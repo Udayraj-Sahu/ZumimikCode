@@ -147,7 +147,7 @@ export function HorizonScene() {
             style={{ left: `${lm.x + parallaxX * 1.2}%`, top: `${lmY + parallaxY * 0.4}%`, transform: "translate(-50%, -50%)", zIndex: isHovered ? 20 : 10, outline: "none", WebkitTapHighlightColor: "transparent" }}
             onMouseEnter={() => setHoveredLandmark(lm)}
             onMouseLeave={() => setHoveredLandmark(null)}>
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 0.45 + (isHovered ? 0.55 : 0), y: 0 }} transition={{ delay: 0.8, duration: 1.4 }} style={{ cursor: "pointer" }}>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 0.45 + (isHovered ? 0.55 : 0), y: 0 }} transition={{ delay: 0.8, duration: 1.4 }} style={{ cursor: "pointer", outline: "none", WebkitTapHighlightColor: "transparent" }}>
               <span className="font-display" style={{ fontSize: "10px", fontWeight: 700, color: isHovered ? "#C8FF5A" : "#8B8B8B", letterSpacing: "0.18em", whiteSpace: "nowrap", transition: "color 0.3s ease", display: "block", textAlign: "center" }}>{lm.label}</span>
               <div style={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
                 <div style={{ width: 3, height: 3, borderRadius: "50%", background: isHovered ? "#C8FF5A" : "rgba(255,255,255,0.3)", transition: "background 0.3s ease" }} />
