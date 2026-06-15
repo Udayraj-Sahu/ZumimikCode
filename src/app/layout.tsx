@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { VerticalNav } from "@/components/nav/VerticalNav";
+import { FloatingActions } from "@/components/FloatingActions";
 import "./globals.css";
-
-const FloatingActions = dynamic(() => import("@/components/FloatingActions").then((m) => m.FloatingActions), { ssr: false });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],

@@ -166,12 +166,7 @@ export function RankSignal() {
           </motion.div>
         </div>
 
-        <motion.div
-          className="text-center px-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <div className="text-center px-6">
           <p className="mb-3 tracking-[0.3em] uppercase text-xs text-muted-foreground font-mono">
             Exam Arena · Season 4
           </p>
@@ -191,8 +186,8 @@ export function RankSignal() {
             Not a coaching platform. A competitive battlefield where India&apos;s sharpest minds
             fight, rank, and rise.
           </p>
-
-          <div id="hero-buttons-sentinel" aria-hidden="true" />
+        </div>
+        <div id="hero-buttons-sentinel" aria-hidden="true" />
           <motion.div
             animate={{ opacity: heroVisible ? 1 : 0, y: heroVisible ? 0 : -10 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -219,7 +214,6 @@ export function RankSignal() {
               Build the Muscle
             </motion.button>
           </motion.div>
-        </motion.div>
       </motion.div>
     </div>
   );

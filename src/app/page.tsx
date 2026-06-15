@@ -1,12 +1,10 @@
-import dynamic from "next/dynamic";
 import { RankSignal } from "@/components/sections/RankSignal";
 import { ExamPortals } from "@/components/sections/ExamPortals";
 import { AchievementWall } from "@/components/sections/AchievementWall";
 import { ConstellationCoach } from "@/components/sections/ConstellationCoach";
 import { EnergyTower } from "@/components/sections/EnergyTower";
+import { HorizonScene } from "@/components/sections/HorizonScene";
 import { SectionReveal } from "@/components/SectionReveal";
-
-const HorizonScene = dynamic(() => import("@/components/sections/HorizonScene").then((m) => m.HorizonScene), { ssr: false });
 
 export default function Home() {
   return (
