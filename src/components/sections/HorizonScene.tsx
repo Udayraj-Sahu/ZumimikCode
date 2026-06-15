@@ -144,7 +144,7 @@ export function HorizonScene() {
         const lmY = lm.y + progress * -6;
         return (
           <div key={lm.id} className="absolute"
-            style={{ left: `${lm.x + parallaxX * 1.2}%`, top: `${lmY + parallaxY * 0.4}%`, transform: "translate(-50%, -50%)", zIndex: isHovered ? 20 : 10 }}
+            style={{ left: `${lm.x + parallaxX * 1.2}%`, top: `${lmY + parallaxY * 0.4}%`, transform: "translate(-50%, -50%)", zIndex: isHovered ? 20 : 10, outline: "none", WebkitTapHighlightColor: "transparent" }}
             onMouseEnter={() => setHoveredLandmark(lm)}
             onMouseLeave={() => setHoveredLandmark(null)}>
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 0.45 + (isHovered ? 0.55 : 0), y: 0 }} transition={{ delay: 0.8, duration: 1.4 }} style={{ cursor: "pointer" }}>

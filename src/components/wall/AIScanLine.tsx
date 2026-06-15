@@ -46,7 +46,7 @@ export function AIScanLine() {
     let y = -10;
     const interval = setInterval(() => {
       y += 0.6;
-      if (y > 110) y = -10;
+      if (y > 100) y = 0;
       setScanY(y);
       INSIGHTS.forEach((ins, i) => {
         if (Math.abs(ins.y - y) < 3 && !revealedInsights.includes(i)) {
@@ -59,7 +59,7 @@ export function AIScanLine() {
   }, [visible]);
 
   return (
-    <div ref={ref} style={{ position: "relative", width: "100%", height: "clamp(300px, 50vh, 500px)", overflow: "hidden" }}>
+    <div ref={ref} style={{ position: "relative", width: "100%", height: "clamp(300px, 50vh, 500px)" }}>
       <div style={{
         position: "absolute", left: 0, right: 0, top: `${scanY}%`, height: "1px",
         background: "linear-gradient(to right, transparent, #C8FF5A 20%, #C8FF5A 80%, transparent)",
