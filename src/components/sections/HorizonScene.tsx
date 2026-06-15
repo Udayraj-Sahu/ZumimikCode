@@ -53,6 +53,7 @@ export function HorizonScene() {
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
     const handlePointer = (e: MouseEvent | TouchEvent) => {
       if (rafRef.current) return;
       rafRef.current = requestAnimationFrame(() => {
@@ -73,7 +74,9 @@ export function HorizonScene() {
         setMouseY(cy);
       });
     };
-    window.addEventListener("mousemove", handlePointer);
+    if (!isMobile) {
+      window.addEventListener("mousemove", handlePointer);
+    }
     window.addEventListener("touchmove", handlePointer, { passive: true });
     return () => {
       window.removeEventListener("mousemove", handlePointer);
