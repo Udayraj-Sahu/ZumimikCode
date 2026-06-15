@@ -1,0 +1,4 @@
+node_modules/
+.next/
+*.local
+.DS_Store
