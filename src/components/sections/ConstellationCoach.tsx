@@ -130,7 +130,7 @@ export function ConstellationCoach() {
                     onFocus={() => setHoveredStar(i)}
                     onBlur={() => setHoveredStar(null)}
                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setHoveredStar(i); }}
-                    style={{ cursor: "pointer" }}>
+                    style={{ cursor: "pointer", outline: "none", WebkitTapHighlightColor: "transparent" }}>
                     <circle cx={star.x} cy={star.y} r={star.size * 1.8} fill={color} opacity={pulse * 0.15 + (isHovered ? 0.2 : 0)} />
                     <circle cx={star.x} cy={star.y} r={star.size * 0.45} fill={color} opacity={0.85 + pulse * 0.15} />
                     {isHovered && (
