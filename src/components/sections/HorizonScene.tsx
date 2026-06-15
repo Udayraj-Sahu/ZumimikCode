@@ -4,13 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useTransform, animate } from "motion/react";
 
 const DISTANT_SIGNALS = [
-  { id: "iit", label: "IIT", x: 48, baseY: 46, size: 11, delay: 0.4 },
-  { id: "aiims", label: "AIIMS", x: 56, baseY: 38, size: 10, delay: 0.7 },
-  { id: "upsc", label: "UPSC", x: 40, baseY: 49, size: 9, delay: 1.0 },
-  { id: "air100", label: "AIR 100", x: 52, baseY: 32, size: 8, delay: 1.3 },
-  { id: "air50", label: "AIR 50", x: 44, baseY: 26, size: 7, delay: 1.6 },
-  { id: "air10", label: "AIR 10", x: 58, baseY: 44, size: 7, delay: 2.0 },
-  { id: "selection", label: "SELECTION", x: 50, baseY: 18, size: 9, delay: 2.3 },
+  { id: "iit", label: "IIT", x: 15, baseY: 43, size: 11, delay: 0.4 },
+  { id: "aiims", label: "AIIMS", x: 29, baseY: 41, size: 10, delay: 0.7 },
+  { id: "upsc", label: "UPSC", x: 43, baseY: 44, size: 9, delay: 1.0 },
+  { id: "air100", label: "AIR 100", x: 50, baseY: 42, size: 8, delay: 1.3 },
+  { id: "air50", label: "AIR 50", x: 57, baseY: 40, size: 7, delay: 1.6 },
+  { id: "air10", label: "AIR 10", x: 71, baseY: 43, size: 7, delay: 2.0 },
+  { id: "selection", label: "SELECTION", x: 85, baseY: 39, size: 9, delay: 2.3 },
 ];
 
 const NEAR_MILESTONES = [
@@ -88,7 +88,7 @@ export function HorizonScene() {
   const handleBegin = () => {
     setStarted(true);
     const controls = animate(progressMv, 1, {
-      duration: 3,
+      duration: 2,
       ease: [0.16, 1, 0.3, 1],
       onUpdate: (v) => setProgress(v),
       onComplete: () => setShowFinal(true),
