@@ -238,20 +238,9 @@ export function HorizonScene() {
       )}
 
       <style>{`
-        @keyframes horizonPulse {
-          0%, 100% { opacity: 0.18; }
-          50% { opacity: 0.38; }
-        }
-        .horizon-pulse { animation: horizonPulse 4s ease-in-out infinite; }
-        @keyframes signalBlink {
-          0%, 100% { opacity: 0.22; }
-          50% { opacity: 0.55; }
-        }
-        .signal-blink { animation: signalBlink 3s ease-in-out infinite; }
         @media (max-height: 500px) {
           .horizon-headline { font-size: clamp(18px, 4vw, 32px) !important; top: 6% !important; }
           .horizon-cta { bottom: 4% !important; }
-          .horizon-signal { display: none !important; }
         }
       `}</style>
     </div>
