@@ -170,7 +170,7 @@ export default function DashboardPage() {
           </button>
         </motion.div>
       ) : loading ? (
-        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px]">
+        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_420px] 2xl:grid-cols-[1fr_480px]">
           <div className="flex flex-col gap-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -214,7 +214,7 @@ export default function DashboardPage() {
           </aside>
         </div>
       ) : (
-        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px]">
+        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_420px] 2xl:grid-cols-[1fr_480px]">
           <div className="flex flex-col gap-6">
             <section aria-label="Key stats" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {(stats ?? []).map((s, i) => (

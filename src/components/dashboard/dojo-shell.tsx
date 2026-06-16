@@ -74,7 +74,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="lg:pl-64">
-        <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 md:px-8 lg:pb-10">{children}</main>
+        <main className="mx-auto w-full px-4 pb-28 pt-6 md:px-8 lg:pb-10">{children}</main>
       </div>
 
       <nav
