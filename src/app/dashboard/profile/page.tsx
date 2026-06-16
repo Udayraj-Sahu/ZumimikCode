@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Zap, Trophy, Target, Star, Flame, Shield, Swords, Medal } from "lucide-react";
-import { ProfileClient } from "./profile-client";
 
 export const metadata: Metadata = {
   title: "Profile — Exam Arena",
@@ -19,7 +18,6 @@ const ACHIEVEMENTS = [
 
 export default function ProfilePage() {
   return (
-    <ProfileClient>
       <div className="px-4 sm:px-6">
         <div className="pt-5 pb-4 border-b border-border mb-5">
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
@@ -109,6 +107,5 @@ export default function ProfilePage() {
           </div>
         </section>
       </div>
-    </ProfileClient>
   );
 }

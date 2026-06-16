@@ -14,7 +14,6 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DojoShell } from "@/components/dashboard/dojo-shell";
 
 type Topic = { id: string; label: string; icon: LucideIcon; color: string };
 
@@ -48,7 +47,6 @@ export default function ConfigureSprintPage() {
   }, []);
 
   return (
-    <DojoShell>
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <div ref={headerRef} className="pt-5 pb-4 border-b border-border mb-6">
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
@@ -212,6 +210,5 @@ export default function ConfigureSprintPage() {
           </button>
         </div>
       </div>
-    </DojoShell>
   );
 }

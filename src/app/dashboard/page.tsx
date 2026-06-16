@@ -5,7 +5,6 @@ import Link from "next/link";
 import gsap from "gsap";
 import { Play, Clock, Zap, Award, TrendingUp, ChevronRight, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DojoShell } from "@/components/dashboard/dojo-shell";
 import { CognitiveRadar } from "@/components/dashboard/cognitive-radar";
 import { getTopicMastery, getRadarAxes, getDashboardMetrics } from "@/services/dashboard";
 import type { Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
@@ -96,7 +95,6 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <DojoShell>
       <div>
         {/* Header */}
         <div
@@ -424,6 +422,5 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
-    </DojoShell>
   );
 }

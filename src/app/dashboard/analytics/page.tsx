@@ -3,7 +3,6 @@
 import { useCallback } from "react";
 import gsap from "gsap";
 import { TrendingUp } from "lucide-react";
-import { DojoShell } from "@/components/dashboard/dojo-shell";
 
 const weeklyData = [
   { day: "MON", pct: 80 },
@@ -35,7 +34,6 @@ export default function AnalyticsPage() {
   }, []);
 
   return (
-    <DojoShell>
       <div>
         {/* Header */}
         <div
@@ -154,6 +152,5 @@ export default function AnalyticsPage() {
           </div>
         </div>
       </div>
-    </DojoShell>
   );
 }

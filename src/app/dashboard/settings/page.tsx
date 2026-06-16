@@ -18,7 +18,6 @@ import {
   Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DojoShell } from "@/components/dashboard/dojo-shell";
 
 function Toggle({
   label,
@@ -184,7 +183,6 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <DojoShell>
       <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
         <div className="pt-6 pb-4 border-b border-border mb-6">
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
@@ -340,6 +338,5 @@ export default function SettingsPage() {
           onCancel={() => setDeleteOpen(false)}
         />
       </div>
-    </DojoShell>
   );
 }
