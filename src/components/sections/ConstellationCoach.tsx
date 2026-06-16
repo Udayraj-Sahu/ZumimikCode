@@ -31,7 +31,6 @@ const TYPE_LABELS: Record<string, string> = {
   strength: "Strength",
   weak: "Needs work",
   goal: "Goal topic",
-  prediction: "AI Prediction",
 };
 
 export function ConstellationCoach() {
@@ -82,12 +81,12 @@ export function ConstellationCoach() {
               <span style={{ color: "#3B82F6" }}>mapped.</span>
             </h2>
             <p className="mb-8 text-muted-foreground font-sans" style={{ fontSize: "clamp(0.9rem, 2.2vw, 1rem)", lineHeight: 1.7 }}>
-              The AI Coach doesn&apos;t give you a study plan. It builds a live map of your
+              The Coach doesn&apos;t give you a study plan. It builds a live map of your
               intelligence — where you&apos;re strong, where you&apos;re fragile, and where the
               exam will hit hardest.
             </p>
             <div className="flex flex-col gap-3">
-              {Object.entries(TYPE_COLORS).map(([type, color]) => (
+              {Object.entries(TYPE_COLORS).filter(([type]) => type in TYPE_LABELS).map(([type, color]) => (
                 <div key={type} className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
                   <span className="text-xs text-secondary-foreground font-mono">{TYPE_LABELS[type]}</span>

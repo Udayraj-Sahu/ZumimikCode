@@ -73,7 +73,7 @@ export function AIScanLine() {
 
       <div style={{ position: "absolute", top: 0, left: 0, display: "flex", alignItems: "center", gap: "10px", marginBottom: "32px" }}>
         <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#C8FF5A" }} />
-        <span className="font-sans uppercase" style={{ fontSize: "11px", letterSpacing: "0.2em", color: "#C8FF5A" }}>AI Analysis Active</span>
+        <span className="font-sans uppercase" style={{ fontSize: "11px", letterSpacing: "0.2em", color: "#C8FF5A" }}>Active Analysis</span>
       </div>
 
       {INSIGHTS.map((ins, i) => (
