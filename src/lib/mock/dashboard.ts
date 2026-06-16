@@ -1,4 +1,4 @@
-import type { NavItem, Stat, Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
+import type { NavItem, Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
 import {
   Home,
   Zap,
@@ -9,11 +9,11 @@ import {
 } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: Home, mobileLabel: "Home" },
-  { label: "Sprints", href: "/dashboard/configure-sprint", icon: Zap, mobileLabel: "Sprints" },
-  { label: "Analytics", href: "/dashboard/analytics", icon: LineChart, mobileLabel: "Stats" },
-  { label: "Profile", href: "/dashboard/profile", icon: User, mobileLabel: "Profile" },
-  { label: "Settings", href: "/dashboard/settings", icon: Settings, mobileLabel: "Gear" },
+  { label: "Dashboard", href: "/dashboard", icon: Home, section: "Main" },
+  { label: "Sprints", href: "/dashboard/configure-sprint", icon: Zap, section: "Training" },
+  { label: "Analytics", href: "/dashboard/analytics", icon: LineChart, section: "Training" },
+  { label: "Profile", href: "/dashboard/profile", icon: User, section: "Account" },
+  { label: "Settings", href: "/dashboard/settings", icon: Settings, section: "Account" },
 ];
 
 export const MOBILE_NAV: NavItem[] = [
@@ -24,17 +24,10 @@ export const MOBILE_NAV: NavItem[] = [
   { label: "Gear", href: "/dashboard/settings", icon: Settings },
 ];
 
-export const STATS: Stat[] = [
-  { label: "Efficiency Score", value: "87", suffix: "/100", accent: "primary" },
-  { label: "Sessions", value: "47", suffix: "completed", accent: "default" },
-  { label: "Mastery", value: "82%", suffix: "avg score", accent: "secondary" },
-  { label: "Weekly Goal", value: "64%", suffix: "progress", accent: "default" },
-];
-
 export const TOPIC_MASTERY: Topic[] = [
   { name: "Quantitative Aptitude", value: 92, color: "primary" },
   { name: "Logical Reasoning", value: 78, color: "primary" },
-  { name: "Verbal Ability", value: 64, color: "secondary" },
+  { name: "Verbal Ability", value: 64, color: "primary" },
   { name: "Data Interpretation", value: 85, color: "primary" },
   { name: "General Knowledge", value: 41, color: "primary" },
 ];
@@ -49,6 +42,6 @@ export const RADAR_AXES: RadarAxis[] = [
 ];
 
 export const METRICS: Metric[] = [
-  { label: "Action Delay", value: "142ms", icon: "Zap", accent: "secondary" },
+  { label: "Action Delay", value: "142ms", icon: "Zap", accent: "primary" },
   { label: "Focus Density", value: "89%", icon: "TrendingUp", accent: "primary" },
 ];

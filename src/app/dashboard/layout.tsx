@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { DojoShell } from "@/components/dashboard/dojo-shell";
 
 export const metadata: Metadata = {
   title: "Dashboard — Exam Arena",
@@ -8,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return <DojoShell>{children}</DojoShell>;
+  return <>{children}</>;
 }

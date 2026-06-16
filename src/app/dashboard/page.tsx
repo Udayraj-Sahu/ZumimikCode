@@ -1,68 +1,37 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
-import { Bell, Zap, Brain, MoreHorizontal, TrendingUp, Target, BarChart3, Timer, type LucideIcon } from "lucide-react";
+import gsap from "gsap";
+import { Play, Clock, Zap, Award, TrendingUp, ChevronRight, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DojoShell } from "@/components/dashboard/dojo-shell";
 import { CognitiveRadar } from "@/components/dashboard/cognitive-radar";
-import { getDashboardStats, getTopicMastery, getRadarAxes, getDashboardMetrics } from "@/services/dashboard";
-import type { Stat, Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
+import { getTopicMastery, getRadarAxes, getDashboardMetrics } from "@/services/dashboard";
+import type { Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Zap,
   TrendingUp,
 };
 
-const STAT_ICONS: LucideIcon[] = [Target, BarChart3, Brain, Timer];
+const streakDays = [true, true, true, false, true, true, false];
+const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
-const easeOut = [0.16, 1, 0.3, 1] as const;
+const upcomingEvents = [
+  { title: "Sprint Duel", time: "Today, 8PM", tag: "LIVE" },
+  { title: "Mock CAT #7", time: "Thu, 10AM", tag: "MOCK" },
+  { title: "Group Challenge", time: "Sat, 3PM", tag: "GROUP" },
+];
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.4, ease: easeOut },
-  }),
-};
-
-const STYLE_MAP = {
-  primary: "text-primary",
-  default: "text-foreground",
-  secondary: "text-secondary",
-};
-
-function StatCard({ stat, index }: { stat: Stat; index: number }) {
-  const Icon = STAT_ICONS[index % STAT_ICONS.length];
-  return (
-    <motion.div
-      custom={index}
-      initial="hidden"
-      animate="visible"
-      variants={sectionVariants}
-      className="relative overflow-hidden rounded-2xl bg-card p-4"
-    >
-      <Icon className="absolute right-3 top-3 size-4 text-muted-foreground/20" aria-hidden="true" />
-      <p className="text-[10px] font-semibold uppercase leading-tight tracking-widest text-muted-foreground">
-        {stat.label}
-      </p>
-      <p
-        className={cn(
-          "mt-3 text-3xl font-bold tracking-tight",
-          STYLE_MAP[stat.accent],
-        )}
-      >
-        {stat.value}
-        <span className="ml-1 text-xs font-medium text-muted-foreground">{stat.suffix}</span>
-      </p>
-    </motion.div>
-  );
-}
+const leaderboardData = [
+  { rank: 1, name: "Priya S.", xp: 4820 },
+  { rank: 2, name: "Arjun M.", xp: 4310 },
+  { rank: 3, name: "Rohan K.", xp: 3990 },
+  { rank: 47, name: "You", xp: 2340, me: true },
+];
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState<Stat[] | null>(null);
   const [topics, setTopics] = useState<Topic[] | null>(null);
   const [radarAxes, setRadarAxes] = useState<RadarAxis[] | null>(null);
   const [metrics, setMetrics] = useState<Metric[] | null>(null);
@@ -73,14 +42,12 @@ export default function DashboardPage() {
     let cancelled = false;
     async function load() {
       try {
-        const [s, t, r, m] = await Promise.all([
-          getDashboardStats(),
+        const [t, r, m] = await Promise.all([
           getTopicMastery(),
           getRadarAxes(),
           getDashboardMetrics(),
         ]);
         if (cancelled) return;
-        setStats(s);
         setTopics(t);
         setRadarAxes(r);
         setMetrics(m);
@@ -97,243 +64,366 @@ export default function DashboardPage() {
 
   const metricCards = useMemo(() => {
     if (!metrics) return null;
-    return metrics.map((m, i) => {
+    return metrics.map((m) => {
       const Icon = ICON_MAP[m.icon] || Zap;
       return (
-        <motion.div
+        <div
           key={m.label}
-          custom={i + 8}
-          initial="hidden"
-          animate="visible"
-          variants={sectionVariants}
-          className="flex items-center justify-between rounded-2xl bg-card px-5 py-4"
+          className="flex items-center justify-between rounded-lg px-3 py-2 bg-card"
         >
-          <span className="flex items-center gap-3 text-sm font-medium">
-            <Icon className={cn("size-5", m.accent === "secondary" ? "text-secondary" : "text-primary")} aria-hidden="true" />
-            {m.label}
+          <span className="text-fluid-xs text-muted-foreground/60">{m.label}</span>
+          <span className="text-fluid-sm font-bold text-primary font-mono">
+            {m.value}
           </span>
-          <span className="font-bold">{m.value}</span>
-        </motion.div>
+        </div>
       );
     });
   }, [metrics]);
 
+  const headerRef = useCallback((el: HTMLDivElement | null) => {
+    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
+  }, []);
+
+  const errorRef = useCallback((el: HTMLDivElement | null) => {
+    if (el) gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
+  }, []);
+
+  const animateSection = useCallback((el: HTMLDivElement | null) => {
+    if (!el || el.dataset.animated) return;
+    el.dataset.animated = "true";
+    const i = parseInt(el.dataset.sectionIndex || "0");
+    gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: i * 0.08, ease: "power2.out" });
+  }, []);
+
   return (
     <DojoShell>
-      <motion.header
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, ease: easeOut }}
-        className="flex items-start justify-between gap-3 md:gap-4"
-      >
-        <div className="min-w-0">
-          <h1 className="text-balance text-xl font-bold tracking-tight md:text-4xl">
-            Welcome back,{" "}
-            <span className="italic text-primary">Champion</span>
-          </h1>
-          <p className="mt-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            <Zap className="size-4 text-primary" aria-hidden="true" />
-            12-Day Streak Active
-          </p>
-        </div>
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          <button
-            type="button"
-            aria-label="Notifications"
-            className="grid size-9 sm:size-10 place-items-center rounded-xl bg-card outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <Bell className="size-4 sm:size-5 text-muted-foreground" aria-hidden="true" />
-          </button>
-          <span
-            aria-hidden="true"
-            className="grid size-9 sm:size-10 place-items-center rounded-xl bg-secondary text-secondary-foreground"
-          >
-            <Brain className="size-4 sm:size-5" />
-          </span>
-        </div>
-      </motion.header>
-
-      {error ? (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="mt-6 md:mt-8 flex flex-col items-center gap-4 rounded-3xl border border-destructive/30 bg-destructive/5 p-6 md:p-8 text-center"
+      <div>
+        {/* Header */}
+        <div
+          ref={headerRef}
+          className="px-5 md:px-8 pt-6 pb-5 border-b border-border"
         >
-          <p className="text-sm font-semibold text-destructive">{error}</p>
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className="rounded-xl bg-primary px-6 py-2.5 text-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Retry
-          </button>
-        </motion.div>
-      ) : loading ? (
-        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
-          <div className="flex flex-col gap-6">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="animate-pulse rounded-2xl bg-card p-4">
-                  <div className="h-3 w-3/5 rounded bg-muted" />
-                  <div className="mt-4 h-8 w-2/5 rounded bg-muted" />
-                </div>
-              ))}
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
+                EXAM ARENA
+              </p>
+              <p className="mt-0.5 text-fluid-sm text-muted-foreground/50">Welcome back,</p>
+              <h1 className="text-fluid-3xl font-black tracking-tight text-primary leading-none mt-0.5">
+                Champion
+              </h1>
+              <p className="mt-1 text-fluid-sm text-muted-foreground/50">
+                CAT 2026 Prep &middot; 87 days to exam
+              </p>
             </div>
-            <div className="animate-pulse rounded-3xl border border-border bg-card p-6 md:p-8">
-              <div className="h-4 w-1/4 rounded bg-muted" />
-              <div className="mt-4 h-8 w-3/5 rounded bg-muted" />
-              <div className="mt-3 h-4 w-4/5 rounded bg-muted" />
-              <div className="mt-6 h-10 w-1/3 rounded-xl bg-muted" />
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-card border border-border">
+                <Zap size={11} className="text-primary" />
+                <span className="text-fluid-xs font-bold text-primary">6 DAY STREAK</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-card border border-border">
+                <Award size={11} className="text-chart-4" />
+                <span className="text-fluid-xs font-bold text-chart-4">2,340 XP</span>
+              </div>
             </div>
-            <div className="animate-pulse rounded-3xl bg-card p-6">
-              <div className="h-5 w-1/3 rounded bg-muted" />
-              <div className="mt-6 flex flex-col gap-5">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="flex flex-col gap-2">
-                    <div className="h-3 w-2/5 rounded bg-muted" />
-                    <div className="h-2 w-full rounded-full bg-muted" />
-                  </div>
+          </div>
+
+          {/* Stat row */}
+          <div className="flex flex-wrap gap-x-6 gap-y-3 mt-5">
+            {[
+              { label: "ACCURACY", value: "87%", sub: "+3% this week" },
+              { label: "QUESTIONS", value: "1,247", sub: "total solved" },
+              { label: "PERCENTILE", value: "64%ile", sub: "mock rank" },
+              { label: "SPEED", value: "47s", sub: "avg / question" },
+            ].map((s) => (
+              <div key={s.label}>
+                <p className="text-fluid-xs font-semibold tracking-[0.1em] text-muted-foreground/60">{s.label}</p>
+                <p className="text-fluid-2xl font-black tracking-tight text-foreground leading-none mt-0.5">
+                  {s.value}
+                </p>
+                <p className="text-fluid-xs text-primary mt-0.5">{s.sub}</p>
+              </div>
+            ))}
+            {/* Streak mini */}
+            <div className="ml-auto hidden sm:block">
+              <p className="text-fluid-xs font-semibold tracking-[0.1em] text-muted-foreground/60 mb-1">
+                THIS WEEK
+              </p>
+              <div className="flex gap-1">
+                {dayLabels.map((day, i) => (
+                  <span
+                    key={i}
+                    className="grid size-5 place-items-center rounded text-[8px] font-bold"
+                    style={{
+                      background: streakDays[i] ? "var(--primary)" : "#1a1a1a",
+                      color: streakDays[i] ? "#0a0a0a" : "#444",
+                    }}
+                  >
+                    {day}
+                  </span>
                 ))}
               </div>
             </div>
           </div>
-          <aside className="flex flex-col gap-4">
-            <div className="animate-pulse rounded-3xl bg-card p-6">
-              <div className="mx-auto h-3 w-1/2 rounded bg-muted" />
-              <div className="mx-auto mt-2 h-5 w-3/5 rounded bg-muted" />
-              <div className="mt-4 flex items-center justify-center">
-                <div className="size-52 rounded-full bg-muted" />
+        </div>
+
+        {error ? (
+          <div
+            ref={errorRef}
+            className="mx-5 md:mx-8 mt-6 flex flex-col items-center gap-4 rounded-lg border border-destructive/30 bg-destructive/5 p-6 md:p-8 text-center"
+          >
+            <p className="text-fluid-base font-semibold text-destructive">{error}</p>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="rounded-lg bg-primary px-6 py-2.5 text-fluid-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Retry
+            </button>
+          </div>
+        ) : loading ? (
+          <div className="p-5 md:p-8 animate-pulse">
+            <div className="flex flex-col lg:flex-row gap-4">
+              <div className="flex-1 min-w-0 flex flex-col gap-4">
+                <div className="h-32 rounded-lg bg-card" />
+                <div className="h-48 rounded-lg bg-card" />
+                <div className="h-40 rounded-lg bg-card" />
+              </div>
+              <div className="flex flex-col gap-4 w-full lg:w-[350px] shrink-0">
+                <div className="h-64 rounded-lg bg-card" />
+                <div className="h-32 rounded-lg bg-card" />
+                <div className="h-40 rounded-lg bg-card" />
               </div>
             </div>
-            {Array.from({ length: 2 }).map((_, i) => (
-              <div key={i} className="animate-pulse rounded-2xl bg-card px-5 py-4">
-                <div className="h-4 w-3/5 rounded bg-muted" />
-              </div>
-            ))}
-          </aside>
-        </div>
-      ) : (
-        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
-          <div className="flex flex-col gap-6">
-            <section aria-label="Key stats" className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              {(stats ?? []).map((s, i) => (
-                <StatCard key={s.label} stat={s} index={i} />
-              ))}
-            </section>
-
-            <motion.section
-              custom={4}
-              initial="hidden"
-              animate="visible"
-              variants={sectionVariants}
-              className="relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/[0.07] via-card to-background p-6 md:p-8"
-            >
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--primary)/0.08,transparent_60%)]" />
-              <p className="relative text-xs font-bold uppercase tracking-widest text-primary">
-                Today&apos;s Priority
-              </p>
-              <h2 className="relative mt-2 max-w-md text-balance text-xl font-bold uppercase italic tracking-tight md:text-3xl">
-                Daily Arena Sprint
-              </h2>
-              <p className="relative mt-3 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground">
-                Push your limits in today&apos;s challenge. Current record: 0:42s held by
-                @NeuralRacer.
-              </p>
-              <Link
-                href="/dashboard/configure-sprint"
-                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                Start Sprint
-              </Link>
-            </motion.section>
-
-            <motion.section
-              custom={5}
-              initial="hidden"
-              animate="visible"
-              variants={sectionVariants}
-              className="rounded-3xl bg-card p-6"
-            >
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold uppercase italic tracking-tight text-primary">
-                  Topic Mastery
-                </h2>
-                <button
-                  type="button"
-                  aria-label="Topic mastery options"
-                  className="grid size-10 place-items-center rounded-lg outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+          </div>
+        ) : (
+          <div className="p-5 md:p-8">
+            <div className="flex flex-col lg:flex-row gap-4">
+              {/* Left col */}
+              <div className="flex-1 min-w-0 flex flex-col gap-4">
+                {/* Daily Sprint CTA */}
+                <div
+                  ref={animateSection} data-section-index={0}
+                  className="relative overflow-hidden rounded-lg p-5 border border-primary/20"
+                  style={{
+                    background: "linear-gradient(135deg, #1a1f00 0%, #111 70%)",
+                  }}
                 >
-                  <MoreHorizontal className="size-5 text-muted-foreground" aria-hidden="true" />
-                </button>
+                  <div
+                    className="absolute top-0 right-0 w-28 h-28 opacity-10 rounded-full"
+                    style={{ background: "var(--primary)", filter: "blur(36px)" }}
+                  />
+                  <p className="text-fluid-xs font-semibold tracking-[0.15em] text-primary">
+                    TODAY&apos;S CHALLENGE
+                  </p>
+                  <h2 className="text-fluid-xl font-black tracking-tight text-foreground mt-1">
+                    DAILY ARENA SPRINT
+                  </h2>
+                  <p className="text-fluid-sm text-muted-foreground/60 mt-1 leading-relaxed">
+                    30 questions &middot; Timed &middot; Ranked &middot; Earn 150 XP
+                  </p>
+                  <div className="flex items-center gap-3 mt-4">
+                    <Link
+                      href="/dashboard/configure-sprint"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-fluid-xs font-bold tracking-wide text-[#0a0a0a] transition-all hover:opacity-90 active:scale-95"
+                      style={{ background: "var(--primary)" }}
+                    >
+                      <Play size={12} />
+                      START SPRINT
+                    </Link>
+                    <div className="flex items-center gap-1.5 text-fluid-xs text-muted-foreground/50">
+                      <Clock size={10} /> 45 min &middot; 30 Qs
+                    </div>
+                  </div>
+                </div>
+
+                {/* Topic Mastery */}
+                <div
+                  ref={animateSection} data-section-index={1}
+                  className="rounded-lg p-5 bg-card border border-border"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-fluid-lg font-bold tracking-[0.08em] text-foreground">
+                      TOPIC MASTERY
+                    </h3>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 text-fluid-sm text-primary outline-none"
+                    >
+                      VIEW ALL <ChevronRight size={10} />
+                    </button>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {(topics ?? []).length === 0 ? (
+                      <p className="py-4 text-center text-fluid-sm text-muted-foreground/60">
+                        No mastery data available yet. Complete a sprint to see your progress.
+                      </p>
+                    ) : (
+                      (topics ?? []).map((t) => (
+                        <div key={t.name}>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-fluid-sm text-muted-foreground">{t.name}</span>
+                            <span className="text-fluid-sm font-bold text-primary font-mono">
+                              {t.value}%
+                            </span>
+                          </div>
+                          <div className="w-full h-1.5 rounded-full bg-muted">
+                            <div
+                              className="h-full rounded-full transition-all duration-1000 ease-out"
+                              style={{
+                                width: `${t.value}%`,
+                                background: t.color === "primary" ? "var(--primary)" : "var(--secondary)",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                {/* Recent Activity */}
+                <div
+                  ref={animateSection} data-section-index={2}
+                  className="rounded-lg p-5 bg-card border border-border"
+                >
+                  <h3 className="text-fluid-lg font-bold tracking-[0.08em] text-foreground mb-3">
+                    RECENT ACTIVITY
+                  </h3>
+                  <div className="flex flex-col gap-0">
+                    {[
+                      { label: "LR Sprint", score: "22/25", time: "2h ago" },
+                      { label: "Quant Set #14", score: "18/20", time: "Yesterday" },
+                      { label: "Full CAT Mock", score: "142/300", time: "2d ago" },
+                    ].map((a, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between py-2.5 border-b border-border/40"
+                      >
+                        <span className="text-fluid-sm text-muted-foreground">{a.label}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-fluid-sm text-foreground font-mono">
+                            {a.score}
+                          </span>
+                          <span className="text-fluid-xs text-muted-foreground/40">{a.time}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <ul className="mt-6 flex flex-col gap-5">
-                {(topics ?? []).length === 0 ? (
-                  <li className="py-4 text-center text-sm text-muted-foreground">
-                    No mastery data available yet. Complete a sprint to see your progress.
-                  </li>
-                ) : (
-                  (topics ?? []).map((t) => (
-                    <li key={t.name}>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium">{t.name}</span>
+
+              {/* Right col */}
+              <div className="flex flex-col gap-4 w-full lg:w-[350px] shrink-0">
+                {/* Cognitive Radar */}
+                <div
+                  ref={animateSection} data-section-index={3}
+                  className="rounded-lg p-4 bg-card border border-border"
+                >
+                  <h3 className="text-fluid-base font-bold tracking-[0.1em] text-foreground mb-1">
+                    COGNITIVE RADAR
+                  </h3>
+                  {(radarAxes ?? []).length > 0 ? (
+                    <CognitiveRadar axes={radarAxes ?? []} size={220} />
+                  ) : (
+                    <p className="py-8 text-center text-fluid-sm text-muted-foreground/60">
+                      No radar data yet.
+                    </p>
+                  )}
+                  <div className="grid grid-cols-2 gap-1.5 mt-2">
+                    {(metrics ?? []).length > 0 ? (
+                      metricCards
+                    ) : (
+                      <>
+                        <div className="flex items-center justify-between px-2 py-1.5 rounded bg-card">
+                          <span className="text-fluid-xs text-muted-foreground/60">Action Delay</span>
+                          <span className="text-fluid-xs font-bold text-primary font-mono">160ms</span>
+                        </div>
+                        <div className="flex items-center justify-between px-2 py-1.5 rounded bg-card">
+                          <span className="text-fluid-xs text-muted-foreground/60">Focus Density</span>
+                          <span className="text-fluid-xs font-bold text-primary font-mono">89%</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Upcoming */}
+                <div
+                  ref={animateSection} data-section-index={4}
+                  className="rounded-lg p-4 bg-card border border-border"
+                >
+                  <h3 className="text-fluid-base font-bold tracking-[0.1em] text-foreground mb-2">
+                    UPCOMING
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {upcomingEvents.map((e, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between py-2 px-2.5 rounded bg-card"
+                      >
+                        <div>
+                          <div className="text-fluid-sm font-semibold text-foreground/80">{e.title}</div>
+                          <div className="text-fluid-xs text-muted-foreground/40">{e.time}</div>
+                        </div>
                         <span
                           className={cn(
-                            "font-bold",
-                            t.color === "primary" ? "text-primary" : "text-secondary",
+                            "px-1.5 py-0.5 rounded text-fluid-xs font-bold tracking-[0.08em]",
+                            e.tag === "LIVE"
+                              ? "bg-primary/10 text-primary"
+                              : "bg-muted text-muted-foreground/60",
                           )}
                         >
-                          {t.value}%
+                          {e.tag}
                         </span>
                       </div>
-                      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
-                        <div
-                          role="progressbar"
-                          aria-valuenow={t.value}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                          aria-label={t.name}
+                    ))}
+                  </div>
+                </div>
+
+                {/* Leaderboard */}
+                <div
+                  ref={animateSection} data-section-index={5}
+                  className="rounded-lg p-4 bg-card border border-border"
+                >
+                  <h3 className="text-fluid-base font-bold tracking-[0.1em] text-foreground mb-2">
+                    LEADERBOARD
+                  </h3>
+                  <div className="flex flex-col gap-1">
+                    {leaderboardData.map((u) => (
+                      <div
+                        key={u.rank}
+                        className={cn(
+                          "flex items-center gap-2 px-2 py-1.5 rounded",
+                          u.me && "bg-primary/5 border border-primary/15",
+                        )}
+                      >
+                        <span
                           className={cn(
-                            "h-full rounded-full transition-all duration-1000 ease-out",
-                            t.color === "primary" ? "bg-primary" : "bg-secondary",
+                            "text-fluid-xs font-mono w-[18px]",
+                            u.rank <= 3 ? "text-primary" : "text-muted-foreground/30",
                           )}
-                          style={{ width: `${t.value}%` }}
-                        />
+                        >
+                          #{u.rank}
+                        </span>
+                        <span
+                          className="flex-1 text-fluid-sm"
+                          style={{ color: u.me ? "var(--primary)" : "#888", fontWeight: u.me ? 700 : 400 }}
+                        >
+                          {u.name}
+                        </span>
+                        <span className="text-fluid-xs font-mono text-muted-foreground/40">
+                          {u.xp.toLocaleString()}
+                        </span>
                       </div>
-                    </li>
-                  ))
-                )}
-              </ul>
-            </motion.section>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
-            <motion.section
-              custom={6}
-              initial="hidden"
-              animate="visible"
-              variants={sectionVariants}
-              className="rounded-3xl bg-card p-6"
-            >
-              <p className="text-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                Performance Matrix
-              </p>
-              <h2 className="mt-1 text-center text-xl font-bold uppercase italic tracking-tight text-primary">
-                Cognitive Radar
-              </h2>
-              {(radarAxes ?? []).length > 0 ? (
-                <CognitiveRadar axes={radarAxes ?? []} className="mt-4" />
-              ) : (
-                <p className="mt-8 text-center text-sm text-muted-foreground">
-                  No radar data yet.
-                </p>
-              )}
-            </motion.section>
-
-            {metricCards}
-          </aside>
-        </div>
-      )}
+        )}
+      </div>
     </DojoShell>
   );
 }

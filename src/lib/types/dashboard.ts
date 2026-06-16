@@ -4,16 +4,7 @@ export type NavItem = {
   label: string;
   href: string;
   icon: LucideIcon;
-  mobileLabel?: string;
-};
-
-export type StatAccent = "primary" | "default" | "secondary";
-
-export type Stat = {
-  label: string;
-  value: string;
-  suffix: string;
-  accent: StatAccent;
+  section?: string;
 };
 
 export type Topic = {

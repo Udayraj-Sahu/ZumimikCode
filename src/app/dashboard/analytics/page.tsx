@@ -1,104 +1,159 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useCallback } from "react";
+import gsap from "gsap";
+import { TrendingUp } from "lucide-react";
 import { DojoShell } from "@/components/dashboard/dojo-shell";
-import { cn } from "@/lib/utils";
-import { Target, BarChart3, Zap, Trophy, TrendingUp } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Analytics — Exam Arena",
-  description: "Deep-dive performance metrics from your training sessions.",
-  robots: "noindex, nofollow",
-};
-
-const ACTIVITY = [
-  { day: "Mon", value: 85 },
-  { day: "Tue", value: 62 },
-  { day: "Wed", value: 78 },
-  { day: "Thu", value: 91 },
-  { day: "Fri", value: 55 },
-  { day: "Sat", value: 73 },
-  { day: "Sun", value: 88 },
+const weeklyData = [
+  { day: "MON", pct: 80 },
+  { day: "TUE", pct: 62 },
+  { day: "WED", pct: 78 },
+  { day: "THU", pct: 90 },
+  { day: "FRI", pct: 68 },
+  { day: "SAT", pct: 73 },
+  { day: "SUN", pct: 88 },
 ];
 
-const RECENT = [
-  { action: "Completed Sprint", detail: "Quantitative Aptitude — 92%", time: "2h ago" },
-  { action: "New High Score", detail: "Logical Reasoning — 78%", time: "1d ago" },
-  { action: "Streak Milestone", detail: "12-Day Streak Achieved", time: "2d ago" },
-  { action: "Rank Up", detail: "Climbed to #47 in Arena Rankings", time: "3d ago" },
+const recentActivity = [
+  { title: "Completed Sprint", sub: "Quantitative Aptitude — 92%", time: "2H AGO" },
+  { title: "New High Score", sub: "Logical Reasoning — 79%", time: "1D AGO" },
+  { title: "Streak Milestone", sub: "12-Day Streak Achieved", time: "2D AGO" },
+  { title: "Rank Up", sub: "Climbed to #47 in Arena Rankings", time: "3D AGO" },
 ];
 
 export default function AnalyticsPage() {
+  const headerRef = useCallback((el: HTMLDivElement | null) => {
+    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
+  }, []);
+
+  const animateSection = useCallback((el: HTMLDivElement | null) => {
+    if (!el || el.dataset.animated) return;
+    el.dataset.animated = "true";
+    const i = parseInt(el.dataset.sectionIndex || "0");
+    gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: i * 0.08, ease: "power2.out" });
+  }, []);
+
   return (
     <DojoShell>
-      <header>
-        <h1 className="text-xl font-bold tracking-tight md:text-3xl">
-          Analytics
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Deep-dive performance metrics from your last 47 sessions.
-        </p>
-      </header>
+      <div>
+        {/* Header */}
+        <div
+          ref={headerRef}
+          className="px-6 py-5 border-b border-border"
+        >
+          <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
+            EXAM ARENA
+          </p>
+          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground mt-0.5">
+            Analytics
+          </h1>
+          <p className="text-fluid-sm text-muted-foreground/60 mt-0.5">
+            Deep-dive performance metrics from your last 47 sessions.
+          </p>
+        </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        {[
-          { icon: BarChart3, label: "Total Sessions", value: "47", accent: "text-primary" },
-          { icon: Target, label: "Avg Score", value: "82%", accent: "text-chart-2" },
-          { icon: Zap, label: "Best Streak", value: "12d", accent: "text-chart-3" },
-          { icon: Trophy, label: "Arena Rank", value: "#47", accent: "text-chart-4" },
-        ].map((s) => {
-          const Icon = s.icon;
-          return (
-            <div key={s.label} className="rounded-2xl bg-card p-4">
-              <div className="flex items-center gap-2">
-                <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+        <div className="p-6 flex flex-col gap-6">
+          {/* Stat cards */}
+          <div
+            ref={animateSection} data-section-index={0}
+            className="grid grid-cols-2 sm:grid-cols-4 gap-3"
+          >
+            {[
+              { label: "TOTAL SESSIONS", value: "47" },
+              { label: "AVG SCORE", value: "82%" },
+              { label: "BEST STREAK", value: "12d" },
+              { label: "ARENA RANK", value: "#47" },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className="rounded-lg p-4 bg-card border border-border"
+              >
+                <p className="text-fluid-xs font-semibold tracking-[0.12em] text-muted-foreground/60 mb-1.5">
                   {s.label}
                 </p>
+                <p className="text-fluid-3xl font-black tracking-tight text-primary leading-none">
+                  {s.value}
+                </p>
               </div>
-              <p className={cn("mt-2 text-2xl font-bold tracking-tight md:text-3xl", s.accent)}>
-                {s.value}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+            ))}
+          </div>
 
-      <section className="mt-6 rounded-3xl bg-card p-5 md:p-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-primary">Weekly Activity</h2>
-          <TrendingUp className="size-4 text-muted-foreground" aria-hidden="true" />
-        </div>
-        <div className="mt-6 flex items-end justify-between gap-2">
-          {ACTIVITY.map((d) => (
-            <div key={d.day} className="flex flex-1 flex-col items-center gap-2">
-              <span className="text-[10px] font-semibold text-muted-foreground">{d.value}%</span>
-              <div className="w-full rounded-full bg-muted" style={{ height: "clamp(40px, 12vw, 80px)" }}>
+          {/* Weekly Activity */}
+          <div
+            ref={animateSection} data-section-index={1}
+            className="rounded-lg p-5 bg-card border border-border"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-fluid-lg font-bold tracking-[0.08em] text-foreground">
+                WEEKLY ACTIVITY
+              </h2>
+              <TrendingUp size={13} className="text-muted-foreground/50" />
+            </div>
+
+            {/* Percentages row */}
+            <div className="flex justify-between mb-1">
+              {weeklyData.map((d) => (
+                <span
+                  key={d.day}
+                  className="text-fluid-xs text-center flex-1 font-mono text-muted-foreground/50"
+                >
+                  {d.pct}%
+                </span>
+              ))}
+            </div>
+
+            {/* Bar chart */}
+            <div className="flex items-end justify-between gap-[2px] sm:gap-1" style={{ height: "60px" }}>
+              {weeklyData.map((d) => (
                 <div
-                  className="w-full rounded-full bg-primary transition-all duration-700"
-                  style={{ height: `${d.value}%` }}
+                  key={d.day}
+                  className="flex-1 mx-[1px] sm:mx-0.5 rounded-t-sm bg-primary"
+                  style={{ height: `${d.pct}%`, minHeight: "4px" }}
                 />
-              </div>
-              <span className="text-[10px] font-semibold uppercase text-muted-foreground">{d.day}</span>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
 
-      <section className="mt-6 rounded-3xl bg-card p-5 md:p-6">
-        <h2 className="text-sm font-bold uppercase tracking-widest text-primary">Recent Activity</h2>
-        <ul className="mt-4 divide-y divide-border">
-          {RECENT.map((r) => (
-            <li key={r.time} className="flex items-center justify-between gap-4 py-3">
-              <div className="min-w-0">
-                <p className="text-sm font-medium">{r.action}</p>
-                <p className="text-xs text-muted-foreground">{r.detail}</p>
-              </div>
-              <span className="shrink-0 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-                {r.time}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
+            {/* Day labels */}
+            <div className="flex justify-between mt-1">
+              {weeklyData.map((d) => (
+                <span
+                  key={d.day}
+                  className="text-fluid-xs text-center flex-1 tracking-[0.05em] text-muted-foreground/30"
+                >
+                  {d.day}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Activity */}
+          <div
+            ref={animateSection} data-section-index={2}
+            className="rounded-lg p-5 bg-card border border-border"
+          >
+            <h2 className="text-fluid-lg font-bold tracking-[0.08em] text-foreground mb-3">
+              RECENT ACTIVITY
+            </h2>
+            <div className="flex flex-col">
+              {recentActivity.map((a, i) => (
+                <div
+                  key={i}
+                  className="flex items-start justify-between py-3 border-b border-border/40"
+                >
+                  <div>
+                    <p className="text-fluid-base font-semibold text-foreground/80">{a.title}</p>
+                    <p className="text-fluid-sm text-muted-foreground/60 mt-0.5">{a.sub}</p>
+                  </div>
+                  <span className="text-fluid-xs font-mono text-muted-foreground/30 whitespace-nowrap ml-4">
+                    {a.time}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </DojoShell>
   );
 }

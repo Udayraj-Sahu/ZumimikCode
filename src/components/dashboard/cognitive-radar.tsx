@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
 type Axis = { label: string; value: number };
@@ -10,28 +11,43 @@ interface CognitiveRadarProps {
   size?: number;
 }
 
-export function CognitiveRadar({ axes, className, size = 280 }: CognitiveRadarProps) {
-  const center = size / 2;
-  const radius = size / 2 - 36;
+export const CognitiveRadar = memo(function CognitiveRadar({
+  axes,
+  className,
+  size = 280,
+}: CognitiveRadarProps) {
+  const center = useMemo(() => size / 2, [size]);
+  const radius = useMemo(() => size / 2 - 36, [size]);
   const rings = [0.25, 0.5, 0.75, 1];
 
-  const point = (value: number, index: number) => {
-    const angle = (Math.PI * 2 * index) / axes.length - Math.PI / 2;
-    return {
-      x: center + Math.cos(angle) * radius * value,
-      y: center + Math.sin(angle) * radius * value,
-    };
-  };
+  const point = useMemo(
+    () => (value: number, index: number) => {
+      const angle = (Math.PI * 2 * index) / axes.length - Math.PI / 2;
+      return {
+        x: center + Math.cos(angle) * radius * value,
+        y: center + Math.sin(angle) * radius * value,
+      };
+    },
+    [center, radius, axes.length],
+  );
 
-  const polygon = (factor: number) =>
-    axes.map((_, i) => point(factor, i)).map((p) => `${p.x},${p.y}`).join(" ");
+  const polygon = useMemo(
+    () => (factor: number) =>
+      axes.map((_, i) => point(factor, i)).map((p) => `${p.x},${p.y}`).join(" "),
+    [axes, point],
+  );
 
-  const dataPolygon = axes.map((a, i) => point(a.value, i)).map((p) => `${p.x},${p.y}`).join(" ");
+  const dataPolygon = useMemo(
+    () => axes.map((a, i) => point(a.value, i)).map((p) => `${p.x},${p.y}`).join(" "),
+    [axes, point],
+  );
+
+  const viewBox = useMemo(() => `0 0 ${size} ${size}`, [size]);
 
   return (
     <div className={cn("flex items-center justify-center", className)}>
       <svg
-        viewBox={`0 0 ${size} ${size}`}
+        viewBox={viewBox}
         width="100%"
         height="100%"
         role="img"
@@ -82,7 +98,8 @@ export function CognitiveRadar({ axes, className, size = 280 }: CognitiveRadarPr
               y={p.y}
               textAnchor="middle"
               dominantBaseline="middle"
-              className="fill-muted-foreground text-[9px] font-semibold uppercase tracking-widest"
+              fill="var(--muted-foreground)"
+              className="text-fluid-xs font-semibold uppercase tracking-widest"
             >
               {a.label}
             </text>
@@ -91,4 +108,4 @@ export function CognitiveRadar({ axes, className, size = 280 }: CognitiveRadarPr
       </svg>
     </div>
   );
-}
+});

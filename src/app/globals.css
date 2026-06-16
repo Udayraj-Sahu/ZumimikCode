@@ -36,9 +36,8 @@
   --sidebar-accent-foreground: #C8FF5A;
   --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #C8FF5A;
-}
-
-@media (prefers-reduced-motion: reduce) {
+  --surface: #171717;
+} (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -55,9 +54,5 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-inter), system-ui, sans-serif;
-  }
-
-  html {
-    scroll-behavior: smooth;
   }
 }

@@ -11,6 +11,21 @@ import { FloatingActions } from "@/components/FloatingActions";
 export default function Home() {
   return (
     <main>
+      <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2.5 pointer-events-none">
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5">
+          <polygon
+            points="12,2 20,7 20,17 12,22 4,17 4,7"
+            fill="none"
+            stroke="#C8FF5A"
+            strokeWidth="1.5"
+            opacity="0.6"
+          />
+          <circle cx="12" cy="12" r="2" fill="#C8FF5A" opacity="0.4" />
+        </svg>
+        <span className="font-display text-[10px] tracking-[0.3em] text-primary/60 font-semibold">
+          EXAM ARENA
+        </span>
+      </div>
       <VerticalNav />
       <section id="arena">
         <RankSignal />

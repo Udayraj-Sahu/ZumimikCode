@@ -1,19 +1,11 @@
-import { STATS, TOPIC_MASTERY, RADAR_AXES, METRICS } from "@/lib/mock/dashboard";
-import type { Stat, Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
+import { TOPIC_MASTERY, RADAR_AXES, METRICS } from "@/lib/mock/dashboard";
+import type { Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
 import { apiGet } from "./api";
 
 const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-export async function getDashboardStats(): Promise<Stat[]> {
-  if (IS_MOCK) {
-    await delay(200);
-    return STATS;
-  }
-  return apiGet<Stat[]>("/dashboard/stats");
 }
 
 export async function getTopicMastery(): Promise<Topic[]> {
