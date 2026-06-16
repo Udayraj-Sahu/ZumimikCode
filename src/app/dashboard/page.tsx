@@ -1,18 +1,62 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { Bell, Zap, Brain, MoreHorizontal, TrendingUp } from "lucide-react";
+import { motion } from "motion/react";
+import { Bell, Zap, Brain, MoreHorizontal, TrendingUp, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DojoShell } from "@/components/dashboard/dojo-shell";
 import { CognitiveRadar } from "@/components/dashboard/cognitive-radar";
-import { getDashboardStats, getTopicMastery, getRadarAxes } from "@/services/dashboard";
-import type { Stat, Topic, RadarAxis } from "@/lib/types/dashboard";
+import { getDashboardStats, getTopicMastery, getRadarAxes, getDashboardMetrics } from "@/services/dashboard";
+import type { Stat, Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  Zap,
+  TrendingUp,
+};
+
+const easeOut = [0.16, 1, 0.3, 1] as const;
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.4, ease: easeOut },
+  }),
+};
+
+function StatCard({ stat, index }: { stat: Stat; index: number }) {
+  return (
+    <motion.div
+      custom={index}
+      initial="hidden"
+      animate="visible"
+      variants={sectionVariants}
+      className="rounded-2xl bg-card p-4"
+    >
+      <p className="text-[10px] font-semibold uppercase leading-tight tracking-widest text-muted-foreground">
+        {stat.label}
+      </p>
+      <p
+        className={cn(
+          "mt-3 text-3xl font-bold tracking-tight",
+          stat.accent === "primary" && "text-primary",
+          stat.accent === "secondary" && "text-secondary",
+        )}
+      >
+        {stat.value}
+        <span className="ml-1 text-xs font-medium text-muted-foreground">{stat.suffix}</span>
+      </p>
+    </motion.div>
+  );
+}
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<Stat[] | null>(null);
   const [topics, setTopics] = useState<Topic[] | null>(null);
   const [radarAxes, setRadarAxes] = useState<RadarAxis[] | null>(null);
+  const [metrics, setMetrics] = useState<Metric[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,15 +64,17 @@ export default function DashboardPage() {
     let cancelled = false;
     async function load() {
       try {
-        const [s, t, r] = await Promise.all([
+        const [s, t, r, m] = await Promise.all([
           getDashboardStats(),
           getTopicMastery(),
           getRadarAxes(),
+          getDashboardMetrics(),
         ]);
         if (cancelled) return;
         setStats(s);
         setTopics(t);
         setRadarAxes(r);
+        setMetrics(m);
       } catch (e) {
         if (cancelled) return;
         setError(e instanceof Error ? e.message : "Failed to load dashboard data");
@@ -40,9 +86,37 @@ export default function DashboardPage() {
     return () => { cancelled = true; };
   }, []);
 
+  const metricCards = useMemo(() => {
+    if (!metrics) return null;
+    return metrics.map((m, i) => {
+      const Icon = ICON_MAP[m.icon] || Zap;
+      return (
+        <motion.div
+          key={m.label}
+          custom={i + 8}
+          initial="hidden"
+          animate="visible"
+          variants={sectionVariants}
+          className="flex items-center justify-between rounded-2xl bg-card px-5 py-4"
+        >
+          <span className="flex items-center gap-3 text-sm font-medium">
+            <Icon className={cn("size-5", m.accent === "secondary" ? "text-secondary" : "text-primary")} aria-hidden="true" />
+            {m.label}
+          </span>
+          <span className="font-bold">{m.value}</span>
+        </motion.div>
+      );
+    });
+  }, [metrics]);
+
   return (
     <DojoShell>
-      <header className="flex items-start justify-between gap-4">
+      <motion.header
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: easeOut }}
+        className="flex items-start justify-between gap-4"
+      >
         <div>
           <h1 className="text-balance text-2xl font-bold tracking-tight md:text-4xl">
             Welcome back,{" "}
@@ -53,7 +127,7 @@ export default function DashboardPage() {
             12-Day Streak Active
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
             aria-label="Notifications"
@@ -68,10 +142,15 @@ export default function DashboardPage() {
             <Brain className="size-5" />
           </span>
         </div>
-      </header>
+      </motion.header>
 
       {error ? (
-        <div className="mt-8 flex flex-col items-center gap-4 rounded-3xl border border-destructive/30 bg-destructive/5 p-8 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="mt-8 flex flex-col items-center gap-4 rounded-3xl border border-destructive/30 bg-destructive/5 p-8 text-center"
+        >
           <p className="text-sm font-semibold text-destructive">{error}</p>
           <button
             type="button"
@@ -80,11 +159,11 @@ export default function DashboardPage() {
           >
             Retry
           </button>
-        </div>
+        </motion.div>
       ) : loading ? (
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="flex flex-col gap-6">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="animate-pulse rounded-2xl bg-card p-4">
                   <div className="h-3 w-20 rounded bg-muted" />
@@ -128,27 +207,19 @@ export default function DashboardPage() {
       ) : (
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="flex flex-col gap-6">
-            <section aria-label="Key stats" className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              {(stats ?? []).map((s) => (
-                <div key={s.label} className="rounded-2xl bg-card p-4">
-                  <p className="text-[10px] font-semibold uppercase leading-tight tracking-widest text-muted-foreground">
-                    {s.label}
-                  </p>
-                  <p
-                    className={cn(
-                      "mt-3 text-3xl font-bold tracking-tight",
-                      s.accent === "primary" && "text-primary",
-                      s.accent === "secondary" && "text-secondary",
-                    )}
-                  >
-                    {s.value}
-                    <span className="ml-1 text-xs font-medium text-muted-foreground">{s.suffix}</span>
-                  </p>
-                </div>
+            <section aria-label="Key stats" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {(stats ?? []).map((s, i) => (
+                <StatCard key={s.label} stat={s} index={i} />
               ))}
             </section>
 
-            <section className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-secondary/30 via-card to-background p-6 md:p-8">
+            <motion.section
+              custom={4}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-secondary/30 via-card to-background p-6 md:p-8"
+            >
               <p className="text-xs font-bold uppercase tracking-widest text-primary">
                 Today&apos;s Priority
               </p>
@@ -165,9 +236,15 @@ export default function DashboardPage() {
               >
                 Start Sprint
               </Link>
-            </section>
+            </motion.section>
 
-            <section className="rounded-3xl bg-card p-6">
+            <motion.section
+              custom={5}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="rounded-3xl bg-card p-6"
+            >
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold uppercase italic tracking-tight text-primary">
                   Topic Mastery
@@ -175,7 +252,7 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   aria-label="Topic mastery options"
-                  className="grid size-8 place-items-center rounded-lg outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+                  className="grid size-10 place-items-center rounded-lg outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <MoreHorizontal className="size-5 text-muted-foreground" aria-hidden="true" />
                 </button>
@@ -207,7 +284,7 @@ export default function DashboardPage() {
                           aria-valuemax={100}
                           aria-label={t.name}
                           className={cn(
-                            "h-full rounded-full",
+                            "h-full rounded-full transition-all duration-1000 ease-out",
                             t.color === "primary" ? "bg-primary" : "bg-secondary",
                           )}
                           style={{ width: `${t.value}%` }}
@@ -217,11 +294,17 @@ export default function DashboardPage() {
                   ))
                 )}
               </ul>
-            </section>
+            </motion.section>
           </div>
 
           <aside className="flex flex-col gap-4">
-            <section className="rounded-3xl bg-card p-6">
+            <motion.section
+              custom={6}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="rounded-3xl bg-card p-6"
+            >
               <p className="text-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
                 Performance Matrix
               </p>
@@ -235,22 +318,9 @@ export default function DashboardPage() {
                   No radar data yet.
                 </p>
               )}
-            </section>
+            </motion.section>
 
-            <div className="flex items-center justify-between rounded-2xl bg-card px-5 py-4">
-              <span className="flex items-center gap-3 text-sm font-medium">
-                <Zap className="size-5 text-secondary" aria-hidden="true" />
-                Action Delay
-              </span>
-              <span className="font-bold">142ms</span>
-            </div>
-            <div className="flex items-center justify-between rounded-2xl bg-card px-5 py-4">
-              <span className="flex items-center gap-3 text-sm font-medium">
-                <TrendingUp className="size-5 text-primary" aria-hidden="true" />
-                Focus Density
-              </span>
-              <span className="font-bold">89%</span>
-            </div>
+            {metricCards}
           </aside>
         </div>
       )}

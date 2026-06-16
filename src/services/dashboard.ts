@@ -1,5 +1,5 @@
-import { STATS, TOPIC_MASTERY, RADAR_AXES } from "@/lib/mock/dashboard";
-import type { Stat, Topic, RadarAxis } from "@/lib/types/dashboard";
+import { STATS, TOPIC_MASTERY, RADAR_AXES, METRICS } from "@/lib/mock/dashboard";
+import type { Stat, Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
 import { apiGet } from "./api";
 
 const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
@@ -30,4 +30,12 @@ export async function getRadarAxes(): Promise<RadarAxis[]> {
     return RADAR_AXES;
   }
   return apiGet<RadarAxis[]>("/dashboard/radar");
+}
+
+export async function getDashboardMetrics(): Promise<Metric[]> {
+  if (IS_MOCK) {
+    await delay(100);
+    return METRICS;
+  }
+  return apiGet<Metric[]>("/dashboard/metrics");
 }

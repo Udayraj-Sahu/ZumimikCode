@@ -1,4 +1,4 @@
-import type { NavItem, Stat, Topic, RadarAxis } from "@/lib/types/dashboard";
+import type { NavItem, Stat, Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
 import {
   Home,
   Zap,
@@ -46,4 +46,9 @@ export const RADAR_AXES: RadarAxis[] = [
   { label: "Focus", value: 0.8 },
   { label: "Memory", value: 0.72 },
   { label: "Reflex", value: 0.85 },
+];
+
+export const METRICS: Metric[] = [
+  { label: "Action Delay", value: "142ms", icon: "Zap", accent: "secondary" },
+  { label: "Focus Density", value: "89%", icon: "TrendingUp", accent: "primary" },
 ];

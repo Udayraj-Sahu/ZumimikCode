@@ -48,7 +48,7 @@ export default function ConfigureSprintPage() {
           >
             <ArrowLeft className="size-5" aria-hidden="true" />
           </button>
-          <h1 className="text-lg font-bold uppercase tracking-widest text-primary">
+          <h1 className="text-base sm:text-lg font-bold uppercase tracking-widest text-primary">
             Configure Sprint
           </h1>
         </header>

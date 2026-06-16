@@ -26,3 +26,10 @@ export type RadarAxis = {
   label: string;
   value: number;
 };
+
+export type Metric = {
+  label: string;
+  value: string;
+  icon: string;
+  accent: "primary" | "secondary";
+};

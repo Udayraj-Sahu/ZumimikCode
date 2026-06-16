@@ -43,7 +43,7 @@ function Toggle({
     >
       <span
         className={cn(
-          "inline-block size-5 transform rounded-full bg-background shadow transition-transform",
+          "inline-block size-5 transform rounded-full bg-background shadow transition-transform duration-200",
           checked ? "translate-x-6" : "translate-x-1",
         )}
       />
@@ -79,8 +79,8 @@ function Row({
       )}
     >
       <Icon className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
-      <span className="flex-1 text-sm font-medium text-foreground">{label}</span>
-      {trailing}
+      <span className="flex-1 text-sm font-medium text-foreground truncate">{label}</span>
+      {trailing ? <span className="shrink-0 flex items-center gap-2">{trailing}</span> : null}
     </Tag>
   );
 }
@@ -113,17 +113,17 @@ export default function SettingsPage() {
   return (
     <DojoShell>
       <div className="mx-auto w-full max-w-2xl">
-        <header className="flex items-center justify-between">
+        <header className="flex items-center justify-between gap-2">
           <button
             type="button"
             onClick={() => router.back()}
             aria-label="Go back"
             className="flex items-center gap-2 text-primary outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <ArrowLeft className="size-6" aria-hidden="true" />
-            <h1 className="text-xl font-bold uppercase italic tracking-tight">Settings</h1>
+            <ArrowLeft className="size-6 shrink-0" aria-hidden="true" />
+            <h1 className="text-lg sm:text-xl font-bold uppercase italic tracking-tight">Settings</h1>
           </button>
-          <span className="font-mono text-sm font-bold uppercase italic tracking-tight text-primary">
+          <span className="font-mono text-xs sm:text-sm font-bold uppercase italic tracking-tight text-primary shrink-0">
             Exam Arena
           </span>
         </header>
@@ -133,7 +133,7 @@ export default function SettingsPage() {
           <p className="mt-1 text-xs font-semibold uppercase tracking-widest opacity-80">
             Accelerate Your Evolution
           </p>
-          <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <span className="text-2xl font-extrabold italic">$9.99/MO</span>
             <button
               type="button"
@@ -159,9 +159,9 @@ export default function SettingsPage() {
               label="Email Address"
               onClick={() => alert("Edit email address")}
               trailing={
-                <span className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">user@examarena.com</span>
-                  <ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />
+                <span className="flex items-center gap-2 min-w-0">
+                  <span className="text-sm text-muted-foreground truncate max-w-[140px] sm:max-w-none">user@examarena.com</span>
+                  <ChevronRight className="size-5 text-muted-foreground shrink-0" aria-hidden="true" />
                 </span>
               }
             />
