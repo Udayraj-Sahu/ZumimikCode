@@ -1,3 +1,4 @@
+import type { NavItem, Stat, Topic, RadarAxis } from "@/lib/types/dashboard";
 import {
   Home,
   Zap,
@@ -5,15 +6,7 @@ import {
   User,
   Settings,
   LayoutGrid,
-  type LucideIcon,
 } from "lucide-react";
-
-export type NavItem = {
-  label: string;
-  href: string;
-  icon: LucideIcon;
-  mobileLabel?: string;
-};
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: Home, mobileLabel: "Home" },
@@ -31,18 +24,12 @@ export const MOBILE_NAV: NavItem[] = [
   { label: "Gear", href: "/dashboard/settings", icon: Settings },
 ];
 
-export const STATS = [
-  { label: "Efficiency Score", value: "87", suffix: "/100", accent: "primary" as const },
-  { label: "Sessions", value: "47", suffix: "completed", accent: "default" as const },
-  { label: "Mastery", value: "82%", suffix: "avg score", accent: "secondary" as const },
-  { label: "Weekly Goal", value: "64%", suffix: "progress", accent: "default" as const },
+export const STATS: Stat[] = [
+  { label: "Efficiency Score", value: "87", suffix: "/100", accent: "primary" },
+  { label: "Sessions", value: "47", suffix: "completed", accent: "default" },
+  { label: "Mastery", value: "82%", suffix: "avg score", accent: "secondary" },
+  { label: "Weekly Goal", value: "64%", suffix: "progress", accent: "default" },
 ];
-
-export type Topic = {
-  name: string;
-  value: number;
-  color: "primary" | "secondary";
-};
 
 export const TOPIC_MASTERY: Topic[] = [
   { name: "Quantitative Aptitude", value: 92, color: "primary" },
@@ -52,7 +39,7 @@ export const TOPIC_MASTERY: Topic[] = [
   { name: "General Knowledge", value: 41, color: "primary" },
 ];
 
-export const RADAR_AXES = [
+export const RADAR_AXES: RadarAxis[] = [
   { label: "Speed", value: 0.9 },
   { label: "Logic", value: 0.75 },
   { label: "Stamina", value: 0.7 },

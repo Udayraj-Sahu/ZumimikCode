@@ -3,7 +3,7 @@ import { Bell, Zap, Brain, MoreHorizontal, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DojoShell } from "@/components/dashboard/dojo-shell";
 import { CognitiveRadar } from "@/components/dashboard/cognitive-radar";
-import { STATS, TOPIC_MASTERY, RADAR_AXES } from "@/lib/dashboard-data";
+import { STATS, TOPIC_MASTERY, RADAR_AXES } from "@/lib/mock/dashboard";
 
 export default function DashboardPage() {
   return (

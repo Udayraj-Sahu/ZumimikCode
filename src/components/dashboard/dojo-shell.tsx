@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogOut, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { NAV_ITEMS, MOBILE_NAV } from "@/lib/dashboard-data";
+import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 
 export function DojoShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
