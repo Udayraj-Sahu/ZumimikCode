@@ -140,15 +140,15 @@ export default function DashboardPage() {
           <button
             type="button"
             aria-label="Notifications"
-            className="grid size-9 md:size-10 place-items-center rounded-xl bg-card outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-10 place-items-center rounded-xl bg-card outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <Bell className="size-4 md:size-5 text-muted-foreground" aria-hidden="true" />
+            <Bell className="size-5 text-muted-foreground" aria-hidden="true" />
           </button>
           <span
             aria-hidden="true"
-            className="grid size-9 md:size-10 place-items-center rounded-xl bg-secondary text-secondary-foreground"
+            className="grid size-10 place-items-center rounded-xl bg-secondary text-secondary-foreground"
           >
-            <Brain className="size-4 md:size-5" />
+            <Brain className="size-5" />
           </span>
         </div>
       </motion.header>
@@ -170,9 +170,9 @@ export default function DashboardPage() {
           </button>
         </motion.div>
       ) : loading ? (
-        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_420px] 2xl:grid-cols-[1fr_480px]">
+        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="flex flex-col gap-6">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="animate-pulse rounded-2xl bg-card p-4">
                   <div className="h-3 w-3/5 rounded bg-muted" />
@@ -214,9 +214,9 @@ export default function DashboardPage() {
           </aside>
         </div>
       ) : (
-        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_420px] 2xl:grid-cols-[1fr_480px]">
+        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
           <div className="flex flex-col gap-6">
-            <section aria-label="Key stats" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <section aria-label="Key stats" className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {(stats ?? []).map((s, i) => (
                 <StatCard key={s.label} stat={s} index={i} />
               ))}
@@ -307,7 +307,7 @@ export default function DashboardPage() {
             </motion.section>
           </div>
 
-          <aside className="flex flex-col gap-4">
+          <aside className="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start">
             <motion.section
               custom={6}
               initial="hidden"

@@ -11,7 +11,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col bg-sidebar px-4 py-6 lg:flex">
+      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar px-4 py-6 shadow-[2px_0_12px_-4px_rgba(0,0,0,0.3)] lg:flex">
         <div className="px-3">
           <div className="flex items-center gap-2">
             <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5">
@@ -74,7 +74,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="lg:pl-64">
-        <main className="mx-auto w-full px-4 pb-28 pt-6 md:px-8 lg:pb-10">{children}</main>
+        <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 md:px-8 lg:pl-0 lg:pr-8 lg:pb-10">{children}</main>
       </div>
 
       <nav
