@@ -54,7 +54,7 @@ export default function ProfilePage() {
 
         <section className="mt-6 rounded-3xl bg-card p-5 md:p-6">
           <h2 className="text-sm font-bold uppercase tracking-widest text-primary">Achievements</h2>
-          <div className="mt-4 grid grid-cols-3 gap-3">
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
             {ACHIEVEMENTS.map((a) => {
               const Icon = a.icon;
               return (

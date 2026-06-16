@@ -124,7 +124,7 @@ export default function DashboardPage() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: easeOut }}
-        className="flex items-start justify-between gap-4"
+        className="flex items-start justify-between gap-3 md:gap-4"
       >
         <div className="min-w-0">
           <h1 className="text-balance text-xl font-bold tracking-tight md:text-4xl">
@@ -136,19 +136,19 @@ export default function DashboardPage() {
             12-Day Streak Active
           </p>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <button
             type="button"
             aria-label="Notifications"
-            className="grid size-10 place-items-center rounded-xl bg-card outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-9 sm:size-10 place-items-center rounded-xl bg-card outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <Bell className="size-5 text-muted-foreground" aria-hidden="true" />
+            <Bell className="size-4 sm:size-5 text-muted-foreground" aria-hidden="true" />
           </button>
           <span
             aria-hidden="true"
-            className="grid size-10 place-items-center rounded-xl bg-secondary text-secondary-foreground"
+            className="grid size-9 sm:size-10 place-items-center rounded-xl bg-secondary text-secondary-foreground"
           >
-            <Brain className="size-5" />
+            <Brain className="size-4 sm:size-5" />
           </span>
         </div>
       </motion.header>
