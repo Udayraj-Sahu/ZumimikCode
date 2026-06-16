@@ -5,10 +5,13 @@ import { ConstellationCoach } from "@/components/sections/ConstellationCoach";
 import { EnergyTower } from "@/components/sections/EnergyTower";
 import { HorizonScene } from "@/components/sections/HorizonScene";
 import { SectionReveal } from "@/components/SectionReveal";
+import { VerticalNav } from "@/components/nav/VerticalNav";
+import { FloatingActions } from "@/components/FloatingActions";
 
 export default function Home() {
   return (
     <main>
+      <VerticalNav />
       <section id="arena">
         <RankSignal />
       </section>
@@ -21,6 +24,7 @@ export default function Home() {
           <HorizonScene />
         </SectionReveal>
       </section>
+      <FloatingActions />
     </main>
   );
 }

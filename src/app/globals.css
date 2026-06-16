@@ -6,13 +6,31 @@
   --background: #050505;
   --foreground: #ffffff;
   --card: #0d0d0d;
+  --card-foreground: #ffffff;
+  --popover: #0d0d0d;
+  --popover-foreground: #ffffff;
   --primary: #C8FF5A;
   --primary-foreground: #050505;
-  --secondary: #111111;
+  --secondary: #0d7377;
   --secondary-foreground: #ffffff;
+  --muted: #1a1a1a;
   --muted-foreground: #8B8B8B;
+  --accent: #1a1a1a;
+  --accent-foreground: #C8FF5A;
   --destructive: #FF4444;
+  --destructive-foreground: #ffffff;
   --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #C8FF5A;
+  --radius: 0.75rem;
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #C8FF5A;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #C8FF5A;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #C8FF5A;
 }
 
 @media (prefers-reduced-motion: reduce) {

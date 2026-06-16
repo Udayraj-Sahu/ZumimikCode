@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 
 export function FloatingActions() {
@@ -46,11 +47,12 @@ export function FloatingActions() {
       ref={containerRef}
       className="fixed right-4 sm:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3"
     >
-      <button
-        className="px-4 sm:px-5 py-2 sm:py-2.5 text-[clamp(10px,1.5vw,12px)] tracking-wide rounded bg-primary text-primary-foreground border-none cursor-pointer font-display font-semibold hover:brightness-110 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 whitespace-nowrap"
+      <Link
+        href="/dashboard"
+        className="px-4 sm:px-5 py-2 sm:py-2.5 text-[clamp(10px,1.5vw,12px)] tracking-wide rounded bg-primary text-primary-foreground border-none cursor-pointer font-display font-semibold hover:brightness-110 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 whitespace-nowrap inline-block text-center"
       >
         Enter the Arena
-      </button>
+      </Link>
       <button
         className="px-4 sm:px-5 py-2 sm:py-2.5 text-[clamp(10px,1.5vw,12px)] tracking-wide rounded bg-transparent text-secondary-foreground border border-border cursor-pointer font-display font-medium hover:border-primary/40 hover:text-foreground transition-all duration-200 whitespace-nowrap"
       >

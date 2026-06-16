@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
-import { VerticalNav } from "@/components/nav/VerticalNav";
-import { FloatingActions } from "@/components/FloatingActions";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -104,9 +102,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               EXAM ARENA
             </span>
           </div>
-          <VerticalNav />
           {children}
-          <FloatingActions />
         </div>
       </body>
     </html>
