@@ -60,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body>
+        <style>{`:root{--background:#050505;--foreground:#fff}`}</style>
         <div className="bg-background min-h-screen pb-0 overflow-x-clip" id="main-content">
           <a
             href="#main-content"
