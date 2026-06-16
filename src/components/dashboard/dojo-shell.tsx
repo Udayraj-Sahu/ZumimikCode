@@ -11,7 +11,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar px-4 py-6 lg:flex">
+      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col bg-sidebar px-4 py-6 lg:flex">
         <div className="px-3">
           <div className="flex items-center gap-2">
             <svg aria-hidden="true" viewBox="0 0 24 24" className="w-5 h-5">
@@ -61,7 +61,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
             href="/dashboard/configure-sprint"
             className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
           >
-            Start Workout
+            Start Sprint
           </Link>
           <button
             type="button"
@@ -91,7 +91,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex min-w-14 flex-col items-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wide outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex min-w-12 flex-col items-center gap-0.5 rounded-xl px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wide outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
                     active ? "bg-primary text-primary-foreground" : "text-muted-foreground",
                   )}
                 >

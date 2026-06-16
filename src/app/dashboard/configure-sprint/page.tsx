@@ -53,14 +53,14 @@ export default function ConfigureSprintPage() {
           </h1>
         </header>
 
-        <section className="mt-10">
+        <section className="mt-6 sm:mt-10">
           <h2 className="text-center text-sm font-semibold uppercase tracking-[0.25em] text-muted-foreground">
             Choose Your Topic
           </h2>
           <div
             role="radiogroup"
             aria-label="Choose your topic"
-            className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3"
+            className="mt-4 sm:mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3"
           >
             {TOPICS.map((t) => {
               const active = topic === t.id;
@@ -73,13 +73,13 @@ export default function ConfigureSprintPage() {
                   aria-checked={active}
                   onClick={() => setTopic(t.id)}
                   className={cn(
-                    "flex flex-col items-center justify-center gap-3 rounded-2xl border p-5 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex flex-col items-center justify-center gap-3 rounded-2xl border p-4 sm:p-5 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)]"
                       : "border-border bg-card hover:border-border/80 hover:bg-accent/50",
                   )}
                 >
-                  <Icon className={cn("size-7", active ? "text-primary" : t.color)} aria-hidden="true" />
+                  <Icon className={cn("size-6 sm:size-7", active ? "text-primary" : t.color)} aria-hidden="true" />
                   <span className="text-center text-xs font-semibold uppercase tracking-wide">
                     {t.label}
                   </span>
@@ -89,11 +89,11 @@ export default function ConfigureSprintPage() {
           </div>
         </section>
 
-        <section className="mt-10">
+        <section className="mt-6 sm:mt-10">
           <h2 className="text-center text-sm font-semibold uppercase tracking-[0.25em] text-muted-foreground">
             Session Length
           </h2>
-          <div role="radiogroup" aria-label="Session length" className="mt-5 grid grid-cols-3 gap-3">
+          <div role="radiogroup" aria-label="Session length" className="mt-4 sm:mt-5 grid grid-cols-3 gap-3">
             {LENGTHS.map((m) => {
               const active = length === m;
               return (
@@ -104,13 +104,13 @@ export default function ConfigureSprintPage() {
                   aria-checked={active}
                   onClick={() => setLength(m)}
                   className={cn(
-                    "flex flex-col items-center gap-1 rounded-2xl border py-6 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex flex-col items-center gap-1 rounded-2xl border py-5 sm:py-6 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "border-primary bg-accent text-primary"
                       : "border-border bg-card text-muted-foreground hover:bg-accent/50",
                   )}
                 >
-                  <span className="text-4xl font-bold italic tracking-tight">{m}</span>
+                  <span className="text-3xl sm:text-4xl font-bold italic tracking-tight">{m}</span>
                   <span className="text-[10px] font-semibold uppercase tracking-widest">Minutes</span>
                 </button>
               );
@@ -118,14 +118,14 @@ export default function ConfigureSprintPage() {
           </div>
         </section>
 
-        <section className="mt-10">
+        <section className="mt-6 sm:mt-10">
           <h2 className="text-center text-sm font-semibold uppercase tracking-[0.25em] text-muted-foreground">
             Difficulty
           </h2>
           <div
             role="radiogroup"
             aria-label="Difficulty"
-            className="mx-auto mt-5 flex max-w-md flex-wrap items-center justify-center gap-3"
+            className="mx-auto mt-4 sm:mt-5 flex max-w-md flex-wrap items-center justify-center gap-3"
           >
             {DIFFICULTIES.map((d) => {
               const active = difficulty === d;
@@ -137,7 +137,7 @@ export default function ConfigureSprintPage() {
                   aria-checked={active}
                   onClick={() => setDifficulty(d)}
                   className={cn(
-                    "rounded-full px-6 py-3 text-sm font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "rounded-full px-5 sm:px-6 py-3 text-sm font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "bg-primary text-primary-foreground shadow-[0_0_20px_-2px_var(--primary)]"
                       : "bg-card text-muted-foreground hover:bg-accent",
@@ -155,7 +155,7 @@ export default function ConfigureSprintPage() {
           onClick={() =>
             router.push(`/dashboard?topic=${topic}&length=${length}&difficulty=${difficulty.toLowerCase()}`)
           }
-          className="mt-12 flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-primary to-secondary py-4 text-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-8 sm:mt-12 flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-primary to-primary/60 py-4 text-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Start Sprint
           <ArrowRight className="size-5" aria-hidden="true" />

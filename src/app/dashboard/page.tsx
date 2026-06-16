@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Bell, Zap, Brain, MoreHorizontal, TrendingUp, type LucideIcon } from "lucide-react";
+import { Bell, Zap, Brain, MoreHorizontal, TrendingUp, Target, BarChart3, Timer, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DojoShell } from "@/components/dashboard/dojo-shell";
 import { CognitiveRadar } from "@/components/dashboard/cognitive-radar";
@@ -14,6 +14,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Zap,
   TrendingUp,
 };
+
+const STAT_ICONS: LucideIcon[] = [Target, BarChart3, Brain, Timer];
 
 const easeOut = [0.16, 1, 0.3, 1] as const;
 
@@ -26,23 +28,30 @@ const sectionVariants = {
   }),
 };
 
+const STYLE_MAP = {
+  primary: "text-primary",
+  default: "text-foreground",
+  secondary: "text-secondary",
+};
+
 function StatCard({ stat, index }: { stat: Stat; index: number }) {
+  const Icon = STAT_ICONS[index % STAT_ICONS.length];
   return (
     <motion.div
       custom={index}
       initial="hidden"
       animate="visible"
       variants={sectionVariants}
-      className="rounded-2xl bg-card p-4"
+      className="relative overflow-hidden rounded-2xl bg-card p-4"
     >
+      <Icon className="absolute right-3 top-3 size-4 text-muted-foreground/20" aria-hidden="true" />
       <p className="text-[10px] font-semibold uppercase leading-tight tracking-widest text-muted-foreground">
         {stat.label}
       </p>
       <p
         className={cn(
           "mt-3 text-3xl font-bold tracking-tight",
-          stat.accent === "primary" && "text-primary",
-          stat.accent === "secondary" && "text-secondary",
+          STYLE_MAP[stat.accent],
         )}
       >
         {stat.value}
@@ -117,8 +126,8 @@ export default function DashboardPage() {
         transition={{ duration: 0.3, ease: easeOut }}
         className="flex items-start justify-between gap-4"
       >
-        <div>
-          <h1 className="text-balance text-2xl font-bold tracking-tight md:text-4xl">
+        <div className="min-w-0">
+          <h1 className="text-balance text-xl font-bold tracking-tight md:text-4xl">
             Welcome back,{" "}
             <span className="italic text-primary">Champion</span>
           </h1>
@@ -131,15 +140,15 @@ export default function DashboardPage() {
           <button
             type="button"
             aria-label="Notifications"
-            className="grid size-10 place-items-center rounded-xl bg-card outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-9 md:size-10 place-items-center rounded-xl bg-card outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <Bell className="size-5 text-muted-foreground" aria-hidden="true" />
+            <Bell className="size-4 md:size-5 text-muted-foreground" aria-hidden="true" />
           </button>
           <span
             aria-hidden="true"
-            className="grid size-10 place-items-center rounded-xl bg-secondary text-secondary-foreground"
+            className="grid size-9 md:size-10 place-items-center rounded-xl bg-secondary text-secondary-foreground"
           >
-            <Brain className="size-5" />
+            <Brain className="size-4 md:size-5" />
           </span>
         </div>
       </motion.header>
@@ -149,7 +158,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="mt-8 flex flex-col items-center gap-4 rounded-3xl border border-destructive/30 bg-destructive/5 p-8 text-center"
+          className="mt-6 md:mt-8 flex flex-col items-center gap-4 rounded-3xl border border-destructive/30 bg-destructive/5 p-6 md:p-8 text-center"
         >
           <p className="text-sm font-semibold text-destructive">{error}</p>
           <button
@@ -161,28 +170,28 @@ export default function DashboardPage() {
           </button>
         </motion.div>
       ) : loading ? (
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
+        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px]">
           <div className="flex flex-col gap-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="animate-pulse rounded-2xl bg-card p-4">
-                  <div className="h-3 w-20 rounded bg-muted" />
-                  <div className="mt-4 h-8 w-16 rounded bg-muted" />
+                  <div className="h-3 w-3/5 rounded bg-muted" />
+                  <div className="mt-4 h-8 w-2/5 rounded bg-muted" />
                 </div>
               ))}
             </div>
             <div className="animate-pulse rounded-3xl border border-border bg-card p-6 md:p-8">
-              <div className="h-4 w-32 rounded bg-muted" />
-              <div className="mt-4 h-8 w-72 rounded bg-muted" />
-              <div className="mt-3 h-4 w-56 rounded bg-muted" />
-              <div className="mt-6 h-10 w-36 rounded-xl bg-muted" />
+              <div className="h-4 w-1/4 rounded bg-muted" />
+              <div className="mt-4 h-8 w-3/5 rounded bg-muted" />
+              <div className="mt-3 h-4 w-4/5 rounded bg-muted" />
+              <div className="mt-6 h-10 w-1/3 rounded-xl bg-muted" />
             </div>
             <div className="animate-pulse rounded-3xl bg-card p-6">
-              <div className="h-5 w-28 rounded bg-muted" />
+              <div className="h-5 w-1/3 rounded bg-muted" />
               <div className="mt-6 flex flex-col gap-5">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div key={i} className="flex flex-col gap-2">
-                    <div className="h-3 w-32 rounded bg-muted" />
+                    <div className="h-3 w-2/5 rounded bg-muted" />
                     <div className="h-2 w-full rounded-full bg-muted" />
                   </div>
                 ))}
@@ -191,21 +200,21 @@ export default function DashboardPage() {
           </div>
           <aside className="flex flex-col gap-4">
             <div className="animate-pulse rounded-3xl bg-card p-6">
-              <div className="mx-auto h-3 w-28 rounded bg-muted" />
-              <div className="mx-auto mt-2 h-5 w-36 rounded bg-muted" />
+              <div className="mx-auto h-3 w-1/2 rounded bg-muted" />
+              <div className="mx-auto mt-2 h-5 w-3/5 rounded bg-muted" />
               <div className="mt-4 flex items-center justify-center">
                 <div className="size-52 rounded-full bg-muted" />
               </div>
             </div>
             {Array.from({ length: 2 }).map((_, i) => (
               <div key={i} className="animate-pulse rounded-2xl bg-card px-5 py-4">
-                <div className="h-4 w-28 rounded bg-muted" />
+                <div className="h-4 w-3/5 rounded bg-muted" />
               </div>
             ))}
           </aside>
         </div>
       ) : (
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
+        <div className="mt-6 md:mt-8 grid gap-6 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_400px]">
           <div className="flex flex-col gap-6">
             <section aria-label="Key stats" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {(stats ?? []).map((s, i) => (
@@ -218,16 +227,17 @@ export default function DashboardPage() {
               initial="hidden"
               animate="visible"
               variants={sectionVariants}
-              className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-secondary/30 via-card to-background p-6 md:p-8"
+              className="relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/[0.07] via-card to-background p-6 md:p-8"
             >
-              <p className="text-xs font-bold uppercase tracking-widest text-primary">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--primary)/0.08,transparent_60%)]" />
+              <p className="relative text-xs font-bold uppercase tracking-widest text-primary">
                 Today&apos;s Priority
               </p>
-              <h2 className="mt-2 max-w-md text-balance text-2xl font-bold uppercase italic tracking-tight md:text-4xl">
-                Hyper-Speed Cognitive Sprint
+              <h2 className="relative mt-2 max-w-md text-balance text-xl font-bold uppercase italic tracking-tight md:text-3xl">
+                Daily Arena Sprint
               </h2>
-              <p className="mt-3 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground">
-                Push your limits in the visual processing chamber. Current record: 0:42s held by
+              <p className="relative mt-3 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground">
+                Push your limits in today&apos;s challenge. Current record: 0:42s held by
                 @NeuralRacer.
               </p>
               <Link

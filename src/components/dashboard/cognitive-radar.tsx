@@ -10,7 +10,7 @@ interface CognitiveRadarProps {
   size?: number;
 }
 
-export function CognitiveRadar({ axes, className, size = 260 }: CognitiveRadarProps) {
+export function CognitiveRadar({ axes, className, size = 280 }: CognitiveRadarProps) {
   const center = size / 2;
   const radius = size / 2 - 36;
   const rings = [0.25, 0.5, 0.75, 1];
