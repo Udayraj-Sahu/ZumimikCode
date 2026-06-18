@@ -1,22 +1,25 @@
-import type { Metadata } from "next";
-import { Zap, Trophy, Target, Star, Flame, Shield, Swords, Medal } from "lucide-react";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Profile — Exam Arena",
-  description: "Your Exam Arena profile, stats, and achievements.",
-  robots: "noindex, nofollow",
+import { Zap, Trophy, Target, Star, Flame, Shield, Swords, Medal } from "lucide-react";
+import { useProfileData } from "@/hooks/queries/use-profile";
+
+const ICON_MAP: Record<string, React.ElementType> = {
+  Flame, Zap, Medal, Star, Shield, Swords,
 };
 
-const ACHIEVEMENTS = [
-  { icon: Flame, label: "Week Warrior", desc: "7-day streak", unlocked: true },
-  { icon: Zap, label: "Speed Demon", desc: "10 sprints in a day", unlocked: true },
-  { icon: Medal, label: "Top 50", desc: "Arena rank #47", unlocked: true },
-  { icon: Star, label: "Perfect Score", desc: "100% on any sprint", unlocked: false },
-  { icon: Shield, label: "Iron Will", desc: "30-day streak", unlocked: false },
-  { icon: Swords, label: "Gladiator", desc: "100 sprints completed", unlocked: false },
-];
-
 export default function ProfilePage() {
+  const { data, isLoading } = useProfileData();
+
+  if (isLoading || !data) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  const { profile, stats, achievements } = data;
+
   return (
       <div className="px-4 sm:px-6">
         <div className="pt-5 pb-4 border-b border-border mb-5">
@@ -30,31 +33,27 @@ export default function ProfilePage() {
 
         <header className="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-6">
           <span className="relative grid size-20 shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 text-fluid-3xl font-black text-primary ring-2 ring-primary/30 sm:size-24">
-            UA
+            {profile.initials}
           </span>
           <div className="text-center sm:text-left">
             <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">
-              Udayraj Sahu
+              {profile.name}
             </h1>
             <div className="mt-1.5 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
               <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-0.5 text-fluid-xs font-bold uppercase tracking-wider text-primary">
                 <Zap size={10} />
-                Champion
+                {profile.badge}
               </span>
-              <span className="text-fluid-xs text-muted-foreground/60">Lv. 04</span>
+              <span className="text-fluid-xs text-muted-foreground/60">{profile.level}</span>
               <span className="text-fluid-xs text-muted-foreground/60">&middot;</span>
-              <span className="text-fluid-xs font-semibold text-chart-4">12-Day Streak</span>
+              <span className="text-fluid-xs font-semibold text-chart-4">{profile.streak}</span>
             </div>
           </div>
         </header>
 
         <div className="mt-5 grid grid-cols-3 gap-2.5 sm:gap-4">
-          {[
-            { label: "Sessions", value: "47", icon: Target },
-            { label: "Streak", value: "12d", icon: Flame },
-            { label: "Rank", value: "#47", icon: Trophy },
-          ].map((s) => {
-            const Icon = s.icon;
+          {stats.map((s) => {
+            const Icon = s.label === "Sessions" ? Target : s.label === "Streak" ? Flame : Trophy;
             return (
               <div
                 key={s.label}
@@ -77,8 +76,8 @@ export default function ProfilePage() {
             Achievements
           </h2>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-6">
-            {ACHIEVEMENTS.map((a) => {
-              const Icon = a.icon;
+            {achievements.map((a) => {
+              const Icon = ICON_MAP[a.icon] || Star;
               return (
                 <div
                   key={a.label}

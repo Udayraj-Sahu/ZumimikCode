@@ -5,32 +5,14 @@ import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import {
   ArrowRight,
-  Zap,
-  Minus,
-  X,
-  Percent,
-  Square,
-  Shuffle,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-type Topic = { id: string; label: string; icon: LucideIcon; color: string };
-
-const TOPICS: Topic[] = [
-  { id: "addition", label: "Rapid Addition", icon: Zap, color: "text-primary" },
-  { id: "subtraction", label: "Fast Subtraction", icon: Minus, color: "text-secondary" },
-  { id: "multiplication", label: "Speed Mult.", icon: X, color: "text-chart-4" },
-  { id: "division", label: "Quick Division", icon: Percent, color: "text-chart-3" },
-  { id: "squares", label: "Mental Squares", icon: Square, color: "text-chart-3" },
-  { id: "mixed", label: "Mixed Challenge", icon: Shuffle, color: "text-foreground" },
-];
-
-const LENGTHS = [5, 10, 15];
-const DIFFICULTIES = ["Adaptive", "Beginner", "Advanced"];
+import { useSprintTopics } from "@/hooks/queries/use-sprint";
 
 export default function ConfigureSprintPage() {
   const router = useRouter();
+  const { data, isLoading } = useSprintTopics();
   const [topic, setTopic] = useState("addition");
   const [length, setLength] = useState(10);
   const [difficulty, setDifficulty] = useState("Beginner");
@@ -45,6 +27,16 @@ export default function ConfigureSprintPage() {
     const i = parseInt(el.dataset.sectionIndex || "0");
     gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, delay: 0.1 + i * 0.1, ease: "power2.out" });
   }, []);
+
+  if (isLoading || !data) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  const { topics, config } = data;
 
   return (
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
@@ -77,7 +69,7 @@ export default function ConfigureSprintPage() {
             aria-label="Choose your topic"
             className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3"
           >
-            {TOPICS.map((t) => {
+            {topics.map((t) => {
               const active = topic === t.id;
               const Icon = t.icon;
               return (
@@ -125,7 +117,7 @@ export default function ConfigureSprintPage() {
               aria-label="Session length"
               className="flex gap-2.5 sm:gap-3"
             >
-              {LENGTHS.map((m) => {
+              {config.lengths.map((m) => {
                 const active = length === m;
                 return (
                   <button
@@ -168,7 +160,7 @@ export default function ConfigureSprintPage() {
               aria-label="Difficulty"
               className="flex gap-2.5 sm:gap-3"
             >
-              {DIFFICULTIES.map((d) => {
+              {config.difficulties.map((d) => {
                 const active = difficulty === d;
                 return (
                   <button

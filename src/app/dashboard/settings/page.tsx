@@ -20,6 +20,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useUiStore } from "@/stores/ui-store";
 import { AlertModal } from "@/components/ui/alert-modal";
+import { useSettingsData, useUpdateSettings } from "@/hooks/queries/use-settings";
 
 function Toggle({
   label,
@@ -167,8 +168,9 @@ const REST_OPTIONS = ["30s", "60s", "90s", "120s"];
 export default function SettingsPage() {
   const router = useRouter();
   const openModal = useUiStore((s) => s.openModal);
-  const [pushNotifications, setPushNotifications] = useState(true);
-  const [sessionReminders, setSessionReminders] = useState(false);
+  const { data, isLoading } = useSettingsData();
+  const updateSettings = useUpdateSettings();
+
   const [restIndex, setRestIndex] = useState(1);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -184,6 +186,16 @@ export default function SettingsPage() {
     const i = parseInt(el.dataset.sectionIndex || "0");
     gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: 0.08 + i * 0.08, ease: "power2.out" });
   }, []);
+
+  if (isLoading || !data) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  const { preferences, subscription } = data;
 
   return (
       <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
@@ -206,7 +218,7 @@ export default function SettingsPage() {
             Accelerate Your Evolution
           </p>
           <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-            <span className="text-fluid-2xl font-extrabold italic">$9.99/MO</span>
+            <span className="text-fluid-2xl font-extrabold italic">{subscription.price}</span>
             <button
               type="button"
               onClick={() => router.push("/dashboard/configure-sprint")}
@@ -235,7 +247,7 @@ export default function SettingsPage() {
               onClick={() => openModal({ type: "alert", title: "Email", message: "Edit email address" })}
               trailing={
                 <span className="flex items-center gap-2 min-w-0">
-                  <span className="text-fluid-base text-muted-foreground truncate max-w-[140px] sm:max-w-none">user@examarena.com</span>
+                  <span className="text-fluid-base text-muted-foreground truncate max-w-[140px] sm:max-w-none">{preferences.email}</span>
                   <ChevronRight className="size-5 text-muted-foreground shrink-0" aria-hidden="true" />
                 </span>
               }
@@ -255,8 +267,8 @@ export default function SettingsPage() {
               trailing={
                 <Toggle
                   label="Push Notifications"
-                  checked={pushNotifications}
-                  onChange={setPushNotifications}
+                  checked={preferences.pushNotifications}
+                  onChange={(v) => updateSettings.mutate({ pushNotifications: v })}
                 />
               }
             />
@@ -266,8 +278,8 @@ export default function SettingsPage() {
               trailing={
                 <Toggle
                   label="Session Reminders"
-                  checked={sessionReminders}
-                  onChange={setSessionReminders}
+                  checked={preferences.sessionReminders}
+                  onChange={(v) => updateSettings.mutate({ sessionReminders: v })}
                 />
               }
             />
@@ -286,7 +298,7 @@ export default function SettingsPage() {
               onClick={cycleRest}
               trailing={
                 <span className="flex items-center gap-2">
-                  <span className="text-fluid-base text-muted-foreground">{REST_OPTIONS[restIndex]}</span>
+                  <span className="text-fluid-base text-muted-foreground">{preferences.restDuration}</span>
                   <ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />
                 </span>
               }

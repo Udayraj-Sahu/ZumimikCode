@@ -3,25 +3,11 @@
 import { useCallback } from "react";
 import gsap from "gsap";
 import { TrendingUp } from "lucide-react";
-
-const weeklyData = [
-  { day: "MON", pct: 80 },
-  { day: "TUE", pct: 62 },
-  { day: "WED", pct: 78 },
-  { day: "THU", pct: 90 },
-  { day: "FRI", pct: 68 },
-  { day: "SAT", pct: 73 },
-  { day: "SUN", pct: 88 },
-];
-
-const recentActivity = [
-  { title: "Completed Sprint", sub: "Quantitative Aptitude — 92%", time: "2H AGO" },
-  { title: "New High Score", sub: "Logical Reasoning — 79%", time: "1D AGO" },
-  { title: "Streak Milestone", sub: "12-Day Streak Achieved", time: "2D AGO" },
-  { title: "Rank Up", sub: "Climbed to #47 in Arena Rankings", time: "3D AGO" },
-];
+import { useAnalyticsData } from "@/hooks/queries/use-analytics";
 
 export default function AnalyticsPage() {
+  const { data, isLoading } = useAnalyticsData();
+
   const headerRef = useCallback((el: HTMLDivElement | null) => {
     if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
   }, []);
@@ -33,9 +19,18 @@ export default function AnalyticsPage() {
     gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: i * 0.08, ease: "power2.out" });
   }, []);
 
+  if (isLoading || !data) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  const { stats, weekly, recent } = data;
+
   return (
       <div>
-        {/* Header */}
         <div
           ref={headerRef}
           className="px-6 py-5 border-b border-border"
@@ -47,21 +42,20 @@ export default function AnalyticsPage() {
             Analytics
           </h1>
           <p className="text-fluid-sm text-muted-foreground/60 mt-0.5">
-            Deep-dive performance metrics from your last 47 sessions.
+            Deep-dive performance metrics from your last {stats.totalSessions} sessions.
           </p>
         </div>
 
         <div className="p-6 flex flex-col gap-6">
-          {/* Stat cards */}
           <div
             ref={animateSection} data-section-index={0}
             className="grid grid-cols-2 sm:grid-cols-4 gap-3"
           >
             {[
-              { label: "TOTAL SESSIONS", value: "47" },
-              { label: "AVG SCORE", value: "82%" },
-              { label: "BEST STREAK", value: "12d" },
-              { label: "ARENA RANK", value: "#47" },
+              { label: "TOTAL SESSIONS", value: String(stats.totalSessions) },
+              { label: "AVG SCORE", value: `${stats.avgScore}%` },
+              { label: "BEST STREAK", value: `${stats.bestStreak}d` },
+              { label: "ARENA RANK", value: `#${stats.arenaRank}` },
             ].map((s, i) => (
               <div
                 key={i}
@@ -77,7 +71,6 @@ export default function AnalyticsPage() {
             ))}
           </div>
 
-          {/* Weekly Activity */}
           <div
             ref={animateSection} data-section-index={1}
             className="rounded-lg p-5 bg-card border border-border"
@@ -89,9 +82,8 @@ export default function AnalyticsPage() {
               <TrendingUp size={13} className="text-muted-foreground/50" />
             </div>
 
-            {/* Percentages row */}
             <div className="flex justify-between mb-1">
-              {weeklyData.map((d) => (
+              {weekly.map((d) => (
                 <span
                   key={d.day}
                   className="text-fluid-xs text-center flex-1 font-mono text-muted-foreground/50"
@@ -101,9 +93,8 @@ export default function AnalyticsPage() {
               ))}
             </div>
 
-            {/* Bar chart */}
             <div className="flex items-end justify-between gap-[2px] sm:gap-1" style={{ height: "60px" }}>
-              {weeklyData.map((d) => (
+              {weekly.map((d) => (
                 <div
                   key={d.day}
                   className="flex-1 mx-[1px] sm:mx-0.5 rounded-t-sm bg-primary"
@@ -112,9 +103,8 @@ export default function AnalyticsPage() {
               ))}
             </div>
 
-            {/* Day labels */}
             <div className="flex justify-between mt-1">
-              {weeklyData.map((d) => (
+              {weekly.map((d) => (
                 <span
                   key={d.day}
                   className="text-fluid-xs text-center flex-1 tracking-[0.05em] text-muted-foreground/30"
@@ -125,7 +115,6 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          {/* Recent Activity */}
           <div
             ref={animateSection} data-section-index={2}
             className="rounded-lg p-5 bg-card border border-border"
@@ -134,7 +123,7 @@ export default function AnalyticsPage() {
               RECENT ACTIVITY
             </h2>
             <div className="flex flex-col">
-              {recentActivity.map((a, i) => (
+              {recent.map((a, i) => (
                 <div
                   key={i}
                   className="flex items-start justify-between py-3 border-b border-border/40"
