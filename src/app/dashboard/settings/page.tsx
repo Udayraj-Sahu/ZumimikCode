@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUiStore } from "@/stores/ui-store";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 import { AlertModal } from "@/components/ui/alert-modal";
 import { useSettingsData, useUpdateSettings } from "@/hooks/queries/use-settings";
 
@@ -172,6 +173,7 @@ export default function SettingsPage() {
   const updateSettings = useUpdateSettings();
 
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const onboardingReset = useOnboardingStore((s) => s.reset);
 
   const [restDuration, setRestDuration] = useState("60s");
   const cycleRest = () => {
@@ -184,6 +186,7 @@ export default function SettingsPage() {
   };
 
   const handleDeleteConfirm = () => {
+    onboardingReset();
     setDeleteOpen(false);
   };
 

@@ -10,6 +10,7 @@ type OnboardingState = {
   targetExam: string;
   level: string;
   isOnboarded: boolean;
+  autoSlidePaused: boolean;
 
   setAuthData: (data: { name?: string; email?: string; phone?: string; authMethod: "google" | "phone" }) => void;
   setTargetExam: (exam: string) => void;
@@ -17,6 +18,7 @@ type OnboardingState = {
   nextStep: () => void;
   completeOnboarding: () => void;
   reset: () => void;
+  setAutoSlidePaused: (paused: boolean) => void;
 };
 
 const initial = {
@@ -28,6 +30,7 @@ const initial = {
   targetExam: "",
   level: "",
   isOnboarded: false,
+  autoSlidePaused: false,
 };
 
 export const useOnboardingStore = create<OnboardingState>()(
@@ -52,6 +55,8 @@ export const useOnboardingStore = create<OnboardingState>()(
       completeOnboarding: () => set({ isOnboarded: true }),
 
       reset: () => set(initial),
+
+      setAutoSlidePaused: (paused: boolean) => set({ autoSlidePaused: paused }),
     }),
     {
       name: "exam-arena-onboarding",

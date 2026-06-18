@@ -13,7 +13,11 @@ const EXAMS = [
   { id: "vedic-math", label: "Vedic Math", icon: Sigma },
 ];
 
-export function StepGoal() {
+type Props = {
+  onSelect: () => void;
+};
+
+export function StepGoal({ onSelect }: Props) {
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const setTargetExam = useOnboardingStore((s) => s.setTargetExam);
   const nextStep = useOnboardingStore((s) => s.nextStep);
@@ -22,11 +26,12 @@ export function StepGoal() {
   const handleSelect = (id: string) => {
     setSelected(id);
     setTargetExam(id);
+    onSelect();
   };
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="text-fluid-lg font-bold text-foreground text-center">
+      <p data-step-el className="text-fluid-lg font-bold text-foreground text-center">
         What are you preparing for?
       </p>
       <div className="grid grid-cols-2 gap-3">
@@ -36,12 +41,13 @@ export function StepGoal() {
           return (
             <button
               key={exam.id}
+              data-step-el
               type="button"
               onClick={() => handleSelect(exam.id)}
               className={cn(
-                "flex flex-col items-center gap-2 rounded-2xl border p-5 outline-none transition-all duration-200 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring",
+                "flex flex-col items-center gap-2 rounded-2xl border p-5 outline-none transition-all duration-200 active:scale-[0.93] focus-visible:ring-2 focus-visible:ring-ring",
                 active
-                  ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)]"
+                  ? "border-primary bg-accent shadow-[0_0_12px_var(--primary)]"
                   : "border-border/60 bg-card hover:border-border hover:bg-accent/40",
               )}
             >
@@ -57,10 +63,11 @@ export function StepGoal() {
         })}
       </div>
       <button
+        data-step-el
         type="button"
-        onClick={nextStep}
+        onClick={() => { nextStep(); }}
         disabled={!selected}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-fluid-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40 disabled:pointer-events-none"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-fluid-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40 disabled:pointer-events-none"
       >
         Continue
       </button>

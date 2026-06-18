@@ -7,14 +7,17 @@ import { cn } from "@/lib/utils";
 
 type AuthPanelProps = {
   onAuthSuccess: (data: { name?: string; phone?: string; authMethod: "google" | "phone" }) => void;
+  onPauseAutoSlide?: () => void;
+  onResumeAutoSlide?: () => void;
 };
 
-export function AuthPanel({ onAuthSuccess }: AuthPanelProps) {
+export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }: AuthPanelProps) {
   const [mode, setMode] = useState<"select" | "phone-input" | "otp" | "verifying">("select");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
+  const pauseRef = useRef(false);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -22,13 +25,22 @@ export function AuthPanel({ onAuthSuccess }: AuthPanelProps) {
     }
   }, [mode]);
 
-  const handleGoogle = () => {
-    onAuthSuccess({ name: "Google User", authMethod: "google" });
+  const enterOtp = () => {
+    if (phone.replace(/\D/g, "").length < 10) return;
+    pauseRef.current = true;
+    onPauseAutoSlide?.();
+    setMode("otp");
   };
 
-  const handleSendOtp = () => {
-    if (phone.replace(/\D/g, "").length < 10) return;
-    setMode("otp");
+  const exitOtp = () => {
+    pauseRef.current = false;
+    onResumeAutoSlide?.();
+    setMode("phone-input");
+    setOtp(["", "", "", "", "", ""]);
+  };
+
+  const handleGoogle = () => {
+    onAuthSuccess({ name: "Google User", authMethod: "google" });
   };
 
   const handleOtpChange = (val: string, i: number) => {
@@ -61,10 +73,12 @@ export function AuthPanel({ onAuthSuccess }: AuthPanelProps) {
       {mode === "select" && (
         <>
           <button
+            data-step-el
             type="button"
             onClick={handleGoogle}
-            className="flex w-full items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-4 py-4 text-fluid-base font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="group relative flex w-full items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-4 py-4 text-fluid-base font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
           >
+            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
             <Globe size={20} className="text-muted-foreground" />
             Continue with Google
           </button>
@@ -74,10 +88,12 @@ export function AuthPanel({ onAuthSuccess }: AuthPanelProps) {
             <span className="flex-1 h-px bg-border" />
           </div>
           <button
+            data-step-el
             type="button"
             onClick={() => setMode("phone-input")}
-            className="flex w-full items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-4 py-4 text-fluid-base font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="group relative flex w-full items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-4 py-4 text-fluid-base font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
           >
+            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
             <Smartphone size={20} className="text-muted-foreground" />
             Continue with Phone Number
           </button>
@@ -86,8 +102,8 @@ export function AuthPanel({ onAuthSuccess }: AuthPanelProps) {
 
       {mode === "phone-input" && (
         <div className="w-full flex flex-col gap-4">
-          <p className="text-fluid-sm font-semibold text-foreground/80">Enter your phone number</p>
-          <div className="flex items-center gap-2">
+          <p data-step-el className="text-fluid-sm font-semibold text-foreground/80">Enter your phone number</p>
+          <div data-step-el className="flex items-center gap-2">
             <span className="flex items-center gap-1 rounded-xl border border-border/60 bg-card px-3 py-3 text-fluid-sm font-medium text-foreground">
               <span className="text-muted-foreground">+91</span>
             </span>
@@ -103,10 +119,11 @@ export function AuthPanel({ onAuthSuccess }: AuthPanelProps) {
             />
           </div>
           <button
+            data-step-el
             type="button"
-            onClick={handleSendOtp}
+            onClick={enterOtp}
             disabled={phoneDigits.length < 10}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-fluid-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40 disabled:pointer-events-none"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-fluid-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-40 disabled:pointer-events-none"
           >
             Send OTP <ArrowRight size={16} />
           </button>
@@ -115,10 +132,10 @@ export function AuthPanel({ onAuthSuccess }: AuthPanelProps) {
 
       {mode === "otp" && (
         <div className="w-full flex flex-col gap-4">
-          <p className="text-fluid-sm text-foreground/60 text-center">
+          <p data-step-el className="text-fluid-sm text-foreground/60 text-center">
             OTP sent to <span className="font-semibold text-foreground">+91 {phone}</span>
           </p>
-          <div className="flex justify-center gap-2">
+          <div data-step-el className="flex justify-center gap-2">
             {otp.map((d, i) => (
               <input
                 key={i}
@@ -130,16 +147,17 @@ export function AuthPanel({ onAuthSuccess }: AuthPanelProps) {
                 onChange={(e) => handleOtpChange(e.target.value, i)}
                 onKeyDown={(e) => handleOtpKeyDown(e, i)}
                 className={cn(
-                  "size-10 rounded-xl border text-center text-fluid-lg font-bold outline-none transition-colors",
-                  d ? "border-primary bg-primary/5 text-foreground" : "border-border/60 bg-card text-foreground",
+                  "size-10 rounded-xl border text-center text-fluid-lg font-bold outline-none transition-all",
+                  d ? "border-primary bg-primary/5 text-foreground scale-110" : "border-border/60 bg-card text-foreground",
                 )}
                 autoFocus={i === 0}
               />
             ))}
           </div>
           <button
+            data-step-el
             type="button"
-            onClick={() => setMode("phone-input")}
+            onClick={exitOtp}
             className="text-center text-fluid-xs text-muted-foreground/50 underline underline-offset-2 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded"
           >
             Change phone number
