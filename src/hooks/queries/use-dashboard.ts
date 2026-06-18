@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getTopicMastery, getRadarAxes, getDashboardMetrics } from "@/services/dashboard";
+import { cacheQueryData } from "@/services/offline/sync";
 import type { Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
 
 type DashboardData = {
@@ -18,8 +20,16 @@ async function fetchDashboardData(): Promise<DashboardData> {
 }
 
 export function useDashboardData() {
-  return useQuery<DashboardData>({
+  const query = useQuery<DashboardData>({
     queryKey: ["dashboard"],
     queryFn: fetchDashboardData,
   });
+
+  useEffect(() => {
+    if (query.data) {
+      cacheQueryData("dashboard", query.data);
+    }
+  }, [query.data]);
+
+  return query;
 }

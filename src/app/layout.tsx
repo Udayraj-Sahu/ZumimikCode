@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
+import { OnlineProvider } from "@/providers/online-provider";
+import { CapacitorInit } from "./capacitor-init";
 
 
 const spaceGrotesk = Space_Grotesk({
@@ -49,9 +51,15 @@ export const metadata: Metadata = {
     description:
       "Not a coaching platform. A competitive battlefield where India's sharpest minds fight, rank, and rise.",
   },
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.svg",
     apple: "/favicon.svg",
+  },
+  other: {
+    "theme-color": "#C8FF5A",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "default",
   },
 };
 
@@ -85,7 +93,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               }),
             }}
           />
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <OnlineProvider>
+              <CapacitorInit />
+              {children}
+            </OnlineProvider>
+          </QueryProvider>
         </div>
       </body>
     </html>
