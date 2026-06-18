@@ -136,7 +136,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             onClick={() => { logout(); router.push("/"); }}
-            className="flex items-center justify-center gap-2 py-2 rounded text-fluid-sm font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center justify-center gap-2 py-3 rounded text-fluid-sm font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
           >
             <LogOut size={12} />
             LOGOUT
