@@ -17,7 +17,7 @@ export function SplashScreen() {
   }, []);
 
   return (
-    <div ref={ref} className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background">
+    <div ref={ref} className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background lg:hidden">
       <Swords className="size-16 text-primary mb-4" />
       <h1 className="text-2xl font-bold text-white">Exam Arena</h1>
       <p className="text-muted-foreground text-sm mt-1">Arena of Champions</p>
