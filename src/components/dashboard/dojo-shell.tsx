@@ -155,7 +155,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
         aria-label="Primary mobile"
         className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur-lg lg:hidden"
       >
-        <ul className="mx-auto flex max-w-md items-center justify-around px-2 py-1">
+        <ul className="mx-auto flex max-w-md items-center justify-around px-2 py-0.5">
           {MOBILE_NAV.map((item) => {
             const active = pathname === item.href;
             const Icon = item.icon;
@@ -165,13 +165,13 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-2 text-fluid-xs font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-fluid-xs font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground/60 hover:text-muted-foreground",
                   )}
                 >
-                  <Icon className="size-4" aria-hidden="true" />
+                  <Icon className="size-3.5" aria-hidden="true" />
                   <span>{item.label}</span>
                 </Link>
               </li>
