@@ -11,9 +11,11 @@ type AuthState = {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isOnboarded: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   setToken: (token: string | null) => void;
+  completeOnboarding: () => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -25,9 +27,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
   token: null,
   isAuthenticated: true,
+  isOnboarded: true,
 
   login: async (_email: string, _password: string) => {
-    // Stub — real JWT flow added when backend exists
     set({
       user: { id: "1", name: "Udayraj Sahu", email: _email, role: "Champion" },
       token: "mock-jwt-token",
@@ -41,5 +43,9 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   setToken: (token: string | null) => {
     set({ token, isAuthenticated: !!token });
+  },
+
+  completeOnboarding: () => {
+    set({ isOnboarded: true });
   },
 }));
