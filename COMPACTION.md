@@ -123,6 +123,7 @@ src/
 - `OnlineProvider` + `network-store` (online/offline listeners, mutation queue)
 - Mobile font fixes: `fluid-xs` 11px, `fluid-sm` 12px, streak cells `size-7` `text-[11px]`, nav `py-3`
 - Bottom nav active state fix (unique href per tab)
+- Dashboard home: all inline data (stats, streak, events, leaderboard, recent activity) moved to typed mock service + TanStack Query
 
 ### ❌ Not Yet
 - Express backend (PostgreSQL + Redis + Socket.IO)
@@ -131,7 +132,6 @@ src/
 - Vercel deploy preview / production deploy
 - Socket.IO real-time features (auto-reconnect, background recovery)
 - PWA PNG icons (192x192, 512x512) — currently SVG only with `sizes: any`
-- Remaining inline hardcoded data (leaderboard, upcoming events on dashboard home)
 
 ## Relevant Files Quick Reference
 ```

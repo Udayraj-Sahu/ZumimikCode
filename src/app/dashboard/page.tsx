@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import gsap from "gsap";
 import { Play, Clock, Zap, Award, TrendingUp, ChevronRight, type LucideIcon } from "lucide-react";
@@ -14,6 +15,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 export default function DashboardPage() {
+  const router = useRouter();
   const { data, isLoading, error } = useDashboardData();
   const topics = data?.topics ?? [];
   const radarAxes = data?.radarAxes ?? [];
@@ -108,18 +110,20 @@ export default function DashboardPage() {
                 THIS WEEK
               </p>
               <div className="flex gap-1">
-                {(streak?.labels ?? ["M","T","W","T","F","S","S"]).map((day, i) => (
-                  <span
-                    key={i}
-                    className="grid size-7 place-items-center rounded text-[11px] font-bold"
-                    style={{
-                      background: (streak?.days ?? [true,true,true,false,true,true,false])[i] ? "var(--primary)" : "#1a1a1a",
-                      color: (streak?.days ?? [true,true,true,false,true,true,false])[i] ? "#0a0a0a" : "#444",
-                    }}
-                  >
-                    {day}
-                  </span>
-                ))}
+                {(streak?.labels ?? ["M","T","W","T","F","S","S"]).map((day, i) => {
+                  const active = (streak?.days ?? [true,true,true,false,true,true,false])[i];
+                  return (
+                    <span
+                      key={i}
+                      className={cn(
+                        "grid size-7 place-items-center rounded text-[11px] font-bold",
+                        active ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                      )}
+                    >
+                      {day}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -133,8 +137,8 @@ export default function DashboardPage() {
             <p className="text-fluid-base font-semibold text-destructive">{error instanceof Error ? error.message : "Failed to load dashboard data"}</p>
             <button
               type="button"
-              onClick={() => window.location.reload()}
-              className="rounded-lg bg-primary px-6 py-2.5 text-fluid-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
+              onClick={() => router.refresh()}
+              className="rounded-lg bg-primary px-6 py-3 text-fluid-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
             >
               Retry
             </button>
@@ -147,7 +151,7 @@ export default function DashboardPage() {
                 <div className="h-48 rounded-lg bg-card" />
                 <div className="h-40 rounded-lg bg-card" />
               </div>
-              <div className="flex flex-col gap-4 w-full lg:w-[350px] shrink-0">
+              <div className="flex flex-col gap-4 w-full lg:w-80 shrink-0">
                 <div className="h-64 rounded-lg bg-card" />
                 <div className="h-32 rounded-lg bg-card" />
                 <div className="h-40 rounded-lg bg-card" />
@@ -162,10 +166,7 @@ export default function DashboardPage() {
                 {/* Daily Sprint CTA */}
                 <div
                   ref={animateSection} data-section-index={0}
-                  className="relative overflow-hidden rounded-lg p-5 border border-primary/20"
-                  style={{
-                    background: "linear-gradient(135deg, #1a1f00 0%, #111 70%)",
-                  }}
+                  className="relative overflow-hidden rounded-lg p-5 border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-background"
                 >
                   <div
                     className="absolute top-0 right-0 w-28 h-28 opacity-10 rounded-full"
@@ -183,8 +184,7 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-3 mt-4">
                     <Link
                       href="/dashboard/configure-sprint"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-fluid-xs font-bold tracking-wide text-[#0a0a0a] transition-all hover:opacity-90 active:scale-95"
-                      style={{ background: "var(--primary)" }}
+                      className="flex items-center gap-2 rounded-lg bg-primary px-4 py-3 text-fluid-xs font-bold tracking-wide text-primary-foreground transition-all hover:opacity-90 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       <Play size={12} />
                       START SPRINT
@@ -206,7 +206,7 @@ export default function DashboardPage() {
                     </h3>
                     <button
                       type="button"
-                      className="flex items-center gap-1 text-fluid-sm text-primary outline-none"
+                      className="flex items-center gap-1 text-fluid-sm text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
                     >
                       VIEW ALL <ChevronRight size={10} />
                     </button>
@@ -274,7 +274,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Right col */}
-              <div className="flex flex-col gap-4 w-full lg:w-[350px] shrink-0">
+              <div className="flex flex-col gap-4 w-full lg:w-80 shrink-0">
                 {/* Cognitive Radar */}
                 <div
                   ref={animateSection} data-section-index={3}
@@ -371,15 +371,17 @@ export default function DashboardPage() {
                         >
                           <span
                             className={cn(
-                              "text-fluid-xs font-mono w-[18px]",
+                              "text-fluid-xs font-mono w-4",
                               u.rank <= 3 ? "text-primary" : "text-muted-foreground/30",
                             )}
                           >
                             #{u.rank}
                           </span>
                           <span
-                            className="flex-1 text-fluid-sm"
-                            style={{ color: u.me ? "var(--primary)" : "#888", fontWeight: u.me ? 700 : 400 }}
+                            className={cn(
+                              "flex-1 text-fluid-sm",
+                              u.me ? "font-bold text-primary" : "text-muted-foreground",
+                            )}
                           >
                             {u.name}
                           </span>
