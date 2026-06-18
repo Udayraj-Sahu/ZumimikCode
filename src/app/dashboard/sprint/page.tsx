@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import gsap from "gsap";
-import { ArrowLeft, Check, X, Clock, Zap, ChevronRight } from "lucide-react";
+import { ArrowLeft, Check, X, Clock, Zap, ChevronRight, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintSession } from "@/hooks/queries/use-sprint-session";
 import { useSprintStore } from "@/stores/sprint-store";
@@ -31,9 +31,11 @@ function SprintContent() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [result, setResult] = useState<ReturnType<typeof getResult> | null>(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout>>();
   const feedbackRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  const reviewRef = useRef<HTMLDivElement>(null);
   const questionsRef = useRef(data?.questions ?? null);
   questionsRef.current = data?.questions ?? null;
 
@@ -72,6 +74,13 @@ function SprintContent() {
       gsap.fromTo(resultRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" });
     }
   }, [result]);
+
+  useEffect(() => {
+    if (reviewOpen && reviewRef.current) {
+      const cards = reviewRef.current.querySelectorAll<HTMLElement>("[data-review-card]");
+      gsap.fromTo(cards, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.06, ease: "power2.out" });
+    }
+  }, [reviewOpen]);
 
   const handleSelect = (optionIndex: number) => {
     if (showFeedback || status !== "active") return;
@@ -213,6 +222,90 @@ function SprintContent() {
           </div>
         </div>
 
+        {/* Review toggle */}
+        <div className="mt-6">
+          <button
+            type="button"
+            onClick={() => setReviewOpen(!reviewOpen)}
+            className="flex w-full items-center justify-between rounded-xl border border-border/40 bg-card px-4 py-3 text-left outline-none transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <span className="text-fluid-sm font-bold uppercase tracking-widest text-foreground/80">
+              Review Answers
+            </span>
+            <ChevronDown
+              size={18}
+              className={cn(
+                "text-muted-foreground transition-transform duration-200",
+                reviewOpen && "rotate-180",
+              )}
+            />
+          </button>
+
+          {/* Review cards */}
+          {reviewOpen && (
+            <div ref={reviewRef} className="mt-4 flex flex-col gap-4">
+              {data.questions.map((q, i) => {
+                const a = result.answers.find((x) => x.questionId === q.id);
+                const selected = a?.selectedIndex ?? -1;
+                return (
+                  <div
+                    key={q.id}
+                    data-review-card
+                    className="rounded-xl border border-border/40 bg-card p-4"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="flex items-center gap-1.5 text-fluid-xs font-bold uppercase tracking-wider">
+                        <span className={cn(
+                          "grid size-5 place-items-center rounded text-[10px] font-bold",
+                          a?.correct ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive",
+                        )}>
+                          {a?.correct ? <Check size={10} /> : <X size={10} />}
+                        </span>
+                        Question {i + 1}
+                      </span>
+                      <span className="text-fluid-xs font-mono text-muted-foreground/40">
+                        {Math.round(a?.timeSpent ?? 0)}s
+                      </span>
+                    </div>
+                    <p className="text-fluid-sm font-semibold text-foreground/80 mb-2.5 leading-relaxed">
+                      {q.text}
+                    </p>
+                    <div className="flex flex-col gap-1.5">
+                      {q.options.map((option, oi) => {
+                        const isUserPick = oi === selected;
+                        const isRight = oi === q.correctIndex;
+                        let variant = "bg-muted/50 border-transparent text-muted-foreground/50" as string;
+                        if (isRight && isUserPick) variant = "border-primary bg-primary/10 text-primary";
+                        else if (isRight) variant = "border-primary bg-primary/5 text-primary";
+                        else if (isUserPick) variant = "border-destructive bg-destructive/10 text-destructive";
+                        return (
+                          <div
+                            key={oi}
+                            className={cn(
+                              "flex items-center gap-2 rounded-lg border px-3 py-2 text-fluid-xs",
+                              variant,
+                            )}
+                          >
+                            <span className="font-mono text-[10px] opacity-60 w-3">
+                              {String.fromCharCode(65 + oi)}
+                            </span>
+                            <span className="flex-1">{option}</span>
+                            {isUserPick && (
+                              <span className={cn(isRight ? "text-primary" : "text-destructive")}>
+                                {isRight ? <Check size={12} /> : <X size={12} />}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         <div className="mt-6 flex flex-col gap-3">
           <button
             type="button"
@@ -228,6 +321,7 @@ function SprintContent() {
               setSelectedIndex(null);
               setShowFeedback(false);
               setResult(null);
+              setReviewOpen(false);
               initSprint(data.totalTime);
             }}
             className="flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
