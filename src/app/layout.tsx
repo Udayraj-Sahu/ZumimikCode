@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { QueryProvider } from "@/providers/query-provider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -83,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               }),
             }}
           />
-          {children}
+          <QueryProvider>{children}</QueryProvider>
         </div>
       </body>
     </html>

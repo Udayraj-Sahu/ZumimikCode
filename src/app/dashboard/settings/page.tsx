@@ -18,6 +18,8 @@ import {
   Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useUiStore } from "@/stores/ui-store";
+import { AlertModal } from "@/components/ui/alert-modal";
 
 function Toggle({
   label,
@@ -164,6 +166,7 @@ const REST_OPTIONS = ["30s", "60s", "90s", "120s"];
 
 export default function SettingsPage() {
   const router = useRouter();
+  const openModal = useUiStore((s) => s.openModal);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [sessionReminders, setSessionReminders] = useState(false);
   const [restIndex, setRestIndex] = useState(1);
@@ -229,7 +232,7 @@ export default function SettingsPage() {
             <Row
               icon={Mail}
               label="Email Address"
-              onClick={() => alert("Edit email address")}
+              onClick={() => openModal({ type: "alert", title: "Email", message: "Edit email address" })}
               trailing={
                 <span className="flex items-center gap-2 min-w-0">
                   <span className="text-fluid-base text-muted-foreground truncate max-w-[140px] sm:max-w-none">user@examarena.com</span>
@@ -300,19 +303,19 @@ export default function SettingsPage() {
             <Row
               icon={ShieldCheck}
               label="Privacy Center"
-              onClick={() => alert("Open Privacy Center")}
+              onClick={() => openModal({ type: "alert", title: "Privacy Center", message: "Open Privacy Center" })}
               trailing={<ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />}
             />
             <Row
               icon={Download}
               label="Export Training Data"
-              onClick={() => alert("Exporting training data...")}
+              onClick={() => openModal({ type: "alert", title: "Export", message: "Exporting training data..." })}
               trailing={<ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />}
             />
             <Row
               icon={CreditCard}
               label="Manage Plan"
-              onClick={() => alert("Manage subscription plan")}
+              onClick={() => openModal({ type: "alert", title: "Plan", message: "Manage subscription plan" })}
               trailing={<ExternalLink className="size-5 text-muted-foreground" aria-hidden="true" />}
             />
           </Card>
@@ -337,6 +340,7 @@ export default function SettingsPage() {
           onConfirm={handleDeleteConfirm}
           onCancel={() => setDeleteOpen(false)}
         />
+        <AlertModal />
       </div>
   );
 }

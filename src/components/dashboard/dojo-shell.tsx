@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { LogOut, Zap, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
+import { useAuthStore } from "@/stores/auth-store";
 
 const SIDEBAR_SECTIONS = Object.entries(
   NAV_ITEMS.reduce<Record<string, typeof NAV_ITEMS>>((acc, item) => {
@@ -20,6 +21,7 @@ const SIDEBAR_SECTIONS = Object.entries(
 export function DojoShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const logout = useAuthStore((s) => s.logout);
   const sidebarRef = useRef<HTMLElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
 
@@ -133,7 +135,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           </Link>
           <button
             type="button"
-            onClick={() => router.push("/")}
+            onClick={() => { logout(); router.push("/"); }}
             className="flex items-center justify-center gap-2 py-2 rounded text-fluid-sm font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
           >
             <LogOut size={12} />
@@ -163,7 +165,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex min-w-16 flex-col items-center gap-0.5 rounded-xl px-3 py-2 text-[10px] font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex min-w-16 flex-col items-center gap-0.5 rounded-xl px-3 py-3 text-[10px] font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground/60 hover:text-muted-foreground",

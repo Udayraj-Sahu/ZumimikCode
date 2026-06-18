@@ -47,8 +47,8 @@ const config: Config = {
         },
       },
       fontSize: {
-        "fluid-xs": ["clamp(9px, 1vw, 10px)", { lineHeight: "1.3" }],
-        "fluid-sm": ["clamp(9px, 1.4vw, 12px)", { lineHeight: "1.4" }],
+        "fluid-xs": ["clamp(11px, 1vw, 12px)", { lineHeight: "1.3" }],
+        "fluid-sm": ["clamp(12px, 1.4vw, 13px)", { lineHeight: "1.4" }],
         "fluid-base": ["clamp(13px, 2vw, 15px)", { lineHeight: "1.5" }],
         "fluid-lg": ["clamp(15px, 2.5vw, 20px)", { lineHeight: "1.3" }],
         "fluid-xl": ["clamp(18px, 3.5vw, 28px)", { lineHeight: "1.2" }],

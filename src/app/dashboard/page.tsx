@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useCallback } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { Play, Clock, Zap, Award, TrendingUp, ChevronRight, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CognitiveRadar } from "@/components/dashboard/cognitive-radar";
-import { getTopicMastery, getRadarAxes, getDashboardMetrics } from "@/services/dashboard";
-import type { Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
+import { useDashboardData } from "@/hooks/queries/use-dashboard";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Zap,
@@ -31,53 +30,25 @@ const leaderboardData = [
 ];
 
 export default function DashboardPage() {
-  const [topics, setTopics] = useState<Topic[] | null>(null);
-  const [radarAxes, setRadarAxes] = useState<RadarAxis[] | null>(null);
-  const [metrics, setMetrics] = useState<Metric[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useDashboardData();
+  const topics = data?.topics ?? [];
+  const radarAxes = data?.radarAxes ?? [];
+  const metrics = data?.metrics ?? null;
 
-  useEffect(() => {
-    let cancelled = false;
-    async function load() {
-      try {
-        const [t, r, m] = await Promise.all([
-          getTopicMastery(),
-          getRadarAxes(),
-          getDashboardMetrics(),
-        ]);
-        if (cancelled) return;
-        setTopics(t);
-        setRadarAxes(r);
-        setMetrics(m);
-      } catch (e) {
-        if (cancelled) return;
-        setError(e instanceof Error ? e.message : "Failed to load dashboard data");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-    load();
-    return () => { cancelled = true; };
-  }, []);
-
-  const metricCards = useMemo(() => {
-    if (!metrics) return null;
-    return metrics.map((m) => {
-      const Icon = ICON_MAP[m.icon] || Zap;
-      return (
-        <div
-          key={m.label}
-          className="flex items-center justify-between rounded-lg px-3 py-2 bg-card"
-        >
-          <span className="text-fluid-xs text-muted-foreground/60">{m.label}</span>
-          <span className="text-fluid-sm font-bold text-primary font-mono">
-            {m.value}
-          </span>
-        </div>
-      );
-    });
-  }, [metrics]);
+  const metricCards = metrics?.map((m) => {
+    const Icon = ICON_MAP[m.icon] || Zap;
+    return (
+      <div
+        key={m.label}
+        className="flex items-center justify-between rounded-lg px-3 py-2 bg-card"
+      >
+        <span className="text-fluid-xs text-muted-foreground/60">{m.label}</span>
+        <span className="text-fluid-sm font-bold text-primary font-mono">
+          {m.value}
+        </span>
+      </div>
+    );
+  });
 
   const headerRef = useCallback((el: HTMLDivElement | null) => {
     if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
@@ -151,7 +122,7 @@ export default function DashboardPage() {
                 {dayLabels.map((day, i) => (
                   <span
                     key={i}
-                    className="grid size-5 place-items-center rounded text-[8px] font-bold"
+                    className="grid size-7 place-items-center rounded text-[11px] font-bold"
                     style={{
                       background: streakDays[i] ? "var(--primary)" : "#1a1a1a",
                       color: streakDays[i] ? "#0a0a0a" : "#444",
@@ -170,7 +141,7 @@ export default function DashboardPage() {
             ref={errorRef}
             className="mx-5 md:mx-8 mt-6 flex flex-col items-center gap-4 rounded-lg border border-destructive/30 bg-destructive/5 p-6 md:p-8 text-center"
           >
-            <p className="text-fluid-base font-semibold text-destructive">{error}</p>
+            <p className="text-fluid-base font-semibold text-destructive">{error instanceof Error ? error.message : "Failed to load dashboard data"}</p>
             <button
               type="button"
               onClick={() => window.location.reload()}
@@ -179,7 +150,7 @@ export default function DashboardPage() {
               Retry
             </button>
           </div>
-        ) : loading ? (
+        ) : isLoading ? (
           <div className="p-5 md:p-8 animate-pulse">
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="flex-1 min-w-0 flex flex-col gap-4">
@@ -252,12 +223,12 @@ export default function DashboardPage() {
                     </button>
                   </div>
                   <div className="flex flex-col gap-3">
-                    {(topics ?? []).length === 0 ? (
+                    {topics.length === 0 ? (
                       <p className="py-4 text-center text-fluid-sm text-muted-foreground/60">
                         No mastery data available yet. Complete a sprint to see your progress.
                       </p>
                     ) : (
-                      (topics ?? []).map((t) => (
+                      topics.map((t) => (
                         <div key={t.name}>
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-fluid-sm text-muted-foreground">{t.name}</span>
@@ -321,15 +292,15 @@ export default function DashboardPage() {
                   <h3 className="text-fluid-base font-bold tracking-[0.1em] text-foreground mb-1">
                     COGNITIVE RADAR
                   </h3>
-                  {(radarAxes ?? []).length > 0 ? (
-                    <CognitiveRadar axes={radarAxes ?? []} size={220} />
+                  {radarAxes.length > 0 ? (
+                    <CognitiveRadar axes={radarAxes} size={220} />
                   ) : (
                     <p className="py-8 text-center text-fluid-sm text-muted-foreground/60">
                       No radar data yet.
                     </p>
                   )}
                   <div className="grid grid-cols-2 gap-1.5 mt-2">
-                    {(metrics ?? []).length > 0 ? (
+                    {metrics && metrics.length > 0 ? (
                       metricCards
                     ) : (
                       <>
