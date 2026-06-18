@@ -43,7 +43,7 @@ export function AlertModal() {
             <button
               type="button"
               onClick={() => { closeModal(); modal.onConfirm?.(); }}
-              className="rounded-lg bg-destructive px-4 py-2 text-fluid-sm font-bold uppercase tracking-widest text-destructive-foreground outline-none transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-lg bg-destructive px-4 py-3 text-fluid-sm font-bold uppercase tracking-widest text-destructive-foreground outline-none transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring"
             >
               Confirm
             </button>
@@ -51,7 +51,7 @@ export function AlertModal() {
           <button
             type="button"
             onClick={closeModal}
-            className="rounded-lg bg-muted px-4 py-2 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-lg bg-muted px-4 py-3 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring"
           >
             {modal.type === "alert" ? "OK" : "Cancel"}
           </button>

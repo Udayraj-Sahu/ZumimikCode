@@ -124,6 +124,10 @@ src/
 - Mobile font fixes: `fluid-xs` 11px, `fluid-sm` 12px, streak cells `size-7` `text-[11px]`, nav `py-3`
 - Bottom nav active state fix (unique href per tab)
 - Dashboard home: all inline data (stats, streak, events, leaderboard, recent activity) moved to typed mock service + TanStack Query
+- All hardcoded hex colors in dashboard replaced with theme tokens
+- `window.location.reload()` → `router.refresh()` (no direct window calls remaining)
+- Touch targets: `py-2` → `py-3` (44px min) on all interactive elements
+- All `hover:` interactions paired with `focus-visible:ring-2`
 
 ### ❌ Not Yet
 - Express backend (PostgreSQL + Redis + Socket.IO)
