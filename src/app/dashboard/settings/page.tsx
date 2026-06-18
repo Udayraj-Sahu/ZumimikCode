@@ -75,10 +75,10 @@ function Row({
     <Tag
       type={onClick ? "button" : undefined}
       onClick={onClick}
-      className={cn(
-        "flex w-full items-center gap-3 px-4 py-4 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
-        onClick && "hover:bg-accent/40",
-      )}
+        className={cn(
+          "flex w-full items-center gap-3 px-4 py-4 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring active:bg-accent/60",
+          onClick && "hover:bg-accent/40",
+        )}
     >
       <Icon className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
       <span className="flex-1 text-fluid-base font-medium text-foreground truncate">{label}</span>
@@ -171,10 +171,17 @@ export default function SettingsPage() {
   const { data, isLoading } = useSettingsData();
   const updateSettings = useUpdateSettings();
 
-  const [restIndex, setRestIndex] = useState(1);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const cycleRest = () => setRestIndex((i) => (i + 1) % REST_OPTIONS.length);
+  const [restDuration, setRestDuration] = useState("60s");
+  const cycleRest = () => {
+    setRestDuration((prev) => {
+      const idx = (REST_OPTIONS.indexOf(prev) + 1) % REST_OPTIONS.length;
+      const next = REST_OPTIONS[idx];
+      updateSettings.mutate({ restDuration: next });
+      return next;
+    });
+  };
 
   const handleDeleteConfirm = () => {
     setDeleteOpen(false);
@@ -247,7 +254,7 @@ export default function SettingsPage() {
               onClick={() => openModal({ type: "alert", title: "Email", message: "Edit email address" })}
               trailing={
                 <span className="flex items-center gap-2 min-w-0">
-                  <span className="text-fluid-base text-muted-foreground truncate max-w-[140px] sm:max-w-none">{preferences.email}</span>
+                  <span className="text-fluid-base text-muted-foreground truncate max-w-[200px] sm:max-w-none">{preferences.email}</span>
                   <ChevronRight className="size-5 text-muted-foreground shrink-0" aria-hidden="true" />
                 </span>
               }
@@ -298,7 +305,7 @@ export default function SettingsPage() {
               onClick={cycleRest}
               trailing={
                 <span className="flex items-center gap-2">
-                  <span className="text-fluid-base text-muted-foreground">{preferences.restDuration}</span>
+                  <span className="text-fluid-base text-muted-foreground">{restDuration}</span>
                   <ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />
                 </span>
               }

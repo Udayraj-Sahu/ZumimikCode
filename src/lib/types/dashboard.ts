@@ -22,7 +22,6 @@ export type Metric = {
   label: string;
   value: string;
   icon: string;
-  accent: "primary" | "secondary";
 };
 
 export type DashboardStats = {

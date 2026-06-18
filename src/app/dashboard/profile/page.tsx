@@ -51,7 +51,7 @@ export default function ProfilePage() {
           </div>
         </header>
 
-        <div className="mt-5 grid grid-cols-3 gap-2.5 sm:gap-4">
+        <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
           {stats.map((s) => {
             const Icon = s.label === "Sessions" ? Target : s.label === "Streak" ? Flame : Trophy;
             return (
@@ -63,7 +63,7 @@ export default function ProfilePage() {
                 <p className="mt-1.5 text-fluid-xl font-black tracking-tight text-primary sm:text-fluid-2xl">
                   {s.value}
                 </p>
-                <p className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/50 sm:text-fluid-xs">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 sm:text-fluid-xs">
                   {s.label}
                 </p>
               </div>
@@ -97,7 +97,7 @@ export default function ProfilePage() {
                   <p className="text-[11px] font-bold uppercase tracking-wide sm:text-fluid-sm">
                     {a.label}
                   </p>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground/60 sm:text-fluid-xs">
+                  <p className="mt-0.5 text-fluid-xs text-muted-foreground/60">
                     {a.desc}
                   </p>
                 </div>

@@ -42,8 +42,8 @@ export const RADAR_AXES: RadarAxis[] = [
 ];
 
 export const METRICS: Metric[] = [
-  { label: "Action Delay", value: "142ms", icon: "Zap", accent: "primary" },
-  { label: "Focus Density", value: "89%", icon: "TrendingUp", accent: "primary" },
+  { label: "Action Delay", value: "142ms", icon: "Zap" },
+  { label: "Focus Density", value: "89%", icon: "TrendingUp" },
 ];
 
 export const DASHBOARD_STATS: DashboardStats = {

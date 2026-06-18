@@ -93,11 +93,11 @@ export default function AnalyticsPage() {
               ))}
             </div>
 
-            <div className="flex items-end justify-between gap-[2px] sm:gap-1" style={{ height: "60px" }}>
+            <div className="flex items-end justify-between gap-[3px] sm:gap-1.5 h-16 sm:h-20">
               {weekly.map((d) => (
-                <div
-                  key={d.day}
-                  className="flex-1 mx-[1px] sm:mx-0.5 rounded-t-sm bg-primary"
+                  <div
+                    key={d.day}
+                    className="flex-1 rounded-t-sm bg-primary"
                   style={{ height: `${d.pct}%`, minHeight: "4px" }}
                 />
               ))}

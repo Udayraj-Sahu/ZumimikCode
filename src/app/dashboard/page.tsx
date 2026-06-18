@@ -104,7 +104,7 @@ export default function DashboardPage() {
                 <p className="text-fluid-xs text-primary mt-0.5">{s.sub}</p>
               </div>
             ))}
-            {/* Streak mini */}
+            {/* Streak mini — desktop */}
             <div className="ml-auto hidden sm:block">
               <p className="text-fluid-xs font-semibold tracking-[0.1em] text-muted-foreground/60 mb-1">
                 THIS WEEK
@@ -125,6 +125,18 @@ export default function DashboardPage() {
                   );
                 })}
               </div>
+            </div>
+            {/* Streak mini — mobile compact */}
+            <div className="flex sm:hidden items-center gap-1 ml-auto">
+              {(streak?.days ?? [true,true,true,false,true,true,false]).map((active, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "size-2 rounded-full",
+                    active ? "bg-primary" : "bg-muted",
+                  )}
+                />
+              ))}
             </div>
           </div>
         </div>

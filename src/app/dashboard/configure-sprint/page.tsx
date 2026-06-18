@@ -3,10 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import {
-  ArrowRight,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintTopics } from "@/hooks/queries/use-sprint";
 
@@ -80,7 +77,7 @@ export default function ConfigureSprintPage() {
                   aria-checked={active}
                   onClick={() => setTopic(t.id)}
                   className={cn(
-                    "relative flex flex-col items-center justify-center gap-2 rounded-2xl border p-4 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring sm:gap-3 sm:p-6",
+                    "relative flex flex-col items-center justify-center gap-2 rounded-2xl border p-4 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] sm:gap-3 sm:p-6",
                     active
                       ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary),0_0_24px_-4px_var(--primary)]"
                       : "border-border/60 bg-card hover:border-border hover:bg-accent/40",
@@ -134,7 +131,7 @@ export default function ConfigureSprintPage() {
                     )}
                   >
                     <span className="text-fluid-xl font-black italic tracking-tight sm:text-fluid-2xl">{m}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest sm:text-fluid-sm">
+                    <span className="text-fluid-xs font-bold uppercase tracking-widest">
                       min
                     </span>
                   </button>
@@ -170,7 +167,7 @@ export default function ConfigureSprintPage() {
                     aria-checked={active}
                     onClick={() => setDifficulty(d)}
                     className={cn(
-                      "relative flex flex-1 flex-col items-center gap-1 rounded-2xl border py-4 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring sm:py-5",
+                      "relative flex flex-1 flex-col items-center gap-1 rounded-2xl border py-4 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] sm:py-5",
                       active
                         ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary),0_0_24px_-4px_var(--primary)]"
                         : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40",

@@ -128,7 +128,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
         <div data-sidebar-section className="px-3 pb-4 flex flex-col gap-2 border-t border-sidebar-border pt-3">
           <Link
             href="/dashboard/configure-sprint"
-            className="flex items-center justify-center gap-2 py-3 rounded bg-primary text-primary-foreground text-fluid-sm font-bold tracking-[0.1em] transition-all hover:opacity-90 active:scale-95"
+            className="flex items-center justify-center gap-2 py-3 rounded bg-primary text-primary-foreground text-fluid-sm font-bold tracking-[0.1em] outline-none transition-all hover:opacity-90 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Zap size={14} />
             START SPRINT
@@ -165,7 +165,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex min-w-16 flex-col items-center gap-0.5 rounded-xl px-3 py-3 text-[10px] font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-3 text-fluid-xs font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground/60 hover:text-muted-foreground",
