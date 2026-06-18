@@ -13,27 +13,16 @@ const ICON_MAP: Record<string, LucideIcon> = {
   TrendingUp,
 };
 
-const streakDays = [true, true, true, false, true, true, false];
-const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
-
-const upcomingEvents = [
-  { title: "Sprint Duel", time: "Today, 8PM", tag: "LIVE" },
-  { title: "Mock CAT #7", time: "Thu, 10AM", tag: "MOCK" },
-  { title: "Group Challenge", time: "Sat, 3PM", tag: "GROUP" },
-];
-
-const leaderboardData = [
-  { rank: 1, name: "Priya S.", xp: 4820 },
-  { rank: 2, name: "Arjun M.", xp: 4310 },
-  { rank: 3, name: "Rohan K.", xp: 3990 },
-  { rank: 47, name: "You", xp: 2340, me: true },
-];
-
 export default function DashboardPage() {
   const { data, isLoading, error } = useDashboardData();
   const topics = data?.topics ?? [];
   const radarAxes = data?.radarAxes ?? [];
   const metrics = data?.metrics ?? null;
+  const stats = data?.stats ?? null;
+  const streak = data?.streak ?? null;
+  const upcoming = data?.upcoming ?? [];
+  const leaderboard = data?.leaderboard ?? [];
+  const recent = data?.recent ?? [];
 
   const metricCards = metrics?.map((m) => {
     const Icon = ICON_MAP[m.icon] || Zap;
@@ -88,11 +77,11 @@ export default function DashboardPage() {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-card border border-border">
                 <Zap size={11} className="text-primary" />
-                <span className="text-fluid-xs font-bold text-primary">6 DAY STREAK</span>
+                <span className="text-fluid-xs font-bold text-primary">{streak?.current ?? 6} DAY STREAK</span>
               </div>
               <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-card border border-border">
                 <Award size={11} className="text-chart-4" />
-                <span className="text-fluid-xs font-bold text-chart-4">2,340 XP</span>
+                <span className="text-fluid-xs font-bold text-chart-4">{(streak?.xp ?? 2340).toLocaleString()} XP</span>
               </div>
             </div>
           </div>
@@ -100,10 +89,10 @@ export default function DashboardPage() {
           {/* Stat row */}
           <div className="flex flex-wrap gap-x-6 gap-y-3 mt-5">
             {[
-              { label: "ACCURACY", value: "87%", sub: "+3% this week" },
-              { label: "QUESTIONS", value: "1,247", sub: "total solved" },
-              { label: "PERCENTILE", value: "64%ile", sub: "mock rank" },
-              { label: "SPEED", value: "47s", sub: "avg / question" },
+              { label: "ACCURACY", value: `${stats?.accuracy ?? 87}%`, sub: "+3% this week" },
+              { label: "QUESTIONS", value: (stats?.questions ?? 1247).toLocaleString(), sub: "total solved" },
+              { label: "PERCENTILE", value: `${stats?.percentile ?? 64}%ile`, sub: "mock rank" },
+              { label: "SPEED", value: `${stats?.speed ?? 47}s`, sub: "avg / question" },
             ].map((s) => (
               <div key={s.label}>
                 <p className="text-fluid-xs font-semibold tracking-[0.1em] text-muted-foreground/60">{s.label}</p>
@@ -119,13 +108,13 @@ export default function DashboardPage() {
                 THIS WEEK
               </p>
               <div className="flex gap-1">
-                {dayLabels.map((day, i) => (
+                {(streak?.labels ?? ["M","T","W","T","F","S","S"]).map((day, i) => (
                   <span
                     key={i}
                     className="grid size-7 place-items-center rounded text-[11px] font-bold"
                     style={{
-                      background: streakDays[i] ? "var(--primary)" : "#1a1a1a",
-                      color: streakDays[i] ? "#0a0a0a" : "#444",
+                      background: (streak?.days ?? [true,true,true,false,true,true,false])[i] ? "var(--primary)" : "#1a1a1a",
+                      color: (streak?.days ?? [true,true,true,false,true,true,false])[i] ? "#0a0a0a" : "#444",
                     }}
                   >
                     {day}
@@ -260,24 +249,26 @@ export default function DashboardPage() {
                     RECENT ACTIVITY
                   </h3>
                   <div className="flex flex-col gap-0">
-                    {[
-                      { label: "LR Sprint", score: "22/25", time: "2h ago" },
-                      { label: "Quant Set #14", score: "18/20", time: "Yesterday" },
-                      { label: "Full CAT Mock", score: "142/300", time: "2d ago" },
-                    ].map((a, i) => (
-                      <div
-                        key={i}
-                        className="flex items-center justify-between py-2.5 border-b border-border/40"
-                      >
-                        <span className="text-fluid-sm text-muted-foreground">{a.label}</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-fluid-sm text-foreground font-mono">
-                            {a.score}
-                          </span>
-                          <span className="text-fluid-xs text-muted-foreground/40">{a.time}</span>
+                    {recent.length === 0 ? (
+                      <p className="py-4 text-center text-fluid-sm text-muted-foreground/60">
+                        No recent activity yet.
+                      </p>
+                    ) : (
+                      recent.map((a, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center justify-between py-2.5 border-b border-border/40"
+                        >
+                          <span className="text-fluid-sm text-muted-foreground">{a.label}</span>
+                          <div className="flex items-center gap-3">
+                            <span className="text-fluid-sm text-foreground font-mono">
+                              {a.score}
+                            </span>
+                            <span className="text-fluid-xs text-muted-foreground/40">{a.time}</span>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                 </div>
               </div>
@@ -326,27 +317,33 @@ export default function DashboardPage() {
                     UPCOMING
                   </h3>
                   <div className="flex flex-col gap-2">
-                    {upcomingEvents.map((e, i) => (
-                      <div
-                        key={i}
-                        className="flex items-center justify-between py-2 px-2.5 rounded bg-card"
-                      >
-                        <div>
-                          <div className="text-fluid-sm font-semibold text-foreground/80">{e.title}</div>
-                          <div className="text-fluid-xs text-muted-foreground/40">{e.time}</div>
-                        </div>
-                        <span
-                          className={cn(
-                            "px-1.5 py-0.5 rounded text-fluid-xs font-bold tracking-[0.08em]",
-                            e.tag === "LIVE"
-                              ? "bg-primary/10 text-primary"
-                              : "bg-muted text-muted-foreground/60",
-                          )}
+                    {upcoming.length === 0 ? (
+                      <p className="py-2 text-center text-fluid-sm text-muted-foreground/60">
+                        No upcoming events.
+                      </p>
+                    ) : (
+                      upcoming.map((e, i) => (
+                        <div
+                          key={i}
+                          className="flex items-center justify-between py-2 px-2.5 rounded bg-card"
                         >
-                          {e.tag}
-                        </span>
-                      </div>
-                    ))}
+                          <div>
+                            <div className="text-fluid-sm font-semibold text-foreground/80">{e.title}</div>
+                            <div className="text-fluid-xs text-muted-foreground/40">{e.time}</div>
+                          </div>
+                          <span
+                            className={cn(
+                              "px-1.5 py-0.5 rounded text-fluid-xs font-bold tracking-[0.08em]",
+                              e.tag === "LIVE"
+                                ? "bg-primary/10 text-primary"
+                                : "bg-muted text-muted-foreground/60",
+                            )}
+                          >
+                            {e.tag}
+                          </span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
 
@@ -359,33 +356,39 @@ export default function DashboardPage() {
                     LEADERBOARD
                   </h3>
                   <div className="flex flex-col gap-1">
-                    {leaderboardData.map((u) => (
-                      <div
-                        key={u.rank}
-                        className={cn(
-                          "flex items-center gap-2 px-2 py-1.5 rounded",
-                          u.me && "bg-primary/5 border border-primary/15",
-                        )}
-                      >
-                        <span
+                    {leaderboard.length === 0 ? (
+                      <p className="py-2 text-center text-fluid-sm text-muted-foreground/60">
+                        No leaderboard data yet.
+                      </p>
+                    ) : (
+                      leaderboard.map((u) => (
+                        <div
+                          key={u.rank}
                           className={cn(
-                            "text-fluid-xs font-mono w-[18px]",
-                            u.rank <= 3 ? "text-primary" : "text-muted-foreground/30",
+                            "flex items-center gap-2 px-2 py-1.5 rounded",
+                            u.me && "bg-primary/5 border border-primary/15",
                           )}
                         >
-                          #{u.rank}
-                        </span>
-                        <span
-                          className="flex-1 text-fluid-sm"
-                          style={{ color: u.me ? "var(--primary)" : "#888", fontWeight: u.me ? 700 : 400 }}
-                        >
-                          {u.name}
-                        </span>
-                        <span className="text-fluid-xs font-mono text-muted-foreground/40">
-                          {u.xp.toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
+                          <span
+                            className={cn(
+                              "text-fluid-xs font-mono w-[18px]",
+                              u.rank <= 3 ? "text-primary" : "text-muted-foreground/30",
+                            )}
+                          >
+                            #{u.rank}
+                          </span>
+                          <span
+                            className="flex-1 text-fluid-sm"
+                            style={{ color: u.me ? "var(--primary)" : "#888", fontWeight: u.me ? 700 : 400 }}
+                          >
+                            {u.name}
+                          </span>
+                          <span className="text-fluid-xs font-mono text-muted-foreground/40">
+                            {u.xp.toLocaleString()}
+                          </span>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>

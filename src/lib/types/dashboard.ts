@@ -24,3 +24,36 @@ export type Metric = {
   icon: string;
   accent: "primary" | "secondary";
 };
+
+export type DashboardStats = {
+  accuracy: number;
+  questions: number;
+  percentile: number;
+  speed: number;
+};
+
+export type StreakData = {
+  current: number;
+  xp: number;
+  days: boolean[];
+  labels: string[];
+};
+
+export type UpcomingEvent = {
+  title: string;
+  time: string;
+  tag: string;
+};
+
+export type LeaderboardEntry = {
+  rank: number;
+  name: string;
+  xp: number;
+  me?: boolean;
+};
+
+export type HomeRecentActivityItem = {
+  label: string;
+  score: string;
+  time: string;
+};

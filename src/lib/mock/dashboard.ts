@@ -1,4 +1,4 @@
-import type { NavItem, Topic, RadarAxis, Metric } from "@/lib/types/dashboard";
+import type { NavItem, Topic, RadarAxis, Metric, DashboardStats, StreakData, UpcomingEvent, LeaderboardEntry, HomeRecentActivityItem } from "@/lib/types/dashboard";
 import {
   Home,
   Zap,
@@ -44,4 +44,37 @@ export const RADAR_AXES: RadarAxis[] = [
 export const METRICS: Metric[] = [
   { label: "Action Delay", value: "142ms", icon: "Zap", accent: "primary" },
   { label: "Focus Density", value: "89%", icon: "TrendingUp", accent: "primary" },
+];
+
+export const DASHBOARD_STATS: DashboardStats = {
+  accuracy: 87,
+  questions: 1247,
+  percentile: 64,
+  speed: 47,
+};
+
+export const STREAK_DATA: StreakData = {
+  current: 6,
+  xp: 2340,
+  days: [true, true, true, false, true, true, false],
+  labels: ["M", "T", "W", "T", "F", "S", "S"],
+};
+
+export const UPCOMING_EVENTS: UpcomingEvent[] = [
+  { title: "Sprint Duel", time: "Today, 8PM", tag: "LIVE" },
+  { title: "Mock CAT #7", time: "Thu, 10AM", tag: "MOCK" },
+  { title: "Group Challenge", time: "Sat, 3PM", tag: "GROUP" },
+];
+
+export const LEADERBOARD: LeaderboardEntry[] = [
+  { rank: 1, name: "Priya S.", xp: 4820 },
+  { rank: 2, name: "Arjun M.", xp: 4310 },
+  { rank: 3, name: "Rohan K.", xp: 3990 },
+  { rank: 47, name: "You", xp: 2340, me: true },
+];
+
+export const HOME_RECENT_ACTIVITY: HomeRecentActivityItem[] = [
+  { label: "LR Sprint", score: "22/25", time: "2h ago" },
+  { label: "Quant Set #14", score: "18/20", time: "Yesterday" },
+  { label: "Full CAT Mock", score: "142/300", time: "2d ago" },
 ];
