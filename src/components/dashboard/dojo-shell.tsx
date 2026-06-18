@@ -165,7 +165,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-fluid-xs font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground/60 hover:text-muted-foreground",
