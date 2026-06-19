@@ -1,106 +1,206 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
-import { Globe, Smartphone } from "lucide-react";
-import { useOnboardingStore } from "@/stores/onboarding-store";
-import { useAuthStore } from "@/stores/auth-store";
-import { AuthPanel } from "@/components/onboarding/auth-panel";
+import { useState, useRef, useCallback, useEffect } from "react";
 
-const DuelSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-48 h-36">
+const RadarDuelSVG = () => (
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]">
     <defs>
-      <radialGradient id="duelL" cx="40%" cy="35%"><stop offset="0%" stopColor="#c8b8f8" /><stop offset="100%" stopColor="#7b4fcf" /></radialGradient>
-      <radialGradient id="duelR" cx="40%" cy="35%"><stop offset="0%" stopColor="#a8c8ff" /><stop offset="100%" stopColor="#5060e8" /></radialGradient>
+      <radialGradient id="radarGlow" cx="50%" cy="50%">
+        <stop offset="0%" stopColor="#C8FF5A" stopOpacity="0.25" />
+        <stop offset="100%" stopColor="#C8FF5A" stopOpacity="0" />
+      </radialGradient>
+      <pattern id="gridDot" width="10" height="10" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="0.5" fill="#ffffff08" />
+      </pattern>
     </defs>
-    <line x1="100" y1="12" x2="55" y2="108" stroke="#ffffff12" strokeWidth="1" />
-    <line x1="100" y1="5" x2="145" y2="98" stroke="#C8FF5A18" strokeWidth="1" />
-    <circle cx="135" cy="62" r="36" fill="url(#duelL)" opacity="0.85" />
-    <text x="135" y="69" textAnchor="middle" fontSize="22" fill="#1a0a30" fontWeight="700">✦</text>
-    <circle cx="65" cy="105" r="32" fill="url(#duelR)" opacity="0.85" />
-    <text x="65" y="112" textAnchor="middle" fontSize="20" fill="#0a1040" fontWeight="700">✦</text>
-    <text x="100" y="90" textAnchor="middle" fontSize="14" fill="#C8FF5A" fontWeight="800" letterSpacing="2">VS</text>
-    <circle cx="148" cy="22" r="3" fill="#fff" opacity="0.45" />
-    <circle cx="52" cy="20" r="2" fill="#fff" opacity="0.35" />
-    <circle cx="170" cy="100" r="2" fill="#C8FF5A" opacity="0.35" />
+    <rect width="200" height="150" fill="url(#gridDot)" />
+    <circle cx="100" cy="75" r="60" fill="none" stroke="#C8FF5A10" strokeWidth="0.5" strokeDasharray="2 8">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="5s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="100" cy="75" r="45" fill="none" stroke="#C8FF5A18" strokeWidth="0.6" strokeDasharray="3 6">
+      <animate attributeName="opacity" values="0.3;0.6;0.3" dur="4s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="100" cy="75" r="30" fill="none" stroke="#C8FF5A25" strokeWidth="0.8" strokeDasharray="4 4">
+      <animate attributeName="strokeDashoffset" values="0;-8" dur="3s" repeatCount="indefinite" />
+    </circle>
+    <polygon points="100,52 120,62 120,88 100,98 80,88 80,62" fill="none" stroke="#C8FF5A" strokeWidth="1" strokeDasharray="4 3" opacity="0.3">
+      <animate attributeName="strokeDashoffset" values="0;-14" dur="2s" repeatCount="indefinite" />
+    </polygon>
+    <circle cx="100" cy="75" r="16" fill="url(#radarGlow)" />
+    <circle cx="100" cy="75" r="3" fill="#C8FF5A" opacity="0.9">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite" />
+    </circle>
+    <line x1="50" y1="75" x2="95" y2="75" stroke="#C8FF5A30" strokeWidth="0.8" strokeDasharray="3 3" />
+    <line x1="105" y1="75" x2="150" y2="75" stroke="#3B82F630" strokeWidth="0.8" strokeDasharray="3 3" />
+    <circle cx="50" cy="75" r="10" fill="none" stroke="#C8FF5A" strokeWidth="1.5" opacity="0.5">
+      <animate attributeName="r" values="10;13;10" dur="2.5s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="50" cy="75" r="5" fill="#C8FF5A" />
+    <text x="50" y="78" textAnchor="middle" fontSize="6" fill="#000" fontWeight="800" fontFamily="monospace">P1</text>
+    <circle cx="150" cy="75" r="10" fill="none" stroke="#3B82F6" strokeWidth="1.5" opacity="0.5">
+      <animate attributeName="r" values="13;10;13" dur="2.5s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="150" cy="75" r="5" fill="#3B82F6" />
+    <text x="150" y="78" textAnchor="middle" fontSize="6" fill="#fff" fontWeight="800" fontFamily="monospace">P2</text>
+    <text x="100" y="122" textAnchor="middle" fontSize="13" fill="#C8FF5A" fontWeight="800" fontFamily="monospace" letterSpacing="2">VS</text>
+    <circle cx="40" cy="42" r="1.5" fill="#C8FF5A">
+      <animate attributeName="cy" values="42;36;42" dur="3s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="160" cy="105" r="1.5" fill="#3B82F6">
+      <animate attributeName="cy" values="105;112;105" dur="3.5s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="135" cy="35" r="1" fill="#fff">
+      <animate attributeName="opacity" values="0.1;0.6;0.1" dur="2s" repeatCount="indefinite" />
+    </circle>
   </svg>
 );
 
-const RiseSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-48 h-36">
+const EnergyTowerSVG = () => (
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]">
     <defs>
-      <radialGradient id="riseGold" cx="50%" cy="0%"><stop offset="0%" stopColor="#ffd970" /><stop offset="100%" stopColor="#e8a020" /></radialGradient>
-      <radialGradient id="riseSilver" cx="50%" cy="0%"><stop offset="0%" stopColor="#e0e0f0" /><stop offset="100%" stopColor="#9090b0" /></radialGradient>
-      <radialGradient id="riseBronze" cx="50%" cy="0%"><stop offset="0%" stopColor="#f0c0a0" /><stop offset="100%" stopColor="#c08050" /></radialGradient>
+      <linearGradient id="towerGrad" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stopColor="#1a1a1a" />
+        <stop offset="50%" stopColor="#3B82F6" />
+        <stop offset="100%" stopColor="#C8FF5A" />
+      </linearGradient>
+      <pattern id="towerDot" width="10" height="10" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="0.5" fill="#ffffff06" />
+      </pattern>
     </defs>
-    <rect x="80" y="55" width="40" height="85" rx="4" fill="url(#riseGold)" />
-    <text x="100" y="102" textAnchor="middle" fontSize="11" fill="#4a2a00" fontWeight="700">1</text>
-    <rect x="44" y="88" width="32" height="52" rx="4" fill="url(#riseSilver)" opacity="0.85" />
-    <text x="60" y="116" textAnchor="middle" fontSize="9" fill="#2a2a4a" fontWeight="700">2</text>
-    <rect x="124" y="105" width="32" height="35" rx="4" fill="url(#riseBronze)" opacity="0.85" />
-    <text x="140" y="126" textAnchor="middle" fontSize="9" fill="#4a2a1a" fontWeight="700">3</text>
-    <text x="100" y="46" textAnchor="middle" fontSize="18">👑</text>
-    <line x1="40" y1="145" x2="160" y2="145" stroke="#ffffff12" strokeWidth="1" />
-    <circle cx="38" cy="82" r="2" fill="#C8FF5A" opacity="0.45" />
-    <circle cx="162" cy="78" r="2" fill="#C8FF5A" opacity="0.35" />
+    <rect width="200" height="150" fill="url(#towerDot)" />
+    <rect x="88" y="30" width="24" height="100" rx="12" fill="url(#towerGrad)" opacity="0.15" />
+    <rect x="92" y="30" width="16" height="100" rx="8" fill="url(#towerGrad)" opacity="0.3" />
+    <rect x="96" y="30" width="8" height="100" rx="4" fill="url(#towerGrad)" opacity="0.8">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite" />
+    </rect>
+    <line x1="80" y1="130" x2="120" y2="130" stroke="#ffffff20" strokeWidth="0.5" />
+    <line x1="80" y1="100" x2="82" y2="100" stroke="#ffffff15" strokeWidth="0.5" />
+    <line x1="82" y1="65" x2="80" y2="65" stroke="#ffffff15" strokeWidth="0.5" />
+    <line x1="80" y1="45" x2="82" y2="45" stroke="#ffffff15" strokeWidth="0.5" />
+    <line x1="120" y1="100" x2="118" y2="100" stroke="#ffffff15" strokeWidth="0.5" />
+    <line x1="118" y1="65" x2="120" y2="65" stroke="#ffffff15" strokeWidth="0.5" />
+    <line x1="120" y1="45" x2="118" y2="45" stroke="#ffffff15" strokeWidth="0.5" />
+    <text x="100" y="46" textAnchor="middle" fontSize="11" fill="#C8FF5A" fontWeight="700">★</text>
+    <circle cx="100" cy="48" r="8" fill="none" stroke="#C8FF5A" strokeWidth="0.8" opacity="0.4">
+      <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="100" cy="105" r="5" fill="#F59E0B" opacity="0.9" />
+    <circle cx="100" cy="70" r="5" fill="#3B82F6" opacity="0.9" />
+    <circle cx="100" cy="48" r="4" fill="#C8FF5A" opacity="0.9" />
+    <text x="100" y="108" textAnchor="middle" fontSize="5" fill="#fff" fontWeight="700" fontFamily="monospace">3</text>
+    <text x="100" y="73" textAnchor="middle" fontSize="5" fill="#fff" fontWeight="700" fontFamily="monospace">2</text>
+    <text x="100" y="51" textAnchor="middle" fontSize="4" fill="#000" fontWeight="700" fontFamily="monospace">1</text>
+    <circle cx="35" cy="90" r="1.5" fill="#C8FF5A">
+      <animate attributeName="opacity" values="0.1;0.5;0.1" dur="2.5s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="165" cy="55" r="1" fill="#3B82F6">
+      <animate attributeName="opacity" values="0.3;0.1;0.3" dur="3s" repeatCount="indefinite" />
+    </circle>
   </svg>
 );
 
-const LeaguesSVG = () => (
-  <svg width="180" height="150" viewBox="0 0 180 150" className="w-44 h-36">
+const ConstellationSVG = () => (
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]">
     <defs>
-      <radialGradient id="badgeGrad" cx="35%" cy="30%"><stop offset="0%" stopColor="#ffd970" /><stop offset="60%" stopColor="#e8a020" /><stop offset="100%" stopColor="#c06010" /></radialGradient>
+      <radialGradient id="starGlow" cx="50%" cy="50%">
+        <stop offset="0%" stopColor="#C8FF5A" stopOpacity="0.4" />
+        <stop offset="100%" stopColor="#C8FF5A" stopOpacity="0" />
+      </radialGradient>
+      <pattern id="constDot" width="12" height="12" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="0.4" fill="#ffffff06" />
+      </pattern>
     </defs>
-    <polygon points="90,15 105,48 140,53 116,78 122,114 90,96 58,114 64,78 40,53 75,48" fill="url(#badgeGrad)" stroke="#f0c040" strokeWidth="1.5" />
-    <text x="90" y="74" textAnchor="middle" fontSize="24" fill="#4a1a00" fontWeight="800">S</text>
-    <text x="90" y="95" textAnchor="middle" fontSize="7" fill="#f0c040" fontWeight="600" letterSpacing="1">RANK</text>
-    <circle cx="142" cy="20" r="3" fill="#fff" opacity="0.45" />
-    <circle cx="35" cy="40" r="2" fill="#C8FF5A" opacity="0.45" />
-    <circle cx="150" cy="95" r="2" fill="#ffd970" opacity="0.35" />
-    <circle cx="30" cy="110" r="1.5" fill="#fff" opacity="0.25" />
-    <line x1="30" y1="138" x2="150" y2="138" stroke="#ffffff10" strokeWidth="1" />
-  </svg>
-);
-
-const DoomSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-48 h-36">
-    <defs>
-      <radialGradient id="brainGrad" cx="35%" cy="30%"><stop offset="0%" stopColor="#c8b8f8" /><stop offset="100%" stopColor="#7b4fcf" /></radialGradient>
-      <radialGradient id="phoneGrad" cx="35%" cy="30%"><stop offset="0%" stopColor="#a0a0e8" /><stop offset="100%" stopColor="#604090" /></radialGradient>
-    </defs>
-    <g transform="translate(10, 20)">
-      <circle cx="45" cy="55" r="30" fill="url(#brainGrad)" opacity="0.85" />
-      <text x="45" y="62" textAnchor="middle" fontSize="22" fill="#1a0a30" fontWeight="700">∞</text>
+    <rect width="200" height="150" fill="url(#constDot)" />
+    <g>
+      <line x1="100" y1="32" x2="148" y2="54" stroke="#ffffff12" strokeWidth="0.6">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" begin="0s" repeatCount="indefinite" />
+      </line>
+      <line x1="148" y1="54" x2="148" y2="96" stroke="#ffffff12" strokeWidth="0.6">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" begin="0.3s" repeatCount="indefinite" />
+      </line>
+      <line x1="148" y1="96" x2="100" y2="118" stroke="#ffffff12" strokeWidth="0.6">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" begin="0.6s" repeatCount="indefinite" />
+      </line>
+      <line x1="100" y1="118" x2="52" y2="96" stroke="#ffffff12" strokeWidth="0.6">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" begin="0.9s" repeatCount="indefinite" />
+      </line>
+      <line x1="52" y1="96" x2="52" y2="54" stroke="#ffffff12" strokeWidth="0.6">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" begin="1.2s" repeatCount="indefinite" />
+      </line>
+      <line x1="52" y1="54" x2="100" y2="32" stroke="#ffffff12" strokeWidth="0.6">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" begin="1.5s" repeatCount="indefinite" />
+      </line>
+      <line x1="100" y1="32" x2="100" y2="118" stroke="#ffffff10" strokeWidth="0.4" strokeDasharray="3 4" />
+      <line x1="148" y1="54" x2="52" y2="96" stroke="#ffffff08" strokeWidth="0.3" strokeDasharray="2 5" />
+      <line x1="148" y1="96" x2="52" y2="54" stroke="#ffffff08" strokeWidth="0.3" strokeDasharray="2 5" />
     </g>
-    <g transform="translate(95, 18) rotate(-15, 55, 55)">
-      <rect x="10" y="15" width="90" height="92" rx="10" fill="url(#phoneGrad)" opacity="0.85" />
-      <rect x="10" y="15" width="90" height="92" rx="10" fill="none" stroke="#8060c0" strokeWidth="1" />
-      <rect x="22" y="26" width="30" height="60" rx="4" fill="#2a1a50" opacity="0.7" />
-      <rect x="60" y="32" width="30" height="54" rx="4" fill="#2a1a50" opacity="0.7" />
-      <circle cx="37" cy="56" r="7" fill="#ffffff12" />
-      <polygon points="34,52 34,60 41,56" fill="#ffffff35" />
-      <circle cx="75" cy="49" r="6" fill="#ffffff12" />
-      <polygon points="73,45 73,53 79,49" fill="#ffffff35" />
+    <circle cx="52" cy="54" r="3" fill="#3B82F6" opacity="0.6" />
+    <circle cx="148" cy="54" r="3" fill="#F59E0B" opacity="0.6" />
+    <circle cx="148" cy="96" r="3" fill="#EF4444" opacity="0.6" />
+    <circle cx="52" cy="96" r="3" fill="#fff" opacity="0.4" />
+    <circle cx="100" cy="32" r="3" fill="#C8FF5A" opacity="0.8" />
+    <circle cx="100" cy="118" r="3" fill="#C8FF5A" opacity="0.5" />
+    <circle cx="100" cy="75" r="16" fill="url(#starGlow)" />
+    <circle cx="100" cy="75" r="6" fill="#C8FF5A">
+      <animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <text x="100" y="78" textAnchor="middle" fontSize="6" fill="#000" fontWeight="800" fontFamily="monospace">YOU</text>
+  </svg>
+);
+
+const ScanChoiceSVG = () => (
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]">
+    <defs>
+      <pattern id="scanDot" width="8" height="8" patternUnits="userSpaceOnUse">
+        <circle cx="1" cy="1" r="0.4" fill="#ffffff06" />
+      </pattern>
+      <linearGradient id="scanLineGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#C8FF5A" stopOpacity="0" />
+        <stop offset="50%" stopColor="#C8FF5A" stopOpacity="0.8" />
+        <stop offset="100%" stopColor="#C8FF5A" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+    <rect width="200" height="150" fill="url(#scanDot)" />
+    <circle cx="55" cy="68" r="22" fill="none" stroke="#3B82F6" strokeWidth="1.5" opacity="0.5" />
+    <circle cx="55" cy="68" r="16" fill="#3B82F6" opacity="0.1" />
+    <text x="55" y="72" textAnchor="middle" fontSize="14" fill="#3B82F6" fontWeight="700" fontFamily="monospace">∞</text>
+    <rect x="128" y="42" width="38" height="52" rx="6" fill="none" stroke="#C8FF5A" strokeWidth="1.5" opacity="0.5" />
+    <rect x="133" y="47" width="28" height="34" rx="3" fill="#C8FF5A" opacity="0.08" />
+    <rect x="133" y="47" width="28" height="12" rx="3" fill="#C8FF5A" opacity="0.15" />
+    <circle cx="147" cy="53" r="2" fill="#C8FF5A" opacity="0.5" />
+    <circle cx="140" cy="62" r="1.5" fill="#C8FF5A" opacity="0.3" />
+    <circle cx="155" cy="67" r="1.5" fill="#C8FF5A" opacity="0.3" />
+    <rect x="133" y="85" width="28" height="4" rx="2" fill="#C8FF5A" opacity="0.25" />
+    <g>
+      <rect x="92" y="20" width="16" height="110" fill="url(#scanLineGrad)" opacity="0.15" />
+      <rect x="99" y="20" width="2" height="110" fill="#C8FF5A" opacity="0.6">
+        <animate attributeName="y" values="10;130;10" dur="4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite" />
+      </rect>
     </g>
-    <text x="95" y="140" textAnchor="middle" fontSize="11" fill="#C8FF5A" fontWeight="700" letterSpacing="1">VS</text>
-    <circle cx="170" cy="15" r="2" fill="#C8FF5A" opacity="0.3" />
+    <text x="100" y="142" textAnchor="middle" fontSize="11" fill="#C8FF5A" fontWeight="800" fontFamily="monospace" letterSpacing="2">VS</text>
+    <circle cx="30" cy="40" r="1" fill="#fff">
+      <animate attributeName="opacity" values="0.1;0.5;0.1" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <circle cx="170" cy="110" r="1" fill="#fff">
+      <animate attributeName="opacity" values="0.2;0;0.2" dur="3s" repeatCount="indefinite" />
+    </circle>
+    <text x="60" y="105" textAnchor="middle" fontSize="4" fill="#ffffff20" fontFamily="monospace">BRAIN</text>
+    <text x="147" y="100" textAnchor="middle" fontSize="4" fill="#ffffff20" fontFamily="monospace">PHONE</text>
   </svg>
 );
 
 const PANELS = [
-  { headline: "Duel to Begin", subtitle: "Real-time battles in math, memory & logic.", Hero: DuelSVG },
-  { headline: "Win to Rise", subtitle: "Earn rating. Climb the leaderboard.", Hero: RiseSVG },
-  { headline: "Leagues and Ranks", subtitle: "Rise up based on playtime and skill level.", Hero: LeaguesSVG },
-  { headline: "Rip Doomscrolling", subtitle: "Choose brain-stimulating play.", Hero: DoomSVG },
+  { headline: "Duel to Begin", subtitle: "Real-time battles in math, memory & logic.", Hero: RadarDuelSVG },
+  { headline: "Win to Rise", subtitle: "Earn rating. Climb the leaderboard.", Hero: EnergyTowerSVG },
+  { headline: "Leagues and Ranks", subtitle: "Rise up based on playtime and skill level.", Hero: ConstellationSVG },
+  { headline: "Rip Doomscrolling", subtitle: "Choose brain-stimulating play.", Hero: ScanChoiceSVG },
 ];
 
-type Props = { onNext: () => void };
+type Props = { onPanelChange: (index: number) => void };
 
-export function StepWelcome({ onNext }: Props) {
-  const setAuthData = useOnboardingStore((s) => s.setAuthData);
-  const authLogin = useAuthStore((s) => s.login);
-
+export function StepWelcome({ onPanelChange }: Props) {
   const [panelIndex, setPanelIndex] = useState(0);
-  const [phoneMode, setPhoneMode] = useState(false);
   const [offsetPct, setOffsetPct] = useState(0);
   const [transition, setTransition] = useState(true);
 
@@ -109,13 +209,34 @@ export function StepWelcome({ onNext }: Props) {
   const touchDiff = useRef(0);
   const isDragging = useRef(false);
   const containerWidth = useRef(1);
+  const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const goToPanelRef = useRef<(i: number) => void>(() => {});
+
+  const clearAutoTimer = useCallback(() => {
+    if (autoTimerRef.current !== null) {
+      clearTimeout(autoTimerRef.current);
+      autoTimerRef.current = null;
+    }
+  }, []);
 
   const goToPanel = useCallback((i: number) => {
     const target = Math.max(0, Math.min(i, PANELS.length - 1));
     setPanelIndex(target);
+    onPanelChange(target);
     setTransition(true);
     setOffsetPct(-target * 100);
-  }, []);
+    clearAutoTimer();
+    if (target < PANELS.length - 1) {
+      autoTimerRef.current = setTimeout(() => goToPanelRef.current(target + 1), 2500);
+    }
+  }, [onPanelChange, clearAutoTimer]);
+
+  goToPanelRef.current = goToPanel;
+
+  useEffect(() => {
+    goToPanelRef.current(0);
+    return clearAutoTimer;
+  }, [clearAutoTimer]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     containerWidth.current = containerRef.current?.offsetWidth || 1;
@@ -123,6 +244,7 @@ export function StepWelcome({ onNext }: Props) {
     touchStartX.current = e.touches[0].clientX;
     touchDiff.current = 0;
     setTransition(false);
+    clearAutoTimer();
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -142,106 +264,33 @@ export function StepWelcome({ onNext }: Props) {
     touchDiff.current = 0;
   };
 
-  const advance = () => {
-    if (panelIndex < PANELS.length - 1) {
-      goToPanel(panelIndex + 1);
-    }
-  };
-
-  const handleAuthSuccess = (data: { name?: string; phone?: string; authMethod: "google" | "phone" }) => {
-    setAuthData(data);
-    authLogin(data.phone ?? `${data.name}@google.com`, "mock-password");
-    onNext();
-  };
-
-  if (phoneMode) {
-    return (
-      <div className="flex flex-col gap-4 w-full">
-        <button type="button" onClick={() => setPhoneMode(false)}
-          className="self-start text-fluid-xs text-muted-foreground/50 underline underline-offset-2 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-1"
-        >
-          &larr; Back
-        </button>
-        <AuthPanel onAuthSuccess={handleAuthSuccess} />
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-col gap-3 w-full">
-      <div className="flex gap-1.5 px-1">
-        {PANELS.map((_, i) => (
+    <div
+      ref={containerRef}
+      className="relative overflow-hidden rounded-2xl w-full"
+      style={{ touchAction: "pan-y" }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <div
+        className="flex"
+        style={{
+          transform: `translateX(${offsetPct}%)`,
+          transition: transition ? "transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)" : "none",
+        }}
+      >
+        {PANELS.map((panel, i) => (
           <div
             key={i}
-            className={`h-1 flex-1 rounded-full transition-all duration-500 ${i <= panelIndex ? "bg-primary" : "bg-border"}`}
-          />
+            className="w-full flex-shrink-0 flex flex-col items-center gap-2 py-2 px-2 select-none"
+            data-step-el
+          >
+            <panel.Hero />
+            <h2 className="text-fluid-xl font-black text-foreground text-center uppercase tracking-wide">{panel.headline}</h2>
+            <p className="text-[10px] text-muted-foreground/60 text-center max-w-xs uppercase tracking-[0.08em] leading-relaxed">{panel.subtitle}</p>
+          </div>
         ))}
-      </div>
-
-      <div
-        ref={containerRef}
-        className="relative overflow-hidden rounded-2xl"
-        style={{ touchAction: "pan-y" }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onClick={advance}
-      >
-        <div
-          className="flex"
-          style={{
-            transform: `translateX(${offsetPct}%)`,
-            transition: transition ? "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)" : "none",
-          }}
-        >
-          {PANELS.map((panel, i) => (
-            <div
-              key={i}
-              className="w-full flex-shrink-0 flex flex-col items-center gap-3 py-4 px-2 select-none"
-              data-step-el
-            >
-              <panel.Hero />
-              <h2 className="text-fluid-2xl font-black text-foreground text-center uppercase tracking-wide">{panel.headline}</h2>
-              <p className="text-fluid-xs text-muted-foreground/60 text-center max-w-xs uppercase tracking-[0.08em] leading-relaxed">{panel.subtitle}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2.5 mt-1">
-        <button type="button" onClick={handleAuthSuccess.bind(null, { name: "Google User", authMethod: "google" })}
-          className="group relative flex w-full items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-4 py-3.5 text-fluid-base font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
-          data-step-el
-        >
-          <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-          <Globe size={18} className="text-muted-foreground" />
-          Continue with Google
-        </button>
-        <div className="flex items-center gap-3 text-fluid-xs text-muted-foreground/30 px-2">
-          <span className="flex-1 h-px bg-border" />
-          <span>— OR —</span>
-          <span className="flex-1 h-px bg-border" />
-        </div>
-        <button type="button" onClick={() => setPhoneMode(true)}
-          className="group relative flex w-full items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-4 py-3.5 text-fluid-base font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
-          data-step-el
-        >
-          <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-          <Smartphone size={18} className="text-muted-foreground" />
-          Continue with Phone Number
-        </button>
-        <button type="button" onClick={onNext}
-          className="w-full text-center text-fluid-xs text-muted-foreground/40 underline underline-offset-2 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded py-1 mt-1"
-          data-step-el
-        >
-          Skip for now
-        </button>
-        <p className="text-center text-[10px] text-muted-foreground/25 leading-relaxed px-2">
-          By continuing, you agree to our{" "}
-          <span className="underline underline-offset-2 cursor-pointer hover:text-muted-foreground/50">Terms of Service</span>{" "}
-          and{" "}
-          <span className="underline underline-offset-2 cursor-pointer hover:text-muted-foreground/50">Privacy Policy</span>
-        </p>
       </div>
     </div>
   );
