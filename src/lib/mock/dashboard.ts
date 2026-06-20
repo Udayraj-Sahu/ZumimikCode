@@ -10,18 +10,35 @@ import {
   Award,
   Bell,
   HelpCircle,
+  Clock,
+  BookOpen,
+  Calendar,
+  Swords,
+  Library,
+  CreditCard,
+  Users,
+  FileText,
 } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: Home, section: "Main" },
   { label: "Sprints", href: "/dashboard/configure-sprint", icon: Zap, section: "Training" },
+  { label: "History", href: "/dashboard/history", icon: Clock, section: "Training" },
+  { label: "Practice", href: "/dashboard/practice", icon: BookOpen, section: "Training" },
   { label: "Analytics", href: "/dashboard/analytics", icon: LineChart, section: "Training" },
   { label: "Leaderboard", href: "/dashboard/leaderboard", icon: Trophy, section: "Training" },
   { label: "Profile", href: "/dashboard/profile", icon: User, section: "Account" },
   { label: "Achievements", href: "/dashboard/achievements", icon: Award, section: "Account" },
+  { label: "Duel", href: "/dashboard/duel", icon: Swords, section: "Account" },
   { label: "Settings", href: "/dashboard/settings", icon: Settings, section: "Account" },
+  { label: "Friends", href: "/dashboard/friends", icon: Users, section: "Account" },
+  { label: "Settings", href: "/dashboard/settings", icon: Settings, section: "Account" },
+  { label: "Planner", href: "/dashboard/planner", icon: Calendar, section: "Support" },
+  { label: "Reports", href: "/dashboard/reports", icon: FileText, section: "Support" },
   { label: "Notifications", href: "/dashboard/notifications", icon: Bell, section: "Support" },
   { label: "Help & About", href: "/dashboard/help", icon: HelpCircle, section: "Support" },
+  { label: "Question Bank", href: "/dashboard/questions", icon: Library, section: "Resources" },
+  { label: "Flashcards", href: "/dashboard/flashcards", icon: CreditCard, section: "Resources" },
 ];
 
 export const MOBILE_NAV: NavItem[] = [

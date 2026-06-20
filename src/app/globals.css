@@ -37,7 +37,45 @@
   --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #C8FF5A;
   --surface: #171717;
-} (prefers-reduced-motion: reduce) {
+}
+
+.light {
+  --background: #FAFAFA;
+  --foreground: #0A0A0A;
+  --card: #FFFFFF;
+  --card-foreground: #0A0A0A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0A0A0A;
+  --primary: #1A8C3A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F0F0F0;
+  --secondary-foreground: #0A0A0A;
+  --muted: #E5E5E5;
+  --muted-foreground: #6B6B6B;
+  --accent: #E8F5E9;
+  --accent-foreground: #1A8C3A;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: rgba(0, 0, 0, 0.12);
+  --ring: #1A8C3A;
+  --chart-1: #1A8C3A;
+  --chart-2: #3B82F6;
+  --chart-3: #F59E0B;
+  --chart-4: #8B5CF6;
+  --chart-5: #DC2626;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #0A0A0A;
+  --sidebar-primary: #1A8C3A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E8F5E9;
+  --sidebar-accent-foreground: #1A8C3A;
+  --sidebar-border: rgba(0, 0, 0, 0.08);
+  --sidebar-ring: #1A8C3A;
+  --surface: #F5F5F5;
+}
+
+@media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

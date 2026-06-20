@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
 const TargetSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-24 h-[72px]">
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-24 h-[72px]" aria-hidden="true">
     <defs>
       <radialGradient id="targetGlow" cx="50%" cy="50%">
         <stop offset="0%" stopColor="#C8FF5A" stopOpacity="0.2" />
@@ -62,9 +62,10 @@ export function StepGoal({ onSelect }: Props) {
   return (
     <div className="flex flex-col items-center gap-5 w-full">
       <TargetSVG />
-      <p data-step-el className="text-fluid-lg font-black text-foreground text-center uppercase tracking-wide">What are you preparing for?</p>
-      <p data-step-el className="text-[10px] text-muted-foreground/40 text-center uppercase tracking-[0.08em] -mt-3">Choose your arena</p>
-      <div className="grid grid-cols-2 gap-2.5 w-full">
+      <fieldset className="w-full border-none p-0 m-0 flex flex-col items-center gap-5">
+        <legend className="text-fluid-lg font-black text-foreground text-center uppercase tracking-wide">What are you preparing for?</legend>
+        <p data-step-el className="text-[10px] text-muted-foreground/40 text-center uppercase tracking-[0.08em]">Choose your arena</p>
+      <div className="grid grid-cols-2 gap-2.5 w-full" role="group" aria-label="Exam choices">
         {EXAMS.map((exam) => {
           const active = selected === exam.id;
           const Icon = exam.icon;
@@ -102,6 +103,7 @@ export function StepGoal({ onSelect }: Props) {
           );
         })}
       </div>
+      </fieldset>
       <button
         data-step-el
         type="button"

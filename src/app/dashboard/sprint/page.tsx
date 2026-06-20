@@ -7,6 +7,7 @@ import { ArrowLeft, Check, X, Clock, Zap, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintSession } from "@/hooks/queries/use-sprint-session";
 import { useSprintStore } from "@/stores/sprint-store";
+import { useFeedback } from "@/lib/use-feedback";
 import type { Question } from "@/lib/types/sprint-session";
 
 function formatTime(s: number): string {
@@ -22,6 +23,7 @@ function SprintContent() {
   const length = parseInt(searchParams.get("length") ?? "10", 10);
   const difficulty = searchParams.get("difficulty") ?? "beginner";
 
+  const feedback = useFeedback();
   const { data, isLoading, error } = useSprintSession(topic, length, difficulty);
   const {
     status, currentIndex, timeLeft,
@@ -41,6 +43,7 @@ function SprintContent() {
 
   const finishSprint = useCallback(() => {
     if (data) {
+      feedback.complete();
       completeSprint({
         questions: data.questions,
         topicLabel: data.topicLabel,
@@ -48,7 +51,7 @@ function SprintContent() {
       });
       goToResults();
     }
-  }, [data, completeSprint, goToResults]);
+  }, [data, completeSprint, goToResults, feedback]);
 
   useEffect(() => {
     if (data && status === "idle") {
@@ -69,6 +72,12 @@ function SprintContent() {
   }, [status, timeLeft, finishSprint]);
 
   useEffect(() => {
+    if (status === "active" && timeLeft <= 30 && timeLeft > 0) {
+      feedback.countdown();
+    }
+  }, [status, timeLeft, feedback]);
+
+  useEffect(() => {
     if (feedbackRef.current && showFeedback) {
       gsap.fromTo(feedbackRef.current, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" });
     }
@@ -82,6 +91,11 @@ function SprintContent() {
     setSelectedIndex(optionIndex);
     setShowFeedback(true);
     answerCurrent(q.id, optionIndex);
+    if (optionIndex === q.correctIndex) {
+      feedback.correct();
+    } else {
+      feedback.wrong();
+    }
 
     autoAdvanceRef.current = setTimeout(() => {
       if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current);

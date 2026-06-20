@@ -4,10 +4,13 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Fragment, useRef, useEffect, useCallback } from "react";
 import gsap from "gsap";
-import { LogOut, Zap, Flame } from "lucide-react";
+import { LogOut, Zap, Flame, SunMoon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useAuthStore } from "@/stores/auth-store";
+import { useThemeStore } from "@/stores/theme-store";
+import { Walkthrough } from "@/components/dashboard/walkthrough";
+import { RatePrompt } from "@/components/dashboard/rate-prompt";
 
 const SIDEBAR_SECTIONS = Object.entries(
   NAV_ITEMS.reduce<Record<string, typeof NAV_ITEMS>>((acc, item) => {
@@ -22,6 +25,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
+  const { theme, toggleTheme } = useThemeStore();
   const sidebarRef = useRef<HTMLElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
 
@@ -135,6 +139,14 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           </Link>
           <button
             type="button"
+            onClick={toggleTheme}
+            className="flex items-center justify-center gap-2 py-2 rounded text-fluid-xs font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <SunMoon size={12} />
+            {theme === "dark" ? "LIGHT MODE" : "DARK MODE"}
+          </button>
+          <button
+            type="button"
             onClick={() => { logout(); router.push("/"); }}
             className="flex items-center justify-center gap-2 py-3 rounded text-fluid-sm font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
           >
@@ -179,6 +191,8 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           })}
         </ul>
       </nav>
+      <Walkthrough />
+      <RatePrompt />
     </div>
   );
 }

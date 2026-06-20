@@ -79,7 +79,7 @@ export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }
             className="group relative flex w-full items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-4 py-4 text-fluid-base font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
           >
             <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-            <Globe size={20} className="text-muted-foreground" />
+            <Globe size={20} className="text-muted-foreground" aria-hidden="true" />
             Continue with Google
           </button>
           <div className="flex w-full items-center gap-3 text-fluid-xs text-muted-foreground/40">
@@ -94,7 +94,7 @@ export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }
             className="group relative flex w-full items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-4 py-4 text-fluid-base font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
           >
             <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-            <Smartphone size={20} className="text-muted-foreground" />
+            <Smartphone size={20} className="text-muted-foreground" aria-hidden="true" />
             Continue with Phone Number
           </button>
         </>
@@ -114,6 +114,7 @@ export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }
               value={phone}
               onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
               placeholder="9876543210"
+              aria-label="Phone number"
               className="flex-1 rounded-xl border border-border/60 bg-card px-4 py-3 text-fluid-base text-foreground outline-none placeholder:text-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
               autoFocus
             />
@@ -146,6 +147,7 @@ export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }
                 value={d}
                 onChange={(e) => handleOtpChange(e.target.value, i)}
                 onKeyDown={(e) => handleOtpKeyDown(e, i)}
+                aria-label={`Digit ${i + 1} of 6`}
                 className={cn(
                   "size-10 rounded-xl border text-center text-fluid-lg font-bold outline-none transition-all",
                   d ? "border-primary bg-primary/5 text-foreground scale-110" : "border-border/60 bg-card text-foreground",
@@ -167,7 +169,7 @@ export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }
 
       {mode === "verifying" && (
         <div className="flex flex-col items-center gap-3 py-6">
-          <Loader2 size={32} className="animate-spin text-primary" />
+          <Loader2 size={32} className="animate-spin text-primary" role="status" aria-label="Verifying OTP" />
           <p className="text-fluid-sm text-muted-foreground/60">Verifying OTP...</p>
         </div>
       )}

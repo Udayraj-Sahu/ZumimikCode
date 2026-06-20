@@ -9,7 +9,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useAuthStore } from "@/stores/auth-store";
 
 const HexRingSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-32 h-24 absolute top-0 opacity-30 pointer-events-none">
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-32 h-24 absolute top-0 opacity-30 pointer-events-none" aria-hidden="true">
     <defs>
       <radialGradient id="hexGlow" cx="50%" cy="50%">
         <stop offset="0%" stopColor="#C8FF5A" stopOpacity="0.15" />
@@ -131,7 +131,7 @@ export function StepDone({ onSelect }: Props) {
       </div>
 
       <div data-animate className="text-center">
-        <p className="text-fluid-2xl font-black text-foreground">You&apos;re all set!</p>
+        <h1 className="text-fluid-2xl font-black text-foreground">You&apos;re all set!</h1>
         <p className="mt-1 text-fluid-xs text-muted-foreground/50 uppercase tracking-[0.08em]">Your arena is ready</p>
       </div>
 
@@ -202,7 +202,7 @@ export function StepDone({ onSelect }: Props) {
         <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
       </button>
 
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         {particles.map((p, i) => (
           <div
             key={i}

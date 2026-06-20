@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { Check, X, ChevronRight, ChevronDown, Zap, Clock, Award, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintStore } from "@/stores/sprint-store";
+import { useRateStore } from "@/stores/rate-store";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
 
 function formatTime(s: number): string {
@@ -19,7 +20,12 @@ export default function SprintResultsPage() {
   const lastResult = useSprintStore((s) => s.lastResult);
   const lastSession = useSprintStore((s) => s.lastSession);
   const reset = useSprintStore((s) => s.reset);
+  const incrementSprint = useRateStore((s) => s.increment);
   const [reviewOpen, setReviewOpen] = useState(false);
+
+  useEffect(() => {
+    incrementSprint();
+  }, [incrementSprint]);
   const resultRef = useRef<HTMLDivElement>(null);
   const reviewRef = useRef<HTMLDivElement>(null);
 

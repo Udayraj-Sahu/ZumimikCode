@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
 const StairStepSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-24 h-[72px]">
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-24 h-[72px]" aria-hidden="true">
     <defs>
       <pattern id="stepDot" width="8" height="8" patternUnits="userSpaceOnUse">
         <circle cx="1" cy="1" r="0.3" fill="#ffffff06" />
@@ -85,9 +85,10 @@ export function StepLevel({ onSelect }: Props) {
   return (
     <div className="flex flex-col items-center gap-5 w-full">
       <StairStepSVG />
-      <p data-step-el className="text-fluid-lg font-black text-foreground text-center uppercase tracking-wide">Your experience?</p>
-      <p data-step-el className="text-[10px] text-muted-foreground/40 text-center uppercase tracking-[0.08em] -mt-3">Set your starting rank</p>
-      <div className="flex flex-col gap-2.5 w-full">
+      <fieldset className="w-full border-none p-0 m-0 flex flex-col items-center gap-5">
+        <legend className="text-fluid-lg font-black text-foreground text-center uppercase tracking-wide">Your experience?</legend>
+        <p data-step-el className="text-[10px] text-muted-foreground/40 text-center uppercase tracking-[0.08em]">Set your starting rank</p>
+      <div className="flex flex-col gap-2.5 w-full" role="group" aria-label="Experience level">
         {LEVELS.map((lvl) => {
           const active = selected === lvl.id;
           const Icon = lvl.icon;
@@ -142,6 +143,7 @@ export function StepLevel({ onSelect }: Props) {
           );
         })}
       </div>
+      </fieldset>
       <button
         data-step-el
         type="button"

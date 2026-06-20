@@ -43,7 +43,7 @@ export default function OnboardingPage() {
 
   if (currentStep === 0 && phoneMode) {
     return (
-      <div className="flex h-dvh flex-col bg-background overflow-hidden" role="main">
+      <main className="flex h-dvh flex-col bg-background overflow-hidden">
         <div className="flex flex-col items-center pt-3 px-5">
           <div className="flex items-center gap-2 mb-1">
             <span className="grid size-6 place-items-center rounded bg-primary text-primary-foreground">
@@ -60,7 +60,7 @@ export default function OnboardingPage() {
           </button>
           <AuthPanel onAuthSuccess={handleAuthSuccess} />
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -75,7 +75,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="flex h-dvh flex-col bg-background justify-between overflow-hidden" role="main">
+    <main className="flex h-dvh flex-col bg-background justify-between overflow-hidden">
       <div className="flex flex-col items-center pt-3 px-5 shrink-0">
         <div className="flex items-center gap-2 mb-1">
           <span className="grid size-6 place-items-center rounded bg-primary text-primary-foreground">
@@ -135,12 +135,12 @@ export default function OnboardingPage() {
           </button>
           <p className="text-center text-[9px] text-muted-foreground/25 leading-relaxed px-1">
             By continuing, you agree to our{" "}
-            <span className="underline underline-offset-1 cursor-pointer hover:text-muted-foreground/50">Terms of Service</span>{" "}
+            <button type="button" className="underline underline-offset-1 cursor-pointer hover:text-muted-foreground/50 outline-none focus-visible:ring-2 focus-visible:ring-ring rounded">Terms of Service</button>{" "}
             and{" "}
-            <span className="underline underline-offset-1 cursor-pointer hover:text-muted-foreground/50">Privacy Policy</span>
+            <button type="button" className="underline underline-offset-1 cursor-pointer hover:text-muted-foreground/50 outline-none focus-visible:ring-2 focus-visible:ring-ring rounded">Privacy Policy</button>
           </p>
         </div>
       )}
-    </div>
+    </main>
   );
 }

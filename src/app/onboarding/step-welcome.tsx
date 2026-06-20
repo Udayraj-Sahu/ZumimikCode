@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 
 const RadarDuelSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]">
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]" aria-hidden="true">
     <defs>
       <radialGradient id="radarGlow" cx="50%" cy="50%">
         <stop offset="0%" stopColor="#C8FF5A" stopOpacity="0.25" />
@@ -56,7 +56,7 @@ const RadarDuelSVG = () => (
 );
 
 const EnergyTowerSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]">
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]" aria-hidden="true">
     <defs>
       <linearGradient id="towerGrad" x1="0" y1="1" x2="0" y2="0">
         <stop offset="0%" stopColor="#1a1a1a" />
@@ -100,7 +100,7 @@ const EnergyTowerSVG = () => (
 );
 
 const ConstellationSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]">
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]" aria-hidden="true">
     <defs>
       <radialGradient id="starGlow" cx="50%" cy="50%">
         <stop offset="0%" stopColor="#C8FF5A" stopOpacity="0.4" />
@@ -149,7 +149,7 @@ const ConstellationSVG = () => (
 );
 
 const ScanChoiceSVG = () => (
-  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]">
+  <svg width="200" height="150" viewBox="0 0 200 150" className="w-full max-w-[340px] aspect-[4/3]" aria-hidden="true">
     <defs>
       <pattern id="scanDot" width="8" height="8" patternUnits="userSpaceOnUse">
         <circle cx="1" cy="1" r="0.4" fill="#ffffff06" />
@@ -264,6 +264,16 @@ export function StepWelcome({ onPanelChange }: Props) {
     touchDiff.current = 0;
   };
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      goToPanel(panelIndex - 1);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      goToPanel(panelIndex + 1);
+    }
+  }, [goToPanel, panelIndex]);
+
   return (
     <div
       ref={containerRef}
@@ -272,7 +282,15 @@ export function StepWelcome({ onPanelChange }: Props) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onKeyDown={handleKeyDown}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Welcome slides"
+      tabIndex={0}
     >
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {PANELS[panelIndex].headline} — {PANELS[panelIndex].subtitle}
+      </div>
       <div
         className="flex"
         style={{
@@ -285,6 +303,10 @@ export function StepWelcome({ onPanelChange }: Props) {
             key={i}
             className="w-full flex-shrink-0 flex flex-col items-center gap-2 py-2 px-2 select-none"
             data-step-el
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`Slide ${i + 1}: ${panel.headline}`}
+            aria-hidden={i !== panelIndex}
           >
             <panel.Hero />
             <h2 className="text-fluid-xl font-black text-foreground text-center uppercase tracking-wide">{panel.headline}</h2>

@@ -15,6 +15,9 @@ import {
   ChevronRight,
   ExternalLink,
   Settings,
+  SunMoon,
+  Volume2,
+  Smartphone,
   Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -22,6 +25,8 @@ import { useUiStore } from "@/stores/ui-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { AlertModal } from "@/components/ui/alert-modal";
 import { useSettingsData, useUpdateSettings } from "@/hooks/queries/use-settings";
+import { useThemeStore } from "@/stores/theme-store";
+import { useSettingsStore } from "@/stores/settings-store";
 
 function Toggle({
   label,
@@ -172,6 +177,8 @@ export default function SettingsPage() {
   const { data, isLoading } = useSettingsData();
   const updateSettings = useUpdateSettings();
 
+  const { theme, toggleTheme } = useThemeStore();
+  const { soundEnabled, hapticEnabled, setSoundEnabled, setHapticEnabled } = useSettingsStore();
   const [deleteOpen, setDeleteOpen] = useState(false);
   const onboardingReset = useOnboardingStore((s) => s.reset);
 
@@ -300,8 +307,29 @@ export default function SettingsPage() {
           ref={animateSection} data-section-index={3}
           className="mt-8"
         >
-          <GroupLabel>Session</GroupLabel>
+          <GroupLabel>Appearance &amp; Session</GroupLabel>
           <Card>
+            <Row
+              icon={SunMoon}
+              label="Dark Mode"
+              trailing={
+                <Toggle label="Dark Mode" checked={theme === "dark"} onChange={() => toggleTheme()} />
+              }
+            />
+            <Row
+              icon={Volume2}
+              label="Sound Effects"
+              trailing={
+                <Toggle label="Sound Effects" checked={soundEnabled} onChange={setSoundEnabled} />
+              }
+            />
+            <Row
+              icon={Smartphone}
+              label="Haptic Feedback"
+              trailing={
+                <Toggle label="Haptic Feedback" checked={hapticEnabled} onChange={setHapticEnabled} />
+              }
+            />
             <Row
               icon={Timer}
               label="Rest Duration"
