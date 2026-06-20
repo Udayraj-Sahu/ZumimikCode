@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import { ArrowRight, Check, BadgeCheck, BarChart3, Smartphone, Globe } from "lucide-react";
+import { ArrowRight, BadgeCheck, BarChart3, Smartphone, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useAuthStore } from "@/stores/auth-store";
@@ -36,6 +36,15 @@ const LEVEL_LABELS: Record<string, string> = {
 
 const CONFETTI_COLORS = ["#C8FF5A", "#60A5FA", "#F472B6", "#FBBF24", "#A78BFA"];
 
+type ConfettiParticle = {
+  size: number;
+  x: number;
+  y: number;
+  color: string;
+  rounded: boolean;
+  rotation: number;
+};
+
 type Props = { onSelect: () => void };
 
 export function StepDone({ onSelect }: Props) {
@@ -45,7 +54,23 @@ export function StepDone({ onSelect }: Props) {
   const contentRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const checkCircleRef = useRef<HTMLDivElement>(null);
-  const confettiRef = useRef<HTMLDivElement>(null);
+
+  const particles = useMemo<ConfettiParticle[]>(() =>
+    Array.from({ length: 30 }).map((_, i) => {
+      const size = 4 + Math.random() * 4;
+      const angle = (360 / 30) * i + Math.random() * 20;
+      const dist = 60 + Math.random() * 100;
+      const rad = (angle * Math.PI) / 180;
+      return {
+        size,
+        x: Math.cos(rad) * dist,
+        y: Math.sin(rad) * dist,
+        color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+        rounded: Math.random() > 0.5,
+        rotation: gsap.utils.random(-180, 180),
+      };
+    }), [],
+  );
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -63,45 +88,28 @@ export function StepDone({ onSelect }: Props) {
         gsap.fromTo(checkCircleRef.current, { scale: 0 }, { scale: 1, duration: 0.25, ease: "back.out(2)", delay: 0.05 });
       }
 
-      if (confettiRef.current) {
-        const particles = Array.from({ length: 30 }).map((_, i) => {
-          const el = document.createElement("div");
-          const size = 4 + Math.random() * 4;
-          const angle = (360 / 30) * i + Math.random() * 20;
-          const dist = 60 + Math.random() * 100;
-          const rad = (angle * Math.PI) / 180;
-          el.className = "absolute rounded-sm";
-          el.style.cssText = `
-            width:${size}px; height:${size}px;
-            background:${CONFETTI_COLORS[i % CONFETTI_COLORS.length]};
-            left:50%; top:50%;
-            border-radius:${Math.random() > 0.5 ? "50%" : "2px"};
-            opacity:0;
-          `;
-          confettiRef.current!.appendChild(el);
-          return { el, x: Math.cos(rad) * dist, y: Math.sin(rad) * dist };
-        });
-
+      const confettiEls = contentRef.current?.querySelectorAll<HTMLElement>("[data-confetti]");
+      if (confettiEls?.length) {
         gsap.fromTo(
-          particles.map((p) => p.el),
+          confettiEls,
           { opacity: 1, scale: 1, x: 0, y: 0 },
           {
             x: (i) => particles[i].x,
             y: (i) => particles[i].y,
             opacity: 0,
             scale: 0,
-            rotation: () => gsap.utils.random(-180, 180),
-          duration: () => 0.5 + Math.random() * 0.3,
-          ease: "power3.out",
-          delay: 0.15,
-          stagger: 0.02,
+            rotation: (i) => particles[i].rotation,
+            duration: () => 0.5 + Math.random() * 0.3,
+            ease: "power3.out",
+            delay: 0.15,
+            stagger: 0.02,
           },
         );
       }
     }, contentRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [particles]);
 
   const handleEnter = () => {
     completeOnboarding();
@@ -194,7 +202,24 @@ export function StepDone({ onSelect }: Props) {
         <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
       </button>
 
-      <div ref={confettiRef} className="absolute inset-0 pointer-events-none overflow-hidden" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {particles.map((p, i) => (
+          <div
+            key={i}
+            data-confetti
+            className="absolute"
+            style={{
+              width: p.size,
+              height: p.size,
+              background: p.color,
+              borderRadius: p.rounded ? "50%" : "2px",
+              left: "50%",
+              top: "50%",
+              opacity: 0,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }

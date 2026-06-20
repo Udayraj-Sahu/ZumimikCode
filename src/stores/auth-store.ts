@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 type User = {
   id: string;
@@ -18,34 +19,53 @@ type AuthState = {
   completeOnboarding: () => void;
 };
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: {
-    id: "1",
-    name: "Udayraj Sahu",
-    email: "user@examarena.com",
-    role: "Champion",
-  },
-  token: null,
-  isAuthenticated: true,
-  isOnboarded: true,
+const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
 
-  login: async (_email: string, _password: string) => {
-    set({
-      user: { id: "1", name: "Udayraj Sahu", email: _email, role: "Champion" },
-      token: "mock-jwt-token",
-      isAuthenticated: true,
-    });
-  },
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      isOnboarded: false,
 
-  logout: () => {
-    set({ user: null, token: null, isAuthenticated: false });
-  },
+      login: async (email: string, _password: string) => {
+        if (IS_MOCK) {
+          await new Promise((r) => setTimeout(r, 300));
+          set({
+            user: { id: "1", name: email.split("@")[0], email, role: "Champion" },
+            token: "mock-jwt-token",
+            isAuthenticated: true,
+          });
+        } else {
+          const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password: _password }),
+          });
+          if (!res.ok) throw new Error("Login failed");
+          const data = await res.json();
+          set({ user: data.user, token: data.token, isAuthenticated: true });
+        }
+      },
 
-  setToken: (token: string | null) => {
-    set({ token, isAuthenticated: !!token });
-  },
+      logout: () => {
+        set({ user: null, token: null, isAuthenticated: false });
+      },
 
-  completeOnboarding: () => {
-    set({ isOnboarded: true });
-  },
-}));
+      setToken: (token) => {
+        set({ token, isAuthenticated: !!token });
+      },
+
+      completeOnboarding: () => {
+        set({ isOnboarded: true });
+      },
+    }),
+    {
+      name: "exam-arena-auth",
+      storage: createJSONStorage(() =>
+        typeof window !== "undefined" ? localStorage : (undefined as unknown as Storage),
+      ),
+    },
+  ),
+);

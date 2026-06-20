@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useNetworkStore } from "@/stores/network-store";
 import { syncAll } from "@/services/offline/sync";
+import { isOnline, onOnline, onOffline } from "@/services/device";
 
 export function OnlineProvider({ children }: { children: React.ReactNode }) {
   const setOnline = useNetworkStore((s) => s.setOnline);
@@ -12,7 +13,7 @@ export function OnlineProvider({ children }: { children: React.ReactNode }) {
     if (mounted.current) return;
     mounted.current = true;
 
-    setOnline(navigator.onLine);
+    setOnline(isOnline());
 
     const goOnline = () => {
       setOnline(true);
@@ -20,12 +21,12 @@ export function OnlineProvider({ children }: { children: React.ReactNode }) {
     };
     const goOffline = () => setOnline(false);
 
-    window.addEventListener("online", goOnline);
-    window.addEventListener("offline", goOffline);
+    const unsubOnline = onOnline(goOnline);
+    const unsubOffline = onOffline(goOffline);
 
     return () => {
-      window.removeEventListener("online", goOnline);
-      window.removeEventListener("offline", goOffline);
+      unsubOnline();
+      unsubOffline();
     };
   }, [setOnline]);
 
