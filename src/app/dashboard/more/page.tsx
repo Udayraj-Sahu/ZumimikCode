@@ -6,11 +6,14 @@ import { Fragment, useCallback, useRef } from "react";
 import gsap from "gsap";
 import { ChevronLeft, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { NAV_ITEMS } from "@/lib/mock/dashboard";
+import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useProfileData } from "@/hooks/queries/use-profile";
 
+const EXCLUDED_HREFS = new Set(MOBILE_NAV.map((n) => n.href));
+const FILTERED_ITEMS = NAV_ITEMS.filter((item) => !EXCLUDED_HREFS.has(item.href));
+
 const SIDEBAR_SECTIONS = Object.entries(
-  NAV_ITEMS.reduce<Record<string, typeof NAV_ITEMS>>((acc, item) => {
+  FILTERED_ITEMS.reduce<Record<string, typeof FILTERED_ITEMS>>((acc, item) => {
     const section = item.section ?? "";
     if (!acc[section]) acc[section] = [];
     acc[section].push(item);
