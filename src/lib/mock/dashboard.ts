@@ -6,14 +6,22 @@ import {
   User,
   Settings,
   LayoutGrid,
+  Trophy,
+  Award,
+  Bell,
+  HelpCircle,
 } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: Home, section: "Main" },
   { label: "Sprints", href: "/dashboard/configure-sprint", icon: Zap, section: "Training" },
   { label: "Analytics", href: "/dashboard/analytics", icon: LineChart, section: "Training" },
+  { label: "Leaderboard", href: "/dashboard/leaderboard", icon: Trophy, section: "Training" },
   { label: "Profile", href: "/dashboard/profile", icon: User, section: "Account" },
+  { label: "Achievements", href: "/dashboard/achievements", icon: Award, section: "Account" },
   { label: "Settings", href: "/dashboard/settings", icon: Settings, section: "Account" },
+  { label: "Notifications", href: "/dashboard/notifications", icon: Bell, section: "Support" },
+  { label: "Help & About", href: "/dashboard/help", icon: HelpCircle, section: "Support" },
 ];
 
 export const MOBILE_NAV: NavItem[] = [

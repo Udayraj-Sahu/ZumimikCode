@@ -13,12 +13,14 @@ type SprintState = {
   questionStartTime: number | null;
   sessionStartTime: number | null;
   timeLeft: number;
+  lastResult: SprintResult | null;
+  lastSession: { questions: Question[]; topicLabel: string; difficulty: string } | null;
 
   initSprint: (totalTime: number) => void;
   answerCurrent: (questionId: string, optionIndex: number) => void;
   nextQuestion: () => void;
   tick: () => void;
-  completeSprint: () => void;
+  completeSprint: (session?: { questions: Question[]; topicLabel: string; difficulty: string }) => void;
   getResult: (questions: Question[]) => SprintResult;
   reset: () => void;
 };
@@ -30,6 +32,8 @@ export const useSprintStore = create<SprintState>((set, get) => ({
   questionStartTime: null,
   sessionStartTime: null,
   timeLeft: 0,
+  lastResult: null,
+  lastSession: null,
 
   initSprint: (totalTime) =>
     set({
@@ -63,8 +67,16 @@ export const useSprintStore = create<SprintState>((set, get) => ({
       return { timeLeft: next <= 0 ? 0 : next };
     }),
 
-  completeSprint: () =>
-    set({ status: "completed" }),
+  completeSprint: (session) => {
+    const state = get();
+    const questions = session?.questions;
+    if (questions && questions.length > 0) {
+      const result = state.getResult(questions);
+      set({ status: "completed", lastResult: result, lastSession: session });
+    } else {
+      set({ status: "completed" });
+    }
+  },
 
   getResult: (questions) => {
     const state = get();
@@ -93,5 +105,7 @@ export const useSprintStore = create<SprintState>((set, get) => ({
       questionStartTime: null,
       sessionStartTime: null,
       timeLeft: 0,
+      lastResult: null,
+      lastSession: null,
     }),
 }));
