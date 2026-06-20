@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
-import Link from "next/link";
+import { AuthModal } from "@/components/onboarding/auth-modal";
+import { useRouter } from "next/navigation";
 
 const RINGS = [
   { delay: 0, size: 180, opacity: 0.4 },
@@ -18,8 +19,6 @@ const STATS = [
   { label: "Battles completed", value: "18,763" },
 ];
 
-const MotionLink = motion.create(Link);
-
 export function RankSignal() {
   const containerRef = useRef<HTMLDivElement>(null);
   const rawX = useMotionValue(0);
@@ -28,6 +27,8 @@ export function RankSignal() {
   const y = useSpring(rawY, { stiffness: 60, damping: 20 });
   const [statIndex, setStatIndex] = useState(0);
   const [heroVisible, setHeroVisible] = useState(true);
+  const [showAuth, setShowAuth] = useState(false);
+  const router = useRouter();
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
@@ -196,9 +197,15 @@ export function RankSignal() {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className={heroVisible ? "flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-10" : "flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-10 pointer-events-none"}
           >
-            <MotionLink
-              href="/dashboard"
-              className="px-7 py-3 text-sm tracking-wide rounded bg-primary text-primary-foreground border-none cursor-pointer font-display font-semibold hover:brightness-110 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 inline-block"
+            <motion.button
+              onClick={() => {
+                if (window.innerWidth < 640) {
+                  router.push("/onboarding");
+                } else {
+                  setShowAuth(true);
+                }
+              }}
+              className="px-7 py-3 text-sm tracking-wide rounded bg-primary text-primary-foreground border-none cursor-pointer font-display font-semibold hover:brightness-110 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -206,7 +213,7 @@ export function RankSignal() {
               whileTap={{ scale: 0.97 }}
             >
               Enter the Arena
-            </MotionLink>
+            </motion.button>
             <motion.button
               className="px-7 py-3 text-sm tracking-wide rounded bg-transparent text-secondary-foreground border border-border cursor-pointer font-display font-medium hover:border-primary/40 hover:text-foreground transition-all duration-200"
               initial={{ opacity: 0, y: 20 }}
@@ -219,6 +226,8 @@ export function RankSignal() {
             </motion.button>
           </motion.div>
       </motion.div>
+
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
     </div>
   );
 }

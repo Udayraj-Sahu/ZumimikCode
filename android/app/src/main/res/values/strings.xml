@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Exam Arena</string>
+    <string name="title_activity_main">Exam Arena</string>
+    <string name="package_name">com.examarena.app</string>
+    <string name="custom_url_scheme">com.examarena.app</string>
+</resources>

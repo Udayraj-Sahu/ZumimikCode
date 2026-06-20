@@ -4,10 +4,9 @@ const config: CapacitorConfig = {
   appId: "com.examarena.app",
   appName: "Exam Arena",
   webDir: "out",
-  server: {
-    url: process.env.CAPACITOR_SERVER_URL || undefined,
-    cleartext: true,
-  },
+  ...(process.env.CAPACITOR_SERVER_URL
+    ? { server: { url: process.env.CAPACITOR_SERVER_URL, cleartext: true } }
+    : {}),
 };
 
 export default config;

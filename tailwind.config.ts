@@ -55,6 +55,15 @@ const config: Config = {
         "fluid-2xl": ["clamp(22px, 4.5vw, 34px)", { lineHeight: "1.1" }],
         "fluid-3xl": ["clamp(28px, 5vw, 40px)", { lineHeight: "1.1" }],
       },
+      keyframes: {
+        "breath-glow": {
+          "0%, 100%": { boxShadow: "0 0 8px var(--primary)", opacity: "1" },
+          "50%": { boxShadow: "0 0 18px var(--primary)", opacity: "0.85" },
+        },
+      },
+      animation: {
+        "breath-glow": "breath-glow 2.5s ease-in-out infinite",
+      },
       borderRadius: {
         sm: "calc(var(--radius) - 4px)",
         md: "calc(var(--radius) - 2px)",

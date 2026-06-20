@@ -1,0 +1,12 @@
+{
+  "name": "Exam Arena",
+  "short_name": "ExamArena",
+  "description": "A competitive exam preparation platform.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#C8FF5A",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

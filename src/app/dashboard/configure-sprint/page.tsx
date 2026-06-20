@@ -187,7 +187,7 @@ export default function ConfigureSprintPage() {
           <button
             type="button"
             onClick={() =>
-              router.push(`/dashboard?topic=${topic}&length=${length}&difficulty=${difficulty.toLowerCase()}`)
+              router.push(`/dashboard/sprint?topic=${topic}&length=${length}&difficulty=${difficulty.toLowerCase()}`)
             }
             className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-primary/60 py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring sm:text-fluid-lg"
           >
