@@ -46,7 +46,7 @@ export const MOBILE_NAV: NavItem[] = [
   { label: "Sprints", href: "/dashboard/configure-sprint", icon: Zap },
   { label: "Stats", href: "/dashboard/analytics", icon: LineChart },
   { label: "Profile", href: "/dashboard/profile", icon: User },
-  { label: "Gear", href: "/dashboard/settings", icon: Settings },
+  { label: "More", href: "#more", icon: LayoutGrid },
 ];
 
 export const TOPIC_MASTERY: Topic[] = [

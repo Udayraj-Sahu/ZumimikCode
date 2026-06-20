@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Fragment, useRef, useEffect, useCallback } from "react";
+import { Fragment, useRef, useEffect, useCallback, useState } from "react";
 import gsap from "gsap";
 import { LogOut, Zap, Flame, SunMoon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useThemeStore } from "@/stores/theme-store";
 import { Walkthrough } from "@/components/dashboard/walkthrough";
 import { RatePrompt } from "@/components/dashboard/rate-prompt";
+import { MobileDrawer } from "@/components/dashboard/mobile-drawer";
 
 const SIDEBAR_SECTIONS = Object.entries(
   NAV_ITEMS.reduce<Record<string, typeof NAV_ITEMS>>((acc, item) => {
@@ -26,6 +27,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
   const { theme, toggleTheme } = useThemeStore();
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const sidebarRef = useRef<HTMLElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
 
@@ -169,28 +171,38 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
       >
         <ul className="mx-auto flex max-w-md items-center justify-around px-2 py-0.5">
           {MOBILE_NAV.map((item) => {
-            const active = pathname === item.href;
+            const isMore = item.href === "#more";
+            const active = isMore ? false : pathname === item.href;
             const Icon = item.icon;
+            const shared = cn(
+              "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+              active
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground/60 hover:text-muted-foreground",
+            );
             return (
               <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
-                    active
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground/60 hover:text-muted-foreground",
-                  )}
-                >
-                  <Icon className="size-3.5" aria-hidden="true" />
-                  <span>{item.label}</span>
-                </Link>
+                {isMore ? (
+                  <button type="button" onClick={() => setDrawerOpen(true)} className={shared}>
+                    <Icon className="size-3.5" aria-hidden="true" />
+                    <span>{item.label}</span>
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={shared}
+                  >
+                    <Icon className="size-3.5" aria-hidden="true" />
+                    <span>{item.label}</span>
+                  </Link>
+                )}
               </li>
             );
           })}
         </ul>
       </nav>
+      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
       <Walkthrough />
       <RatePrompt />
     </div>
