@@ -32,7 +32,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Duel", href: "/dashboard/duel", icon: Swords, section: "Account" },
   { label: "Settings", href: "/dashboard/settings", icon: Settings, section: "Account" },
   { label: "Friends", href: "/dashboard/friends", icon: Users, section: "Account" },
-  { label: "Settings", href: "/dashboard/settings", icon: Settings, section: "Account" },
   { label: "Planner", href: "/dashboard/planner", icon: Calendar, section: "Support" },
   { label: "Reports", href: "/dashboard/reports", icon: FileText, section: "Support" },
   { label: "Notifications", href: "/dashboard/notifications", icon: Bell, section: "Support" },
@@ -46,7 +45,7 @@ export const MOBILE_NAV: NavItem[] = [
   { label: "Sprints", href: "/dashboard/configure-sprint", icon: Zap },
   { label: "Stats", href: "/dashboard/analytics", icon: LineChart },
   { label: "Profile", href: "/dashboard/profile", icon: User },
-  { label: "More", href: "#more", icon: LayoutGrid },
+  { label: "More", href: "/dashboard/more", icon: LayoutGrid },
 ];
 
 export const TOPIC_MASTERY: Topic[] = [
