@@ -43,6 +43,8 @@ export const useSprintStore = create<SprintState>((set, get) => ({
       questionStartTime: Date.now(),
       sessionStartTime: Date.now(),
       timeLeft: totalTime,
+      lastResult: null,
+      lastSession: null,
     }),
 
   answerCurrent: (questionId, optionIndex) =>
@@ -105,7 +107,5 @@ export const useSprintStore = create<SprintState>((set, get) => ({
       questionStartTime: null,
       sessionStartTime: null,
       timeLeft: 0,
-      lastResult: null,
-      lastSession: null,
     }),
 }));

@@ -69,10 +69,6 @@ function SprintContent() {
   }, [status, timeLeft, finishSprint]);
 
   useEffect(() => {
-    return () => { reset(); };
-  }, [reset]);
-
-  useEffect(() => {
     if (feedbackRef.current && showFeedback) {
       gsap.fromTo(feedbackRef.current, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" });
     }
