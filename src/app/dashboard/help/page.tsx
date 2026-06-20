@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ChevronDown, HelpCircle, Mail, FileText, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useHelpData } from "@/hooks/queries/use-help";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import type { FaqItem } from "@/lib/types/help";
 
 function FaqAccordion({ items }: { items: FaqItem[] }) {
@@ -73,6 +74,7 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
 }
 
 export default function HelpPage() {
+  usePageMeta("Help & About — Exam Arena");
   const { data, isLoading, error } = useHelpData();
   const sectionsRef = useRef<HTMLDivElement>(null);
 

@@ -5,8 +5,10 @@ import gsap from "gsap";
 import { Users, UserPlus, Swords, Zap, Award, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useFriends } from "@/hooks/queries/use-friends";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 export default function FriendsPage() {
+  usePageMeta("Friends — Exam Arena");
   const { data, isLoading, error } = useFriends();
   const [tab, setTab] = useState<"friends" | "activity" | "requests">("friends");
   const listRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,7 @@ export default function FriendsPage() {
           </div>
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
           >
             <UserPlus size={14} /> Add
           </button>
@@ -113,7 +115,7 @@ export default function FriendsPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <p className="text-fluid-sm font-bold text-foreground/80 truncate">{f.name}</p>
-                  <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  <span className="rounded bg-muted px-1.5 py-0.5 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground">
                     {f.level}
                   </span>
                 </div>
@@ -175,18 +177,20 @@ export default function FriendsPage() {
                     <p className="text-fluid-xs text-muted-foreground/40">{f.level} &middot; {f.xp.toLocaleString()} XP</p>
                   </div>
                   <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground outline-none transition-transform hover:scale-[1.1] active:scale-[0.9] focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                      <Check size={14} />
-                    </button>
-                    <button
-                      type="button"
-                      className="grid size-8 place-items-center rounded-lg bg-muted text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                      <X size={14} />
-                    </button>
+            <button
+              type="button"
+              aria-label="Accept friend request from {f.name}"
+              className="grid size-11 place-items-center rounded-lg bg-primary text-primary-foreground outline-none transition-transform hover:scale-[1.1] active:scale-[0.9] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Check size={14} />
+            </button>
+            <button
+              type="button"
+              aria-label="Reject friend request from {f.name}"
+              className="grid size-11 place-items-center rounded-lg bg-muted text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <X size={14} />
+            </button>
                   </div>
                 </div>
               ))

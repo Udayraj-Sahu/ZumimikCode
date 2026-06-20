@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Bell, BellDot, Zap, Award, Swords, Info, CheckCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNotifications } from "@/hooks/queries/use-notifications";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import type { NotificationItem } from "@/lib/types/notifications";
 
 const TYPE_ICON: Record<NotificationItem["type"], typeof Bell> = {
@@ -15,6 +16,7 @@ const TYPE_ICON: Record<NotificationItem["type"], typeof Bell> = {
 };
 
 export default function NotificationsPage() {
+  usePageMeta("Notifications — Exam Arena");
   const [filter, setFilter] = useState<"all" | "unread">("all");
   const { data: notifications, isLoading, error } = useNotifications();
   const listRef = useRef<HTMLDivElement>(null);
@@ -129,7 +131,7 @@ export default function NotificationsPage() {
                 <div
                   key={n.id}
                   data-notification-item
-                  className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-accent/20"
+                  className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-accent/20 active:bg-accent/30"
                 >
                   <div className={cn(
                     "grid size-9 shrink-0 place-items-center rounded-lg mt-0.5",

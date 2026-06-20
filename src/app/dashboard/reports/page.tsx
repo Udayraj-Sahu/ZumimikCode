@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { FileText, Download, Zap, Target, TrendingUp, Clock, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReports } from "@/hooks/queries/use-reports";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 function formatTime(s: number): string {
   const h = Math.floor(s / 3600);
@@ -14,6 +15,7 @@ function formatTime(s: number): string {
 }
 
 export default function ReportsPage() {
+  usePageMeta("Reports — Exam Arena");
   const { data, isLoading, error } = useReports();
   const [period, setPeriod] = useState<"7d" | "30d" | "90d">("30d");
   const gridRef = useRef<HTMLDivElement>(null);

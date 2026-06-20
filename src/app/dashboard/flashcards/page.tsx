@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, RotateCw, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SPRINT_TOPICS } from "@/lib/mock/sprint";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 const CARD_CONTENT: Record<string, { front: string; back: string }[]> = {
   addition: [
@@ -76,6 +77,7 @@ const CARD_CONTENT: Record<string, { front: string; back: string }[]> = {
 };
 
 export default function FlashcardsPage() {
+  usePageMeta("Flashcards — Exam Arena");
   const [topic, setTopic] = useState("addition");
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
@@ -147,7 +149,7 @@ export default function FlashcardsPage() {
         <p className="text-fluid-sm text-muted-foreground/60">Quick mental math review</p>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
         {SPRINT_TOPICS.map((t) => {
           const Icon = t.icon;
           return (
@@ -195,6 +197,7 @@ export default function FlashcardsPage() {
               className="relative cursor-pointer rounded-2xl border border-border/40 bg-card p-8 sm:p-12 min-h-[200px] sm:min-h-[260px] flex items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-ring"
               role="button"
               tabIndex={0}
+              aria-label={flipped ? "Tap to see question" : "Tap to reveal answer"}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") flip(); }}
             >
               <div className="text-center">

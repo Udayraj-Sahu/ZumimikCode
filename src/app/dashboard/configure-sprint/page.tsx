@@ -6,8 +6,10 @@ import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintTopics } from "@/hooks/queries/use-sprint";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 export default function ConfigureSprintPage() {
+  usePageMeta("Configure Sprint — Exam Arena");
   const router = useRouter();
   const { data, isLoading } = useSprintTopics();
   const [topic, setTopic] = useState("addition");
@@ -87,7 +89,7 @@ export default function ConfigureSprintPage() {
                     className={cn("size-6 sm:size-8", active ? "text-primary" : t.color)}
                     aria-hidden="true"
                   />
-                  <span className="text-center text-[11px] font-bold uppercase tracking-wide sm:text-fluid-sm">
+                  <span className="text-center text-fluid-xs font-bold uppercase tracking-wide sm:text-fluid-sm">
                     {t.label}
                   </span>
                 </button>

@@ -2,12 +2,14 @@
 
 import { Zap, Trophy, Target, Star, Flame, Shield, Swords, Medal } from "lucide-react";
 import { useProfileData } from "@/hooks/queries/use-profile";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Flame, Zap, Medal, Star, Shield, Swords,
 };
 
 export default function ProfilePage() {
+  usePageMeta("Profile — Exam Arena");
   const { data, isLoading } = useProfileData();
 
   if (isLoading || !data) {
@@ -63,7 +65,7 @@ export default function ProfilePage() {
                 <p className="mt-1.5 text-fluid-xl font-black tracking-tight text-primary sm:text-fluid-2xl">
                   {s.value}
                 </p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 sm:text-fluid-xs">
+                <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
                   {s.label}
                 </p>
               </div>
@@ -94,7 +96,7 @@ export default function ProfilePage() {
                   >
                     <Icon className="size-4 sm:size-5" aria-hidden="true" />
                   </div>
-                  <p className="text-[11px] font-bold uppercase tracking-wide sm:text-fluid-sm">
+                  <p className="text-fluid-xs font-bold uppercase tracking-wide sm:text-fluid-sm">
                     {a.label}
                   </p>
                   <p className="mt-0.5 text-fluid-xs text-muted-foreground/60">

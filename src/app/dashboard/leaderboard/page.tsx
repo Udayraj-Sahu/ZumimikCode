@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Trophy, Medal, ArrowUp, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLeaderboard } from "@/hooks/queries/use-leaderboard";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import type { LeaderboardEntry } from "@/lib/types/dashboard";
 
 const PERIODS = ["week", "month", "all"] as const;
@@ -61,6 +62,7 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
 }
 
 export default function LeaderboardPage() {
+  usePageMeta("Leaderboard — Exam Arena");
   const [period, setPeriod] = useState<"week" | "month" | "all">("all");
   const { data: entries, isLoading, error } = useLeaderboard();
 

@@ -4,8 +4,10 @@ import { useCallback } from "react";
 import gsap from "gsap";
 import { TrendingUp } from "lucide-react";
 import { useAnalyticsData } from "@/hooks/queries/use-analytics";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 export default function AnalyticsPage() {
+  usePageMeta("Analytics — Exam Arena");
   const { data, isLoading } = useAnalyticsData();
 
   const headerRef = useCallback((el: HTMLDivElement | null) => {

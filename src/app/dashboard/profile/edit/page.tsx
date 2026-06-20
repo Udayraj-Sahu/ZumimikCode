@@ -6,8 +6,10 @@ import gsap from "gsap";
 import { ChevronLeft, Camera, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useProfileData } from "@/hooks/queries/use-profile";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 export default function EditProfilePage() {
+  usePageMeta("Edit Profile — Exam Arena");
   const router = useRouter();
   const { data } = useProfileData();
   const profile = data?.profile;
@@ -35,7 +37,7 @@ export default function EditProfilePage() {
         <button
           type="button"
           onClick={() => router.back()}
-          className="grid size-8 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="grid size-11 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Back"
         >
           <ChevronLeft size={20} />

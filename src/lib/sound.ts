@@ -1,13 +1,18 @@
+import { createAudioContext } from "@/lib/browser";
+
 let ctx: AudioContext | null = null;
 
-function getCtx(): AudioContext {
-  if (!ctx) ctx = new AudioContext();
-  if (ctx.state === "suspended") ctx.resume();
+function getCtx(): AudioContext | null {
+  if (!ctx) ctx = createAudioContext();
+  if (ctx && ctx.state === "suspended") {
+    ctx.resume();
+  }
   return ctx;
 }
 
 function playTone(freq: number, duration: number, type: OscillatorType = "sine", gain = 0.15) {
   const c = getCtx();
+  if (!c) return;
   const osc = c.createOscillator();
   const g = c.createGain();
   osc.type = type;

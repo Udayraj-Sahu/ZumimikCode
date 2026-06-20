@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAchievements } from "@/hooks/queries/use-achievements";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import type { AchievementItem } from "@/lib/types/achievements";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -61,6 +62,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
 }
 
 export default function AchievementsPage() {
+  usePageMeta("Achievements — Exam Arena");
   const { data: achievements, isLoading, error } = useAchievements();
   const gridRef = useRef<HTMLDivElement>(null);
 

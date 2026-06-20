@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useSprintSession } from "@/hooks/queries/use-sprint-session";
 import { useSprintStore } from "@/stores/sprint-store";
 import { useFeedback } from "@/lib/use-feedback";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import type { Question } from "@/lib/types/sprint-session";
 
 function formatTime(s: number): string {
@@ -17,6 +18,7 @@ function formatTime(s: number): string {
 }
 
 function SprintContent() {
+  usePageMeta("Sprint — Exam Arena");
   const router = useRouter();
   const searchParams = useSearchParams();
   const topic = searchParams.get("topic") ?? "";

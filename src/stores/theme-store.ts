@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { safeLocalStorage } from "@/lib/browser";
 
 type Theme = "dark" | "light";
 
@@ -18,9 +19,7 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: "exam-arena-theme",
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined" ? localStorage : (undefined as unknown as Storage),
-      ),
+      storage: createJSONStorage(() => safeLocalStorage),
     },
   ),
 );

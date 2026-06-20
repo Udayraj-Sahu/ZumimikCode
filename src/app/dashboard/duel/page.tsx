@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useDuelSetup } from "@/hooks/queries/use-duel";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { useFeedback } from "@/lib/use-feedback";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import { DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
 import type { DuelOpponent, DuelResult } from "@/lib/types/duel";
 import type { Question } from "@/lib/types/sprint-session";
@@ -15,6 +16,7 @@ import type { Question } from "@/lib/types/sprint-session";
 type Phase = "config" | "active" | "done";
 
 export default function DuelPage() {
+  usePageMeta("Duel — Exam Arena");
   const router = useRouter();
   const feedback = useFeedback();
   const { data: setup, isLoading: setupLoading } = useDuelSetup();

@@ -21,6 +21,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import { useUiStore } from "@/stores/ui-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { AlertModal } from "@/components/ui/alert-modal";
@@ -172,6 +173,7 @@ function DeleteModal({
 const REST_OPTIONS = ["30s", "60s", "90s", "120s"];
 
 export default function SettingsPage() {
+  usePageMeta("Settings — Exam Arena");
   const router = useRouter();
   const openModal = useUiStore((s) => s.openModal);
   const { data, isLoading } = useSettingsData();

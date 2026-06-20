@@ -7,12 +7,14 @@ import { Check, X, ChevronRight, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { useFeedback } from "@/lib/use-feedback";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import { SPRINT_TOPICS } from "@/lib/mock/sprint";
 import type { Question } from "@/lib/types/sprint-session";
 
 type Phase = "config" | "active" | "done";
 
 export default function PracticePage() {
+  usePageMeta("Practice — Exam Arena");
   const router = useRouter();
   const [topic, setTopic] = useState("");
   const [difficulty, setDifficulty] = useState("Beginner");

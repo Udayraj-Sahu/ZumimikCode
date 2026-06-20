@@ -5,8 +5,10 @@ import gsap from "gsap";
 import { Calendar, Zap, Flame, Target, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePlanner } from "@/hooks/queries/use-planner";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 export default function PlannerPage() {
+  usePageMeta("Study Planner — Exam Arena");
   const { data, isLoading, error } = usePlanner();
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -91,7 +93,7 @@ export default function PlannerPage() {
 
             {/* Week days */}
             <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">This Week</p>
-            <div ref={gridRef} className="grid grid-cols-7 gap-2">
+            <div ref={gridRef} className="flex gap-2 overflow-x-auto pb-2 sm:grid sm:grid-cols-7 sm:overflow-x-visible sm:pb-0">
               {data.days.map((day) => {
                 const pct = day.planned > 0 ? Math.round((day.completed / day.planned) * 100) : 0;
                 return (
@@ -99,7 +101,7 @@ export default function PlannerPage() {
                     key={day.date}
                     data-day-card
                     className={cn(
-                      "rounded-xl border p-2 sm:p-3 flex flex-col items-center text-center transition-all",
+                      "rounded-xl border p-2 sm:p-3 flex flex-col items-center text-center transition-all shrink-0 w-[72px] sm:w-auto",
                       day.isToday
                         ? "border-primary bg-primary/5"
                         : "border-border/40 bg-card",

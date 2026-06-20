@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { safeLocalStorage } from "@/lib/browser";
 
 type User = {
   id: string;
@@ -11,11 +12,13 @@ type User = {
 type AuthState = {
   user: User | null;
   token: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
   isOnboarded: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   setToken: (token: string | null) => void;
+  setRefreshToken: (token: string | null) => void;
   completeOnboarding: () => void;
 };
 
@@ -26,6 +29,7 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       token: null,
+      refreshToken: null,
       isAuthenticated: false,
       isOnboarded: false,
 
@@ -50,11 +54,15 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
-        set({ user: null, token: null, isAuthenticated: false });
+        set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
       },
 
       setToken: (token) => {
         set({ token, isAuthenticated: !!token });
+      },
+
+      setRefreshToken: (refreshToken) => {
+        set({ refreshToken });
       },
 
       completeOnboarding: () => {
@@ -63,9 +71,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "exam-arena-auth",
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined" ? localStorage : (undefined as unknown as Storage),
-      ),
+      storage: createJSONStorage(() => safeLocalStorage),
     },
   ),
 );

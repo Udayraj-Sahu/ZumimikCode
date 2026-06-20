@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { safeLocalStorage } from "@/lib/browser";
 
 type SettingsState = {
   soundEnabled: boolean;
@@ -18,9 +19,7 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: "exam-arena-settings",
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined" ? localStorage : (undefined as unknown as Storage),
-      ),
+      storage: createJSONStorage(() => safeLocalStorage),
     },
   ),
 );

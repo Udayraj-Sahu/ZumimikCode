@@ -6,9 +6,11 @@ import { Check, X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SPRINT_TOPICS } from "@/lib/mock/sprint";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import type { Question } from "@/lib/types/sprint-session";
 
 export default function QuestionsPage() {
+  usePageMeta("Question Bank — Exam Arena");
   const [topic, setTopic] = useState("addition");
   const { data: session, isLoading } = usePracticeSession(topic, 20, "Beginner");
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
@@ -49,7 +51,7 @@ export default function QuestionsPage() {
       </div>
 
       <div ref={animateSection} data-section-index="0" className="mt-5">
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
           {SPRINT_TOPICS.map((t) => {
             const Icon = t.icon;
             return (
@@ -128,7 +130,7 @@ export default function QuestionsPage() {
                                 : "border-transparent bg-muted/50 text-muted-foreground/50",
                             )}
                           >
-                            <span className="font-mono text-[10px] opacity-60 w-3">{String.fromCharCode(65 + oi)}</span>
+                            <span className="font-mono text-fluid-xs opacity-60 w-3">{String.fromCharCode(65 + oi)}</span>
                             <span className="flex-1">{opt}</span>
                             {oi === q.correctIndex && <Check size={12} className="text-primary shrink-0" />}
                           </div>

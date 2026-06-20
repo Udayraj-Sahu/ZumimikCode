@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useHistory } from "@/hooks/queries/use-history";
 import { TOPICS_FILTER, DIFFICULTY_FILTER } from "@/lib/mock/history";
 import type { HistoryEntry } from "@/lib/types/history";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -37,7 +38,7 @@ function HistoryRow({
       type="button"
       data-history-row
       onClick={() => onSelect(entry)}
-      className="flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-accent/20 focus-visible:ring-2 focus-visible:ring-ring rounded-lg"
+      className="flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-accent/20 active:bg-accent/30 focus-visible:ring-2 focus-visible:ring-ring rounded-lg"
     >
       <div className={cn(
         "grid size-9 shrink-0 place-items-center rounded-lg",
@@ -70,6 +71,7 @@ function HistoryRow({
 }
 
 export default function HistoryPage() {
+  usePageMeta("Sprint History — Exam Arena");
   const router = useRouter();
   const { data: entries, isLoading, error } = useHistory();
   const [topicFilter, setTopicFilter] = useState("all");
@@ -133,7 +135,7 @@ export default function HistoryPage() {
 
       {/* Filters */}
       <div ref={animateSection} data-section-index="0" className="mt-5 flex flex-wrap gap-2">
-        <div className="flex items-center gap-1.5 rounded-lg bg-muted px-2 py-1">
+        <div className="flex items-center gap-1.5 rounded-lg bg-muted px-3 py-2.5 min-h-[44px]">
           <Filter size={12} className="text-muted-foreground/40" />
           <select
             value={topicFilter}
@@ -165,7 +167,7 @@ export default function HistoryPage() {
         <button
           type="button"
           onClick={() => setSortAsc(!sortAsc)}
-          className="ml-auto flex items-center gap-1 rounded-lg bg-muted px-3 py-1.5 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="ml-auto flex items-center gap-1 rounded-lg bg-muted px-3 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
         >
           <ArrowUpDown size={12} />
           {sortAsc ? "Oldest" : "Newest"}
@@ -251,7 +253,7 @@ export default function HistoryPage() {
                 type="button"
                 onClick={() => setPage(i)}
                 className={cn(
-                  "size-8 rounded-lg text-fluid-xs font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                  "min-w-[44px] min-h-[44px] rounded-lg text-fluid-xs font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                   page === i ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground",
                 )}
               >

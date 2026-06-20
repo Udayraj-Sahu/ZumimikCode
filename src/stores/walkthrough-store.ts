@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { safeLocalStorage } from "@/lib/browser";
 
 type WalkthroughState = {
   completed: boolean;
@@ -16,9 +17,7 @@ export const useWalkthroughStore = create<WalkthroughState>()(
     }),
     {
       name: "exam-arena-walkthrough",
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined" ? localStorage : (undefined as unknown as Storage),
-      ),
+      storage: createJSONStorage(() => safeLocalStorage),
     },
   ),
 );

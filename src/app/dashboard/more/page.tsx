@@ -8,6 +8,7 @@ import { ChevronLeft, Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useProfileData } from "@/hooks/queries/use-profile";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 const EXCLUDED_HREFS = new Set(MOBILE_NAV.map((n) => n.href));
 const FILTERED_ITEMS = NAV_ITEMS.filter((item) => !EXCLUDED_HREFS.has(item.href));
@@ -22,6 +23,7 @@ const SIDEBAR_SECTIONS = Object.entries(
 );
 
 export default function MorePage() {
+  usePageMeta("More — Exam Arena");
   const router = useRouter();
   const { data } = useProfileData();
   const profile = data?.profile;
@@ -45,7 +47,7 @@ export default function MorePage() {
         <button
           type="button"
           onClick={() => router.back()}
-          className="grid size-8 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="grid size-11 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Back"
         >
           <ChevronLeft size={20} />
@@ -67,7 +69,7 @@ export default function MorePage() {
           </div>
           <Link
             href="/dashboard/profile/edit"
-            className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider text-primary outline-none transition-colors hover:bg-primary/20 focus-visible:ring-2 focus-visible:ring-ring shrink-0"
+            className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring shrink-0 min-h-[44px]"
           >
             <Pencil size={12} />
             Edit

@@ -8,6 +8,7 @@ import { Play, Clock, Zap, Award, TrendingUp, ChevronRight, type LucideIcon } fr
 import { cn } from "@/lib/utils";
 import { CognitiveRadar } from "@/components/dashboard/cognitive-radar";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Zap,
@@ -15,6 +16,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 export default function DashboardPage() {
+  usePageMeta("Dashboard — Exam Arena");
   const router = useRouter();
   const { data, isLoading, error } = useDashboardData();
   const topics = data?.topics ?? [];

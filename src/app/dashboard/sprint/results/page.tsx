@@ -7,6 +7,7 @@ import { Check, X, ChevronRight, ChevronDown, Zap, Clock, Award, Target } from "
 import { cn } from "@/lib/utils";
 import { useSprintStore } from "@/stores/sprint-store";
 import { useRateStore } from "@/stores/rate-store";
+import { usePageMeta } from "@/hooks/use-page-meta";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
 
 function formatTime(s: number): string {
@@ -16,6 +17,7 @@ function formatTime(s: number): string {
 }
 
 export default function SprintResultsPage() {
+  usePageMeta("Sprint Results — Exam Arena");
   const router = useRouter();
   const lastResult = useSprintStore((s) => s.lastResult);
   const lastSession = useSprintStore((s) => s.lastSession);
@@ -192,7 +194,7 @@ export default function SprintResultsPage() {
                     <div className="flex items-center justify-between mb-2">
                       <span className="flex items-center gap-1.5 text-fluid-xs font-bold uppercase tracking-wider">
                         <span className={cn(
-                          "grid size-5 place-items-center rounded text-[10px] font-bold",
+                          "grid size-5 place-items-center rounded text-fluid-xs font-bold",
                           a?.correct ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive",
                         )}>
                           {a?.correct ? <Check size={10} /> : <X size={10} />}
@@ -222,7 +224,7 @@ export default function SprintResultsPage() {
                               variant,
                             )}
                           >
-                            <span className="font-mono text-[10px] opacity-60 w-3">
+                            <span className="font-mono text-fluid-xs opacity-60 w-3">
                               {String.fromCharCode(65 + oi)}
                             </span>
                             <span className="flex-1">{option}</span>
