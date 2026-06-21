@@ -31,6 +31,7 @@ function LivePortal({ exam }: { exam: (typeof LIVE_EXAMS)[0] }) {
       onHoverEnd={() => setHovered(false)}
       onFocus={() => setHovered(true)}
       onBlur={() => setHovered(false)}
+      onClick={() => setHovered((h) => !h)}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setHovered((h) => !h); }}
       role="button"
       tabIndex={0}

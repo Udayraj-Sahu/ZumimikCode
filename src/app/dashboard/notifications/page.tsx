@@ -48,25 +48,23 @@ export default function NotificationsPage() {
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
       {/* Header */}
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Notifications</h1>
-            <p className="text-fluid-sm text-muted-foreground/60">
-              {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
-            </p>
-          </div>
-          {unreadCount > 0 && (
+        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Notifications</h1>
+        <p className="text-fluid-sm text-muted-foreground/60">
+          {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
+        </p>
+        {unreadCount > 0 && (
+          <div className="mt-3 flex justify-center">
             <button
               type="button"
-              className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider text-primary outline-none transition-colors hover:bg-primary/20 focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-3 text-fluid-xs font-bold uppercase tracking-wider text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
             >
               <CheckCheck size={14} />
               Mark All Read
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Filter tabs */}
@@ -78,7 +76,7 @@ export default function NotificationsPage() {
             "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "all"
               ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:text-foreground",
+              : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
           )}
         >
           All
@@ -90,7 +88,7 @@ export default function NotificationsPage() {
             "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "unread"
               ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:text-foreground",
+              : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
           )}
         >
           Unread {unreadCount > 0 && <span className="ml-1 text-primary">({unreadCount})</span>}
@@ -124,7 +122,7 @@ export default function NotificationsPage() {
         )}
 
         {filtered.length > 0 && (
-          <div ref={listRef} className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
+          <div ref={listRef} role="list" className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
             {filtered.map((n) => {
               const Icon = TYPE_ICON[n.type];
               return (
@@ -155,7 +153,7 @@ export default function NotificationsPage() {
                     )}>
                       {n.message}
                     </p>
-                    <p className="text-fluid-xs text-muted-foreground/30 mt-1">{n.time}</p>
+                    <p className="text-fluid-xs text-muted-foreground/50 mt-1">{n.time}</p>
                   </div>
                 </div>
               );

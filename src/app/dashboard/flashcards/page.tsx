@@ -82,7 +82,7 @@ export default function FlashcardsPage() {
 
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
         <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Flashcards</h1>
         <p className="text-fluid-sm text-muted-foreground/60">Quick mental math review</p>
@@ -100,7 +100,7 @@ export default function FlashcardsPage() {
                 "flex items-center gap-1.5 rounded-lg px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 topic === t.id
                   ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:text-foreground",
+                  : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
               )}
             >
               <Icon size={14} />
@@ -142,27 +142,27 @@ export default function FlashcardsPage() {
               <div className="text-center">
                 {!flipped ? (
                   <>
-                    <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/30 mb-4">Question</p>
+                    <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-4">Question</p>
                     <p className="text-fluid-2xl sm:text-3xl font-black tracking-tight text-foreground">{current.front}</p>
                   </>
                 ) : (
                   <>
-                    <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/30 mb-4">Answer</p>
+                    <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-4">Answer</p>
                     <p className="text-fluid-3xl sm:text-4xl font-black text-primary">{current.back}</p>
                   </>
                 )}
               </div>
             </div>
 
-            <p className="text-center text-fluid-xs text-muted-foreground/30 mt-3">Tap card to flip</p>
+            <p className="text-center text-fluid-xs text-muted-foreground/50 mt-3">Tap card to flip</p>
 
             {/* Controls */}
-            <div className="mt-6 flex items-center justify-center gap-4">
+            <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
               <button
                 type="button"
                 onClick={goPrev}
                 disabled={index === 0}
-                className="flex items-center gap-1 rounded-lg bg-muted px-4 py-3 text-fluid-xs font-bold text-muted-foreground outline-none transition-colors hover:text-foreground disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-1 rounded-lg bg-muted px-4 py-3 text-fluid-xs font-bold text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground active:bg-muted/70 disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <ChevronLeft size={16} /> Prev
               </button>
@@ -177,7 +177,7 @@ export default function FlashcardsPage() {
                 type="button"
                 onClick={goNext}
                 disabled={index >= cards.length - 1}
-                className="flex items-center gap-1 rounded-lg bg-muted px-4 py-3 text-fluid-xs font-bold text-muted-foreground outline-none transition-colors hover:text-foreground disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-1 rounded-lg bg-muted px-4 py-3 text-fluid-xs font-bold text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground active:bg-muted/70 disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Next <ChevronRight size={16} />
               </button>

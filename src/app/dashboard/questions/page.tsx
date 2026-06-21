@@ -50,7 +50,7 @@ export default function QuestionsPage() {
 
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
         <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Question Bank</h1>
         <p className="text-fluid-sm text-muted-foreground/60">Browse questions by topic</p>
@@ -69,7 +69,7 @@ export default function QuestionsPage() {
                   "flex items-center gap-1.5 rounded-lg px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                   topic === t.id
                     ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:text-foreground",
+                    : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
                 )}
               >
                 <Icon size={14} />
@@ -86,6 +86,7 @@ export default function QuestionsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search questions..."
+            aria-label="Search questions"
             className="w-full rounded-xl border border-border/40 bg-card py-2.5 pl-9 pr-4 text-fluid-sm text-foreground outline-none placeholder:text-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
@@ -117,7 +118,7 @@ export default function QuestionsPage() {
                 <button
                   type="button"
                   onClick={() => setRevealed((prev) => ({ ...prev, [q.id]: !prev[q.id] }))}
-                  className="flex w-full items-start gap-3 p-4 text-left outline-none transition-colors hover:bg-accent/20 focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex w-full items-start gap-3 p-4 text-left outline-none transition-colors hover:bg-accent/20 active:bg-accent/30 focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-muted text-fluid-xs font-bold font-mono text-muted-foreground">
                     {i + 1}

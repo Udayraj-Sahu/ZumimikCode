@@ -89,7 +89,7 @@ export default function TextScaffold({
             <button
               type="button"
               onClick={handleReveal}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border/60 py-3 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none transition-colors hover:border-primary/40 hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex w-full min-h-[44px] items-center justify-center gap-2 rounded-xl border border-dashed border-border/60 py-3 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none transition-colors hover:border-primary/40 hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
             >
               Show Next Step ({visibleSteps}/{totalSteps})
             </button>

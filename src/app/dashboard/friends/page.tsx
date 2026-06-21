@@ -38,13 +38,11 @@ export default function FriendsPage() {
 
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Friends</h1>
-            <p className="text-fluid-sm text-muted-foreground/60">Compete and stay motivated together</p>
-          </div>
+        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Friends</h1>
+        <p className="text-fluid-sm text-muted-foreground/60">Compete and stay motivated together</p>
+        <div className="mt-3 flex justify-center">
           <button
             type="button"
             className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
@@ -54,12 +52,12 @@ export default function FriendsPage() {
         </div>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 overflow-x-auto">
         <button
           type="button"
           onClick={() => setTab("friends")}
           className={cn(
-            "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-lg px-4 py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
             tab === "friends" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground",
           )}
         >
@@ -69,7 +67,7 @@ export default function FriendsPage() {
           type="button"
           onClick={() => setTab("activity")}
           className={cn(
-            "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-lg px-4 py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
             tab === "activity" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground",
           )}
         >
@@ -79,7 +77,7 @@ export default function FriendsPage() {
           type="button"
           onClick={() => setTab("requests")}
           className={cn(
-            "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-lg px-4 py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
             tab === "requests" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground",
           )}
         >
@@ -127,7 +125,7 @@ export default function FriendsPage() {
               </div>
               <button
                 type="button"
-                className="flex items-center gap-1 rounded-lg bg-primary/10 px-3 py-2 text-fluid-xs font-bold text-primary outline-none transition-colors hover:bg-primary/20 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-1 rounded-lg bg-primary/10 px-3 py-2 text-fluid-xs font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <Swords size={12} /> Duel
               </button>
@@ -150,7 +148,7 @@ export default function FriendsPage() {
                   <p className="text-fluid-sm text-foreground/80">
                     <span className="font-bold">{friend?.name ?? "Someone"}</span> {a.label}
                   </p>
-                  <p className="text-fluid-xs text-muted-foreground/30 mt-0.5">{a.time}</p>
+                  <p className="text-fluid-xs text-muted-foreground/50 mt-0.5">{a.time}</p>
                 </div>
               </div>
             );
@@ -179,14 +177,14 @@ export default function FriendsPage() {
                   <div className="flex gap-2">
             <button
               type="button"
-              aria-label="Accept friend request from {f.name}"
+              aria-label={`Accept friend request from ${f.name}`}
               className="grid size-11 place-items-center rounded-lg bg-primary text-primary-foreground outline-none transition-transform hover:scale-[1.1] active:scale-[0.9] focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Check size={14} />
             </button>
             <button
               type="button"
-              aria-label="Reject friend request from {f.name}"
+              aria-label={`Reject friend request from ${f.name}`}
               className="grid size-11 place-items-center rounded-lg bg-muted text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
             >
               <X size={14} />

@@ -59,12 +59,14 @@ export function VerticalNav() {
           )}
           <motion.button
             onClick={() => scrollTo(node.id)}
+            type="button"
             aria-current={i === active ? "true" : undefined}
-            className="relative flex items-center gap-3 group"
+            aria-label={`Scroll to ${node.label}`}
+            className="relative flex items-center gap-3 group outline-none focus-visible:ring-2 focus-visible:ring-ring rounded min-h-[44px]"
             style={{ background: "none", border: "none", cursor: "pointer", padding: "4px 0" }}
             whileHover={{ x: 4 }}
           >
-            <div className="relative flex items-center justify-center w-7 h-7">
+            <div className="relative flex items-center justify-center size-[44px]">
               {i <= active && (
                 <motion.div
                   className="absolute inset-0 rounded-full"
@@ -77,9 +79,8 @@ export function VerticalNav() {
                 />
               )}
               <span
-                className="font-mono"
+                className="font-mono text-xs"
                 style={{
-                  fontSize: 11,
                   color: i <= active ? "#C8FF5A" : "#8B8B8B",
                   transition: "color 0.3s",
                 }}

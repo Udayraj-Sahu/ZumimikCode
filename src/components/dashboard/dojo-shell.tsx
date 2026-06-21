@@ -67,7 +67,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-background text-foreground">
       <aside
         ref={sidebarRef}
-        className="fixed inset-y-0 left-0 hidden w-[240px] flex-col border-r border-sidebar-border bg-sidebar lg:flex"
+        className="fixed inset-y-0 left-0 hidden w-60 flex-col border-r border-sidebar-border bg-sidebar lg:flex"
       >
         {/* Logo */}
         <div className="px-4 py-5 border-b border-sidebar-border">
@@ -110,16 +110,16 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         className={cn(
-                          "relative flex items-center gap-3 px-3 py-2.5 rounded outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-ring",
+                          "relative flex items-center gap-3 px-3 py-3 rounded outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-ring",
                           active
                             ? "bg-primary/10 text-primary"
-                            : "text-muted-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent",
+                            : "text-muted-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent active:bg-sidebar-accent/80",
                         )}
                       >
                         {active && (
                           <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-r bg-primary" />
                         )}
-                        <Icon size={16} />
+                        <Icon size={16} aria-hidden="true" />
                         <span className="text-fluid-base font-bold tracking-[0.08em]">
                           {item.label}
                         </span>
@@ -136,7 +136,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
         <div data-sidebar-section className="px-3 pb-4 flex flex-col gap-2 border-t border-sidebar-border pt-3">
           <Link
             href="/dashboard/configure-sprint"
-            className="flex items-center justify-center gap-2 py-3 rounded bg-primary text-primary-foreground text-fluid-sm font-bold tracking-[0.1em] outline-none transition-all hover:opacity-90 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center justify-center gap-2 py-3.5 rounded bg-primary text-primary-foreground text-fluid-sm font-bold tracking-[0.1em] outline-none transition-all hover:opacity-90 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
           >
             <Zap size={14} />
             START SPRINT
@@ -144,7 +144,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             onClick={toggleTheme}
-            className="flex items-center justify-center gap-2 py-2 rounded text-fluid-xs font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex items-center justify-center gap-2 py-3.5 rounded text-fluid-xs font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
           >
             <SunMoon size={12} />
             {theme === "dark" ? "LIGHT MODE" : "DARK MODE"}
@@ -152,7 +152,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             onClick={() => { logout(); router.push("/"); }}
-            className="flex items-center justify-center gap-2 py-3 rounded text-fluid-sm font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center justify-center gap-2 py-3.5 rounded text-fluid-sm font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
           >
             <LogOut size={12} />
             LOGOUT
@@ -160,7 +160,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <main className="lg:ml-[240px] h-dvh overflow-y-auto pb-24 lg:pb-0">
+      <main className="lg:ml-60 h-dvh overflow-y-auto pb-24 lg:pb-0">
         <div key={pathname} ref={pageRef}>
           {children}
         </div>
@@ -181,10 +181,10 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex min-w-14 flex-col items-center gap-0.5 rounded-xl px-3 py-3 text-[11px] font-bold uppercase tracking-wide outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-muted-foreground/60 hover:text-muted-foreground",
+                      : "text-muted-foreground/60 hover:text-muted-foreground active:bg-primary/10",
                   )}
                 >
                   <Icon className="size-3.5" aria-hidden="true" />

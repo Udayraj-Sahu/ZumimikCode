@@ -53,13 +53,11 @@ export default function ReportsPage() {
 
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Reports</h1>
-            <p className="text-fluid-sm text-muted-foreground/60">Detailed performance analytics</p>
-          </div>
+        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Reports</h1>
+        <p className="text-fluid-sm text-muted-foreground/60">Detailed performance analytics</p>
+        <div className="mt-3 flex justify-center">
           <button
             type="button"
             className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring"
@@ -79,7 +77,7 @@ export default function ReportsPage() {
               "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
               period === p
                 ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:text-foreground",
+                : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
             )}
           >
             {p}

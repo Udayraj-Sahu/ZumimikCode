@@ -33,11 +33,13 @@ export default function ShapeCanvasRenderer({
   template,
   visibleSteps,
   mode,
+  onStepReveal,
 }: RendererProps) {
   const problem = template.examples?.[0]?.problem_statement ?? "";
   const { shape, dimensions } = useMemo(() => parseShape(problem), [problem]);
 
   const allRevealed = visibleSteps >= (template.examples?.[0]?.solution?.length ?? 0);
+  const svgHeight = useMemo(() => 200 + Math.max(0, dimensions.length - 1) * 14, [dimensions.length]);
 
   const renderShape = () => {
     switch (shape) {
@@ -94,9 +96,10 @@ export default function ShapeCanvasRenderer({
       template={template}
       visibleSteps={visibleSteps}
       mode={mode}
+      onStepReveal={onStepReveal}
     >
       <svg
-        viewBox="0 0 360 200"
+        viewBox={`0 0 360 ${svgHeight}`}
         className="w-full h-auto max-w-[400px]"
         role="img"
         aria-label={`Shape canvas for ${shape}`}

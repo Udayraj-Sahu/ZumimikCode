@@ -33,16 +33,19 @@ export default function EditProfilePage() {
   return (
     <div className="pb-10">
       {/* Header */}
-      <div ref={headerRef} className="flex items-center gap-2 px-4 pt-5 pb-4 border-b border-border">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="grid size-11 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label="Back"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <h1 className="text-fluid-xl font-black tracking-tight text-foreground">Edit Profile</h1>
+      <div ref={headerRef} className="px-4 pt-5 pb-4 border-b border-border text-center">
+        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60 mb-1">EXAM ARENA</p>
+        <div className="flex items-center justify-center gap-2">
+          <button
+            type="button"
+            onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard/profile"); }}
+            className="grid size-11 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label="Back"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <h1 className="text-fluid-xl font-black tracking-tight text-foreground">Edit Profile</h1>
+        </div>
       </div>
 
       <div className="px-4 mt-6">

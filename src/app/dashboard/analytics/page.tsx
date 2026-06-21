@@ -8,7 +8,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 
 export default function AnalyticsPage() {
   usePageMeta("Analytics — Exam Arena");
-  const { data, isLoading } = useAnalyticsData();
+  const { data, isLoading, error } = useAnalyticsData();
 
   const headerRef = useCallback((el: HTMLDivElement | null) => {
     if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
@@ -21,10 +21,25 @@ export default function AnalyticsPage() {
     gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: i * 0.08, ease: "power2.out" });
   }, []);
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+        <p className="text-fluid-base text-muted-foreground">Failed to load analytics.</p>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="rounded-xl bg-primary px-5 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          Retry
+        </button>
       </div>
     );
   }
@@ -109,7 +124,7 @@ export default function AnalyticsPage() {
               {weekly.map((d) => (
                 <span
                   key={d.day}
-                  className="text-fluid-xs text-center flex-1 tracking-[0.05em] text-muted-foreground/30"
+                  className="text-fluid-xs text-center flex-1 tracking-[0.05em] text-muted-foreground/50"
                 >
                   {d.day}
                 </span>
@@ -134,7 +149,7 @@ export default function AnalyticsPage() {
                     <p className="text-fluid-base font-semibold text-foreground/80">{a.title}</p>
                     <p className="text-fluid-sm text-muted-foreground/60 mt-0.5">{a.sub}</p>
                   </div>
-                  <span className="text-fluid-xs font-mono text-muted-foreground/30 whitespace-nowrap ml-4">
+                  <span className="text-fluid-xs font-mono text-muted-foreground/50 whitespace-nowrap ml-4">
                     {a.time}
                   </span>
                 </div>

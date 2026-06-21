@@ -65,7 +65,7 @@ export function RatePrompt() {
           <button
             type="button"
             onClick={handleLater}
-            className="grid size-8 place-items-center rounded-lg text-muted-foreground/40 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-11 place-items-center rounded-lg text-muted-foreground/40 outline-none hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Close"
           >
             <X size={18} />
@@ -83,9 +83,7 @@ export function RatePrompt() {
               key={star}
               type="button"
               onClick={() => setRating(star)}
-              onMouseEnter={() => setHovered(star)}
-              onMouseLeave={() => setHovered(0)}
-              className="outline-none focus-visible:ring-2 focus-visible:ring-ring rounded p-0.5 transition-transform hover:scale-110"
+              className="outline-none focus-visible:ring-2 focus-visible:ring-ring rounded p-1.5 transition-transform hover:scale-110 active:scale-95"
               aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}
             >
               <Star
@@ -113,14 +111,14 @@ export function RatePrompt() {
             <button
               type="button"
               onClick={handleLater}
-              className="text-fluid-xs text-muted-foreground/40 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-1"
+              className="text-fluid-xs text-muted-foreground/40 outline-none hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-3 py-2 min-h-[44px]"
             >
               Later
             </button>
             <button
               type="button"
               onClick={handleNever}
-              className="text-fluid-xs text-muted-foreground/40 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-1"
+              className="text-fluid-xs text-muted-foreground/40 outline-none hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-3 py-2 min-h-[44px]"
             >
               Don&apos;t Ask Again
             </button>

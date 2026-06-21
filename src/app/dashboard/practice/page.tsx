@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import gsap from "gsap";
 import {
   Check,
   X,
+  Zap,
   ChevronRight,
   ChevronLeft,
   BookOpen,
@@ -37,8 +38,11 @@ export default function PracticePage() {
   const domain = targetExam || "vedic-math";
   const sprintTopics = getTopicsByDomain(domain);
   const domainLabel = DOMAIN_LABELS[targetExam] || targetExam || "Templates";
+  const searchParams = useSearchParams();
+  const templateIdParam = searchParams.get("templateId");
+  const returnTo = searchParams.get("returnTo") || "/dashboard";
 
-  const [practiceType, setPracticeType] = useState<PracticeType>("mcq");
+  const [practiceType, setPracticeType] = useState<PracticeType>(templateIdParam ? "templates" : "mcq");
   const [topic, setTopic] = useState("");
   const [difficulty, setDifficulty] = useState("Beginner");
   const [phase, setPhase] = useState<Phase>("config");
@@ -125,33 +129,49 @@ export default function PracticePage() {
   const storeTemplates = useTemplateStore((s) => s.templates);
   const setMode = useTemplateStore((s) => s.setMode);
 
-  const startTemplatePractice = async () => {
-    if (!targetExam) {
+  const startTemplatePractice = async (singleTemplateId?: string) => {
+    const exam = singleTemplateId ? undefined : targetExam;
+    if (!exam && !singleTemplateId) {
       feedback.wrong();
       return;
     }
     setLoadingTemplates(true);
     try {
-      const all = await getTemplatesByDomain(targetExam);
-      const filtered = templateCategory === "all"
-        ? all
-        : all.filter((t) => t.concept.category === templateCategory);
-      if (filtered.length === 0) {
+      let templatesForSession: SolveAlongTemplate[];
+      if (singleTemplateId) {
+        const { getTemplate } = await import("@/services/templates");
+        const tpl = await getTemplate(singleTemplateId);
+        templatesForSession = tpl ? [tpl] : [];
+      } else {
+        const all = await getTemplatesByDomain(exam!);
+        templatesForSession = templateCategory === "all"
+          ? all
+          : all.filter((t) => t.concept.category === templateCategory);
+      }
+      if (templatesForSession.length === 0) {
         feedback.wrong();
         setLoadingTemplates(false);
         return;
       }
-      setLoadedTemplates(filtered);
-      loadTemplates(filtered);
+      setLoadedTemplates(templatesForSession);
+      loadTemplates(templatesForSession);
       setMode(renderMode);
       setRendererPhase("active");
       setRendererCorrect(0);
-      setRendererTotal(filtered.length);
+      setRendererTotal(templatesForSession.length);
       setPhase("active");
     } finally {
       setLoadingTemplates(false);
     }
   };
+
+  // Auto-start template when templateId is provided via URL
+  useEffect(() => {
+    if (templateIdParam && !loadingTemplates && loadedTemplates.length === 0) {
+      startTemplatePractice(templateIdParam);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templateIdParam]);
 
   const handleTemplateNext = () => {
     if (storeCurrentIndex >= storeTemplates.length - 1) {
@@ -180,7 +200,7 @@ export default function PracticePage() {
   if (phase === "config") {
     return (
       <div className="px-4 sm:px-6 pt-6 pb-10">
-        <div ref={headerRef}>
+        <div ref={headerRef} className="text-center">
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
           <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Practice</h1>
           <p className="text-fluid-sm text-muted-foreground/60">Choose your practice mode</p>
@@ -196,7 +216,7 @@ export default function PracticePage() {
                 "flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 practiceType === "mcq"
                   ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground",
+                  : "text-muted-foreground hover:text-foreground active:text-foreground",
               )}
             >
               <BookOpen size={16} /> MCQ
@@ -208,7 +228,7 @@ export default function PracticePage() {
                 "flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 practiceType === "templates"
                   ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground",
+                  : "text-muted-foreground hover:text-foreground active:text-foreground",
               )}
             >
               <BrainCircuit size={16} /> {targetExam ? domainLabel : "Templates"}
@@ -232,7 +252,7 @@ export default function PracticePage() {
                         "flex flex-col items-center gap-2 rounded-2xl border p-4 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
                         topic === t.id
                           ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary),0_0_24px_-4px_var(--primary)]"
-                          : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40",
+                          :                      "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
                       )}
                       aria-label={`Select ${t.label}`}
                     >
@@ -256,7 +276,7 @@ export default function PracticePage() {
                       "flex-1 rounded-xl border py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                       difficulty === d
                         ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)] text-foreground"
-                        : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40",
+                        :                      "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
                     )}
                     aria-label={`Difficulty ${d}`}
                   >
@@ -302,7 +322,7 @@ export default function PracticePage() {
           <>
             <div ref={animateSection} data-section-index="1" className="mt-6">
               <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Category</p>
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {[
                   { id: "all", label: "All Techniques" },
                   { id: "multiplication", label: "Multiplication" },
@@ -317,7 +337,7 @@ export default function PracticePage() {
                       "flex items-center gap-3 rounded-2xl border p-4 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
                       templateCategory === cat.id
                         ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)]"
-                        : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40",
+                        :                      "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
                     )}
                     aria-label={`Category ${cat.label}`}
                   >
@@ -349,7 +369,7 @@ export default function PracticePage() {
                       "flex-1 rounded-xl border py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                       renderMode === m.value
                         ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)] text-foreground"
-                        : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40",
+                        :                      "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
                     )}
                     aria-label={`Mode ${m.label}`}
                   >
@@ -368,7 +388,7 @@ export default function PracticePage() {
               <button
                 type="button"
                 disabled={loadingTemplates}
-                onClick={startTemplatePractice}
+                onClick={() => startTemplatePractice()}
                 className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BrainCircuit size={16} />
@@ -414,10 +434,76 @@ export default function PracticePage() {
           >
             Practice Again <ChevronRight size={16} />
           </button>
+          {returnTo !== "/dashboard" && returnTo && (
+            <button
+              type="button"
+              onClick={() => router.push(returnTo)}
+              className="rounded-2xl border border-chart-3/40 bg-chart-3/5 py-4 text-fluid-sm font-bold uppercase tracking-widest text-chart-3 outline-none transition-colors hover:bg-chart-3/10 active:bg-chart-3/20 focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Back to Sprint Setup
+            </button>
+          )}
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Template done → prompt user to apply it with a Sprint
+  if (practiceType === "templates" && rendererPhase === "done" && completed) {
+    const sprintTopic = searchParams.get("topic") || "";
+    const sprintDifficulty = searchParams.get("difficulty") || "beginner";
+    return (
+      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-8" ref={contentRef}>
+        <div className="text-center">
+          <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-chart-3/10 text-fluid-3xl font-black text-chart-3">
+            <Check className="size-8" />
+          </div>
+          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">
+            Technique Learned!
+          </h1>
+          <p className="mt-2 text-fluid-sm text-muted-foreground/60 leading-relaxed max-w-xs mx-auto">
+            You&apos;ve completed the walkthrough. Now apply it under real conditions.
+          </p>
+        </div>
+        <div className="mt-6 flex flex-col gap-3">
+          {sprintTopic && (
+            <button
+              type="button"
+              onClick={() =>
+                router.push(`/dashboard/sprint?topic=${sprintTopic}&length=5&difficulty=${sprintDifficulty}`)
+              }
+              className="flex items-center justify-center gap-2 rounded-2xl bg-chart-3 py-4 text-fluid-base font-bold uppercase tracking-widest text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Zap size={16} /> Start 5-Question Sprint
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
+            className="flex items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Practice Another <ChevronRight size={16} />
+          </button>
+          {returnTo !== "/dashboard" && returnTo && (
+            <button
+              type="button"
+              onClick={() => router.push(returnTo)}
+              className="rounded-2xl border border-chart-3/40 bg-chart-3/5 py-4 text-fluid-sm font-bold uppercase tracking-widest text-chart-3 outline-none transition-colors hover:bg-chart-3/10 active:bg-chart-3/20 focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Back to Sprint Setup
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard")}
+            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
           >
             Dashboard
           </button>
@@ -452,21 +538,23 @@ export default function PracticePage() {
           template={currentTemplate}
           visibleSteps={stepProgress.visibleSteps}
           mode={renderMode}
+          onStepReveal={stepProgress.handleRevealNext}
         />
 
-        {/* Step reveal button (outside TextScaffold for consistency) */}
-        {renderMode === "solve_along" && !stepProgress.allRevealed && (
-          <button
-            type="button"
-            onClick={stepProgress.handleRevealNext}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border/60 py-3 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none transition-colors hover:border-primary/40 hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Show Next Step ({stepProgress.visibleSteps}/{stepProgress.totalSteps})
-          </button>
+        {/* "Now You Try" prompt when all steps revealed */}
+        {stepProgress.allRevealed && renderMode === "solve_along" && (
+          <div className="mt-5 text-center">
+            <p className="text-fluid-xs font-bold uppercase tracking-[0.15em] text-chart-3">
+              Now you try it!
+            </p>
+            <p className="mt-0.5 text-fluid-xs text-muted-foreground/50">
+              Apply the technique and solve on your own
+            </p>
+          </div>
         )}
 
         {/* Navigation buttons */}
-        {stepProgress.isCorrect !== null && (
+        {(stepProgress.isCorrect !== null || stepProgress.allRevealed || renderMode === "quick") && (
           <div className="mt-6 flex gap-3">
             {storeCurrentIndex > 0 && (
               <button
@@ -475,7 +563,7 @@ export default function PracticePage() {
                   useTemplateStore.getState().prevTemplate();
                   stepProgress.reset();
                 }}
-                className="flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-card px-5 py-4 text-fluid-xs font-bold uppercase tracking-wider text-foreground outline-none transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-card px-5 py-4 text-fluid-xs font-bold uppercase tracking-wider text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <ChevronLeft size={16} /> Previous
               </button>
@@ -539,7 +627,7 @@ export default function PracticePage() {
             {question.options.map((option, i) => {
               const isSelected = answers[question.id] === i;
               const isCorrect = i === question.correctIndex;
-              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40" as string;
+              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60" as string;
               if (revealed) {
                 if (isCorrect) variant = "border-primary bg-primary/10 text-primary";
                 else if (isSelected) variant = "border-destructive bg-destructive/10 text-destructive";

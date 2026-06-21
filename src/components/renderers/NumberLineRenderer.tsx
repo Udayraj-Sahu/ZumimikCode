@@ -9,6 +9,7 @@ export default function NumberLineRenderer({
   template,
   visibleSteps,
   mode,
+  onStepReveal,
 }: RendererProps) {
   const { lower, upper, result, totalSteps } = useMemo(() => {
     const s = template.examples?.[0]?.solution ?? [];
@@ -32,6 +33,7 @@ export default function NumberLineRenderer({
       template={template}
       visibleSteps={visibleSteps}
       mode={mode}
+      onStepReveal={onStepReveal}
     >
       <svg
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}

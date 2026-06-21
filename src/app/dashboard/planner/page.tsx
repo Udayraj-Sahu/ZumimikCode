@@ -36,7 +36,7 @@ export default function PlannerPage() {
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
       {/* Header */}
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
         <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Study Planner</h1>
         <p className="text-fluid-sm text-muted-foreground/60">Plan your sprints and track consistency</p>
@@ -93,7 +93,7 @@ export default function PlannerPage() {
 
             {/* Week days */}
             <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">This Week</p>
-            <div ref={gridRef} className="flex gap-2 overflow-x-auto pb-2 sm:grid sm:grid-cols-7 sm:overflow-x-visible sm:pb-0">
+            <div ref={gridRef} className="grid grid-cols-3 gap-2 sm:grid-cols-7 sm:overflow-x-visible">
               {data.days.map((day) => {
                 const pct = day.planned > 0 ? Math.round((day.completed / day.planned) * 100) : 0;
                 return (
@@ -101,7 +101,7 @@ export default function PlannerPage() {
                     key={day.date}
                     data-day-card
                     className={cn(
-                      "rounded-xl border p-2 sm:p-3 flex flex-col items-center text-center transition-all shrink-0 w-[72px] sm:w-auto",
+                      "rounded-xl border p-2 sm:p-3 flex flex-col items-center text-center transition-all",
                       day.isToday
                         ? "border-primary bg-primary/5"
                         : "border-border/40 bg-card",

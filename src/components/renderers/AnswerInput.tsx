@@ -65,7 +65,7 @@ export default function AnswerInput({
           <button
             type="button"
             onClick={handleRetry}
-            className="rounded-xl border border-border/60 bg-card px-4 py-2 text-fluid-xs font-bold text-foreground outline-none transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-xl border border-border/60 bg-card px-4 py-3 text-fluid-xs font-bold text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
           >
             Try Again
           </button>

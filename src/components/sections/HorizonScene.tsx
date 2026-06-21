@@ -146,7 +146,8 @@ export function HorizonScene() {
           <div key={lm.id} className="absolute"
             style={{ left: `${lm.x + parallaxX * 1.2}%`, top: `${lmY + parallaxY * 0.4}%`, transform: "translate(-50%, -50%)", zIndex: isHovered ? 20 : 10, outline: "none", WebkitTapHighlightColor: "transparent" }}
             onMouseEnter={() => setHoveredLandmark(lm)}
-            onMouseLeave={() => setHoveredLandmark(null)}>
+            onMouseLeave={() => setHoveredLandmark(null)}
+            onClick={() => setHoveredLandmark(isHovered ? null : lm)}>
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 0.45 + (isHovered ? 0.55 : 0), y: 0 }} transition={{ delay: 0.8, duration: 1.4 }} style={{ cursor: "pointer", outline: "none", WebkitTapHighlightColor: "transparent" }}>
               <span className="font-display" style={{ fontSize: "10px", fontWeight: 700, color: isHovered ? "#C8FF5A" : "#8B8B8B", letterSpacing: "0.18em", whiteSpace: "nowrap", transition: "color 0.3s ease", display: "block", textAlign: "center" }}>{lm.label}</span>
               <div style={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
@@ -203,10 +204,11 @@ export function HorizonScene() {
         <motion.div className="absolute horizon-cta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.8, duration: 1.2 }} style={{ bottom: "clamp(4%, 10%, 15%)", left: "50%", transform: "translateX(-50%)", textAlign: "center", width: "90vw", maxWidth: 500 }}>
           <button onClick={handleBegin}
             className="font-display uppercase hover:opacity-85 transition-opacity duration-200"
-            style={{ fontSize: 'clamp(10px, 2.5vw, 12px)', fontWeight: 800, letterSpacing: "0.22em", color: "#050505", background: "#C8FF5A", border: "none", padding: "clamp(10px, 2vw, 14px) clamp(24px, 5vw, 40px)", cursor: "pointer" }}>
+            style={{ fontSize: 'clamp(12px, 2.5vw, 14px)', fontWeight: 800, letterSpacing: "0.22em", color: "#050505", background: "#C8FF5A", border: "none", padding: "clamp(14px, 2vw, 16px) clamp(28px, 5vw, 44px)", cursor: "pointer" }}>
             BEGIN THE JOURNEY
           </button>
           <p className="font-display hidden sm:block" style={{ fontSize: 10, color: "#8B8B8B", letterSpacing: "0.14em", marginTop: 16 }}>MOVE YOUR CURSOR — THE HORIZON RESPONDS</p>
+          <p className="font-display sm:hidden" style={{ fontSize: 10, color: "#8B8B8B", letterSpacing: "0.14em", marginTop: 16 }}>SWIPE — THE HORIZON RESPONDS</p>
         </motion.div>
       )}
 
@@ -232,7 +234,7 @@ export function HorizonScene() {
             <p className="font-display" style={{ fontSize: "clamp(22px, 4vw, 56px)", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em", lineHeight: 1.1, margin: "4px 0 0" }}>YOU HAVE.</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2, duration: 1 }} style={{ marginTop: "clamp(32px, 6vh, 64px)" }}>
-            <button className="font-display uppercase hover:opacity-85 transition-opacity duration-200" style={{ fontSize: 'clamp(10px, 2.5vw, 12px)', fontWeight: 800, letterSpacing: "0.22em", color: "#050505", background: "#C8FF5A", border: "none", padding: "clamp(12px, 2vw, 16px) clamp(28px, 5vw, 48px)", cursor: "pointer" }}>
+            <button className="font-display uppercase hover:opacity-85 active:opacity-70 transition-opacity duration-200" style={{ fontSize: 'clamp(12px, 2.5vw, 14px)', fontWeight: 800, letterSpacing: "0.22em", color: "#050505", background: "#C8FF5A", border: "none", padding: "clamp(14px, 2vw, 18px) clamp(28px, 5vw, 48px)", cursor: "pointer" }}>
               BEGIN THE JOURNEY
             </button>
           </motion.div>

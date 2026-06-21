@@ -149,7 +149,7 @@ export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }
                 onKeyDown={(e) => handleOtpKeyDown(e, i)}
                 aria-label={`Digit ${i + 1} of 6`}
                 className={cn(
-                  "size-10 rounded-xl border text-center text-fluid-lg font-bold outline-none transition-all",
+                  "size-11 rounded-xl border text-center text-fluid-lg font-bold outline-none transition-all",
                   d ? "border-primary bg-primary/5 text-foreground scale-110" : "border-border/60 bg-card text-foreground",
                 )}
                 autoFocus={i === 0}
@@ -160,7 +160,7 @@ export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }
             data-step-el
             type="button"
             onClick={exitOtp}
-            className="text-center text-fluid-xs text-muted-foreground/50 underline underline-offset-2 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="text-center text-fluid-xs text-muted-foreground/50 underline underline-offset-2 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded min-h-[44px] flex items-center justify-center px-4"
           >
             Change phone number
           </button>

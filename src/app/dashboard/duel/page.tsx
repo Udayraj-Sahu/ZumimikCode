@@ -126,7 +126,7 @@ export default function DuelPage() {
   if (phase === "config") {
     return (
       <div className="px-4 sm:px-6 pt-6 pb-10">
-        <div ref={headerRef}>
+        <div ref={headerRef} className="text-center">
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
           <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Live Duel</h1>
           <p className="text-fluid-sm text-muted-foreground/60">Compete head-to-head in real-time</p>
@@ -144,7 +144,7 @@ export default function DuelPage() {
                   "rounded-xl border py-3 px-3 text-fluid-xs font-bold text-center outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                   topic === t.id
                     ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)] text-foreground"
-                    : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40",
+                    : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
                 )}
               >
                 {t.label}
@@ -212,7 +212,7 @@ export default function DuelPage() {
         </div>
 
         {/* Comparison */}
-        <div className="mt-6 grid grid-cols-2 gap-4">
+        <div className="mt-6 grid grid-cols-2 sm:grid-cols-2 gap-4">
           <div className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-fluid-xs font-semibold tracking-widest text-muted-foreground/50">YOUR SCORE</p>
             <p className="mt-1 text-fluid-2xl font-black text-primary">{result.yourScore}</p>
@@ -225,7 +225,7 @@ export default function DuelPage() {
           </div>
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3">
           <div className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className="text-fluid-xs text-muted-foreground/40">Your Time</p>
             <p className="text-fluid-lg font-bold font-mono text-foreground/80">{result.yourTime}s</p>
@@ -247,7 +247,7 @@ export default function DuelPage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
           >
             Dashboard
           </button>
@@ -310,7 +310,7 @@ export default function DuelPage() {
             {question.options.map((option, i) => {
               const isSelected = answers[question.id] === i;
               const isCorrect = i === question.correctIndex;
-              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40" as string;
+              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60" as string;
               if (revealed) {
                 if (isCorrect) variant = "border-primary bg-primary/10 text-primary";
                 else if (isSelected) variant = "border-destructive bg-destructive/10 text-destructive";

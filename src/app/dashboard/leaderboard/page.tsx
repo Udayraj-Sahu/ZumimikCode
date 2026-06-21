@@ -23,7 +23,7 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
       data-leaderboard-row
       className={cn(
         "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors",
-        entry.me ? "bg-primary/5 border border-primary/20" : "hover:bg-accent/20",
+        entry.me ? "bg-primary/5 border border-primary/20" : "hover:bg-accent/20 active:bg-accent/30",
       )}
     >
       <span className={cn(
@@ -97,7 +97,7 @@ export default function LeaderboardPage() {
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
       {/* Header */}
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
         <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Leaderboard</h1>
         <p className="text-fluid-sm text-muted-foreground/60">Track your ranking across all arenas</p>
@@ -111,10 +111,10 @@ export default function LeaderboardPage() {
             type="button"
             onClick={() => setPeriod(p)}
             className={cn(
-              "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+              "rounded-lg px-4 py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
               period === p
                 ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:text-foreground",
+                : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
             )}
           >
             {p}
@@ -147,7 +147,7 @@ export default function LeaderboardPage() {
 
         {entries && entries.length > 0 && (
           <>
-            <div className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
+            <div role="list" className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
               {entries.map((entry, i) => (
                 <LeaderboardRow key={entry.rank} entry={entry} index={i} />
               ))}

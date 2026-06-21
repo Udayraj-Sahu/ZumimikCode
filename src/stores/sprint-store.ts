@@ -14,13 +14,13 @@ type SprintState = {
   sessionStartTime: number | null;
   timeLeft: number;
   lastResult: SprintResult | null;
-  lastSession: { questions: Question[]; topicLabel: string; difficulty: string } | null;
+  lastSession: { questions: Question[]; topic: string; topicLabel: string; difficulty: string } | null;
 
   initSprint: (totalTime: number) => void;
   answerCurrent: (questionId: string, optionIndex: number) => void;
   nextQuestion: () => void;
   tick: () => void;
-  completeSprint: (session?: { questions: Question[]; topicLabel: string; difficulty: string }) => void;
+  completeSprint: (session?: { questions: Question[]; topic: string; topicLabel: string; difficulty: string }) => void;
   getResult: (questions: Question[]) => SprintResult;
   reset: () => void;
 };

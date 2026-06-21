@@ -68,7 +68,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
             ref={closeBtnRef}
             type="button"
             onClick={onClose}
-            className="grid size-8 place-items-center rounded-lg outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-11 place-items-center rounded-lg outline-none transition-colors hover:bg-muted active:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Close"
           >
             <X size={18} className="text-muted-foreground" />

@@ -64,7 +64,7 @@ function HistoryRow({
       </div>
       <div className="text-right shrink-0">
         <p className="text-fluid-xs font-mono text-muted-foreground/40">{formatTime(entry.totalTimeSpent)}</p>
-        <p className="text-fluid-xs text-muted-foreground/30 mt-0.5">{formatDate(entry.completedAt)}</p>
+        <p className="text-fluid-xs text-muted-foreground/50 mt-0.5">{formatDate(entry.completedAt)}</p>
       </div>
       <ChevronRight size={14} className="text-muted-foreground/20 shrink-0" />
     </button>
@@ -131,7 +131,7 @@ export default function HistoryPage() {
 
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
         <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Sprint History</h1>
         <p className="text-fluid-sm text-muted-foreground/60">Review your past sprint performances</p>
@@ -144,24 +144,24 @@ export default function HistoryPage() {
           <select
             value={topicFilter}
             onChange={(e) => { setTopicFilter(e.target.value); setPage(0); }}
-            className="bg-transparent text-fluid-xs font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer"
+            className="bg-transparent text-fluid-xs font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded"
           >
             {TOPICS_FILTER_HISTORY.map((t) => (
               <option key={t.id} value={t.id}>{t.label}</option>
             ))}
           </select>
         </div>
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           {DIFFICULTY_FILTER.map((d) => (
             <button
               key={d.id}
               type="button"
               onClick={() => { setDiffFilter(d.id); setPage(0); }}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                "rounded-lg px-2 sm:px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 diffFilter === d.id
                   ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:text-foreground",
+                  : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
               )}
             >
               {d.label}
@@ -171,7 +171,7 @@ export default function HistoryPage() {
         <button
           type="button"
           onClick={() => setSortAsc(!sortAsc)}
-          className="ml-auto flex items-center gap-1 rounded-lg bg-muted px-3 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+          className="ml-auto flex items-center gap-1 rounded-lg bg-muted px-3 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
         >
           <ArrowUpDown size={12} />
           {sortAsc ? "Oldest" : "Newest"}
@@ -187,12 +187,12 @@ export default function HistoryPage() {
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="text-fluid-xs text-muted-foreground/40 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-1"
+                className="min-h-[44px] px-3 py-2 text-fluid-xs text-muted-foreground/40 outline-none hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded"
               >
                 Close
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-2 text-center mb-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center mb-3">
               <div className="rounded-lg bg-muted p-2">
                 <p className="text-fluid-xs text-muted-foreground/40">Score</p>
                 <p className="text-fluid-lg font-black text-foreground">{selected.score}/{selected.total}</p>
@@ -241,7 +241,7 @@ export default function HistoryPage() {
         )}
 
         {sorted.length > 0 && (
-          <div ref={listRef} className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
+          <div ref={listRef} role="list" className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
             {paged.map((entry, i) => (
               <HistoryRow key={entry.id} entry={entry} index={i} onSelect={setSelected} />
             ))}
@@ -257,8 +257,8 @@ export default function HistoryPage() {
                 type="button"
                 onClick={() => setPage(i)}
                 className={cn(
-                  "min-w-[44px] min-h-[44px] rounded-lg text-fluid-xs font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
-                  page === i ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground",
+                  "min-w-[44px] min-h-[44px] rounded-lg text-fluid-xs font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:bg-muted/70",
+                  page === i ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
                 )}
               >
                 {i + 1}

@@ -19,6 +19,7 @@ export default function ArrowMatrixRenderer({
   template,
   visibleSteps,
   mode,
+  onStepReveal,
 }: RendererProps) {
   const problemLabel = template.examples?.[0]?.problem_statement ?? "";
   const parsed = useMemo(() => {
@@ -41,6 +42,7 @@ export default function ArrowMatrixRenderer({
       template={template}
       visibleSteps={visibleSteps}
       mode={mode}
+      onStepReveal={onStepReveal}
     >
       <svg
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}

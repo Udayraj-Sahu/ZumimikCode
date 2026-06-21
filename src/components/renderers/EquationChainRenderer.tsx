@@ -8,17 +8,21 @@ export default function EquationChainRenderer({
   template,
   visibleSteps,
   mode,
+  onStepReveal,
 }: RendererProps) {
   const steps = template.examples?.[0]?.solution ?? [];
+
+  const svgWidth = useMemo(() => Math.max(400, 60 + steps.length * 120 + 60), [steps.length]);
 
   return (
     <TextScaffold
       template={template}
       visibleSteps={visibleSteps}
       mode={mode}
+      onStepReveal={onStepReveal}
     >
       <svg
-        viewBox="0 0 400 200"
+        viewBox={`0 0 ${svgWidth} 200`}
         className="w-full h-auto max-w-[450px]"
         role="img"
         aria-label="Equation chain"

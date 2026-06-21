@@ -161,7 +161,7 @@ export function RankSignal() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <span className="text-[10px] sm:text-xs tracking-widest uppercase text-primary/70 font-mono">
+            <span className="text-xs sm:text-sm tracking-widest uppercase text-primary/70 font-mono">
               {STATS[statIndex].value}{" "}
               <span className="text-secondary-foreground/50">
                 {STATS[statIndex].label}

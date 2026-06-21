@@ -44,7 +44,7 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
           <button
             type="button"
             onClick={() => toggle(item.id)}
-            className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left outline-none transition-colors hover:bg-accent/20 focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left outline-none transition-colors hover:bg-accent/20 active:bg-accent/30 focus-visible:ring-2 focus-visible:ring-ring rounded"
           >
             <span className="text-fluid-sm font-semibold text-foreground/80">{item.question}</span>
             <ChevronDown
@@ -102,7 +102,7 @@ export default function HelpPage() {
   return (
     <div className="mx-auto w-full max-w-2xl px-4 sm:px-6 pt-6 pb-10">
       {/* Header */}
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
         <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Help & About</h1>
         <p className="text-fluid-sm text-muted-foreground/60">Frequently asked questions and app information</p>
@@ -160,7 +160,7 @@ export default function HelpPage() {
               <h2 className="text-fluid-sm font-bold uppercase tracking-widest text-foreground/80 mb-3">Contact & Support</h2>
               <a
                 href="mailto:report@examarena.io"
-                className="flex items-center gap-3 rounded-lg bg-muted px-4 py-3 text-fluid-sm font-semibold text-foreground/80 outline-none transition-colors hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-3 rounded-lg bg-muted px-4 py-3 text-fluid-sm font-semibold text-foreground/80 outline-none transition-colors hover:bg-muted/70 active:bg-muted/80 focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <Mail size={16} className="text-muted-foreground/40" />
                 report@examarena.io
@@ -172,14 +172,14 @@ export default function HelpPage() {
               <h2 className="px-4 pt-4 pb-2 text-fluid-sm font-bold uppercase tracking-widest text-foreground/80">Legal</h2>
               <button
                 type="button"
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-fluid-sm font-semibold text-foreground/80 outline-none transition-colors hover:bg-accent/20 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-fluid-sm font-semibold text-foreground/80 outline-none transition-colors hover:bg-accent/20 active:bg-accent/30 focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <FileText size={16} className="text-muted-foreground/40" />
                 Terms of Service
               </button>
               <button
                 type="button"
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-fluid-sm font-semibold text-foreground/80 outline-none transition-colors hover:bg-accent/20 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-fluid-sm font-semibold text-foreground/80 outline-none transition-colors hover:bg-accent/20 active:bg-accent/30 focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <ShieldCheck size={16} className="text-muted-foreground/40" />
                 Privacy Policy

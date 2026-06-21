@@ -131,4 +131,5 @@ export type RendererProps = {
   template: SolveAlongTemplate;
   visibleSteps: number;
   mode: RenderMode;
+  onStepReveal?: () => void;
 };

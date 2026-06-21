@@ -24,7 +24,7 @@ export default function ProfilePage() {
 
   return (
       <div className="px-4 sm:px-6">
-        <div className="pt-5 pb-4 border-b border-border mb-5">
+        <div className="pt-5 pb-4 border-b border-border mb-5 text-center">
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
             EXAM ARENA
           </p>

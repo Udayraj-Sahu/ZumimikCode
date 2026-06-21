@@ -43,16 +43,19 @@ export default function MorePage() {
   return (
     <div className="pb-10">
       {/* Header */}
-      <div ref={headerRef} className="flex items-center gap-2 px-4 pt-5 pb-4 border-b border-border">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="grid size-11 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label="Back"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <h1 className="text-fluid-xl font-black tracking-tight text-foreground">More</h1>
+      <div ref={headerRef} className="px-4 pt-5 pb-4 border-b border-border text-center">
+        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60 mb-1">EXAM ARENA</p>
+        <div className="flex items-center justify-center gap-2">
+          <button
+            type="button"
+            onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard"); }}
+            className="grid size-11 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label="Back"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <h1 className="text-fluid-xl font-black tracking-tight text-foreground">More</h1>
+        </div>
       </div>
 
       {/* User card */}
@@ -84,7 +87,7 @@ export default function MorePage() {
             <p className="mb-2.5 text-fluid-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/40">
               {section}
             </p>
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {items.map((item) => {
                 const Icon = item.icon;
                 return (

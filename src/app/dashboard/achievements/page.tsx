@@ -93,7 +93,7 @@ export default function AchievementsPage() {
   return (
     <div className="px-4 sm:px-6 pt-6 pb-10">
       {/* Header */}
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
         <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Achievements</h1>
         <p className="text-fluid-sm text-muted-foreground/60">

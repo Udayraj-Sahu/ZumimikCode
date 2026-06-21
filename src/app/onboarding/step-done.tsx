@@ -7,6 +7,7 @@ import { ArrowRight, BadgeCheck, BarChart3, Smartphone, Globe } from "lucide-rea
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useAuthStore } from "@/stores/auth-store";
+import { useWalkthroughStore } from "@/stores/walkthrough-store";
 
 const HexRingSVG = () => (
   <svg width="200" height="150" viewBox="0 0 200 150" className="w-32 h-24 absolute top-0 opacity-30 pointer-events-none" aria-hidden="true">
@@ -113,6 +114,7 @@ export function StepDone({ onSelect }: Props) {
 
   const handleEnter = () => {
     completeOnboarding();
+    useWalkthroughStore.getState().complete();
     onSelect();
     authLogin(phone || `${name}@onboard.com`, "mock-password");
     router.push("/dashboard");

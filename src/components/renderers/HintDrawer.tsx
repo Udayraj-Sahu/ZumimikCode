@@ -18,7 +18,7 @@ export default function HintDrawer({ hints }: HintDrawerProps) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center gap-2 px-4 py-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="flex w-full min-h-[44px] items-center gap-2 px-4 py-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring"
         aria-expanded={open}
       >
         <Lightbulb size={16} className="shrink-0 text-chart-3" />

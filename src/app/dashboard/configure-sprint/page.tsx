@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintTopics } from "@/hooks/queries/use-sprint";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
+import { getTemplatesByCategory } from "@/services/templates";
+import { getTemplateCategoriesForTopic } from "@/lib/topic-template-map";
+import type { SolveAlongTemplate } from "@/lib/types/template";
 
 export default function ConfigureSprintPage() {
   usePageMeta("Configure Sprint — Exam Arena");
@@ -17,6 +20,21 @@ export default function ConfigureSprintPage() {
   const [topic, setTopic] = useState("addition");
   const [length, setLength] = useState(10);
   const [difficulty, setDifficulty] = useState("Beginner");
+  const [templates, setTemplates] = useState<SolveAlongTemplate[]>([]);
+  const [loadingTemplates, setLoadingTemplates] = useState(false);
+
+  useEffect(() => {
+    const cats = getTemplateCategoriesForTopic(targetExam, topic);
+    if (cats.length === 0) {
+      setTemplates([]);
+      return;
+    }
+    setLoadingTemplates(true);
+    getTemplatesByCategory(cats[0], targetExam).then((results) => {
+      setTemplates(results);
+      setLoadingTemplates(false);
+    });
+  }, [topic, targetExam]);
 
   const headerRef = useCallback((el: HTMLDivElement | null) => {
     if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
@@ -41,7 +59,7 @@ export default function ConfigureSprintPage() {
 
   return (
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <div ref={headerRef} className="pt-5 pb-4 border-b border-border mb-6">
+        <div ref={headerRef} className="pt-5 pb-4 border-b border-border mb-6 text-center">
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
             EXAM ARENA
           </p>
@@ -84,7 +102,7 @@ export default function ConfigureSprintPage() {
                     "relative flex flex-col items-center justify-center gap-2 rounded-2xl border p-4 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] sm:gap-3 sm:p-6",
                     active
                       ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary),0_0_24px_-4px_var(--primary)]"
-                      : "border-border/60 bg-card hover:border-border hover:bg-accent/40",
+                      : "border-border/60 bg-card hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
                   )}
                 >
                   <Icon
@@ -187,7 +205,75 @@ export default function ConfigureSprintPage() {
           </section>
         </div>
 
-        <div ref={animateSection} data-section-index={3} className="mt-8 sm:mt-10">
+        {/* Learn the Technique — only shown when templates exist for selected topic */}
+        {(templates.length > 0 || loadingTemplates) && (
+          <section
+            ref={animateSection} data-section-index={3}
+            className="mt-6"
+          >
+            <div className="mb-3 flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-chart-3/10 px-3 py-1 text-fluid-xs font-bold uppercase tracking-wider text-chart-3">
+                Learn
+              </span>
+              <h2 className="text-fluid-sm font-bold uppercase tracking-[0.15em] text-muted-foreground/80">
+                Learn the Technique
+              </h2>
+            </div>
+            {loadingTemplates ? (
+              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin snap-x snap-mandatory">
+                {Array.from({ length: 2 }).map((_, i) => (
+                  <div key={i} className="min-w-[65vw] sm:min-w-[260px] snap-start rounded-xl border border-border/40 bg-card p-4 animate-pulse">
+                    <div className="h-4 w-24 rounded bg-muted mb-3" />
+                    <div className="h-3 w-32 rounded bg-muted mb-2" />
+                    <div className="h-8 w-20 rounded bg-muted mt-3" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin snap-x snap-mandatory">
+                {templates.map((tpl) => (
+                  <div
+                    key={tpl.id}
+                    className="min-w-[65vw] sm:min-w-[240px] snap-start shrink-0 rounded-xl border border-border/40 bg-card p-4 flex flex-col"
+                  >
+                    <p className="text-fluid-xs font-bold uppercase tracking-wider text-chart-3 mb-1">
+                      {tpl.concept.category}
+                    </p>
+                    <p className="text-fluid-sm font-bold text-foreground leading-snug">
+                      {tpl.concept.technique_name}
+                    </p>
+                    <p className="text-fluid-xs text-muted-foreground/50 mt-1">
+                      {tpl.examples.length} example{tpl.examples.length > 1 ? "s" : ""} &middot; ~{tpl.expected_time}s
+                    </p>
+                    <div className="flex items-center gap-1 mt-1.5">
+                      {[1, 2, 3, 4, 5].map((d) => (
+                        <span
+                          key={d}
+                          className={cn(
+                            "size-1.5 rounded-full",
+                            d <= tpl.difficulty ? "bg-chart-3" : "bg-muted",
+                          )}
+                        />
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        router.push(`/dashboard/practice?templateId=${tpl.id}&returnTo=/dashboard/configure-sprint&topic=${topic}&difficulty=${difficulty.toLowerCase()}`)
+                      }
+                      className="mt-3 flex items-center justify-center gap-1.5 rounded-lg bg-chart-3/10 py-3 text-fluid-xs font-bold uppercase tracking-wider text-chart-3 outline-none transition-colors hover:bg-chart-3/20 active:bg-chart-3/30 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+                    >
+                      <BookOpen size={12} />
+                      Learn
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        <div ref={animateSection} data-section-index={4} className="mt-6 sm:mt-8">
           <button
             type="button"
             onClick={() =>

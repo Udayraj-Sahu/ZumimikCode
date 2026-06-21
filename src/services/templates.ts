@@ -1,5 +1,5 @@
 import type { SolveAlongTemplate, TemplateSession } from "@/lib/types/template";
-import { SAMPLE_TEMPLATES, getTemplatesByDomain as mockGetByDomain, getCategoriesForDomain as mockGetCategories } from "@/lib/mock/templates";
+import { SAMPLE_TEMPLATES, getTemplatesByDomain as mockGetByDomain, getCategoriesForDomain as mockGetCategories, generateFallbackTemplates } from "@/lib/mock/templates";
 import { apiGet, apiPost } from "./api";
 
 const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
@@ -11,7 +11,15 @@ function delay(ms: number) {
 export async function getTemplate(id: string): Promise<SolveAlongTemplate | null> {
   if (IS_MOCK) {
     await delay(200);
-    return SAMPLE_TEMPLATES.find((t) => t.id === id) ?? null;
+    const match = SAMPLE_TEMPLATES.find((t) => t.id === id);
+    if (match) return match;
+    if (id.startsWith("fallback__")) {
+      const parts = id.split("__");
+      const domain = parts[1];
+      const category = parts[2];
+      return generateFallbackTemplates(domain, category, 1)[0] ?? null;
+    }
+    return null;
   }
   return apiGet<SolveAlongTemplate>(`/api/templates/${id}`);
 }
@@ -39,7 +47,9 @@ export async function getTemplatesByCategory(
   if (IS_MOCK) {
     await delay(200);
     const { getTemplatesByCategory: mockGetByCat } = await import("@/lib/mock/templates");
-    return mockGetByCat(category, domain);
+    const real = mockGetByCat(category, domain);
+    if (real.length > 0) return real;
+    return generateFallbackTemplates(domain ?? "vedic-math", category);
   }
   const params = new URLSearchParams({ category });
   if (domain) params.set("domain", domain);

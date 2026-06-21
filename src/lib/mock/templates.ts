@@ -242,3 +242,103 @@ export function getCategoriesForDomain(domain: string): string[] {
   }
   return Array.from(cats);
 }
+
+const FALLBACK_SCAFFOLD_TYPES: Array<SolveAlongTemplate["visual_scaffold"]["type"]> = [
+  "arrow_matrix",
+  "number_line",
+  "grid_construction",
+  "equation_chain",
+  "place_value_chart",
+  "shape_canvas",
+  "venn_diagram",
+];
+
+const FALLBACK_REMINDERS: Record<string, string[]> = {
+  vedic_math: [
+    "Practice mental calculations daily",
+    "Look for patterns before applying formulas",
+    "Break complex problems into smaller steps",
+    "Verify your answer with approximation",
+  ],
+  gmat: [
+    "Read the question carefully before solving",
+    "Eliminate wrong answers first",
+    "Manage time — don't spend too long on one question",
+    "Look for clue words in the stem",
+  ],
+  general: [
+    "Understand the concept before memorizing steps",
+    "Check your work with a different method",
+    "Focus on accuracy first, then speed",
+    "Review mistakes to identify weak areas",
+  ],
+};
+
+const FALLBACK_MISTAKES: string[] = [
+  "Rushing through the problem without reading carefully",
+  "Misapplying the formula or technique",
+  "Arithmetic errors in intermediate steps",
+  "Forgetting to double-check the final answer",
+];
+
+const DOMAIN_LABEL_MAP: Record<string, string> = {
+  "vedic-math": "Vedic Math",
+  gmat: "GMAT",
+  cat: "CAT",
+  gre: "GRE",
+  banking: "Banking",
+};
+
+let _fallbackCounter = 0;
+
+export function generateFallbackTemplates(
+  domain: string,
+  category: string,
+  count = 3,
+): SolveAlongTemplate[] {
+  const domainLabel = DOMAIN_LABEL_MAP[domain] || domain;
+  const catLabel = category
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+  const namePatterns = [
+    `Core ${domainLabel} — ${catLabel}`,
+    `Advanced ${domainLabel} — ${catLabel}`,
+    `Rapid ${domainLabel} — ${catLabel}`,
+  ];
+  const reminders =
+    FALLBACK_REMINDERS[domain as keyof typeof FALLBACK_REMINDERS] ??
+    FALLBACK_REMINDERS.general;
+
+  return Array.from({ length: count }, (_, i) => {
+    const idx = _fallbackCounter++;
+    const scaffoldType =
+      FALLBACK_SCAFFOLD_TYPES[
+        (i + _fallbackCounter) % FALLBACK_SCAFFOLD_TYPES.length
+      ];
+
+    return {
+      id: `fallback__${domain}__${category}__${idx}`,
+      domain,
+      concept: {
+        technique_name: namePatterns[i % namePatterns.length],
+        category,
+      },
+      difficulty: (i % 3) + 2, // 2, 3, 4
+      expected_time: 30 + i * 15, // 30, 45, 60
+      visual_scaffold: { type: scaffoldType },
+      examples: [
+        {
+          problem_statement: `Sample problem for ${domainLabel} — ${catLabel} (Example ${i + 1})`,
+          solution: [
+            { step_num: 1, operation: "Identify the given values and the target value" },
+            { step_num: 2, operation: "Select the appropriate formula or technique" },
+            { step_num: 3, operation: "Apply the method step by step" },
+            { step_num: 4, operation: "Verify the result for consistency" },
+          ],
+        },
+      ],
+      key_reminders: reminders.slice(0, 2),
+      common_mistakes: FALLBACK_MISTAKES.slice(0, 2),
+    };
+  });
+}

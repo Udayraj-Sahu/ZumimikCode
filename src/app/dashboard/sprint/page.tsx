@@ -50,12 +50,13 @@ function SprintContent() {
       feedback.complete();
       completeSprint({
         questions: data.questions,
+        topic: topic,
         topicLabel: data.topicLabel,
         difficulty: data.difficulty,
       });
       goToResults();
     }
-  }, [data, completeSprint, goToResults, feedback]);
+  }, [data, topic, completeSprint, goToResults, feedback]);
 
   useEffect(() => {
     if (data && status === "idle") {
@@ -160,14 +161,14 @@ function SprintContent() {
           <button
             type="button"
             onClick={() => router.push("/dashboard/configure-sprint")}
-            className="rounded-lg bg-muted px-5 py-3 text-fluid-sm font-bold text-foreground outline-none transition-colors hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-lg bg-muted px-5 py-3 text-fluid-sm font-bold text-foreground outline-none transition-colors hover:bg-muted/70 active:bg-muted/90 focus-visible:ring-2 focus-visible:ring-ring"
           >
             Back
           </button>
           <button
             type="button"
             onClick={() => router.refresh()}
-            className="rounded-lg bg-primary px-5 py-3 text-fluid-sm font-bold text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-lg bg-primary px-5 py-3 text-fluid-sm font-bold text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Retry
           </button>
@@ -193,18 +194,21 @@ function SprintContent() {
 
   return (
     <div className="mx-auto max-w-lg px-4 sm:px-6">
-      <div ref={headerRef} className="flex items-center justify-between pt-4 pb-3">
-        <button
-          type="button"
-          onClick={() => { reset(); router.push("/dashboard/configure-sprint"); }}
-          className="flex items-center gap-1 outline-none transition-opacity hover:opacity-70 focus-visible:ring-2 focus-visible:ring-ring rounded p-1 text-muted-foreground/60"
-          aria-label="Back to configure"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <span className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
-          {currentIndex + 1} / {data.questions.length}
-        </span>
+      <div ref={headerRef} className="pt-4 pb-3 text-center">
+        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60 mb-2">EXAM ARENA</p>
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => { reset(); router.push("/dashboard/configure-sprint"); }}
+            className="grid size-11 place-items-center outline-none transition-opacity hover:opacity-70 active:opacity-50 focus-visible:ring-2 focus-visible:ring-ring rounded-lg text-muted-foreground/60"
+            aria-label="Back to configure"
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <span className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
+            {currentIndex + 1} / {data.questions.length}
+          </span>
+        </div>
       </div>
 
       <div className="h-1.5 w-full rounded-full bg-muted mb-5">
@@ -238,7 +242,7 @@ function SprintContent() {
             {question.options.map((option, i) => {
               const isSelected = selectedIndex === i;
               const isCorrect = i === question.correctIndex;
-              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40" as string;
+              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60" as string;
               if (showFeedback) {
                 if (isSelected && isCorrect) variant = "border-primary bg-primary/10 text-primary";
                 else if (isSelected && !isCorrect) variant = "border-destructive bg-destructive/10 text-destructive";

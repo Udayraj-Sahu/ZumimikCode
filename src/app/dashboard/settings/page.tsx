@@ -46,14 +46,14 @@ function Toggle({
       aria-label={label}
       onClick={() => onChange(!checked)}
       className={cn(
-        "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+        "relative inline-flex h-11 w-14 shrink-0 items-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
         checked ? "bg-primary" : "bg-muted",
       )}
     >
       <span
         className={cn(
           "inline-block size-5 transform rounded-full bg-background shadow transition-transform duration-200",
-          checked ? "translate-x-6" : "translate-x-1",
+          checked ? "translate-x-7" : "translate-x-1",
         )}
       />
     </button>
@@ -153,14 +153,14 @@ function DeleteModal({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-lg bg-muted px-4 py-3 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-lg bg-muted px-4 py-3 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-muted/70 active:bg-muted/80 focus-visible:ring-2 focus-visible:ring-ring"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className="rounded-lg bg-destructive px-4 py-3 text-fluid-sm font-bold uppercase tracking-widest text-destructive-foreground outline-none transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-lg bg-destructive px-4 py-3 text-fluid-sm font-bold uppercase tracking-widest text-destructive-foreground outline-none transition-colors hover:opacity-90 active:opacity-80 focus-visible:ring-2 focus-visible:ring-ring"
           >
             Delete
           </button>
@@ -218,11 +218,11 @@ export default function SettingsPage() {
 
   return (
       <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
-        <div className="pt-6 pb-4 border-b border-border mb-6">
+        <div className="pt-6 pb-4 border-b border-border mb-6 text-center">
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
             EXAM ARENA
           </p>
-          <div className="flex items-center gap-2 mt-0.5">
+          <div className="flex items-center justify-center gap-2 mt-0.5">
             <Settings className="size-6 text-primary" aria-hidden="true" />
             <h1 className="text-fluid-2xl font-bold tracking-tight">Settings</h1>
           </div>
@@ -241,7 +241,7 @@ export default function SettingsPage() {
             <button
               type="button"
               onClick={() => router.push("/dashboard/configure-sprint")}
-              className="rounded-lg bg-background/90 px-5 py-3 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-transform hover:scale-[1.03] focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-lg bg-background/90 px-5 py-3 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-transform hover:scale-[1.03] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
             >
               Upgrade Now
             </button>
@@ -266,7 +266,7 @@ export default function SettingsPage() {
               onClick={() => openModal({ type: "alert", title: "Email", message: "Edit email address" })}
               trailing={
                 <span className="flex items-center gap-2 min-w-0">
-                  <span className="text-fluid-base text-muted-foreground truncate max-w-[200px] sm:max-w-none">{preferences.email}</span>
+                  <span className="text-fluid-base text-muted-foreground truncate max-w-[120px] sm:max-w-[200px] lg:max-w-none">{preferences.email}</span>
                   <ChevronRight className="size-5 text-muted-foreground shrink-0" aria-hidden="true" />
                 </span>
               }
@@ -377,7 +377,7 @@ export default function SettingsPage() {
           <button
             type="button"
             onClick={() => setDeleteOpen(true)}
-            className="flex items-center gap-2 text-fluid-base font-bold uppercase tracking-widest text-destructive outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-2 text-fluid-base font-bold uppercase tracking-widest text-destructive outline-none transition-opacity hover:opacity-80 active:opacity-60 focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Trash2 className="size-5" aria-hidden="true" />
             Delete Account

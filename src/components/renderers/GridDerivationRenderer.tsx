@@ -9,6 +9,7 @@ export default function GridDerivationRenderer({
   template,
   visibleSteps,
   mode,
+  onStepReveal,
 }: RendererProps) {
   const { number, base, deficiency } = useMemo(() => {
     const p = template.examples?.[0]?.problem_statement ?? "";
@@ -26,6 +27,7 @@ export default function GridDerivationRenderer({
       template={template}
       visibleSteps={visibleSteps}
       mode={mode}
+      onStepReveal={onStepReveal}
     >
       <svg
         viewBox="0 0 420 280"

@@ -39,12 +39,13 @@ function getSteps(domainLabel: string) {
 }
 
 export function Walkthrough() {
-  const { completed, complete } = useWalkthroughStore();
+  const completed = useWalkthroughStore((s) => s.completed);
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const domainLabel = DOMAIN_LABELS[targetExam] || "Exam Arena";
   const STEPS = getSteps(domainLabel);
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -56,26 +57,40 @@ export function Walkthrough() {
   }, [completed]);
 
   useEffect(() => {
-    if (open && cardRef.current) {
+    if (open && !closing && cardRef.current) {
       gsap.fromTo(cardRef.current, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
     }
-    if (open && overlayRef.current) {
+    if (open && !closing && overlayRef.current) {
       gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" });
     }
-  }, [open, step]);
+  }, [open, closing]);
+
+  const animateOut = () => {
+    if (closing) return;
+    setClosing(true);
+    gsap.to(cardRef.current, { opacity: 0, y: 16, scale: 0.96, duration: 0.25, ease: "power2.out" });
+    gsap.to(overlayRef.current, {
+      opacity: 0,
+      duration: 0.2,
+      ease: "power2.out",
+      onComplete: () => {
+        useWalkthroughStore.getState().complete();
+        setOpen(false);
+        setClosing(false);
+      },
+    });
+  };
 
   const handleNext = () => {
     if (step < STEPS.length - 1) {
       setStep((s) => s + 1);
     } else {
-      complete();
-      setOpen(false);
+      animateOut();
     }
   };
 
   const handleSkip = () => {
-    complete();
-    setOpen(false);
+    animateOut();
   };
 
   if (!open) return null;
@@ -112,8 +127,8 @@ export function Walkthrough() {
           </div>
           <button
             type="button"
-            onClick={handleSkip}
-            className="text-fluid-xs text-muted-foreground/40 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-1"
+      onClick={animateOut}
+            className="text-fluid-xs text-muted-foreground/40 outline-none hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-3 py-2 min-h-[44px]"
           >
             Skip
           </button>
