@@ -1,5 +1,5 @@
 import type { SolveAlongTemplate, TemplateSession } from "@/lib/types/template";
-import { SAMPLE_TEMPLATES } from "@/lib/mock/templates";
+import { SAMPLE_TEMPLATES, getTemplatesByDomain as mockGetByDomain, getCategoriesForDomain as mockGetCategories } from "@/lib/mock/templates";
 import { apiGet, apiPost } from "./api";
 
 const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
@@ -16,14 +16,34 @@ export async function getTemplate(id: string): Promise<SolveAlongTemplate | null
   return apiGet<SolveAlongTemplate>(`/api/templates/${id}`);
 }
 
+export async function getTemplatesByDomain(domain: string): Promise<SolveAlongTemplate[]> {
+  if (IS_MOCK) {
+    await delay(200);
+    return mockGetByDomain(domain);
+  }
+  return apiGet<SolveAlongTemplate[]>(`/api/templates?domain=${domain}`);
+}
+
+export async function getCategoriesForDomain(domain: string): Promise<string[]> {
+  if (IS_MOCK) {
+    await delay(100);
+    return mockGetCategories(domain);
+  }
+  return apiGet<string[]>(`/api/templates/categories?domain=${domain}`);
+}
+
 export async function getTemplatesByCategory(
   category: string,
+  domain?: string,
 ): Promise<SolveAlongTemplate[]> {
   if (IS_MOCK) {
     await delay(200);
-    return SAMPLE_TEMPLATES.filter((t) => t.concept.category === category);
+    const { getTemplatesByCategory: mockGetByCat } = await import("@/lib/mock/templates");
+    return mockGetByCat(category, domain);
   }
-  return apiGet<SolveAlongTemplate[]>(`/api/templates?category=${category}`);
+  const params = new URLSearchParams({ category });
+  if (domain) params.set("domain", domain);
+  return apiGet<SolveAlongTemplate[]>(`/api/templates?${params}`);
 }
 
 export async function getAllTemplates(): Promise<SolveAlongTemplate[]> {

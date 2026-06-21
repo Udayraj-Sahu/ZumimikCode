@@ -1,8 +1,10 @@
 import type { SolveAlongTemplate } from "@/lib/types/template";
 
 export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
+  // ── VEDIC MATH ──────────────────────────────────────────
   {
     id: "mult-764x38",
+    domain: "vedic-math",
     concept: { technique_name: "Nikhilam Multiplication", category: "multiplication" },
     difficulty: 3,
     expected_time: 45,
@@ -22,6 +24,7 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
   },
   {
     id: "mult-97x94",
+    domain: "vedic-math",
     concept: { technique_name: "Nikhilam Multiplication", category: "multiplication" },
     difficulty: 2,
     expected_time: 30,
@@ -42,6 +45,7 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
   },
   {
     id: "mult-123x456",
+    domain: "vedic-math",
     concept: { technique_name: "Vertical & Crosswise", category: "multiplication" },
     difficulty: 4,
     expected_time: 60,
@@ -64,6 +68,7 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
   },
   {
     id: "div-84by7",
+    domain: "vedic-math",
     concept: { technique_name: "Direct Division", category: "division" },
     difficulty: 2,
     expected_time: 30,
@@ -83,6 +88,7 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
   },
   {
     id: "div-256by16",
+    domain: "vedic-math",
     concept: { technique_name: "Direct Division", category: "division" },
     difficulty: 3,
     expected_time: 40,
@@ -103,6 +109,7 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
   },
   {
     id: "div-1000by8",
+    domain: "vedic-math",
     concept: { technique_name: "Direct Division", category: "division" },
     difficulty: 2,
     expected_time: 25,
@@ -123,12 +130,115 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     key_reminders: ["Bring down one digit at a time", "The quotient builds digit by digit"],
     common_mistakes: ["Skipping steps when digit is smaller than divisor"],
   },
+
+  // ── GMAT ────────────────────────────────────────────────
+  {
+    id: "gmat-ps-speed-1",
+    domain: "gmat",
+    concept: { technique_name: "Speed & Distance", category: "problem_solving" },
+    difficulty: 3,
+    expected_time: 90,
+    visual_scaffold: { type: "number_line" },
+    examples: [
+      {
+        problem_statement: "A car travels 240 miles at 60 mph. How long does the trip take?",
+        solution: [
+          { step_num: 1, operation: "Time = Distance ÷ Speed" },
+          { step_num: 2, operation: "Time = 240 ÷ 60" },
+          { step_num: 3, operation: "Time = 4 hours", result: "4" },
+        ],
+      },
+    ],
+    key_reminders: ["Use the formula Distance = Rate × Time", "Check units match"],
+    common_mistakes: ["Multiplying instead of dividing", "Forgetting to convert units"],
+  },
+  {
+    id: "gmat-ps-work-1",
+    domain: "gmat",
+    concept: { technique_name: "Work Rate", category: "problem_solving" },
+    difficulty: 4,
+    expected_time: 120,
+    visual_scaffold: { type: "arrow_matrix" },
+    examples: [
+      {
+        problem_statement: "Alice can paint a room in 6 hours. Bob can paint it in 3 hours. How long together?",
+        solution: [
+          { step_num: 1, operation: "Alice's rate: 1/6 room per hour" },
+          { step_num: 2, operation: "Bob's rate: 1/3 room per hour" },
+          { step_num: 3, operation: "Combined rate: 1/6 + 1/3 = 1/2 room per hour" },
+          { step_num: 4, operation: "Time = 1 ÷ (1/2) = 2 hours", result: "2" },
+        ],
+      },
+    ],
+    key_reminders: ["Combined rate = sum of individual rates", "Time = Work ÷ Rate"],
+    common_mistakes: ["Averaging the times instead of summing rates", "Inverting the fraction"],
+  },
+  {
+    id: "gmat-ds-numbers-1",
+    domain: "gmat",
+    concept: { technique_name: "Number Properties — DS", category: "data_sufficiency" },
+    difficulty: 4,
+    expected_time: 120,
+    visual_scaffold: { type: "grid_construction" },
+    examples: [
+      {
+        problem_statement: "Is x divisible by 6? (1) x is divisible by 2. (2) x is divisible by 3.",
+        solution: [
+          { step_num: 1, operation: "For divisibility by 6, need both factors 2 and 3" },
+          { step_num: 2, operation: "Statement 1: x is divisible by 2 — tells us x has factor 2" },
+          { step_num: 3, operation: "Statement 2: x is divisible by 3 — tells us x has factor 3" },
+          { step_num: 4, operation: "Both together: x has factors 2 AND 3 → divisible by 6" },
+          { step_num: 5, operation: "Answer: Both statements together are sufficient (C)", result: "C" },
+        ],
+      },
+    ],
+    key_reminders: ["Divisibility by 6 requires both 2 and 3", "Data Sufficiency: evaluate individually first, then together"],
+    common_mistakes: ["Assuming (1) alone is enough", "Forgetting that 6 = 2 × 3"],
+  },
+  {
+    id: "gmat-sc-parallel-1",
+    domain: "gmat",
+    concept: { technique_name: "Parallel Structure — SC", category: "sentence_correction" },
+    difficulty: 3,
+    expected_time: 75,
+    visual_scaffold: { type: "equation_chain" },
+    examples: [
+      {
+        problem_statement: "The athlete trained rigorously, ate a balanced diet, and ___ plenty of rest.",
+        solution: [
+          { step_num: 1, operation: "List: trained, ate, ___  — all verbs in past tense" },
+          { step_num: 2, operation: "First two are past tense (trained, ate)" },
+          { step_num: 3, operation: "Third must also be past tense: 'got'" },
+          { step_num: 4, operation: "Correct: 'got plenty of rest'", result: "got" },
+        ],
+      },
+    ],
+    key_reminders: ["Items in a list must share the same grammatical form", "Look for 'and', 'or', 'but' as parallelism markers"],
+    common_mistakes: ["Switching from past to present tense mid-list", "Using a gerund when the list starts with base verbs"],
+  },
 ];
 
-export function getTemplatesByCategory(category: string): SolveAlongTemplate[] {
-  return SAMPLE_TEMPLATES.filter((t) => t.concept.category === category);
+export function getTemplatesByDomain(domain: string): SolveAlongTemplate[] {
+  return SAMPLE_TEMPLATES.filter((t) => t.domain === domain);
+}
+
+export function getTemplatesByCategory(
+  category: string,
+  domain?: string,
+): SolveAlongTemplate[] {
+  return SAMPLE_TEMPLATES.filter(
+    (t) => t.concept.category === category && (!domain || t.domain === domain),
+  );
 }
 
 export function getTemplateById(id: string): SolveAlongTemplate | undefined {
   return SAMPLE_TEMPLATES.find((t) => t.id === id);
+}
+
+export function getCategoriesForDomain(domain: string): string[] {
+  const cats = new Set<string>();
+  for (const t of SAMPLE_TEMPLATES) {
+    if (t.domain === domain) cats.add(t.concept.category);
+  }
+  return Array.from(cats);
 }

@@ -10,33 +10,31 @@ import {
   ChevronLeft,
   BookOpen,
   BrainCircuit,
+  Target,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { useStepProgress } from "@/hooks/use-step-progress";
 import { useTemplateStore } from "@/stores/template-store";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useFeedback } from "@/lib/use-feedback";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { SPRINT_TOPICS } from "@/lib/mock/sprint";
-import { getAllTemplates } from "@/services/templates";
+import { getTemplatesByDomain } from "@/services/templates";
 import RendererRouter from "@/components/renderers/RendererRouter";
 import type { Question } from "@/lib/types/sprint-session";
 import type { SolveAlongTemplate, RenderMode } from "@/lib/types/template";
+import { DOMAIN_LABELS } from "@/lib/types/template";
 
-type PracticeType = "mcq" | "vedic";
+type PracticeType = "mcq" | "templates";
 type Phase = "config" | "active" | "done";
-
-const VEDIC_CATEGORIES = [
-  { id: "all", label: "All Techniques", color: "bg-primary/10 text-primary" },
-  { id: "multiplication", label: "Multiplication", color: "bg-chart-3/10 text-chart-3" },
-  { id: "division", label: "Division", color: "bg-chart-4/10 text-chart-4" },
-  { id: "squares", label: "Squares", color: "bg-chart-2/10 text-chart-2" },
-];
 
 export default function PracticePage() {
   usePageMeta("Practice — Exam Arena");
   const router = useRouter();
   const feedback = useFeedback();
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const domainLabel = DOMAIN_LABELS[targetExam] || targetExam || "Templates";
 
   const [practiceType, setPracticeType] = useState<PracticeType>("mcq");
   const [topic, setTopic] = useState("");
@@ -44,8 +42,8 @@ export default function PracticePage() {
   const [phase, setPhase] = useState<Phase>("config");
 
   const [renderMode, setRenderMode] = useState<RenderMode>("solve_along");
-  const [vedicCategory, setVedicCategory] = useState("all");
-  const [vedicTemplates, setVedicTemplates] = useState<SolveAlongTemplate[]>([]);
+  const [templateCategory, setTemplateCategory] = useState("all");
+  const [loadedTemplates, setLoadedTemplates] = useState<SolveAlongTemplate[]>([]);
   const [rendererPhase, setRendererPhase] = useState<"idle" | "active" | "done">("idle");
   const [rendererCorrect, setRendererCorrect] = useState(0);
   const [rendererTotal, setRendererTotal] = useState(0);
@@ -125,19 +123,23 @@ export default function PracticePage() {
   const storeTemplates = useTemplateStore((s) => s.templates);
   const setMode = useTemplateStore((s) => s.setMode);
 
-  const startVedicPractice = async () => {
+  const startTemplatePractice = async () => {
+    if (!targetExam) {
+      feedback.wrong();
+      return;
+    }
     setLoadingTemplates(true);
     try {
-      const all = await getAllTemplates();
-      const filtered = vedicCategory === "all"
+      const all = await getTemplatesByDomain(targetExam);
+      const filtered = templateCategory === "all"
         ? all
-        : all.filter((t) => t.concept.category === vedicCategory);
+        : all.filter((t) => t.concept.category === templateCategory);
       if (filtered.length === 0) {
         feedback.wrong();
         setLoadingTemplates(false);
         return;
       }
-      setVedicTemplates(filtered);
+      setLoadedTemplates(filtered);
       loadTemplates(filtered);
       setMode(renderMode);
       setRendererPhase("active");
@@ -149,7 +151,7 @@ export default function PracticePage() {
     }
   };
 
-  const handleVedicNext = () => {
+  const handleTemplateNext = () => {
     if (storeCurrentIndex >= storeTemplates.length - 1) {
       feedback.complete();
       setRendererPhase("done");
@@ -161,13 +163,13 @@ export default function PracticePage() {
     }
   };
 
-  const handleVedicCorrect = () => {
+  const handleTemplateCorrect = () => {
     setRendererCorrect((c) => c + 1);
     feedback.correct();
     stepProgress.handleCorrect();
   };
 
-  const handleVedicWrong = () => {
+  const handleTemplateWrong = () => {
     stepProgress.handleWrong();
   };
 
@@ -199,15 +201,15 @@ export default function PracticePage() {
             </button>
             <button
               type="button"
-              onClick={() => setPracticeType("vedic")}
+              onClick={() => setPracticeType("templates")}
               className={cn(
                 "flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
-                practiceType === "vedic"
+                practiceType === "templates"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              <BrainCircuit size={16} /> Vedic Math
+              <BrainCircuit size={16} /> {targetExam ? domainLabel : "Templates"}
             </button>
           </div>
         </div>
@@ -275,25 +277,52 @@ export default function PracticePage() {
           </>
         )}
 
-        {practiceType === "vedic" && (
+        {practiceType === "templates" && !targetExam && (
+          <div ref={animateSection} data-section-index="1" className="mt-6">
+            <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border/40 bg-card/50 p-8 text-center">
+              <Target size={32} className="text-muted-foreground/30" />
+              <p className="text-fluid-sm font-semibold text-muted-foreground">No exam selected yet</p>
+              <p className="text-fluid-xs text-muted-foreground/50 max-w-xs">
+                Choose your target exam during onboarding to unlock step-by-step technique practice.
+              </p>
+              <button
+                type="button"
+                onClick={() => router.push("/onboarding")}
+                className="rounded-xl bg-primary px-5 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                Go to Onboarding
+              </button>
+            </div>
+          </div>
+        )}
+
+        {practiceType === "templates" && targetExam && (
           <>
             <div ref={animateSection} data-section-index="1" className="mt-6">
-              <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Technique Category</p>
+              <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Category</p>
               <div className="grid grid-cols-2 gap-2.5">
-                {VEDIC_CATEGORIES.map((cat) => (
+                {[
+                  { id: "all", label: "All Techniques" },
+                  { id: "multiplication", label: "Multiplication" },
+                  { id: "division", label: "Division" },
+                  { id: "squares", label: "Squares" },
+                ].map((cat) => (
                   <button
                     key={cat.id}
                     type="button"
-                    onClick={() => setVedicCategory(cat.id)}
+                    onClick={() => setTemplateCategory(cat.id)}
                     className={cn(
                       "flex items-center gap-3 rounded-2xl border p-4 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
-                      vedicCategory === cat.id
+                      templateCategory === cat.id
                         ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)]"
                         : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40",
                     )}
                     aria-label={`Category ${cat.label}`}
                   >
-                    <span className={cn("rounded-lg px-2.5 py-1 text-fluid-xs font-bold", cat.color)}>
+                    <span className={cn(
+                      "rounded-lg px-2.5 py-1 text-fluid-xs font-bold",
+                      cat.id === "all" ? "bg-primary/10 text-primary" : "bg-chart-3/10 text-chart-3",
+                    )}>
                       {cat.label === "All Techniques" ? "ALL" : cat.label.slice(0, 4).toUpperCase()}
                     </span>
                     <span className="text-fluid-sm font-semibold">{cat.label}</span>
@@ -337,11 +366,11 @@ export default function PracticePage() {
               <button
                 type="button"
                 disabled={loadingTemplates}
-                onClick={startVedicPractice}
+                onClick={startTemplatePractice}
                 className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BrainCircuit size={16} />
-                {loadingTemplates ? "Loading..." : `Start Vedic ${renderMode === "quick" ? "Quick" : renderMode === "guided" ? "Guided" : "Solve-Along"}`}
+                {loadingTemplates ? "Loading..." : `Start ${domainLabel} ${renderMode === "quick" ? "Quick" : renderMode === "guided" ? "Guided" : "Solve-Along"}`}
               </button>
             </div>
           </>
@@ -395,13 +424,13 @@ export default function PracticePage() {
     );
   }
 
-  if (practiceType === "vedic" && rendererPhase === "active" && currentTemplate) {
+  if (practiceType === "templates" && rendererPhase === "active" && currentTemplate) {
     return (
       <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 pb-10">
         {/* Header */}
         <div ref={headerRef} className="flex items-center justify-between mb-3">
           <span className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
-            Vedic Math &middot; {currentTemplate.concept?.technique_name}
+            {domainLabel} &middot; {currentTemplate.concept?.technique_name}
           </span>
           <span className="text-fluid-xs font-mono text-muted-foreground/40">
             {storeCurrentIndex + 1}/{storeTemplates.length}
@@ -451,7 +480,7 @@ export default function PracticePage() {
             )}
             <button
               type="button"
-              onClick={handleVedicNext}
+              onClick={handleTemplateNext}
               className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
             >
               {storeCurrentIndex >= storeTemplates.length - 1 ? "See Results" : "Next"}{" "}
@@ -463,7 +492,7 @@ export default function PracticePage() {
     );
   }
 
-  if (practiceType === "vedic" && (loadingTemplates || rendererPhase === "idle")) {
+  if (practiceType === "templates" && (loadingTemplates || rendererPhase === "idle")) {
     return (
       <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 animate-pulse">
         <div className="h-14 rounded-lg bg-card mb-4" />

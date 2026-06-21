@@ -15,6 +15,7 @@ export type ScaffoldType =
 
 export type SolveAlongTemplate = {
   id: string;
+  domain: string;
   concept: {
     technique_name: string;
     category: string;
@@ -76,6 +77,7 @@ export const TemplateExampleSchema = z.object({
 
 export const SolveAlongTemplateSchema = z.object({
   id: z.string().min(1),
+  domain: z.string().min(1),
   concept: z.object({
     technique_name: z.string().min(1),
     category: z.string().min(1),
@@ -106,6 +108,24 @@ export const TemplateSessionSchema = z.object({
   stepProgress: z.record(z.string(), StepProgressSchema),
   mode: z.enum(["quick", "solve_along", "guided"]),
 });
+
+export const DOMAINS = [
+  { id: "vedic-math", label: "Vedic Math" },
+  { id: "gmat", label: "GMAT" },
+  { id: "cat", label: "CAT" },
+  { id: "gre", label: "GRE" },
+  { id: "banking", label: "Banking" },
+] as const;
+
+export const DOMAIN_LABELS: Record<string, string> = {
+  "vedic-math": "Vedic Math",
+  gmat: "GMAT",
+  cat: "CAT",
+  gre: "GRE",
+  banking: "Banking",
+};
+
+export type DomainId = (typeof DOMAINS)[number]["id"];
 
 export type RendererProps = {
   template: SolveAlongTemplate;
