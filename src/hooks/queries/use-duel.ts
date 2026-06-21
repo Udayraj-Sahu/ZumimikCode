@@ -7,14 +7,14 @@ type DuelSetupData = {
   opponents: DuelOpponent[];
 };
 
-async function fetchDuelSetup(): Promise<DuelSetupData> {
-  const [topics, opponents] = await Promise.all([getDuelTopics(), getDuelOpponents()]);
+async function fetchDuelSetup(domain?: string): Promise<DuelSetupData> {
+  const [topics, opponents] = await Promise.all([getDuelTopics(domain), getDuelOpponents()]);
   return { topics, opponents };
 }
 
-export function useDuelSetup() {
+export function useDuelSetup(domain?: string) {
   return useQuery<DuelSetupData>({
-    queryKey: ["duel-setup"],
-    queryFn: fetchDuelSetup,
+    queryKey: ["duel-setup", domain],
+    queryFn: () => fetchDuelSetup(domain),
   });
 }

@@ -4,87 +4,26 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ChevronLeft, ChevronRight, RotateCw, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SPRINT_TOPICS } from "@/lib/mock/sprint";
-import { usePracticeSession } from "@/hooks/queries/use-practice";
+import { useOnboardingStore } from "@/stores/onboarding-store";
+import { getTopicsByDomain } from "@/lib/mock/sprint";
+import type { SprintTopic } from "@/lib/types/sprint";
+import { getFlashcards } from "@/lib/mock/flashcards";
+import type { Flashcard } from "@/lib/mock/flashcards";
 import { usePageMeta } from "@/hooks/use-page-meta";
-
-const CARD_CONTENT: Record<string, { front: string; back: string }[]> = {
-  addition: [
-    { front: "142 + 387", back: "529" },
-    { front: "256 + 189", back: "445" },
-    { front: "574 + 298", back: "872" },
-    { front: "1,234 + 567", back: "1,801" },
-    { front: "3,456 + 789", back: "4,245" },
-    { front: "99 + 99", back: "198" },
-    { front: "750 + 250", back: "1,000" },
-    { front: "1,999 + 1", back: "2,000" },
-    { front: "125 + 75", back: "200" },
-    { front: "505 + 495", back: "1,000" },
-  ],
-  subtraction: [
-    { front: "500 - 237", back: "263" },
-    { front: "1,000 - 456", back: "544" },
-    { front: "800 - 329", back: "471" },
-    { front: "2,500 - 1,750", back: "750" },
-    { front: "10,000 - 1", back: "9,999" },
-    { front: "600 - 298", back: "302" },
-    { front: "720 - 90", back: "630" },
-  ],
-  multiplication: [
-    { front: "12 × 15", back: "180" },
-    { front: "25 × 8", back: "200" },
-    { front: "11 × 11", back: "121" },
-    { front: "50 × 50", back: "2,500" },
-    { front: "7 × 13", back: "91" },
-    { front: "16 × 25", back: "400" },
-    { front: "125 × 8", back: "1,000" },
-    { front: "14 × 14", back: "196" },
-    { front: "15 × 15", back: "225" },
-  ],
-  division: [
-    { front: "144 ÷ 12", back: "12" },
-    { front: "500 ÷ 25", back: "20" },
-    { front: "1,000 ÷ 8", back: "125" },
-    { front: "360 ÷ 12", back: "30" },
-    { front: "99 ÷ 9", back: "11" },
-    { front: "256 ÷ 16", back: "16" },
-    { front: "1,000 ÷ 125", back: "8" },
-  ],
-  squares: [
-    { front: "12²", back: "144" },
-    { front: "15²", back: "225" },
-    { front: "20²", back: "400" },
-    { front: "25²", back: "625" },
-    { front: "30²", back: "900" },
-    { front: "11²", back: "121" },
-    { front: "13²", back: "169" },
-    { front: "18²", back: "324" },
-    { front: "50²", back: "2,500" },
-    { front: "100²", back: "10,000" },
-  ],
-  mixed: [
-    { front: "(12 × 5) + 20", back: "80" },
-    { front: "100 - (7 × 7)", back: "51" },
-    { front: "(150 ÷ 3) × 2", back: "100" },
-    { front: "25 + 36 - 14", back: "47" },
-    { front: "8 × 8 - 8", back: "56" },
-    { front: "(100 + 50) ÷ 5", back: "30" },
-    { front: "144 ÷ 12 + 5", back: "17" },
-    { front: "(5 + 5) × (5 + 5)", back: "100" },
-    { front: "999 + 1 - 500", back: "500" },
-    { front: "2 × 3 × 4 × 5", back: "120" },
-  ],
-};
 
 export default function FlashcardsPage() {
   usePageMeta("Flashcards — Exam Arena");
-  const [topic, setTopic] = useState("addition");
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const domain = targetExam || "vedic-math";
+  const topics = getTopicsByDomain(domain);
+  const defaultTopic = topics.length > 0 ? topics[0].id : "addition";
+  const [topic, setTopic] = useState(defaultTopic);
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [known, setKnown] = useState<number[]>([]);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const cards = CARD_CONTENT[topic] ?? [];
+  const cards: Flashcard[] = getFlashcards(domain, topic);
   const current = cards[index];
   const progress = cards.length > 0 ? ((known.length) / cards.length) * 100 : 0;
 
@@ -150,7 +89,7 @@ export default function FlashcardsPage() {
       </div>
 
       <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-        {SPRINT_TOPICS.map((t) => {
+        {topics.map((t) => {
           const Icon = t.icon;
           return (
             <button

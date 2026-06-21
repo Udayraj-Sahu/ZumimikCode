@@ -6,7 +6,8 @@ import gsap from "gsap";
 import { Clock, Zap, Award, ChevronRight, Check, X, Filter, ArrowUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useHistory } from "@/hooks/queries/use-history";
-import { TOPICS_FILTER, DIFFICULTY_FILTER } from "@/lib/mock/history";
+import { getTopicFilters, DIFFICULTY_FILTER } from "@/lib/mock/history";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { HistoryEntry } from "@/lib/types/history";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
@@ -73,7 +74,10 @@ function HistoryRow({
 export default function HistoryPage() {
   usePageMeta("Sprint History — Exam Arena");
   const router = useRouter();
-  const { data: entries, isLoading, error } = useHistory();
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const domain = targetExam || "vedic-math";
+  const TOPICS_FILTER_HISTORY = getTopicFilters(domain);
+  const { data: entries, isLoading, error } = useHistory(targetExam);
   const [topicFilter, setTopicFilter] = useState("all");
   const [diffFilter, setDiffFilter] = useState("all");
   const [sortAsc, setSortAsc] = useState(false);
@@ -142,7 +146,7 @@ export default function HistoryPage() {
             onChange={(e) => { setTopicFilter(e.target.value); setPage(0); }}
             className="bg-transparent text-fluid-xs font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer"
           >
-            {TOPICS_FILTER.map((t) => (
+            {TOPICS_FILTER_HISTORY.map((t) => (
               <option key={t.id} value={t.id}>{t.label}</option>
             ))}
           </select>

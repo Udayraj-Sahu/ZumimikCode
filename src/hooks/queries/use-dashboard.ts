@@ -19,24 +19,24 @@ type DashboardData = {
   recent: HomeRecentActivityItem[];
 };
 
-async function fetchDashboardData(): Promise<DashboardData> {
+async function fetchDashboardData(domain?: string): Promise<DashboardData> {
   const [topics, radarAxes, metrics, stats, streak, upcoming, leaderboard, recent] = await Promise.all([
-    getTopicMastery(),
-    getRadarAxes(),
-    getDashboardMetrics(),
-    getDashboardStats(),
-    getStreakData(),
-    getUpcomingEvents(),
-    getLeaderboard(),
-    getHomeRecentActivity(),
+    getTopicMastery(domain),
+    getRadarAxes(domain),
+    getDashboardMetrics(domain),
+    getDashboardStats(domain),
+    getStreakData(domain),
+    getUpcomingEvents(domain),
+    getLeaderboard(domain),
+    getHomeRecentActivity(domain),
   ]);
   return { topics, radarAxes, metrics, stats, streak, upcoming, leaderboard, recent };
 }
 
-export function useDashboardData() {
+export function useDashboardData(domain?: string) {
   const query = useQuery<DashboardData>({
-    queryKey: ["dashboard"],
-    queryFn: fetchDashboardData,
+    queryKey: ["dashboard", domain],
+    queryFn: () => fetchDashboardData(domain),
   });
 
   useEffect(() => {

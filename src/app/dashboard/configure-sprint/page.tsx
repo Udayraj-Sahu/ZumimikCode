@@ -7,11 +7,13 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintTopics } from "@/hooks/queries/use-sprint";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 
 export default function ConfigureSprintPage() {
   usePageMeta("Configure Sprint — Exam Arena");
   const router = useRouter();
-  const { data, isLoading } = useSprintTopics();
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const { data, isLoading } = useSprintTopics(targetExam);
   const [topic, setTopic] = useState("addition");
   const [length, setLength] = useState(10);
   const [difficulty, setDifficulty] = useState("Beginner");

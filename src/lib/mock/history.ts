@@ -37,15 +37,47 @@ export const HISTORY_ENTRIES: HistoryEntry[] = [
   entry("h20", "addition", "Rapid Addition", "Beginner", 20, 20, 250, 175, 30),
 ];
 
-export const TOPICS_FILTER = [
-  { id: "all", label: "All Topics" },
-  { id: "addition", label: "Addition" },
-  { id: "subtraction", label: "Subtraction" },
-  { id: "multiplication", label: "Multiplication" },
-  { id: "division", label: "Division" },
-  { id: "squares", label: "Squares" },
-  { id: "mixed", label: "Mixed" },
-];
+const TOPICS_FILTER_BY_DOMAIN: Record<string, { id: string; label: string }[]> = {
+  "vedic-math": [
+    { id: "all", label: "All Topics" },
+    { id: "addition", label: "Addition" },
+    { id: "subtraction", label: "Subtraction" },
+    { id: "multiplication", label: "Multiplication" },
+    { id: "division", label: "Division" },
+    { id: "squares", label: "Squares" },
+    { id: "mixed", label: "Mixed" },
+  ],
+  gmat: [
+    { id: "all", label: "All Topics" },
+    { id: "ps", label: "Problem Solving" },
+    { id: "ds", label: "Data Sufficiency" },
+    { id: "sc", label: "Sentence Correction" },
+    { id: "cr", label: "Critical Reasoning" },
+    { id: "rc", label: "Reading Comp." },
+  ],
+  cat: [
+    { id: "all", label: "All Topics" },
+    { id: "qa", label: "Quantitative Apt." },
+    { id: "lrdi", label: "LR & DI" },
+    { id: "va", label: "Verbal Ability" },
+  ],
+  gre: [
+    { id: "all", label: "All Topics" },
+    { id: "qc", label: "Quant Comparison" },
+    { id: "ps", label: "Problem Solving" },
+    { id: "tc", label: "Text Completion" },
+    { id: "se", label: "Sentence Equivalence" },
+    { id: "rc", label: "Reading Comp." },
+  ],
+  banking: [
+    { id: "all", label: "All Topics" },
+    { id: "numerical", label: "Numerical Ability" },
+    { id: "reasoning", label: "Reasoning" },
+    { id: "english", label: "English" },
+    { id: "ga", label: "General Awareness" },
+    { id: "computer", label: "Computer" },
+  ],
+};
 
 export const DIFFICULTY_FILTER = [
   { id: "all", label: "All" },
@@ -53,3 +85,9 @@ export const DIFFICULTY_FILTER = [
   { id: "Intermediate", label: "Intermediate" },
   { id: "Advanced", label: "Advanced" },
 ];
+
+export function getTopicFilters(domain: string) {
+  return TOPICS_FILTER_BY_DOMAIN[domain] ?? TOPICS_FILTER_BY_DOMAIN["vedic-math"] ?? [];
+}
+
+export const TOPICS_FILTER = getTopicFilters("vedic-math");

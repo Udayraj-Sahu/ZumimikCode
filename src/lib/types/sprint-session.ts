@@ -8,6 +8,7 @@ export type Question = {
 
 export type SprintSession = {
   id: string;
+  domain?: string;
   topic: string;
   topicLabel: string;
   difficulty: string;

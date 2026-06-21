@@ -9,6 +9,7 @@ import { useSprintSession } from "@/hooks/queries/use-sprint-session";
 import { useSprintStore } from "@/stores/sprint-store";
 import { useFeedback } from "@/lib/use-feedback";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { Question } from "@/lib/types/sprint-session";
 
 function formatTime(s: number): string {
@@ -25,8 +26,9 @@ function SprintContent() {
   const length = parseInt(searchParams.get("length") ?? "10", 10);
   const difficulty = searchParams.get("difficulty") ?? "beginner";
 
+  const targetExam = useOnboardingStore((s) => s.targetExam);
   const feedback = useFeedback();
-  const { data, isLoading, error } = useSprintSession(topic, length, difficulty);
+  const { data, isLoading, error } = useSprintSession(topic, length, difficulty, targetExam);
   const {
     status, currentIndex, timeLeft,
     initSprint, answerCurrent, nextQuestion, tick, completeSprint, reset,

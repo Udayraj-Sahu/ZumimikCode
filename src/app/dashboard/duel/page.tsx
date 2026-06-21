@@ -9,6 +9,7 @@ import { useDuelSetup } from "@/hooks/queries/use-duel";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { useFeedback } from "@/lib/use-feedback";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 import { DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
 import type { DuelOpponent, DuelResult } from "@/lib/types/duel";
 import type { Question } from "@/lib/types/sprint-session";
@@ -19,11 +20,12 @@ export default function DuelPage() {
   usePageMeta("Duel — Exam Arena");
   const router = useRouter();
   const feedback = useFeedback();
-  const { data: setup, isLoading: setupLoading } = useDuelSetup();
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const { data: setup, isLoading: setupLoading } = useDuelSetup(targetExam);
   const [topic, setTopic] = useState("addition");
   const [opponent, setOpponent] = useState<DuelOpponent>(DUEL_OPPONENTS[0]);
   const [phase, setPhase] = useState<Phase>("config");
-  const { data: session, isLoading: sessionLoading } = usePracticeSession(topic, 10, "Intermediate");
+  const { data: session, isLoading: sessionLoading } = usePracticeSession(topic, 10, "Intermediate", targetExam);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});

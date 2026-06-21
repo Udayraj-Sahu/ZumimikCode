@@ -1,4 +1,4 @@
-import { DUEL_TOPICS, DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
+import { getDuelTopics as mockGetDuelTopics, DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
 import type { DuelTopic, DuelOpponent, DuelResult } from "@/lib/types/duel";
 import { apiGet } from "./api";
 
@@ -8,12 +8,13 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function getDuelTopics(): Promise<DuelTopic[]> {
+export async function getDuelTopics(domain?: string): Promise<DuelTopic[]> {
   if (IS_MOCK) {
     await delay(100);
-    return DUEL_TOPICS;
+    return mockGetDuelTopics(domain ?? "vedic-math");
   }
-  return apiGet<DuelTopic[]>("/duel/topics");
+  const params = domain ? `?domain=${domain}` : "";
+  return apiGet<DuelTopic[]>(`/duel/topics${params}`);
 }
 
 export async function getDuelOpponents(): Promise<DuelOpponent[]> {

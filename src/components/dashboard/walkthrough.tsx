@@ -5,37 +5,44 @@ import gsap from "gsap";
 import { Flame, Zap, Award, BarChart3, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWalkthroughStore } from "@/stores/walkthrough-store";
+import { useOnboardingStore } from "@/stores/onboarding-store";
+import { DOMAIN_LABELS } from "@/lib/types/template";
 
-const STEPS = [
-  {
-    icon: Flame,
-    title: "Welcome to Exam Arena",
-    description: "Use the sidebar to navigate between Dashboard, Sprints, Analytics, and more. Everything you need is one click away.",
-  },
-  {
-    icon: Zap,
-    title: "Start a Sprint",
-    description: "Tap 'Start Sprint' to begin a timed challenge. Each sprint sharpens your speed and accuracy across different topics.",
-  },
-  {
-    icon: Award,
-    title: "Track Your Streak",
-    description: "Your streak and XP appear at the top of the dashboard. Stay consistent to climb the leaderboard.",
-  },
-  {
-    icon: BarChart3,
-    title: "Monitor Progress",
-    description: "Topic Mastery and Cognitive Radar show where you excel and where to focus more practice.",
-  },
-  {
-    icon: Check,
-    title: "You're Ready!",
-    description: "Start your first sprint or explore the dashboard. You can replay this tour anytime from Settings.",
-  },
-];
+function getSteps(domainLabel: string) {
+  return [
+    {
+      icon: Flame,
+      title: `Welcome to ${domainLabel}`,
+      description: `Use the sidebar to navigate between Dashboard, Sprints, Analytics, and more. Everything you need for ${domainLabel} prep is one click away.`,
+    },
+    {
+      icon: Zap,
+      title: "Start a Sprint",
+      description: "Tap 'Start Sprint' to begin a timed challenge. Each sprint sharpens your speed and accuracy across different topics.",
+    },
+    {
+      icon: Award,
+      title: "Track Your Streak",
+      description: "Your streak and XP appear at the top of the dashboard. Stay consistent to climb the leaderboard.",
+    },
+    {
+      icon: BarChart3,
+      title: "Monitor Progress",
+      description: "Topic Mastery and Cognitive Radar show where you excel and where to focus more practice.",
+    },
+    {
+      icon: Check,
+      title: "You're Ready!",
+      description: "Start your first sprint or explore the dashboard. You can replay this tour anytime from Settings.",
+    },
+  ];
+}
 
 export function Walkthrough() {
   const { completed, complete } = useWalkthroughStore();
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const domainLabel = DOMAIN_LABELS[targetExam] || "Exam Arena";
+  const STEPS = getSteps(domainLabel);
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);

@@ -4,14 +4,20 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { Check, X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SPRINT_TOPICS } from "@/lib/mock/sprint";
+import { useOnboardingStore } from "@/stores/onboarding-store";
+import { getTopicsByDomain } from "@/lib/mock/sprint";
+import type { SprintTopic } from "@/lib/types/sprint";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { Question } from "@/lib/types/sprint-session";
 
 export default function QuestionsPage() {
   usePageMeta("Question Bank — Exam Arena");
-  const [topic, setTopic] = useState("addition");
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const domain = targetExam || "vedic-math";
+  const topics = getTopicsByDomain(domain);
+  const defaultTopic = topics.length > 0 ? topics[0].id : "addition";
+  const [topic, setTopic] = useState(defaultTopic);
   const { data: session, isLoading } = usePracticeSession(topic, 20, "Beginner");
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [search, setSearch] = useState("");
@@ -52,7 +58,7 @@ export default function QuestionsPage() {
 
       <div ref={animateSection} data-section-index="0" className="mt-5">
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-          {SPRINT_TOPICS.map((t) => {
+          {topics.map((t) => {
             const Icon = t.icon;
             return (
               <button

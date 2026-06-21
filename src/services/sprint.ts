@@ -1,4 +1,4 @@
-import { SPRINT_TOPICS, SPRINT_CONFIG } from "@/lib/mock/sprint";
+import { getTopicsByDomain, SPRINT_CONFIG } from "@/lib/mock/sprint";
 import type { SprintTopic, SprintConfig } from "@/lib/types/sprint";
 import { apiGet } from "./api";
 
@@ -8,12 +8,13 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function getSprintTopics(): Promise<SprintTopic[]> {
+export async function getSprintTopics(domain?: string): Promise<SprintTopic[]> {
   if (IS_MOCK) {
     await delay(200);
-    return SPRINT_TOPICS;
+    return getTopicsByDomain(domain ?? "vedic-math");
   }
-  return apiGet<SprintTopic[]>("/sprint/topics");
+  const params = domain ? `?domain=${domain}` : "";
+  return apiGet<SprintTopic[]>(`/sprint/topics${params}`);
 }
 
 export async function getSprintConfig(): Promise<SprintConfig> {

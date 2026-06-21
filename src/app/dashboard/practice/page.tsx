@@ -19,7 +19,7 @@ import { useTemplateStore } from "@/stores/template-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useFeedback } from "@/lib/use-feedback";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { SPRINT_TOPICS } from "@/lib/mock/sprint";
+import { getTopicsByDomain } from "@/lib/mock/sprint";
 import { getTemplatesByDomain } from "@/services/templates";
 import RendererRouter from "@/components/renderers/RendererRouter";
 import type { Question } from "@/lib/types/sprint-session";
@@ -34,6 +34,8 @@ export default function PracticePage() {
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);
+  const domain = targetExam || "vedic-math";
+  const sprintTopics = getTopicsByDomain(domain);
   const domainLabel = DOMAIN_LABELS[targetExam] || targetExam || "Templates";
 
   const [practiceType, setPracticeType] = useState<PracticeType>("mcq");
@@ -48,7 +50,7 @@ export default function PracticePage() {
   const [rendererCorrect, setRendererCorrect] = useState(0);
   const [rendererTotal, setRendererTotal] = useState(0);
 
-  const { data: session, isLoading } = usePracticeSession(topic, 10, difficulty);
+  const { data: session, isLoading } = usePracticeSession(topic, 10, difficulty, targetExam);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [revealed, setRevealed] = useState(false);
@@ -219,7 +221,7 @@ export default function PracticePage() {
             <div ref={animateSection} data-section-index="1" className="mt-6">
               <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Choose Topic</p>
               <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
-                {SPRINT_TOPICS.map((t) => {
+                {sprintTopics.map((t) => {
                   const Icon = t.icon;
                   return (
                     <button

@@ -7,8 +7,10 @@ import gsap from "gsap";
 import { LogOut, Zap, Flame, SunMoon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
+import { DOMAIN_LABELS } from "@/lib/types/template";
 import { useAuthStore } from "@/stores/auth-store";
 import { useThemeStore } from "@/stores/theme-store";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 import { Walkthrough } from "@/components/dashboard/walkthrough";
 import { RatePrompt } from "@/components/dashboard/rate-prompt";
 
@@ -26,6 +28,8 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
   const { theme, toggleTheme } = useThemeStore();
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const domainLabel = DOMAIN_LABELS[targetExam] || "Training Ground";
   const sidebarRef = useRef<HTMLElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
 
@@ -76,7 +80,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                 EXAM ARENA
               </h1>
               <p className="text-fluid-sm tracking-[0.08em] text-muted-foreground/50">
-                Training Ground
+                {domainLabel}
               </p>
             </div>
           </div>

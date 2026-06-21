@@ -7,17 +7,17 @@ type SprintData = {
   config: SprintConfig;
 };
 
-async function fetchSprintData(): Promise<SprintData> {
+async function fetchSprintData(domain?: string): Promise<SprintData> {
   const [topics, config] = await Promise.all([
-    getSprintTopics(),
+    getSprintTopics(domain),
     getSprintConfig(),
   ]);
   return { topics, config };
 }
 
-export function useSprintTopics() {
+export function useSprintTopics(domain?: string) {
   return useQuery<SprintData>({
-    queryKey: ["sprint"],
-    queryFn: fetchSprintData,
+    queryKey: ["sprint", domain],
+    queryFn: () => fetchSprintData(domain),
   });
 }
