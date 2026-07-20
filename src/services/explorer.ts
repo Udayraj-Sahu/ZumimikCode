@@ -1,5 +1,12 @@
 import type { TopicNode, TopicEdge } from "@/lib/types/technique";
-import { getSubjectTree as mockGetTree, findNodeById as mockFindNode, getAllLeafTechniques as mockGetLeaves, getSubjectEdges as mockGetEdges } from "@/lib/mock/explorer";
+import {
+  getSubjectTree as mockGetTree,
+  findNodeById as mockFindNode,
+  getAllLeafTechniques as mockGetLeaves,
+  getSubjectEdges as mockGetEdges,
+  getPrerequisitesForTechnique as mockGetPrereqs,
+  isTechniqueUnlocked as mockIsUnlocked,
+} from "@/lib/mock/explorer";
 import { apiGet } from "./api";
 
 const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
@@ -40,4 +47,27 @@ export async function getSubjectEdges(): Promise<TopicEdge[]> {
     return mockGetEdges();
   }
   return apiGet<TopicEdge[]>("/api/subjects/edges");
+}
+
+export async function getPrerequisitesForTechnique(
+  techniqueId: string,
+): Promise<TopicEdge[]> {
+  if (IS_MOCK) {
+    await delay(50);
+    return mockGetPrereqs(techniqueId);
+  }
+  return apiGet<TopicEdge[]>(`/api/subjects/techniques/${techniqueId}/prerequisites`);
+}
+
+export async function checkTechniqueUnlocked(
+  techniqueId: string,
+  masteredTechniqueIds: string[],
+): Promise<boolean> {
+  if (IS_MOCK) {
+    await delay(50);
+    return mockIsUnlocked(techniqueId, masteredTechniqueIds);
+  }
+  return apiGet<boolean>(
+    `/api/subjects/techniques/${techniqueId}/unlocked?mastered=${masteredTechniqueIds.join(",")}`,
+  );
 }

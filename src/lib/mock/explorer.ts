@@ -270,6 +270,21 @@ export function getSubjectEdges(): TopicEdge[] {
   return SUBJECT_EDGES;
 }
 
+export function getPrerequisitesForTechnique(techniqueId: string): TopicEdge[] {
+  return SUBJECT_EDGES.filter(
+    (e) => e.targetId === techniqueId && e.type === "REQUIRES",
+  );
+}
+
+export function isTechniqueUnlocked(
+  techniqueId: string,
+  masteredTechniqueIds: string[],
+): boolean {
+  const prereqs = getPrerequisitesForTechnique(techniqueId);
+  if (prereqs.length === 0) return true;
+  return prereqs.every((p) => masteredTechniqueIds.includes(p.sourceId));
+}
+
 export function getAllLeafTechniques(tree: TopicNode[]): TopicNode[] {
   const leaves: TopicNode[] = [];
   function walk(nodes: TopicNode[]) {
