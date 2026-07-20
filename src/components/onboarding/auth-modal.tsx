@@ -20,6 +20,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
   const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding);
   const setAuthData = useOnboardingStore((s) => s.setAuthData);
   const authLogin = useAuthStore((s) => s.login);
+  const authLoginWithFirebase = useAuthStore((s) => s.loginWithFirebase);
 
   useEffect(() => {
     if (overlayRef.current && dialogRef.current) {
@@ -35,10 +36,19 @@ export function AuthModal({ onClose }: AuthModalProps) {
     }
   }, [onClose]);
 
-  const handleAuthSuccess = (data: { name?: string; phone?: string; authMethod: "google" | "phone" }) => {
+  const handleAuthSuccess = async (data: {
+    name?: string;
+    phone?: string;
+    idToken?: string;
+    authMethod: "google" | "phone";
+  }) => {
     setAuthData(data);
     completeOnboarding();
-    authLogin(data.phone ?? `${data.name}@google.com`, "mock-password");
+    if (data.idToken) {
+      await authLoginWithFirebase(data.idToken, data.authMethod);
+    } else {
+      await authLogin(data.phone ?? `${data.name ?? "User"}@google.com`, "mock-password");
+    }
     router.push("/dashboard");
   };
 

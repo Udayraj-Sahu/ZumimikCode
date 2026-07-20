@@ -16,6 +16,8 @@ interface TextScaffoldProps {
   onStepReveal?: () => void;
   onCorrect?: () => void;
   onWrong?: () => void;
+  showAnswerInput?: boolean;
+  showVisualScaffold?: boolean;
 }
 
 function extractAnswer(example: {
@@ -41,6 +43,8 @@ export default function TextScaffold({
   onStepReveal,
   onCorrect,
   onWrong,
+  showAnswerInput = true,
+  showVisualScaffold = true,
 }: TextScaffoldProps) {
   const example = useMemo(
     () => template.examples?.[0] ?? { solution: [] },
@@ -113,7 +117,7 @@ export default function TextScaffold({
       )}
 
       {/* L5: VISUAL — renderer canvas */}
-      {children && (
+      {showVisualScaffold && children && (
         <div
           className="flex justify-center rounded-2xl border border-border/30 bg-card/50 p-4"
           aria-label="Visual scaffold"
@@ -123,12 +127,14 @@ export default function TextScaffold({
       )}
 
       {/* ANSWER INPUT */}
-      <AnswerInput
-        expectedAnswer={answer}
-        onCorrect={() => onCorrect?.()}
-        onWrong={() => onWrong?.()}
-        disabled={mode === "quick" && allRevealed}
-      />
+      {showAnswerInput && (
+        <AnswerInput
+          expectedAnswer={answer}
+          onCorrect={() => onCorrect?.()}
+          onWrong={() => onWrong?.()}
+          disabled={mode === "quick" && allRevealed}
+        />
+      )}
     </div>
   );
 }

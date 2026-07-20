@@ -10,6 +10,8 @@ export default function RendererRouter({
   visibleSteps,
   mode,
   onStepReveal,
+  showAnswerInput,
+  showVisualScaffold,
 }: RendererProps) {
   const scaffoldType = useMemo(
     () => template.visual_scaffold?.type?.toLowerCase() ?? "",
@@ -22,6 +24,6 @@ export default function RendererRouter({
   );
 
   return (
-    <Renderer template={template} visibleSteps={visibleSteps} mode={mode} onStepReveal={onStepReveal} />
+    <Renderer template={template} visibleSteps={visibleSteps} mode={mode} onStepReveal={onStepReveal} showAnswerInput={showAnswerInput} showVisualScaffold={showVisualScaffold} />
   );
 }

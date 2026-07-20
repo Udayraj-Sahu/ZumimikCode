@@ -1,6 +1,7 @@
 import { useAuthStore } from "@/stores/auth-store";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const API_PREFIX = "/api/v1";
 
 class ApiError extends Error {
   constructor(
@@ -20,7 +21,7 @@ function getAuthHeaders(): Record<string, string> {
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const { headers: extraHeaders, ...restOptions } = options;
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const res = await fetch(`${BASE_URL}${API_PREFIX}${path}`, {
     headers: {
       "Content-Type": "application/json",
       ...getAuthHeaders(),
@@ -32,7 +33,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     const { refreshToken, setToken } = useAuthStore.getState();
     if (refreshToken) {
       try {
-        const refreshRes = await fetch(`${BASE_URL}/api/auth/refresh`, {
+        const refreshRes = await fetch(`${BASE_URL}${API_PREFIX}/auth/refresh`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ refreshToken }),
@@ -45,7 +46,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
             Authorization: `Bearer ${newToken}`,
             ...(extraHeaders as Record<string, string>),
           };
-          const retryRes = await fetch(`${BASE_URL}${path}`, options);
+          const retryRes = await fetch(`${BASE_URL}${API_PREFIX}${path}`, options);
           if (!retryRes.ok) throw new ApiError(retryRes.status, `API error: ${retryRes.status}`);
           return retryRes.json();
         }

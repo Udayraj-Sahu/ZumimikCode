@@ -8,12 +8,8 @@ import {
 } from "@/lib/utils/parse-division";
 import TextScaffold from "./TextScaffold";
 
-export default function StrikePadRenderer({
-  template,
-  visibleSteps,
-  mode,
-  onStepReveal,
-}: RendererProps) {
+export default function StrikePadRenderer(props: RendererProps) {
+  const { template, visibleSteps, mode, onStepReveal, ...rest } = props;
   const problemLabel = template.examples?.[0]?.problem_statement ?? "";
   const parsed = useMemo(() => {
     const p = template.examples?.[0]?.problem_statement ?? "";
@@ -35,6 +31,7 @@ export default function StrikePadRenderer({
       visibleSteps={visibleSteps}
       mode={mode}
       onStepReveal={onStepReveal}
+      {...rest}
     >
       <svg
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}

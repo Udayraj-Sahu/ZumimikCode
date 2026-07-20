@@ -50,7 +50,7 @@ export default function AnalyticsPage() {
       <div>
         <div
           ref={headerRef}
-          className="px-6 py-5 border-b border-border"
+          className="px-6 py-5 border-b border-border text-center"
         >
           <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
             EXAM ARENA

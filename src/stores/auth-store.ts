@@ -16,6 +16,7 @@ type AuthState = {
   isAuthenticated: boolean;
   isOnboarded: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithFirebase: (idToken: string, method: "google" | "phone") => Promise<void>;
   logout: () => void;
   setToken: (token: string | null) => void;
   setRefreshToken: (token: string | null) => void;
@@ -42,7 +43,8 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
           });
         } else {
-          const res = await fetch("/api/auth/login", {
+          const API_PREFIX = "/api/v1";
+          const res = await fetch(`${API_PREFIX}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password: _password }),
@@ -50,6 +52,27 @@ export const useAuthStore = create<AuthState>()(
           if (!res.ok) throw new Error("Login failed");
           const data = await res.json();
           set({ user: data.user, token: data.token, isAuthenticated: true });
+        }
+      },
+
+      loginWithFirebase: async (idToken: string, method: "google" | "phone") => {
+        if (IS_MOCK) {
+          await new Promise((r) => setTimeout(r, 300));
+          const name = method === "google" ? "Firebase User" : "Phone User";
+          set({
+            user: { id: "1", name, email: `${name}@firebase.com`, role: "Champion" },
+            token: "mock-firebase-token",
+            isAuthenticated: true,
+          });
+        } else {
+          const res = await fetch(`/api/v1/auth/${method}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken }),
+          });
+          if (!res.ok) throw new Error("Firebase auth failed");
+          const data = await res.json();
+          set({ user: data.user, token: data.token, refreshToken: data.refreshToken, isAuthenticated: true });
         }
       },
 

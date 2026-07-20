@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Flame, Globe, Smartphone } from "lucide-react";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useAuthStore } from "@/stores/auth-store";
+import { useRouter } from "next/navigation";
 import { StepWelcome } from "./step-welcome";
 import { StepGoal } from "./step-goal";
 import { StepLevel } from "./step-level";
@@ -16,7 +17,16 @@ export default function OnboardingPage() {
   const nextStep = useOnboardingStore((s) => s.nextStep);
   const setAuthData = useOnboardingStore((s) => s.setAuthData);
   const authLogin = useAuthStore((s) => s.login);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
+  const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isAuthenticated && isOnboarded) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, isOnboarded, router]);
 
   const [currentPanel, setCurrentPanel] = useState(0);
   const [phoneMode, setPhoneMode] = useState(false);
@@ -73,6 +83,8 @@ export default function OnboardingPage() {
       default: return <StepWelcome onPanelChange={setCurrentPanel} />;
     }
   };
+
+  if (isAuthenticated && isOnboarded) return <div className="fixed inset-0 bg-background" />;
 
   return (
     <main className="flex h-dvh flex-col bg-background justify-between overflow-hidden">

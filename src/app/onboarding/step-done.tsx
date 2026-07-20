@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo } from "react";
+const IS_MOCK_STEP = process.env.NEXT_PUBLIC_API_MOCK !== "false";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ArrowRight, BadgeCheck, BarChart3, Smartphone, Globe } from "lucide-react";
@@ -116,7 +117,9 @@ export function StepDone({ onSelect }: Props) {
     completeOnboarding();
     useWalkthroughStore.getState().complete();
     onSelect();
-    authLogin(phone || `${name}@onboard.com`, "mock-password");
+    if (IS_MOCK_STEP) {
+      authLogin(phone || `${name}@onboard.com`, "mock-password");
+    }
     router.push("/dashboard");
   };
 

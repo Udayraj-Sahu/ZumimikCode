@@ -1,3 +1,9 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/auth-store";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 import { RankSignal } from "@/components/sections/RankSignal";
 import { ExamPortals } from "@/components/sections/ExamPortals";
 import { AchievementWall } from "@/components/sections/AchievementWall";
@@ -9,6 +15,18 @@ import { VerticalNav } from "@/components/nav/VerticalNav";
 import { FloatingActions } from "@/components/FloatingActions";
 
 export default function Home() {
+  const router = useRouter();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
+
+  useEffect(() => {
+    if (isAuthenticated && isOnboarded) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, isOnboarded, router]);
+
+  if (isAuthenticated && isOnboarded) return <div className="fixed inset-0 bg-background" />;
+
   return (
     <main>
       <div className="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2.5 pointer-events-none">

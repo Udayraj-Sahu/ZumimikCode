@@ -4,12 +4,8 @@ import { useMemo } from "react";
 import type { RendererProps } from "@/lib/types/template";
 import TextScaffold from "./TextScaffold";
 
-export default function EquationChainRenderer({
-  template,
-  visibleSteps,
-  mode,
-  onStepReveal,
-}: RendererProps) {
+export default function EquationChainRenderer(props: RendererProps) {
+  const { template, visibleSteps, mode, onStepReveal, ...rest } = props;
   const steps = template.examples?.[0]?.solution ?? [];
 
   const svgWidth = useMemo(() => Math.max(400, 60 + steps.length * 120 + 60), [steps.length]);
@@ -20,6 +16,7 @@ export default function EquationChainRenderer({
       visibleSteps={visibleSteps}
       mode={mode}
       onStepReveal={onStepReveal}
+      {...rest}
     >
       <svg
         viewBox={`0 0 ${svgWidth} 200`}

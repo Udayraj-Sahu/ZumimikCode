@@ -143,6 +143,242 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     common_mistakes: ["Skipping steps when digit is smaller than divisor"],
   },
 
+  // ── VEDIC MATH: ADDITION ──────────────────────────────
+  {
+    id: "add-142-387",
+    domain: "vedic-math",
+    concept: { technique_name: "Left-to-Right Addition", category: "addition" },
+    difficulty: 2,
+    expected_time: 20,
+    visual_scaffold: { type: "place_value_chart" },
+    examples: [
+      {
+        problem_statement: "Add 142 + 387 using left-to-right method",
+        solution: [
+          { step_num: 1, operation: "Add hundreds: 100 + 300 = 400" },
+          { step_num: 2, operation: "Add tens: 40 + 80 = 120" },
+          { step_num: 3, operation: "Add ones: 2 + 7 = 9" },
+          { step_num: 4, operation: "Combine: 400 + 120 + 9 = 529", result: "529" },
+        ],
+      },
+    ],
+    key_reminders: ["Add from left to right (largest place first)", "Keep a running total in your head"],
+    common_mistakes: ["Adding from right to left like standard method", "Losing track of carries when adding left to right"],
+  },
+  {
+    id: "add-574-298",
+    domain: "vedic-math",
+    concept: { technique_name: "Complementary Addition", category: "addition" },
+    difficulty: 2,
+    expected_time: 20,
+    visual_scaffold: { type: "number_line" },
+    examples: [
+      {
+        problem_statement: "Add 574 + 298 using complementary method",
+        solution: [
+          { step_num: 1, operation: "Round 298 up to 300: 574 + 300 = 874" },
+          { step_num: 2, operation: "We added 2 extra, so subtract 2: 874 — 2 = 872" },
+          { step_num: 3, operation: "Answer: 872", result: "872" },
+        ],
+      },
+    ],
+    key_reminders: ["Round one number to the nearest hundred, then adjust", "If you round up, subtract the excess at the end"],
+    common_mistakes: ["Forgetting to subtract the rounding adjustment", "Rounding the wrong direction"],
+  },
+  {
+    id: "add-3456-789",
+    domain: "vedic-math",
+    concept: { technique_name: "Column Addition — Rapid", category: "addition" },
+    difficulty: 3,
+    expected_time: 25,
+    visual_scaffold: { type: "place_value_chart" },
+    examples: [
+      {
+        problem_statement: "Add 3,456 + 789",
+        solution: [
+          { step_num: 1, operation: "Align by place value: thousands, hundreds, tens, ones" },
+          { step_num: 2, operation: "Thousands: 3 + 0 = 3" },
+          { step_num: 3, operation: "Hundreds: 4 + 7 = 11 → carry 1 thousand, write 1 hundred" },
+          { step_num: 4, operation: "Tens: 5 + 8 = 13 + carry 0 = 13 → carry 1 hundred, write 3 tens" },
+          { step_num: 5, operation: "Ones: 6 + 9 = 15 + carry 0 = 15 → write 5, carry 1 ten" },
+          { step_num: 6, operation: "Answer: 4,245", result: "4245" },
+        ],
+      },
+    ],
+    key_reminders: ["Align numbers by place value", "Carry over when a column sum exceeds 9"],
+    common_mistakes: ["Misaligning digits with different place values", "Forgetting to add the carry to the next column"],
+  },
+
+  // ── VEDIC MATH: SUBTRACTION ───────────────────────────
+  {
+    id: "sub-500-237",
+    domain: "vedic-math",
+    concept: { technique_name: "Complementary Subtraction", category: "subtraction" },
+    difficulty: 2,
+    expected_time: 20,
+    visual_scaffold: { type: "number_line" },
+    examples: [
+      {
+        problem_statement: "Subtract 237 from 500",
+        solution: [
+          { step_num: 1, operation: "Think: what number plus 237 equals 500?" },
+          { step_num: 2, operation: "237 + 263 = 500, because 237 + 200 = 437, 437 + 60 = 497, 497 + 3 = 500" },
+          { step_num: 3, operation: "Answer: 263", result: "263" },
+        ],
+      },
+    ],
+    key_reminders: ["Use complements for round-number subtractions", "Work with one place value at a time"],
+    common_mistakes: ["Borrowing incorrectly across zeros", "Forgetting to adjust after borrowing"],
+  },
+  {
+    id: "sub-1000-456",
+    domain: "vedic-math",
+    concept: { technique_name: "All-from-9 Last-from-10", category: "subtraction" },
+    difficulty: 2,
+    expected_time: 15,
+    visual_scaffold: { type: "place_value_chart" },
+    examples: [
+      {
+        problem_statement: "Subtract 456 from 1,000",
+        solution: [
+          { step_num: 1, operation: "For each digit, subtract from 9; for the last digit, subtract from 10" },
+          { step_num: 2, operation: "Hundreds: 9 — 4 = 5" },
+          { step_num: 3, operation: "Tens: 9 — 5 = 4" },
+          { step_num: 4, operation: "Ones: 10 — 6 = 4" },
+          { step_num: 5, operation: "Answer: 544", result: "544" },
+        ],
+      },
+    ],
+    key_reminders: ["All digits except the last: subtract from 9", "Last digit: subtract from 10"],
+    common_mistakes: ["Using 10 for every digit instead of only the last", "Applying this method only to 10, 100, 1000 etc."],
+  },
+  {
+    id: "sub-1234-567",
+    domain: "vedic-math",
+    concept: { technique_name: "Left-to-Right Subtraction", category: "subtraction" },
+    difficulty: 3,
+    expected_time: 25,
+    visual_scaffold: { type: "place_value_chart" },
+    examples: [
+      {
+        problem_statement: "Subtract 567 from 1,234",
+        solution: [
+          { step_num: 1, operation: "Subtract hundreds: 1200 — 500 = 700" },
+          { step_num: 2, operation: "Subtract tens: 30 — 60 → borrow from 700: (700 — 100) + (130 — 60) = 600 + 70 = 670" },
+          { step_num: 3, operation: "Subtract ones: 4 — 7 → borrow from 670: (670 — 10) + (14 — 7) = 660 + 7 = 667" },
+          { step_num: 4, operation: "Answer: 667", result: "667" },
+        ],
+      },
+    ],
+    key_reminders: ["Subtract left to right, borrowing when needed", "Keep track of borrows mentally"],
+    common_mistakes: ["Forgetting to reduce the borrowed digit", "Subtracting the smaller from the larger instead of borrowing"],
+  },
+
+  // ── VEDIC MATH: SQUARES ──────────────────────────────
+  {
+    id: "sq-25",
+    domain: "vedic-math",
+    concept: { technique_name: "Squaring Numbers Ending in 5", category: "squares" },
+    difficulty: 1,
+    expected_time: 10,
+    visual_scaffold: { type: "arrow_matrix" },
+    examples: [
+      {
+        problem_statement: "Find 25²",
+        solution: [
+          { step_num: 1, operation: "For numbers ending in 5: multiply the tens digit by (tens digit + 1)" },
+          { step_num: 2, operation: "Tens digit: 2 → 2 × (2 + 1) = 2 × 3 = 6" },
+          { step_num: 3, operation: "Then append 25" },
+          { step_num: 4, operation: "Answer: 625", result: "625" },
+        ],
+      },
+    ],
+    key_reminders: ["Only works for numbers ending in 5", "Left part = tens digit × (tens digit + 1)", "Right part is always 25"],
+    common_mistakes: ["Applying the rule to numbers not ending in 5", "Forgetting to append 25 at the end"],
+  },
+  {
+    id: "sq-12",
+    domain: "vedic-math",
+    concept: { technique_name: "Duplex Method for Squares", category: "squares" },
+    difficulty: 2,
+    expected_time: 15,
+    visual_scaffold: { type: "grid_construction" },
+    examples: [
+      {
+        problem_statement: "Find 12²",
+        solution: [
+          { step_num: 1, operation: "12² = (12 + 2) × (12 — 2) + 2²" },
+          { step_num: 2, operation: "= 14 × 10 + 4" },
+          { step_num: 3, operation: "= 140 + 4 = 144", result: "144" },
+        ],
+      },
+    ],
+    key_reminders: ["Use (a + b)(a — b) + b² identity", "Choose b to make one factor a round number"],
+    common_mistakes: ["Miscalculating the difference term", "Forgetting to add b² at the end"],
+  },
+  {
+    id: "sq-13",
+    domain: "vedic-math",
+    concept: { technique_name: "Base Method for Squares", category: "squares" },
+    difficulty: 2,
+    expected_time: 15,
+    visual_scaffold: { type: "grid_construction" },
+    examples: [
+      {
+        problem_statement: "Find 13²",
+        solution: [
+          { step_num: 1, operation: "Take nearest base: 10. Deviation from base: +3" },
+          { step_num: 2, operation: "Left part: 13 + 3 = 16" },
+          { step_num: 3, operation: "Right part: 3² = 9" },
+          { step_num: 4, operation: "Since base has 1 zero, right part needs 1 digit: 09" },
+          { step_num: 5, operation: "Answer: 169", result: "169" },
+        ],
+      },
+    ],
+    key_reminders: ["Left = number + deviation", "Right = deviation² with enough digits (base's zero count)", "Base can be 10, 100, 1000 etc."],
+    common_mistakes: ["Not padding the right part to match base's zero count", "Using the wrong sign for the deviation"],
+  },
+
+  // ── VEDIC MATH: MIXED ────────────────────────────────
+  {
+    id: "mix-12x5-plus-20",
+    domain: "vedic-math",
+    concept: { technique_name: "Order of Operations", category: "mixed" },
+    difficulty: 2,
+    expected_time: 20,
+    visual_scaffold: { type: "equation_chain" },
+    examples: [
+      {
+        problem_statement: "Solve (12 × 5) + 20",
+        solution: [
+          { step_num: 1, operation: "First complete the bracketed multiplication: 12 × 5 = 60" },
+          { step_num: 2, operation: "Then add: 60 + 20 = 80", result: "80" },
+        ],
+      },
+    ],
+    key_reminders: ["Always solve brackets first", "Multiplication/division before addition/subtraction"],
+    common_mistakes: ["Adding before multiplying", "Ignoring the bracket order"],
+  },
+  {
+    id: "mix-100-minus-7x7",
+    domain: "vedic-math",
+    concept: { technique_name: "Mixed Operations Strategy", category: "mixed" },
+    difficulty: 2,
+    expected_time: 20,
+    visual_scaffold: { type: "equation_chain" },
+    examples: [
+      {
+        problem_statement: "Solve 100 — (7 × 7)",
+        solution: [
+          { step_num: 1, operation: "First compute the bracketed multiplication: 7 × 7 = 49" },
+          { step_num: 2, operation: "Then subtract: 100 — 49 = 51", result: "51" },
+        ],
+      },
+    ],
+    key_reminders: ["Brackets have the highest priority", "Break complex expressions into simple steps"],
+    common_mistakes: ["Subtracting before multiplying when there are no brackets", "Misreading the operation order"],
+  },
+
   // ── GMAT ────────────────────────────────────────────────
   {
     id: "gmat-ps-speed-1",

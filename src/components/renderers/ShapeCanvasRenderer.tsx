@@ -29,12 +29,8 @@ function parseShape(problem: string): ParsedShape {
   return { shape, dimensions: dims };
 }
 
-export default function ShapeCanvasRenderer({
-  template,
-  visibleSteps,
-  mode,
-  onStepReveal,
-}: RendererProps) {
+export default function ShapeCanvasRenderer(props: RendererProps) {
+  const { template, visibleSteps, mode, onStepReveal, ...rest } = props;
   const problem = template.examples?.[0]?.problem_statement ?? "";
   const { shape, dimensions } = useMemo(() => parseShape(problem), [problem]);
 
@@ -97,6 +93,7 @@ export default function ShapeCanvasRenderer({
       visibleSteps={visibleSteps}
       mode={mode}
       onStepReveal={onStepReveal}
+      {...rest}
     >
       <svg
         viewBox={`0 0 360 ${svgHeight}`}

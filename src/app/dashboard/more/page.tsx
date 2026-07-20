@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Fragment, useCallback, useRef } from "react";
 import gsap from "gsap";
-import { ChevronLeft, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useProfileData } from "@/hooks/queries/use-profile";
@@ -24,7 +23,6 @@ const SIDEBAR_SECTIONS = Object.entries(
 
 export default function MorePage() {
   usePageMeta("More — Exam Arena");
-  const router = useRouter();
   const { data } = useProfileData();
   const profile = data?.profile;
 
@@ -45,17 +43,7 @@ export default function MorePage() {
       {/* Header */}
       <div ref={headerRef} className="px-4 pt-5 pb-4 border-b border-border text-center">
         <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60 mb-1">EXAM ARENA</p>
-        <div className="flex items-center justify-center gap-2">
-          <button
-            type="button"
-            onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard"); }}
-            className="grid size-11 place-items-center rounded-lg text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label="Back"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <h1 className="text-fluid-xl font-black tracking-tight text-foreground">More</h1>
-        </div>
+        <h1 className="text-fluid-xl font-black tracking-tight text-foreground">More</h1>
       </div>
 
       {/* User card */}

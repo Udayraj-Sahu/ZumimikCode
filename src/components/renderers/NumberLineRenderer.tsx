@@ -5,12 +5,8 @@ import type { RendererProps } from "@/lib/types/template";
 import { parseNumberLine } from "@/lib/utils/parse-number-line";
 import TextScaffold from "./TextScaffold";
 
-export default function NumberLineRenderer({
-  template,
-  visibleSteps,
-  mode,
-  onStepReveal,
-}: RendererProps) {
+export default function NumberLineRenderer(props: RendererProps) {
+  const { template, visibleSteps, mode, onStepReveal, ...rest } = props;
   const { lower, upper, result, totalSteps } = useMemo(() => {
     const s = template.examples?.[0]?.solution ?? [];
     const parsed = parseNumberLine(s);
@@ -34,6 +30,7 @@ export default function NumberLineRenderer({
       visibleSteps={visibleSteps}
       mode={mode}
       onStepReveal={onStepReveal}
+      {...rest}
     >
       <svg
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}

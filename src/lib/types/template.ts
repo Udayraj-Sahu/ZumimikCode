@@ -140,4 +140,6 @@ export type RendererProps = {
   visibleSteps: number;
   mode: RenderMode;
   onStepReveal?: () => void;
+  showAnswerInput?: boolean;
+  showVisualScaffold?: boolean;
 };

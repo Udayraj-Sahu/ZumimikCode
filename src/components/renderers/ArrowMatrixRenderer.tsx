@@ -15,12 +15,8 @@ const GAP_Y = 80;
 const OFFSET_X = 50;
 const OFFSET_Y = 50;
 
-export default function ArrowMatrixRenderer({
-  template,
-  visibleSteps,
-  mode,
-  onStepReveal,
-}: RendererProps) {
+export default function ArrowMatrixRenderer(props: RendererProps) {
+  const { template, visibleSteps, mode, onStepReveal, ...rest } = props;
   const problemLabel = template.examples?.[0]?.problem_statement ?? "";
   const parsed = useMemo(() => {
     const p = template.examples?.[0]?.problem_statement ?? "";
@@ -43,6 +39,7 @@ export default function ArrowMatrixRenderer({
       visibleSteps={visibleSteps}
       mode={mode}
       onStepReveal={onStepReveal}
+      {...rest}
     >
       <svg
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
