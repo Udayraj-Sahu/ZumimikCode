@@ -150,6 +150,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Left-to-Right Addition", category: "addition" },
     difficulty: 2,
     expected_time: 20,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "place_value_chart" },
     examples: [
       {
@@ -171,6 +173,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Complementary Addition", category: "addition" },
     difficulty: 2,
     expected_time: 20,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "number_line" },
     examples: [
       {
@@ -191,6 +195,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Column Addition — Rapid", category: "addition" },
     difficulty: 3,
     expected_time: 25,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "place_value_chart" },
     examples: [
       {
@@ -216,6 +222,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Complementary Subtraction", category: "subtraction" },
     difficulty: 2,
     expected_time: 20,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "number_line" },
     examples: [
       {
@@ -236,6 +244,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "All-from-9 Last-from-10", category: "subtraction" },
     difficulty: 2,
     expected_time: 15,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "place_value_chart" },
     examples: [
       {
@@ -258,6 +268,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Left-to-Right Subtraction", category: "subtraction" },
     difficulty: 3,
     expected_time: 25,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "place_value_chart" },
     examples: [
       {
@@ -281,6 +293,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Squaring Numbers Ending in 5", category: "squares" },
     difficulty: 1,
     expected_time: 10,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "arrow_matrix" },
     examples: [
       {
@@ -302,6 +316,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Duplex Method for Squares", category: "squares" },
     difficulty: 2,
     expected_time: 15,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "grid_construction" },
     examples: [
       {
@@ -322,6 +338,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Base Method for Squares", category: "squares" },
     difficulty: 2,
     expected_time: 15,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "grid_construction" },
     examples: [
       {
@@ -346,6 +364,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Order of Operations", category: "mixed" },
     difficulty: 2,
     expected_time: 20,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "equation_chain" },
     examples: [
       {
@@ -365,6 +385,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Mixed Operations Strategy", category: "mixed" },
     difficulty: 2,
     expected_time: 20,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "equation_chain" },
     examples: [
       {

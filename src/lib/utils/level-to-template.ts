@@ -16,6 +16,8 @@ export function exampleToTemplate(
     },
     difficulty: level,
     expected_time: 60,
+    version: 1,
+    generationMethod: "converted",
     visual_scaffold: {
       type: "textual_scaffold",
       config: {},
