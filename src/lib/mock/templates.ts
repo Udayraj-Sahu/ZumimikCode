@@ -8,6 +8,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Nikhilam Multiplication", category: "multiplication" },
     difficulty: 3,
     expected_time: 45,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "arrow_matrix" },
     examples: [
       {
@@ -28,6 +30,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Nikhilam Multiplication", category: "multiplication" },
     difficulty: 2,
     expected_time: 30,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "arrow_matrix" },
     examples: [
       {
@@ -49,6 +53,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Vertical & Crosswise", category: "multiplication" },
     difficulty: 4,
     expected_time: 60,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "arrow_matrix" },
     examples: [
       {
@@ -72,6 +78,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Direct Division", category: "division" },
     difficulty: 2,
     expected_time: 30,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "place_value_chart" },
     examples: [
       {
@@ -92,6 +100,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Direct Division", category: "division" },
     difficulty: 3,
     expected_time: 40,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "place_value_chart" },
     examples: [
       {
@@ -113,6 +123,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Direct Division", category: "division" },
     difficulty: 2,
     expected_time: 25,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "place_value_chart" },
     examples: [
       {
@@ -138,6 +150,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Speed & Distance", category: "problem_solving" },
     difficulty: 3,
     expected_time: 90,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "number_line" },
     examples: [
       {
@@ -158,6 +172,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Work Rate", category: "problem_solving" },
     difficulty: 4,
     expected_time: 120,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "arrow_matrix" },
     examples: [
       {
@@ -179,6 +195,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Number Properties — DS", category: "data_sufficiency" },
     difficulty: 4,
     expected_time: 120,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "grid_construction" },
     examples: [
       {
@@ -201,6 +219,8 @@ export const SAMPLE_TEMPLATES: SolveAlongTemplate[] = [
     concept: { technique_name: "Parallel Structure — SC", category: "sentence_correction" },
     difficulty: 3,
     expected_time: 75,
+    version: 1,
+    generationMethod: "template",
     visual_scaffold: { type: "equation_chain" },
     examples: [
       {
@@ -325,6 +345,8 @@ export function generateFallbackTemplates(
       },
       difficulty: (i % 3) + 2, // 2, 3, 4
       expected_time: 30 + i * 15, // 30, 45, 60
+      version: 1,
+      generationMethod: "llm",
       visual_scaffold: { type: scaffoldType },
       examples: [
         {

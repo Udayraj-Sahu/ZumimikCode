@@ -1,4 +1,4 @@
-import type { TopicNode } from "@/lib/types/technique";
+import type { TopicNode, TopicEdge } from "@/lib/types/technique";
 
 const SUBJECT_TREES: Record<string, TopicNode[]> = {
   "vedic-math": [
@@ -236,6 +236,18 @@ const SUBJECT_TREES: Record<string, TopicNode[]> = {
   ],
 };
 
+export const SUBJECT_EDGES: TopicEdge[] = [
+  { sourceId: "nikhilam-base-100", targetId: "digital-root-check", type: "REQUIRES", label: "Digital root helps verify nikhilam results" },
+  { sourceId: "nikhilam-base-1000", targetId: "nikhilam-base-100", type: "REQUIRES", label: "Base 1000 extends Base 100 concepts" },
+  { sourceId: "vert-cross-2digit", targetId: "nikhilam-base-100", type: "REQUIRES", label: "Vertical & crosswise builds on nikhilam" },
+  { sourceId: "direct-division", targetId: "digital-root-check", type: "REQUIRES", label: "Digital root verifies division results" },
+  { sourceId: "prime-factorization", targetId: "number-system-factors", type: "REQUIRES", label: "Understand factors before prime factorization" },
+  { sourceId: "lcm-gcd", targetId: "prime-factorization", type: "REQUIRES", label: "Prime factorization is needed for LCM/GCD" },
+  { sourceId: "speed-distance", targetId: "work-rate", type: "FRONTIER_OF", label: "Work rate uses rate concepts from speed-distance" },
+  { sourceId: "work-rate", targetId: "data-sufficiency", type: "FRONTIER_OF", label: "DS uses work rate problems" },
+  { sourceId: "percentage-tricks", targetId: "number-system-factors", type: "REQUIRES", label: "Percentage tricks build on number system" },
+];
+
 export function getSubjectTree(domain: string): TopicNode[] {
   const tree = SUBJECT_TREES[domain] ?? [];
   if (tree.length > 0) return tree;
@@ -252,6 +264,10 @@ export function findNodeById(tree: TopicNode[], id: string): TopicNode | null {
     }
   }
   return null;
+}
+
+export function getSubjectEdges(): TopicEdge[] {
+  return SUBJECT_EDGES;
 }
 
 export function getAllLeafTechniques(tree: TopicNode[]): TopicNode[] {

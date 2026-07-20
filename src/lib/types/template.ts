@@ -13,6 +13,8 @@ export type ScaffoldType =
   | "formula_generalization"
   | "venn_diagram";
 
+export type GenerationMethod = "template" | "llm" | "converted";
+
 export type SolveAlongTemplate = {
   id: string;
   domain: string;
@@ -30,6 +32,9 @@ export type SolveAlongTemplate = {
   examples: TemplateExample[];
   key_reminders?: string[];
   common_mistakes?: string[];
+  version: number;
+  sourceDocumentId?: string;
+  generationMethod?: GenerationMethod;
 };
 
 export type TemplateExample = {
@@ -92,6 +97,9 @@ export const SolveAlongTemplateSchema = z.object({
   examples: z.array(TemplateExampleSchema).min(1),
   key_reminders: z.array(z.string()).optional(),
   common_mistakes: z.array(z.string()).optional(),
+  version: z.number().int().positive().default(1),
+  sourceDocumentId: z.string().optional(),
+  generationMethod: z.enum(["template", "llm", "converted"]).optional(),
 });
 
 export const StepProgressSchema = z.object({

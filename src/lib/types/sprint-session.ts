@@ -1,9 +1,16 @@
+export type TrustStatus = "sandbox" | "trusted" | "live";
+
 export type Question = {
   id: string;
   text: string;
   options: string[];
   correctIndex: number;
   timeLimit: number;
+  difficulty?: number;
+  techniqueId?: string;
+  trustStatus?: TrustStatus;
+  sourceId?: string;
+  variantGroupId?: string;
 };
 
 export type SprintSession = {

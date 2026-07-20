@@ -1,6 +1,60 @@
-import type { Question, SprintSession } from "@/lib/types/sprint-session";
+import type { Question, SprintSession, TrustStatus } from "@/lib/types/sprint-session";
 
 const TOTAL_TIME_PER_QUESTION = 30;
+
+const TOPIC_TECHNIQUE_MAP: Record<string, Record<string, string[]>> = {
+  "vedic-math": {
+    addition: [],
+    subtraction: [],
+    multiplication: ["nikhilam-base-100", "nikhilam-base-1000", "vert-cross-2digit"],
+    division: ["direct-division"],
+    squares: ["digital-root-check"],
+    mixed: ["nikhilam-base-100", "direct-division", "digital-root-check"],
+  },
+  gmat: {
+    ps: ["work-rate", "speed-distance"],
+    ds: ["data-sufficiency"],
+    sc: ["sentence-correction-parallelism"],
+    cr: [],
+    rc: [],
+  },
+  cat: {
+    qa: ["number-system-factors", "prime-factorization", "lcm-gcd"],
+    lrdi: [],
+    va: [],
+  },
+  gre: {
+    qc: ["quant-comparison"],
+    ps: ["work-rate"],
+    tc: [],
+    se: [],
+    rc: [],
+  },
+  banking: {
+    numerical: ["percentage-tricks"],
+    reasoning: [],
+    english: [],
+    ga: [],
+    computer: [],
+  },
+};
+
+const sourceCounter = { count: 0 };
+
+function enrichQuestion(q: Question, domain: string, topic: string): Question {
+  const techniqueIds = TOPIC_TECHNIQUE_MAP[domain]?.[topic] ?? [];
+  sourceCounter.count++;
+  return {
+    ...q,
+    difficulty: q.timeLimit <= 10 ? 1 : q.timeLimit <= 20 ? 2 : q.timeLimit <= 30 ? 3 : q.timeLimit > 40 ? 5 : 4,
+    techniqueId: techniqueIds.length > 0
+      ? techniqueIds[q.id.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) % techniqueIds.length]
+      : undefined,
+    trustStatus: "trusted" as TrustStatus,
+    sourceId: `src-manual-${domain}-${sourceCounter.count}`,
+    variantGroupId: undefined,
+  };
+}
 
 // ── VEDIC MATH (original arithmetic) ─────────────
 const VM_QUESTIONS: Record<string, Question[]> = {
@@ -271,10 +325,13 @@ export function generateSprintSession(
 
   const shuffled = shuffle(pool);
   const selected = shuffled.slice(0, Math.min(length, shuffled.length));
-  const questions = selected.map((q) => ({
-    ...q,
-    timeLimit: difficulty === "Beginner" ? q.timeLimit + 10 : difficulty === "Advanced" ? Math.max(5, q.timeLimit - 5) : q.timeLimit,
-  }));
+  const questions = selected.map((q) => {
+    const enriched = enrichQuestion(q, d, topic);
+    return {
+      ...enriched,
+      timeLimit: difficulty === "Beginner" ? q.timeLimit + 10 : difficulty === "Advanced" ? Math.max(5, q.timeLimit - 5) : q.timeLimit,
+    };
+  });
   const totalTime = questions.length * TOTAL_TIME_PER_QUESTION;
 
   return {

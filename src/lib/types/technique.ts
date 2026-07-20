@@ -1,5 +1,14 @@
 export type TopicNodeType = "subject" | "topic" | "subtopic" | "technique";
 
+export type EdgeType = "REQUIRES" | "FRONTIER_OF" | "NEXT_TOPIC";
+
+export type TopicEdge = {
+  sourceId: string;
+  targetId: string;
+  type: EdgeType;
+  label?: string;
+};
+
 export type TopicNode = {
   id: string;
   type: TopicNodeType;

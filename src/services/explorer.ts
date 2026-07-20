@@ -1,5 +1,5 @@
-import type { TopicNode } from "@/lib/types/technique";
-import { getSubjectTree as mockGetTree, findNodeById as mockFindNode, getAllLeafTechniques as mockGetLeaves } from "@/lib/mock/explorer";
+import type { TopicNode, TopicEdge } from "@/lib/types/technique";
+import { getSubjectTree as mockGetTree, findNodeById as mockFindNode, getAllLeafTechniques as mockGetLeaves, getSubjectEdges as mockGetEdges } from "@/lib/mock/explorer";
 import { apiGet } from "./api";
 
 const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
@@ -32,4 +32,12 @@ export async function getLeafTechniques(domain: string): Promise<TopicNode[]> {
     return mockGetLeaves(tree);
   }
   return apiGet<TopicNode[]>(`/api/subjects/techniques?domain=${domain}`);
+}
+
+export async function getSubjectEdges(): Promise<TopicEdge[]> {
+  if (IS_MOCK) {
+    await delay(100);
+    return mockGetEdges();
+  }
+  return apiGet<TopicEdge[]>("/api/subjects/edges");
 }
