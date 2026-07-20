@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronRight, ChevronDown, BookOpen, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TopicNode } from "@/lib/types/technique";
+import PrerequisiteLock from "./prerequisite-lock";
 
 const TYPE_COLORS: Record<string, string> = {
   subject: "text-primary",
@@ -20,21 +21,34 @@ const TYPE_BG: Record<string, string> = {
   technique: "bg-card border-border/40",
 };
 
-function TreeNode({ node, depth = 0 }: { node: TopicNode; depth?: number }) {
+function TreeNode({
+  node,
+  depth = 0,
+  masteredTechniqueIds,
+  prerequisiteLabels,
+}: {
+  node: TopicNode;
+  depth?: number;
+  masteredTechniqueIds: string[];
+  prerequisiteLabels: Record<string, string>;
+}) {
   const [expanded, setExpanded] = useState(depth < 2);
   const hasChildren = node.children && node.children.length > 0;
   const isTechnique = node.type === "technique";
+
+  const isLocked = isTechnique && !!node.techniqueId && !masteredTechniqueIds.includes(node.techniqueId);
 
   const toggle = useCallback(() => {
     if (hasChildren) setExpanded((e) => !e);
   }, [hasChildren]);
 
   return (
-    <div>
+    <div className="relative">
       <div
         className={cn(
-            "flex items-center gap-2 rounded-lg border px-3 py-2.5 transition-all hover:brightness-110 active:brightness-125 cursor-pointer",
+          "flex items-center gap-2 rounded-lg border px-3 py-2.5 transition-all hover:brightness-110 active:brightness-125 cursor-pointer",
           TYPE_BG[node.type],
+          isLocked && "opacity-60",
         )}
         style={{ marginLeft: depth * 16 }}
       >
@@ -57,7 +71,7 @@ function TreeNode({ node, depth = 0 }: { node: TopicNode; depth?: number }) {
           <GraduationCap size={15} className={cn("shrink-0", TYPE_COLORS[node.type])} />
         )}
 
-        {isTechnique && node.techniqueId ? (
+        {isTechnique && node.techniqueId && !isLocked ? (
           <Link
             href={`/dashboard/technique/${node.techniqueId}`}
             className="flex-1 text-fluid-sm font-semibold text-foreground outline-none hover:text-primary active:text-primary focus-visible:ring-2 focus-visible:ring-ring rounded px-2 py-2 min-h-[44px] flex items-center"
@@ -73,10 +87,20 @@ function TreeNode({ node, depth = 0 }: { node: TopicNode; depth?: number }) {
         )}
       </div>
 
+      {isLocked && (
+        <PrerequisiteLock label={prerequisiteLabels[node.techniqueId!]} />
+      )}
+
       {hasChildren && expanded && (
         <div className="mt-1 flex flex-col gap-1">
           {node.children!.map((child) => (
-            <TreeNode key={child.id} node={child} depth={depth + 1} />
+            <TreeNode
+              key={child.id}
+              node={child}
+              depth={depth + 1}
+              masteredTechniqueIds={masteredTechniqueIds}
+              prerequisiteLabels={prerequisiteLabels}
+            />
           ))}
         </div>
       )}
@@ -84,7 +108,17 @@ function TreeNode({ node, depth = 0 }: { node: TopicNode; depth?: number }) {
   );
 }
 
-export function TopicTree({ trees, isLoading }: { trees: TopicNode[]; isLoading: boolean }) {
+export function TopicTree({
+  trees,
+  isLoading,
+  masteredTechniqueIds = [],
+  prerequisiteLabels = {},
+}: {
+  trees: TopicNode[];
+  isLoading: boolean;
+  masteredTechniqueIds?: string[];
+  prerequisiteLabels?: Record<string, string>;
+}) {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2 animate-pulse">
@@ -108,7 +142,13 @@ export function TopicTree({ trees, isLoading }: { trees: TopicNode[]; isLoading:
   return (
     <div className="flex flex-col gap-2">
       {trees.map((subject) => (
-        <TreeNode key={subject.id} node={subject} depth={0} />
+        <TreeNode
+          key={subject.id}
+          node={subject}
+          depth={0}
+          masteredTechniqueIds={masteredTechniqueIds}
+          prerequisiteLabels={prerequisiteLabels}
+        />
       ))}
     </div>
   );

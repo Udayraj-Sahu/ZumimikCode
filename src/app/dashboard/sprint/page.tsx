@@ -11,6 +11,8 @@ import { useFeedback } from "@/lib/use-feedback";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { Question } from "@/lib/types/sprint-session";
+import TrustBadge from "@/components/ui/trust-badge";
+import ContentFeedback from "@/components/ui/content-feedback";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -223,13 +225,16 @@ function SprintContent() {
           <Zap size={10} />
           {data.topicLabel}
         </span>
-        <span className={cn(
-          "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-fluid-xs font-bold font-mono",
-          isTimerLow ? "bg-destructive/10 text-destructive" : "bg-muted text-muted-foreground",
-        )}>
-          <Clock size={10} />
-          {formatTime(timeLeft)}
-        </span>
+        <div className="flex items-center gap-2">
+          {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
+          <span className={cn(
+            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-fluid-xs font-bold font-mono",
+            isTimerLow ? "bg-destructive/10 text-destructive" : "bg-muted text-muted-foreground",
+          )}>
+            <Clock size={10} />
+            {formatTime(timeLeft)}
+          </span>
+        </div>
       </div>
 
       {question && (
@@ -276,7 +281,7 @@ function SprintContent() {
           </div>
 
           {showFeedback && (
-            <div ref={feedbackRef} className="mt-5">
+            <div ref={feedbackRef} className="mt-5 flex flex-col items-center gap-3">
               <button
                 type="button"
                 onClick={handleNext}
@@ -284,6 +289,7 @@ function SprintContent() {
               >
                 {isLast ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
+              <ContentFeedback questionId={question.id} />
             </div>
           )}
         </div>
