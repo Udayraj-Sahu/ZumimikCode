@@ -2,36 +2,65 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Fragment, useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 import gsap from "gsap";
-import { LogOut, Zap, Flame, SunMoon } from "lucide-react";
+import { LogOut, Zap, Flame, SunMoon, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
-import { DOMAIN_LABELS } from "@/lib/types/template";
 import { useAuthStore } from "@/stores/auth-store";
 import { useThemeStore } from "@/stores/theme-store";
-import { useOnboardingStore } from "@/stores/onboarding-store";
 import { Walkthrough } from "@/components/dashboard/walkthrough";
 import { RatePrompt } from "@/components/dashboard/rate-prompt";
 
-const SIDEBAR_SECTIONS = Object.entries(
-  NAV_ITEMS.reduce<Record<string, typeof NAV_ITEMS>>((acc, item) => {
-    const section = item.section ?? "";
-    if (!acc[section]) acc[section] = [];
-    acc[section].push(item);
-    return acc;
-  }, {}),
-);
+const PRIMARY_NAV: { label: string; href: string }[] = [
+  { label: "Arena", href: "/dashboard" },
+  { label: "Quests", href: "/dashboard/configure-sprint" },
+  { label: "Compete", href: "/dashboard/duel" },
+  { label: "Practice", href: "/dashboard/practice" },
+  { label: "Analytics", href: "/dashboard/analytics" },
+];
+
+const FLYOUT_HREFS = [
+  "/dashboard/leaderboard",
+  "/dashboard/history",
+  "/dashboard/achievements",
+  "/dashboard/settings",
+  "/dashboard/friends",
+  "/dashboard/planner",
+  "/dashboard/reports",
+  "/dashboard/notifications",
+  "/dashboard/help",
+  "/dashboard/questions",
+  "/dashboard/flashcards",
+  "/dashboard/profile",
+];
+
+const NAV_BY_HREF = new Map(NAV_ITEMS.map((item) => [item.href, item]));
 
 export function DojoShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
+  const user = useAuthStore((s) => s.user);
   const { theme, toggleTheme } = useThemeStore();
-  const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domainLabel = DOMAIN_LABELS[targetExam] || "Training Ground";
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
+      }
+    }
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
+
+  useEffect(() => {
+    setMoreOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (sidebarRef.current) {
@@ -63,104 +92,140 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
     [],
   );
 
+  const visibleItems = PRIMARY_NAV.map((p) => ({ ...NAV_BY_HREF.get(p.href)!, label: p.label }));
+  const flyoutItems = FLYOUT_HREFS.map((href) => NAV_BY_HREF.get(href)!).filter(Boolean);
+  const anyFlyoutActive = flyoutItems.some((item) => pathname === item.href);
+  const avatarInitial = user?.name?.[0]?.toUpperCase() ?? "U";
+  const displayName = (user?.name ?? "Operative").toUpperCase();
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <aside
         ref={sidebarRef}
-        className="fixed inset-y-0 left-0 hidden w-60 flex-col border-r border-sidebar-border bg-sidebar lg:flex"
+        className="fixed inset-y-0 left-0 z-50 hidden w-[250px] flex-col border-r border-[#1f1f1f] bg-[#0d0d0d] px-4 py-7 lg:flex"
       >
         {/* Logo */}
-        <div className="px-4 py-5 border-b border-sidebar-border">
-          <div className="flex items-center gap-3">
-            <span className="grid size-8 place-items-center rounded bg-primary text-primary-foreground">
-              <Flame size={16} />
-            </span>
-            <div>
-              <h1 className="text-fluid-lg font-black tracking-[0.1em] leading-tight text-primary">
-                EXAM ARENA
-              </h1>
-              <p className="text-fluid-sm tracking-[0.08em] text-muted-foreground/50">
-                {domainLabel}
-              </p>
-            </div>
-          </div>
+        <div className="mb-12 flex items-center gap-3 pl-1.5">
+          <span className="grid size-9 place-items-center rounded bg-primary text-primary-foreground">
+            <Flame size={18} />
+          </span>
+          <h1 className="text-[19px] font-black tracking-[0.1em] leading-tight text-primary">
+            EXAM ARENA
+          </h1>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 py-3 px-2 flex flex-col gap-0.5" aria-label="Primary">
-          {SIDEBAR_SECTIONS.map(([section, items], sectionIndex) => (
-            <Fragment key={section}>
-              {sectionIndex > 0 && (
-                <div
-                  data-sidebar-section
-                  className="my-3 mx-2 border-t border-sidebar-border"
-                />
+        <nav data-sidebar-section className="relative flex flex-col gap-2.5" aria-label="Primary">
+          {visibleItems.map((item) => {
+            const active = pathname === item.href;
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "flex items-center gap-3.5 rounded-[10px] border border-transparent px-4 py-[13px] text-[13.5px] font-bold uppercase tracking-[0.6px] outline-none transition-[background,color,border-color] duration-150 focus-visible:ring-2 focus-visible:ring-ring",
+                  active
+                    ? "border-primary bg-[rgba(166,255,47,0.06)] text-primary"
+                    : "text-[#8a8f87] hover:text-[#c9cec4]",
+                )}
+              >
+                <Icon className="size-[18px] shrink-0" aria-hidden="true" />
+                {item.label}
+              </Link>
+            );
+          })}
+
+          {/* More + flyout */}
+          <div ref={moreRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setMoreOpen((v) => !v)}
+              aria-expanded={moreOpen}
+              className={cn(
+                "flex w-full items-center gap-3.5 rounded-[10px] border border-transparent px-4 py-[13px] text-[13.5px] font-bold uppercase tracking-[0.6px] outline-none transition-[background,color,border-color] duration-150 focus-visible:ring-2 focus-visible:ring-ring",
+                moreOpen || anyFlyoutActive
+                  ? "border-primary bg-[rgba(166,255,47,0.06)] text-primary"
+                  : "text-[#8a8f87] hover:text-[#c9cec4]",
               )}
-              <div data-sidebar-section>
-                <p className="mb-1.5 px-3 text-fluid-sm font-bold uppercase tracking-[0.15em] text-muted-foreground/40">
-                  {section}
-                </p>
-                <div className="flex flex-col gap-0.5">
-                  {items.map((item) => {
-                    const active = pathname === item.href;
-                    const Icon = item.icon;
-                    return (
+            >
+              <MoreHorizontal className="size-[18px] shrink-0" aria-hidden="true" />
+              More
+            </button>
+
+            <div
+              className={cn(
+                "absolute left-[calc(100%+14px)] top-0 z-50 w-[190px] rounded-[10px] border border-[#1f1f1f] bg-[#161616] p-2 shadow-[0_12px_30px_rgba(0,0,0,0.5)] transition-[opacity,transform,visibility] duration-150",
+                moreOpen ? "visible translate-x-0 opacity-100" : "invisible -translate-x-1.5 opacity-0",
+              )}
+            >
+              <span className="absolute -left-1.5 top-[22px] size-3 rotate-45 border-b border-l border-[#1f1f1f] bg-[#161616]" />
+              <ul className="flex max-h-[70vh] flex-col overflow-y-auto">
+                {flyoutItems.map((item) => {
+                  const active = pathname === item.href;
+                  const Icon = item.icon;
+                  return (
+                    <li key={item.href}>
                       <Link
-                        key={item.href}
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         className={cn(
-                          "relative flex items-center gap-3 px-3 py-3 rounded outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-ring",
+                          "flex items-center gap-3 rounded-[7px] px-3 py-2.5 text-[13.5px] font-semibold tracking-[0.2px] text-[#eaeae5] outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-ring",
                           active
-                            ? "bg-primary/10 text-primary"
-                            : "text-muted-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent active:bg-sidebar-accent/80",
+                            ? "bg-[rgba(166,255,47,0.08)] text-primary"
+                            : "hover:bg-[rgba(166,255,47,0.08)] hover:text-primary",
                         )}
                       >
-                        {active && (
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-r bg-primary" />
-                        )}
-                        <Icon size={16} aria-hidden="true" />
-                        <span className="text-fluid-base font-bold tracking-[0.08em]">
-                          {item.label}
-                        </span>
+                        <Icon className="size-4 shrink-0" aria-hidden="true" />
+                        {item.label}
                       </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            </Fragment>
-          ))}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
         </nav>
 
-        {/* Bottom actions */}
-        <div data-sidebar-section className="px-3 pb-4 flex flex-col gap-2 border-t border-sidebar-border pt-3">
+        {/* Bottom */}
+        <div data-sidebar-section className="mt-auto flex flex-col gap-4 pt-4">
           <Link
             href="/dashboard/configure-sprint"
-            className="flex items-center justify-center gap-2 py-3.5 rounded bg-primary text-primary-foreground text-fluid-sm font-bold tracking-[0.1em] outline-none transition-all hover:opacity-90 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+            className="flex items-center justify-center gap-2 rounded-[10px] bg-primary px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <Zap size={14} />
+            <Zap className="size-4" aria-hidden="true" />
             START SPRINT
           </Link>
-          <button
-            type="button"
-            onClick={toggleTheme}
-              className="flex items-center justify-center gap-2 py-3.5 rounded text-fluid-xs font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
-          >
-            <SunMoon size={12} />
-            {theme === "dark" ? "LIGHT MODE" : "DARK MODE"}
-          </button>
-          <button
-            type="button"
-            onClick={() => { logout(); router.push("/"); }}
-            className="flex items-center justify-center gap-2 py-3.5 rounded text-fluid-sm font-bold tracking-[0.08em] text-muted-foreground/50 outline-none transition-colors hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
-          >
-            <LogOut size={12} />
-            LOGOUT
-          </button>
+
+          <div className="flex items-center gap-3 px-1.5">
+            <span className="grid size-[34px] shrink-0 place-items-center rounded-full bg-[#8a6a5a] text-sm font-bold text-white">
+              {avatarInitial}
+            </span>
+            <span className="flex-1 truncate text-[12.5px] font-bold uppercase tracking-[0.5px] text-[#b8bcb4]">
+              {displayName}
+            </span>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="grid size-9 shrink-0 place-items-center rounded-lg text-[#8a8f87] outline-none transition-colors hover:bg-white/5 hover:text-[#eaeae5] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <SunMoon className="size-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => { logout(); router.push("/"); }}
+              aria-label="Logout"
+              className="grid size-9 shrink-0 place-items-center rounded-lg text-[#8a8f87] outline-none transition-colors hover:bg-white/5 hover:text-[#eaeae5] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <LogOut className="size-4" aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </aside>
 
-      <main className="lg:ml-60 h-dvh overflow-y-auto pb-24 lg:pb-0">
+      <main className="lg:ml-[250px] h-dvh overflow-y-auto pb-24 lg:pb-0">
         <div key={pathname} ref={pageRef}>
           {children}
         </div>
