@@ -204,7 +204,7 @@ export default function PracticePage() {
   /* ================================================================ */
   if (phase === "config") {
     return (
-      <div className="min-h-screen px-5 pt-6 pb-6">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
         <div ref={headerRef} className="mb-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <Dumbbell size={12} className="text-primary" />
@@ -495,7 +495,7 @@ export default function PracticePage() {
     const sprintTopic = searchParams.get("topic") || "";
     const sprintDifficulty = searchParams.get("difficulty") || "beginner";
     return (
-      <div className="min-h-screen mx-auto max-w-lg px-5 pt-8 pb-6" ref={contentRef}>
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-8 pb-6" ref={contentRef}>
         <div className="text-center mb-6">
           <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-[#F59E0B]/10 backdrop-blur-xl">
             <Check size={32} className="text-[#F59E0B]" />
@@ -555,7 +555,7 @@ export default function PracticePage() {
   /* ================================================================ */
   if (practiceType === "templates" && rendererPhase === "active" && currentTemplate) {
     return (
-      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
         <div ref={headerRef} className="flex items-center justify-between mb-3">
           <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
             {domainLabel} &middot; {currentTemplate.concept?.technique_name}
@@ -626,7 +626,7 @@ export default function PracticePage() {
   /* ================================================================ */
   if (practiceType === "templates" && (loadingTemplates || rendererPhase === "idle")) {
     return (
-      <div className="mx-auto max-w-lg px-5 pt-6 pb-6 animate-pulse">
+      <div className="max-w-5xl mx-auto px-5 pt-6 pb-6 animate-pulse">
         <div className="h-12 rounded-2xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-48 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-12 rounded-2xl" style={{ background: GLASS_BG }} />
@@ -636,7 +636,7 @@ export default function PracticePage() {
 
   if (isLoading || !session) {
     return (
-      <div className="mx-auto max-w-lg px-5 pt-6 pb-6 animate-pulse">
+      <div className="max-w-5xl mx-auto px-5 pt-6 pb-6 animate-pulse">
         <div className="h-12 rounded-2xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-48 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-12 rounded-2xl" style={{ background: GLASS_BG }} />
@@ -648,7 +648,7 @@ export default function PracticePage() {
   /*  ACTIVE MCQ                                                       */
   /* ================================================================ */
   return (
-    <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
       <div ref={headerRef} className="flex items-center justify-between mb-3">
         <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
           Practice &middot; {session.topicLabel}

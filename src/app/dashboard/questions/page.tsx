@@ -52,7 +52,7 @@ export default function QuestionsPage() {
   );
 
   return (
-    <div className="min-h-screen px-5 pt-6 pb-6">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>

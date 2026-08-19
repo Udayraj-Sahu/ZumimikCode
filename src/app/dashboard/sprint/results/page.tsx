@@ -46,7 +46,7 @@ export default function SprintResultsPage() {
 
   if (!result || !session) {
     return (
-      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 text-center">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 text-center">
         <p className="text-[13px] text-muted-foreground">No sprint results found.</p>
         <button
           type="button"
@@ -60,7 +60,7 @@ export default function SprintResultsPage() {
   }
 
   return (
-    <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
       {/* Header */}
       <div ref={resultRef}>
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">

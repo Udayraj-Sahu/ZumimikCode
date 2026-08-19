@@ -80,7 +80,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <main className="relative flex h-dvh flex-col items-center justify-between bg-background overflow-hidden">
+    <main className="relative flex h-dvh flex-col items-center justify-between bg-background overflow-hidden max-w-5xl mx-auto">
       {/* Background ambient glow */}
       <div className="pointer-events-none absolute inset-0">
         <div

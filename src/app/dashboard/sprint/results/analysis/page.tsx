@@ -107,7 +107,7 @@ export default function AnalysisPage() {
 
   if (!result || !session) {
     return (
-      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 text-center">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 text-center">
         <p className="text-[13px] text-muted-foreground">No sprint data found.</p>
         <button
           type="button"
@@ -122,7 +122,7 @@ export default function AnalysisPage() {
 
   if (wrongAnswers.length === 0) {
     return (
-      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 text-center">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 text-center">
         <div className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-primary/10 border border-primary/20">
           <Check size={28} className="text-primary" />
         </div>
@@ -152,7 +152,7 @@ export default function AnalysisPage() {
   }
 
   return (
-    <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
       {/* Back button + header */}
       <div className="flex items-center gap-3 mb-6">
         <button

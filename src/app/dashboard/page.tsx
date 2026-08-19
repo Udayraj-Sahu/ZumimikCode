@@ -190,7 +190,7 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-6">
+    <div className="min-h-screen pb-6 max-w-5xl mx-auto">
 
       {/* Ambient glow behind header */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
@@ -364,7 +364,7 @@ export default function DashboardPage() {
       <div ref={animateSection} data-section-index={5} className="px-5 mt-6">
         <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
           <SectionLabel>QUICK ACCESS</SectionLabel>
-          <div className="grid grid-cols-4 gap-3 mt-4">
+          <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-3 mt-4">
             {QUICK_ACCESS_ITEMS.map((q) => {
               const label = q.label === "Exam Prep" && examLabel !== "Exam" ? `${examLabel} Prep` : q.label;
               return (
@@ -394,116 +394,122 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Topic Mastery */}
-      <div ref={animateSection} data-section-index={6} className="px-5 mt-6">
-        <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-          <div className="flex items-center justify-between mb-5">
-            <SectionHeading>Topic mastery</SectionHeading>
-            <button
-              type="button"
-              onClick={() => router.push("/dashboard/mastery")}
-              className="flex items-center gap-1.5 text-[13px] font-semibold text-primary transition-all hover:gap-2.5"
-            >
-              View all <ArrowUpRight size={13} />
-            </button>
-          </div>
-          <div className="flex flex-col gap-4">
-            {topics.map((t) => (
-              <div key={t.name}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{t.name}</span>
-                  <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{t.value}%</span>
-                </div>
-                <div className="h-[7px] w-full rounded-full bg-white/[0.05] overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-700"
-                    style={{
-                      width: `${t.value}%`,
-                      background: `linear-gradient(90deg, ${ACCENT}77, ${ACCENT})`,
-                      boxShadow: `0 0 10px ${ACCENT}40`,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Recent Activity */}
-      <div ref={animateSection} data-section-index={7} className="px-5 mt-4">
-        <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-          <SectionHeading className="mb-4">Recent activity</SectionHeading>
-          <div className="flex flex-col">
-            {recent.map((a, i) => (
-              <div
-                key={a.label}
-                className={cn("flex items-center justify-between py-3.5", i !== recent.length - 1 && "border-b border-white/[0.05]")}
+      {/* Topic Mastery + Recent Activity */}
+      <div className="md:grid md:grid-cols-2 gap-4 px-5 mt-6">
+        {/* Topic Mastery */}
+        <div ref={animateSection} data-section-index={6}>
+          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <div className="flex items-center justify-between mb-5">
+              <SectionHeading>Topic mastery</SectionHeading>
+              <button
+                type="button"
+                onClick={() => router.push("/dashboard/mastery")}
+                className="flex items-center gap-1.5 text-[13px] font-semibold text-primary transition-all hover:gap-2.5"
               >
-                <div className="flex items-center gap-3">
-                  <div className="h-[5px] w-[5px] rounded-full bg-primary/50" />
-                  <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{a.label}</span>
+                View all <ArrowUpRight size={13} />
+              </button>
+            </div>
+            <div className="flex flex-col gap-4">
+              {topics.map((t) => (
+                <div key={t.name}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{t.name}</span>
+                    <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{t.value}%</span>
+                  </div>
+                  <div className="h-[7px] w-full rounded-full bg-white/[0.05] overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{
+                        width: `${t.value}%`,
+                        background: `linear-gradient(90deg, ${ACCENT}77, ${ACCENT})`,
+                        boxShadow: `0 0 10px ${ACCENT}40`,
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{a.score}</span>
-                  <span className="text-[11px] text-muted-foreground/25 w-16 text-right font-normal">{a.time}</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Cognitive Radar */}
-      <div ref={animateSection} data-section-index={8} className="px-5 mt-4">
-        <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-          <SectionHeading className="mb-2">Cognitive radar</SectionHeading>
-          <RadarChart axes={radarLabels} values={radarValues} />
-          <div className="flex flex-col gap-2.5 mt-3">
-            <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
-              <span className="flex items-center gap-2 text-[13px] text-muted-foreground/55 font-normal">
-                <Zap size={13} className="text-primary" />
-                Action Delay
-              </span>
-              <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">142ms</span>
-            </div>
-            <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
-              <span className="flex items-center gap-2 text-[13px] text-muted-foreground/55 font-normal">
-                <ArrowUpRight size={13} className="text-primary" />
-                Focus Density
-              </span>
-              <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">89%</span>
+        {/* Recent Activity */}
+        <div ref={animateSection} data-section-index={7} className="mt-4 md:mt-0">
+          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <SectionHeading className="mb-4">Recent activity</SectionHeading>
+            <div className="flex flex-col">
+              {recent.map((a, i) => (
+                <div
+                  key={a.label}
+                  className={cn("flex items-center justify-between py-3.5", i !== recent.length - 1 && "border-b border-white/[0.05]")}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-[5px] w-[5px] rounded-full bg-primary/50" />
+                    <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{a.label}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{a.score}</span>
+                    <span className="text-[11px] text-muted-foreground/25 w-16 text-right font-normal">{a.time}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Upcoming */}
-      <div ref={animateSection} data-section-index={9} className="px-5 mt-4">
-        <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-          <SectionHeading className="mb-4">Upcoming</SectionHeading>
-          <div className="flex flex-col gap-2.5">
-            {upcoming.map((u) => (
-              <div
-                key={u.title}
-                className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3.5"
-              >
-                <div>
-                  <p className="text-[13px] font-semibold text-foreground tracking-[-0.01em]">{u.title}</p>
-                  <p className="text-[11px] text-muted-foreground/35 mt-0.5 font-normal">{u.time}</p>
-                </div>
-                {u.tag === "LIVE" ? (
-                  <span className="flex items-center gap-1.5 rounded-full bg-[#FF6B35]/15 px-3 py-1 text-[11px] font-semibold text-[#FF6B35]">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#FF6B35] animate-pulse" />
-                    {u.tag}
-                  </span>
-                ) : (
-                  <span className="rounded-full bg-white/[0.05] px-3 py-1 text-[11px] font-semibold text-muted-foreground/50">
-                    {u.tag}
-                  </span>
-                )}
+      {/* Cognitive Radar + Upcoming */}
+      <div className="md:grid md:grid-cols-2 gap-4 px-5 mt-4">
+        {/* Cognitive Radar */}
+        <div ref={animateSection} data-section-index={8}>
+          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <SectionHeading className="mb-2">Cognitive radar</SectionHeading>
+            <RadarChart axes={radarLabels} values={radarValues} />
+            <div className="flex flex-col gap-2.5 mt-3">
+              <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
+                <span className="flex items-center gap-2 text-[13px] text-muted-foreground/55 font-normal">
+                  <Zap size={13} className="text-primary" />
+                  Action Delay
+                </span>
+                <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">142ms</span>
               </div>
-            ))}
+              <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
+                <span className="flex items-center gap-2 text-[13px] text-muted-foreground/55 font-normal">
+                  <ArrowUpRight size={13} className="text-primary" />
+                  Focus Density
+                </span>
+                <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">89%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Upcoming */}
+        <div ref={animateSection} data-section-index={9} className="mt-4 md:mt-0">
+          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <SectionHeading className="mb-4">Upcoming</SectionHeading>
+            <div className="flex flex-col gap-2.5">
+              {upcoming.map((u) => (
+                <div
+                  key={u.title}
+                  className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3.5"
+                >
+                  <div>
+                    <p className="text-[13px] font-semibold text-foreground tracking-[-0.01em]">{u.title}</p>
+                    <p className="text-[11px] text-muted-foreground/35 mt-0.5 font-normal">{u.time}</p>
+                  </div>
+                  {u.tag === "LIVE" ? (
+                    <span className="flex items-center gap-1.5 rounded-full bg-[#FF6B35]/15 px-3 py-1 text-[11px] font-semibold text-[#FF6B35]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#FF6B35] animate-pulse" />
+                      {u.tag}
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-white/[0.05] px-3 py-1 text-[11px] font-semibold text-muted-foreground/50">
+                      {u.tag}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

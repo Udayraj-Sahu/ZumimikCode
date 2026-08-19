@@ -24,7 +24,7 @@ export function ClientTechniquePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6 animate-pulse">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 animate-pulse">
         <div className="h-10 w-32 rounded-xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-32 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-64 rounded-3xl" style={{ background: GLASS_BG }} />
@@ -34,7 +34,7 @@ export function ClientTechniquePage() {
 
   if (error || !technique) {
     return (
-      <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
         <div
           className="flex flex-col items-center gap-4 rounded-3xl p-8 text-center"
           style={{ background: GLASS_BG, border: `1px solid rgba(239,68,68,0.12)` }}
@@ -53,7 +53,7 @@ export function ClientTechniquePage() {
   }
 
   return (
-    <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
       <div ref={headerRef} className="text-center">
         <button
           type="button"

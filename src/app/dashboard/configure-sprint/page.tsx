@@ -52,7 +52,7 @@ export default function ConfigureSprintPage() {
 
   if (isLoading || !data) {
     return (
-      <div className="min-h-screen px-5 pt-6 pb-6 flex items-center justify-center">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 flex items-center justify-center">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
@@ -61,13 +61,12 @@ export default function ConfigureSprintPage() {
   const { topics, config } = data;
 
   return (
-      <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
         <div ref={headerRef} className="text-center mb-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <BookOpen size={12} className="text-primary" />
-            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
+            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">SPRINT</span>
           </div>
-          <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Configure Sprint</h1>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Choose your topic, duration, and difficulty level.</p>
         </div>
 

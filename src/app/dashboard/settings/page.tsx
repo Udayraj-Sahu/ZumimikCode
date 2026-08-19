@@ -210,7 +210,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-6">
+    <div className="min-h-screen bg-background pb-6 max-w-5xl mx-auto">
       {/* Ambient glow */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.2) 0%, transparent 70%)" }} />
 
