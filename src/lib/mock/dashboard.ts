@@ -18,9 +18,10 @@ import {
   CreditCard,
   Users,
   FileText,
-  House,
   GraduationCap,
   Gamepad2,
+  Sparkles,
+  Target,
 } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [
@@ -44,9 +45,9 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const MOBILE_NAV: NavItem[] = [
-  { label: "Home", href: "/dashboard", icon: House },
-  { label: "Learn", href: "/dashboard/learn", icon: GraduationCap },
-  { label: "Play", href: "/dashboard/play", icon: Gamepad2 },
+  { label: "Home", href: "/dashboard", icon: Home },
+  { label: "Learn", href: "/dashboard/learn", icon: BookOpen },
+  { label: "Play", href: "/dashboard/play", icon: Zap },
   { label: "Setting", href: "/dashboard/settings", icon: Settings },
 ];
 
