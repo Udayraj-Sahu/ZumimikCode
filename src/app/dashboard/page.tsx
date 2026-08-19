@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import {
@@ -30,8 +30,10 @@ import { cn } from "@/lib/utils";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useHabitStore } from "@/stores/habit-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
+import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 
 const ACCENT = "#C7F252";
 const GLASS_BG = "rgba(255,255,255,0.04)";
@@ -158,6 +160,7 @@ export default function DashboardPage() {
 
   const [statsOpen, setStatsOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [habitModalOpen, setHabitModalOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -175,6 +178,39 @@ export default function DashboardPage() {
   const upcoming = data?.upcoming ?? FALLBACK_UPCOMING;
   const leaderboard = data?.leaderboard ?? FALLBACK_LEADERBOARD;
   const recent = data?.recent ?? FALLBACK_RECENT;
+
+  const habits = useHabitStore((s) => s.habits);
+  const logs = useHabitStore((s) => s.logs);
+  const habitCount = habits.length;
+  const todayLogs = useMemo(() => {
+    const today = new Date().toISOString().split("T")[0];
+    return logs.filter((l) => l.date === today && l.completed).map((l) => l.habitId);
+  }, [logs]);
+  const todayCompleted = todayLogs.length;
+  const habitStats = useMemo(() => {
+    const completedLogs = logs.filter((l) => l.completed);
+    const dates = new Set(completedLogs.map((l) => l.date));
+    let bestStreak = 0;
+    let current = 0;
+    const today = new Date();
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      if (dates.has(d.toISOString().split("T")[0])) {
+        current++;
+        bestStreak = Math.max(bestStreak, current);
+      } else {
+        current = 0;
+      }
+    }
+    const thirtyAgo = new Date(today);
+    thirtyAgo.setDate(thirtyAgo.getDate() - 30);
+    const recentCompletions = completedLogs.filter((l) => l.date >= thirtyAgo.toISOString().split("T")[0]);
+    const uniqueDays = new Set(recentCompletions.map((l) => l.date)).size;
+    const expectedMax = habitCount * 30;
+    const completionRate = expectedMax > 0 ? Math.min(100, Math.round((recentCompletions.length / expectedMax) * 100)) : 0;
+    return { currentStreak: current, bestStreak, totalCompletions: completedLogs.length, completionRate };
+  }, [logs, habitCount]);
 
   const radarLabels = radarAxes.map((a) => a.label);
   const radarValues = radarAxes.map((a) => a.value);
@@ -355,6 +391,83 @@ export default function DashboardPage() {
             <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground/35 font-normal">
               <Clock size={12} />
               5–15 min each
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Daily Habits */}
+      <div ref={animateSection} data-section-index={5} className="px-5 mt-4">
+        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
+          <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
+          <SectionLabel className="text-[#34D399]">DAILY HABITS</SectionLabel>
+          <h2 className="relative mt-2 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
+          <p className="relative mt-1.5 text-[13px] text-muted-foreground/45 font-normal">Daily check-ins · Track streaks · Stay accountable</p>
+
+          <div className="relative mt-5 flex items-center gap-4">
+            <div className="relative shrink-0">
+              <svg width="64" height="64" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
+                <circle
+                  cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeDasharray={`${2 * Math.PI * 27}`}
+                  strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`}
+                  transform="rotate(-90 32 32)"
+                  className="transition-all duration-700"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-[16px] font-bold text-foreground leading-none">{todayCompleted}</span>
+                <span className="text-[8px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
+              </div>
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1.5">
+                <Flame size={13} className="text-[#34D399]" />
+                <span className="text-[13px] font-bold text-[#34D399]">{habitStats.currentStreak}d streak</span>
+                <span className="text-[11px] text-muted-foreground/30">·</span>
+                <span className="text-[11px] text-muted-foreground/40 font-medium">{habitStats.completionRate}% rate</span>
+              </div>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {habits.slice(0, 5).map((h) => {
+                  const done = todayLogs.includes(h.id);
+                  return (
+                    <div
+                      key={h.id}
+                      className="flex items-center gap-1 rounded-full px-2 py-0.5 border transition-colors"
+                      style={{
+                        borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)",
+                        background: done ? `${h.color}10` : "transparent",
+                      }}
+                    >
+                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
+                      <span className={cn("text-[9px] font-medium truncate max-w-[60px]", done ? "text-foreground/70" : "text-muted-foreground/30")}>
+                        {h.name.split(" ")[0]}
+                      </span>
+                    </div>
+                  );
+                })}
+                {habits.length > 5 && (
+                  <span className="text-[9px] text-muted-foreground/25 font-medium">+{habits.length - 5}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="relative mt-5 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setHabitModalOpen(true)}
+              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95"
+            >
+              VIEW HABITS
+            </button>
+            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground/35 font-normal">
+              <Clock size={12} />
+              {habitCount - todayCompleted > 0 ? `${habitCount - todayCompleted} left today` : "All done!"}
             </div>
           </div>
         </div>
@@ -548,6 +661,10 @@ export default function DashboardPage() {
 
       {showOnboarding && (
         <OnboardingModal onClose={() => setShowOnboarding(false)} />
+      )}
+
+      {habitModalOpen && (
+        <HabitTrackerModal onClose={() => setHabitModalOpen(false)} />
       )}
     </div>
   );
