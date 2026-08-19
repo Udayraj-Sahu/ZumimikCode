@@ -8,6 +8,9 @@ import { useNotifications } from "@/hooks/queries/use-notifications";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { NotificationItem } from "@/lib/types/notifications";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 const TYPE_ICON: Record<NotificationItem["type"], typeof Bell> = {
   sprint_reminder: Zap,
   achievement: Award,
@@ -46,19 +49,22 @@ export default function NotificationsPage() {
   const unreadCount = notifications?.filter((n) => !n.read).length ?? 0;
 
   return (
-    <div className="px-4 sm:px-6 pt-6 pb-10">
+    <div className="min-h-screen px-5 pt-6 pb-6">
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Notifications</h1>
-        <p className="text-fluid-sm text-muted-foreground/60">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Bell size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">NOTIFICATIONS</span>
+        </div>
+        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
         </p>
         {unreadCount > 0 && (
           <div className="mt-3 flex justify-center">
             <button
               type="button"
-              className="flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-3 text-fluid-xs font-bold uppercase tracking-wider text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+              className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-colors min-h-[44px]"
+              style={{ background: "linear-gradient(to right, #C7F252, #A8D43A)", color: "#0A0C0A" }}
             >
               <CheckCheck size={14} />
               Mark All Read
@@ -73,11 +79,12 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("all")}
           className={cn(
-            "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-xl px-4 py-2 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "all"
               ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
+              : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
           )}
+          style={filter !== "all" ? { background: GLASS_BG } : undefined}
         >
           All
         </button>
@@ -85,11 +92,12 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("unread")}
           className={cn(
-            "rounded-lg px-4 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-xl px-4 py-2 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "unread"
               ? "bg-primary text-primary-foreground"
-              : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
+              : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
           )}
+          style={filter !== "unread" ? { background: GLASS_BG } : undefined}
         >
           Unread {unreadCount > 0 && <span className="ml-1 text-primary">({unreadCount})</span>}
         </button>
@@ -100,40 +108,40 @@ export default function NotificationsPage() {
         {isLoading && (
           <div className="animate-pulse space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-20 rounded-xl bg-card" />
+              <div key={i} className="h-20 rounded-3xl" style={{ background: GLASS_BG }} />
             ))}
           </div>
         )}
 
         {error && (
-          <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center">
-            <p className="text-fluid-sm font-semibold text-destructive">Failed to load notifications</p>
-            <p className="mt-1 text-fluid-xs text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center">
+            <p className="text-[12px] font-semibold text-destructive">Failed to load notifications</p>
+            <p className="mt-1 text-[10px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
         )}
 
         {filtered.length === 0 && (
           <div className="py-14 text-center">
             <Bell size={32} className="mx-auto text-muted-foreground/20 mb-3" />
-            <p className="text-fluid-sm text-muted-foreground/60">
+            <p className="text-[12px] text-muted-foreground/60">
               {filter === "unread" ? "No unread notifications" : "No notifications yet"}
             </p>
           </div>
         )}
 
         {filtered.length > 0 && (
-          <div ref={listRef} role="list" className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
+          <div ref={listRef} role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
             {filtered.map((n) => {
               const Icon = TYPE_ICON[n.type];
               return (
                 <div
                   key={n.id}
                   data-notification-item
-                  className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-accent/20 active:bg-accent/30"
+                  className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-white/[0.04] active:bg-white/[0.06]"
                 >
                   <div className={cn(
-                    "grid size-9 shrink-0 place-items-center rounded-lg mt-0.5",
-                    n.read ? "bg-muted" : "bg-primary/10",
+                    "grid size-9 shrink-0 place-items-center rounded-xl mt-0.5",
+                    n.read ? "bg-white/[0.06]" : "bg-primary/10",
                   )}>
                     <Icon size={16} className={n.read ? "text-muted-foreground/40" : "text-primary"} />
                   </div>
@@ -141,19 +149,19 @@ export default function NotificationsPage() {
                     <div className="flex items-center gap-2">
                       {!n.read && <span className="size-2 shrink-0 rounded-full bg-primary" />}
                       <p className={cn(
-                        "text-fluid-sm font-semibold truncate",
+                        "text-[12px] font-semibold truncate",
                         n.read ? "text-foreground/60" : "text-foreground",
                       )}>
                         {n.title}
                       </p>
                     </div>
                     <p className={cn(
-                      "text-fluid-xs mt-0.5 leading-relaxed",
+                      "text-[10px] mt-0.5 leading-relaxed",
                       n.read ? "text-muted-foreground/40" : "text-muted-foreground/60",
                     )}>
                       {n.message}
                     </p>
-                    <p className="text-fluid-xs text-muted-foreground/50 mt-1">{n.time}</p>
+                    <p className="text-[10px] text-muted-foreground/50 mt-1">{n.time}</p>
                   </div>
                 </div>
               );

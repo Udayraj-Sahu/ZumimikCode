@@ -2,15 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Trophy, Puzzle, Brain, Zap, Clock, Flame, type LucideIcon } from "lucide-react";
+import { Trophy, Puzzle, Brain, Zap, Clock, Flame, Gamepad2, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 const TABS = [
-  { id: "math", label: "Math", icon: Zap, color: "text-chart-3" },
-  { id: "puzzle", label: "Puzzle", icon: Puzzle, color: "text-primary" },
-  { id: "memory", label: "Memory", icon: Brain, color: "text-chart-2" },
-  { id: "logic", label: "Logic", icon: Trophy, color: "text-chart-4" },
+  { id: "math", label: "Math", icon: Zap, color: "#F59E0B" },
+  { id: "puzzle", label: "Puzzle", icon: Puzzle, color: "#C7F252" },
+  { id: "memory", label: "Memory", icon: Brain, color: "#3B82F6" },
+  { id: "logic", label: "Logic", icon: Trophy, color: "#A855F7" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -20,7 +23,7 @@ type ModeCard = {
   category: string;
   title: string;
   desc: string;
-  accentClass: string;
+  color: string;
   icon: LucideIcon;
   badge?: string;
   href?: string;
@@ -31,8 +34,8 @@ const MATH_MODES: ModeCard[] = [
     id: "sprint",
     category: "MATH",
     title: "SPRINT DUELS",
-    desc: "RACE TO SOLVE THE MOST IN 1 MINUTE.",
-    accentClass: "text-chart-3",
+    desc: "Race to solve the most in 1 minute.",
+    color: "#F59E0B",
     icon: Clock,
     href: "/dashboard/configure-sprint",
   },
@@ -40,10 +43,10 @@ const MATH_MODES: ModeCard[] = [
     id: "fast",
     category: "MATH",
     title: "FAST & FIRST DUELS",
-    desc: "BE THE FIRST TO ANSWER EACH QUESTION.",
-    accentClass: "text-primary",
+    desc: "Be the first to answer each question.",
+    color: "#C7F252",
     icon: Flame,
-    badge: "2S",
+    badge: "2P",
     href: "/dashboard/duel",
   },
 ];
@@ -55,13 +58,16 @@ const MODES_BY_TAB: Record<TabId, ModeCard[]> = {
   logic: [],
 };
 
-const COMING_SOON_LABEL: Record<TabId, string> = {
+const COMING_SOON: Record<TabId, string> = {
   math: "",
   puzzle: "Puzzle modes coming soon",
   memory: "Memory modes coming soon",
   logic: "Logic modes coming soon",
 };
 
+/* ------------------------------------------------------------------ */
+/*  Mode card                                                           */
+/* ------------------------------------------------------------------ */
 function ModeCardButton({ mode }: { mode: ModeCard }) {
   const router = useRouter();
   const Icon = mode.icon;
@@ -70,54 +76,66 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
     <button
       type="button"
       onClick={() => mode.href && router.push(mode.href)}
-      className="relative w-full rounded-2xl border border-border/40 bg-card p-5 text-left outline-none transition-all hover:border-border hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
+      className="relative w-full rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98] overflow-hidden"
+      style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
     >
-      <div className="flex items-center justify-between mb-3">
-        <span className={cn(
-          "text-[10px] font-extrabold tracking-widest border rounded-md px-2 py-0.5",
-          mode.accentClass,
-          "border-current",
-        )}>
+      <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10" style={{ background: `radial-gradient(circle, ${mode.color}, transparent)` }} />
+
+      <div className="flex items-center justify-between mb-4 relative">
+        <span
+          className="text-[10px] font-bold tracking-[0.14em] rounded-full px-3 py-1 uppercase"
+          style={{ color: mode.color, background: `${mode.color}15`, border: `1px solid ${mode.color}20` }}
+        >
           {mode.category}
         </span>
         {mode.badge && (
-          <span className={cn(
-            "text-[10px] font-extrabold rounded-md px-2 py-0.5 bg-primary text-primary-foreground",
-          )}>
+          <span className="text-[10px] font-bold rounded-full px-3 py-1 bg-primary/15 text-primary border border-primary/20">
             {mode.badge}
           </span>
         )}
       </div>
 
-      <h2 className="text-fluid-lg font-black tracking-tight text-foreground mb-1">
+      <h2 className="relative text-[17px] font-bold tracking-[-0.02em] text-foreground mb-1.5">
         {mode.title}
       </h2>
-      <p className="text-fluid-xs text-muted-foreground/60 font-semibold tracking-wide max-w-[78%]">
+      <p className="relative text-[12px] text-muted-foreground/45 font-normal max-w-[80%] leading-relaxed">
         {mode.desc}
       </p>
 
-      <div className={cn("absolute right-5 bottom-4 opacity-80", mode.accentClass)}>
-        <Icon size={34} strokeWidth={2} />
+      <div className="absolute right-5 bottom-4 opacity-60" style={{ color: mode.color }}>
+        <Icon size={32} strokeWidth={1.8} />
       </div>
     </button>
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  Main page                                                           */
+/* ------------------------------------------------------------------ */
 export default function PlayPage() {
   usePageMeta("Play — Exam Arena");
   const [activeTab, setActiveTab] = useState<TabId>("math");
   const modes = MODES_BY_TAB[activeTab];
-  const comingSoon = COMING_SOON_LABEL[activeTab];
+  const comingSoon = COMING_SOON[activeTab];
 
   return (
-    <div className="px-4 pt-6 pb-24">
+    <div className="min-h-screen px-5 pt-6 pb-6">
+      {/* Header */}
       <header className="mb-5">
-        <h1 className="text-fluid-sm font-extrabold tracking-[0.15em] text-muted-foreground/60">
-          DUELS
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Gamepad2 size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">PLAY</span>
+        </div>
+        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
+          Duels &amp; Challenges
         </h1>
+        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
+          Compete, learn, and climb the leaderboard
+        </p>
       </header>
 
-      <nav className="flex gap-2 mb-6">
+      {/* Tabs */}
+      <nav className="grid grid-cols-4 gap-2.5 mb-5">
         {TABS.map((tab) => {
           const isActive = tab.id === activeTab;
           const Icon = tab.icon;
@@ -127,21 +145,24 @@ export default function PlayPage() {
               type="button"
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                "flex-1 flex flex-col items-center gap-1.5 py-2.5 rounded-2xl outline-none transition-all",
-                "focus-visible:ring-2 focus-visible:ring-ring",
-                isActive ? "bg-accent" : "bg-transparent",
+                "flex flex-col items-center gap-2 py-3 rounded-2xl transition-all",
+                isActive
+                  ? "border border-white/[0.08] bg-white/[0.06] backdrop-blur-xl shadow-lg"
+                  : "border border-transparent bg-white/[0.02]"
               )}
             >
-              <span className={cn(
-                "grid size-8 place-items-center rounded-xl transition-colors",
-                isActive ? "bg-foreground text-background" : "bg-muted text-muted-foreground/50",
-              )}>
-                <Icon size={15} strokeWidth={2.5} />
-              </span>
-              <span className={cn(
-                "text-[10px] font-bold tracking-wide transition-colors",
-                isActive ? tab.color : "text-muted-foreground/50",
-              )}>
+              <div
+                className="h-9 w-9 rounded-xl flex items-center justify-center transition-all"
+                style={{
+                  background: isActive ? `${tab.color}18` : "rgba(255,255,255,0.04)",
+                }}
+              >
+                <Icon size={16} strokeWidth={2.2} style={{ color: isActive ? tab.color : "#6B7280" }} />
+              </div>
+              <span
+                className="text-[10px] font-semibold tracking-[0.02em]"
+                style={{ color: isActive ? tab.color : "rgba(107,114,128,0.5)" }}
+              >
                 {tab.label}
               </span>
             </button>
@@ -149,18 +170,19 @@ export default function PlayPage() {
         })}
       </nav>
 
+      {/* Mode Cards */}
       <main className="flex flex-col gap-3">
         {modes.length > 0 ? (
           modes.map((mode) => <ModeCardButton key={mode.id} mode={mode} />)
         ) : (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="grid size-16 place-items-center rounded-2xl bg-muted/50 mb-4">
-              <Trophy size={28} className="text-muted-foreground/30" />
+          <div className="flex flex-col items-center justify-center py-16 text-center rounded-3xl border border-dashed border-white/[0.06]" style={{ background: GLASS_BG }}>
+            <div className="h-14 w-14 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-4">
+              <Trophy size={24} className="text-muted-foreground/20" />
             </div>
-            <p className="text-fluid-sm font-semibold text-muted-foreground/60">
+            <p className="text-[14px] font-semibold text-muted-foreground/45">
               {comingSoon}
             </p>
-            <p className="text-fluid-xs text-muted-foreground/40 mt-1">
+            <p className="text-[12px] text-muted-foreground/25 mt-1.5 font-normal">
               Stay tuned for new game modes
             </p>
           </div>

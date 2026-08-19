@@ -2,11 +2,14 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import gsap from "gsap";
-import { Search, Users, Plus, Crown } from "lucide-react";
+import { Search, Users, Plus, Crown, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { MOCK_CLUBS, CLUB_FILTERS, type ClubFilter } from "@/lib/mock/clubs";
 import type { Club } from "@/lib/types/clubs";
+
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 type Tab = "find" | "yours";
 
@@ -51,35 +54,37 @@ export default function ClubsPage() {
   });
 
   return (
-    <div className="px-4 sm:px-6 pt-6 pb-24">
-      <div ref={headerRef} className="flex items-center justify-between">
-        <div>
-          <p className="text-[11px] font-bold tracking-[0.15em] text-primary">EXAM ARENA</p>
-          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground mt-1">Clubs</h1>
+    <div className="min-h-screen px-5 pt-6 pb-6">
+      <div ref={headerRef}>
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Users size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">CLUBS</span>
         </div>
-        <button
-          type="button"
-          className="grid size-10 place-items-center rounded-full bg-muted text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <Search size={18} />
-        </button>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[12px] text-muted-foreground/45 font-normal">Find and join study communities</p>
+          </div>
+          <button
+            type="button"
+            className="grid size-10 place-items-center rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl text-muted-foreground outline-none transition-colors hover:bg-white/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <Search size={18} />
+          </button>
+        </div>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex border-b border-border/60">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 p-1 rounded-3xl border border-white/[0.06] bg-white/[0.02]">
         {(["find", "yours"] as Tab[]).map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => setTab(t)}
             className={cn(
-              "flex-1 pb-3 text-fluid-sm font-bold transition-colors outline-none relative focus-visible:ring-2 focus-visible:ring-ring",
-              tab === t ? "text-foreground" : "text-muted-foreground/50",
+              "flex-1 py-2.5 rounded-2xl text-[12px] font-bold transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              tab === t ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground/50 hover:text-foreground",
             )}
           >
             {t === "find" ? "Find Clubs" : "Your Clubs"}
-            {tab === t && (
-              <span className="absolute bottom-0 left-0 right-0 h-[3px] rounded-full bg-foreground" />
-            )}
           </button>
         ))}
       </div>
@@ -91,10 +96,10 @@ export default function ClubsPage() {
             type="button"
             onClick={() => setActiveFilter(f)}
             className={cn(
-              "rounded-full px-3.5 py-2 text-fluid-xs font-semibold whitespace-nowrap outline-none transition-all border focus-visible:ring-2 focus-visible:ring-ring",
+              "rounded-full px-3.5 py-2 text-[10px] font-semibold whitespace-nowrap outline-none transition-all border focus-visible:ring-2 focus-visible:ring-ring",
               activeFilter === f
-                ? "bg-foreground text-background border-foreground"
-                : "bg-muted text-foreground/80 border-border/40 hover:bg-accent",
+                ? "bg-primary text-primary-foreground border-primary"
+                : "text-foreground/80 border-white/[0.06] bg-white/[0.04] backdrop-blur-xl hover:bg-white/[0.08]",
             )}
           >
             {f}
@@ -107,8 +112,8 @@ export default function ClubsPage() {
           {filteredClubs.length === 0 && (
             <div className="py-14 text-center">
               <Users size={28} className="mx-auto text-muted-foreground/20 mb-2" />
-              <p className="text-fluid-sm text-muted-foreground/60">No clubs found</p>
-              <p className="text-fluid-xs text-muted-foreground/40 mt-1">Try a different filter</p>
+              <p className="text-[12px] text-muted-foreground/60">No clubs found</p>
+              <p className="text-[10px] text-muted-foreground/40 mt-1">Try a different filter</p>
             </div>
           )}
 
@@ -120,7 +125,7 @@ export default function ClubsPage() {
 
       <button
         type="button"
-        className="fixed right-5 bottom-20 z-40 grid size-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 outline-none transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+        className="fixed right-5 bottom-20 z-40 grid size-14 place-items-center rounded-full bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] shadow-lg shadow-primary/30 outline-none transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
       >
         <Plus size={22} strokeWidth={2.5} />
       </button>
@@ -135,18 +140,19 @@ function ClubCard({ club }: { club: Club }) {
     <div
       ref={cardRef}
       data-club-item
-      className="flex items-center gap-3.5 rounded-2xl border border-border/60 bg-card p-4 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+      className="flex items-center gap-3.5 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+      style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
     >
       <img
         src={club.coverUrl}
         alt={club.name}
-        className="w-[52px] h-[70px] shrink-0 rounded-lg object-cover border border-border/40"
+        className="w-[52px] h-[70px] shrink-0 rounded-xl object-cover border border-white/[0.06]"
       />
       <div className="flex-1 min-w-0">
         <p className="text-[11px] text-muted-foreground/50 truncate">
           {club.moderator.name} moderates
         </p>
-        <p className="text-fluid-sm font-bold text-foreground truncate leading-tight mt-0.5">
+        <p className="text-[12px] font-bold text-foreground truncate leading-tight mt-0.5">
           {club.name}
         </p>
         <div className="flex items-center gap-2.5 mt-2">
@@ -163,7 +169,7 @@ function ClubCard({ club }: { club: Club }) {
           )}
         </div>
       </div>
-      <div className="grid size-9 shrink-0 place-items-center rounded-full bg-primary/10 text-[11px] font-black text-primary">
+      <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-[11px] font-black text-primary">
         {club.moderator.initials}
       </div>
     </div>

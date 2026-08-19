@@ -9,6 +9,8 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import type { LeaderboardEntry } from "@/lib/types/dashboard";
 
 const PERIODS = ["week", "month", "all"] as const;
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 function RankMedal({ rank }: { rank: number }) {
   if (rank === 1) return <Trophy size={18} className="text-chart-3" />;
@@ -22,12 +24,12 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
     <div
       data-leaderboard-row
       className={cn(
-        "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors",
-        entry.me ? "bg-primary/5 border border-primary/20" : "hover:bg-accent/20 active:bg-accent/30",
+        "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors",
+        entry.me ? "bg-primary/5 border border-primary/20" : "hover:bg-white/[0.04] active:bg-white/[0.06]",
       )}
     >
       <span className={cn(
-        "w-8 text-center text-fluid-sm font-bold font-mono",
+        "w-8 text-center text-[12px] font-bold font-mono",
         entry.rank <= 3 ? "text-foreground" : "text-muted-foreground/40",
         entry.me && "text-primary",
       )}>
@@ -35,11 +37,11 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
       </span>
       <div className="flex-1 min-w-0">
         <p className={cn(
-          "text-fluid-sm font-semibold truncate",
+          "text-[12px] font-semibold truncate",
           entry.me ? "text-primary" : "text-foreground/80",
         )}>
           {entry.name}
-          {entry.me && <span className="ml-2 text-fluid-xs text-primary/60 font-normal">(You)</span>}
+          {entry.me && <span className="ml-2 text-[10px] text-primary/60 font-normal">(You)</span>}
         </p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
@@ -50,12 +52,12 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
           />
         </div>
         <span className={cn(
-          "text-fluid-sm font-bold font-mono",
+          "text-[12px] font-bold font-mono",
           entry.me ? "text-primary" : "text-foreground/80",
         )}>
           {entry.xp.toLocaleString()}
         </span>
-        <span className="text-fluid-xs text-muted-foreground/40 hidden sm:inline">XP</span>
+        <span className="text-[10px] text-muted-foreground/40 hidden sm:inline">XP</span>
       </div>
     </div>
   );
@@ -95,12 +97,14 @@ export default function LeaderboardPage() {
   const xpToNext = prevRank && me ? prevRank.xp - me.xp : 0;
 
   return (
-    <div className="px-4 sm:px-6 pt-6 pb-10">
+    <div className="min-h-screen px-5 pt-6 pb-6">
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Leaderboard</h1>
-        <p className="text-fluid-sm text-muted-foreground/60">Track your ranking across all arenas</p>
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Trophy size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEADERBOARD</span>
+        </div>
+        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Track your ranking across all arenas</p>
       </div>
 
       {/* Period tabs */}
@@ -111,11 +115,13 @@ export default function LeaderboardPage() {
             type="button"
             onClick={() => setPeriod(p)}
             className={cn(
-              "rounded-lg px-4 py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+              "rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
               period === p
                 ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
+                : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+              period !== p && `backdrop-blur-xl`,
             )}
+            style={period !== p ? { background: GLASS_BG, borderColor: "rgba(255,255,255,0.06)" } : undefined}
           >
             {p}
           </button>
@@ -127,27 +133,27 @@ export default function LeaderboardPage() {
         {isLoading && (
           <div className="animate-pulse space-y-3">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-14 rounded-lg bg-card" />
+              <div key={i} className="h-14 rounded-3xl" style={{ background: GLASS_BG }} />
             ))}
           </div>
         )}
 
         {error && (
-          <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center">
-            <p className="text-fluid-sm font-semibold text-destructive">Failed to load leaderboard</p>
-            <p className="mt-1 text-fluid-xs text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center">
+            <p className="text-[12px] font-semibold text-destructive">Failed to load leaderboard</p>
+            <p className="mt-1 text-[10px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
         )}
 
         {entries && entries.length === 0 && (
           <div className="py-10 text-center">
-            <p className="text-fluid-sm text-muted-foreground/60">No rankings yet. Complete a sprint to get on the board!</p>
+            <p className="text-[12px] text-muted-foreground/60">No rankings yet. Complete a sprint to get on the board!</p>
           </div>
         )}
 
         {entries && entries.length > 0 && (
           <>
-            <div role="list" className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
+            <div role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
               {entries.map((entry, i) => (
                 <LeaderboardRow key={entry.rank} entry={entry} index={i} />
               ))}
@@ -155,20 +161,20 @@ export default function LeaderboardPage() {
 
             {/* Your rank summary */}
             {me && (
-              <div ref={animateSection} data-section-index="2" className="mt-6 rounded-xl border border-border/40 bg-card p-4 sm:p-5">
+              <div ref={animateSection} data-section-index="2" className="mt-6 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
                   <div className="flex items-center gap-3">
                     <div className="grid size-10 place-items-center rounded-full bg-primary/10">
                       <Target size={18} className="text-primary" />
                     </div>
                     <div>
-                      <p className="text-fluid-sm font-bold text-foreground">Your Rank</p>
-                      <p className="text-fluid-xs text-muted-foreground/60">
+                      <p className="text-[12px] font-bold text-foreground">Your Rank</p>
+                      <p className="text-[10px] text-muted-foreground/60">
                         #{me.rank} of {entries.length}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 sm:gap-6 text-fluid-sm">
+                  <div className="flex items-center gap-4 sm:gap-6 text-[12px]">
                     <div>
                       <span className="text-muted-foreground/60">XP: </span>
                       <span className="font-bold font-mono text-foreground">{me.xp.toLocaleString()}</span>
@@ -177,7 +183,7 @@ export default function LeaderboardPage() {
                       <div className="flex items-center gap-1 text-chart-3">
                         <ArrowUp size={14} />
                         <span className="font-bold font-mono">{xpToNext.toLocaleString()} XP</span>
-                        <span className="text-muted-foreground/60 text-fluid-xs">to #{prevRank.rank}</span>
+                        <span className="text-muted-foreground/60 text-[10px]">to #{prevRank.rank}</span>
                       </div>
                     )}
                   </div>

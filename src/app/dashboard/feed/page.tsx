@@ -2,11 +2,14 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import gsap from "gsap";
-import { Search, Play, Clock, Sparkles } from "lucide-react";
+import { Search, Play, Clock, Sparkles, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { FEED_HERO, FEED_CATEGORIES, FEED_STORIES, FEED_VIDEOS } from "@/lib/mock/feed";
+
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function FeedPage() {
   usePageMeta("Feed — Exam Arena");
@@ -36,41 +39,47 @@ export default function FeedPage() {
   }, [activeCategory]);
 
   return (
-    <div className="px-4 sm:px-6 pt-6 pb-24">
+    <div className="min-h-screen px-5 pt-6 pb-6">
       {/* Header */}
-      <div ref={headerRef} className="flex items-center justify-between">
-        <div>
-          <p className="text-[11px] font-bold tracking-[0.15em] text-primary">EXAM ARENA</p>
-          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground mt-1">Explore</h1>
+      <div ref={headerRef}>
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Compass size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">FEED</span>
         </div>
-        <div className="grid size-10 place-items-center rounded-full bg-primary/10 text-fluid-sm font-black text-primary ring-2 ring-primary/30">
-          {(firstName?.[0] ?? "C").toUpperCase()}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Explore</h1>
+            <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Discover tips and strategies</p>
+          </div>
+          <div className="grid size-10 place-items-center rounded-full bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[12px] font-black text-[#0A0C0A]">
+            {(firstName?.[0] ?? "C").toUpperCase()}
+          </div>
         </div>
       </div>
 
       {/* Search bar */}
       <div ref={animateSection} data-section-index="0" className="mt-4">
-        <div className="flex items-center gap-2.5 rounded-2xl bg-muted px-4 py-3">
+        <div className="flex items-center gap-2.5 rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3">
           <Search size={16} className="text-muted-foreground/50 shrink-0" />
-          <span className="text-fluid-sm text-muted-foreground/50">Search topics, tips...</span>
+          <span className="text-[12px] text-muted-foreground/50">Search topics, tips...</span>
         </div>
       </div>
 
       {/* Category chips */}
-      <div ref={animateSection} data-section-index="1" className="mt-4 flex gap-5 overflow-x-auto pb-1 border-b border-border/60 scrollbar-thin">
+      <div ref={animateSection} data-section-index="1" className="mt-4 flex gap-5 overflow-x-auto pb-1 border-b border-white/[0.06] scrollbar-thin">
         {FEED_CATEGORIES.map((cat) => (
           <button
             key={cat}
             type="button"
             onClick={() => setActiveCategory(cat)}
             className={cn(
-              "text-fluid-xs font-bold whitespace-nowrap pb-3 outline-none relative transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+              "text-[10px] font-bold whitespace-nowrap pb-3 outline-none relative transition-colors focus-visible:ring-2 focus-visible:ring-ring",
               activeCategory === cat ? "text-foreground" : "text-muted-foreground/50",
             )}
           >
             {cat}
             {activeCategory === cat && (
-              <span className="absolute bottom-0 left-0 right-0 h-[3px] rounded-full bg-foreground" />
+              <span className="absolute bottom-0 left-0 right-0 h-[3px] rounded-full bg-primary" />
             )}
           </button>
         ))}
@@ -78,7 +87,7 @@ export default function FeedPage() {
 
       <div className="mt-5 flex flex-col gap-5">
         {/* Hero card */}
-        <div ref={animateSection} data-section-index="2" className="relative rounded-2xl overflow-hidden h-[160px]">
+        <div ref={animateSection} data-section-index="2" className="relative rounded-3xl overflow-hidden h-[160px]">
           <img
             src={FEED_HERO.imageUrl}
             alt=""
@@ -91,7 +100,7 @@ export default function FeedPage() {
                 <Sparkles size={10} /> {FEED_HERO.badge}
               </span>
             </div>
-            <p className="text-fluid-sm font-bold text-white leading-snug drop-shadow-md">
+            <p className="text-[12px] font-bold text-white leading-snug drop-shadow-md">
               {FEED_HERO.title}
             </p>
           </div>
@@ -99,21 +108,22 @@ export default function FeedPage() {
 
         {/* Study tips */}
         <div ref={animateSection} data-section-index="3">
-          <h2 className="text-fluid-base font-bold text-foreground mb-3">Study Tips</h2>
+          <h2 className="text-[13px] font-bold text-foreground mb-3">Study Tips</h2>
           <div ref={scrollRef} className="flex flex-col gap-3">
             {FEED_STORIES.map((story) => (
               <div
                 key={story.id}
                 data-feed-story
-                className="flex items-center gap-3.5 rounded-2xl border border-border/60 bg-card p-3.5 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-3.5 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3.5 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+                style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
               >
                 <img
                   src={story.thumbnailUrl}
                   alt=""
-                  className="w-14 h-14 shrink-0 rounded-xl object-cover border border-border/40"
+                  className="w-14 h-14 shrink-0 rounded-xl object-cover border border-white/[0.06]"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-fluid-sm font-bold text-foreground truncate">
+                  <p className="text-[12px] font-bold text-foreground truncate">
                     {story.eyebrow}
                   </p>
                   <p className="text-[11px] text-muted-foreground/60 truncate mt-0.5 leading-relaxed">
@@ -133,12 +143,13 @@ export default function FeedPage() {
 
         {/* Strategy videos */}
         <div ref={animateSection} data-section-index="4">
-          <h2 className="text-fluid-base font-bold text-foreground mb-3">Strategy Videos</h2>
+          <h2 className="text-[13px] font-bold text-foreground mb-3">Strategy Videos</h2>
           <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
             {FEED_VIDEOS.map((video) => (
               <div
                 key={video.id}
-                className="w-[120px] shrink-0 rounded-xl overflow-hidden bg-card border border-border/40 h-[150px] relative outline-none transition-all active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
+                className="w-[120px] shrink-0 rounded-3xl overflow-hidden border border-white/[0.06] backdrop-blur-xl h-[150px] relative outline-none transition-all active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
+                style={{ backgroundColor: GLASS_BG }}
               >
                 <img
                   src={video.thumbnailUrl}
@@ -152,7 +163,7 @@ export default function FeedPage() {
                   </p>
                 </div>
                 <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                  <span className="bg-primary px-1.5 py-0.5 rounded text-[8px] font-bold text-primary-foreground">
+                  <span className="bg-gradient-to-r from-[#C7F252] to-[#A8D43A] px-1.5 py-0.5 rounded text-[8px] font-bold text-[#0A0C0A]">
                     {video.source}
                   </span>
                 </div>

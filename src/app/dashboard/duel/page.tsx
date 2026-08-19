@@ -14,6 +14,9 @@ import { DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
 import type { DuelOpponent, DuelResult } from "@/lib/types/duel";
 import type { Question } from "@/lib/types/sprint-session";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 type Phase = "config" | "active" | "done";
 
 export default function DuelPage() {
@@ -125,15 +128,17 @@ export default function DuelPage() {
 
   if (phase === "config") {
     return (
-      <div className="px-4 sm:px-6 pt-6 pb-10">
+      <div className="min-h-screen px-5 pt-6 pb-6">
         <div ref={headerRef} className="text-center">
-          <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Live Duel</h1>
-          <p className="text-fluid-sm text-muted-foreground/60">Compete head-to-head in real-time</p>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+            <Swords size={12} className="text-primary" />
+            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">DUEL</span>
+          </div>
+          <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Compete head-to-head in real-time</p>
         </div>
 
         <div ref={animateSection} data-section-index="0" className="mt-6">
-          <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Select Topic</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Select Topic</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {(setup?.topics ?? []).map((t) => (
               <button
@@ -141,11 +146,12 @@ export default function DuelPage() {
                 type="button"
                 onClick={() => setTopic(t.id)}
                 className={cn(
-                  "rounded-xl border py-3 px-3 text-fluid-xs font-bold text-center outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                  "rounded-xl border py-3 px-3 text-[10px] font-bold text-center outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                   topic === t.id
-                    ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)] text-foreground"
-                    : "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
+                    ? "border-primary bg-primary/10 shadow-[0_0_0_1px_var(--primary)] text-foreground"
+                    : "border-white/[0.06] text-muted-foreground hover:bg-white/[0.06] active:bg-white/[0.08]",
                 )}
+                style={topic !== t.id ? { backgroundColor: GLASS_BG } : undefined}
               >
                 {t.label}
               </button>
@@ -154,7 +160,7 @@ export default function DuelPage() {
         </div>
 
         <div ref={animateSection} data-section-index="1" className="mt-6">
-          <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Your Opponent</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Your Opponent</p>
           <div className="flex flex-wrap gap-2">
             {DUEL_OPPONENTS.map((o) => (
               <button
@@ -164,16 +170,17 @@ export default function DuelPage() {
                 className={cn(
                   "flex items-center gap-3 rounded-xl border px-4 py-3 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                   opponent.name === o.name
-                    ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)]"
-                    : "border-border/60 bg-card hover:border-border hover:bg-accent/40",
+                    ? "border-primary bg-primary/10 shadow-[0_0_0_1px_var(--primary)]"
+                    : "border-white/[0.06] hover:bg-white/[0.06]",
                 )}
+                style={opponent.name !== o.name ? { backgroundColor: GLASS_BG } : undefined}
               >
-                <div className="grid size-9 place-items-center rounded-full bg-primary/10 text-fluid-sm font-black text-primary">
+                <div className="grid size-9 place-items-center rounded-full bg-primary/10 text-[12px] font-bold text-primary">
                   {o.initials}
                 </div>
                 <div className="text-left">
-                  <p className="text-fluid-sm font-bold text-foreground/80">{o.name}</p>
-                  <p className="text-fluid-xs text-muted-foreground/40">{o.level}</p>
+                  <p className="text-[12px] font-bold text-foreground/80">{o.name}</p>
+                  <p className="text-[10px] text-muted-foreground/40">{o.level}</p>
                 </div>
               </button>
             ))}
@@ -184,7 +191,7 @@ export default function DuelPage() {
           <button
             type="button"
             onClick={startDuel}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Swords size={16} /> Start Duel
           </button>
@@ -195,44 +202,43 @@ export default function DuelPage() {
 
   if (phase === "done" && result) {
     return (
-      <div className="mx-auto max-w-2xl px-4 sm:px-6 pt-8" ref={resultRef}>
+      <div className="mx-auto max-w-2xl min-h-screen px-5 pt-6 pb-6" ref={resultRef}>
         <div className="text-center">
           <div className={cn(
-            "mx-auto mb-4 grid size-20 place-items-center rounded-full text-fluid-3xl",
+            "mx-auto mb-4 grid size-20 place-items-center rounded-full text-[28px]",
             result.won ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive",
           )}>
             {result.won ? <Swords size={28} /> : <Swords size={28} />}
           </div>
-          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">
+          <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
             {result.won ? "Victory!" : "Good Effort!"}
           </h1>
-          <p className="text-fluid-sm text-muted-foreground/60 mt-1">
+          <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
             {result.won ? `You beat ${opponent.name}!` : `${opponent.name} edged you out this time.`}
           </p>
         </div>
 
-        {/* Comparison */}
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-2 gap-4">
-          <div className="rounded-xl border border-border/40 bg-card p-4 text-center">
-            <p className="text-fluid-xs font-semibold tracking-widest text-muted-foreground/50">YOUR SCORE</p>
-            <p className="mt-1 text-fluid-2xl font-black text-primary">{result.yourScore}</p>
-            <p className="text-fluid-xs text-muted-foreground/40">{result.yourAccuracy}% accuracy</p>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
+            <p className="text-[10px] font-semibold tracking-widest text-muted-foreground/50">YOUR SCORE</p>
+            <p className="mt-1 text-[20px] font-bold text-primary">{result.yourScore}</p>
+            <p className="text-[10px] text-muted-foreground/40">{result.yourAccuracy}% accuracy</p>
           </div>
-          <div className="rounded-xl border border-border/40 bg-card p-4 text-center">
-            <p className="text-fluid-xs font-semibold tracking-widest text-muted-foreground/50">{opponent.name}</p>
-            <p className="mt-1 text-fluid-2xl font-black text-foreground/60">{result.opponentScore}</p>
-            <p className="text-fluid-xs text-muted-foreground/40">{result.opponentAccuracy}% accuracy</p>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
+            <p className="text-[10px] font-semibold tracking-widest text-muted-foreground/50">{opponent.name}</p>
+            <p className="mt-1 text-[20px] font-bold text-foreground/60">{result.opponentScore}</p>
+            <p className="text-[10px] text-muted-foreground/40">{result.opponentAccuracy}% accuracy</p>
           </div>
         </div>
 
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3">
-          <div className="rounded-xl border border-border/40 bg-card p-3 text-center">
-            <p className="text-fluid-xs text-muted-foreground/40">Your Time</p>
-            <p className="text-fluid-lg font-bold font-mono text-foreground/80">{result.yourTime}s</p>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
+            <p className="text-[10px] text-muted-foreground/40">Your Time</p>
+            <p className="text-[13px] font-bold font-mono text-foreground/80">{result.yourTime}s</p>
           </div>
-          <div className="rounded-xl border border-border/40 bg-card p-3 text-center">
-            <p className="text-fluid-xs text-muted-foreground/40">XP Earned</p>
-            <p className="text-fluid-lg font-bold text-chart-2">+{result.xpEarned}</p>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
+            <p className="text-[10px] text-muted-foreground/40">XP Earned</p>
+            <p className="text-[13px] font-bold text-chart-2">+{result.xpEarned}</p>
           </div>
         </div>
 
@@ -240,14 +246,15 @@ export default function DuelPage() {
           <button
             type="button"
             onClick={startDuel}
-            className="flex items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Swords size={16} /> Rematch
           </button>
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring"
+            style={{ backgroundColor: GLASS_BG }}
           >
             Dashboard
           </button>
@@ -258,30 +265,29 @@ export default function DuelPage() {
 
   if (sessionLoading || !session) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 animate-pulse">
-        <div className="h-14 rounded-lg bg-card mb-4" />
-        <div className="h-48 rounded-2xl bg-card mb-4" />
-        <div className="h-12 rounded-lg bg-card" />
+      <div className="mx-auto max-w-lg min-h-screen px-5 pt-6 pb-6 animate-pulse">
+        <div className="h-14 rounded-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
+        <div className="h-48 rounded-3xl mb-4" style={{ backgroundColor: GLASS_BG }} />
+        <div className="h-12 rounded-xl" style={{ backgroundColor: GLASS_BG }} />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 pb-10">
-      {/* Opponent progress bar */}
-      <div className="mb-4 rounded-xl border border-border/40 bg-card p-3">
+    <div className="mx-auto max-w-lg min-h-screen px-5 pt-6 pb-6">
+      <div className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3" style={{ backgroundColor: GLASS_BG }}>
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-2">
-            <div className="grid size-6 place-items-center rounded-full bg-primary/10 text-fluid-xs font-black text-primary">
+            <div className="grid size-6 place-items-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
               {opponent.initials}
             </div>
-            <span className="text-fluid-xs font-semibold text-foreground/60">{opponent.name}</span>
+            <span className="text-[10px] font-semibold text-foreground/60">{opponent.name}</span>
           </div>
-          <span className="text-fluid-xs font-mono text-muted-foreground/40">
+          <span className="text-[10px] font-mono text-muted-foreground/40">
             {Math.min(opponentProgress, 10)}/10
           </span>
         </div>
-        <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+        <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
           <div
             className="h-full rounded-full bg-chart-4 transition-all duration-500 ease-out"
             style={{ width: `${Math.min(100, (opponentProgress / 10) * 100)}%` }}
@@ -289,32 +295,35 @@ export default function DuelPage() {
         </div>
       </div>
 
-      {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <span className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
+        <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
           Duel &middot; {session.topicLabel}
         </span>
-        <span className="text-fluid-xs font-mono text-muted-foreground/40">
+        <span className="text-[10px] font-mono text-muted-foreground/40">
           {currentIndex + 1}/{session.questions.length}
         </span>
       </div>
 
-      <div className="h-1.5 w-full rounded-full bg-muted mb-6">
+      <div className="h-1.5 w-full rounded-full bg-white/[0.06] mb-6">
         <div className="h-full rounded-full bg-primary transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
       </div>
 
       {question && (
         <div key={question.id} ref={questionRef}>
-          <p className="text-fluid-xl font-bold leading-snug text-foreground mb-5">{question.text}</p>
+          <p className="text-[16px] font-bold leading-snug text-foreground mb-5">{question.text}</p>
           <div className="flex flex-col gap-2.5">
             {question.options.map((option, i) => {
               const isSelected = answers[question.id] === i;
               const isCorrect = i === question.correctIndex;
-              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60" as string;
-              if (revealed) {
+              let variant = "" as string;
+              let variantStyle: React.CSSProperties = {};
+              if (!revealed) {
+                variant = "border-white/[0.06] text-foreground hover:border-white/[0.12] hover:bg-white/[0.06] active:bg-white/[0.08]";
+                variantStyle = { backgroundColor: GLASS_BG };
+              } else {
                 if (isCorrect) variant = "border-primary bg-primary/10 text-primary";
                 else if (isSelected) variant = "border-destructive bg-destructive/10 text-destructive";
-                else variant = "border-border/30 bg-card/50 text-muted-foreground/40";
+                else variant = "border-white/[0.06] bg-white/[0.02] text-muted-foreground/40";
               }
               return (
                 <button
@@ -326,11 +335,12 @@ export default function DuelPage() {
                     "flex items-center gap-3 rounded-2xl border p-4 text-left outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
                     variant,
                   )}
+                  style={!revealed || (!isCorrect && !isSelected) ? variantStyle : undefined}
                 >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-muted text-fluid-xs font-bold text-muted-foreground">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-white/[0.06] text-[10px] font-bold text-muted-foreground">
                     {String.fromCharCode(65 + i)}
                   </span>
-                  <span className="flex-1 text-fluid-base font-medium">{option}</span>
+                  <span className="flex-1 text-[13px] font-medium">{option}</span>
                   {revealed && isCorrect && <Check size={20} className="text-primary shrink-0" />}
                   {revealed && isSelected && !isCorrect && <X size={20} className="text-destructive shrink-0" />}
                 </button>
@@ -343,7 +353,7 @@ export default function DuelPage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>

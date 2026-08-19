@@ -13,6 +13,9 @@ import RendererRouter from "@/components/renderers/RendererRouter";
 import type { SolveAlongTemplate } from "@/lib/types/template";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 export default function AnalysisPage() {
   usePageMeta("Analysis — Exam Arena");
   const router = useRouter();
@@ -104,12 +107,12 @@ export default function AnalysisPage() {
 
   if (!result || !session) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-20 text-center">
-        <p className="text-fluid-base text-muted-foreground">No sprint data found.</p>
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 text-center">
+        <p className="text-[13px] text-muted-foreground">No sprint data found.</p>
         <button
           type="button"
           onClick={() => router.push("/dashboard/configure-sprint")}
-          className="mt-4 rounded-lg bg-primary px-6 py-3 text-fluid-sm font-bold text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Start a Sprint
         </button>
@@ -119,26 +122,27 @@ export default function AnalysisPage() {
 
   if (wrongAnswers.length === 0) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-20 text-center">
-        <div className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-primary/10">
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 text-center">
+        <div className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-primary/10 border border-primary/20">
           <Check size={28} className="text-primary" />
         </div>
-        <h1 className="text-fluid-2xl font-black text-foreground">Perfect Score!</h1>
-        <p className="mt-1 text-fluid-sm text-muted-foreground/60">
+        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">Perfect Score!</h1>
+        <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">
           No wrong answers to analyze.
         </p>
         <div className="mt-6 flex flex-col gap-3">
           <button
             type="button"
             onClick={() => router.push("/dashboard/sprint/results")}
-            className="rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Back to Results
           </button>
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+            style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             Dashboard
           </button>
@@ -148,21 +152,24 @@ export default function AnalysisPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6 pb-10">
+    <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6">
       {/* Back button + header */}
       <div className="flex items-center gap-3 mb-6">
         <button
           type="button"
           onClick={() => router.push("/dashboard/sprint/results")}
-          className="grid size-10 place-items-center rounded-xl border border-border/60 bg-card text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+          className="grid size-10 place-items-center rounded-xl border backdrop-blur-xl text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           aria-label="Back to results"
         >
           <ChevronLeft size={18} />
         </button>
         <div>
-          <p className="text-fluid-xs font-bold uppercase tracking-[0.15em] text-primary">EXAM ARENA</p>
-          <h1 className="text-fluid-xl font-black tracking-tight text-foreground">Analysis</h1>
-          <p className="text-fluid-xs text-muted-foreground/60">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-1">
+            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
+          </div>
+          <h1 className="text-[16px] font-bold tracking-[-0.02em] text-foreground leading-tight">Analysis</h1>
+          <p className="text-[10px] text-muted-foreground/45 font-normal">
             {session.topicLabel} &middot; {wrongAnswers.length} wrong answer
             {wrongAnswers.length > 1 ? "s" : ""}
           </p>
@@ -179,41 +186,42 @@ export default function AnalysisPage() {
           return (
             <div
               key={question.id}
-              className="rounded-xl border border-border/40 bg-card overflow-hidden"
+              className="rounded-3xl border backdrop-blur-xl overflow-hidden"
+              style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
             >
               {/* Question header */}
-              <div className="bg-destructive/5 px-4 py-3 border-b border-border/20">
+              <div className="px-4 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgba(255,255,255,0.04)" }}>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-fluid-xs font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider">
                     <span className="grid size-5 place-items-center rounded bg-destructive/10 text-destructive">
                       <X size={10} />
                     </span>
                     Question {wrongIndex + 1} &middot; Incorrect
                   </span>
-                  <span className="text-fluid-xs font-mono text-muted-foreground/40">
+                  <span className="text-[10px] font-mono text-muted-foreground/40">
                     {Math.round(answer.timeSpent)}s
                   </span>
                 </div>
-                <p className="mt-1.5 text-fluid-sm font-semibold text-foreground/80 leading-relaxed">
+                <p className="mt-1.5 text-[12px] font-semibold text-foreground/80 leading-relaxed">
                   {question.text}
                 </p>
               </div>
 
               {/* User vs correct answer */}
               <div className="grid grid-cols-2 gap-2 px-4 pt-4">
-                <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-center">
-                  <p className="text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground/50">
+                <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" }}>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
                     Your Answer
                   </p>
-                  <p className="mt-1 text-fluid-base font-black text-destructive">
+                  <p className="mt-1 text-[13px] font-black text-destructive">
                     {question.options[answer.selectedIndex] ?? "(unanswered)"}
                   </p>
                 </div>
-                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-center">
-                  <p className="text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground/50">
+                <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" }}>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
                     Correct
                   </p>
-                  <p className="mt-1 text-fluid-base font-black text-primary">
+                  <p className="mt-1 text-[13px] font-black text-primary">
                     {question.options[question.correctIndex]}
                   </p>
                 </div>
@@ -225,11 +233,12 @@ export default function AnalysisPage() {
                   type="button"
                   onClick={() => toggleWalkthrough(question.id)}
                   className={cn(
-                    "flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-ring",
                     walk.open
                       ? "border-chart-3/40 bg-chart-3/10 text-chart-3"
-                      : "border-dashed border-border/60 text-muted-foreground hover:border-chart-3/40 hover:text-chart-3",
+                      : "border-dashed border-white/[0.06] text-muted-foreground hover:border-chart-3/40 hover:text-chart-3",
                   )}
+                  style={!walk.open ? { backgroundColor: GLASS_BG } : undefined}
                 >
                   <BrainCircuit size={14} />
                   {walk.open ? "Close Walkthrough" : "Walk Through"}
@@ -238,11 +247,11 @@ export default function AnalysisPage() {
 
               {/* Template walkthrough */}
               {walk.open && (
-                <div className="border-t border-border/20 px-4 py-4 space-y-4">
+                <div className="border-t px-4 py-4 space-y-4" style={{ borderColor: "rgba(255,255,255,0.04)" }}>
                   {loadingTemplates ? (
                     <div className="animate-pulse space-y-3">
-                      <div className="h-8 rounded-lg bg-card" />
-                      <div className="h-32 rounded-lg bg-card" />
+                      <div className="h-8 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
+                      <div className="h-32 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
                     </div>
                   ) : template ? (
                     <RendererRouter
@@ -254,9 +263,9 @@ export default function AnalysisPage() {
                       showVisualScaffold={false}
                     />
                   ) : (
-                    <div className="rounded-lg bg-muted/30 p-4 text-center">
+                    <div className="rounded-xl backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
                       <BookOpen size={20} className="mx-auto mb-2 text-muted-foreground/30" />
-                      <p className="text-fluid-xs font-semibold text-muted-foreground/60">
+                      <p className="text-[10px] font-semibold text-muted-foreground/60">
                         No template available for this topic yet.
                       </p>
                     </div>
@@ -273,14 +282,16 @@ export default function AnalysisPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard/sprint/results")}
-          className="flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           <ChevronLeft size={16} /> Back to Results
         </button>
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
-          className="flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           Dashboard
         </button>

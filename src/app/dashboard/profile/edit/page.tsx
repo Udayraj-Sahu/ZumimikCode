@@ -3,10 +3,13 @@
 import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import { Camera, Check } from "lucide-react";
+import { Camera, Check, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useProfileData } from "@/hooks/queries/use-profile";
 import { usePageMeta } from "@/hooks/use-page-meta";
+
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function EditProfilePage() {
   usePageMeta("Edit Profile — Exam Arena");
@@ -31,79 +34,78 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="pb-10">
-      {/* Header */}
-      <div ref={headerRef} className="px-4 pt-5 pb-4 border-b border-border text-center">
-        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60 mb-1">EXAM ARENA</p>
-        <h1 className="text-fluid-xl font-black tracking-tight text-foreground">Edit Profile</h1>
+    <div className="min-h-screen px-5 pt-6 pb-6">
+      <div ref={headerRef} className="text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <User size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">PROFILE</span>
+        </div>
+        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Update your personal information</p>
       </div>
 
-      <div className="px-4 mt-6">
-        {/* Avatar */}
+      <div className="mt-6">
         <div className="flex flex-col items-center mb-8">
           <div className="relative">
-            <span className="grid size-20 place-items-center rounded-full bg-gradient-to-br from-primary/30 to-primary/10 text-fluid-3xl font-black text-primary ring-2 ring-primary/20">
+            <span className="grid size-20 place-items-center rounded-full bg-gradient-to-br from-primary/30 to-primary/10 text-[28px] font-bold text-primary ring-2 ring-primary/20">
               {profile?.initials ?? "?"}
             </span>
             <span className="absolute -bottom-1 -right-1 grid size-8 place-items-center rounded-full bg-primary text-primary-foreground shadow-md">
               <Camera size={14} />
             </span>
           </div>
-          <p className="mt-3 text-fluid-xs text-muted-foreground/50">Tap the camera icon to change photo</p>
+          <p className="mt-3 text-[10px] text-muted-foreground/50">Tap the camera icon to change photo</p>
         </div>
 
-        {/* Form */}
         <div className="flex flex-col gap-5">
           <div>
-            <label className="mb-1.5 block text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground/60">
+            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
               Full Name
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl border border-border/60 bg-card px-4 py-3.5 text-fluid-base text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               placeholder="Your name"
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground/60">
+            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
               Email Address
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-border/60 bg-card px-4 py-3.5 text-fluid-base text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               placeholder="email@example.com"
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground/60">
+            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
               Phone Number
             </label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full rounded-xl border border-border/60 bg-card px-4 py-3.5 text-fluid-base text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               placeholder="+91 98765 43210"
             />
           </div>
         </div>
 
-        {/* Save button */}
         <button
           type="button"
           onClick={handleSave}
           disabled={saved}
           className={cn(
-            "mt-8 flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-fluid-base font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "mt-8 flex w-full items-center justify-center gap-2 rounded-3xl py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             saved
               ? "bg-primary/30 text-primary/60 cursor-not-allowed"
-              : "bg-primary text-primary-foreground hover:opacity-90 active:scale-[0.98]",
+              : "bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] hover:opacity-90 active:scale-[0.98]",
           )}
         >
           {saved ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import {
@@ -73,14 +73,11 @@ const FALLBACK_RECENT = [
   { label: "Full CAT Mock", score: "142/300", time: "2d ago" },
 ];
 
-const QUICK_ACCESS_ROW1 = [
+const QUICK_ACCESS_ITEMS = [
   { label: "Exam Prep", icon: Target, color: "#7C6CF0", bg: "rgba(124,108,240,0.12)", href: "/dashboard/learn" },
   { label: "Skill Build", icon: Zap, color: "#3DD6F5", bg: "rgba(61,214,245,0.12)", href: "/dashboard/mastery" },
   { label: "Train Plan", icon: Calendar, color: "#B98CF0", bg: "rgba(185,140,240,0.12)", href: "/dashboard/planner" },
   { label: "Clubs", icon: Users, color: "#F0A93D", bg: "rgba(240,169,61,0.12)", href: "/dashboard/clubs" },
-];
-
-const QUICK_ACCESS_ROW2 = [
   { label: "Store", icon: ShoppingBag, color: "#F05C7A", bg: "rgba(240,92,122,0.12)", href: "/dashboard" },
   { label: "Feed", icon: Rss, color: "#7DDB6A", bg: "rgba(125,219,106,0.12)", href: "/dashboard/feed" },
   { label: "Family", icon: Home, color: "#F05C7A", bg: "rgba(240,92,122,0.12)", href: "/dashboard" },
@@ -161,12 +158,12 @@ export default function DashboardPage() {
 
   const [statsOpen, setStatsOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const modalShownRef = useRef(false);
 
   useEffect(() => {
-    if (modalShownRef.current) return;
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem("onboarding-modal-shown")) return;
     if (!isOnboarded || !firstName) {
-      modalShownRef.current = true;
+      sessionStorage.setItem("onboarding-modal-shown", "1");
       setShowOnboarding(true);
     }
   }, [isOnboarded, firstName]);
@@ -193,7 +190,7 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-28">
+    <div className="min-h-screen pb-6">
 
       {/* Ambient glow behind header */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
@@ -204,11 +201,10 @@ export default function DashboardPage() {
           <Sparkles size={12} className="text-primary" />
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
         </div>
-        <h1 className="text-[28px] font-bold tracking-[-0.03em] text-foreground leading-[1.15]">
-          Welcome back,<br />
-          <span className="bg-gradient-to-r from-primary via-[#d4ff6e] to-primary bg-clip-text text-transparent">{displayName}</span>
+        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2]">
+          Welcome back, <span className="bg-gradient-to-r from-primary via-[#d4ff6e] to-primary bg-clip-text text-transparent">{displayName}</span>
         </h1>
-        <p className="mt-2 text-[13px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
+        <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
         <div className="mt-5 flex items-center justify-center gap-3">
           <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-md px-4 py-2.5">
@@ -227,22 +223,22 @@ export default function DashboardPage() {
         <button
           type="button"
           onClick={() => setStatsOpen((v) => !v)}
-          className="w-full flex items-center justify-between rounded-2xl border backdrop-blur-xl px-5 py-4 transition-all hover:bg-white/[0.06]"
+          className="w-full flex items-center justify-between rounded-2xl border backdrop-blur-xl px-4 py-3 transition-all hover:bg-white/[0.06]"
           style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
         >
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-xl bg-primary/10 flex items-center justify-center">
-              <TrendingUp size={16} className="text-primary" />
+          <div className="flex items-center gap-2.5">
+            <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center">
+              <TrendingUp size={14} className="text-primary" />
             </div>
-            <span className="text-[13px] font-semibold tracking-[-0.01em] text-foreground">YOUR STATS</span>
+            <span className="text-[12px] font-semibold tracking-[-0.01em] text-foreground">YOUR STATS</span>
           </div>
           <ChevronDown
-            size={16}
+            size={14}
             className={cn("text-muted-foreground/40 transition-transform duration-200", statsOpen && "rotate-180")}
           />
         </button>
         {statsOpen && (
-          <div className="grid grid-cols-2 gap-3 mt-3">
+          <div className="grid grid-cols-2 gap-2 mt-2">
             {[
               { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target },
               { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen },
@@ -253,15 +249,15 @@ export default function DashboardPage() {
                 key={s.label}
                 type="button"
                 onClick={() => router.push("/dashboard/analytics")}
-                className="group rounded-2xl border backdrop-blur-xl px-4 py-4 text-left transition-all hover:bg-white/[0.06] active:scale-[0.97]"
+                className="group rounded-xl border backdrop-blur-xl px-3 py-3 text-left transition-all hover:bg-white/[0.06] active:scale-[0.97]"
                 style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
               >
-                <div className="flex items-center justify-between mb-2.5">
-                  <s.icon size={14} className="text-primary/60" />
-                  <ArrowUpRight size={12} className="text-muted-foreground/20 group-hover:text-primary/60 transition-colors" />
+                <div className="flex items-center justify-between mb-1.5">
+                  <s.icon size={12} className="text-primary/60" />
+                  <ArrowUpRight size={10} className="text-muted-foreground/20 group-hover:text-primary/60 transition-colors" />
                 </div>
-                <p className="text-[20px] font-bold tracking-[-0.03em] text-foreground">{s.value}</p>
-                <p className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground/35 mt-1.5 uppercase">{s.label}</p>
+                <p className="text-[16px] font-bold tracking-[-0.03em] text-foreground">{s.value}</p>
+                <p className="text-[9px] font-semibold tracking-[0.12em] text-muted-foreground/35 mt-1 uppercase">{s.label}</p>
               </button>
             ))}
           </div>
@@ -319,16 +315,16 @@ export default function DashboardPage() {
 
       {/* Practice Mode */}
       <div ref={animateSection} data-section-index={3} className="px-5 mt-5">
-        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(139,92,246,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
-          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(139,92,246,0.3), transparent)" }} />
-          <SectionLabel className="text-[#800080]">PRACTICE MODE</SectionLabel>
+        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(34,211,238,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.3), transparent)" }} />
+          <SectionLabel className="text-[#22D3EE]">PRACTICE MODE</SectionLabel>
           <h2 className="relative mt-2 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Master with templates</h2>
           <p className="relative mt-1.5 text-[13px] text-muted-foreground/45 font-normal">Guided exercises · Step-by-step · Build speed &amp; accuracy</p>
           <div className="relative mt-5 flex items-center justify-between">
             <button
               type="button"
               onClick={() => router.push("/dashboard/practice")}
-              className="flex items-center gap-2.5 rounded-full px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] text-white shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all hover:shadow-[0_0_30px_rgba(139,92,246,0.45)] active:scale-95"
+              className="flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#22D3EE] to-[#06B6D4] px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(34,211,238,0.3)] active:scale-95"
             >
               <Play size={15} fill="currentColor" />
               PRACTICE NOW
@@ -343,16 +339,16 @@ export default function DashboardPage() {
 
       {/* Technique Library */}
       <div ref={animateSection} data-section-index={4} className="px-5 mt-4">
-        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(124,108,240,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
-          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(124,108,240,0.3), transparent)" }} />
-          <SectionLabel>TECHNIQUE LIBRARY</SectionLabel>
+        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(245,158,11,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.3), transparent)" }} />
+          <SectionLabel className="text-[#F59E0B]">TECHNIQUE LIBRARY</SectionLabel>
           <h2 className="relative mt-2 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Learn a technique</h2>
           <p className="relative mt-1.5 text-[13px] text-muted-foreground/45 font-normal">Browse core methods · Visual breakdowns · Master each approach</p>
           <div className="relative mt-5 flex items-center justify-between">
             <button
               type="button"
               onClick={() => router.push("/dashboard/explorer")}
-              className="flex items-center gap-2 rounded-full border border-[#7C6CF0]/30 bg-[#7C6CF0]/10 backdrop-blur-sm px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#7C6CF0] transition-all hover:bg-[#7C6CF0]/15 active:scale-95"
+              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(245,158,11,0.3)] active:scale-95"
             >
               EXPLORE TECHNIQUES
             </button>
@@ -369,39 +365,30 @@ export default function DashboardPage() {
         <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
           <SectionLabel>QUICK ACCESS</SectionLabel>
           <div className="grid grid-cols-4 gap-3 mt-4">
-            {QUICK_ACCESS_ROW1.map((q) => (
+            {QUICK_ACCESS_ITEMS.map((q) => {
+              const label = q.label === "Exam Prep" && examLabel !== "Exam" ? `${examLabel} Prep` : q.label;
+              return (
               <button
                 key={q.label}
                 type="button"
                 onClick={() => router.push(q.href)}
-                className="group flex flex-col items-center gap-2.5 rounded-2xl border border-white/[0.04] bg-[#0a0a0a] backdrop-blur-sm py-4 transition-all hover:bg-[#111] active:scale-95"
+                className="group flex flex-col items-center gap-3 rounded-2xl border border-white/[0.04] bg-[#0d0d0d] py-4 transition-all hover:bg-[#141414] active:scale-95"
               >
-                <div className="h-11 w-11 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110" style={{ background: q.bg }}>
-                  <q.icon size={18} color={q.color} />
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md" style={{ background: q.color }} />
+                  <div className="relative h-11 w-11 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style={{ background: q.bg }}>
+                    <q.icon size={18} color={q.color} />
+                  </div>
                 </div>
-                <span className="text-[10px] font-semibold text-foreground/65 text-center leading-tight tracking-[0.01em]">{q.label}</span>
+                <span className="text-[10px] font-medium text-foreground/55 text-center leading-tight tracking-[0.01em]">{label}</span>
               </button>
-            ))}
-          </div>
-          <div className="grid grid-cols-4 gap-3 mt-3">
-            {QUICK_ACCESS_ROW2.map((q) => (
-              <button
-                key={q.label}
-                type="button"
-                onClick={() => router.push(q.href)}
-                className="group flex flex-col items-center gap-2.5 rounded-2xl border border-white/[0.04] bg-[#0a0a0a] backdrop-blur-sm py-4 transition-all hover:bg-[#111] active:scale-95"
-              >
-                <div className="h-11 w-11 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110" style={{ background: q.bg }}>
-                  <q.icon size={18} color={q.color} />
-                </div>
-                <span className="text-[10px] font-semibold text-foreground/65 text-center leading-tight tracking-[0.01em]">{q.label}</span>
-              </button>
-            ))}
-            <div className="flex flex-col items-center justify-center gap-2.5 rounded-2xl border border-dashed border-white/[0.08] bg-white/[0.02] py-4 opacity-40">
-              <div className="h-11 w-11 rounded-2xl flex items-center justify-center border border-dashed border-white/10">
-                <Plus size={16} className="text-muted-foreground" />
+              );
+            })}
+            <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/[0.06] bg-transparent py-4 opacity-35">
+              <div className="h-11 w-11 rounded-full flex items-center justify-center border border-dashed border-white/10">
+                <Plus size={15} className="text-muted-foreground" />
               </div>
-              <span className="text-[10px] font-semibold text-muted-foreground text-center leading-tight tracking-[0.01em]">Coming Soon</span>
+              <span className="text-[10px] font-medium text-muted-foreground text-center leading-tight tracking-[0.01em]">Coming Soon</span>
             </div>
           </div>
         </div>

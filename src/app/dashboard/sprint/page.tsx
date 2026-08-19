@@ -14,6 +14,9 @@ import type { Question } from "@/lib/types/sprint-session";
 import TrustBadge from "@/components/ui/trust-badge";
 import ContentFeedback from "@/components/ui/content-feedback";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
   const sec = s % 60;
@@ -141,12 +144,12 @@ function SprintContent() {
 
   if (!topic || length <= 0) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-8 text-center">
-        <p className="text-fluid-base text-muted-foreground">No sprint configuration found.</p>
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 text-center">
+        <p className="text-[13px] text-muted-foreground">No sprint configuration found.</p>
         <button
           type="button"
           onClick={() => router.push("/dashboard/configure-sprint")}
-          className="mt-4 rounded-lg bg-primary px-6 py-3 text-fluid-sm font-bold text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Configure Sprint
         </button>
@@ -156,21 +159,22 @@ function SprintContent() {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-8 text-center">
-        <p className="text-fluid-base font-semibold text-destructive">Failed to load sprint questions.</p>
-        <p className="mt-2 text-fluid-sm text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 text-center">
+        <p className="text-[13px] font-semibold text-destructive">Failed to load sprint questions.</p>
+        <p className="mt-2 text-[12px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
         <div className="mt-6 flex justify-center gap-3">
           <button
             type="button"
             onClick={() => router.push("/dashboard/configure-sprint")}
-            className="rounded-lg bg-muted px-5 py-3 text-fluid-sm font-bold text-foreground outline-none transition-colors hover:bg-muted/70 active:bg-muted/90 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-xl border backdrop-blur-xl px-5 py-3 text-[12px] font-bold text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+            style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             Back
           </button>
           <button
             type="button"
             onClick={() => router.refresh()}
-            className="rounded-lg bg-primary px-5 py-3 text-fluid-sm font-bold text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Retry
           </button>
@@ -181,10 +185,10 @@ function SprintContent() {
 
   if (isLoading || !data) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 animate-pulse">
-        <div className="h-14 rounded-lg bg-card mb-4" />
-        <div className="h-48 rounded-2xl bg-card mb-4" />
-        <div className="h-12 rounded-lg bg-card" />
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 animate-pulse">
+        <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
+        <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
+        <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
       </div>
     );
   }
@@ -195,25 +199,29 @@ function SprintContent() {
   const isTimerLow = timeLeft <= 30;
 
   return (
-    <div className="mx-auto max-w-lg px-4 sm:px-6">
-      <div ref={headerRef} className="pt-4 pb-3 text-center">
-        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60 mb-2">EXAM ARENA</p>
+    <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6">
+      <div ref={headerRef} className="pb-3 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Zap size={10} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
+        </div>
         <div className="flex items-center justify-between">
           <button
             type="button"
             onClick={() => { reset(); router.push("/dashboard/configure-sprint"); }}
-            className="grid size-11 place-items-center outline-none transition-opacity hover:opacity-70 active:opacity-50 focus-visible:ring-2 focus-visible:ring-ring rounded-lg text-muted-foreground/60"
+            className="grid size-11 place-items-center outline-none transition-opacity hover:opacity-70 active:opacity-50 focus-visible:ring-2 focus-visible:ring-ring rounded-xl text-muted-foreground/60 backdrop-blur-xl"
+            style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
             aria-label="Back to configure"
           >
             <ArrowLeft size={20} />
           </button>
-          <span className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">
             {currentIndex + 1} / {data.questions.length}
           </span>
         </div>
       </div>
 
-      <div className="h-1.5 w-full rounded-full bg-muted mb-5">
+      <div className="h-1.5 w-full rounded-full mb-5" style={{ backgroundColor: GLASS_BG }}>
         <div
           className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
           style={{ width: `${progress}%` }}
@@ -221,16 +229,17 @@ function SprintContent() {
       </div>
 
       <div className="flex items-center justify-between mb-5">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-fluid-xs font-bold uppercase tracking-wider text-primary">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
           <Zap size={10} />
           {data.topicLabel}
         </span>
         <div className="flex items-center gap-2">
           {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
           <span className={cn(
-            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-fluid-xs font-bold font-mono",
-            isTimerLow ? "bg-destructive/10 text-destructive" : "bg-muted text-muted-foreground",
-          )}>
+            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold font-mono backdrop-blur-xl",
+            isTimerLow ? "bg-destructive/10 text-destructive border border-destructive/20" : "text-muted-foreground border border-white/[0.06]",
+          )}
+          style={!isTimerLow ? { backgroundColor: GLASS_BG } : undefined}>
             <Clock size={10} />
             {formatTime(timeLeft)}
           </span>
@@ -239,7 +248,7 @@ function SprintContent() {
 
       {question && (
         <div key={question.id} ref={questionRef}>
-          <p className="text-fluid-xl font-bold leading-snug text-foreground mb-5">
+          <p className="text-[16px] font-bold leading-snug text-foreground mb-5">
             {question.text}
           </p>
 
@@ -247,12 +256,22 @@ function SprintContent() {
             {question.options.map((option, i) => {
               const isSelected = selectedIndex === i;
               const isCorrect = i === question.correctIndex;
-              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60" as string;
+              let variantStyles: React.CSSProperties = { backgroundColor: GLASS_BG, borderColor: GLASS_BORDER };
+              let variantClass = "border backdrop-blur-xl text-foreground hover:bg-white/[0.06] active:bg-white/[0.06]" as string;
               if (showFeedback) {
-                if (isSelected && isCorrect) variant = "border-primary bg-primary/10 text-primary";
-                else if (isSelected && !isCorrect) variant = "border-destructive bg-destructive/10 text-destructive";
-                else if (isCorrect) variant = "border-primary bg-primary/5 text-primary";
-                else variant = "border-border/30 bg-card/50 text-muted-foreground/40";
+                if (isSelected && isCorrect) {
+                  variantClass = "border text-primary";
+                  variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
+                } else if (isSelected && !isCorrect) {
+                  variantClass = "border text-destructive";
+                  variantStyles = { backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" };
+                } else if (isCorrect) {
+                  variantClass = "border text-primary";
+                  variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
+                } else {
+                  variantClass = "border text-muted-foreground/40";
+                  variantStyles = { backgroundColor: "rgba(255,255,255,0.02)", borderColor: "rgba(255,255,255,0.04)" };
+                }
               }
 
               return (
@@ -262,14 +281,15 @@ function SprintContent() {
                   onClick={() => handleSelect(i)}
                   disabled={showFeedback}
                   className={cn(
-                    "flex items-center gap-3 rounded-2xl border p-4 text-left outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
-                    variant,
+                    "flex items-center gap-3 rounded-3xl border p-4 text-left outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
+                    variantClass,
                   )}
+                  style={variantStyles}
                 >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-muted text-fluid-xs font-bold text-muted-foreground">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-muted text-[10px] font-bold text-muted-foreground">
                     {String.fromCharCode(65 + i)}
                   </span>
-                  <span className="flex-1 text-fluid-base font-medium">{option}</span>
+                  <span className="flex-1 text-[13px] font-medium">{option}</span>
                   {showFeedback && isSelected && (
                     <span className={cn("size-5", isCorrect ? "text-primary" : "text-destructive")}>
                       {isCorrect ? <Check size={20} /> : <X size={20} />}
@@ -285,7 +305,7 @@ function SprintContent() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {isLast ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
@@ -315,10 +335,10 @@ function SprintContent() {
 export default function SprintPage() {
   return (
     <Suspense fallback={
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 animate-pulse">
-        <div className="h-14 rounded-lg bg-card mb-4" />
-        <div className="h-48 rounded-2xl bg-card mb-4" />
-        <div className="h-12 rounded-lg bg-card" />
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6 animate-pulse">
+        <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
+        <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
+        <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
       </div>
     }>
       <SprintContent />

@@ -6,6 +6,9 @@ import { TrendingUp } from "lucide-react";
 import { useAnalyticsData } from "@/hooks/queries/use-analytics";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 export default function AnalyticsPage() {
   usePageMeta("Analytics — Exam Arena");
   const { data, isLoading, error } = useAnalyticsData();
@@ -23,7 +26,7 @@ export default function AnalyticsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="min-h-screen px-5 pt-6 pb-6 flex items-center justify-center">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
@@ -31,12 +34,12 @@ export default function AnalyticsPage() {
 
   if (error || !data) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <p className="text-fluid-base text-muted-foreground">Failed to load analytics.</p>
+      <div className="min-h-screen px-5 pt-6 pb-6 flex flex-col items-center justify-center gap-4">
+        <p className="text-[13px] text-muted-foreground">Failed to load analytics.</p>
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="rounded-xl bg-primary px-5 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-5 py-2.5 text-[10px] font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Retry
         </button>
@@ -47,23 +50,16 @@ export default function AnalyticsPage() {
   const { stats, weekly, recent } = data;
 
   return (
-      <div>
-        <div
-          ref={headerRef}
-          className="px-6 py-5 border-b border-border text-center"
-        >
-          <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
-            EXAM ARENA
-          </p>
-          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground mt-0.5">
-            Analytics
-          </h1>
-          <p className="text-fluid-sm text-muted-foreground/60 mt-0.5">
-            Deep-dive performance metrics from your last {stats.totalSessions} sessions.
-          </p>
+      <div className="min-h-screen px-5 pt-6 pb-6">
+        <div ref={headerRef} className="text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+            <TrendingUp size={12} className="text-primary" />
+            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">ANALYTICS</span>
+          </div>
+          <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Deep-dive performance metrics from your last {stats.totalSessions} sessions.</p>
         </div>
 
-        <div className="p-6 flex flex-col gap-6">
+        <div className="flex flex-col gap-6 mt-6">
           <div
             ref={animateSection} data-section-index={0}
             className="grid grid-cols-2 sm:grid-cols-4 gap-3"
@@ -76,12 +72,13 @@ export default function AnalyticsPage() {
             ].map((s, i) => (
               <div
                 key={i}
-                className="rounded-lg p-4 bg-card border border-border"
+                className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4"
+                style={{ background: GLASS_BG }}
               >
-                <p className="text-fluid-xs font-semibold tracking-[0.12em] text-muted-foreground/60 mb-1.5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-1.5">
                   {s.label}
                 </p>
-                <p className="text-fluid-3xl font-black tracking-tight text-primary leading-none">
+                <p className="text-[20px] font-bold tracking-tight text-primary leading-none">
                   {s.value}
                 </p>
               </div>
@@ -90,10 +87,11 @@ export default function AnalyticsPage() {
 
           <div
             ref={animateSection} data-section-index={1}
-            className="rounded-lg p-5 bg-card border border-border"
+            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5"
+            style={{ background: GLASS_BG }}
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-fluid-lg font-bold tracking-[0.08em] text-foreground">
+              <h2 className="text-[13px] font-bold tracking-[0.08em] text-foreground">
                 WEEKLY ACTIVITY
               </h2>
               <TrendingUp size={13} className="text-muted-foreground/50" />
@@ -103,7 +101,7 @@ export default function AnalyticsPage() {
               {weekly.map((d) => (
                 <span
                   key={d.day}
-                  className="text-fluid-xs text-center flex-1 font-mono text-muted-foreground/50"
+                  className="text-[10px] text-center flex-1 font-mono text-muted-foreground/50"
                 >
                   {d.pct}%
                 </span>
@@ -124,7 +122,7 @@ export default function AnalyticsPage() {
               {weekly.map((d) => (
                 <span
                   key={d.day}
-                  className="text-fluid-xs text-center flex-1 tracking-[0.05em] text-muted-foreground/50"
+                  className="text-[10px] text-center flex-1 tracking-[0.05em] text-muted-foreground/50"
                 >
                   {d.day}
                 </span>
@@ -134,22 +132,23 @@ export default function AnalyticsPage() {
 
           <div
             ref={animateSection} data-section-index={2}
-            className="rounded-lg p-5 bg-card border border-border"
+            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5"
+            style={{ background: GLASS_BG }}
           >
-            <h2 className="text-fluid-lg font-bold tracking-[0.08em] text-foreground mb-3">
+            <h2 className="text-[13px] font-bold tracking-[0.08em] text-foreground mb-3">
               RECENT ACTIVITY
             </h2>
             <div className="flex flex-col">
               {recent.map((a, i) => (
                 <div
                   key={i}
-                  className="flex items-start justify-between py-3 border-b border-border/40"
+                  className="flex items-start justify-between py-3 border-b border-white/[0.06]"
                 >
                   <div>
-                    <p className="text-fluid-base font-semibold text-foreground/80">{a.title}</p>
-                    <p className="text-fluid-sm text-muted-foreground/60 mt-0.5">{a.sub}</p>
+                    <p className="text-[13px] font-semibold text-foreground/80">{a.title}</p>
+                    <p className="text-[12px] text-muted-foreground/60 mt-0.5">{a.sub}</p>
                   </div>
-                  <span className="text-fluid-xs font-mono text-muted-foreground/50 whitespace-nowrap ml-4">
+                  <span className="text-[10px] font-mono text-muted-foreground/50 whitespace-nowrap ml-4">
                     {a.time}
                   </span>
                 </div>

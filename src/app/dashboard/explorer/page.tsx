@@ -9,6 +9,9 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { TopicTree } from "@/components/explorer/topic-tree";
 import { Compass, BookOpen } from "lucide-react";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 export default function ExplorerPage() {
   usePageMeta("Topic Explorer — Exam Arena");
   const targetExam = useOnboardingStore((s) => s.targetExam);
@@ -29,13 +32,13 @@ export default function ExplorerPage() {
   }, []);
 
   return (
-    <div className="px-4 sm:px-6 pt-6 pb-10">
+    <div className="min-h-screen px-5 pt-6 pb-6">
       <div ref={headerRef} className="text-center">
-        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground flex items-center justify-center gap-2">
-          <Compass size={22} className="text-primary" /> Topic Explorer
-        </h1>
-        <p className="text-fluid-sm text-muted-foreground/60">Browse techniques by subject and topic</p>
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Compass size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
+        </div>
+        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Browse techniques by subject and topic</p>
       </div>
 
       {subjects.length > 1 && (
@@ -46,11 +49,12 @@ export default function ExplorerPage() {
               type="button"
               onClick={() => setActiveSubject(idx)}
               className={cn(
-                "flex items-center gap-1.5 rounded-xl border px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all whitespace-nowrap focus-visible:ring-2 focus-visible:ring-ring",
+                "flex items-center gap-1.5 rounded-full border px-3 py-2 text-[10px] font-bold uppercase tracking-wider outline-none transition-all whitespace-nowrap focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl",
                 activeSubject === idx
-                  ? "border-primary bg-accent text-foreground shadow-[0_0_0_1px_var(--primary)]"
-                    : "border-border/40 bg-card text-muted-foreground hover:border-border hover:text-foreground active:border-border active:text-foreground",
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
               )}
+              style={activeSubject !== idx ? { background: GLASS_BG, borderColor: "rgba(255,255,255,0.06)" } : undefined}
             >
               <BookOpen size={14} />
               {subject.title}

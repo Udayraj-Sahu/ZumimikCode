@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import gsap from "gsap";
 import {
   Flame, Target, Zap, Swords, Medal, Trophy, LayoutGrid, Timer, Users,
@@ -9,61 +9,182 @@ import {
 import { cn } from "@/lib/utils";
 import { useAchievements } from "@/hooks/queries/use-achievements";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import type { AchievementItem } from "@/lib/types/achievements";
+import type { AchievementItem, AchievementTier, AchievementCategory } from "@/lib/types/achievements";
+
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Flame, Target, Zap, Swords, Medal, Trophy, LayoutGrid, Timer, Users,
 };
 
+const CATEGORIES: { id: AchievementCategory | "all"; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "streak", label: "Streak" },
+  { id: "accuracy", label: "Accuracy" },
+  { id: "speed", label: "Speed" },
+  { id: "social", label: "Social" },
+];
+
+const TIER_STYLES: Record<AchievementTier, { ring: string; ringTrack: string; label: string }> = {
+  bronze:   { ring: "#CD7F32", ringTrack: "rgba(205,127,50,0.15)", label: "Bronze" },
+  silver:   { ring: "#94A3B8", ringTrack: "rgba(148,163,184,0.15)", label: "Silver" },
+  gold:     { ring: "#F59E0B", ringTrack: "rgba(245,158,11,0.15)", label: "Gold" },
+  platinum: { ring: "#C7F252", ringTrack: "rgba(199,242,82,0.15)", label: "Platinum" },
+};
+
+/* ------------------------------------------------------------------ */
+/*  SVG Circular Progress Ring                                          */
+/* ------------------------------------------------------------------ */
+function ProgressRing({ progress, tier, size = 44, stroke = 3 }: { progress: number; tier: AchievementTier; size?: number; stroke?: number }) {
+  const styles = TIER_STYLES[tier];
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (Math.min(progress, 100) / 100) * circumference;
+
+  return (
+    <svg width={size} height={size} className="rotate-[-90deg]">
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke={styles.ringTrack}
+        strokeWidth={stroke}
+      />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={radius}
+        fill="none"
+        stroke={styles.ring}
+        strokeWidth={stroke}
+        strokeLinecap="round"
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        className="transition-all duration-700 ease-out"
+      />
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Shimmer overlay for locked cards                                    */
+/* ------------------------------------------------------------------ */
+function ShimmerOverlay() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl">
+      <div
+        className="absolute inset-0 -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] opacity-[0.07]"
+        style={{
+          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
+        }}
+      />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Achievement Card                                                    */
+/* ------------------------------------------------------------------ */
 function AchievementCard({ item, index }: { item: AchievementItem; index: number }) {
   const Icon = ICON_MAP[item.icon] ?? Flame;
+  const tier = TIER_STYLES[item.tier];
+  const isRecent = useMemo(() => {
+    if (!item.unlockedAt) return false;
+    const diff = Date.now() - new Date(item.unlockedAt).getTime();
+    return diff < 7 * 24 * 60 * 60 * 1000;
+  }, [item.unlockedAt]);
 
   return (
     <div
       data-achievement-card
       className={cn(
-        "rounded-xl border p-4 flex flex-col items-center text-center transition-all",
+        "relative rounded-3xl border p-4 flex flex-col items-center text-center transition-all backdrop-blur-xl overflow-hidden",
         item.unlocked
-          ? "border-border/40 bg-card"
-          : "border-dashed border-border/20 bg-card/50 opacity-50",
+          ? "border-white/[0.06]"
+          : "border-dashed border-white/[0.08] opacity-60",
       )}
+      style={{
+        backgroundColor: item.unlocked ? GLASS_BG : "rgba(255,255,255,0.02)",
+      }}
     >
-      <div className={cn(
-        "grid size-10 place-items-center rounded-lg mb-3",
-        item.unlocked ? "bg-primary/10" : "bg-muted",
-      )}>
-        <Icon size={20} className={item.unlocked ? "text-primary" : "text-muted-foreground/40"} />
-      </div>
-      <p className={cn(
-        "text-fluid-sm font-bold tracking-wide",
-        item.unlocked ? "text-foreground" : "text-muted-foreground/60",
-      )}>
-        {item.label}
-      </p>
-      <p className="text-fluid-xs text-muted-foreground/50 mt-0.5 leading-tight">
-        {item.description}
-      </p>
-      {item.unlocked && (
-        <span className="mt-2 text-fluid-xs font-bold text-primary">Unlocked</span>
+      {isRecent && (
+        <div className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full" style={{ backgroundColor: tier.ring }} />
       )}
-      {!item.unlocked && item.progress !== undefined && item.progress > 0 && (
-        <div className="mt-3 w-full">
-          <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
-            <div
-              className="h-full rounded-full bg-primary/60"
-              style={{ width: `${item.progress}%` }}
+
+      {!item.unlocked && <ShimmerOverlay />}
+
+      {/* Ring + Icon */}
+      <div className="relative mb-3">
+        {item.unlocked ? (
+          <ProgressRing progress={100} tier={item.tier} size={52} stroke={3} />
+        ) : item.progress !== undefined && item.progress > 0 ? (
+          <ProgressRing progress={item.progress} tier={item.tier} size={52} stroke={3} />
+        ) : (
+          <svg width={52} height={52}>
+            <circle
+              cx={26} cy={26} r={23}
+              fill="none"
+              stroke={tier.ringTrack}
+              strokeWidth={3}
+            />
+          </svg>
+        )}
+        <div className="absolute inset-0 grid place-items-center">
+          <div
+            className="grid size-8 place-items-center rounded-lg"
+            style={{
+              backgroundColor: item.unlocked ? `${tier.ring}18` : "rgba(255,255,255,0.04)",
+            }}
+          >
+            <Icon
+              size={16}
+              style={{ color: item.unlocked ? tier.ring : "rgba(107,114,128,0.4)" }}
             />
           </div>
-          <p className="mt-1 text-fluid-xs text-muted-foreground/40 font-mono">{item.progress}%</p>
         </div>
+      </div>
+
+      {/* Label */}
+      <p
+        className="text-[12px] font-bold tracking-wide"
+        style={{ color: item.unlocked ? "var(--foreground)" : "rgba(107,114,128,0.6)" }}
+      >
+        {item.label}
+      </p>
+
+      {/* Description */}
+      <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">
+        {item.description}
+      </p>
+
+      {/* Tier badge */}
+      <span
+        className="mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+        style={{
+          color: item.unlocked ? tier.ring : "rgba(107,114,128,0.4)",
+          backgroundColor: item.unlocked ? `${tier.ring}12` : "rgba(255,255,255,0.03)",
+        }}
+      >
+        {tier.label}
+      </span>
+
+      {/* Progress text for locked */}
+      {!item.unlocked && item.progress !== undefined && item.progress > 0 && (
+        <p className="mt-1.5 text-[10px] text-muted-foreground/40 font-mono">{item.progress}%</p>
       )}
     </div>
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  Main Page                                                           */
+/* ------------------------------------------------------------------ */
 export default function AchievementsPage() {
   usePageMeta("Achievements — Exam Arena");
   const { data: achievements, isLoading, error } = useAchievements();
+  const [activeCategory, setActiveCategory] = useState<AchievementCategory | "all">("all");
   const gridRef = useRef<HTMLDivElement>(null);
 
   const headerRef = useCallback((el: HTMLDivElement | null) => {
@@ -85,65 +206,132 @@ export default function AchievementsPage() {
         gsap.fromTo(cards, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: "power2.out" });
       }
     }
-  }, [achievements]);
+  }, [achievements, activeCategory]);
+
+  const filtered = useMemo(() => {
+    if (!achievements) return [];
+    if (activeCategory === "all") return achievements;
+    return achievements.filter((a) => a.category === activeCategory);
+  }, [achievements, activeCategory]);
 
   const unlocked = achievements?.filter((a) => a.unlocked).length ?? 0;
   const total = achievements?.length ?? 0;
+  const percent = total > 0 ? Math.round((unlocked / total) * 100) : 0;
 
   return (
-    <div className="px-4 sm:px-6 pt-6 pb-10">
+    <div className="min-h-screen px-5 pt-6 pb-6">
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Achievements</h1>
-        <p className="text-fluid-sm text-muted-foreground/60">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Trophy size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">ACHIEVEMENTS</span>
+        </div>
+        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           {total > 0 ? `${unlocked}/${total} unlocked` : "Unlock badges as you train"}
         </p>
       </div>
 
-      {/* Progress bar */}
+      {/* Hero ring + stats */}
       {total > 0 && (
         <div ref={animateSection} data-section-index="0" className="mt-5">
-          <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-            <div
-              className="h-full rounded-full bg-primary transition-all duration-700"
-              style={{ width: `${(unlocked / total) * 100}%` }}
-            />
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 flex items-center gap-5" style={{ background: GLASS_BG }}>
+            {/* Large ring */}
+            <div className="relative shrink-0">
+              <ProgressRing progress={percent} tier="platinum" size={80} stroke={4} />
+              <div className="absolute inset-0 grid place-items-center">
+                <span className="text-[18px] font-bold text-foreground">{percent}%</span>
+              </div>
+            </div>
+            {/* Stats */}
+            <div className="flex-1 grid grid-cols-2 gap-3">
+              <div>
+                <p className="text-[18px] font-bold text-foreground">{unlocked}</p>
+                <p className="text-[10px] text-muted-foreground/40 font-semibold uppercase tracking-wider">Unlocked</p>
+              </div>
+              <div>
+                <p className="text-[18px] font-bold text-foreground">{total - unlocked}</p>
+                <p className="text-[10px] text-muted-foreground/40 font-semibold uppercase tracking-wider">Remaining</p>
+              </div>
+              <div>
+                <p className="text-[18px] font-bold" style={{ color: TIER_STYLES.gold.ring }}>
+                  {achievements?.filter((a) => a.tier === "gold" && a.unlocked).length ?? 0}
+                </p>
+                <p className="text-[10px] text-muted-foreground/40 font-semibold uppercase tracking-wider">Gold</p>
+              </div>
+              <div>
+                <p className="text-[18px] font-bold" style={{ color: TIER_STYLES.platinum.ring }}>
+                  {achievements?.filter((a) => a.tier === "platinum" && a.unlocked).length ?? 0}
+                </p>
+                <p className="text-[10px] text-muted-foreground/40 font-semibold uppercase tracking-wider">Platinum</p>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
+      {/* Category tabs */}
+      <div ref={animateSection} data-section-index="1" className="mt-5 flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat.id}
+            type="button"
+            onClick={() => setActiveCategory(cat.id)}
+            className={cn(
+              "shrink-0 rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] backdrop-blur-xl",
+              activeCategory === cat.id
+                ? "bg-primary text-primary-foreground"
+                : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+            )}
+            style={activeCategory !== cat.id ? { background: GLASS_BG } : undefined}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
       {/* Content */}
-      <div ref={animateSection} data-section-index="1" className="mt-6">
+      <div ref={animateSection} data-section-index="2" className="mt-5">
         {isLoading && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="h-36 rounded-xl bg-card animate-pulse" />
+              <div
+                key={i}
+                className="h-44 rounded-3xl animate-pulse"
+                style={{ backgroundColor: GLASS_BG }}
+              />
             ))}
           </div>
         )}
 
         {error && (
-          <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center">
-            <p className="text-fluid-sm font-semibold text-destructive">Failed to load achievements</p>
-            <p className="mt-1 text-fluid-xs text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl">
+            <p className="text-[12px] font-semibold text-destructive">Failed to load achievements</p>
+            <p className="mt-1 text-[10px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
         )}
 
-        {achievements && achievements.length === 0 && (
+        {achievements && filtered.length === 0 && (
           <div className="py-10 text-center">
-            <p className="text-fluid-sm text-muted-foreground/60">No achievements yet. Complete sprints to unlock them!</p>
+            <p className="text-[12px] text-muted-foreground/60">No achievements in this category yet.</p>
           </div>
         )}
 
-        {achievements && achievements.length > 0 && (
+        {filtered.length > 0 && (
           <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {achievements.map((item, i) => (
+            {filtered.map((item, i) => (
               <AchievementCard key={item.id} item={item} index={i} />
             ))}
           </div>
         )}
       </div>
+
+      {/* Shimmer keyframes via style tag */}
+      <style jsx>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
     </div>
   );
 }

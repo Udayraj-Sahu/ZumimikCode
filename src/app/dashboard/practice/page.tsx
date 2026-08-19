@@ -12,6 +12,7 @@ import {
   BookOpen,
   BrainCircuit,
   Target,
+  Dumbbell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
@@ -29,6 +30,9 @@ import { DOMAIN_LABELS } from "@/lib/types/template";
 
 type PracticeType = "mcq" | "templates";
 type Phase = "config" | "active" | "done";
+
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function PracticePage() {
   usePageMeta("Practice — Exam Arena");
@@ -165,12 +169,10 @@ export default function PracticePage() {
     }
   };
 
-  // Auto-start template when templateId is provided via URL
   useEffect(() => {
     if (templateIdParam && !loadingTemplates && loadedTemplates.length === 0) {
       startTemplatePractice(templateIdParam);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [templateIdParam]);
 
   const handleTemplateNext = () => {
@@ -197,92 +199,106 @@ export default function PracticePage() {
 
   const question: Question | null = session?.questions[currentIndex] ?? null;
 
+  /* ================================================================ */
+  /*  CONFIG PHASE                                                     */
+  /* ================================================================ */
   if (phase === "config") {
     return (
-      <div className="px-4 sm:px-6 pt-6 pb-10">
-        <div ref={headerRef} className="text-center">
-          <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Practice</h1>
-          <p className="text-fluid-sm text-muted-foreground/60">Choose your practice mode</p>
+      <div className="min-h-screen px-5 pt-6 pb-6">
+        <div ref={headerRef} className="mb-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+            <Dumbbell size={12} className="text-primary" />
+            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">PRACTICE</span>
+          </div>
+          <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
+            Sharpen your skills with MCQ drills or technique walkthroughs
+          </p>
         </div>
 
         {/* Practice Type Toggle */}
-        <div ref={animateSection} data-section-index="0" className="mt-6">
-          <div className="flex gap-2 rounded-2xl border border-border/60 bg-card p-1">
+        <div ref={animateSection} data-section-index="0" className="mb-5">
+          <div className="flex gap-2 rounded-3xl border backdrop-blur-xl p-1.5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
             <button
               type="button"
               onClick={() => setPracticeType("mcq")}
               className={cn(
-                "flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                "flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                 practiceType === "mcq"
                   ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground active:text-foreground",
+                  : "text-muted-foreground/50 hover:text-foreground",
               )}
             >
-              <BookOpen size={16} /> MCQ
+              <BookOpen size={14} /> MCQ
             </button>
             <button
               type="button"
               onClick={() => setPracticeType("templates")}
               className={cn(
-                "flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                "flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                 practiceType === "templates"
                   ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground active:text-foreground",
+                  : "text-muted-foreground/50 hover:text-foreground",
               )}
             >
-              <BrainCircuit size={16} /> {targetExam ? domainLabel : "Templates"}
+              <BrainCircuit size={14} /> {targetExam ? domainLabel : "Templates"}
             </button>
           </div>
         </div>
 
+        {/* ── MCQ CONFIG ──────────────────────────────────────────── */}
         {practiceType === "mcq" && (
           <>
-            <div ref={animateSection} data-section-index="1" className="mt-6">
-              <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Choose Topic</p>
-              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
+            <div ref={animateSection} data-section-index="1" className="mb-5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Choose Topic</p>
+              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                 {sprintTopics.map((t) => {
                   const Icon = t.icon;
+                  const active = topic === t.id;
                   return (
                     <button
                       key={t.id}
                       type="button"
                       onClick={() => setTopic(t.id)}
                       className={cn(
-                        "flex flex-col items-center gap-2 rounded-2xl border p-4 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
-                        topic === t.id
-                          ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary),0_0_24px_-4px_var(--primary)]"
-                          :                      "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
+                        "flex flex-col items-center gap-2 rounded-3xl border backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98]",
+                        active
+                          ? "border-primary/40 bg-primary/[0.08] shadow-[0_0_24px_-4px_var(--primary)]"
+                          : "border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06]",
                       )}
                       aria-label={`Select ${t.label}`}
                     >
-                      <Icon size={24} className={topic === t.id ? "text-primary" : "text-muted-foreground/40"} />
-                      <span className="text-fluid-xs font-bold text-center leading-tight">{t.label}</span>
+                      <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: active ? "rgba(199,242,82,0.12)" : GLASS_BG }}>
+                        <Icon size={20} className={active ? "text-[#C7F252]" : "text-muted-foreground/30"} />
+                      </div>
+                      <span className="text-[11px] font-semibold text-center leading-tight">{t.label}</span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            <div ref={animateSection} data-section-index="2" className="mt-6">
-              <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Difficulty</p>
+            <div ref={animateSection} data-section-index="2" className="mb-5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Difficulty</p>
               <div className="flex gap-2">
-                {["Beginner", "Intermediate", "Advanced"].map((d) => (
-                  <button
-                    key={d}
-                    type="button"
-                    onClick={() => setDifficulty(d)}
-                    className={cn(
-                      "flex-1 rounded-xl border py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
-                      difficulty === d
-                        ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)] text-foreground"
-                        :                      "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
-                    )}
-                    aria-label={`Difficulty ${d}`}
-                  >
-                    {d}
-                  </button>
-                ))}
+                {["Beginner", "Intermediate", "Advanced"].map((d) => {
+                  const active = difficulty === d;
+                  return (
+                    <button
+                      key={d}
+                      type="button"
+                      onClick={() => setDifficulty(d)}
+                      className={cn(
+                        "flex-1 rounded-2xl border backdrop-blur-xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
+                        active
+                          ? "border-primary/40 bg-primary/[0.08] text-foreground"
+                          : "border-white/[0.06] bg-white/[0.03] text-muted-foreground/50 hover:bg-white/[0.06]",
+                      )}
+                      aria-label={`Difficulty ${d}`}
+                    >
+                      {d}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -291,7 +307,7 @@ export default function PracticePage() {
                 type="button"
                 disabled={!topic}
                 onClick={startPractice}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BookOpen size={16} /> Start Practice
               </button>
@@ -299,18 +315,21 @@ export default function PracticePage() {
           </>
         )}
 
+        {/* ── TEMPLATES: NO EXAM ──────────────────────────────────── */}
         {practiceType === "templates" && !targetExam && (
-          <div ref={animateSection} data-section-index="1" className="mt-6">
-            <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border/40 bg-card/50 p-8 text-center">
-              <Target size={32} className="text-muted-foreground/30" />
-              <p className="text-fluid-sm font-semibold text-muted-foreground">No exam selected yet</p>
-              <p className="text-fluid-xs text-muted-foreground/50 max-w-xs">
+          <div ref={animateSection} data-section-index="1" className="mt-2">
+            <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-8 text-center" style={{ background: GLASS_BG }}>
+              <div className="h-14 w-14 rounded-2xl bg-white/[0.04] flex items-center justify-center">
+                <Target size={24} className="text-muted-foreground/20" />
+              </div>
+              <p className="text-[14px] font-semibold text-muted-foreground/60">No exam selected yet</p>
+              <p className="text-[12px] text-muted-foreground/30 max-w-xs font-normal leading-relaxed">
                 Choose your target exam during onboarding to unlock step-by-step technique practice.
               </p>
               <button
                 type="button"
                 onClick={() => router.push("/onboarding")}
-                className="rounded-xl bg-primary px-5 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+                className="rounded-2xl bg-primary px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 Go to Onboarding
               </button>
@@ -318,66 +337,73 @@ export default function PracticePage() {
           </div>
         )}
 
+        {/* ── TEMPLATES: WITH EXAM ────────────────────────────────── */}
         {practiceType === "templates" && targetExam && (
           <>
-            <div ref={animateSection} data-section-index="1" className="mt-6">
-              <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Category</p>
+            <div ref={animateSection} data-section-index="1" className="mb-5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Category</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {[
                   { id: "all", label: "All Techniques" },
                   { id: "multiplication", label: "Multiplication" },
                   { id: "division", label: "Division" },
                   { id: "squares", label: "Squares" },
-                ].map((cat) => (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => setTemplateCategory(cat.id)}
-                    className={cn(
-                      "flex items-center gap-3 rounded-2xl border p-4 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
-                      templateCategory === cat.id
-                        ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)]"
-                        :                      "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
-                    )}
-                    aria-label={`Category ${cat.label}`}
-                  >
-                    <span className={cn(
-                      "rounded-lg px-2.5 py-1 text-fluid-xs font-bold",
-                      cat.id === "all" ? "bg-primary/10 text-primary" : "bg-chart-3/10 text-chart-3",
-                    )}>
-                      {cat.label === "All Techniques" ? "ALL" : cat.label.slice(0, 4).toUpperCase()}
-                    </span>
-                    <span className="text-fluid-sm font-semibold">{cat.label}</span>
-                  </button>
-                ))}
+                ].map((cat) => {
+                  const active = templateCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => setTemplateCategory(cat.id)}
+                      className={cn(
+                        "flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98]",
+                        active
+                          ? "border-primary/40 bg-primary/[0.08]"
+                          : "border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06]",
+                      )}
+                      aria-label={`Category ${cat.label}`}
+                    >
+                      <span className={cn(
+                        "rounded-xl px-2.5 py-1 text-[10px] font-bold",
+                        cat.id === "all" ? "bg-primary/10 text-primary" : "bg-[#F59E0B]/10 text-[#F59E0B]",
+                      )}>
+                        {cat.label === "All Techniques" ? "ALL" : cat.label.slice(0, 4).toUpperCase()}
+                      </span>
+                      <span className="text-[13px] font-semibold">{cat.label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            <div ref={animateSection} data-section-index="2" className="mt-6">
-              <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3">Mode</p>
+            <div ref={animateSection} data-section-index="2" className="mb-5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Mode</p>
               <div className="flex gap-2">
                 {([
                   { value: "solve_along" as const, label: "Solve Along" },
                   { value: "quick" as const, label: "Quick" },
                   { value: "guided" as const, label: "Guided" },
-                ]).map((m) => (
-                  <button
-                    key={m.value}
-                    type="button"
-                    onClick={() => setRenderMode(m.value)}
-                    className={cn(
-                      "flex-1 rounded-xl border py-3 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
-                      renderMode === m.value
-                        ? "border-primary bg-accent shadow-[0_0_0_1px_var(--primary)] text-foreground"
-                        :                      "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60",
-                    )}
-                    aria-label={`Mode ${m.label}`}
-                  >
-                    {m.label}
-                  </button>
-                ))}
+                ]).map((m) => {
+                  const active = renderMode === m.value;
+                  return (
+                    <button
+                      key={m.value}
+                      type="button"
+                      onClick={() => setRenderMode(m.value)}
+                      className={cn(
+                        "flex-1 rounded-2xl border backdrop-blur-xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
+                        active
+                          ? "border-primary/40 bg-primary/[0.08] text-foreground"
+                          : "border-white/[0.06] bg-white/[0.03] text-muted-foreground/50 hover:bg-white/[0.06]",
+                      )}
+                      aria-label={`Mode ${m.label}`}
+                    >
+                      {m.label}
+                    </button>
+                  );
+                })}
               </div>
-              <p className="mt-2 text-fluid-xs text-muted-foreground/50">
+              <p className="mt-2 text-[11px] text-muted-foreground/30 font-normal">
                 {renderMode === "solve_along" && "Step-by-step reveal — learn the technique"}
                 {renderMode === "quick" && "All steps visible — speed practice"}
                 {renderMode === "guided" && "Auto-advancing steps with hints"}
@@ -389,7 +415,7 @@ export default function PracticePage() {
                 type="button"
                 disabled={loadingTemplates}
                 onClick={() => startTemplatePractice()}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BrainCircuit size={16} />
                 {loadingTemplates ? "Loading..." : `Start ${domainLabel} ${renderMode === "quick" ? "Quick" : renderMode === "guided" ? "Guided" : "Solve-Along"}`}
@@ -401,36 +427,41 @@ export default function PracticePage() {
     );
   }
 
+  /* ================================================================ */
+  /*  DONE PHASE — MCQ RESULTS                                        */
+  /* ================================================================ */
   if (phase === "done" && completed) {
     const accuracy = Math.round((completed.correct / completed.total) * 100);
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-8" ref={contentRef}>
-        <div className="text-center">
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-8 pb-6" ref={contentRef}>
+        <div className="text-center mb-6">
           <div className={cn(
-            "mx-auto mb-4 grid size-20 place-items-center rounded-full text-fluid-3xl font-black",
-            accuracy >= 80 ? "bg-primary/10 text-primary" : accuracy >= 50 ? "bg-chart-3/10 text-chart-3" : "bg-destructive/10 text-destructive",
+            "mx-auto mb-4 grid size-20 place-items-center rounded-full text-[28px] font-bold backdrop-blur-xl",
+            accuracy >= 80 ? "bg-primary/10 text-primary" : accuracy >= 50 ? "bg-[#F59E0B]/10 text-[#F59E0B]" : "bg-destructive/10 text-destructive",
           )}>
             {accuracy}%
           </div>
-          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">
+          <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
             {accuracy >= 80 ? "Well Done!" : accuracy >= 50 ? "Keep Practicing!" : "Review & Improve!"}
           </h1>
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-3">
-          <div className="rounded-xl border border-border/40 bg-card p-4 text-center">
-            <p className="text-fluid-xs font-semibold tracking-widest text-muted-foreground/50">CORRECT</p>
-            <p className="mt-1 text-fluid-2xl font-black text-foreground">{completed.correct}/{completed.total}</p>
+
+        <div className="grid grid-cols-2 gap-3 mb-5">
+          <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Correct</p>
+            <p className="mt-1 text-[22px] font-bold text-foreground">{completed.correct}/{completed.total}</p>
           </div>
-          <div className="rounded-xl border border-border/40 bg-card p-4 text-center">
-            <p className="text-fluid-xs font-semibold tracking-widest text-muted-foreground/50">ACCURACY</p>
-            <p className="mt-1 text-fluid-2xl font-black text-primary">{accuracy}%</p>
+          <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Accuracy</p>
+            <p className="mt-1 text-[22px] font-bold text-primary">{accuracy}%</p>
           </div>
         </div>
-        <div className="mt-6 flex flex-col gap-3">
+
+        <div className="flex flex-col gap-3">
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
           >
             Practice Again <ChevronRight size={16} />
           </button>
@@ -438,7 +469,8 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={() => router.push(returnTo)}
-              className="rounded-2xl border border-chart-3/40 bg-chart-3/5 py-4 text-fluid-sm font-bold uppercase tracking-widest text-chart-3 outline-none transition-colors hover:bg-chart-3/10 active:bg-chart-3/20 focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04]"
+              style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
             >
               Back to Sprint Setup
             </button>
@@ -446,7 +478,8 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04]"
+            style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
           >
             Dashboard
           </button>
@@ -455,31 +488,34 @@ export default function PracticePage() {
     );
   }
 
-  // Template done → prompt user to apply it with a Sprint
+  /* ================================================================ */
+  /*  TEMPLATE DONE — TECHNIQUE LEARNED                               */
+  /* ================================================================ */
   if (practiceType === "templates" && rendererPhase === "done" && completed) {
     const sprintTopic = searchParams.get("topic") || "";
     const sprintDifficulty = searchParams.get("difficulty") || "beginner";
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-8" ref={contentRef}>
-        <div className="text-center">
-          <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-chart-3/10 text-fluid-3xl font-black text-chart-3">
-            <Check className="size-8" />
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-8 pb-6" ref={contentRef}>
+        <div className="text-center mb-6">
+          <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-[#F59E0B]/10 backdrop-blur-xl">
+            <Check size={32} className="text-[#F59E0B]" />
           </div>
-          <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">
+          <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
             Technique Learned!
           </h1>
-          <p className="mt-2 text-fluid-sm text-muted-foreground/60 leading-relaxed max-w-xs mx-auto">
+          <p className="mt-2 text-[12px] text-muted-foreground/45 leading-relaxed max-w-xs mx-auto font-normal">
             You&apos;ve completed the walkthrough. Now apply it under real conditions.
           </p>
         </div>
-        <div className="mt-6 flex flex-col gap-3">
+
+        <div className="flex flex-col gap-3">
           {sprintTopic && (
             <button
               type="button"
               onClick={() =>
                 router.push(`/dashboard/sprint?topic=${sprintTopic}&length=5&difficulty=${sprintDifficulty}`)
               }
-              className="flex items-center justify-center gap-2 rounded-2xl bg-chart-3 py-4 text-fluid-base font-bold uppercase tracking-widest text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex items-center justify-center gap-2 rounded-3xl bg-[#F59E0B] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
             >
               <Zap size={16} /> Start 5-Question Sprint
             </button>
@@ -487,7 +523,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
           >
             Practice Another <ChevronRight size={16} />
           </button>
@@ -495,7 +531,8 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={() => router.push(returnTo)}
-              className="rounded-2xl border border-chart-3/40 bg-chart-3/5 py-4 text-fluid-sm font-bold uppercase tracking-widest text-chart-3 outline-none transition-colors hover:bg-chart-3/10 active:bg-chart-3/20 focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04]"
+              style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
             >
               Back to Sprint Setup
             </button>
@@ -503,7 +540,8 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-2xl border border-border/60 bg-card py-4 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04]"
+            style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
           >
             Dashboard
           </button>
@@ -512,20 +550,22 @@ export default function PracticePage() {
     );
   }
 
+  /* ================================================================ */
+  /*  TEMPLATE ACTIVE                                                  */
+  /* ================================================================ */
   if (practiceType === "templates" && rendererPhase === "active" && currentTemplate) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 pb-10">
-        {/* Header */}
+      <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6">
         <div ref={headerRef} className="flex items-center justify-between mb-3">
-          <span className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
             {domainLabel} &middot; {currentTemplate.concept?.technique_name}
           </span>
-          <span className="text-fluid-xs font-mono text-muted-foreground/40">
+          <span className="text-[11px] font-mono text-muted-foreground/30">
             {storeCurrentIndex + 1}/{storeTemplates.length}
           </span>
         </div>
 
-        <div className="h-1.5 w-full rounded-full bg-muted mb-6">
+        <div className="h-1.5 w-full rounded-full mb-6" style={{ background: GLASS_BG }}>
           <div
             className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
             style={{
@@ -541,19 +581,17 @@ export default function PracticePage() {
           onStepReveal={stepProgress.handleRevealNext}
         />
 
-        {/* "Now You Try" prompt when all steps revealed */}
         {stepProgress.allRevealed && renderMode === "solve_along" && (
           <div className="mt-5 text-center">
-            <p className="text-fluid-xs font-bold uppercase tracking-[0.15em] text-chart-3">
+            <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#F59E0B]">
               Now you try it!
             </p>
-            <p className="mt-0.5 text-fluid-xs text-muted-foreground/50">
+            <p className="mt-0.5 text-[11px] text-muted-foreground/30 font-normal">
               Apply the technique and solve on your own
             </p>
           </div>
         )}
 
-        {/* Navigation buttons */}
         {(stepProgress.isCorrect !== null || stepProgress.allRevealed || renderMode === "quick") && (
           <div className="mt-6 flex gap-3">
             {storeCurrentIndex > 0 && (
@@ -563,15 +601,16 @@ export default function PracticePage() {
                   useTemplateStore.getState().prevTemplate();
                   stepProgress.reset();
                 }}
-                className="flex items-center justify-center gap-2 rounded-2xl border border-border/60 bg-card px-5 py-4 text-fluid-xs font-bold uppercase tracking-wider text-foreground outline-none transition-colors hover:bg-accent/40 active:bg-accent/60 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl px-5 py-4 text-[11px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.06]"
+                style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
               >
-                <ChevronLeft size={16} /> Previous
+                <ChevronLeft size={14} /> Previous
               </button>
             )}
             <button
               type="button"
               onClick={handleTemplateNext}
-              className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
             >
               {storeCurrentIndex >= storeTemplates.length - 1 ? "See Results" : "Next"}{" "}
               <ChevronRight size={16} />
@@ -582,38 +621,44 @@ export default function PracticePage() {
     );
   }
 
+  /* ================================================================ */
+  /*  LOADING STATES                                                   */
+  /* ================================================================ */
   if (practiceType === "templates" && (loadingTemplates || rendererPhase === "idle")) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 animate-pulse">
-        <div className="h-14 rounded-lg bg-card mb-4" />
-        <div className="h-48 rounded-2xl bg-card mb-4" />
-        <div className="h-12 rounded-lg bg-card" />
+      <div className="mx-auto max-w-lg px-5 pt-6 pb-6 animate-pulse">
+        <div className="h-12 rounded-2xl mb-4" style={{ background: GLASS_BG }} />
+        <div className="h-48 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
+        <div className="h-12 rounded-2xl" style={{ background: GLASS_BG }} />
       </div>
     );
   }
 
   if (isLoading || !session) {
     return (
-      <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 animate-pulse">
-        <div className="h-14 rounded-lg bg-card mb-4" />
-        <div className="h-48 rounded-2xl bg-card mb-4" />
-        <div className="h-12 rounded-lg bg-card" />
+      <div className="mx-auto max-w-lg px-5 pt-6 pb-6 animate-pulse">
+        <div className="h-12 rounded-2xl mb-4" style={{ background: GLASS_BG }} />
+        <div className="h-48 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
+        <div className="h-12 rounded-2xl" style={{ background: GLASS_BG }} />
       </div>
     );
   }
 
+  /* ================================================================ */
+  /*  ACTIVE MCQ                                                       */
+  /* ================================================================ */
   return (
-    <div className="mx-auto max-w-lg px-4 sm:px-6 pt-6 pb-10">
+    <div className="min-h-screen mx-auto max-w-lg px-5 pt-6 pb-6">
       <div ref={headerRef} className="flex items-center justify-between mb-3">
-        <span className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
+        <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
           Practice &middot; {session.topicLabel}
         </span>
-        <span className="text-fluid-xs font-mono text-muted-foreground/40">
+        <span className="text-[11px] font-mono text-muted-foreground/30">
           {currentIndex + 1}/{session.questions.length}
         </span>
       </div>
 
-      <div className="h-1.5 w-full rounded-full bg-muted mb-6">
+      <div className="h-1.5 w-full rounded-full mb-6" style={{ background: GLASS_BG }}>
         <div
           className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
           style={{ width: `${((currentIndex + (revealed ? 1 : 0)) / session.questions.length) * 100}%` }}
@@ -622,16 +667,24 @@ export default function PracticePage() {
 
       {question && (
         <div key={question.id} ref={questionRef}>
-          <p className="text-fluid-xl font-bold leading-snug text-foreground mb-5">{question.text}</p>
+          <p className="text-[16px] font-bold leading-snug text-foreground mb-5 tracking-[-0.01em]">{question.text}</p>
           <div className="flex flex-col gap-2.5">
             {question.options.map((option, i) => {
               const isSelected = answers[question.id] === i;
               const isCorrect = i === question.correctIndex;
-              let variant = "bg-card border-border/60 text-foreground hover:border-border hover:bg-accent/40 active:border-border active:bg-accent/60" as string;
+              let style: React.CSSProperties = { borderColor: GLASS_BORDER, background: GLASS_BG };
+              let labelClass = "bg-white/[0.04] text-muted-foreground/50";
               if (revealed) {
-                if (isCorrect) variant = "border-primary bg-primary/10 text-primary";
-                else if (isSelected) variant = "border-destructive bg-destructive/10 text-destructive";
-                else variant = "border-border/30 bg-card/50 text-muted-foreground/40";
+                if (isCorrect) {
+                  style = { borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.06)" };
+                  labelClass = "bg-[#C7F252]/10 text-[#C7F252]";
+                } else if (isSelected) {
+                  style = { borderColor: "rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.06)" };
+                  labelClass = "bg-destructive/10 text-destructive";
+                } else {
+                  style = { borderColor: "rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.015)" };
+                  labelClass = "bg-white/[0.02] text-muted-foreground/20";
+                }
               }
               return (
                 <button
@@ -639,17 +692,18 @@ export default function PracticePage() {
                   type="button"
                   onClick={() => handleSelect(i)}
                   disabled={revealed}
-                  className={cn(
-                    "flex items-center gap-3 rounded-2xl border p-4 text-left outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
-                    variant,
-                  )}
+                  className="flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 text-left outline-none transition-all active:scale-[0.98]"
+                  style={style}
                 >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-muted text-fluid-xs font-bold text-muted-foreground">
+                  <span className={cn(
+                    "grid size-8 shrink-0 place-items-center rounded-xl text-[11px] font-bold",
+                    labelClass,
+                  )}>
                     {String.fromCharCode(65 + i)}
                   </span>
-                  <span className="flex-1 text-fluid-base font-medium">{option}</span>
-                  {revealed && isCorrect && <Check size={20} className="text-primary shrink-0" />}
-                  {revealed && isSelected && !isCorrect && <X size={20} className="text-destructive shrink-0" />}
+                  <span className="flex-1 text-[13px] font-medium">{option}</span>
+                  {revealed && isCorrect && <Check size={18} className="text-[#C7F252] shrink-0" />}
+                  {revealed && isSelected && !isCorrect && <X size={18} className="text-destructive shrink-0" />}
                 </button>
               );
             })}
@@ -660,7 +714,7 @@ export default function PracticePage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-fluid-base font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
@@ -676,7 +730,7 @@ export default function PracticePage() {
               key={i}
               className={cn(
                 "size-2 rounded-full transition-all duration-300",
-                i === currentIndex ? "bg-primary scale-125" : i < currentIndex || answers[session.questions[i]?.id] !== undefined ? "bg-primary/40" : "bg-muted",
+                i === currentIndex ? "bg-primary scale-125" : i < currentIndex || answers[session.questions[i]?.id] !== undefined ? "bg-primary/40" : "bg-white/10",
               )}
             />
           ))}

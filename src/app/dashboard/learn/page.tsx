@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Grid3x3, Sigma, Pentagon, Sparkles, Plus, ArrowRight, type LucideIcon } from "lucide-react";
+import {
+  Grid3x3,
+  Sigma,
+  Pentagon,
+  Sparkles,
+  Plus,
+  ArrowRight,
+  BookOpen,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -10,12 +19,15 @@ import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 const TOPIC_ICONS: Record<string, LucideIcon> = {
-  "Addition": Grid3x3,
-  "Subtraction": Pentagon,
-  "Multiplication": Sigma,
-  "Division": Grid3x3,
-  "Squares": Pentagon,
+  Addition: Grid3x3,
+  Subtraction: Pentagon,
+  Multiplication: Sigma,
+  Division: Grid3x3,
+  Squares: Pentagon,
   "Quantitative Aptitude": Grid3x3,
   "Logical Reasoning": Sigma,
   "Data Interpretation": Pentagon,
@@ -60,68 +72,55 @@ export default function LearnPage() {
   const topics = data?.topics ?? [];
 
   return (
-    <div className="px-4 pt-6 pb-24">
+    <div className="min-h-screen px-5 pt-6 pb-6">
+      {/* Header */}
       <header className="mb-5">
-        <p className="text-[11px] font-bold tracking-[0.15em] text-primary">
-          ADAPTIVE LEARNING ENGINE
-        </p>
-        <h1 className="text-fluid-xl font-black tracking-tight text-foreground mt-1">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <BookOpen size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
+        </div>
+        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
           Topic Explorer
         </h1>
-        <p className="text-fluid-xs text-muted-foreground/60 mt-0.5">
+        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           Navigate the mathematical landscape
         </p>
       </header>
 
+      {/* Add Prep CTA */}
       <button
         type="button"
         onClick={() => setShowAddPrep(true)}
-        className="w-full rounded-full bg-foreground text-background font-bold text-fluid-sm py-3.5 flex items-center justify-center gap-2 outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring mb-5"
+        className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 flex items-center justify-center gap-2 text-[13px] font-semibold text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98]"
       >
-        <Plus size={16} strokeWidth={3} />
-        <span className="tracking-wide">ADD PREP</span>
+        <Plus size={15} strokeWidth={2.5} />
+        ADD PREP
       </button>
 
-      <div className="rounded-2xl border border-border/40 bg-card p-5 mb-5">
-        <div className="flex items-start gap-3 mb-4">
-          <div className="grid size-10 place-items-center rounded-xl bg-primary/10 shrink-0">
-            <Sparkles size={18} className="text-primary" />
-          </div>
-          <div>
-            <h2 className="text-fluid-sm font-bold text-foreground leading-tight">
-              Topic Explorer
-            </h2>
-            <p className="text-fluid-xs text-muted-foreground/60 mt-0.5">
-              Navigate the mathematical landscape
-            </p>
-          </div>
-        </div>
-
-        <div className="rounded-xl bg-muted/30 p-4">
-          <p className="text-[11px] font-bold tracking-widest text-primary mb-2">
-            EXAM PREP
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {Object.entries(DOMAIN_LABELS).map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setActiveDomain(id)}
-                className={cn(
-                  "text-[11px] font-semibold rounded-full px-3 py-1 transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  activeDomain === id
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground/70 hover:bg-muted/80",
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+      {/* Exam Tabs */}
+      <div className="rounded-3xl border backdrop-blur-xl p-4 mt-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+        <p className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(DOMAIN_LABELS).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setActiveDomain(id)}
+              className={cn(
+                "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
+                activeDomain === id
+                  ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
+                  : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]"
+              )}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 mb-5">
+      {/* Topic Cards */}
+      <div className="flex flex-col gap-3 mt-5">
         {topics.map((topic, i) => {
           const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
           const color = TOPIC_COLORS[i % TOPIC_COLORS.length];
@@ -130,54 +129,64 @@ export default function LearnPage() {
               key={topic.name}
               type="button"
               onClick={() => router.push("/dashboard/explorer")}
-              className="rounded-2xl border border-border/40 bg-card p-5 text-left outline-none transition-all hover:border-border hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+              className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+              style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
             >
-              <div className="flex items-center justify-between mb-6">
-                <div
-                  className="grid size-9 place-items-center rounded-lg"
-                  style={{ backgroundColor: `${color}1A` }}
-                >
-                  <Icon size={16} style={{ color }} />
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-xl flex items-center justify-center" style={{ background: `${color}15` }}>
+                    <Icon size={16} style={{ color }} />
+                  </div>
+                  <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">{topic.name}</h3>
                 </div>
-                <span className="text-fluid-xs text-muted-foreground/60 font-mono">
+                <span className="text-[13px] font-bold tracking-[-0.02em]" style={{ color }}>
                   {topic.value}%
                 </span>
               </div>
-              <h3 className="text-fluid-sm font-bold text-foreground mb-3">
-                {topic.name}
-              </h3>
-              <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
+              <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
                 <div
-                  className="h-full rounded-full transition-all duration-700 ease-out"
-                  style={{ width: `${topic.value}%`, backgroundColor: color }}
+                  className="h-full rounded-full transition-all duration-700"
+                  style={{
+                    width: `${topic.value}%`,
+                    background: `linear-gradient(90deg, ${color}88, ${color})`,
+                    boxShadow: `0 0 8px ${color}40`,
+                  }}
                 />
               </div>
             </button>
           );
         })}
+
+        {topics.length === 0 && (
+          <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
+            <BookOpen size={24} className="mx-auto text-muted-foreground/25 mb-3" />
+            <p className="text-[13px] text-muted-foreground/40 font-normal">No topics yet. Add a prep to get started.</p>
+          </div>
+        )}
       </div>
 
-      <div className="relative rounded-2xl border border-border/40 bg-card p-5 pl-6 overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-1 bg-chart-2" />
-        <div className="flex items-center gap-2 mb-3">
-          <div className="grid size-8 place-items-center rounded-lg bg-chart-2/10">
-            <Sparkles size={14} className="text-chart-2" />
+      {/* Sensei Insight */}
+      {topics.length > 0 && (
+        <div className="relative rounded-3xl border backdrop-blur-xl p-5 mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+          <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#3B82F6] to-[#22D3EE]" />
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="h-7 w-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
+              <Sparkles size={14} className="text-[#3B82F6]" />
+            </div>
+            <p className="text-[10px] font-semibold tracking-[0.18em] text-[#3B82F6]/70 uppercase">SENSEI INSIGHT</p>
           </div>
-          <div className="flex-1 flex items-center justify-between">
-            <p className="text-[11px] font-bold tracking-widest text-chart-2">
-              SENSEI INSIGHT
-            </p>
-          </div>
+          <p className="text-[13px] text-foreground/70 font-normal leading-relaxed pl-1 italic">
+            &ldquo;{getInsight(topics)}&rdquo;
+          </p>
         </div>
-        <p className="italic text-fluid-sm text-foreground/80 leading-relaxed">
-          &ldquo;{getInsight(topics)}&rdquo;
-        </p>
-      </div>
+      )}
 
+      {/* Explore Techniques */}
       <button
         type="button"
         onClick={() => router.push("/dashboard/explorer")}
-        className="w-full mt-5 rounded-2xl border border-border/40 bg-card py-4 flex items-center justify-center gap-2 text-fluid-sm font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+        className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+        style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
       >
         EXPLORE TECHNIQUES
         <ArrowRight size={14} />

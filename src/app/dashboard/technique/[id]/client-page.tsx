@@ -9,6 +9,9 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { QuickReferenceCard } from "@/components/technique/quick-reference-card";
 import { DifficultyTabs } from "@/components/technique/difficulty-tabs";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 export function ClientTechniquePage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
@@ -21,23 +24,26 @@ export function ClientTechniquePage() {
 
   if (isLoading) {
     return (
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6 animate-pulse">
-        <div className="h-10 w-32 rounded-lg bg-card mb-4" />
-        <div className="h-32 rounded-2xl bg-card mb-4" />
-        <div className="h-64 rounded-2xl bg-card" />
+      <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6 animate-pulse">
+        <div className="h-10 w-32 rounded-xl mb-4" style={{ background: GLASS_BG }} />
+        <div className="h-32 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
+        <div className="h-64 rounded-3xl" style={{ background: GLASS_BG }} />
       </div>
     );
   }
 
   if (error || !technique) {
     return (
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6">
-        <div className="flex flex-col items-center gap-4 rounded-2xl border border-destructive/20 bg-destructive/5 p-8 text-center">
-          <p className="text-fluid-base font-semibold text-destructive">Technique not found</p>
+      <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6">
+        <div
+          className="flex flex-col items-center gap-4 rounded-3xl p-8 text-center"
+          style={{ background: GLASS_BG, border: `1px solid rgba(239,68,68,0.12)` }}
+        >
+          <p className="text-[13px] font-semibold text-destructive">Technique not found</p>
           <button
             type="button"
             onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard/explorer"); }}
-            className="rounded-xl bg-primary px-5 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-xl bg-primary px-5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Go Back
           </button>
@@ -47,24 +53,32 @@ export function ClientTechniquePage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6 pb-10">
+    <div className="min-h-screen mx-auto max-w-3xl px-5 pt-6 pb-6">
       <div ref={headerRef} className="text-center">
         <button
           type="button"
           onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard/explorer"); }}
-          className="inline-flex items-center gap-1.5 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring mb-3"
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring mb-3"
+          style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
         >
           <ArrowLeft size={14} /> Back
         </button>
 
-        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
-          EXAM ARENA
-        </p>
-        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground mt-0.5">
+        <div
+          className="inline-flex items-center rounded-full px-3 py-1 mb-2"
+          style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
+        >
+          <span className="text-[10px] font-semibold tracking-[0.15em] text-muted-foreground/60">
+            EXAM ARENA
+          </span>
+        </div>
+
+        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
           {technique.name}
         </h1>
+
         {technique.topicPath.length > 0 && (
-          <p className="text-fluid-xs text-muted-foreground/50 mt-1">
+          <p className="text-[11px] text-muted-foreground/50 mt-1">
             {technique.topicPath.join(" › ")}
           </p>
         )}
@@ -72,17 +86,27 @@ export function ClientTechniquePage() {
 
       {/* Quick Reference Card */}
       <div className="mt-6">
-        <p className="text-fluid-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/50 mb-3">
-          Quick Reference
-        </p>
+        <div
+          className="inline-flex items-center rounded-full px-3 py-1 mb-3"
+          style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
+        >
+          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
+            Quick Reference
+          </p>
+        </div>
         <QuickReferenceCard card={technique.quickReference} />
       </div>
 
       {/* Difficulty Levels */}
       <div className="mt-8">
-        <p className="text-fluid-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/50 mb-3">
-          Difficulty Levels
-        </p>
+        <div
+          className="inline-flex items-center rounded-full px-3 py-1 mb-3"
+          style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
+        >
+          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
+            Difficulty Levels
+          </p>
+        </div>
         <DifficultyTabs levels={technique.levels} techniqueName={technique.name} />
       </div>
     </div>

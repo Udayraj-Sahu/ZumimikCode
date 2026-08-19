@@ -11,6 +11,9 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { HistoryEntry } from "@/lib/types/history";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
   const sec = s % 60;
@@ -39,22 +42,22 @@ function HistoryRow({
       type="button"
       data-history-row
       onClick={() => onSelect(entry)}
-      className="flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-accent/20 active:bg-accent/30 focus-visible:ring-2 focus-visible:ring-ring rounded-lg"
+      className="flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
     >
       <div className={cn(
-        "grid size-9 shrink-0 place-items-center rounded-lg",
+        "grid size-9 shrink-0 place-items-center rounded-xl",
         entry.accuracy >= 80 ? "bg-primary/10" : entry.accuracy >= 50 ? "bg-chart-3/10" : "bg-destructive/10",
       )}>
         <span className={cn(
-          "text-fluid-xs font-black font-mono",
+          "text-[10px] font-bold font-mono",
           entry.accuracy >= 80 ? "text-primary" : entry.accuracy >= 50 ? "text-chart-3" : "text-destructive",
         )}>
           {entry.accuracy}%
         </span>
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-fluid-sm font-semibold text-foreground/80 truncate">{entry.topicLabel}</p>
-        <div className="flex items-center gap-2 text-fluid-xs text-muted-foreground/40 mt-0.5">
+        <p className="text-[12px] font-semibold text-foreground/80 truncate">{entry.topicLabel}</p>
+        <div className="flex items-center gap-2 text-[10px] text-muted-foreground/40 mt-0.5">
           <span>{entry.difficulty}</span>
           <span>&middot;</span>
           <span>{entry.score}/{entry.total}</span>
@@ -63,8 +66,8 @@ function HistoryRow({
         </div>
       </div>
       <div className="text-right shrink-0">
-        <p className="text-fluid-xs font-mono text-muted-foreground/40">{formatTime(entry.totalTimeSpent)}</p>
-        <p className="text-fluid-xs text-muted-foreground/50 mt-0.5">{formatDate(entry.completedAt)}</p>
+        <p className="text-[10px] font-mono text-muted-foreground/40">{formatTime(entry.totalTimeSpent)}</p>
+        <p className="text-[10px] text-muted-foreground/50 mt-0.5">{formatDate(entry.completedAt)}</p>
       </div>
       <ChevronRight size={14} className="text-muted-foreground/20 shrink-0" />
     </button>
@@ -130,21 +133,22 @@ export default function HistoryPage() {
   const paged = sorted.slice(page * perPage, (page + 1) * perPage);
 
   return (
-    <div className="px-4 sm:px-6 pt-6 pb-10">
+    <div className="min-h-screen px-5 pt-6 pb-6">
       <div ref={headerRef} className="text-center">
-        <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">EXAM ARENA</p>
-        <h1 className="text-fluid-2xl font-black tracking-tight text-foreground">Sprint History</h1>
-        <p className="text-fluid-sm text-muted-foreground/60">Review your past sprint performances</p>
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <Clock size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">HISTORY</span>
+        </div>
+        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Review your past sprint performances</p>
       </div>
 
-      {/* Filters */}
       <div ref={animateSection} data-section-index="0" className="mt-5 flex flex-wrap gap-2">
-        <div className="flex items-center gap-1.5 rounded-lg bg-muted px-3 py-2.5 min-h-[44px]">
+        <div className="flex items-center gap-1.5 rounded-xl px-3 py-2.5 min-h-[44px]" style={{ backgroundColor: GLASS_BG }}>
           <Filter size={12} className="text-muted-foreground/40" />
           <select
             value={topicFilter}
             onChange={(e) => { setTopicFilter(e.target.value); setPage(0); }}
-            className="bg-transparent text-fluid-xs font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="bg-transparent text-[10px] font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded"
           >
             {TOPICS_FILTER_HISTORY.map((t) => (
               <option key={t.id} value={t.id}>{t.label}</option>
@@ -158,10 +162,10 @@ export default function HistoryPage() {
               type="button"
               onClick={() => { setDiffFilter(d.id); setPage(0); }}
               className={cn(
-                "rounded-lg px-2 sm:px-3 py-2 text-fluid-xs font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                "rounded-xl px-2 sm:px-3 py-2 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 diffFilter === d.id
                   ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
+                  : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
               )}
             >
               {d.label}
@@ -171,47 +175,47 @@ export default function HistoryPage() {
         <button
           type="button"
           onClick={() => setSortAsc(!sortAsc)}
-          className="ml-auto flex items-center gap-1 rounded-lg bg-muted px-3 py-2.5 text-fluid-xs font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+          className="ml-auto flex items-center gap-1 rounded-xl px-3 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+          style={{ backgroundColor: GLASS_BG }}
         >
           <ArrowUpDown size={12} />
           {sortAsc ? "Oldest" : "Newest"}
         </button>
       </div>
 
-      {/* Content */}
       <div ref={animateSection} data-section-index="1" className="mt-4">
         {selected && (
-          <div ref={detailRef} className="mb-4 rounded-xl border border-border/40 bg-card p-4">
+          <div ref={detailRef} className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ backgroundColor: GLASS_BG }}>
             <div className="flex items-center justify-between mb-3">
-              <p className="text-fluid-sm font-bold text-foreground/80">{selected.topicLabel}</p>
+              <p className="text-[12px] font-bold text-foreground/80">{selected.topicLabel}</p>
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="min-h-[44px] px-3 py-2 text-fluid-xs text-muted-foreground/40 outline-none hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded"
+                className="min-h-[44px] px-3 py-2 text-[10px] text-muted-foreground/40 outline-none hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
               >
                 Close
               </button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center mb-3">
-              <div className="rounded-lg bg-muted p-2">
-                <p className="text-fluid-xs text-muted-foreground/40">Score</p>
-                <p className="text-fluid-lg font-black text-foreground">{selected.score}/{selected.total}</p>
+              <div className="rounded-xl p-2" style={{ backgroundColor: GLASS_BG }}>
+                <p className="text-[10px] text-muted-foreground/40">Score</p>
+                <p className="text-[13px] font-bold text-foreground">{selected.score}/{selected.total}</p>
               </div>
-              <div className="rounded-lg bg-muted p-2">
-                <p className="text-fluid-xs text-muted-foreground/40">Accuracy</p>
+              <div className="rounded-xl p-2" style={{ backgroundColor: GLASS_BG }}>
+                <p className="text-[10px] text-muted-foreground/40">Accuracy</p>
                 <p className={cn(
-                  "text-fluid-lg font-black",
+                  "text-[13px] font-bold",
                   selected.accuracy >= 80 ? "text-primary" : selected.accuracy >= 50 ? "text-chart-3" : "text-destructive",
                 )}>
                   {selected.accuracy}%
                 </p>
               </div>
-              <div className="rounded-lg bg-muted p-2">
-                <p className="text-fluid-xs text-muted-foreground/40">XP</p>
-                <p className="text-fluid-lg font-black text-chart-2">+{selected.xpEarned}</p>
+              <div className="rounded-xl p-2" style={{ backgroundColor: GLASS_BG }}>
+                <p className="text-[10px] text-muted-foreground/40">XP</p>
+                <p className="text-[13px] font-bold text-chart-2">+{selected.xpEarned}</p>
               </div>
             </div>
-            <div className="flex items-center justify-between text-fluid-xs text-muted-foreground/40">
+            <div className="flex items-center justify-between text-[10px] text-muted-foreground/40">
               <span>{selected.difficulty}</span>
               <span>{formatTime(selected.totalTimeSpent)}</span>
               <span>{formatDate(selected.completedAt)}</span>
@@ -222,33 +226,32 @@ export default function HistoryPage() {
         {isLoading && (
           <div className="animate-pulse space-y-2">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-16 rounded-lg bg-card" />
+              <div key={i} className="h-16 rounded-xl" style={{ backgroundColor: GLASS_BG }} />
             ))}
           </div>
         )}
 
         {error && (
-          <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center">
-            <p className="text-fluid-sm font-semibold text-destructive">Failed to load history</p>
+          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center">
+            <p className="text-[12px] font-semibold text-destructive">Failed to load history</p>
           </div>
         )}
 
         {sorted.length === 0 && (
           <div className="py-14 text-center">
             <Award size={32} className="mx-auto text-muted-foreground/20 mb-3" />
-            <p className="text-fluid-sm text-muted-foreground/60">No sprint history yet. Complete a sprint to see it here!</p>
+            <p className="text-[12px] text-muted-foreground/60">No sprint history yet. Complete a sprint to see it here!</p>
           </div>
         )}
 
         {sorted.length > 0 && (
-          <div ref={listRef} role="list" className="rounded-xl border border-border/40 bg-card divide-y divide-border/40 overflow-hidden">
+          <div ref={listRef} role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ backgroundColor: GLASS_BG }}>
             {paged.map((entry, i) => (
               <HistoryRow key={entry.id} entry={entry} index={i} onSelect={setSelected} />
             ))}
           </div>
         )}
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-4 flex items-center justify-center gap-2">
             {Array.from({ length: totalPages }).map((_, i) => (
@@ -257,8 +260,8 @@ export default function HistoryPage() {
                 type="button"
                 onClick={() => setPage(i)}
                 className={cn(
-                  "min-w-[44px] min-h-[44px] rounded-lg text-fluid-xs font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:bg-muted/70",
-                  page === i ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground active:text-foreground",
+                  "min-w-[44px] min-h-[44px] rounded-xl text-[10px] font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:bg-white/[0.06]",
+                  page === i ? "bg-primary text-primary-foreground" : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
                 )}
               >
                 {i + 1}
