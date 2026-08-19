@@ -430,71 +430,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Topic Mastery + Recent Activity */}
-      <div className="md:grid md:grid-cols-2 gap-4 px-5 mt-6">
-        {/* Topic Mastery */}
-        <div ref={animateSection} data-section-index={6}>
-          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-            <div className="flex items-center justify-between mb-5">
-              <SectionHeading>Topic mastery</SectionHeading>
-              <button
-                type="button"
-                onClick={() => router.push("/dashboard/mastery")}
-                className="flex items-center gap-1.5 text-[13px] font-semibold text-primary transition-all hover:gap-2.5"
-              >
-                View all <ArrowUpRight size={13} />
-              </button>
-            </div>
-            <div className="flex flex-col gap-4">
-              {topics.map((t) => (
-                <div key={t.name}>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{t.name}</span>
-                    <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{t.value}%</span>
-                  </div>
-                  <div className="h-[7px] w-full rounded-full bg-white/[0.05] overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{
-                        width: `${t.value}%`,
-                        background: `linear-gradient(90deg, ${ACCENT}77, ${ACCENT})`,
-                        boxShadow: `0 0 10px ${ACCENT}40`,
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Recent Activity */}
-        <div ref={animateSection} data-section-index={7} className="mt-4 md:mt-0">
-          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-            <SectionHeading className="mb-4">Recent activity</SectionHeading>
-            <div className="flex flex-col">
-              {recent.map((a, i) => (
-                <div
-                  key={a.label}
-                  className={cn("flex items-center justify-between py-3.5", i !== recent.length - 1 && "border-b border-white/[0.05]")}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="h-[5px] w-[5px] rounded-full bg-primary/50" />
-                    <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{a.label}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{a.score}</span>
-                    <span className="text-[11px] text-muted-foreground/25 w-16 text-right font-normal">{a.time}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Daily Habits */}
-      <div ref={animateSection} data-section-index={7} className="px-5 mt-4">
+      <div ref={animateSection} data-section-index={5} className="px-5 mt-4">
         <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
           <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
           <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
@@ -565,6 +502,69 @@ export default function DashboardPage() {
             <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground/35 font-normal">
               <Clock size={12} />
               {habitCount - todayCompleted > 0 ? `${habitCount - todayCompleted} left today` : "All done!"}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Topic Mastery + Recent Activity */}
+      <div className="md:grid md:grid-cols-2 gap-4 px-5 mt-6">
+        {/* Topic Mastery */}
+        <div ref={animateSection} data-section-index={6}>
+          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <div className="flex items-center justify-between mb-5">
+              <SectionHeading>Topic mastery</SectionHeading>
+              <button
+                type="button"
+                onClick={() => router.push("/dashboard/mastery")}
+                className="flex items-center gap-1.5 text-[13px] font-semibold text-primary transition-all hover:gap-2.5"
+              >
+                View all <ArrowUpRight size={13} />
+              </button>
+            </div>
+            <div className="flex flex-col gap-4">
+              {topics.map((t) => (
+                <div key={t.name}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{t.name}</span>
+                    <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{t.value}%</span>
+                  </div>
+                  <div className="h-[7px] w-full rounded-full bg-white/[0.05] overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{
+                        width: `${t.value}%`,
+                        background: `linear-gradient(90deg, ${ACCENT}77, ${ACCENT})`,
+                        boxShadow: `0 0 10px ${ACCENT}40`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div ref={animateSection} data-section-index={7} className="mt-4 md:mt-0">
+          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <SectionHeading className="mb-4">Recent activity</SectionHeading>
+            <div className="flex flex-col">
+              {recent.map((a, i) => (
+                <div
+                  key={a.label}
+                  className={cn("flex items-center justify-between py-3.5", i !== recent.length - 1 && "border-b border-white/[0.05]")}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="h-[5px] w-[5px] rounded-full bg-primary/50" />
+                    <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{a.label}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{a.score}</span>
+                    <span className="text-[11px] text-muted-foreground/25 w-16 text-right font-normal">{a.time}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
