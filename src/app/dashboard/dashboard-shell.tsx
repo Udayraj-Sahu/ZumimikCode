@@ -14,12 +14,10 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!isAuthenticated) {
       router.replace("/onboarding");
-    } else if (!isOnboarded) {
-      router.replace("/onboarding");
     }
-  }, [isAuthenticated, isOnboarded, router]);
+  }, [isAuthenticated, router]);
 
-  if (!isAuthenticated || !isOnboarded) return null;
+  if (!isAuthenticated) return null;
 
   return (
     <DojoShell>{children}</DojoShell>

@@ -1,18 +1,24 @@
 "use client";
 
-import { useState, useLayoutEffect, useCallback, useEffect } from "react";
+import { useState, useLayoutEffect, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { SplashScreen } from "@/components/ui/splash-screen";
 import { useAuthStore } from "@/stores/auth-store";
-import { useOnboardingStore } from "@/stores/onboarding-store";
+import OnboardingPage from "@/app/onboarding/page";
 
 export function AppEntry({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<"loading" | "native" | "web">("loading");
-  const [pendingNav, setPendingNav] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   useLayoutEffect(() => {
+    document.documentElement.classList.remove("loading");
+
+    if (isAuthenticated) {
+      router.prefetch("/dashboard");
+    }
+
     try {
       if ((window as any).Capacitor?.isNativePlatform?.()) {
         setState("native");
@@ -31,32 +37,26 @@ export function AppEntry({ children }: { children: React.ReactNode }) {
       });
 
     return () => { cancelled = true; };
-  }, []);
+  }, [isAuthenticated, router]);
 
   useEffect(() => {
-    if (pendingNav && (pathname.startsWith("/dashboard") || pathname.startsWith("/onboarding"))) {
-      setPendingNav(false);
+    if (state === "native" && isAuthenticated && pathname !== "/") {
       setState("web");
     }
-  }, [pendingNav, pathname]);
+  }, [state, isAuthenticated, pathname]);
 
-  useEffect(() => {
-    if (!pendingNav) return;
-    const timer = setTimeout(() => {
-      setPendingNav(false);
-      setState("web");
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [pendingNav]);
+  const handleSplashComplete = useCallback(() => {
+    if (useAuthStore.getState().isAuthenticated && pathname === "/") {
+      router.replace("/dashboard");
+      return;
+    }
+    setState("web");
+  }, [pathname, router]);
 
-  const handleComplete = useCallback(() => {
-    const isAuth = useAuthStore.getState().isAuthenticated;
-    const isOnboarded = useOnboardingStore.getState().isOnboarded;
-    setPendingNav(true);
-    router.replace(isAuth && isOnboarded ? "/dashboard" : "/onboarding");
-  }, [router]);
+  if (state === "loading") return <div className="fixed inset-0 bg-background" />;
+  if (state === "native") return <SplashScreen onComplete={handleSplashComplete} />;
 
-  if (state === "loading" || pendingNav) return <div className="fixed inset-0 bg-background" />;
-  if (state === "native") return <SplashScreen onComplete={handleComplete} />;
+  if (!isAuthenticated) return <OnboardingPage />;
+
   return <>{children}</>;
 }

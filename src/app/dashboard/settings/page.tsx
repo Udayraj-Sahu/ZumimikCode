@@ -1,398 +1,271 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import gsap from "gsap";
 import {
-  User,
-  Mail,
-  Bell,
+  Calendar,
+  Phone,
+  DollarSign,
+  Laptop,
+  HelpCircle,
+  MessageSquare,
+  LogOut,
   Clock,
-  Timer,
-  CreditCard,
-  ShieldCheck,
-  Download,
+  FileText,
+  Award,
+  Star,
+  Trophy,
+  User,
+  Bell,
   ChevronRight,
-  ExternalLink,
-  Settings,
-  SunMoon,
-  Volume2,
-  Smartphone,
-  Trash2,
+  Zap,
+  Pencil,
+  Shield,
+  MapPin,
+  CreditCard,
+  Check,
+  X,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { usePageMeta } from "@/hooks/use-page-meta";
-import { useUiStore } from "@/stores/ui-store";
+import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
-import { AlertModal } from "@/components/ui/alert-modal";
-import { useSettingsData, useUpdateSettings } from "@/hooks/queries/use-settings";
-import { useThemeStore } from "@/stores/theme-store";
-import { useSettingsStore } from "@/stores/settings-store";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
-function Toggle({
-  label,
-  checked,
-  onChange,
-}: {
-  label: string;
-  checked: boolean;
-  onChange: (v: boolean) => void;
-}) {
+/* ------------------------------------------------------------------ */
+/*  Reusable row item                                                  */
+/* ------------------------------------------------------------------ */
+type RowProps = {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  danger?: boolean;
+  onClick?: () => void;
+};
+
+function Row({ icon, title, subtitle, danger, onClick }: RowProps) {
   return (
     <button
       type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      onClick={() => onChange(!checked)}
-      className={cn(
-        "relative inline-flex h-11 w-14 shrink-0 items-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
-        checked ? "bg-primary" : "bg-muted",
-      )}
+      onClick={onClick}
+      className="w-full flex items-center gap-4 rounded-2xl bg-card px-5 py-4 text-left transition-colors hover:bg-accent/30 active:scale-[0.99]"
     >
-      <span
-        className={cn(
-          "inline-block size-5 transform rounded-full bg-background shadow transition-transform duration-200",
-          checked ? "translate-x-7" : "translate-x-1",
-        )}
-      />
+      <span className={danger ? "text-[#ff5c5c]" : "text-primary"}>
+        {icon}
+      </span>
+      <span className="flex-1 min-w-0">
+        <span className={danger ? "block text-[15px] font-semibold text-[#ff5c5c]" : "block text-[15px] font-semibold text-foreground"}>
+          {title}
+        </span>
+        <span className="block text-[13px] text-muted-foreground/60 mt-0.5">
+          {subtitle}
+        </span>
+      </span>
+      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/40" />
     </button>
   );
 }
 
-function GroupLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mb-2 px-1 text-fluid-sm font-bold uppercase tracking-widest text-primary">{children}</h2>
-  );
-}
-
-function Row({
-  icon: Icon,
-  label,
-  trailing,
-  onClick,
-}: {
-  icon: React.ElementType;
-  label: string;
-  trailing?: React.ReactNode;
-  onClick?: () => void;
-}) {
-  const Tag = onClick ? "button" : "div";
-  return (
-    <Tag
-      type={onClick ? "button" : undefined}
-      onClick={onClick}
-        className={cn(
-          "flex w-full items-center gap-3 px-4 py-4 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring active:bg-accent/60",
-          onClick && "hover:bg-accent/40",
-        )}
-    >
-      <Icon className="size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
-      <span className="flex-1 text-fluid-base font-medium text-foreground truncate">{label}</span>
-      {trailing ? <span className="shrink-0 flex items-center gap-2">{trailing}</span> : null}
-    </Tag>
-  );
-}
-
-function Card({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="divide-y divide-border overflow-hidden rounded-xl border border-border/40 bg-card">
+    <p className="px-1 pt-6 pb-3 text-[11px] font-bold tracking-[0.12em] text-muted-foreground/50">
       {children}
+    </p>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Profile header                                                      */
+/* ------------------------------------------------------------------ */
+function ProfileHeader({ name, initials, badge, rank, sessions }: { name: string; initials: string; badge: string; rank: string; sessions: string }) {
+  return (
+    <div className="flex flex-col items-center px-6 pt-8 pb-2 text-center">
+      <div className="relative">
+        <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-primary/30 bg-primary/10">
+          <span className="text-2xl font-bold tracking-wide text-primary">{initials}</span>
+        </div>
+        <button type="button" className="absolute bottom-0 right-0 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
+          <Pencil className="h-3.5 w-3.5" />
+        </button>
+      </div>
+      <h1 className="mt-4 text-xl font-bold text-foreground">{name}</h1>
+      <div className="mt-2 flex items-center gap-2 text-[13px] font-semibold">
+        <span className="flex items-center gap-1 text-primary">
+          <Shield className="h-3.5 w-3.5" /> {badge}
+        </span>
+        <span className="text-muted-foreground/60">Lv. 04</span>
+      </div>
+      <p className="mt-2 text-[13px] text-muted-foreground/60">Rank #{rank} &middot; {sessions} sessions</p>
+      <p className="mt-1 flex items-center gap-1 text-[13px] text-muted-foreground/60">
+        <MapPin className="h-3.5 w-3.5" /> Mumbai, India
+      </p>
+      <button type="button" className="mt-3 flex items-center gap-1.5 text-[13px] font-bold tracking-wide text-primary">
+        <Pencil className="h-3.5 w-3.5" /> EDIT PROFILE
+      </button>
     </div>
   );
 }
 
-function DeleteModal({
-  open,
-  onConfirm,
-  onCancel,
-}: {
-  open: boolean;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (open && overlayRef.current && dialogRef.current) {
-      gsap.fromTo(
-        overlayRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.2, ease: "power2.out" },
-      );
-      gsap.fromTo(
-        dialogRef.current,
-        { opacity: 0, scale: 0.95, y: 8 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.25, ease: "power2.out" },
-      );
-    }
-  }, [open]);
-
-  if (!open) return null;
-
+/* ------------------------------------------------------------------ */
+/*  Stat cards                                                          */
+/* ------------------------------------------------------------------ */
+function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return (
-    <div
-      ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-      onClick={onCancel}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="delete-title"
-    >
-      <div
-        ref={dialogRef}
-        className="mx-4 w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h3 id="delete-title" className="text-fluid-lg font-bold text-foreground">Delete Account</h3>
-        <p className="mt-2 text-fluid-sm text-muted-foreground">
-          This action cannot be undone. All your training data, streaks, and achievements will be permanently deleted.
-        </p>
-        <div className="mt-6 flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="rounded-lg bg-muted px-4 py-3 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-muted/70 active:bg-muted/80 focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            className="rounded-lg bg-destructive px-4 py-3 text-fluid-sm font-bold uppercase tracking-widest text-destructive-foreground outline-none transition-colors hover:opacity-90 active:opacity-80 focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Delete
-          </button>
-        </div>
+    <div className="flex-1 rounded-2xl bg-card px-4 py-4">
+      <div className="flex items-center justify-between text-primary">
+        {icon}
+        <span className="text-lg font-bold text-foreground">{value}</span>
+      </div>
+      <p className="mt-3 text-[11px] font-bold tracking-wide text-muted-foreground/50">{label.toUpperCase()}</p>
+      <div className="mt-2 h-[3px] w-full rounded-full bg-white/5" />
+    </div>
+  );
+}
+
+function PerformanceOverview({ sessions, streak, rank, xp }: { sessions: string; streak: string; rank: string; xp: string }) {
+  return (
+    <div className="px-4">
+      <SectionLabel>PERFORMANCE OVERVIEW</SectionLabel>
+      <div className="grid grid-cols-2 gap-3">
+        <StatCard icon={<span className="text-lg">🎯</span>} value={sessions} label="Sessions" />
+        <StatCard icon={<span className="text-lg">🔥</span>} value={streak} label="Streak" />
+        <StatCard icon={<Trophy className="h-5 w-5" />} value={`#${rank}`} label="Rank" />
+        <StatCard icon={<Zap className="h-5 w-5" />} value={xp} label="XP" />
       </div>
     </div>
   );
 }
 
-const REST_OPTIONS = ["30s", "60s", "90s", "120s"];
+/* ------------------------------------------------------------------ */
+/*  Subscription card                                                   */
+/* ------------------------------------------------------------------ */
+function SubscriptionCard() {
+  return (
+    <div className="px-4">
+      <SectionLabel>SUBSCRIPTION</SectionLabel>
+      <div className="rounded-2xl border border-border/40 bg-card p-5">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <CreditCard className="h-5 w-5 text-primary" />
+            <div>
+              <p className="text-[15px] font-bold text-foreground">Free Plan</p>
+              <p className="text-[13px] text-muted-foreground/60">$0 / month</p>
+            </div>
+          </div>
+          <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold text-foreground">CURRENT</span>
+        </div>
+        <ul className="mt-4 space-y-2 text-[13px]">
+          <li className="flex items-center gap-2 text-foreground">
+            <Check className="h-3.5 w-3.5 text-primary" /> 5 sprints per day
+          </li>
+          <li className="flex items-center gap-2 text-foreground">
+            <Check className="h-3.5 w-3.5 text-primary" /> Basic analytics
+          </li>
+          <li className="flex items-center gap-2 text-muted-foreground/40 line-through">
+            <X className="h-3.5 w-3.5" /> Advanced analytics
+          </li>
+          <li className="flex items-center gap-2 text-muted-foreground/40 line-through">
+            <X className="h-3.5 w-3.5" /> Unlimited sprints
+          </li>
+        </ul>
+        <button type="button" className="mt-5 w-full rounded-full bg-primary py-3.5 text-[14px] font-bold text-primary-foreground transition-transform active:scale-[0.98]">
+          Upgrade to Pro — $9.99/mo
+        </button>
+      </div>
+    </div>
+  );
+}
 
+/* ------------------------------------------------------------------ */
+/*  Main page                                                           */
+/* ------------------------------------------------------------------ */
 export default function SettingsPage() {
   usePageMeta("Settings — Exam Arena");
   const router = useRouter();
-  const openModal = useUiStore((s) => s.openModal);
-  const { data, isLoading } = useSettingsData();
-  const updateSettings = useUpdateSettings();
+  const logout = useAuthStore((s) => s.logout);
+  const firstName = useOnboardingStore((s) => s.firstName);
 
-  const { theme, toggleTheme } = useThemeStore();
-  const { soundEnabled, hapticEnabled, setSoundEnabled, setHapticEnabled } = useSettingsStore();
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const onboardingReset = useOnboardingStore((s) => s.reset);
+  const name = firstName || "Google User";
+  const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
-  const [restDuration, setRestDuration] = useState("60s");
-  const cycleRest = () => {
-    setRestDuration((prev) => {
-      const idx = (REST_OPTIONS.indexOf(prev) + 1) % REST_OPTIONS.length;
-      const next = REST_OPTIONS[idx];
-      updateSettings.mutate({ restDuration: next });
-      return next;
-    });
+  const handleLogout = () => {
+    logout();
+    router.replace("/");
   };
-
-  const handleDeleteConfirm = () => {
-    onboardingReset();
-    setDeleteOpen(false);
-  };
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (!el || el.dataset.animated) return;
-    el.dataset.animated = "true";
-    const i = parseInt(el.dataset.sectionIndex || "0");
-    gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: 0.08 + i * 0.08, ease: "power2.out" });
-  }, []);
-
-  if (isLoading || !data) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
-    );
-  }
-
-  const { preferences, subscription } = data;
 
   return (
-      <div className="mx-auto w-full max-w-2xl px-4 sm:px-6">
-        <div className="pt-6 pb-4 border-b border-border mb-6 text-center">
-          <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
-            EXAM ARENA
-          </p>
-          <div className="flex items-center justify-center gap-2 mt-0.5">
-            <Settings className="size-6 text-primary" aria-hidden="true" />
-            <h1 className="text-fluid-2xl font-bold tracking-tight">Settings</h1>
+    <div className="min-h-screen bg-background pb-32">
+      {/* Profile summary */}
+      <ProfileHeader
+        name={name}
+        initials={initials || "UA"}
+        badge="CHAMPION"
+        rank="47"
+        sessions="47"
+      />
+
+      <div className="mt-2 space-y-6">
+        <PerformanceOverview
+          sessions="47"
+          streak="12-Day Streak"
+          rank="47"
+          xp="2,340"
+        />
+        <SubscriptionCard />
+
+        {/* Prep / Membership */}
+        <div className="px-4">
+          <SectionLabel>PREP / MEMBERSHIP</SectionLabel>
+          <div className="rounded-2xl border border-dashed border-white/10 py-8 text-center">
+            <p className="text-[13px] text-muted-foreground/60">No active preps yet</p>
           </div>
-        </div>
-
-        <section
-          ref={animateSection} data-section-index={0}
-          className="mt-6 overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/70 p-6 text-primary-foreground shadow-[0_0_40px_-10px] shadow-primary/60"
-        >
-          <h3 className="text-fluid-2xl font-extrabold uppercase italic tracking-tight">Unlock Pro</h3>
-          <p className="mt-1 text-fluid-sm font-semibold uppercase tracking-widest opacity-80">
-            Accelerate Your Evolution
-          </p>
-          <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-            <span className="text-fluid-2xl font-extrabold italic">{subscription.price}</span>
-            <button
-              type="button"
-              onClick={() => router.push("/dashboard/configure-sprint")}
-              className="rounded-lg bg-background/90 px-5 py-3 text-fluid-sm font-bold uppercase tracking-widest text-foreground outline-none transition-transform hover:scale-[1.03] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Upgrade Now
-            </button>
-          </div>
-        </section>
-
-        <section
-          ref={animateSection} data-section-index={1}
-          className="mt-8"
-        >
-          <GroupLabel>Account</GroupLabel>
-          <Card>
-            <Row
-              icon={User}
-              label="Profile Information"
-              onClick={() => router.push("/dashboard/profile")}
-              trailing={<ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />}
-            />
-            <Row
-              icon={Mail}
-              label="Email Address"
-              onClick={() => openModal({ type: "alert", title: "Email", message: "Edit email address" })}
-              trailing={
-                <span className="flex items-center gap-2 min-w-0">
-                  <span className="text-fluid-base text-muted-foreground truncate max-w-[120px] sm:max-w-[200px] lg:max-w-none">{preferences.email}</span>
-                  <ChevronRight className="size-5 text-muted-foreground shrink-0" aria-hidden="true" />
-                </span>
-              }
-            />
-          </Card>
-        </section>
-
-        <section
-          ref={animateSection} data-section-index={2}
-          className="mt-8"
-        >
-          <GroupLabel>Notifications</GroupLabel>
-          <Card>
-            <Row
-              icon={Bell}
-              label="Push Notifications"
-              trailing={
-                <Toggle
-                  label="Push Notifications"
-                  checked={preferences.pushNotifications}
-                  onChange={(v) => updateSettings.mutate({ pushNotifications: v })}
-                />
-              }
-            />
-            <Row
-              icon={Clock}
-              label="Session Reminders"
-              trailing={
-                <Toggle
-                  label="Session Reminders"
-                  checked={preferences.sessionReminders}
-                  onChange={(v) => updateSettings.mutate({ sessionReminders: v })}
-                />
-              }
-            />
-          </Card>
-        </section>
-
-        <section
-          ref={animateSection} data-section-index={3}
-          className="mt-8"
-        >
-          <GroupLabel>Appearance &amp; Session</GroupLabel>
-          <Card>
-            <Row
-              icon={SunMoon}
-              label="Dark Mode"
-              trailing={
-                <Toggle label="Dark Mode" checked={theme === "dark"} onChange={() => toggleTheme()} />
-              }
-            />
-            <Row
-              icon={Volume2}
-              label="Sound Effects"
-              trailing={
-                <Toggle label="Sound Effects" checked={soundEnabled} onChange={setSoundEnabled} />
-              }
-            />
-            <Row
-              icon={Smartphone}
-              label="Haptic Feedback"
-              trailing={
-                <Toggle label="Haptic Feedback" checked={hapticEnabled} onChange={setHapticEnabled} />
-              }
-            />
-            <Row
-              icon={Timer}
-              label="Rest Duration"
-              onClick={cycleRest}
-              trailing={
-                <span className="flex items-center gap-2">
-                  <span className="text-fluid-base text-muted-foreground">{restDuration}</span>
-                  <ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />
-                </span>
-              }
-            />
-          </Card>
-        </section>
-
-        <section
-          ref={animateSection} data-section-index={4}
-          className="mt-8"
-        >
-          <GroupLabel>Data &amp; Privacy</GroupLabel>
-          <Card>
-            <Row
-              icon={ShieldCheck}
-              label="Privacy Center"
-              onClick={() => openModal({ type: "alert", title: "Privacy Center", message: "Open Privacy Center" })}
-              trailing={<ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />}
-            />
-            <Row
-              icon={Download}
-              label="Export Training Data"
-              onClick={() => openModal({ type: "alert", title: "Export", message: "Exporting training data..." })}
-              trailing={<ChevronRight className="size-5 text-muted-foreground" aria-hidden="true" />}
-            />
-            <Row
-              icon={CreditCard}
-              label="Manage Plan"
-              onClick={() => openModal({ type: "alert", title: "Plan", message: "Manage subscription plan" })}
-              trailing={<ExternalLink className="size-5 text-muted-foreground" aria-hidden="true" />}
-            />
-          </Card>
-        </section>
-
-        <div className="mt-12 flex flex-col items-center gap-4">
           <button
             type="button"
-            onClick={() => setDeleteOpen(true)}
-            className="flex items-center gap-2 text-fluid-base font-bold uppercase tracking-widest text-destructive outline-none transition-opacity hover:opacity-80 active:opacity-60 focus-visible:ring-2 focus-visible:ring-ring"
+            onClick={() => router.push("/dashboard/learn")}
+            className="mt-3 w-full rounded-2xl border border-dashed border-white/15 py-4 text-[14px] font-bold text-foreground"
           >
-            <Trash2 className="size-5" aria-hidden="true" />
-            Delete Account
+            + Add Prep
           </button>
-          <p className="text-center text-fluid-sm uppercase tracking-widest text-muted-foreground/60">
-            Exam Arena Version 1.0.0
-          </p>
         </div>
 
-        <DeleteModal
-          open={deleteOpen}
-          onConfirm={handleDeleteConfirm}
-          onCancel={() => setDeleteOpen(false)}
-        />
-        <AlertModal />
+        {/* Activity & Records */}
+        <div className="px-4">
+          <SectionLabel>ACTIVITY & RECORDS</SectionLabel>
+          <div className="space-y-3">
+            <Row icon={<Clock className="h-5 w-5" />} title="Past Sessions" subtitle="View your sprint history" onClick={() => router.push("/dashboard/history")} />
+            <Row icon={<FileText className="h-5 w-5" />} title="Reports" subtitle="Performance analytics" onClick={() => router.push("/dashboard/reports")} />
+            <Row icon={<Award className="h-5 w-5" />} title="Achievements" subtitle="3/6 unlocked" onClick={() => router.push("/dashboard/achievements")} />
+            <Row icon={<Star className="h-5 w-5" />} title="Badges" subtitle="Collect them all" onClick={() => router.push("/dashboard/achievements")} />
+            <Row icon={<Trophy className="h-5 w-5" />} title="Leaderboard" subtitle="See your ranking" onClick={() => router.push("/dashboard/leaderboard")} />
+          </div>
+        </div>
+
+        {/* Account Settings */}
+        <div className="px-4">
+          <SectionLabel>ACCOUNT SETTINGS</SectionLabel>
+          <div className="space-y-3">
+            <Row icon={<User className="h-5 w-5" />} title="Personal Details" subtitle="Name, email, phone" onClick={() => router.push("/dashboard/profile/edit")} />
+            <Row icon={<Bell className="h-5 w-5" />} title="Notification Preferences" subtitle="Push & reminders" onClick={() => router.push("/dashboard/notifications")} />
+            <Row icon={<Calendar className="h-5 w-5" />} title="Class Calendar" subtitle="Schedule & planning" onClick={() => router.push("/dashboard/planner")} />
+            <Row icon={<Phone className="h-5 w-5" />} title="Call Reminder" subtitle="Coming soon" />
+            <Row icon={<DollarSign className="h-5 w-5" />} title="Payments" subtitle="Coming soon" />
+            <Row icon={<Laptop className="h-5 w-5" />} title="Logged-in Devices" subtitle="Coming soon" />
+          </div>
+        </div>
+
+        {/* Support */}
+        <div className="px-4">
+          <SectionLabel>SUPPORT</SectionLabel>
+          <div className="space-y-3">
+            <Row icon={<HelpCircle className="h-5 w-5" />} title="Help Center" subtitle="Guides & tutorials" onClick={() => router.push("/dashboard/help")} />
+            <Row icon={<MessageSquare className="h-5 w-5" />} title="FAQs" subtitle="Common questions" />
+            <Row icon={<Phone className="h-5 w-5" />} title="Contact Support" subtitle="We're here to help" />
+          </div>
+        </div>
+
+        {/* Logout */}
+        <div className="px-4">
+          <Row icon={<LogOut className="h-5 w-5" />} title="Logout" subtitle="Sign out of your account" danger onClick={handleLogout} />
+        </div>
       </div>
+    </div>
   );
 }

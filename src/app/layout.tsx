@@ -68,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`loading ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <body>
@@ -77,7 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `(function(){try{var t=localStorage.getItem("exam-arena-theme");if(t){var o=JSON.parse(t);if(o&&o.state&&o.state.theme==="light")document.documentElement.classList.add("light")}}catch(e){}})()`,
           }}
         />
-        <style>{`:root{--background:#050505;--foreground:#fff}`}</style>
+        <style>{`html.loading #main-content{opacity:0}`}</style>
         <div className="bg-background min-h-screen pb-0 overflow-x-clip" id="main-content">
           <a
             href="#main-content"

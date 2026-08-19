@@ -19,6 +19,8 @@ import {
   Users,
   FileText,
   House,
+  GraduationCap,
+  Gamepad2,
 } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [
@@ -43,10 +45,9 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const MOBILE_NAV: NavItem[] = [
   { label: "Home", href: "/dashboard", icon: House },
-  { label: "Sprints", href: "/dashboard/configure-sprint", icon: Zap },
-  { label: "Stats", href: "/dashboard/analytics", icon: LineChart },
-  { label: "Profile", href: "/dashboard/profile", icon: User },
-  { label: "More", href: "/dashboard/more", icon: LayoutGrid },
+  { label: "Learn", href: "/dashboard/learn", icon: GraduationCap },
+  { label: "Play", href: "/dashboard/play", icon: Gamepad2 },
+  { label: "Setting", href: "/dashboard/settings", icon: Settings },
 ];
 
 const RADAR_AXES: RadarAxis[] = [

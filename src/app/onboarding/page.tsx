@@ -1,158 +1,190 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { Flame, Globe, Smartphone } from "lucide-react";
-import { useOnboardingStore } from "@/stores/onboarding-store";
+import { Flame, Globe, Smartphone, Zap, Target, Trophy, Swords } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
-import { StepWelcome } from "./step-welcome";
-import { StepGoal } from "./step-goal";
-import { StepLevel } from "./step-level";
-import { StepDone } from "./step-done";
-import { AuthPanel } from "@/components/onboarding/auth-panel";
+
+const FEATURES = [
+  { icon: Zap, label: "Speed Drills", color: "#C8FF5A" },
+  { icon: Target, label: "Smart Sprints", color: "#22D3EE" },
+  { icon: Trophy, label: "Live Rankings", color: "#FBBF24" },
+];
 
 export default function OnboardingPage() {
-  const currentStep = useOnboardingStore((s) => s.currentStep);
-  const nextStep = useOnboardingStore((s) => s.nextStep);
-  const setAuthData = useOnboardingStore((s) => s.setAuthData);
   const authLogin = useAuthStore((s) => s.login);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
   const router = useRouter();
-  const contentRef = useRef<HTMLDivElement>(null);
+
+  const heroRef = useRef<HTMLDivElement>(null);
+  const brandRef = useRef<HTMLDivElement>(null);
+  const taglineRef = useRef<HTMLDivElement>(null);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isAuthenticated && isOnboarded) {
-      router.replace("/dashboard");
-    }
-  }, [isAuthenticated, isOnboarded, router]);
+    if (isAuthenticated) return;
 
-  const [currentPanel, setCurrentPanel] = useState(0);
-  const [phoneMode, setPhoneMode] = useState(false);
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-  useEffect(() => {
-    if (contentRef.current) {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(contentRef.current, { opacity: 0, y: 30, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.25 })
-        .fromTo(
-          contentRef.current.querySelectorAll<HTMLElement>("[data-step-el]"),
-          { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.2, stagger: 0.05 },
-          "-=0.1",
-        );
-    }
-  }, [currentStep]);
+    tl.fromTo(
+      brandRef.current,
+      { opacity: 0, y: -20, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.6 },
+    )
+      .fromTo(
+        taglineRef.current,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.5 },
+        "-=0.3",
+      )
+      .fromTo(
+        featuresRef.current?.children ? Array.from(featuresRef.current.children) : [],
+        { opacity: 0, y: 20, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.1 },
+        "-=0.2",
+      )
+      .fromTo(
+        buttonsRef.current?.children ? Array.from(buttonsRef.current.children) : [],
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.08 },
+        "-=0.1",
+      )
+      .fromTo(
+        footerRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4 },
+        "-=0.1",
+      );
 
-  const handleAuthSuccess = (data: { name?: string; phone?: string; authMethod: "google" | "phone" }) => {
-    setAuthData(data);
-    authLogin(data.phone ?? `${data.name}@google.com`, "mock-password");
-    setPhoneMode(false);
-    nextStep();
+    return () => { tl.kill(); };
+  }, [isAuthenticated]);
+
+  if (isAuthenticated) return <div className="fixed inset-0 bg-background" />;
+
+  const handleLogin = (method: "google" | "phone") => {
+    const name = method === "google" ? "Google User" : "Phone User";
+
+    gsap.to(buttonsRef.current, {
+      opacity: 0,
+      y: 10,
+      duration: 0.2,
+      ease: "power2.in",
+      onComplete: async () => {
+        await authLogin(`${name}@exam.com`, "mock-password");
+        router.replace("/dashboard");
+      },
+    });
   };
-
-  if (currentStep === 0 && phoneMode) {
-    return (
-      <main className="flex h-dvh flex-col bg-background overflow-hidden">
-        <div className="flex flex-col items-center pt-3 px-5">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="grid size-6 place-items-center rounded bg-primary text-primary-foreground">
-              <Flame size={12} />
-            </span>
-            <span className="text-[10px] font-bold tracking-wider text-foreground">WELCOME TO EXAM ARENA</span>
-          </div>
-        </div>
-        <div className="flex-1 flex flex-col gap-4 px-5 justify-center min-h-0">
-          <button type="button" onClick={() => setPhoneMode(false)}
-            className="self-start text-fluid-xs text-muted-foreground/50 underline underline-offset-2 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-1"
-          >
-            &larr; Back
-          </button>
-          <AuthPanel onAuthSuccess={handleAuthSuccess} />
-        </div>
-      </main>
-    );
-  }
-
-  const stepContent = () => {
-    switch (currentStep) {
-      case 0: return <StepWelcome onPanelChange={setCurrentPanel} />;
-      case 1: return <StepGoal onSelect={() => {}} />;
-      case 2: return <StepLevel onSelect={() => {}} />;
-      case 3: return <StepDone onSelect={() => {}} />;
-      default: return <StepWelcome onPanelChange={setCurrentPanel} />;
-    }
-  };
-
-  if (isAuthenticated && isOnboarded) return <div className="fixed inset-0 bg-background" />;
 
   return (
-    <main className="flex h-dvh flex-col bg-background justify-between overflow-hidden">
-      <div className="flex flex-col items-center pt-3 px-5 shrink-0">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="grid size-6 place-items-center rounded bg-primary text-primary-foreground">
-            <Flame size={12} />
-          </span>
-          <span className="text-[10px] font-bold tracking-wider text-foreground">WELCOME TO EXAM ARENA</span>
+    <main className="relative flex h-dvh flex-col items-center justify-between bg-background overflow-hidden">
+      {/* Background ambient glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute top-[-20%] left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full opacity-[0.07]"
+          style={{ background: "radial-gradient(circle, #C8FF5A 0%, transparent 70%)" }}
+        />
+        <div
+          className="absolute bottom-0 left-1/4 h-[300px] w-[300px] rounded-full opacity-[0.04]"
+          style={{ background: "radial-gradient(circle, #22D3EE 0%, transparent 70%)" }}
+        />
+        <div
+          className="absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full opacity-[0.04]"
+          style={{ background: "radial-gradient(circle, #A855F7 0%, transparent 70%)" }}
+        />
+      </div>
+
+      {/* Hero */}
+      <div ref={heroRef} className="relative flex flex-1 flex-col items-center justify-center px-6 w-full">
+        {/* Brand */}
+        <div ref={brandRef} className="flex flex-col items-center gap-4 mb-8">
+          <div className="relative">
+            <div className="grid size-16 place-items-center rounded-2xl bg-primary/10 ring-1 ring-primary/20">
+              <Swords size={32} className="text-primary" />
+            </div>
+            <div className="absolute -inset-2 rounded-3xl bg-primary/5 blur-xl" />
+          </div>
+          <div className="text-center">
+            <h1 className="text-3xl font-black tracking-[0.15em] text-foreground">
+              EXAM ARENA
+            </h1>
+            <div className="flex items-center justify-center gap-2 mt-1.5">
+              <div className="h-px w-6 bg-primary/30" />
+              <span className="text-[10px] font-bold tracking-[0.3em] text-primary/60">
+                ARENA OF CHAMPIONS
+              </span>
+              <div className="h-px w-6 bg-primary/30" />
+            </div>
+          </div>
         </div>
 
-        {currentStep === 0 && (
-          <div className="flex gap-1.5 w-full px-1 mt-2">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-1 flex-1 rounded-full bg-border overflow-hidden">
-                <div
-                  className={`h-full rounded-full bg-primary transition-all duration-200 ${
-                    i <= currentPanel ? "" : "w-0"
-                  }`}
-                  style={{ width: i <= currentPanel ? "100%" : "0%" }}
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div ref={contentRef} className="flex-1 flex items-center justify-center px-5 overflow-hidden min-h-0">
-        {stepContent()}
-      </div>
-
-      {currentStep === 0 && !phoneMode && (
-        <div className="flex flex-col gap-1.5 px-5 pb-3 shrink-0">
-          <button type="button" onClick={handleAuthSuccess.bind(null, { name: "Google User", authMethod: "google" })}
-            className="group relative flex w-full items-center justify-center gap-2 rounded-xl border border-border/60 bg-card px-4 py-2.5 text-fluid-sm font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
-            data-step-el
-          >
-            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-            <Globe size={15} className="text-muted-foreground" />
-            Continue with Google
-          </button>
-          <div className="flex items-center gap-2 text-[10px] text-muted-foreground/30 px-2">
-            <span className="flex-1 h-px bg-border" />
-            <span>— OR —</span>
-            <span className="flex-1 h-px bg-border" />
-          </div>
-          <button type="button" onClick={() => setPhoneMode(true)}
-            className="group relative flex w-full items-center justify-center gap-2 rounded-xl border border-border/60 bg-card px-4 py-2.5 text-fluid-sm font-semibold text-foreground outline-none transition-all hover:border-primary/40 hover:bg-accent/40 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
-            data-step-el
-          >
-            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
-            <Smartphone size={15} className="text-muted-foreground" />
-            Continue with Phone Number
-          </button>
-          <button type="button" onClick={nextStep}
-            className="w-full text-center text-[10px] text-muted-foreground/40 underline underline-offset-2 outline-none hover:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring rounded py-0.5 mt-0.5"
-            data-step-el
-          >
-            Skip for now
-          </button>
-          <p className="text-center text-[9px] text-muted-foreground/25 leading-relaxed px-1">
-            By continuing, you agree to our{" "}
-            <button type="button" className="underline underline-offset-1 cursor-pointer hover:text-muted-foreground/50 outline-none focus-visible:ring-2 focus-visible:ring-ring rounded">Terms of Service</button>{" "}
-            and{" "}
-            <button type="button" className="underline underline-offset-1 cursor-pointer hover:text-muted-foreground/50 outline-none focus-visible:ring-2 focus-visible:ring-ring rounded">Privacy Policy</button>
+        {/* Tagline */}
+        <div ref={taglineRef} className="text-center mb-10 max-w-xs">
+          <p className="text-sm leading-relaxed text-muted-foreground/70">
+            Not a coaching app.
+            <br />
+            <span className="text-foreground/90 font-semibold">
+              A competitive battlefield
+            </span>{" "}
+            where India&apos;s sharpest minds fight, rank, and rise.
           </p>
         </div>
-      )}
+
+        {/* Feature pills */}
+        <div ref={featuresRef} className="flex items-center gap-3 mb-12">
+          {FEATURES.map((f) => {
+            const Icon = f.icon;
+            return (
+              <div
+                key={f.label}
+                className="flex items-center gap-2 rounded-full border border-border/40 bg-card/60 backdrop-blur-sm px-3.5 py-2"
+              >
+                <Icon size={13} style={{ color: f.color }} />
+                <span className="text-[11px] font-semibold text-muted-foreground/70">
+                  {f.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Auth buttons */}
+        <div ref={buttonsRef} className="flex flex-col gap-3 w-full max-w-xs">
+          <button
+            type="button"
+            onClick={() => handleLogin("google")}
+            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <span className="grid size-8 place-items-center rounded-lg bg-white/10 group-hover:bg-white/15 transition-colors">
+              <Globe size={16} className="text-foreground/80" />
+            </span>
+            Continue with Google
+          </button>
+          <button
+            type="button"
+            onClick={() => handleLogin("phone")}
+            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <span className="grid size-8 place-items-center rounded-lg bg-white/10 group-hover:bg-white/15 transition-colors">
+              <Smartphone size={16} className="text-foreground/80" />
+            </span>
+            Continue with Phone
+          </button>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div ref={footerRef} className="relative pb-8 pt-4 text-center px-6">
+        <p className="text-[11px] text-muted-foreground/40 leading-relaxed">
+          By continuing, you agree to our{" "}
+          <span className="text-muted-foreground/60 font-medium">Terms of Service</span>
+          {" & "}
+          <span className="text-muted-foreground/60 font-medium">Privacy Policy</span>
+        </p>
+      </div>
     </main>
   );
 }

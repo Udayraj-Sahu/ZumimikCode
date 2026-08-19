@@ -227,7 +227,9 @@ export function RankSignal() {
           </motion.div>
       </motion.div>
 
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      {showAuth && (
+        <AuthModal onClose={() => setShowAuth(false)} />
+      )}
     </div>
   );
 }
