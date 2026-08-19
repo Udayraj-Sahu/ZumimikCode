@@ -32,30 +32,30 @@ export default function OnboardingPage() {
     tl.fromTo(
       brandRef.current,
       { opacity: 0, y: -20, scale: 0.9 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.6 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.3 },
     )
       .fromTo(
         taglineRef.current,
         { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.5 },
-        "-=0.3",
+        { opacity: 1, y: 0, duration: 0.25 },
+        "-=0.2",
       )
       .fromTo(
         featuresRef.current?.children ? Array.from(featuresRef.current.children) : [],
         { opacity: 0, y: 20, scale: 0.9 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.4, stagger: 0.1 },
-        "-=0.2",
+        { opacity: 1, y: 0, scale: 1, duration: 0.2, stagger: 0.05 },
+        "-=0.15",
       )
       .fromTo(
         buttonsRef.current?.children ? Array.from(buttonsRef.current.children) : [],
         { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.35, stagger: 0.08 },
+        { opacity: 1, y: 0, duration: 0.2, stagger: 0.04 },
         "-=0.1",
       )
       .fromTo(
         footerRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.4 },
+        { opacity: 1, duration: 0.2 },
         "-=0.1",
       );
 
