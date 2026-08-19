@@ -14,8 +14,6 @@ import {
   BookOpen,
   Calendar,
   Swords,
-  Library,
-  CreditCard,
   Users,
   FileText,
   GraduationCap,
@@ -40,8 +38,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Reports", href: "/dashboard/reports", icon: FileText, section: "Support" },
   { label: "Notifications", href: "/dashboard/notifications", icon: Bell, section: "Support" },
   { label: "Help & About", href: "/dashboard/help", icon: HelpCircle, section: "Support" },
-  { label: "Question Bank", href: "/dashboard/questions", icon: Library, section: "Resources" },
-  { label: "Flashcards", href: "/dashboard/flashcards", icon: CreditCard, section: "Resources" },
 ];
 
 export const MOBILE_NAV: NavItem[] = [

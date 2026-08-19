@@ -30,8 +30,6 @@ const FLYOUT_HREFS = [
   "/dashboard/reports",
   "/dashboard/notifications",
   "/dashboard/help",
-  "/dashboard/questions",
-  "/dashboard/flashcards",
   "/dashboard/profile",
 ];
 
