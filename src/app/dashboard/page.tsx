@@ -400,7 +400,7 @@ export default function DashboardPage() {
       <div ref={animateSection} data-section-index={5} className="px-5 mt-6">
         <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
           <SectionLabel>QUICK ACCESS</SectionLabel>
-          <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-3 mt-4">
+          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 mt-4">
             {QUICK_ACCESS_ITEMS.map((q) => {
               const label = q.label === "Exam Prep" && examLabel !== "Exam" ? `${examLabel} Prep` : q.label;
               return (
@@ -508,7 +508,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Topic Mastery + Recent Activity */}
-      <div className="md:grid md:grid-cols-2 gap-4 px-5 mt-6">
+      <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 px-5 mt-6">
         {/* Topic Mastery */}
         <div ref={animateSection} data-section-index={6}>
           <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
@@ -571,7 +571,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Cognitive Radar + Upcoming */}
-      <div className="md:grid md:grid-cols-2 gap-4 px-5 mt-4">
+      <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 px-5 mt-4">
         {/* Cognitive Radar */}
         <div ref={animateSection} data-section-index={8}>
           <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
