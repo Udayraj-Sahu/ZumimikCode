@@ -66,12 +66,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`loading ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
-      suppressHydrationWarning
-    >
-      <body>
+      <html
+        lang="en"
+        className={`loading overflow-x-hidden ${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+        suppressHydrationWarning
+      >
+      <body className="overflow-x-hidden">
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem("exam-arena-theme");if(t){var o=JSON.parse(t);if(o&&o.state&&o.state.theme==="light")document.documentElement.classList.add("light")}}catch(e){}})()`,
