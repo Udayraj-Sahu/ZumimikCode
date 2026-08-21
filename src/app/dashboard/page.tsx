@@ -231,10 +231,10 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-6 max-w-5xl mx-auto">
+    <div className="min-h-screen pb-6 max-w-5xl mx-auto overflow-x-hidden">
 
       {/* Ambient glow behind header */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
 
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative px-6 pt-8 pb-2 text-center">
