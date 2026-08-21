@@ -153,11 +153,9 @@ export default function DashboardPage() {
   usePageMeta("Dashboard — Exam Arena");
   const router = useRouter();
   const firstName = useOnboardingStore((s) => s.firstName);
-  const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data } = useDashboardData(targetExam);
 
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [habitModalOpen, setHabitModalOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -177,15 +175,6 @@ export default function DashboardPage() {
     const width = el.clientWidth;
     el.scrollTo({ left: width * index, behavior: "smooth" });
   }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (sessionStorage.getItem("onboarding-modal-shown")) return;
-    if (!isOnboarded || !firstName) {
-      sessionStorage.setItem("onboarding-modal-shown", "1");
-      setShowOnboarding(true);
-    }
-  }, [isOnboarded, firstName]);
 
   const topics = data?.topics ?? FALLBACK_TOPICS;
   const radarAxes = data?.radarAxes ?? FALLBACK_RADAR;
@@ -278,23 +267,11 @@ export default function DashboardPage() {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
           onScroll={handleCarouselScroll}
         >
-          {/* Slide 1: Complete Account Details */}
+          {/* Slide 1: Complete Account Details — inline onboarding */}
           <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
-            <button
-              type="button"
-              onClick={() => setShowOnboarding(true)}
-              className="w-full h-full rounded-3xl border border-dashed border-primary/20 backdrop-blur-xl px-5 py-6 text-left transition-all hover:border-primary/40 hover:bg-white/[0.03] active:scale-[0.98]"
-            >
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <Sparkles size={20} className="text-primary" />
-                </div>
-                <div>
-                  <p className="text-[15px] font-bold text-primary tracking-[-0.01em]">Complete your account details</p>
-                  <p className="text-[12px] text-muted-foreground/40 mt-1 font-normal">Set your goals &amp; targets for a personalized experience</p>
-                </div>
-              </div>
-            </button>
+            <div className="rounded-3xl border border-border/40 bg-card overflow-hidden h-full">
+              <OnboardingModal onClose={() => {}} inline />
+            </div>
           </div>
 
           {/* Slide 2: Your Stats */}
@@ -628,10 +605,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-
-      {showOnboarding && (
-        <OnboardingModal onClose={() => setShowOnboarding(false)} />
-      )}
 
       {habitModalOpen && (
         <HabitTrackerModal onClose={() => setHabitModalOpen(false)} />

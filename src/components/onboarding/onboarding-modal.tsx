@@ -76,9 +76,9 @@ const TOTAL_STEPS = 5;
 const STEP_ICONS = [User, Users, Target, Brain, ClipboardList];
 const STEP_COLORS = ["#C8FF4D", "#22D3EE", "#34D399", "#A855F7", "#FF5C5C"];
 
-type Props = { onClose: () => void };
+type Props = { onClose: () => void; inline?: boolean };
 
-export function OnboardingModal({ onClose }: Props) {
+export function OnboardingModal({ onClose, inline }: Props) {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [completed, setCompleted] = useState(false);
@@ -96,11 +96,12 @@ export function OnboardingModal({ onClose }: Props) {
   const [localDob, setLocalDob] = useState(store.dob);
 
   useEffect(() => {
+    if (inline) return;
     if (overlayRef.current && panelRef.current) {
       gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
       gsap.fromTo(panelRef.current, { opacity: 0, y: 32, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" });
     }
-  }, []);
+  }, [inline]);
 
   const animateStepTransition = useCallback((dir: 1 | -1) => {
     if (!contentRef.current) return;
@@ -112,6 +113,7 @@ export function OnboardingModal({ onClose }: Props) {
   }, []);
 
   const handleClose = () => {
+    if (inline) { onClose(); return; }
     if (overlayRef.current && panelRef.current) {
       gsap.to(panelRef.current, { opacity: 0, y: 20, scale: 0.97, duration: 0.2, ease: "power2.in" });
       gsap.to(overlayRef.current, { opacity: 0, duration: 0.2, onComplete: onClose });
@@ -169,6 +171,151 @@ export function OnboardingModal({ onClose }: Props) {
     step === 3 ||
     step === 4;
 
+  const panel = (
+    <>
+      {/* Header with dot indicators */}
+      <div className="sticky top-0 z-10 bg-card/95 backdrop-blur-sm px-5 pt-4 pb-3 border-b border-border/40">
+        <div className="flex items-center justify-between mb-4">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="grid size-8 place-items-center rounded-lg text-muted-foreground/50 hover:text-foreground transition-colors"
+          >
+            <X size={16} />
+          </button>
+          <div className="flex items-center gap-2">
+            {Array.from({ length: TOTAL_STEPS }).map((_, i) => {
+              const StepIcon = STEP_ICONS[i];
+              const isActive = i === step;
+              const isDone = i < step;
+              return (
+                <div
+                  key={i}
+                  className={cn(
+                    "flex items-center justify-center rounded-full transition-all duration-300",
+                    isActive
+                      ? "size-8 bg-primary/15 ring-2 ring-primary/40"
+                      : isDone
+                        ? "size-6 bg-primary/10"
+                        : "size-6 bg-muted",
+                  )}
+                >
+                  {isDone ? (
+                    <Check size={10} className="text-primary" />
+                  ) : (
+                    <StepIcon
+                      size={isActive ? 14 : 10}
+                      className={cn(
+                        "transition-colors duration-300",
+                        isActive ? "text-primary" : "text-muted-foreground/40",
+                      )}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* Progress bar */}
+        <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
+          <div
+            className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+            style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-5 min-h-[320px] flex flex-col overflow-hidden">
+        {completed ? (
+          <div className="flex-1 flex flex-col items-center justify-center gap-4">
+            <div className="grid size-20 place-items-center rounded-full bg-primary/15">
+              <PartyPopper size={36} className="text-primary" />
+            </div>
+            <div className="text-center">
+              <p className="text-fluid-lg font-black text-foreground">You&apos;re all set!</p>
+              <p className="text-fluid-xs text-muted-foreground/60 mt-1">Let&apos;s start learning</p>
+            </div>
+          </div>
+        ) : (
+          <div ref={contentRef} className="flex-1 flex flex-col">
+            {step === 0 && (
+              <StepName
+                value={localFirstName}
+                onChange={setLocalFirstName}
+                onNext={goNext}
+              />
+            )}
+            {step === 1 && (
+              <StepSingleSelect
+                title="What describes you?"
+                subtitle="Pick the one that fits best"
+                options={PERSONA_OPTIONS}
+                value={localPersona}
+                onSelect={setLocalPersona}
+              />
+            )}
+            {step === 2 && (
+              <StepSingleSelect
+                title="What brings you here?"
+                subtitle="We'll tailor content to your goal"
+                options={GOAL_OPTIONS}
+                value={localGoal}
+                onSelect={setLocalGoal}
+              />
+            )}
+            {step === 3 && (
+              <StepTriggers
+                value={localTriggers}
+                onChange={setLocalTriggers}
+              />
+            )}
+            {step === 4 && (
+              <StepDetails
+                sex={localSex}
+                onSexChange={setLocalSex}
+                dob={localDob}
+                onDobChange={setLocalDob}
+              />
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      {!completed && (
+        <div className="sticky bottom-0 bg-card/95 backdrop-blur-sm px-5 pb-5 pt-3 border-t border-border/40 flex gap-3">
+          {step > 0 && (
+            <button
+              type="button"
+              onClick={goPrev}
+              className="flex items-center gap-1.5 rounded-2xl border border-border/60 bg-background px-4 py-3.5 text-fluid-xs font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <ChevronLeft size={14} />
+              Back
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
+            disabled={!canNext}
+            className={cn(
+              "flex-1 flex items-center justify-center gap-2 rounded-2xl py-3.5 text-fluid-sm font-bold outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring",
+              canNext
+                ? "bg-primary text-primary-foreground hover:opacity-90"
+                : "bg-muted text-muted-foreground/40 cursor-not-allowed",
+            )}
+          >
+            {step === TOTAL_STEPS - 1 ? "Finish" : "Continue"}
+            {step < TOTAL_STEPS - 1 && <ChevronRight size={14} />}
+          </button>
+        </div>
+      )}
+    </>
+  );
+
+  if (inline) return panel;
+
   return createPortal(
     <div
       ref={overlayRef}
@@ -180,144 +327,7 @@ export function OnboardingModal({ onClose }: Props) {
         className="w-full max-w-md max-h-[90vh] overflow-y-auto bg-card rounded-t-3xl sm:rounded-3xl border border-border/60 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header with dot indicators */}
-        <div className="sticky top-0 z-10 bg-card/95 backdrop-blur-sm px-5 pt-4 pb-3 border-b border-border/40">
-          <div className="flex items-center justify-between mb-4">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="grid size-8 place-items-center rounded-lg text-muted-foreground/50 hover:text-foreground transition-colors"
-            >
-              <X size={16} />
-            </button>
-            <div className="flex items-center gap-2">
-              {Array.from({ length: TOTAL_STEPS }).map((_, i) => {
-                const StepIcon = STEP_ICONS[i];
-                const isActive = i === step;
-                const isDone = i < step;
-                return (
-                  <div
-                    key={i}
-                    className={cn(
-                      "flex items-center justify-center rounded-full transition-all duration-300",
-                      isActive
-                        ? "size-8 bg-primary/15 ring-2 ring-primary/40"
-                        : isDone
-                          ? "size-6 bg-primary/10"
-                          : "size-6 bg-muted",
-                    )}
-                  >
-                    {isDone ? (
-                      <Check size={10} className="text-primary" />
-                    ) : (
-                      <StepIcon
-                        size={isActive ? 14 : 10}
-                        className={cn(
-                          "transition-colors duration-300",
-                          isActive ? "text-primary" : "text-muted-foreground/40",
-                        )}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          {/* Progress bar */}
-          <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
-            <div
-              className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-              style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="p-5 min-h-[320px] flex flex-col overflow-hidden">
-          {completed ? (
-            <div className="flex-1 flex flex-col items-center justify-center gap-4">
-              <div className="grid size-20 place-items-center rounded-full bg-primary/15">
-                <PartyPopper size={36} className="text-primary" />
-              </div>
-              <div className="text-center">
-                <p className="text-fluid-lg font-black text-foreground">You&apos;re all set!</p>
-                <p className="text-fluid-xs text-muted-foreground/60 mt-1">Let&apos;s start learning</p>
-              </div>
-            </div>
-          ) : (
-            <div ref={contentRef} className="flex-1 flex flex-col">
-              {step === 0 && (
-                <StepName
-                  value={localFirstName}
-                  onChange={setLocalFirstName}
-                  onNext={goNext}
-                />
-              )}
-              {step === 1 && (
-                <StepSingleSelect
-                  title="What describes you?"
-                  subtitle="Pick the one that fits best"
-                  options={PERSONA_OPTIONS}
-                  value={localPersona}
-                  onSelect={setLocalPersona}
-                />
-              )}
-              {step === 2 && (
-                <StepSingleSelect
-                  title="What brings you here?"
-                  subtitle="We'll tailor content to your goal"
-                  options={GOAL_OPTIONS}
-                  value={localGoal}
-                  onSelect={setLocalGoal}
-                />
-              )}
-              {step === 3 && (
-                <StepTriggers
-                  value={localTriggers}
-                  onChange={setLocalTriggers}
-                />
-              )}
-              {step === 4 && (
-                <StepDetails
-                  sex={localSex}
-                  onSexChange={setLocalSex}
-                  dob={localDob}
-                  onDobChange={setLocalDob}
-                />
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Footer */}
-        {!completed && (
-          <div className="sticky bottom-0 bg-card/95 backdrop-blur-sm px-5 pb-5 pt-3 border-t border-border/40 flex gap-3">
-            {step > 0 && (
-              <button
-                type="button"
-                onClick={goPrev}
-                className="flex items-center gap-1.5 rounded-2xl border border-border/60 bg-background px-4 py-3.5 text-fluid-xs font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <ChevronLeft size={14} />
-                Back
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
-              disabled={!canNext}
-              className={cn(
-                "flex-1 flex items-center justify-center gap-2 rounded-2xl py-3.5 text-fluid-sm font-bold outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring",
-                canNext
-                  ? "bg-primary text-primary-foreground hover:opacity-90"
-                  : "bg-muted text-muted-foreground/40 cursor-not-allowed",
-              )}
-            >
-              {step === TOTAL_STEPS - 1 ? "Finish" : "Continue"}
-              {step < TOTAL_STEPS - 1 && <ChevronRight size={14} />}
-            </button>
-          </div>
-        )}
+        {panel}
       </div>
     </div>,
     document.body,
