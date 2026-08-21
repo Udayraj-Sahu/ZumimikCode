@@ -227,16 +227,33 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
       {/* Content */}
       <div className="p-5 min-h-[320px] flex flex-col overflow-hidden">
-        {completed ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-4">
-            <div className="grid size-20 place-items-center rounded-full bg-primary/15">
-              <PartyPopper size={36} className="text-primary" />
+          {completed ? (
+            <div className="flex-1 flex flex-col items-center justify-center gap-4">
+              <div className="grid size-20 place-items-center rounded-full bg-primary/15">
+                <PartyPopper size={36} className="text-primary" />
+              </div>
+              <div className="text-center">
+                <p className="text-fluid-lg font-black text-foreground">You&apos;re all set!</p>
+                <p className="text-fluid-xs text-muted-foreground/60 mt-1">Let&apos;s start learning</p>
+              </div>
+              <div className="w-full mt-2 space-y-2.5">
+                {[
+                  { icon: Target, label: "Start a Sprint", desc: "Test your skills with a timed quiz", color: "#34D399" },
+                  { icon: BookOpen, label: "Explore Techniques", desc: "Browse methods to solve faster", color: "#F59E0B" },
+                  { icon: Zap, label: "Try Practice Mode", desc: "Step-by-step guided exercises", color: "#22D3EE" },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-3 rounded-xl border border-border/40 bg-background/50 px-4 py-3">
+                    <div className="size-8 shrink-0 rounded-lg flex items-center justify-center" style={{ background: item.color + "18" }}>
+                      <item.icon size={14} style={{ color: item.color }} />
+                    </div>
+                    <div>
+                      <p className="text-[12px] font-bold text-foreground">{item.label}</p>
+                      <p className="text-[10px] text-muted-foreground/40">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="text-center">
-              <p className="text-fluid-lg font-black text-foreground">You&apos;re all set!</p>
-              <p className="text-fluid-xs text-muted-foreground/60 mt-1">Let&apos;s start learning</p>
-            </div>
-          </div>
         ) : (
           <div ref={contentRef} className="flex-1 flex flex-col">
             {step === 0 && (

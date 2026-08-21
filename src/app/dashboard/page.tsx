@@ -268,15 +268,17 @@ export default function DashboardPage() {
           onScroll={handleCarouselScroll}
         >
           {/* Slide 1: Complete Account Details — inline onboarding */}
-          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px] h-[380px]">
             <div className="rounded-3xl border border-border/40 bg-card overflow-hidden h-full flex flex-col">
-              <p className="px-5 pt-4 text-[11px] text-muted-foreground/40 font-normal italic text-center">Let us guide you better</p>
-              <OnboardingModal onClose={() => {}} inline />
+              <p className="px-5 pt-4 pb-2 text-[11px] text-muted-foreground/40 font-normal italic text-center shrink-0">Let us guide you better</p>
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <OnboardingModal onClose={() => {}} inline />
+              </div>
             </div>
           </div>
 
           {/* Slide 2: Your Stats */}
-          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px] h-[380px]">
             <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
               <p className="text-[11px] text-muted-foreground/40 font-normal italic text-center mb-4">Your game&apos;s improving</p>
               <div className="flex items-center gap-2.5 mb-4">
@@ -312,7 +314,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 3: This Week + Daily Habits */}
-          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px] h-[380px]">
             <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
@@ -379,7 +381,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 4: Practice + Technique */}
-          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px] h-[380px]">
             <div className="rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col gap-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
               <p className="text-[11px] text-muted-foreground/40 font-normal italic text-center">Something on your mind?</p>
               <div className="relative overflow-hidden rounded-2xl p-4" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
@@ -402,7 +404,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 5: Placeholder */}
-          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px] h-[380px]">
             <div className="rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-5 h-full flex items-center justify-center" style={{ background: GLASS_BG }}>
               <span className="text-[12px] text-muted-foreground/25 font-medium">Coming soon</span>
             </div>
