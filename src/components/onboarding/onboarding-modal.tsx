@@ -189,7 +189,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                     isActive ? "h-2 w-2" : isDone ? "h-1.5 w-1.5" : "h-1.5 w-1.5"
                   )}
                   style={{
-                    background: isActive || isDone ? STEP_COLORS[i] : "rgba(255,255,255,0.15)",
+                    background: isActive || isDone ? "#C8FF4D" : "rgba(255,255,255,0.15)",
                   }}
                 />
               );
@@ -271,7 +271,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                   ? "text-[#0A0C0A]"
                   : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
-              style={canNext ? { background: STEP_COLORS[step] } : undefined}
+              style={canNext ? { background: "#C8FF4D" } : undefined}
             >
               {step === TOTAL_STEPS - 1 ? (
                 <Sparkles size={16} />
@@ -355,7 +355,7 @@ function StepSingleSelect({
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">{title}</h2>
         <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">{subtitle}</p>
       </div>
-      <div className="grid grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-2 gap-2">
         {options.map((opt) => {
           const Icon = opt.icon;
           const active = value === opt.label;
@@ -365,34 +365,29 @@ function StepSingleSelect({
               type="button"
               onClick={() => onSelect(opt.label)}
               className={cn(
-                "relative flex flex-col items-center gap-2 rounded-2xl border p-4 text-center transition-all active:scale-[0.97]",
+                "relative flex items-center gap-2.5 rounded-2xl border p-3 text-left transition-all active:scale-[0.97]",
                 active
-                  ? "border-transparent"
+                  ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
                   : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
               )}
-              style={active ? {
-                background: `linear-gradient(135deg, ${opt.color}10, ${opt.color}05)`,
-                borderColor: `${opt.color}30`,
-                boxShadow: `0 0 20px ${opt.color}08`,
-              } : undefined}
             >
               <div
-                className="size-10 rounded-xl flex items-center justify-center transition-all"
-                style={{ backgroundColor: active ? opt.color + "20" : "rgba(255,255,255,0.04)" }}
+                className="size-9 shrink-0 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: active ? "#C8FF4D20" : "rgba(255,255,255,0.04)" }}
               >
-                <Icon size={18} style={{ color: active ? opt.color : "rgba(255,255,255,0.3)" }} />
+                <Icon size={16} style={{ color: active ? "#C8FF4D" : "rgba(255,255,255,0.3)" }} />
               </div>
-              <div>
-                <p className={cn("text-[12px] font-bold leading-tight", active ? "text-foreground" : "text-foreground/60")}>
+              <div className="min-w-0">
+                <p className={cn("text-[11px] font-bold leading-tight truncate", active ? "text-foreground" : "text-foreground/60")}>
                   {opt.label}
                 </p>
                 {opt.desc && (
-                  <p className="text-[9px] text-muted-foreground/30 mt-0.5 font-medium">{opt.desc}</p>
+                  <p className="text-[9px] text-muted-foreground/30 mt-0.5 font-medium truncate">{opt.desc}</p>
                 )}
               </div>
               {active && (
-                <div className="absolute top-2.5 right-2.5 size-5 rounded-full flex items-center justify-center" style={{ background: opt.color }}>
-                  <Check size={10} className="text-[#0A0C0A]" strokeWidth={3} />
+                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[#C8FF4D]">
+                  <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
                 </div>
               )}
             </button>
@@ -406,20 +401,20 @@ function StepSingleSelect({
 function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
   return (
     <div className="flex flex-col">
-      <div className="mb-5">
+      <div className="mb-4">
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Which describe you right now?</h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Pick all that apply</p>
+        <p className="text-[13px] text-muted-foreground/50 mt-1 font-medium">Pick all that apply</p>
       </div>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-3.5">
         {TRIGGER_GROUPED.map((group) => (
           <div key={group.label}>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-1 h-3.5 rounded-full" style={{ backgroundColor: group.color }} />
-              <p className="text-[10px] font-bold tracking-[0.14em] text-muted-foreground/40 uppercase">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-1 h-3 rounded-full" style={{ backgroundColor: group.color }} />
+              <p className="text-[9px] font-bold tracking-[0.14em] text-muted-foreground/35 uppercase">
                 {group.label}
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {group.tags.map((tag) => {
                 const active = value.includes(tag);
                 return (
@@ -430,14 +425,13 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                       onChange(active ? value.filter((t) => t !== tag) : [...value, tag])
                     }
                     className={cn(
-                      "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[11px] font-bold transition-all active:scale-95",
+                      "flex items-center gap-1 rounded-full px-3 py-1.5 text-[10px] font-bold transition-all active:scale-95",
                       active
-                        ? "text-[#0A0C0A]"
+                        ? "text-[#0A0C0A] bg-[#C8FF4D]"
                         : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
                     )}
-                    style={active ? { background: group.color } : undefined}
                   >
-                    {active && <Check size={10} strokeWidth={3} />}
+                    {active && <Check size={8} strokeWidth={3} />}
                     {tag}
                   </button>
                 );
