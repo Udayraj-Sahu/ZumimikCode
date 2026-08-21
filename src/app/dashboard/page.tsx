@@ -408,25 +408,23 @@ export default function DashboardPage() {
       </div>
 
       {/* Complete Account Details */}
-      {!isOnboarded && (
-        <div ref={animateSection} data-section-index={2.5} className="px-5 mt-4">
-          <button
-            type="button"
-            onClick={() => setShowOnboarding(true)}
-            className="w-full rounded-2xl border border-dashed border-primary/20 backdrop-blur-xl px-5 py-4 text-left transition-all hover:border-primary/40 hover:bg-white/[0.03] active:scale-[0.98]"
-          >
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Sparkles size={16} className="text-primary" />
-              </div>
-              <div>
-                <p className="text-[13px] font-semibold text-primary tracking-[-0.01em]">Complete your account details</p>
-                <p className="text-[12px] text-muted-foreground/35 mt-0.5 font-normal">Set your goals &amp; targets for a personalized experience</p>
-              </div>
+      <div ref={animateSection} data-section-index={2.5} className="px-5 mt-4">
+        <button
+          type="button"
+          onClick={() => setShowOnboarding(true)}
+          className="w-full rounded-2xl border border-dashed border-primary/20 backdrop-blur-xl px-5 py-4 text-left transition-all hover:border-primary/40 hover:bg-white/[0.03] active:scale-[0.98]"
+        >
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Sparkles size={16} className="text-primary" />
             </div>
-          </button>
-        </div>
-      )}
+            <div>
+              <p className="text-[13px] font-semibold text-primary tracking-[-0.01em]">Complete your account details</p>
+              <p className="text-[12px] text-muted-foreground/35 mt-0.5 font-normal">Set your goals &amp; targets for a personalized experience</p>
+            </div>
+          </div>
+        </button>
+      </div>
 
       {/* Practice Mode */}
       <div ref={animateSection} data-section-index={3} className="px-5 mt-5">
