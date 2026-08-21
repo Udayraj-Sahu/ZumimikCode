@@ -260,7 +260,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Carousel */}
-      <div ref={animateSection} data-section-index={1.5} className="mt-5">
+      <div ref={animateSection} data-section-index={1.5} className="mt-5 overflow-hidden">
         <div
           ref={carouselRef}
           className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 px-5 pb-3"
@@ -269,9 +269,10 @@ export default function DashboardPage() {
         >
           {/* Slide 1: Complete Account Details — inline onboarding */}
           <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px] h-[380px]">
-            <div className="rounded-3xl border border-border/40 bg-card overflow-hidden h-full flex flex-col">
-              <p className="px-5 pt-4 pb-2 text-[11px] text-muted-foreground/40 font-normal italic text-center shrink-0">Let us guide you better</p>
-              <div className="flex-1 overflow-y-auto min-h-0">
+            <div className="rounded-3xl border border-primary/15 overflow-hidden h-full flex flex-col relative" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
+              <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25), transparent)" }} />
+              <p className="px-5 pt-4 pb-2 text-[11px] text-muted-foreground/40 font-normal italic text-center shrink-0 relative">Let us guide you better</p>
+              <div className="flex-1 overflow-y-auto min-h-0 relative" style={{ scrollbarWidth: "none" }}>
                 <OnboardingModal onClose={() => {}} inline />
               </div>
             </div>
@@ -287,26 +288,28 @@ export default function DashboardPage() {
                 </div>
                 <span className="text-[12px] font-semibold tracking-[-0.01em] text-foreground">YOUR STATS</span>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2.5">
                 {[
-                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target },
-                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen },
-                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award },
-                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap },
+                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target, color: "#34D399" },
+                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen, color: "#22D3EE" },
+                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award, color: "#A78BFA" },
+                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap, color: "#FBBF24" },
                 ].map((s) => (
                   <button
                     key={s.label}
                     type="button"
                     onClick={() => router.push("/dashboard/analytics")}
-                    className="group rounded-xl border backdrop-blur-xl px-3 py-3 text-left transition-all hover:bg-white/[0.06] active:scale-[0.97]"
-                    style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                    className="group rounded-2xl border border-white/[0.04] backdrop-blur-xl px-3 py-3.5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.97] relative overflow-hidden"
                   >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <s.icon size={12} className="text-primary/60" />
+                    <div className="absolute inset-0 opacity-[0.04]" style={{ background: `radial-gradient(circle at top right, ${s.color}, transparent 70%)` }} />
+                    <div className="flex items-center justify-between mb-2 relative">
+                      <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: s.color + "18" }}>
+                        <s.icon size={13} style={{ color: s.color }} />
+                      </div>
                       <ArrowUpRight size={10} className="text-muted-foreground/20 group-hover:text-primary/60 transition-colors" />
                     </div>
-                    <p className="text-[16px] font-bold tracking-[-0.03em] text-foreground">{s.value}</p>
-                    <p className="text-[9px] font-semibold tracking-[0.12em] text-muted-foreground/35 mt-1 uppercase">{s.label}</p>
+                    <p className="text-[18px] font-bold tracking-[-0.03em] text-foreground relative">{s.value}</p>
+                    <p className="text-[9px] font-semibold tracking-[0.12em] text-muted-foreground/35 mt-1.5 uppercase relative">{s.label}</p>
                   </button>
                 ))}
               </div>
