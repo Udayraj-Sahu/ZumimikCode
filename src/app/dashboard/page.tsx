@@ -158,7 +158,7 @@ export default function DashboardPage() {
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data } = useDashboardData(targetExam);
 
-  const [statsOpen, setStatsOpen] = useState(false);
+  const [statsOpen, setStatsOpen] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [habitModalOpen, setHabitModalOpen] = useState(false);
 
