@@ -269,7 +269,8 @@ export default function DashboardPage() {
         >
           {/* Slide 1: Complete Account Details — inline onboarding */}
           <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
-            <div className="rounded-3xl border border-border/40 bg-card overflow-hidden h-full">
+            <div className="rounded-3xl border border-border/40 bg-card overflow-hidden h-full flex flex-col">
+              <p className="px-5 pt-4 text-[11px] text-muted-foreground/40 font-normal italic text-center">Let us guide you better</p>
               <OnboardingModal onClose={() => {}} inline />
             </div>
           </div>
@@ -277,6 +278,7 @@ export default function DashboardPage() {
           {/* Slide 2: Your Stats */}
           <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
             <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+              <p className="text-[11px] text-muted-foreground/40 font-normal italic text-center mb-4">Your game&apos;s improving</p>
               <div className="flex items-center gap-2.5 mb-4">
                 <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center">
                   <TrendingUp size={14} className="text-primary" />
@@ -314,6 +316,7 @@ export default function DashboardPage() {
             <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
+              <p className="relative text-[11px] text-muted-foreground/40 font-normal italic text-center mb-3">Consistency is key</p>
               <div className="relative flex items-center gap-3 overflow-hidden">
                 <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/35 shrink-0 uppercase">This Week</span>
                 <div className="flex items-center gap-[6px] flex-1 justify-end">
@@ -378,6 +381,7 @@ export default function DashboardPage() {
           {/* Slide 4: Practice + Technique */}
           <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
             <div className="rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col gap-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+              <p className="text-[11px] text-muted-foreground/40 font-normal italic text-center">Something on your mind?</p>
               <div className="relative overflow-hidden rounded-2xl p-4" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
                 <SectionLabel className="text-[#22D3EE]">PRACTICE MODE</SectionLabel>
                 <h3 className="relative mt-2 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Master with templates</h3>
@@ -405,7 +409,7 @@ export default function DashboardPage() {
           </div>
         </div>
         {/* Dot indicators */}
-        <div className="flex items-center justify-center gap-2 mt-3">
+        <div className="flex items-center justify-center gap-2 mt-2">
           {[0, 1, 2, 3, 4].map((i) => (
             <button
               key={i}
