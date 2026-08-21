@@ -172,8 +172,6 @@ export function OnboardingModal({ onClose, inline }: Props) {
     step === 3 ||
     step === 4;
 
-  const accentColor = STEP_COLORS[step];
-
   const panel = (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -184,17 +182,13 @@ export function OnboardingModal({ onClose, inline }: Props) {
               const isActive = i === step;
               const isDone = i < step;
               return (
-                <div key={i} className="flex items-center gap-1">
-                  <div
-                    className={cn(
-                      "h-1.5 rounded-full transition-all duration-400",
-                      isActive ? "w-6" : isDone ? "w-3" : "w-1.5"
-                    )}
-                    style={{
-                      background: isDone || isActive ? STEP_COLORS[i] : "rgba(255,255,255,0.1)",
-                    }}
-                  />
-                </div>
+                <div
+                  key={i}
+                  className={cn(
+                    "rounded-full transition-all duration-400",
+                    isActive ? "h-1.5 w-6 bg-white/80" : isDone ? "h-1.5 w-3 bg-white/30" : "h-1.5 w-1.5 bg-white/15"
+                  )}
+                />
               );
             })}
           </div>
@@ -258,7 +252,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
               <button
                 type="button"
                 onClick={goPrev}
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-[11px] font-bold text-foreground/50 outline-none transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                className="flex items-center justify-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[11px] font-bold text-foreground/50 outline-none transition-all hover:bg-white/[0.06] active:scale-[0.98]"
               >
                 <ChevronLeft size={12} />
                 Back
@@ -269,17 +263,16 @@ export function OnboardingModal({ onClose, inline }: Props) {
               onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
               disabled={!canNext}
               className={cn(
-                "size-10 rounded-full flex items-center justify-center outline-none transition-all active:scale-90",
+                "flex items-center justify-center transition-all active:scale-90",
                 canNext
-                  ? "text-[#0A0C0A]"
-                  : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
+                  ? "text-primary"
+                  : "text-muted-foreground/20 cursor-not-allowed",
               )}
-              style={canNext ? { background: accentColor } : undefined}
             >
               {step === TOTAL_STEPS - 1 ? (
-                <Sparkles size={16} />
+                <Sparkles size={20} />
               ) : (
-                <ArrowRight size={16} />
+                <ArrowRight size={20} />
               )}
             </button>
           </div>
