@@ -186,8 +186,11 @@ export function OnboardingModal({ onClose, inline }: Props) {
                   key={i}
                   className={cn(
                     "rounded-full transition-all duration-400",
-                    isActive ? "h-2 w-2 bg-white" : isDone ? "h-1.5 w-1.5 bg-white/50" : "h-1.5 w-1.5 bg-white/15"
+                    isActive ? "h-2 w-2" : isDone ? "h-1.5 w-1.5" : "h-1.5 w-1.5"
                   )}
+                  style={{
+                    background: isActive || isDone ? STEP_COLORS[i] : "rgba(255,255,255,0.15)",
+                  }}
                 />
               );
             })}
@@ -263,16 +266,17 @@ export function OnboardingModal({ onClose, inline }: Props) {
               onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
               disabled={!canNext}
               className={cn(
-                "transition-all active:scale-90",
+                "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
                 canNext
-                  ? "text-primary"
-                  : "text-muted-foreground/20 cursor-not-allowed",
+                  ? "text-[#0A0C0A]"
+                  : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
+              style={canNext ? { background: STEP_COLORS[step] } : undefined}
             >
               {step === TOTAL_STEPS - 1 ? (
-                <Sparkles size={22} />
+                <Sparkles size={16} />
               ) : (
-                <ArrowRight size={22} />
+                <ArrowRight size={16} />
               )}
             </button>
           </div>
