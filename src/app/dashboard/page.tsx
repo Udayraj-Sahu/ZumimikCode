@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import {
@@ -8,7 +8,6 @@ import {
   Clock,
   Zap,
   Award,
-  ChevronDown,
   ChevronRight,
   Target,
   Calendar,
@@ -158,9 +157,26 @@ export default function DashboardPage() {
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data } = useDashboardData(targetExam);
 
-  const [statsOpen, setStatsOpen] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [habitModalOpen, setHabitModalOpen] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  const handleCarouselScroll = useCallback(() => {
+    if (!carouselRef.current) return;
+    const el = carouselRef.current;
+    const scrollLeft = el.scrollLeft;
+    const width = el.clientWidth;
+    const idx = Math.round(scrollLeft / width);
+    setCarouselIndex(idx);
+  }, []);
+
+  const scrollToSlide = useCallback((index: number) => {
+    if (!carouselRef.current) return;
+    const el = carouselRef.current;
+    const width = el.clientWidth;
+    el.scrollTo({ left: width * index, behavior: "smooth" });
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -254,222 +270,176 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Your Stats — collapsible */}
-      <div ref={animateSection} data-section-index={1} className="px-5 mt-6">
-        <button
-          type="button"
-          onClick={() => setStatsOpen((v) => !v)}
-          className="w-full flex items-center justify-between rounded-2xl border backdrop-blur-xl px-4 py-3 transition-all hover:bg-white/[0.06]"
-          style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+      {/* Carousel */}
+      <div ref={animateSection} data-section-index={1.5} className="mt-5">
+        <div
+          ref={carouselRef}
+          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 px-5 pb-3"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
+          onScroll={handleCarouselScroll}
         >
-          <div className="flex items-center gap-2.5">
-            <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center">
-              <TrendingUp size={14} className="text-primary" />
-            </div>
-            <span className="text-[12px] font-semibold tracking-[-0.01em] text-foreground">YOUR STATS</span>
-          </div>
-          <ChevronDown
-            size={14}
-            className={cn("text-muted-foreground/40 transition-transform duration-200", statsOpen && "rotate-180")}
-          />
-        </button>
-        {statsOpen && (
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            {[
-              { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target },
-              { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen },
-              { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award },
-              { label: "Speed", value: `${stats.speed}s avg`, icon: Zap },
-            ].map((s) => (
-              <button
-                key={s.label}
-                type="button"
-                onClick={() => router.push("/dashboard/analytics")}
-                className="group rounded-xl border backdrop-blur-xl px-3 py-3 text-left transition-all hover:bg-white/[0.06] active:scale-[0.97]"
-                style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
-              >
-                <div className="flex items-center justify-between mb-1.5">
-                  <s.icon size={12} className="text-primary/60" />
-                  <ArrowUpRight size={10} className="text-muted-foreground/20 group-hover:text-primary/60 transition-colors" />
+          {/* Slide 1: Complete Account Details */}
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+            <button
+              type="button"
+              onClick={() => setShowOnboarding(true)}
+              className="w-full h-full rounded-3xl border border-dashed border-primary/20 backdrop-blur-xl px-5 py-6 text-left transition-all hover:border-primary/40 hover:bg-white/[0.03] active:scale-[0.98]"
+            >
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <Sparkles size={20} className="text-primary" />
                 </div>
-                <p className="text-[16px] font-bold tracking-[-0.03em] text-foreground">{s.value}</p>
-                <p className="text-[9px] font-semibold tracking-[0.12em] text-muted-foreground/35 mt-1 uppercase">{s.label}</p>
-              </button>
-            ))}
+                <div>
+                  <p className="text-[15px] font-bold text-primary tracking-[-0.01em]">Complete your account details</p>
+                  <p className="text-[12px] text-muted-foreground/40 mt-1 font-normal">Set your goals &amp; targets for a personalized experience</p>
+                </div>
+              </div>
+            </button>
           </div>
-        )}
-      </div>
 
-      {/* This Week + Daily Habits merged */}
-      <div ref={animateSection} data-section-index={2} className="px-5 mt-5">
-        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
-          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
-          <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
-
-          {/* This Week row */}
-          <div className="relative flex items-center gap-3 overflow-hidden">
-            <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/35 shrink-0 uppercase">This Week</span>
-            <div className="flex items-center gap-[6px] flex-1 justify-end">
-              {streak.labels.map((day, i) => {
-                const done = streak.days[i];
-                return (
-                  <div
-                    key={i}
-                    className={cn(
-                      "h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold border shrink-0 transition-all",
-                      done ? "shadow-[0_0_12px_rgba(199,242,82,0.3)]" : ""
-                    )}
-                    style={{
-                      background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)",
-                      color: done ? "#0A0C08" : "#4B5563",
-                      borderColor: done ? "transparent" : "rgba(255,255,255,0.06)",
-                    }}
+          {/* Slide 2: Your Stats */}
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+            <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <TrendingUp size={14} className="text-primary" />
+                </div>
+                <span className="text-[12px] font-semibold tracking-[-0.01em] text-foreground">YOUR STATS</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target },
+                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen },
+                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award },
+                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap },
+                ].map((s) => (
+                  <button
+                    key={s.label}
+                    type="button"
+                    onClick={() => router.push("/dashboard/analytics")}
+                    className="group rounded-xl border backdrop-blur-xl px-3 py-3 text-left transition-all hover:bg-white/[0.06] active:scale-[0.97]"
+                    style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                   >
-                    {day}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="relative mt-5 h-px w-full bg-white/[0.05]" />
-
-          {/* Habits content */}
-          <SectionLabel className="text-[#34D399] mt-4">DAILY HABITS</SectionLabel>
-          <h2 className="relative mt-2 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-          <p className="relative mt-1.5 text-[13px] text-muted-foreground/45 font-normal">Daily check-ins · Track streaks · Stay accountable</p>
-
-          <div className="relative mt-5 flex items-center gap-4">
-            <div className="relative shrink-0">
-              <svg width="64" height="64" viewBox="0 0 64 64">
-                <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
-                <circle
-                  cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeDasharray={`${2 * Math.PI * 27}`}
-                  strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`}
-                  transform="rotate(-90 32 32)"
-                  className="transition-all duration-700"
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-[16px] font-bold text-foreground leading-none">{todayCompleted}</span>
-                <span className="text-[8px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
-              </div>
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1.5">
-                <Flame size={13} className="text-[#34D399]" />
-                <span className="text-[13px] font-bold text-[#34D399]">{habitStats.currentStreak}d streak</span>
-                <span className="text-[11px] text-muted-foreground/30">·</span>
-                <span className="text-[11px] text-muted-foreground/40 font-medium">{habitStats.completionRate}% rate</span>
-              </div>
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {habits.slice(0, 5).map((h) => {
-                  const done = todayLogs.includes(h.id);
-                  return (
-                    <div
-                      key={h.id}
-                      className="flex items-center gap-1 rounded-full px-2 py-0.5 border transition-colors"
-                      style={{
-                        borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)",
-                        background: done ? `${h.color}10` : "transparent",
-                      }}
-                    >
-                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
-                      <span className={cn("text-[9px] font-medium truncate max-w-[60px]", done ? "text-foreground/70" : "text-muted-foreground/30")}>
-                        {h.name.split(" ")[0]}
-                      </span>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <s.icon size={12} className="text-primary/60" />
+                      <ArrowUpRight size={10} className="text-muted-foreground/20 group-hover:text-primary/60 transition-colors" />
                     </div>
-                  );
-                })}
-                {habits.length > 5 && (
-                  <span className="text-[9px] text-muted-foreground/25 font-medium">+{habits.length - 5}</span>
-                )}
+                    <p className="text-[16px] font-bold tracking-[-0.03em] text-foreground">{s.value}</p>
+                    <p className="text-[9px] font-semibold tracking-[0.12em] text-muted-foreground/35 mt-1 uppercase">{s.label}</p>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
 
-          <div className="relative mt-5 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => setHabitModalOpen(true)}
-              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95"
-            >
-              VIEW HABITS
-            </button>
-            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground/35 font-normal">
-              <Clock size={12} />
-              {habitCount - todayCompleted > 0 ? `${habitCount - todayCompleted} left today` : "All done!"}
+          {/* Slide 3: This Week + Daily Habits */}
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+            <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
+              <div className="relative flex items-center gap-3 overflow-hidden">
+                <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/35 shrink-0 uppercase">This Week</span>
+                <div className="flex items-center gap-[6px] flex-1 justify-end">
+                  {streak.labels.map((day, i) => {
+                    const done = streak.days[i];
+                    return (
+                      <div key={i} className={cn("h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold border shrink-0 transition-all", done ? "shadow-[0_0_12px_rgba(199,242,82,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
+                        {day}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="relative mt-5 h-px w-full bg-white/[0.05]" />
+              <SectionLabel className="text-[#34D399] mt-4">DAILY HABITS</SectionLabel>
+              <h2 className="relative mt-2 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
+              <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Daily check-ins · Track streaks · Stay accountable</p>
+              <div className="relative mt-4 flex items-center gap-4">
+                <div className="relative shrink-0">
+                  <svg width="56" height="56" viewBox="0 0 64 64">
+                    <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
+                    <circle cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="4" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 27}`} strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`} transform="rotate(-90 32 32)" className="transition-all duration-700" />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-[14px] font-bold text-foreground leading-none">{todayCompleted}</span>
+                    <span className="text-[7px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <Flame size={12} className="text-[#34D399]" />
+                    <span className="text-[12px] font-bold text-[#34D399]">{habitStats.currentStreak}d streak</span>
+                    <span className="text-[10px] text-muted-foreground/30">·</span>
+                    <span className="text-[10px] text-muted-foreground/40 font-medium">{habitStats.completionRate}% rate</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {habits.slice(0, 5).map((h) => {
+                      const done = todayLogs.includes(h.id);
+                      return (
+                        <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-0.5 border transition-colors" style={{ borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)", background: done ? `${h.color}10` : "transparent" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
+                          <span className={cn("text-[8px] font-medium truncate max-w-[50px]", done ? "text-foreground/70" : "text-muted-foreground/30")}>{h.name.split(" ")[0]}</span>
+                        </div>
+                      );
+                    })}
+                    {habits.length > 5 && <span className="text-[8px] text-muted-foreground/25 font-medium">+{habits.length - 5}</span>}
+                  </div>
+                </div>
+              </div>
+              <div className="relative mt-4 flex items-center justify-between">
+                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95">
+                  VIEW HABITS
+                </button>
+                <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/35 font-normal">
+                  <Clock size={11} />
+                  {habitCount - todayCompleted > 0 ? `${habitCount - todayCompleted} left today` : "All done!"}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Slide 4: Practice + Technique */}
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+            <div className="rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col gap-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+              <div className="relative overflow-hidden rounded-2xl p-4" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+                <SectionLabel className="text-[#22D3EE]">PRACTICE MODE</SectionLabel>
+                <h3 className="relative mt-2 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Master with templates</h3>
+                <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Guided exercises · Build speed &amp; accuracy</p>
+                <button type="button" onClick={() => router.push("/dashboard/practice")} className="relative mt-3 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#22D3EE] to-[#06B6D4] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(34,211,238,0.3)] active:scale-95">
+                  <Play size={13} fill="currentColor" /> PRACTICE NOW
+                </button>
+              </div>
+              <div className="relative overflow-hidden rounded-2xl p-4" style={{ background: "linear-gradient(135deg, rgba(245,158,11,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+                <SectionLabel className="text-[#F59E0B]">TECHNIQUE LIBRARY</SectionLabel>
+                <h3 className="relative mt-2 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Learn a technique</h3>
+                <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Browse core methods · Master each approach</p>
+                <button type="button" onClick={() => router.push("/dashboard/explorer")} className="relative mt-3 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(245,158,11,0.3)] active:scale-95">
+                  EXPLORE TECHNIQUES
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Slide 5: Placeholder */}
+          <div className="snap-center shrink-0 w-[calc(100vw-40px)] max-w-[480px]">
+            <div className="rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-5 h-full flex items-center justify-center" style={{ background: GLASS_BG }}>
+              <span className="text-[12px] text-muted-foreground/25 font-medium">Coming soon</span>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Complete Account Details */}
-      <div ref={animateSection} data-section-index={2.5} className="px-5 mt-4">
-        <button
-          type="button"
-          onClick={() => setShowOnboarding(true)}
-          className="w-full rounded-2xl border border-dashed border-primary/20 backdrop-blur-xl px-5 py-4 text-left transition-all hover:border-primary/40 hover:bg-white/[0.03] active:scale-[0.98]"
-        >
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Sparkles size={16} className="text-primary" />
-            </div>
-            <div>
-              <p className="text-[13px] font-semibold text-primary tracking-[-0.01em]">Complete your account details</p>
-              <p className="text-[12px] text-muted-foreground/35 mt-0.5 font-normal">Set your goals &amp; targets for a personalized experience</p>
-            </div>
-          </div>
-        </button>
-      </div>
-
-      {/* Practice Mode */}
-      <div ref={animateSection} data-section-index={3} className="px-5 mt-5">
-        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(34,211,238,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
-          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.3), transparent)" }} />
-          <SectionLabel className="text-[#22D3EE]">PRACTICE MODE</SectionLabel>
-          <h2 className="relative mt-2 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Master with templates</h2>
-          <p className="relative mt-1.5 text-[13px] text-muted-foreground/45 font-normal">Guided exercises · Step-by-step · Build speed &amp; accuracy</p>
-          <div className="relative mt-5 flex items-center justify-between">
+        {/* Dot indicators */}
+        <div className="flex items-center justify-center gap-2 mt-3">
+          {[0, 1, 2, 3, 4].map((i) => (
             <button
+              key={i}
               type="button"
-              onClick={() => router.push("/dashboard/practice")}
-              className="flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#22D3EE] to-[#06B6D4] px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(34,211,238,0.3)] active:scale-95"
-            >
-              <Play size={15} fill="currentColor" />
-              PRACTICE NOW
-            </button>
-            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground/35 font-normal">
-              <Clock size={12} />
-              5–15 min each
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Technique Library */}
-      <div ref={animateSection} data-section-index={4} className="px-5 mt-4">
-        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(245,158,11,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
-          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.3), transparent)" }} />
-          <SectionLabel className="text-[#F59E0B]">TECHNIQUE LIBRARY</SectionLabel>
-          <h2 className="relative mt-2 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Learn a technique</h2>
-          <p className="relative mt-1.5 text-[13px] text-muted-foreground/45 font-normal">Browse core methods · Visual breakdowns · Master each approach</p>
-          <div className="relative mt-5 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => router.push("/dashboard/explorer")}
-              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(245,158,11,0.3)] active:scale-95"
-            >
-              EXPLORE TECHNIQUES
-            </button>
-            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground/35 font-normal">
-              <Clock size={12} />
-              5–15 min each
-            </div>
-          </div>
+              onClick={() => scrollToSlide(i)}
+              className={cn(
+                "rounded-full transition-all duration-300",
+                carouselIndex === i ? "h-2 w-5 bg-primary" : "h-2 w-2 bg-white/15"
+              )}
+            />
+          ))}
         </div>
       </div>
 
