@@ -300,30 +300,109 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* This Week — label + circles in one row */}
+      {/* This Week + Daily Habits merged */}
       <div ref={animateSection} data-section-index={2} className="px-5 mt-5">
-        <div className="flex items-center gap-3 rounded-2xl border backdrop-blur-xl px-4 py-4 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-          <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/35 shrink-0 uppercase">This Week</span>
-          <div className="flex items-center gap-[6px] flex-1 justify-end">
-            {streak.labels.map((day, i) => {
-              const done = streak.days[i];
-              return (
-                <div
-                  key={i}
-                  className={cn(
-                    "h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold border shrink-0 transition-all",
-                    done ? "shadow-[0_0_12px_rgba(199,242,82,0.3)]" : ""
-                  )}
-                  style={{
-                    background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)",
-                    color: done ? "#0A0C08" : "#4B5563",
-                    borderColor: done ? "transparent" : "rgba(255,255,255,0.06)",
-                  }}
-                >
-                  {day}
-                </div>
-              );
-            })}
+        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
+          <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
+
+          {/* This Week row */}
+          <div className="relative flex items-center gap-3 overflow-hidden">
+            <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/35 shrink-0 uppercase">This Week</span>
+            <div className="flex items-center gap-[6px] flex-1 justify-end">
+              {streak.labels.map((day, i) => {
+                const done = streak.days[i];
+                return (
+                  <div
+                    key={i}
+                    className={cn(
+                      "h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold border shrink-0 transition-all",
+                      done ? "shadow-[0_0_12px_rgba(199,242,82,0.3)]" : ""
+                    )}
+                    style={{
+                      background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)",
+                      color: done ? "#0A0C08" : "#4B5563",
+                      borderColor: done ? "transparent" : "rgba(255,255,255,0.06)",
+                    }}
+                  >
+                    {day}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="relative mt-5 h-px w-full bg-white/[0.05]" />
+
+          {/* Habits content */}
+          <SectionLabel className="text-[#34D399] mt-4">DAILY HABITS</SectionLabel>
+          <h2 className="relative mt-2 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
+          <p className="relative mt-1.5 text-[13px] text-muted-foreground/45 font-normal">Daily check-ins · Track streaks · Stay accountable</p>
+
+          <div className="relative mt-5 flex items-center gap-4">
+            <div className="relative shrink-0">
+              <svg width="64" height="64" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
+                <circle
+                  cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeDasharray={`${2 * Math.PI * 27}`}
+                  strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`}
+                  transform="rotate(-90 32 32)"
+                  className="transition-all duration-700"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-[16px] font-bold text-foreground leading-none">{todayCompleted}</span>
+                <span className="text-[8px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
+              </div>
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1.5">
+                <Flame size={13} className="text-[#34D399]" />
+                <span className="text-[13px] font-bold text-[#34D399]">{habitStats.currentStreak}d streak</span>
+                <span className="text-[11px] text-muted-foreground/30">·</span>
+                <span className="text-[11px] text-muted-foreground/40 font-medium">{habitStats.completionRate}% rate</span>
+              </div>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {habits.slice(0, 5).map((h) => {
+                  const done = todayLogs.includes(h.id);
+                  return (
+                    <div
+                      key={h.id}
+                      className="flex items-center gap-1 rounded-full px-2 py-0.5 border transition-colors"
+                      style={{
+                        borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)",
+                        background: done ? `${h.color}10` : "transparent",
+                      }}
+                    >
+                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
+                      <span className={cn("text-[9px] font-medium truncate max-w-[60px]", done ? "text-foreground/70" : "text-muted-foreground/30")}>
+                        {h.name.split(" ")[0]}
+                      </span>
+                    </div>
+                  );
+                })}
+                {habits.length > 5 && (
+                  <span className="text-[9px] text-muted-foreground/25 font-medium">+{habits.length - 5}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="relative mt-5 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setHabitModalOpen(true)}
+              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95"
+            >
+              VIEW HABITS
+            </button>
+            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground/35 font-normal">
+              <Clock size={12} />
+              {habitCount - todayCompleted > 0 ? `${habitCount - todayCompleted} left today` : "All done!"}
+            </div>
           </div>
         </div>
       </div>
@@ -425,83 +504,6 @@ export default function DashboardPage() {
                 <Plus size={15} className="text-muted-foreground" />
               </div>
               <span className="text-[10px] font-medium text-muted-foreground text-center leading-tight tracking-[0.01em]">Coming Soon</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Daily Habits */}
-      <div ref={animateSection} data-section-index={5} className="px-5 mt-4">
-        <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
-          <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
-          <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
-          <SectionLabel className="text-[#34D399]">DAILY HABITS</SectionLabel>
-          <h2 className="relative mt-2 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-          <p className="relative mt-1.5 text-[13px] text-muted-foreground/45 font-normal">Daily check-ins · Track streaks · Stay accountable</p>
-
-          <div className="relative mt-5 flex items-center gap-4">
-            <div className="relative shrink-0">
-              <svg width="64" height="64" viewBox="0 0 64 64">
-                <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
-                <circle
-                  cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeDasharray={`${2 * Math.PI * 27}`}
-                  strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`}
-                  transform="rotate(-90 32 32)"
-                  className="transition-all duration-700"
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-[16px] font-bold text-foreground leading-none">{todayCompleted}</span>
-                <span className="text-[8px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
-              </div>
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1.5">
-                <Flame size={13} className="text-[#34D399]" />
-                <span className="text-[13px] font-bold text-[#34D399]">{habitStats.currentStreak}d streak</span>
-                <span className="text-[11px] text-muted-foreground/30">·</span>
-                <span className="text-[11px] text-muted-foreground/40 font-medium">{habitStats.completionRate}% rate</span>
-              </div>
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {habits.slice(0, 5).map((h) => {
-                  const done = todayLogs.includes(h.id);
-                  return (
-                    <div
-                      key={h.id}
-                      className="flex items-center gap-1 rounded-full px-2 py-0.5 border transition-colors"
-                      style={{
-                        borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)",
-                        background: done ? `${h.color}10` : "transparent",
-                      }}
-                    >
-                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
-                      <span className={cn("text-[9px] font-medium truncate max-w-[60px]", done ? "text-foreground/70" : "text-muted-foreground/30")}>
-                        {h.name.split(" ")[0]}
-                      </span>
-                    </div>
-                  );
-                })}
-                {habits.length > 5 && (
-                  <span className="text-[9px] text-muted-foreground/25 font-medium">+{habits.length - 5}</span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="relative mt-5 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => setHabitModalOpen(true)}
-              className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-6 py-3 text-[13px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95"
-            >
-              VIEW HABITS
-            </button>
-            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground/35 font-normal">
-              <Clock size={12} />
-              {habitCount - todayCompleted > 0 ? `${habitCount - todayCompleted} left today` : "All done!"}
             </div>
           </div>
         </div>
