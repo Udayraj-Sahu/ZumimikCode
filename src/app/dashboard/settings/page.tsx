@@ -25,11 +25,13 @@ import {
   CreditCard,
   Check,
   X,
+  ChevronDown,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
+import { cn } from "@/lib/utils";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -66,6 +68,23 @@ function Row({ icon, title, subtitle, danger, onClick }: RowProps) {
       </span>
       <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/30" />
     </button>
+  );
+}
+
+function CollapsibleSection({ label, defaultOpen = false, children }: { label: string; defaultOpen?: boolean; children: React.ReactNode }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="px-4">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between pt-6 pb-3 text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase"
+      >
+        {label}
+        <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground/40 transition-transform duration-200", open && "rotate-180")} />
+      </button>
+      {open && children}
+    </div>
   );
 }
 
@@ -247,8 +266,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Activity & Records */}
-        <div className="px-4">
-          <SectionLabel>ACTIVITY & RECORDS</SectionLabel>
+        <CollapsibleSection label="ACTIVITY & RECORDS">
           <div className="space-y-2.5">
             <Row icon={<Clock className="h-5 w-5" />} title="Past Sessions" subtitle="View your sprint history" onClick={() => router.push("/dashboard/history")} />
             <Row icon={<FileText className="h-5 w-5" />} title="Reports" subtitle="Performance analytics" onClick={() => router.push("/dashboard/reports")} />
@@ -256,11 +274,10 @@ export default function SettingsPage() {
             <Row icon={<Star className="h-5 w-5" />} title="Badges" subtitle="Collect them all" onClick={() => router.push("/dashboard/achievements")} />
             <Row icon={<Trophy className="h-5 w-5" />} title="Leaderboard" subtitle="See your ranking" onClick={() => router.push("/dashboard/leaderboard")} />
           </div>
-        </div>
+        </CollapsibleSection>
 
         {/* Account Settings */}
-        <div className="px-4">
-          <SectionLabel>ACCOUNT SETTINGS</SectionLabel>
+        <CollapsibleSection label="ACCOUNT SETTINGS">
           <div className="space-y-2.5">
             <Row icon={<User className="h-5 w-5" />} title="Personal Details" subtitle="Name, email, phone" onClick={() => router.push("/dashboard/profile/edit")} />
             <Row icon={<Bell className="h-5 w-5" />} title="Notification Preferences" subtitle="Push & reminders" onClick={() => router.push("/dashboard/notifications")} />
@@ -269,17 +286,16 @@ export default function SettingsPage() {
             <Row icon={<DollarSign className="h-5 w-5" />} title="Payments" subtitle="Coming soon" />
             <Row icon={<Laptop className="h-5 w-5" />} title="Logged-in Devices" subtitle="Coming soon" />
           </div>
-        </div>
+        </CollapsibleSection>
 
         {/* Support */}
-        <div className="px-4">
-          <SectionLabel>SUPPORT</SectionLabel>
+        <CollapsibleSection label="SUPPORT">
           <div className="space-y-2.5">
             <Row icon={<HelpCircle className="h-5 w-5" />} title="Help Center" subtitle="Guides & tutorials" onClick={() => router.push("/dashboard/help")} />
             <Row icon={<MessageSquare className="h-5 w-5" />} title="FAQs" subtitle="Common questions" />
             <Row icon={<Phone className="h-5 w-5" />} title="Contact Support" subtitle="We're here to help" />
           </div>
-        </div>
+        </CollapsibleSection>
 
         {/* Logout */}
         <div className="px-4">
