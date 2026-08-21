@@ -75,15 +75,31 @@ function CollapsibleSection({ label, defaultOpen = false, children }: { label: s
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="px-4">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between pt-6 pb-3 text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase"
-      >
-        {label}
-        <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground/40 transition-transform duration-200", open && "rotate-180")} />
-      </button>
-      {open && children}
+      {open ? (
+        <>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="flex w-full items-center justify-between pt-6 pb-3 text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase"
+          >
+            {label}
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground/40 rotate-180" />
+          </button>
+          {children}
+        </>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="mt-6 flex w-full items-center justify-between rounded-2xl border backdrop-blur-xl px-5 py-4 transition-all hover:bg-white/[0.06] active:scale-[0.99]"
+          style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+        >
+          <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
+            {label}
+          </span>
+          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground/40" />
+        </button>
+      )}
     </div>
   );
 }
@@ -266,7 +282,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Activity & Records */}
-        <CollapsibleSection label="ACTIVITY & RECORDS">
+        <CollapsibleSection label="ACTIVITY & RECORDS" defaultOpen>
           <div className="space-y-2.5">
             <Row icon={<Clock className="h-5 w-5" />} title="Past Sessions" subtitle="View your sprint history" onClick={() => router.push("/dashboard/history")} />
             <Row icon={<FileText className="h-5 w-5" />} title="Reports" subtitle="Performance analytics" onClick={() => router.push("/dashboard/reports")} />
@@ -277,7 +293,7 @@ export default function SettingsPage() {
         </CollapsibleSection>
 
         {/* Account Settings */}
-        <CollapsibleSection label="ACCOUNT SETTINGS">
+        <CollapsibleSection label="ACCOUNT SETTINGS" defaultOpen>
           <div className="space-y-2.5">
             <Row icon={<User className="h-5 w-5" />} title="Personal Details" subtitle="Name, email, phone" onClick={() => router.push("/dashboard/profile/edit")} />
             <Row icon={<Bell className="h-5 w-5" />} title="Notification Preferences" subtitle="Push & reminders" onClick={() => router.push("/dashboard/notifications")} />
@@ -289,7 +305,7 @@ export default function SettingsPage() {
         </CollapsibleSection>
 
         {/* Support */}
-        <CollapsibleSection label="SUPPORT">
+        <CollapsibleSection label="SUPPORT" defaultOpen>
           <div className="space-y-2.5">
             <Row icon={<HelpCircle className="h-5 w-5" />} title="Help Center" subtitle="Guides & tutorials" onClick={() => router.push("/dashboard/help")} />
             <Row icon={<MessageSquare className="h-5 w-5" />} title="FAQs" subtitle="Common questions" />
