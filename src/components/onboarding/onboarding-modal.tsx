@@ -97,6 +97,12 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const [localDob, setLocalDob] = useState(store.dob);
 
   useEffect(() => {
+    if (store.firstName && store.persona && store.goal) {
+      setCompleted(true);
+    }
+  }, [store.firstName, store.persona, store.goal]);
+
+  useEffect(() => {
     if (inline) return;
     if (overlayRef.current && panelRef.current) {
       gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
@@ -199,7 +205,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto min-h-0 px-5 pt-2 pb-4" style={{ scrollbarWidth: "none" }}>
+      <div className="flex-1 overflow-y-auto min-h-0 px-5 pt-2 pb-4 scroll-smooth" style={{ scrollbarWidth: "none" }}>
         {completed ? (
           <CompletionScreen />
         ) : (
@@ -593,31 +599,35 @@ function ScrollColumn({
 
 function CompletionScreen() {
   return (
-    <div className="flex flex-col items-center justify-center py-8 text-center">
-      <div className="relative mb-6">
-        <div className="size-20 rounded-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(200,255,77,0.15), rgba(200,255,77,0.05))" }}>
-          <PartyPopper size={36} className="text-[#C8FF5A]" />
+    <div className="flex flex-col items-center justify-center py-10 text-center animate-in fade-in duration-300">
+      <div className="relative mb-5">
+        <div className="size-16 rounded-full flex items-center justify-center bg-[#C8FF4D]/[0.12]">
+          <PartyPopper size={30} className="text-[#C8FF4D]" />
         </div>
-        <div className="absolute -top-1 -right-1 size-6 rounded-full bg-[#C8FF5A] flex items-center justify-center shadow-lg shadow-[#C8FF5A]/30">
-          <Check size={12} className="text-[#0A0C0A]" strokeWidth={3} />
+        <div className="absolute -top-1 -right-1 size-5 rounded-full bg-[#C8FF4D] flex items-center justify-center shadow-lg shadow-[#C8FF4D]/30">
+          <Check size={10} className="text-[#0A0C0A]" strokeWidth={3} />
         </div>
       </div>
-      <h2 className="text-[22px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
-      <p className="text-[13px] text-muted-foreground/45 mt-1.5 font-medium">Let&apos;s start learning</p>
+      <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
+      <p className="text-[12px] text-muted-foreground/40 mt-1 font-medium">Let&apos;s start learning</p>
 
-      <div className="w-full mt-8 space-y-2.5">
+      <div className="w-full mt-6 space-y-2">
         {[
-          { icon: Target, label: "Start a Sprint", desc: "Test your skills with a timed quiz", color: "#34D399" },
-          { icon: BookOpen, label: "Explore Techniques", desc: "Browse methods to solve faster", color: "#F59E0B" },
-          { icon: Zap, label: "Try Practice Mode", desc: "Step-by-step guided exercises", color: "#22D3EE" },
-        ].map((item) => (
-          <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-white/[0.05] bg-white/[0.02] px-4 py-3.5">
-            <div className="size-9 shrink-0 rounded-xl flex items-center justify-center" style={{ background: item.color + "15" }}>
-              <item.icon size={16} style={{ color: item.color }} />
+          { icon: Target, label: "Start a Sprint", desc: "Test your skills with a timed quiz" },
+          { icon: BookOpen, label: "Explore Techniques", desc: "Browse methods to solve faster" },
+          { icon: Zap, label: "Try Practice Mode", desc: "Step-by-step guided exercises" },
+        ].map((item, i) => (
+          <div
+            key={item.label}
+            className="flex items-center gap-3 rounded-2xl border border-white/[0.05] bg-white/[0.02] px-4 py-3 opacity-0 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+            style={{ animationDelay: `${i * 100}ms` }}
+          >
+            <div className="size-8 shrink-0 rounded-xl flex items-center justify-center bg-[#C8FF4D]/[0.1]">
+              <item.icon size={14} className="text-[#C8FF4D]" />
             </div>
             <div>
-              <p className="text-[12px] font-bold text-foreground/80">{item.label}</p>
-              <p className="text-[10px] text-muted-foreground/35 font-medium">{item.desc}</p>
+              <p className="text-[11px] font-bold text-foreground/80">{item.label}</p>
+              <p className="text-[9px] text-muted-foreground/30 font-medium">{item.desc}</p>
             </div>
           </div>
         ))}
