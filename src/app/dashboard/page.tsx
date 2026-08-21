@@ -271,7 +271,6 @@ export default function DashboardPage() {
           <div className="snap-center shrink-0 w-[calc(100%-32px)] max-w-[480px] h-[380px]">
             <div className="rounded-3xl border border-primary/15 overflow-hidden h-full flex flex-col relative" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25), transparent)" }} />
-              <p className="px-5 pt-4 pb-2 text-[11px] text-muted-foreground/40 font-normal italic text-center shrink-0 relative">Let us guide you better</p>
               <div className="flex-1 overflow-y-auto min-h-0 relative" style={{ scrollbarWidth: "none" }}>
                 <OnboardingModal onClose={() => {}} inline />
               </div>

@@ -178,14 +178,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="sticky top-0 z-10 backdrop-blur-xl px-5 pt-4 pb-3" style={{ background: "rgba(10,12,10,0.9)" }}>
-        <div className="flex items-center justify-between mb-3">
-          <button
-            type="button"
-            onClick={handleClose}
-            className="grid size-8 place-items-center rounded-xl text-muted-foreground/50 hover:text-foreground hover:bg-white/[0.04] transition-all"
-          >
-            <X size={16} />
-          </button>
+        <div className="flex items-center justify-end mb-3">
           <div className="flex items-center gap-1.5">
             {STEP_LABELS.map((label, i) => {
               const isActive = i === step;
@@ -205,9 +198,6 @@ export function OnboardingModal({ onClose, inline }: Props) {
               );
             })}
           </div>
-          <span className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground/35 uppercase">
-            {step + 1}/{TOTAL_STEPS}
-          </span>
         </div>
       </div>
 
@@ -263,14 +253,14 @@ export function OnboardingModal({ onClose, inline }: Props) {
       {/* Footer */}
       {!completed && (
         <div className="sticky bottom-0 backdrop-blur-xl px-5 pb-5 pt-3" style={{ background: "rgba(10,12,10,0.9)" }}>
-          <div className="flex gap-3">
+          <div className="flex items-center justify-between">
             {step > 0 && (
               <button
                 type="button"
                 onClick={goPrev}
-                className="flex items-center justify-center gap-1.5 rounded-2xl border border-white/[0.06] bg-white/[0.03] px-5 py-3.5 text-[12px] font-bold text-foreground/70 outline-none transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                className="flex items-center justify-center gap-1.5 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-[11px] font-bold text-foreground/50 outline-none transition-all hover:bg-white/[0.06] active:scale-[0.98]"
               >
-                <ChevronLeft size={14} />
+                <ChevronLeft size={12} />
                 Back
               </button>
             )}
@@ -279,23 +269,17 @@ export function OnboardingModal({ onClose, inline }: Props) {
               onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
               disabled={!canNext}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 rounded-2xl py-3.5 text-[13px] font-bold outline-none transition-all active:scale-[0.98]",
+                "size-10 rounded-full flex items-center justify-center outline-none transition-all active:scale-90",
                 canNext
                   ? "text-[#0A0C0A]"
-                  : "bg-white/[0.06] text-muted-foreground/30 cursor-not-allowed",
+                  : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
               style={canNext ? { background: accentColor } : undefined}
             >
               {step === TOTAL_STEPS - 1 ? (
-                <>
-                  <Sparkles size={14} />
-                  Let&apos;s Go
-                </>
+                <Sparkles size={16} />
               ) : (
-                <>
-                  Continue
-                  <ArrowRight size={14} />
-                </>
+                <ArrowRight size={16} />
               )}
             </button>
           </div>
