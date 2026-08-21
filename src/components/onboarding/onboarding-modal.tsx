@@ -175,9 +175,9 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const panel = (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="sticky top-0 z-10 backdrop-blur-xl px-5 pt-4 pb-3" style={{ background: "rgba(10,12,10,0.9)" }}>
+      <div className="sticky top-0 z-10 px-5 pt-4 pb-2">
         <div className="flex items-center justify-end mb-3">
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             {STEP_LABELS.map((label, i) => {
               const isActive = i === step;
               const isDone = i < step;
@@ -186,7 +186,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                   key={i}
                   className={cn(
                     "rounded-full transition-all duration-400",
-                    isActive ? "h-1.5 w-6 bg-white/80" : isDone ? "h-1.5 w-3 bg-white/30" : "h-1.5 w-1.5 bg-white/15"
+                    isActive ? "h-2 w-2 bg-white" : isDone ? "h-1.5 w-1.5 bg-white/50" : "h-1.5 w-1.5 bg-white/15"
                   )}
                 />
               );
@@ -246,33 +246,33 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
       {/* Footer */}
       {!completed && (
-        <div className="sticky bottom-0 backdrop-blur-xl px-5 pb-5 pt-3" style={{ background: "rgba(10,12,10,0.9)" }}>
+        <div className="sticky bottom-0 px-5 pb-5 pt-3">
           <div className="flex items-center justify-between">
-            {step > 0 && (
+            {step > 0 ? (
               <button
                 type="button"
                 onClick={goPrev}
-                className="flex items-center justify-center gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-[11px] font-bold text-foreground/50 outline-none transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                className="flex items-center gap-1 text-[11px] font-bold text-foreground/40 outline-none transition-colors hover:text-foreground/70 active:scale-[0.98]"
               >
-                <ChevronLeft size={12} />
+                <ChevronLeft size={14} />
                 Back
               </button>
-            )}
+            ) : <div />}
             <button
               type="button"
               onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
               disabled={!canNext}
               className={cn(
-                "flex items-center justify-center transition-all active:scale-90",
+                "transition-all active:scale-90",
                 canNext
                   ? "text-primary"
                   : "text-muted-foreground/20 cursor-not-allowed",
               )}
             >
               {step === TOTAL_STEPS - 1 ? (
-                <Sparkles size={20} />
+                <Sparkles size={22} />
               ) : (
-                <ArrowRight size={20} />
+                <ArrowRight size={22} />
               )}
             </button>
           </div>
