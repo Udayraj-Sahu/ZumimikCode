@@ -24,26 +24,28 @@ import {
   School,
   Compass,
   PartyPopper,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
 const PERSONA_OPTIONS = [
-  { label: "Student", icon: GraduationCap, color: "#34D399" },
-  { label: "Working Professional", icon: Briefcase, color: "#22D3EE" },
-  { label: "Job Seeker", icon: Search, color: "#A78BFA" },
-  { label: "Parent", icon: Heart, color: "#FB7185" },
-  { label: "Educator", icon: BookOpen, color: "#FBBF24" },
-  { label: "Other", icon: Plus, color: "#8B9086" },
+  { label: "Student", icon: GraduationCap, color: "#34D399", desc: "Currently studying" },
+  { label: "Working Professional", icon: Briefcase, color: "#22D3EE", desc: "Balancing work & prep" },
+  { label: "Job Seeker", icon: Search, color: "#A78BFA", desc: "Preparing for next role" },
+  { label: "Parent", icon: Heart, color: "#FB7185", desc: "Guiding a child" },
+  { label: "Educator", icon: BookOpen, color: "#FBBF24", desc: "Teaching & mentoring" },
+  { label: "Other", icon: Plus, color: "#8B9086", desc: "Something else" },
 ];
 
 const GOAL_OPTIONS = [
-  { label: "Prepare for CAT", icon: Target, color: "#34D399" },
-  { label: "Prepare for GMAT", icon: Calculator, color: "#22D3EE" },
-  { label: "Prepare for GRE", icon: BookOpen, color: "#A78BFA" },
-  { label: "Master speed math", icon: Zap, color: "#FBBF24" },
-  { label: "Help with my school stuff", icon: School, color: "#FB7185" },
-  { label: "Just exploring", icon: Compass, color: "#8B9086" },
+  { label: "Prepare for CAT", icon: Target, color: "#34D399", desc: "MBA entrance exam" },
+  { label: "Prepare for GMAT", icon: Calculator, color: "#22D3EE", desc: "Graduate management" },
+  { label: "Prepare for GRE", icon: BookOpen, color: "#A78BFA", desc: "Graduate record exam" },
+  { label: "Master speed math", icon: Zap, color: "#FBBF24", desc: "Calculation skills" },
+  { label: "Help with school stuff", icon: School, color: "#FB7185", desc: "Academic support" },
+  { label: "Just exploring", icon: Compass, color: "#8B9086", desc: "Seeing what's here" },
 ];
 
 const TRIGGER_GROUPED = [
@@ -72,8 +74,7 @@ const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
 const YEARS = Array.from({ length: 30 }, (_, i) => 2010 - i);
 
 const TOTAL_STEPS = 5;
-
-const STEP_ICONS = [User, Users, Target, Brain, ClipboardList];
+const STEP_LABELS = ["Name", "Who", "Goal", "Vibe", "Details"];
 const STEP_COLORS = ["#C8FF4D", "#22D3EE", "#34D399", "#A855F7", "#FF5C5C"];
 
 type Props = { onClose: () => void; inline?: boolean };
@@ -139,7 +140,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     if (contentRef.current) {
       gsap.fromTo(contentRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" });
     }
-    setTimeout(() => handleClose(), 1200);
+    setTimeout(() => handleClose(), 2000);
   };
 
   const goNext = () => {
@@ -171,91 +172,51 @@ export function OnboardingModal({ onClose, inline }: Props) {
     step === 3 ||
     step === 4;
 
+  const accentColor = STEP_COLORS[step];
+
   const panel = (
-    <>
-      {/* Header with dot indicators */}
-      <div className="sticky top-0 z-10 bg-card/95 backdrop-blur-sm px-5 pt-4 pb-3 border-b border-border/40">
-        <div className="flex items-center justify-between mb-4">
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="sticky top-0 z-10 backdrop-blur-xl px-5 pt-4 pb-3" style={{ background: "rgba(10,12,10,0.9)" }}>
+        <div className="flex items-center justify-between mb-3">
           <button
             type="button"
             onClick={handleClose}
-            className="grid size-8 place-items-center rounded-lg text-muted-foreground/50 hover:text-foreground transition-colors"
+            className="grid size-8 place-items-center rounded-xl text-muted-foreground/50 hover:text-foreground hover:bg-white/[0.04] transition-all"
           >
             <X size={16} />
           </button>
-          <div className="flex items-center gap-2">
-            {Array.from({ length: TOTAL_STEPS }).map((_, i) => {
-              const StepIcon = STEP_ICONS[i];
+          <div className="flex items-center gap-1.5">
+            {STEP_LABELS.map((label, i) => {
               const isActive = i === step;
               const isDone = i < step;
               return (
-                <div
-                  key={i}
-                  className={cn(
-                    "flex items-center justify-center rounded-full transition-all duration-300",
-                    isActive
-                      ? "size-8 bg-primary/15 ring-2 ring-primary/40"
-                      : isDone
-                        ? "size-6 bg-primary/10"
-                        : "size-6 bg-muted",
-                  )}
-                >
-                  {isDone ? (
-                    <Check size={10} className="text-primary" />
-                  ) : (
-                    <StepIcon
-                      size={isActive ? 14 : 10}
-                      className={cn(
-                        "transition-colors duration-300",
-                        isActive ? "text-primary" : "text-muted-foreground/40",
-                      )}
-                    />
-                  )}
+                <div key={i} className="flex items-center gap-1">
+                  <div
+                    className={cn(
+                      "h-1.5 rounded-full transition-all duration-400",
+                      isActive ? "w-6" : isDone ? "w-3" : "w-1.5"
+                    )}
+                    style={{
+                      background: isDone || isActive ? STEP_COLORS[i] : "rgba(255,255,255,0.1)",
+                    }}
+                  />
                 </div>
               );
             })}
           </div>
-        </div>
-        {/* Progress bar */}
-        <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
-          <div
-            className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-            style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }}
-          />
+          <span className="text-[10px] font-bold tracking-[0.12em] text-muted-foreground/35 uppercase">
+            {step + 1}/{TOTAL_STEPS}
+          </span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-5 min-h-[320px] flex flex-col overflow-hidden">
-          {completed ? (
-            <div className="flex-1 flex flex-col items-center justify-center gap-4">
-              <div className="grid size-20 place-items-center rounded-full bg-primary/15">
-                <PartyPopper size={36} className="text-primary" />
-              </div>
-              <div className="text-center">
-                <p className="text-fluid-lg font-black text-foreground">You&apos;re all set!</p>
-                <p className="text-fluid-xs text-muted-foreground/60 mt-1">Let&apos;s start learning</p>
-              </div>
-              <div className="w-full mt-2 space-y-2.5">
-                {[
-                  { icon: Target, label: "Start a Sprint", desc: "Test your skills with a timed quiz", color: "#34D399" },
-                  { icon: BookOpen, label: "Explore Techniques", desc: "Browse methods to solve faster", color: "#F59E0B" },
-                  { icon: Zap, label: "Try Practice Mode", desc: "Step-by-step guided exercises", color: "#22D3EE" },
-                ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-3 rounded-xl border border-border/40 bg-background/50 px-4 py-3">
-                    <div className="size-8 shrink-0 rounded-lg flex items-center justify-center" style={{ background: item.color + "18" }}>
-                      <item.icon size={14} style={{ color: item.color }} />
-                    </div>
-                    <div>
-                      <p className="text-[12px] font-bold text-foreground">{item.label}</p>
-                      <p className="text-[10px] text-muted-foreground/40">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+      <div className="flex-1 overflow-y-auto min-h-0 px-5 pt-2 pb-4" style={{ scrollbarWidth: "none" }}>
+        {completed ? (
+          <CompletionScreen />
         ) : (
-          <div ref={contentRef} className="flex-1 flex flex-col">
+          <div ref={contentRef} className="flex flex-col">
             {step === 0 && (
               <StepName
                 value={localFirstName}
@@ -301,34 +262,46 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
       {/* Footer */}
       {!completed && (
-        <div className="sticky bottom-0 bg-card/95 backdrop-blur-sm px-5 pb-5 pt-3 border-t border-border/40 flex gap-3">
-          {step > 0 && (
+        <div className="sticky bottom-0 backdrop-blur-xl px-5 pb-5 pt-3" style={{ background: "rgba(10,12,10,0.9)" }}>
+          <div className="flex gap-3">
+            {step > 0 && (
+              <button
+                type="button"
+                onClick={goPrev}
+                className="flex items-center justify-center gap-1.5 rounded-2xl border border-white/[0.06] bg-white/[0.03] px-5 py-3.5 text-[12px] font-bold text-foreground/70 outline-none transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+              >
+                <ChevronLeft size={14} />
+                Back
+              </button>
+            )}
             <button
               type="button"
-              onClick={goPrev}
-              className="flex items-center gap-1.5 rounded-2xl border border-border/60 bg-background px-4 py-3.5 text-fluid-xs font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+              onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
+              disabled={!canNext}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-2 rounded-2xl py-3.5 text-[13px] font-bold outline-none transition-all active:scale-[0.98]",
+                canNext
+                  ? "text-[#0A0C0A]"
+                  : "bg-white/[0.06] text-muted-foreground/30 cursor-not-allowed",
+              )}
+              style={canNext ? { background: accentColor } : undefined}
             >
-              <ChevronLeft size={14} />
-              Back
+              {step === TOTAL_STEPS - 1 ? (
+                <>
+                  <Sparkles size={14} />
+                  Let&apos;s Go
+                </>
+              ) : (
+                <>
+                  Continue
+                  <ArrowRight size={14} />
+                </>
+              )}
             </button>
-          )}
-          <button
-            type="button"
-            onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
-            disabled={!canNext}
-            className={cn(
-              "flex-1 flex items-center justify-center gap-2 rounded-2xl py-3.5 text-fluid-sm font-bold outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring",
-              canNext
-                ? "bg-primary text-primary-foreground hover:opacity-90"
-                : "bg-muted text-muted-foreground/40 cursor-not-allowed",
-            )}
-          >
-            {step === TOTAL_STEPS - 1 ? "Finish" : "Continue"}
-            {step < TOTAL_STEPS - 1 && <ChevronRight size={14} />}
-          </button>
+          </div>
         </div>
       )}
-    </>
+    </div>
   );
 
   if (inline) return panel;
@@ -341,7 +314,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     >
       <div
         ref={panelRef}
-        className="w-full max-w-md max-h-[90vh] overflow-y-auto bg-card rounded-t-3xl sm:rounded-3xl border border-border/60 shadow-2xl"
+        className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
+        style={{ background: "rgba(14,17,13,0.98)" }}
         onClick={(e) => e.stopPropagation()}
       >
         {panel}
@@ -355,23 +329,28 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
 function StepName({ value, onChange, onNext }: { value: string; onChange: (v: string) => void; onNext: () => void }) {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-col">
       <div className="mb-6">
-        <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 mb-3">
-          <User size={22} className="text-primary" />
+        <div className="size-11 rounded-2xl flex items-center justify-center mb-4" style={{ background: "rgba(200,255,77,0.1)" }}>
+          <User size={20} className="text-[#C8FF5A]" />
         </div>
-        <h2 className="text-fluid-lg font-black text-foreground">What&apos;s your first name?</h2>
-        <p className="text-fluid-xs text-muted-foreground/60 mt-1">So we can personalise your experience</p>
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">What&apos;s your first name?</h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">So we can personalise your experience</p>
       </div>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => { if (e.key === "Enter" && value.trim().length > 0) onNext(); }}
-        placeholder="Enter your first name"
-        className="w-full rounded-2xl border border-border/60 bg-background px-4 py-4 text-fluid-sm text-foreground placeholder:text-muted-foreground/30 outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/40 transition-all"
+        placeholder="Type your name..."
+        className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/25 outline-none focus:border-[#C8FF5A]/30 focus:ring-1 focus:ring-[#C8FF5A]/20 transition-all"
         autoFocus
       />
+      {value.trim().length > 0 && (
+        <p className="mt-3 text-[12px] text-muted-foreground/35 font-medium">
+          Hey <span className="text-foreground/70 font-bold">{value.trim()}</span>, nice to meet you!
+        </p>
+      )}
     </div>
   );
 }
@@ -385,17 +364,17 @@ function StepSingleSelect({
 }: {
   title: string;
   subtitle: string;
-  options: { label: string; icon: any; color: string }[];
+  options: { label: string; icon: any; color: string; desc?: string }[];
   value: string | null;
   onSelect: (v: string) => void;
 }) {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-col">
       <div className="mb-5">
-        <h2 className="text-fluid-lg font-black text-foreground">{title}</h2>
-        <p className="text-fluid-xs text-muted-foreground/60 mt-1">{subtitle}</p>
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">{title}</h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">{subtitle}</p>
       </div>
-      <div className="flex flex-col gap-2.5">
+      <div className="grid grid-cols-2 gap-2.5">
         {options.map((opt) => {
           const Icon = opt.icon;
           const active = value === opt.label;
@@ -405,24 +384,34 @@ function StepSingleSelect({
               type="button"
               onClick={() => onSelect(opt.label)}
               className={cn(
-                "flex items-center gap-3 rounded-2xl border p-4 text-left text-fluid-sm font-bold transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring",
+                "relative flex flex-col items-center gap-2 rounded-2xl border p-4 text-center transition-all active:scale-[0.97]",
                 active
-                  ? "border-primary bg-primary/5 shadow-[0_0_0_1px_var(--primary)]"
-                  : "border-border/60 bg-background hover:border-border hover:bg-accent/30",
+                  ? "border-transparent"
+                  : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
               )}
+              style={active ? {
+                background: `linear-gradient(135deg, ${opt.color}10, ${opt.color}05)`,
+                borderColor: `${opt.color}30`,
+                boxShadow: `0 0 20px ${opt.color}08`,
+              } : undefined}
             >
               <div
-                className="grid size-10 shrink-0 place-items-center rounded-xl"
-                style={{ backgroundColor: opt.color + "1A" }}
+                className="size-10 rounded-xl flex items-center justify-center transition-all"
+                style={{ backgroundColor: active ? opt.color + "20" : "rgba(255,255,255,0.04)" }}
               >
-                <Icon size={18} style={{ color: opt.color }} />
+                <Icon size={18} style={{ color: active ? opt.color : "rgba(255,255,255,0.3)" }} />
               </div>
-              <span className={cn("flex-1", active ? "text-primary" : "text-foreground")}>
-                {opt.label}
-              </span>
+              <div>
+                <p className={cn("text-[12px] font-bold leading-tight", active ? "text-foreground" : "text-foreground/60")}>
+                  {opt.label}
+                </p>
+                {opt.desc && (
+                  <p className="text-[9px] text-muted-foreground/30 mt-0.5 font-medium">{opt.desc}</p>
+                )}
+              </div>
               {active && (
-                <div className="grid size-6 place-items-center rounded-full bg-primary">
-                  <Check size={12} className="text-primary-foreground" />
+                <div className="absolute top-2.5 right-2.5 size-5 rounded-full flex items-center justify-center" style={{ background: opt.color }}>
+                  <Check size={10} className="text-[#0A0C0A]" strokeWidth={3} />
                 </div>
               )}
             </button>
@@ -435,21 +424,18 @@ function StepSingleSelect({
 
 function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-col">
       <div className="mb-5">
-        <h2 className="text-fluid-lg font-black text-foreground">Which describe you right now?</h2>
-        <p className="text-fluid-xs text-muted-foreground/60 mt-1">Pick all that apply</p>
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Which describe you right now?</h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Pick all that apply</p>
       </div>
       <div className="flex flex-col gap-5">
         {TRIGGER_GROUPED.map((group) => (
           <div key={group.label}>
-            <div className="flex items-center gap-2 mb-2.5">
-              <span
-                className="w-1 h-4 rounded-full"
-                style={{ backgroundColor: group.color }}
-              />
-              <p className="text-[10px] font-bold tracking-widest text-muted-foreground/50">
-                {group.label.toUpperCase()}
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-1 h-3.5 rounded-full" style={{ backgroundColor: group.color }} />
+              <p className="text-[10px] font-bold tracking-[0.14em] text-muted-foreground/40 uppercase">
+                {group.label}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -463,13 +449,14 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                       onChange(active ? value.filter((t) => t !== tag) : [...value, tag])
                     }
                     className={cn(
-                      "flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-fluid-xs font-bold transition-all active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring",
+                      "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[11px] font-bold transition-all active:scale-95",
                       active
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground/70 hover:bg-accent",
+                        ? "text-[#0A0C0A]"
+                        : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
                     )}
+                    style={active ? { background: group.color } : undefined}
                   >
-                    {active && <Check size={11} strokeWidth={3} />}
+                    {active && <Check size={10} strokeWidth={3} />}
                     {tag}
                   </button>
                 );
@@ -494,13 +481,13 @@ function StepDetails({
   onDobChange: (fn: (prev: { day: number; month: string; year: number }) => { day: number; month: string; year: number }) => void;
 }) {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-col">
       <div className="mb-5">
-        <h2 className="text-fluid-lg font-black text-foreground">Personal Details</h2>
-        <p className="text-fluid-xs text-muted-foreground/60 mt-1">Help us personalise your journey</p>
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Personal Details</h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Help us personalise your journey</p>
       </div>
 
-      <p className="text-[10px] font-bold tracking-widest text-muted-foreground/50 mb-2.5">GENDER</p>
+      <p className="text-[10px] font-bold tracking-[0.14em] text-muted-foreground/35 mb-2.5 uppercase">Gender</p>
       <div className="flex gap-2.5 mb-6">
         {["Male", "Female"].map((s) => (
           <button
@@ -508,10 +495,10 @@ function StepDetails({
             type="button"
             onClick={() => onSexChange(s)}
             className={cn(
-              "flex-1 flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-fluid-xs font-bold transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring",
+              "flex-1 flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-[13px] font-bold transition-all active:scale-[0.98]",
               sex === s
-                ? "border-primary bg-primary/5 text-primary shadow-[0_0_0_1px_var(--primary)]"
-                : "border-border/60 bg-background text-foreground hover:bg-accent/30",
+                ? "border-[#FF5C5C]/30 bg-[#FF5C5C]/10 text-[#FF5C5C]"
+                : "border-white/[0.06] bg-white/[0.03] text-foreground/60 hover:bg-white/[0.05]",
             )}
           >
             {s}
@@ -519,28 +506,23 @@ function StepDetails({
         ))}
       </div>
 
-      <p className="text-[10px] font-bold tracking-widest text-muted-foreground/50 mb-3">DATE OF BIRTH</p>
-      <div className="rounded-2xl border border-border/60 bg-background overflow-hidden">
+      <p className="text-[10px] font-bold tracking-[0.14em] text-muted-foreground/35 mb-3 uppercase">Date of Birth</p>
+      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
         <div className="flex">
-          {/* Day */}
           <ScrollColumn
             items={DAYS.map((d) => ({ value: String(d), label: String(d) }))}
             selected={String(dob.day)}
             onSelect={(v) => onDobChange((prev) => ({ ...prev, day: Number(v) }))}
             label="DD"
           />
-          {/* Divider */}
-          <div className="w-px bg-border/40 my-3" />
-          {/* Month */}
+          <div className="w-px bg-white/[0.06] my-3" />
           <ScrollColumn
             items={MONTHS.map((m) => ({ value: m, label: m.slice(0, 3) }))}
             selected={dob.month}
             onSelect={(v) => onDobChange((prev) => ({ ...prev, month: v }))}
             label="MM"
           />
-          {/* Divider */}
-          <div className="w-px bg-border/40 my-3" />
-          {/* Year */}
+          <div className="w-px bg-white/[0.06] my-3" />
           <ScrollColumn
             items={YEARS.map((y) => ({ value: String(y), label: String(y) }))}
             selected={String(dob.year)}
@@ -589,17 +571,15 @@ function ScrollColumn({
 
   return (
     <div className="flex-1 flex flex-col">
-      <p className="text-center text-[9px] font-bold tracking-widest text-muted-foreground/30 pt-2 pb-1">
+      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-muted-foreground/25 pt-2 pb-1">
         {label}
       </p>
       <div className="relative" style={{ height: ITEM_H * VISIBLE }}>
-        {/* Top/bottom fade masks */}
-        <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
-        {/* Selection highlight */}
+        <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[rgba(14,17,13,0.98)] to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[rgba(14,17,13,0.98)] to-transparent z-10 pointer-events-none" />
         <div
-          className="absolute left-1 right-1 h-10 rounded-xl bg-primary/8 border border-primary/20 z-0 pointer-events-none"
-          style={{ top: PAD * ITEM_H }}
+          className="absolute left-1 right-1 h-10 rounded-xl border z-0 pointer-events-none"
+          style={{ top: PAD * ITEM_H, background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.06)" }}
         />
         <div
           ref={containerRef}
@@ -607,7 +587,6 @@ function ScrollColumn({
           className="h-full overflow-y-scroll scrollbar-thin snap-y snap-mandatory"
           style={{ scrollBehavior: "smooth" }}
         >
-          {/* Top padding */}
           <div style={{ height: PAD * ITEM_H }} />
           {items.map((item) => {
             const isActive = item.value === selected;
@@ -622,7 +601,7 @@ function ScrollColumn({
                 }}
                 className={cn(
                   "w-full flex items-center justify-center snap-center transition-all duration-200",
-                  isActive ? "text-foreground font-bold text-fluid-sm" : "text-muted-foreground/40 text-fluid-xs font-medium",
+                  isActive ? "text-foreground font-bold text-[15px]" : "text-muted-foreground/30 text-[13px] font-medium",
                 )}
                 style={{ height: ITEM_H }}
               >
@@ -630,9 +609,43 @@ function ScrollColumn({
               </button>
             );
           })}
-          {/* Bottom padding */}
           <div style={{ height: PAD * ITEM_H }} />
         </div>
+      </div>
+    </div>
+  );
+}
+
+function CompletionScreen() {
+  return (
+    <div className="flex flex-col items-center justify-center py-8 text-center">
+      <div className="relative mb-6">
+        <div className="size-20 rounded-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(200,255,77,0.15), rgba(200,255,77,0.05))" }}>
+          <PartyPopper size={36} className="text-[#C8FF5A]" />
+        </div>
+        <div className="absolute -top-1 -right-1 size-6 rounded-full bg-[#C8FF5A] flex items-center justify-center shadow-lg shadow-[#C8FF5A]/30">
+          <Check size={12} className="text-[#0A0C0A]" strokeWidth={3} />
+        </div>
+      </div>
+      <h2 className="text-[22px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
+      <p className="text-[13px] text-muted-foreground/45 mt-1.5 font-medium">Let&apos;s start learning</p>
+
+      <div className="w-full mt-8 space-y-2.5">
+        {[
+          { icon: Target, label: "Start a Sprint", desc: "Test your skills with a timed quiz", color: "#34D399" },
+          { icon: BookOpen, label: "Explore Techniques", desc: "Browse methods to solve faster", color: "#F59E0B" },
+          { icon: Zap, label: "Try Practice Mode", desc: "Step-by-step guided exercises", color: "#22D3EE" },
+        ].map((item) => (
+          <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-white/[0.05] bg-white/[0.02] px-4 py-3.5">
+            <div className="size-9 shrink-0 rounded-xl flex items-center justify-center" style={{ background: item.color + "15" }}>
+              <item.icon size={16} style={{ color: item.color }} />
+            </div>
+            <div>
+              <p className="text-[12px] font-bold text-foreground/80">{item.label}</p>
+              <p className="text-[10px] text-muted-foreground/35 font-medium">{item.desc}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
