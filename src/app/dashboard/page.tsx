@@ -138,11 +138,57 @@ function SectionHeading({ children, className }: { children: React.ReactNode; cl
   );
 }
 
-function SectionLabel({ children, className }: { children: React.ReactNode; className?: string }) {
+function SectionLabel({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <p className={cn("text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase", className)}>
+    <p className={cn("text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase", className)} style={style}>
       {children}
     </p>
+  );
+}
+
+type SlideActionCardProps = {
+  accent: string;
+  label: string;
+  icon: LucideIcon;
+  iconFill?: boolean;
+  title: string;
+  desc: string;
+  cta: string;
+  ctaFrom: string;
+  ctaTo: string;
+  href: string;
+  glowShadow: string;
+};
+
+function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta, ctaFrom, ctaTo, href, glowShadow }: SlideActionCardProps) {
+  const router = useRouter();
+  return (
+    <div
+      className="relative flex-1 rounded-2xl border overflow-hidden flex flex-col px-4 pt-3 pb-3.5"
+      style={{ borderColor: `${accent}26`, background: `linear-gradient(180deg, ${accent}1A 0%, rgba(255,255,255,0.02) 100%)` }}
+    >
+      <div className="flex items-center gap-2.5">
+        <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: `${accent}26` }}>
+          <Icon size={15} style={{ color: accent }} fill={iconFill ? "currentColor" : "none"} />
+        </div>
+        <SectionLabel style={{ color: accent }}>{label}</SectionLabel>
+      </div>
+      <div className="flex-1 flex flex-col justify-center">
+        <h3 className="text-[16px] font-bold tracking-[-0.03em] text-foreground leading-tight">{title}</h3>
+        <p className="mt-1 text-[11.5px] text-muted-foreground/45 font-normal">{desc}</p>
+      </div>
+      <button
+        type="button"
+        onClick={() => router.push(href)}
+        className="flex items-center justify-center gap-2 rounded-xl px-5 py-2 text-[11.5px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all active:scale-95"
+        style={{ background: `linear-gradient(90deg, ${ctaFrom}, ${ctaTo})`, boxShadow: `0 0 0 rgba(0,0,0,0)` }}
+        onMouseEnter={(e) => { e.currentTarget.style.boxShadow = glowShadow; }}
+        onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 0 rgba(0,0,0,0)"; }}
+      >
+        {cta}
+      </button>
+      <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-20 pointer-events-none" style={{ background: `radial-gradient(circle, ${accent}, transparent 70%)` }} />
+    </div>
   );
 }
 
@@ -277,7 +323,7 @@ export default function DashboardPage() {
           onScroll={handleCarouselScroll}
         >
           {/* Slide 1: Complete Account Details — inline onboarding */}
-          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+          <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
             <div data-carousel-card className="w-[calc(100%-40px)] mx-auto rounded-3xl border border-primary/15 overflow-hidden h-full flex flex-col relative" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25), transparent)" }} />
               <div className="flex-1 overflow-y-auto min-h-0 relative" style={{ scrollbarWidth: "none" }}>
@@ -287,7 +333,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 2: Your Stats */}
-          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 1 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+          <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 1 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
             <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, rgba(199,242,82,0.05) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
               <div className="relative flex items-center justify-between mb-4">
@@ -341,7 +387,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 3: This Week + Daily Habits */}
-          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+          <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
             <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
@@ -421,49 +467,42 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 4: Practice + Technique */}
-          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 3 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+          <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 3 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
             <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.25), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.3), transparent)" }} />
 
-              <div className="relative flex-1 rounded-2xl border border-[#22D3EE]/15 overflow-hidden flex flex-col px-4 pt-3 pb-3.5" style={{ background: "linear-gradient(180deg, rgba(34,211,238,0.10) 0%, rgba(255,255,255,0.02) 100%)" }}>
-                <div className="flex items-center gap-2.5">
-                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(34,211,238,0.15)" }}>
-                    <Play size={15} className="text-[#22D3EE]" fill="currentColor" />
-                  </div>
-                  <SectionLabel className="text-[#22D3EE]">PRACTICE MODE</SectionLabel>
-                </div>
-                <div className="flex-1 flex flex-col justify-center">
-                  <h3 className="text-[16px] font-bold tracking-[-0.03em] text-foreground leading-tight">Master with templates</h3>
-                  <p className="mt-1 text-[11.5px] text-muted-foreground/45 font-normal">Guided exercises · Build speed &amp; accuracy</p>
-                </div>
-                <button type="button" onClick={() => router.push("/dashboard/practice")} className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#22D3EE] to-[#06B6D4] px-5 py-2 text-[11.5px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(34,211,238,0.3)] active:scale-95">
-                  <Play size={12} fill="currentColor" /> PRACTICE NOW
-                </button>
-                <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, #22D3EE, transparent 70%)" }} />
-              </div>
+              <SlideActionCard
+                accent="#22D3EE"
+                label="PRACTICE MODE"
+                icon={Play}
+                iconFill
+                title="Master with templates"
+                desc="Guided exercises · Build speed & accuracy"
+                cta="PRACTICE NOW"
+                ctaFrom="#22D3EE"
+                ctaTo="#06B6D4"
+                href="/dashboard/practice"
+                glowShadow="0 0 16px rgba(34,211,238,0.3)"
+              />
 
-              <div className="relative flex-1 rounded-2xl border border-[#F59E0B]/15 overflow-hidden flex flex-col px-4 pt-3 pb-3.5" style={{ background: "linear-gradient(180deg, rgba(245,158,11,0.10) 0%, rgba(255,255,255,0.02) 100%)" }}>
-                <div className="flex items-center gap-2.5">
-                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(245,158,11,0.15)" }}>
-                    <BookOpen size={15} className="text-[#F59E0B]" />
-                  </div>
-                  <SectionLabel className="text-[#F59E0B]">TECHNIQUE LIBRARY</SectionLabel>
-                </div>
-                <div className="flex-1 flex flex-col justify-center">
-                  <h3 className="text-[16px] font-bold tracking-[-0.03em] text-foreground leading-tight">Learn a technique</h3>
-                  <p className="mt-1 text-[11.5px] text-muted-foreground/45 font-normal">Browse core methods · Master each approach</p>
-                </div>
-                <button type="button" onClick={() => router.push("/dashboard/explorer")} className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-5 py-2 text-[11.5px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(245,158,11,0.3)] active:scale-95">
-                  EXPLORE TECHNIQUES
-                </button>
-                <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, #F59E0B, transparent 70%)" }} />
-              </div>
+              <SlideActionCard
+                accent="#F59E0B"
+                label="TECHNIQUE LIBRARY"
+                icon={BookOpen}
+                title="Learn a technique"
+                desc="Browse core methods · Master each approach"
+                cta="EXPLORE TECHNIQUES"
+                ctaFrom="#F59E0B"
+                ctaTo="#D97706"
+                href="/dashboard/explorer"
+                glowShadow="0 0 16px rgba(245,158,11,0.3)"
+              />
             </div>
           </div>
 
           {/* Slide 5: Placeholder */}
-          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+          <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
             <div data-carousel-card className="w-[calc(100%-40px)] mx-auto rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-5 h-full flex items-center justify-center" style={{ background: GLASS_BG }}>
               <span className="text-[12px] text-muted-foreground/25 font-medium">Coming soon</span>
             </div>

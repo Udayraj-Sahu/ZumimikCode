@@ -2,7 +2,7 @@ import type { Technique } from "@/lib/types/technique";
 import { getTechniqueById as mockGetById, getTechniquesBySubject as mockGetBySubject, getAllTechniques as mockGetAll } from "@/lib/mock/techniques";
 import { apiGet } from "./api";
 
-const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
+import { IS_MOCK } from "@/lib/config";
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

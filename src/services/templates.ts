@@ -2,7 +2,7 @@ import type { SolveAlongTemplate, TemplateSession } from "@/lib/types/template";
 import { SAMPLE_TEMPLATES, getTemplatesByDomain as mockGetByDomain, getCategoriesForDomain as mockGetCategories, generateFallbackTemplates } from "@/lib/mock/templates";
 import { apiGet, apiPost } from "./api";
 
-const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
+import { IS_MOCK } from "@/lib/config";
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

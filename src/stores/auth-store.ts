@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { safeLocalStorage } from "@/lib/browser";
+import { IS_MOCK, apiUrl } from "@/lib/config";
 
 type User = {
   id: string;
@@ -23,8 +24,6 @@ type AuthState = {
   completeOnboarding: () => void;
 };
 
-const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
-
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
@@ -43,8 +42,7 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
           });
         } else {
-          const API_PREFIX = "/api/v1";
-          const res = await fetch(`${API_PREFIX}/auth/login`, {
+          const res = await fetch(apiUrl("/auth/login"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password: _password }),
@@ -65,7 +63,7 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
           });
         } else {
-          const res = await fetch(`/api/v1/auth/${method}`, {
+          const res = await fetch(apiUrl(`/auth/${method}`), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ idToken }),

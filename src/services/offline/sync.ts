@@ -1,5 +1,6 @@
 import { db } from "./db";
 import { useNetworkStore, type QueuedMutation } from "@/stores/network-store";
+import { apiUrl } from "@/lib/config";
 
 export async function cacheQueryData(key: string, data: unknown, trustStatus?: string): Promise<void> {
   await db.dashboardCache.put({
@@ -34,11 +35,10 @@ export async function syncAll(): Promise<void> {
   if (!queue.length) return;
 
   const { removeFromQueue } = useNetworkStore.getState();
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
   const results = await Promise.allSettled(
     queue.map(async (mutation: QueuedMutation) => {
-      const res = await fetch(`${API_URL}/api/v1/sync/${mutation.key}`, {
+      const res = await fetch(apiUrl(`/sync/${mutation.key}`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(mutation.payload),

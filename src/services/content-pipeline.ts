@@ -4,7 +4,7 @@ import { apiPost } from "./api";
 import { useNetworkStore } from "@/stores/network-store";
 import { db } from "./offline/db";
 
-const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
+import { IS_MOCK } from "@/lib/config";
 
 let feedbackIdCounter = 0;
 

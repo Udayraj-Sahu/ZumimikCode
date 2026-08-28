@@ -6,7 +6,7 @@ import { Globe, Smartphone, ArrowRight, Check, Loader2, AlertCircle, RefreshCw }
 import { cn } from "@/lib/utils";
 import { isFirebaseConfigured, getFirebaseAuth, getFirebaseGoogleProvider } from "@/lib/firebase/client";
 
-const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
+import { IS_MOCK } from "@/lib/config";
 
 type AuthPanelProps = {
   onAuthSuccess: (data: {
