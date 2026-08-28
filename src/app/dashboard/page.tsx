@@ -415,9 +415,9 @@ export default function DashboardPage() {
               </div>
               <div className="relative h-px w-full bg-white/[0.05]" />
               <SectionLabel className="text-[#34D399] mt-3.5">DAILY HABITS</SectionLabel>
-              <h2 className="relative mt-2 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
+              <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
               <p className="relative mt-0.5 text-[11px] text-muted-foreground/40 font-normal">Daily check-ins · Streaks · Stay accountable</p>
-              <div className="relative mt-3 flex flex-1 items-center gap-4 min-h-0">
+              <div className="relative mt-3 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="68" height="68" viewBox="0 0 64 64">
                     <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
@@ -454,7 +454,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
-              <div className="relative mt-3 flex items-center justify-between">
+              <div className="relative mt-auto pt-4 flex items-center justify-between">
                 <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95">
                   VIEW HABITS
                 </button>
