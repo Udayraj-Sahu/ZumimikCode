@@ -268,7 +268,7 @@ export default function DashboardPage() {
           onScroll={handleCarouselScroll}
         >
           {/* Slide 1: Complete Account Details — inline onboarding */}
-          <div className="snap-center shrink-0 w-[calc(100%-32px)] max-w-[480px] h-[380px]">
+          <div className="snap-center shrink-0 w-[calc(100%-40px)] max-w-[480px] h-[380px]">
             <div className="rounded-3xl border border-primary/15 overflow-hidden h-full flex flex-col relative" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25), transparent)" }} />
               <div className="flex-1 overflow-y-auto min-h-0 relative" style={{ scrollbarWidth: "none" }}>
@@ -352,7 +352,7 @@ export default function DashboardPage() {
                 {streak.labels.map((day, i) => {
                   const done = streak.days[i];
                   return (
-                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_rgba(199,242,82,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
+                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_rgba(52,211,153,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, #34D399, #10B981)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
                       {day}
                     </div>
                   );
