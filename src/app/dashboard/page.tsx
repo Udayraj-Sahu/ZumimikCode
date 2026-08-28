@@ -403,7 +403,7 @@ export default function DashboardPage() {
                   {streak.current} day
                 </div>
               </div>
-              <div className="relative flex items-center justify-between gap-1 mb-3">
+              <div className="relative flex items-center justify-between gap-1.5 mb-3">
                 {streak.labels.map((day, i) => {
                   const done = streak.days[i];
                   return (
@@ -414,10 +414,10 @@ export default function DashboardPage() {
                 })}
               </div>
               <div className="relative h-px w-full bg-white/[0.05]" />
-              <SectionLabel className="text-[#34D399] mt-4">DAILY HABITS</SectionLabel>
+              <SectionLabel className="text-[#34D399] mt-3.5">DAILY HABITS</SectionLabel>
               <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
               <p className="relative mt-0.5 text-[11px] text-muted-foreground/40 font-normal">Daily check-ins · Streaks · Stay accountable</p>
-              <div className="relative mt-4 flex items-center gap-4">
+              <div className="relative mt-3 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="68" height="68" viewBox="0 0 64 64">
                     <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
@@ -428,7 +428,7 @@ export default function DashboardPage() {
                     <span className="text-[7.5px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
                   </div>
                 </div>
-                <div className="flex-1 min-w-0 space-y-2.5">
+                <div className="flex-1 min-w-0 space-y-3">
                   <div className="flex items-center gap-2">
                     <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
                       <Flame size={13} className="text-[#34D399]" />
