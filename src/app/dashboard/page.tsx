@@ -384,24 +384,38 @@ export default function DashboardPage() {
 
           {/* Slide 4: Practice + Technique */}
           <div className="snap-center shrink-0 w-[calc(100%-40px)] max-w-[480px] h-[380px]">
-            <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] p-5 h-full flex flex-col gap-4" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgba(255,255,255,0.02) 100%)" }}>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] p-4 h-full flex flex-col gap-3" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.25), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.3), transparent)" }} />
-              <div className="relative overflow-hidden rounded-2xl p-4 flex-1 flex flex-col justify-center" style={{ background: "rgba(34,211,238,0.05)" }}>
-                <SectionLabel className="text-[#22D3EE]">PRACTICE MODE</SectionLabel>
-                <h3 className="relative mt-2 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Master with templates</h3>
+
+              <div className="relative flex-1 rounded-2xl border border-[#22D3EE]/15 overflow-hidden flex flex-col p-4" style={{ background: "linear-gradient(180deg, rgba(34,211,238,0.10) 0%, rgba(255,255,255,0.02) 100%)" }}>
+                <div className="flex items-center gap-2.5">
+                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(34,211,238,0.15)" }}>
+                    <Play size={15} className="text-[#22D3EE]" fill="currentColor" />
+                  </div>
+                  <SectionLabel className="text-[#22D3EE]">PRACTICE MODE</SectionLabel>
+                </div>
+                <h3 className="relative mt-3 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Master with templates</h3>
                 <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Guided exercises · Build speed &amp; accuracy</p>
-                <button type="button" onClick={() => router.push("/dashboard/practice")} className="relative mt-3 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#22D3EE] to-[#06B6D4] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(34,211,238,0.3)] active:scale-95">
-                  <Play size={13} fill="currentColor" /> PRACTICE NOW
+                <button type="button" onClick={() => router.push("/dashboard/practice")} className="relative mt-auto flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#22D3EE] to-[#06B6D4] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(34,211,238,0.3)] active:scale-95">
+                  <Play size={12} fill="currentColor" /> PRACTICE NOW
                 </button>
+                <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, #22D3EE, transparent 70%)" }} />
               </div>
-              <div className="relative overflow-hidden rounded-2xl p-4 flex-1 flex flex-col justify-center" style={{ background: "rgba(245,158,11,0.05)" }}>
-                <SectionLabel className="text-[#F59E0B]">TECHNIQUE LIBRARY</SectionLabel>
-                <h3 className="relative mt-2 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Learn a technique</h3>
+
+              <div className="relative flex-1 rounded-2xl border border-[#F59E0B]/15 overflow-hidden flex flex-col p-4" style={{ background: "linear-gradient(180deg, rgba(245,158,11,0.10) 0%, rgba(255,255,255,0.02) 100%)" }}>
+                <div className="flex items-center gap-2.5">
+                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(245,158,11,0.15)" }}>
+                    <BookOpen size={15} className="text-[#F59E0B]" />
+                  </div>
+                  <SectionLabel className="text-[#F59E0B]">TECHNIQUE LIBRARY</SectionLabel>
+                </div>
+                <h3 className="relative mt-3 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Learn a technique</h3>
                 <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Browse core methods · Master each approach</p>
-                <button type="button" onClick={() => router.push("/dashboard/explorer")} className="relative mt-3 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(245,158,11,0.3)] active:scale-95">
+                <button type="button" onClick={() => router.push("/dashboard/explorer")} className="relative mt-auto flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(245,158,11,0.3)] active:scale-95">
                   EXPLORE TECHNIQUES
                 </button>
+                <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, #F59E0B, transparent 70%)" }} />
               </div>
             </div>
           </div>
