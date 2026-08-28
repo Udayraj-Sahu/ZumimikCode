@@ -384,9 +384,10 @@ export default function DashboardPage() {
 
           {/* Slide 4: Practice + Technique */}
           <div className="snap-center shrink-0 w-[calc(100%-40px)] max-w-[480px] h-[380px]">
-            <div className="rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col gap-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-              <p className="text-[11px] text-muted-foreground/40 font-normal italic text-center">Something on your mind?</p>
-              <div className="relative overflow-hidden rounded-2xl p-4" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] p-5 h-full flex flex-col gap-4" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgba(255,255,255,0.02) 100%)" }}>
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.25), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.3), transparent)" }} />
+              <div className="relative overflow-hidden rounded-2xl p-4 flex-1 flex flex-col justify-center" style={{ background: "rgba(34,211,238,0.05)" }}>
                 <SectionLabel className="text-[#22D3EE]">PRACTICE MODE</SectionLabel>
                 <h3 className="relative mt-2 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Master with templates</h3>
                 <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Guided exercises · Build speed &amp; accuracy</p>
@@ -394,7 +395,7 @@ export default function DashboardPage() {
                   <Play size={13} fill="currentColor" /> PRACTICE NOW
                 </button>
               </div>
-              <div className="relative overflow-hidden rounded-2xl p-4" style={{ background: "linear-gradient(135deg, rgba(245,158,11,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+              <div className="relative overflow-hidden rounded-2xl p-4 flex-1 flex flex-col justify-center" style={{ background: "rgba(245,158,11,0.05)" }}>
                 <SectionLabel className="text-[#F59E0B]">TECHNIQUE LIBRARY</SectionLabel>
                 <h3 className="relative mt-2 text-[17px] font-bold tracking-[-0.03em] text-foreground leading-tight">Learn a technique</h3>
                 <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Browse core methods · Master each approach</p>
