@@ -150,7 +150,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     if (contentRef.current) {
       gsap.fromTo(contentRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" });
     }
-    setTimeout(() => handleClose(), 2000);
+    setTimeout(() => handleClose(), 2600);
   };
 
   const goNext = () => {
@@ -610,8 +610,19 @@ function CompletionScreen() {
     { icon: Trophy, label: "Leaderboard" },
     { icon: Users, label: "Compete" },
   ];
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (gridRef.current) {
+      gsap.fromTo(gridRef.current.children,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: "power2.out" },
+      );
+    }
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center py-6 text-center animate-in fade-in duration-300">
+    <div className="flex flex-col items-center justify-center py-6 text-center">
       <div className="relative mb-3">
         <div className="size-12 rounded-full flex items-center justify-center bg-[#C8FF4D]/[0.12]">
           <PartyPopper size={22} className="text-[#C8FF4D]" />
@@ -623,13 +634,9 @@ function CompletionScreen() {
       <h2 className="text-[17px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
       <p className="text-[11px] text-muted-foreground/40 mt-0.5 font-medium">Let&apos;s start learning</p>
 
-      <div className="grid grid-cols-4 gap-2 w-full mt-5">
-        {suggestions.map((item, i) => (
-          <div
-            key={item.label}
-            className="flex flex-col items-center gap-1.5 rounded-xl border border-white/[0.05] bg-white/[0.02] py-3 opacity-0 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
-            style={{ animationDelay: `${i * 80}ms` }}
-          >
+      <div ref={gridRef} className="grid grid-cols-4 gap-2 w-full mt-5">
+        {suggestions.map((item) => (
+          <div key={item.label} className="flex flex-col items-center gap-1.5 rounded-xl border border-white/[0.05] bg-white/[0.02] py-3">
             <div className="size-8 rounded-lg flex items-center justify-center bg-[#C8FF4D]/[0.1]">
               <item.icon size={14} className="text-[#C8FF4D]" />
             </div>
