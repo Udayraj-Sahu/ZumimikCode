@@ -279,36 +279,52 @@ export default function DashboardPage() {
 
           {/* Slide 2: Your Stats */}
           <div className="snap-center shrink-0 w-[calc(100%-40px)] max-w-[480px] h-[380px]">
-            <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-              <p className="text-[11px] text-muted-foreground/40 font-normal italic text-center mb-4">Your game&apos;s improving</p>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <TrendingUp size={14} className="text-primary" />
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, rgba(199,242,82,0.05) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.02) 100%)" }}>
+              <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
+              <div className="relative flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2.5">
+                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                    <TrendingUp size={15} className="text-primary" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[11px] font-bold tracking-[-0.01em] text-foreground">YOUR STATS</span>
+                    <span className="text-[9px] text-muted-foreground/35 font-medium">This week</span>
+                  </div>
                 </div>
-                <span className="text-[12px] font-semibold tracking-[-0.01em] text-foreground">YOUR STATS</span>
+                <button
+                  type="button"
+                  onClick={() => router.push("/dashboard/analytics")}
+                  className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-[10px] font-bold text-foreground/50 transition-all hover:bg-white/[0.06] hover:text-foreground/80 active:scale-95"
+                >
+                  Details
+                  <ArrowUpRight size={10} />
+                </button>
               </div>
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-2 gap-2.5 flex-1 content-center">
                 {[
-                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target, color: "#34D399" },
-                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen, color: "#22D3EE" },
-                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award, color: "#A78BFA" },
-                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap, color: "#FBBF24" },
+                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target, color: "#34D399", trend: "+4%" },
+                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen, color: "#22D3EE", trend: "+23" },
+                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award, color: "#A78BFA", trend: "Top 8%" },
+                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap, color: "#FBBF24", trend: "-2s" },
                 ].map((s) => (
                   <button
                     key={s.label}
                     type="button"
                     onClick={() => router.push("/dashboard/analytics")}
-                    className="group rounded-2xl border border-white/[0.04] backdrop-blur-xl px-3 py-3.5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.97] relative overflow-hidden"
+                    className="group relative overflow-hidden rounded-2xl border border-white/[0.05] p-3.5 text-left transition-all hover:bg-white/[0.05] active:scale-[0.97] flex flex-col justify-center"
                   >
-                    <div className="absolute inset-0 opacity-[0.04]" style={{ background: `radial-gradient(circle at top right, ${s.color}, transparent 70%)` }} />
-                    <div className="flex items-center justify-between mb-2 relative">
-                      <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: s.color + "18" }}>
-                        <s.icon size={13} style={{ color: s.color }} />
+                    <div className="absolute inset-0 opacity-[0.06] group-hover:opacity-[0.1] transition-opacity" style={{ background: `radial-gradient(circle at top right, ${s.color}, transparent 75%)` }} />
+                    <div className="flex items-center justify-between mb-2.5 relative">
+                      <div className="size-8 rounded-lg flex items-center justify-center" style={{ background: s.color + "18" }}>
+                        <s.icon size={14} style={{ color: s.color }} />
                       </div>
-                      <ArrowUpRight size={10} className="text-muted-foreground/20 group-hover:text-primary/60 transition-colors" />
+                      <span className="text-[8.5px] font-bold text-foreground/60 bg-white/[0.04] border border-white/[0.05] rounded-full px-2 py-0.5">{s.trend}</span>
                     </div>
-                    <p className="text-[18px] font-bold tracking-[-0.03em] text-foreground relative">{s.value}</p>
-                    <p className="text-[9px] font-semibold tracking-[0.12em] text-muted-foreground/35 mt-1.5 uppercase relative">{s.label}</p>
+                    <p className="text-[20px] font-bold tracking-[-0.03em] text-foreground relative leading-none">{s.value}</p>
+                    <div className="flex items-center justify-between mt-2 relative">
+                      <p className="text-[8.5px] font-semibold tracking-[0.14em] text-muted-foreground/35 uppercase">{s.label}</p>
+                      <ArrowUpRight size={11} className="text-muted-foreground/20 group-hover:text-primary/60 transition-colors" />
+                    </div>
                   </button>
                 ))}
               </div>
