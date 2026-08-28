@@ -360,7 +360,7 @@ function StepSingleSelect({
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">{title}</h2>
         <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">{subtitle}</p>
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="flex flex-col gap-2">
         {options.map((opt) => {
           const Icon = opt.icon;
           const active = value === opt.label;
@@ -370,7 +370,7 @@ function StepSingleSelect({
               type="button"
               onClick={() => onSelect(opt.label)}
               className={cn(
-                "relative flex items-center gap-2.5 rounded-2xl border p-3 text-left transition-all active:scale-[0.97]",
+                "relative flex items-center gap-3 rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.97]",
                 active
                   ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
                   : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
@@ -382,12 +382,12 @@ function StepSingleSelect({
               >
                 <Icon size={16} style={{ color: active ? "#C8FF4D" : "rgba(255,255,255,0.3)" }} />
               </div>
-              <div className="min-w-0">
-                <p className={cn("text-[11px] font-bold leading-tight truncate", active ? "text-foreground" : "text-foreground/60")}>
+              <div className="min-w-0 flex-1">
+                <p className={cn("text-[12px] font-bold leading-tight truncate", active ? "text-foreground" : "text-foreground/60")}>
                   {opt.label}
                 </p>
                 {opt.desc && (
-                  <p className="text-[9px] text-muted-foreground/30 mt-0.5 font-medium truncate">{opt.desc}</p>
+                  <p className="text-[10px] text-muted-foreground/30 mt-0.5 font-medium truncate">{opt.desc}</p>
                 )}
               </div>
               {active && (
