@@ -602,6 +602,7 @@ function ScrollColumn({
 
 function CompletionScreen() {
   const router = useRouter();
+  const store = useOnboardingStore();
   const suggestions = [
     { icon: Swords, label: "Start Sprint", desc: "Instant quiz", color: "#34D399", bg: "rgba(52,211,153,0.12)", href: "/dashboard/configure-sprint" },
     { icon: FileText, label: "Mock Test", desc: "Full exam", color: "#F59E0B", bg: "rgba(245,158,11,0.12)", href: "/dashboard/questions" },
@@ -619,22 +620,45 @@ function CompletionScreen() {
     }
   }, []);
 
-  return (
-    <div className="flex flex-col items-center justify-center h-full text-center">
-      <h2 className="text-[16px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
+  const name = store.firstName?.trim() || "Champion";
 
-      <div ref={gridRef} className="grid grid-cols-2 gap-2 w-full mt-4">
+  return (
+    <div className="h-full flex flex-col text-center px-1">
+      <div className="flex flex-col items-center pt-6 pb-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
+          <Sparkles size={12} className="text-[#C8FF4D]" />
+          <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">Profile complete</span>
+        </div>
+        <h2 className="mt-3 text-[19px] font-black tracking-[-0.03em] text-foreground">
+          You&apos;re all set, <span className="text-[#C8FF4D]">{name}</span>!
+        </h2>
+        <p className="mt-1 text-[11px] text-muted-foreground/40 font-medium">Here&apos;s how to start your fight</p>
+      </div>
+
+      <div className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-3 mb-4">
+        <div className="relative flex items-center justify-around gap-2">
+          {[{ l: "PERSONA", v: store.persona || "Student" }, { l: "GOAL", v: store.goal || "Master math" }].map((item) => (
+            <div key={item.l} className="flex flex-col items-center gap-0.5">
+              <span className="text-[7.5px] font-bold tracking-[0.16em] text-muted-foreground/30 uppercase">{item.l}</span>
+              <span className="text-[10.5px] font-bold text-foreground/70">{item.v}</span>
+            </div>
+          ))}
+        </div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-10 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(200,255,77,0.4), transparent)" }} />
+      </div>
+
+      <div ref={gridRef} className="grid grid-cols-2 gap-2 w-full flex-1 content-start">
         {suggestions.map((item) => (
           <button
             key={item.label}
             type="button"
             onClick={() => router.push(item.href)}
-            className="group flex flex-col items-center gap-1 rounded-2xl border border-white/[0.05] bg-white/[0.02] py-3 transition-all hover:bg-white/[0.04] active:scale-95"
+            className="group flex flex-col items-center justify-center gap-1 rounded-2xl border border-white/[0.05] bg-white/[0.02] py-3.5 transition-all hover:bg-white/[0.04] active:scale-95"
           >
-            <div className="relative mb-0.5">
+            <div className="relative mb-1">
               <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md" style={{ background: item.color }} />
-              <div className="relative size-9 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style={{ background: item.bg }}>
-                <item.icon size={16} color={item.color} />
+              <div className="relative size-10 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style={{ background: item.bg }}>
+                <item.icon size={17} color={item.color} />
               </div>
             </div>
             <span className="text-[10.5px] font-bold text-foreground/70 text-center leading-tight tracking-[0.01em]">{item.label}</span>
