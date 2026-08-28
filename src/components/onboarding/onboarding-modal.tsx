@@ -634,7 +634,6 @@ function CompletionScreen() {
             </div>
           ))}
         </div>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-10 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(200,255,77,0.4), transparent)" }} />
       </div>
     </div>
   );
@@ -673,18 +672,18 @@ function CelebrationAvatar() {
       <div ref={sparkleRef} className="absolute inset-0 pointer-events-none">
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <div className="size-1.5 rounded-full" style={{ background: ["#C8FF4D", "#34D399", "#22D3EE", "#A78BFA", "#FBBF24", "#FB7185"][i] }} />
+            <div className="size-1.5 rounded-full" style={{ background: ["#A78BFA", "#22D3EE", "#A78BFA", "#22D3EE", "#A78BFA", "#22D3EE"][i] }} />
           </div>
         ))}
       </div>
       <div ref={avatarRef}>
-        <div className="relative size-16 rounded-2xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(200,255,77,0.22), rgba(200,255,77,0.06))", border: "1px solid rgba(200,255,77,0.25)", boxShadow: "0 8px 30px rgba(200,255,77,0.12)" }}>
+        <div className="relative size-16 rounded-2xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.28), rgba(34,211,238,0.10))", border: "1px solid rgba(167,139,250,0.30)", boxShadow: "0 8px 30px rgba(139,92,246,0.18)" }}>
           <div className="flex items-center gap-3">
-            <div ref={eyeLRef} className="size-2 rounded-full bg-[#C8FF4D]" />
-            <div ref={eyeRRef} className="size-2 rounded-full bg-[#C8FF4D]" />
+            <div ref={eyeLRef} className="size-2 rounded-full bg-[#A78BFA]" />
+            <div ref={eyeRRef} className="size-2 rounded-full bg-[#A78BFA]" />
           </div>
-          <div className="absolute bottom-4.5 left-1/2 -translate-x-1/2 w-4 h-1.5 rounded-b-full border-b-[1.5px] border-[#C8FF4D]/70" />
-          <div className="absolute -top-1.5 -right-1.5 text-[10px] text-[#C8FF4D]">
+          <div className="absolute bottom-4.5 left-1/2 -translate-x-1/2 w-4 h-1.5 rounded-b-full border-b-[1.5px] border-[#A78BFA]/70" />
+          <div className="absolute -top-1.5 -right-1.5 text-[10px] text-[#A78BFA]">
             <Sparkles size={10} fill="currentColor" />
           </div>
         </div>
