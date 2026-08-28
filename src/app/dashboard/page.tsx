@@ -333,24 +333,28 @@ export default function DashboardPage() {
 
           {/* Slide 3: This Week + Daily Habits */}
           <div className="snap-center shrink-0 w-[calc(100%-40px)] max-w-[480px] h-[380px]">
-            <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+            <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
-              <p className="relative text-[11px] text-muted-foreground/40 font-normal italic text-center mb-3">Consistency is key</p>
-              <div className="relative flex items-center gap-3 overflow-hidden">
-                <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/35 shrink-0 uppercase">This Week</span>
-                <div className="flex items-center gap-[6px] flex-1 justify-end">
+              <div className="relative flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
+                    <Flame size={15} className="text-[#34D399]" />
+                  </div>
+                  <SectionLabel className="text-[#34D399]">THIS WEEK</SectionLabel>
+                </div>
+                <div className="flex items-center gap-[6px]">
                   {streak.labels.map((day, i) => {
                     const done = streak.days[i];
                     return (
-                      <div key={i} className={cn("h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold border shrink-0 transition-all", done ? "shadow-[0_0_12px_rgba(199,242,82,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
+                      <div key={i} className={cn("h-7 w-7 rounded-full flex items-center justify-center text-[9px] font-bold border shrink-0 transition-all", done ? "shadow-[0_0_12px_rgba(199,242,82,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
                         {day}
                       </div>
                     );
                   })}
                 </div>
               </div>
-              <div className="relative mt-5 h-px w-full bg-white/[0.05]" />
+              <div className="relative h-px w-full bg-white/[0.05]" />
               <SectionLabel className="text-[#34D399] mt-4">DAILY HABITS</SectionLabel>
               <h2 className="relative mt-2 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
               <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Daily check-ins · Track streaks · Stay accountable</p>
@@ -386,7 +390,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
-              <div className="relative mt-4 flex items-center justify-between">
+              <div className="relative mt-auto pt-4 flex items-center justify-between">
                 <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95">
                   VIEW HABITS
                 </button>
