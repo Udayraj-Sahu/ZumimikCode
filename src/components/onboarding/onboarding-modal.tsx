@@ -601,14 +601,10 @@ function ScrollColumn({
 
 function CompletionScreen() {
   const suggestions = [
-    { icon: Target, label: "Start Sprint" },
-    { icon: Zap, label: "Practice" },
-    { icon: BookOpen, label: "Techniques" },
-    { icon: FileText, label: "Mock Test" },
-    { icon: Clock, label: "Timed Quiz" },
-    { icon: TrendingUp, label: "Analytics" },
-    { icon: Trophy, label: "Leaderboard" },
-    { icon: Users, label: "Compete" },
+    { icon: Zap, label: "Start Sprint", color: "#7C6CF0", bg: "rgba(124,108,240,0.12)" },
+    { icon: FileText, label: "Mock Test", color: "#3DD6F5", bg: "rgba(61,214,245,0.12)" },
+    { icon: BookOpen, label: "Techniques", color: "#F0A93D", bg: "rgba(240,169,61,0.12)" },
+    { icon: Trophy, label: "Leaderboard", color: "#F05C7A", bg: "rgba(240,92,122,0.12)" },
   ];
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -616,7 +612,7 @@ function CompletionScreen() {
     if (gridRef.current) {
       gsap.fromTo(gridRef.current.children,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: "power2.out" },
+        { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" },
       );
     }
   }, []);
@@ -634,14 +630,21 @@ function CompletionScreen() {
       <h2 className="text-[17px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
       <p className="text-[11px] text-muted-foreground/40 mt-0.5 font-medium">Let&apos;s start learning</p>
 
-      <div ref={gridRef} className="grid grid-cols-4 gap-2 w-full mt-5">
+      <div ref={gridRef} className="grid grid-cols-2 gap-2.5 w-full mt-5">
         {suggestions.map((item) => (
-          <div key={item.label} className="flex flex-col items-center gap-1.5 rounded-xl border border-white/[0.05] bg-white/[0.02] py-3">
-            <div className="size-8 rounded-lg flex items-center justify-center bg-[#C8FF4D]/[0.1]">
-              <item.icon size={14} className="text-[#C8FF4D]" />
+          <button
+            key={item.label}
+            type="button"
+            className="group flex flex-col items-center gap-2 rounded-2xl border border-white/[0.05] bg-white/[0.02] py-4 transition-all hover:bg-white/[0.04] active:scale-95"
+          >
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md" style={{ background: item.color }} />
+              <div className="relative size-10 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style={{ background: item.bg }}>
+                <item.icon size={17} color={item.color} />
+              </div>
             </div>
-            <p className="text-[9px] font-bold text-foreground/70 leading-tight">{item.label}</p>
-          </div>
+            <span className="text-[11px] font-semibold text-foreground/60 text-center leading-tight tracking-[0.01em]">{item.label}</span>
+          </button>
         ))}
       </div>
     </div>
