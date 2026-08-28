@@ -368,9 +368,7 @@ export default function DashboardPage() {
                 })}
               </div>
               <div className="relative h-px w-full bg-white/[0.05]" />
-              <SectionLabel className="text-[#34D399] mt-4">DAILY HABITS</SectionLabel>
-              <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-              <p className="relative mt-0.5 text-[11px] text-muted-foreground/40 font-normal">Daily check-ins · Streaks · Stay accountable</p>
+              <SectionLabel className="text-[#34D399] mt-3">DAILY HABITS</SectionLabel>
               <div className="relative mt-3 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="64" height="64" viewBox="0 0 64 64">
