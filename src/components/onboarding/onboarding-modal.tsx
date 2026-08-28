@@ -30,6 +30,7 @@ import {
   Clock,
   TrendingUp,
   Trophy,
+  Swords,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -189,7 +190,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto min-h-0 px-5 pt-2 pb-4 scroll-smooth" style={{ scrollbarWidth: "none" }}>
+      <div className={cn("flex-1 min-h-0 px-5", completed ? "overflow-hidden" : "overflow-y-auto pt-2 pb-4 scroll-smooth")} style={{ scrollbarWidth: "none" }}>
         {completed ? (
           <CompletionScreen />
         ) : (
@@ -602,9 +603,9 @@ function ScrollColumn({
 function CompletionScreen() {
   const router = useRouter();
   const suggestions = [
-    { icon: Zap, label: "Start Sprint", desc: "Instant quiz", color: "#34D399", bg: "rgba(52,211,153,0.12)", href: "/dashboard/configure-sprint" },
+    { icon: Swords, label: "Start Sprint", desc: "Instant quiz", color: "#34D399", bg: "rgba(52,211,153,0.12)", href: "/dashboard/configure-sprint" },
     { icon: FileText, label: "Mock Test", desc: "Full exam", color: "#F59E0B", bg: "rgba(245,158,11,0.12)", href: "/dashboard/questions" },
-    { icon: BookOpen, label: "Techniques", desc: "Speed math", color: "#22D3EE", bg: "rgba(34,211,238,0.12)", href: "/dashboard/explorer" },
+    { icon: Sparkles, label: "Techniques", desc: "Speed math", color: "#22D3EE", bg: "rgba(34,211,238,0.12)", href: "/dashboard/explorer" },
     { icon: Trophy, label: "Leaderboard", desc: "Rankings", color: "#A78BFA", bg: "rgba(167,139,250,0.12)", href: "/dashboard/leaderboard" },
   ];
   const gridRef = useRef<HTMLDivElement>(null);
@@ -619,25 +620,25 @@ function CompletionScreen() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center py-6 text-center">
-      <h2 className="text-[17px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
+    <div className="flex flex-col items-center justify-center h-full text-center">
+      <h2 className="text-[16px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
 
-      <div ref={gridRef} className="grid grid-cols-2 gap-2.5 w-full mt-5">
+      <div ref={gridRef} className="grid grid-cols-2 gap-2 w-full mt-4">
         {suggestions.map((item) => (
           <button
             key={item.label}
             type="button"
             onClick={() => router.push(item.href)}
-            className="group flex flex-col items-center gap-1.5 rounded-2xl border border-white/[0.05] bg-white/[0.02] py-4 transition-all hover:bg-white/[0.04] active:scale-95"
+            className="group flex flex-col items-center gap-1 rounded-2xl border border-white/[0.05] bg-white/[0.02] py-3 transition-all hover:bg-white/[0.04] active:scale-95"
           >
-            <div className="relative mb-1">
+            <div className="relative mb-0.5">
               <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md" style={{ background: item.color }} />
-              <div className="relative size-10 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style={{ background: item.bg }}>
-                <item.icon size={17} color={item.color} />
+              <div className="relative size-9 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style={{ background: item.bg }}>
+                <item.icon size={16} color={item.color} />
               </div>
             </div>
-            <span className="text-[11px] font-bold text-foreground/70 text-center leading-tight tracking-[0.01em]">{item.label}</span>
-            <span className="text-[9px] text-muted-foreground/30 font-medium">{item.desc}</span>
+            <span className="text-[10.5px] font-bold text-foreground/70 text-center leading-tight tracking-[0.01em]">{item.label}</span>
+            <span className="text-[8.5px] text-muted-foreground/30 font-medium">{item.desc}</span>
           </button>
         ))}
       </div>
