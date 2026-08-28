@@ -343,16 +343,23 @@ export default function DashboardPage() {
                   </div>
                   <SectionLabel className="text-[#34D399]">THIS WEEK</SectionLabel>
                 </div>
-                <div className="flex items-center gap-[6px]">
-                  {streak.labels.map((day, i) => {
-                    const done = streak.days[i];
-                    return (
-                      <div key={i} className={cn("h-7 w-7 rounded-full flex items-center justify-center text-[9px] font-bold border shrink-0 transition-all", done ? "shadow-[0_0_12px_rgba(199,242,82,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
-                        {day}
-                      </div>
-                    );
-                  })}
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#34D399]">
+                  <Flame size={11} />
+                  {streak.current} day
                 </div>
+              </div>
+              <div className="relative flex items-center justify-between gap-1 mb-3">
+                {streak.labels.map((day, i) => {
+                  const done = streak.days[i];
+                  return (
+                    <div key={i} className="flex flex-col items-center gap-1 shrink-0">
+                      <div className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_rgba(199,242,82,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
+                        {i}
+                      </div>
+                      <span className="text-[7px] font-bold uppercase text-muted-foreground/30">{day}</span>
+                    </div>
+                  );
+                })}
               </div>
               <div className="relative h-px w-full bg-white/[0.05]" />
               <SectionLabel className="text-[#34D399] mt-4">DAILY HABITS</SectionLabel>
