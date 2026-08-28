@@ -598,11 +598,11 @@ function ScrollColumn({
 
 function CompletionScreen() {
   const store = useOnboardingStore();
-  const gridRef = useRef<HTMLDivElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (gridRef.current) {
-      gsap.fromTo(gridRef.current.children,
+    if (boxRef.current) {
+      gsap.fromTo(boxRef.current.children,
         { opacity: 0, y: 10 },
         { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" },
       );
@@ -614,7 +614,8 @@ function CompletionScreen() {
   return (
     <div className="h-full flex flex-col justify-center text-center px-1">
       <div className="flex flex-col items-center pb-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
+        <CelebrationAvatar />
+        <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
           <Sparkles size={12} className="text-[#C8FF4D]" />
           <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">Profile complete</span>
         </div>
@@ -624,7 +625,7 @@ function CompletionScreen() {
         <p className="mt-1 text-[11px] text-muted-foreground/40 font-medium">Let&apos;s start your fight</p>
       </div>
 
-      <div ref={gridRef} className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-4">
+      <div ref={boxRef} className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-4">
         <div className="relative flex items-center justify-around gap-2">
           {[{ l: "PERSONA", v: store.persona || "Student" }, { l: "GOAL", v: store.goal || "Master math" }].map((item) => (
             <div key={item.l} className="flex flex-col items-center gap-0.5">
@@ -634,6 +635,59 @@ function CompletionScreen() {
           ))}
         </div>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-10 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(200,255,77,0.4), transparent)" }} />
+      </div>
+    </div>
+  );
+}
+
+function CelebrationAvatar() {
+  const avatarRef = useRef<HTMLDivElement>(null);
+  const eyeLRef = useRef<HTMLDivElement>(null);
+  const eyeRRef = useRef<HTMLDivElement>(null);
+  const sparkleRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!avatarRef.current || !sparkleRef.current) return;
+    const sparks = Array.from(sparkleRef.current.children);
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.2 });
+    tl.to(avatarRef.current, { y: -7, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 1 });
+    sparks.forEach((s, i) => {
+      const angle = (i / sparks.length) * Math.PI * 2;
+      gsap.fromTo(s,
+        { opacity: 0, scale: 0, x: 0, y: 0 },
+        { opacity: [0, 1, 0] as never, scale: [0, 1, 0.4] as never, x: Math.cos(angle) * 26, y: Math.sin(angle) * 26, duration: 1.4, ease: "power1.out", repeat: -1, repeatDelay: 0.9, delay: i * 0.18 },
+      );
+    });
+    const blink = gsap.timeline({ repeat: -1, repeatDelay: 2.6 });
+    blink.to([eyeLRef.current, eyeRRef.current], { scaleY: 0.12, duration: 0.09, ease: "power2.in" })
+      .to([eyeLRef.current, eyeRRef.current], { scaleY: 1, duration: 0.15, ease: "power2.out" });
+    return () => {
+      tl.kill();
+      blink.kill();
+      sparks.forEach((s) => gsap.killTweensOf(s));
+    };
+  }, []);
+
+  return (
+    <div className="relative flex items-center justify-center">
+      <div ref={sparkleRef} className="absolute inset-0 pointer-events-none">
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div className="size-1.5 rounded-full" style={{ background: ["#C8FF4D", "#34D399", "#22D3EE", "#A78BFA", "#FBBF24", "#FB7185"][i] }} />
+          </div>
+        ))}
+      </div>
+      <div ref={avatarRef}>
+        <div className="relative size-16 rounded-2xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(200,255,77,0.22), rgba(200,255,77,0.06))", border: "1px solid rgba(200,255,77,0.25)", boxShadow: "0 8px 30px rgba(200,255,77,0.12)" }}>
+          <div className="flex items-center gap-3">
+            <div ref={eyeLRef} className="size-2 rounded-full bg-[#C8FF4D]" />
+            <div ref={eyeRRef} className="size-2 rounded-full bg-[#C8FF4D]" />
+          </div>
+          <div className="absolute bottom-4.5 left-1/2 -translate-x-1/2 w-4 h-1.5 rounded-b-full border-b-[1.5px] border-[#C8FF4D]/70" />
+          <div className="absolute -top-1.5 -right-1.5 text-[10px] text-[#C8FF4D]">
+            <Sparkles size={10} fill="currentColor" />
+          </div>
+        </div>
       </div>
     </div>
   );
