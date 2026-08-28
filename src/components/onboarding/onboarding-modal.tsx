@@ -615,7 +615,11 @@ function CompletionScreen() {
     <div className="h-full flex flex-col justify-center text-center px-1">
       <div className="flex flex-col items-center pb-4">
         <CelebrationAvatar />
-        <h2 className="mt-4 text-[19px] font-black tracking-[-0.03em] text-foreground">
+        <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
+          <Sparkles size={12} className="text-[#C8FF4D]" />
+          <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">Profile complete</span>
+        </div>
+        <h2 className="mt-3 text-[19px] font-black tracking-[-0.03em] text-foreground">
           You&apos;re all set, <span className="text-[#C8FF4D]">{name}</span>!
         </h2>
         <p className="mt-1 text-[11px] text-muted-foreground/40 font-medium">Let&apos;s start your fight</p>
@@ -623,9 +627,12 @@ function CompletionScreen() {
 
       <div ref={boxRef} className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-4">
         <div className="relative flex items-center justify-around gap-2">
-          <span className="text-[13px] font-bold text-foreground/70">{store.persona || "Student"}</span>
-          <span className="text-[10px] text-muted-foreground/20 font-bold">·</span>
-          <span className="text-[13px] font-bold text-foreground/70">{store.goal || "Master math"}</span>
+          {[{ l: "PERSONA", v: store.persona || "Student" }, { l: "GOAL", v: store.goal || "Master math" }].map((item) => (
+            <div key={item.l} className="flex flex-col items-center gap-0.5">
+              <span className="text-[7.5px] font-bold tracking-[0.16em] text-muted-foreground/30 uppercase">{item.l}</span>
+              <span className="text-[11px] font-bold text-foreground/70">{item.v}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

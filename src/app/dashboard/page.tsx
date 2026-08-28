@@ -346,7 +346,12 @@ export default function DashboardPage() {
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
               <div className="relative flex items-center justify-between mb-3">
-                <div />
+                <div className="flex items-center gap-2.5">
+                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
+                    <Flame size={15} className="text-[#34D399]" />
+                  </div>
+                  <SectionLabel className="text-[#34D399]">THIS WEEK</SectionLabel>
+                </div>
                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#34D399]">
                   <Flame size={11} />
                   {streak.current} day
@@ -363,6 +368,7 @@ export default function DashboardPage() {
                 })}
               </div>
               <div className="relative h-px w-full bg-white/[0.05]" />
+              <SectionLabel className="text-[#34D399] mt-3">DAILY HABITS</SectionLabel>
               <div className="relative mt-3 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="64" height="64" viewBox="0 0 64 64">
