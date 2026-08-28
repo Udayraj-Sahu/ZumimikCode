@@ -272,7 +272,7 @@ export default function DashboardPage() {
       <div ref={animateSection} data-section-index={1.5} className="mt-5">
         <div
           ref={carouselRef}
-          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 px-5 pb-3"
+          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 scroll-px-5 pb-3"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch", width: "100%" }}
           onScroll={handleCarouselScroll}
         >
