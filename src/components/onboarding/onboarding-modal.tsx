@@ -26,6 +26,10 @@ import {
   PartyPopper,
   Sparkles,
   ArrowRight,
+  FileText,
+  Clock,
+  TrendingUp,
+  Trophy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -182,26 +186,6 @@ export function OnboardingModal({ onClose, inline }: Props) {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="sticky top-0 z-10 px-5 pt-4 pb-2">
-        <div className="flex items-center justify-end mb-3">
-          <div className="flex items-center gap-2">
-            {STEP_LABELS.map((label, i) => {
-              const isActive = i === step;
-              const isDone = i < step;
-              return (
-                <div
-                  key={i}
-                  className={cn(
-                    "rounded-full transition-all duration-400",
-                    isActive ? "h-2 w-2" : isDone ? "h-1.5 w-1.5" : "h-1.5 w-1.5"
-                  )}
-                  style={{
-                    background: isActive || isDone ? "#C8FF4D" : "rgba(255,255,255,0.15)",
-                  }}
-                />
-              );
-            })}
-          </div>
-        </div>
       </div>
 
       {/* Content */}
@@ -256,6 +240,24 @@ export function OnboardingModal({ onClose, inline }: Props) {
       {/* Footer */}
       {!completed && (
         <div className="sticky bottom-0 px-5 pb-5 pt-3">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            {STEP_LABELS.map((label, i) => {
+              const isActive = i === step;
+              const isDone = i < step;
+              return (
+                <div
+                  key={i}
+                  className={cn(
+                    "rounded-full transition-all duration-400",
+                    isActive ? "h-2 w-2" : isDone ? "h-1.5 w-1.5" : "h-1.5 w-1.5"
+                  )}
+                  style={{
+                    background: isActive || isDone ? "#C8FF4D" : "rgba(255,255,255,0.15)",
+                  }}
+                />
+              );
+            })}
+          </div>
           <div className="flex items-center justify-between">
             {step > 0 ? (
               <button
@@ -598,37 +600,40 @@ function ScrollColumn({
 }
 
 function CompletionScreen() {
+  const suggestions = [
+    { icon: Target, label: "Start Sprint" },
+    { icon: Zap, label: "Practice" },
+    { icon: BookOpen, label: "Techniques" },
+    { icon: FileText, label: "Mock Test" },
+    { icon: Clock, label: "Timed Quiz" },
+    { icon: TrendingUp, label: "Analytics" },
+    { icon: Trophy, label: "Leaderboard" },
+    { icon: Users, label: "Compete" },
+  ];
   return (
-    <div className="flex flex-col items-center justify-center py-10 text-center animate-in fade-in duration-300">
-      <div className="relative mb-5">
-        <div className="size-16 rounded-full flex items-center justify-center bg-[#C8FF4D]/[0.12]">
-          <PartyPopper size={30} className="text-[#C8FF4D]" />
+    <div className="flex flex-col items-center justify-center py-6 text-center animate-in fade-in duration-300">
+      <div className="relative mb-3">
+        <div className="size-12 rounded-full flex items-center justify-center bg-[#C8FF4D]/[0.12]">
+          <PartyPopper size={22} className="text-[#C8FF4D]" />
         </div>
-        <div className="absolute -top-1 -right-1 size-5 rounded-full bg-[#C8FF4D] flex items-center justify-center shadow-lg shadow-[#C8FF4D]/30">
-          <Check size={10} className="text-[#0A0C0A]" strokeWidth={3} />
+        <div className="absolute -top-0.5 -right-0.5 size-4 rounded-full bg-[#C8FF4D] flex items-center justify-center shadow-lg shadow-[#C8FF4D]/30">
+          <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
         </div>
       </div>
-      <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
-      <p className="text-[12px] text-muted-foreground/40 mt-1 font-medium">Let&apos;s start learning</p>
+      <h2 className="text-[17px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
+      <p className="text-[11px] text-muted-foreground/40 mt-0.5 font-medium">Let&apos;s start learning</p>
 
-      <div className="w-full mt-6 space-y-2">
-        {[
-          { icon: Target, label: "Start a Sprint", desc: "Test your skills with a timed quiz" },
-          { icon: BookOpen, label: "Explore Techniques", desc: "Browse methods to solve faster" },
-          { icon: Zap, label: "Try Practice Mode", desc: "Step-by-step guided exercises" },
-        ].map((item, i) => (
+      <div className="grid grid-cols-4 gap-2 w-full mt-5">
+        {suggestions.map((item, i) => (
           <div
             key={item.label}
-            className="flex items-center gap-3 rounded-2xl border border-white/[0.05] bg-white/[0.02] px-4 py-3 opacity-0 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
-            style={{ animationDelay: `${i * 100}ms` }}
+            className="flex flex-col items-center gap-1.5 rounded-xl border border-white/[0.05] bg-white/[0.02] py-3 opacity-0 animate-in fade-in slide-in-from-bottom-2 duration-300 fill-mode-both"
+            style={{ animationDelay: `${i * 80}ms` }}
           >
-            <div className="size-8 shrink-0 rounded-xl flex items-center justify-center bg-[#C8FF4D]/[0.1]">
+            <div className="size-8 rounded-lg flex items-center justify-center bg-[#C8FF4D]/[0.1]">
               <item.icon size={14} className="text-[#C8FF4D]" />
             </div>
-            <div>
-              <p className="text-[11px] font-bold text-foreground/80">{item.label}</p>
-              <p className="text-[9px] text-muted-foreground/30 font-medium">{item.desc}</p>
-            </div>
+            <p className="text-[9px] font-bold text-foreground/70 leading-tight">{item.label}</p>
           </div>
         ))}
       </div>
