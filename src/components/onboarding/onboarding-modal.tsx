@@ -24,7 +24,6 @@ import {
   Zap,
   School,
   Compass,
-  PartyPopper,
   Sparkles,
   ArrowRight,
   FileText,
@@ -621,14 +620,6 @@ function CompletionScreen() {
 
   return (
     <div className="flex flex-col items-center justify-center py-6 text-center">
-      <div className="relative mb-3">
-        <div className="size-12 rounded-full flex items-center justify-center bg-[#C8FF4D]/[0.12]">
-          <PartyPopper size={22} className="text-[#C8FF4D]" />
-        </div>
-        <div className="absolute -top-0.5 -right-0.5 size-4 rounded-full bg-[#C8FF4D] flex items-center justify-center shadow-lg shadow-[#C8FF4D]/30">
-          <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
-        </div>
-      </div>
       <h2 className="text-[17px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
 
       <div ref={gridRef} className="grid grid-cols-2 gap-2.5 w-full mt-5">
