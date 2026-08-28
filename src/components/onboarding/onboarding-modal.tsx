@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import {
   ChevronRight,
@@ -600,11 +601,12 @@ function ScrollColumn({
 }
 
 function CompletionScreen() {
+  const router = useRouter();
   const suggestions = [
-    { icon: Zap, label: "Start Sprint", color: "#7C6CF0", bg: "rgba(124,108,240,0.12)" },
-    { icon: FileText, label: "Mock Test", color: "#3DD6F5", bg: "rgba(61,214,245,0.12)" },
-    { icon: BookOpen, label: "Techniques", color: "#F0A93D", bg: "rgba(240,169,61,0.12)" },
-    { icon: Trophy, label: "Leaderboard", color: "#F05C7A", bg: "rgba(240,92,122,0.12)" },
+    { icon: Zap, label: "Start Sprint", desc: "Instant quiz", color: "#34D399", bg: "rgba(52,211,153,0.12)", href: "/dashboard/configure-sprint" },
+    { icon: FileText, label: "Mock Test", desc: "Full exam", color: "#F59E0B", bg: "rgba(245,158,11,0.12)", href: "/dashboard/questions" },
+    { icon: BookOpen, label: "Techniques", desc: "Speed math", color: "#22D3EE", bg: "rgba(34,211,238,0.12)", href: "/dashboard/explorer" },
+    { icon: Trophy, label: "Leaderboard", desc: "Rankings", color: "#A78BFA", bg: "rgba(167,139,250,0.12)", href: "/dashboard/leaderboard" },
   ];
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -628,22 +630,23 @@ function CompletionScreen() {
         </div>
       </div>
       <h2 className="text-[17px] font-black tracking-[-0.03em] text-foreground">You&apos;re all set!</h2>
-      <p className="text-[11px] text-muted-foreground/40 mt-0.5 font-medium">Let&apos;s start learning</p>
 
       <div ref={gridRef} className="grid grid-cols-2 gap-2.5 w-full mt-5">
         {suggestions.map((item) => (
           <button
             key={item.label}
             type="button"
-            className="group flex flex-col items-center gap-2 rounded-2xl border border-white/[0.05] bg-white/[0.02] py-4 transition-all hover:bg-white/[0.04] active:scale-95"
+            onClick={() => router.push(item.href)}
+            className="group flex flex-col items-center gap-1.5 rounded-2xl border border-white/[0.05] bg-white/[0.02] py-4 transition-all hover:bg-white/[0.04] active:scale-95"
           >
-            <div className="relative">
+            <div className="relative mb-1">
               <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md" style={{ background: item.color }} />
               <div className="relative size-10 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style={{ background: item.bg }}>
                 <item.icon size={17} color={item.color} />
               </div>
             </div>
-            <span className="text-[11px] font-semibold text-foreground/60 text-center leading-tight tracking-[0.01em]">{item.label}</span>
+            <span className="text-[11px] font-bold text-foreground/70 text-center leading-tight tracking-[0.01em]">{item.label}</span>
+            <span className="text-[9px] text-muted-foreground/30 font-medium">{item.desc}</span>
           </button>
         ))}
       </div>
