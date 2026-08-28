@@ -360,41 +360,58 @@ export default function DashboardPage() {
               </div>
               <div className="relative h-px w-full bg-white/[0.05]" />
               <SectionLabel className="text-[#34D399] mt-4">DAILY HABITS</SectionLabel>
-              <h2 className="relative mt-2 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-              <p className="relative mt-1 text-[12px] text-muted-foreground/45 font-normal">Daily check-ins · Track streaks · Stay accountable</p>
-              <div className="relative mt-4 flex items-center gap-4">
+              <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
+              <p className="relative mt-0.5 text-[11px] text-muted-foreground/40 font-normal">Daily check-ins · Streaks · Stay accountable</p>
+              <div className="relative mt-3 flex items-center gap-4">
                 <div className="relative shrink-0">
-                  <svg width="56" height="56" viewBox="0 0 64 64">
-                    <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
-                    <circle cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="4" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 27}`} strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`} transform="rotate(-90 32 32)" className="transition-all duration-700" />
+                  <svg width="64" height="64" viewBox="0 0 64 64">
+                    <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
+                    <circle cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 27}`} strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`} transform="rotate(-90 32 32)" className="transition-all duration-700" />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-[14px] font-bold text-foreground leading-none">{todayCompleted}</span>
-                    <span className="text-[7px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
+                    <span className="text-[15px] font-bold text-foreground leading-none">{todayCompleted}</span>
+                    <span className="text-[7.5px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
                   </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <Flame size={12} className="text-[#34D399]" />
-                    <span className="text-[12px] font-bold text-[#34D399]">{habitStats.currentStreak}d streak</span>
-                    <span className="text-[10px] text-muted-foreground/30">·</span>
-                    <span className="text-[10px] text-muted-foreground/40 font-medium">{habitStats.completionRate}% rate</span>
+                <div className="flex-1 min-w-0 space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
+                      <Flame size={13} className="text-[#34D399]" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-[11px] font-bold text-foreground/80 leading-none">{habitStats.currentStreak} day streak</p>
+                      <p className="text-[9px] text-muted-foreground/35 mt-1">Best {habitStats.bestStreak} days</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    {habits.slice(0, 5).map((h) => {
-                      const done = todayLogs.includes(h.id);
-                      return (
-                        <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-0.5 border transition-colors" style={{ borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)", background: done ? `${h.color}10` : "transparent" }}>
-                          <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
-                          <span className={cn("text-[8px] font-medium truncate max-w-[50px]", done ? "text-foreground/70" : "text-muted-foreground/30")}>{h.name.split(" ")[0]}</span>
-                        </div>
-                      );
-                    })}
-                    {habits.length > 5 && <span className="text-[8px] text-muted-foreground/25 font-medium">+{habits.length - 5}</span>}
+                  <div className="flex items-center gap-2">
+                    <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
+                      <Target size={13} className="text-[#34D399]" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className="text-[11px] font-bold text-foreground/80 leading-none">Completion</p>
+                        <p className="text-[10px] font-bold text-[#34D399]">{habitStats.completionRate}%</p>
+                      </div>
+                      <div className="mt-1.5 h-1 w-full rounded-full bg-white/[0.05] overflow-hidden">
+                        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${habitStats.completionRate}%`, background: "linear-gradient(90deg, #10B981, #34D399)" }} />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="relative mt-auto pt-4 flex items-center justify-between">
+              <div className="relative mt-3 flex items-center gap-1.5 flex-wrap">
+                {habits.slice(0, 5).map((h) => {
+                  const done = todayLogs.includes(h.id);
+                  return (
+                    <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)", background: done ? `${h.color}10` : "transparent" }}>
+                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
+                      <span className={cn("text-[8px] font-medium truncate max-w-[50px]", done ? "text-foreground/70" : "text-muted-foreground/30")}>{h.name.split(" ")[0]}</span>
+                    </div>
+                  );
+                })}
+                {habits.length > 5 && <span className="text-[8px] text-muted-foreground/25 font-medium">+{habits.length - 5}</span>}
+              </div>
+              <div className="relative mt-auto pt-3 flex items-center justify-between">
                 <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95">
                   VIEW HABITS
                 </button>
