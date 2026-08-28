@@ -352,11 +352,8 @@ export default function DashboardPage() {
                 {streak.labels.map((day, i) => {
                   const done = streak.days[i];
                   return (
-                    <div key={i} className="flex flex-col items-center gap-1 shrink-0">
-                      <div className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_rgba(199,242,82,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
-                        {i}
-                      </div>
-                      <span className="text-[7px] font-bold uppercase text-muted-foreground/30">{day}</span>
+                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_rgba(199,242,82,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${ACCENT}, #a8e62e)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
+                      {day}
                     </div>
                   );
                 })}
