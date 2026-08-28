@@ -272,13 +272,13 @@ export default function DashboardPage() {
       <div ref={animateSection} data-section-index={1.5} className="mt-5">
         <div
           ref={carouselRef}
-          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-3 px-5 pb-3"
+          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch", width: "100%" }}
           onScroll={handleCarouselScroll}
         >
           {/* Slide 1: Complete Account Details — inline onboarding */}
-          <div className={cn("snap-center shrink-0 w-full max-w-[480px] h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="rounded-3xl border border-primary/15 overflow-hidden h-full flex flex-col relative" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
+          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto rounded-3xl border border-primary/15 overflow-hidden h-full flex flex-col relative" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25), transparent)" }} />
               <div className="flex-1 overflow-y-auto min-h-0 relative" style={{ scrollbarWidth: "none" }}>
                 <OnboardingModal onClose={() => {}} inline />
@@ -287,8 +287,8 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 2: Your Stats */}
-          <div className={cn("snap-center shrink-0 w-full max-w-[480px] h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 1 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, rgba(199,242,82,0.05) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.02) 100%)" }}>
+          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 1 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, rgba(199,242,82,0.05) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
               <div className="relative flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
@@ -341,8 +341,8 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 3: This Week + Daily Habits */}
-          <div className={cn("snap-center shrink-0 w-full max-w-[480px] h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.02) 100%)" }}>
+          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
               <div className="relative flex items-center justify-between mb-3">
@@ -433,8 +433,8 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 4: Practice + Technique */}
-          <div className={cn("snap-center shrink-0 w-full max-w-[480px] h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 3 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="relative overflow-hidden rounded-3xl border border-white/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgba(255,255,255,0.02) 100%)" }}>
+          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 3 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.25), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.3), transparent)" }} />
 
@@ -475,8 +475,8 @@ export default function DashboardPage() {
           </div>
 
           {/* Slide 5: Placeholder */}
-          <div className={cn("snap-center shrink-0 w-full max-w-[480px] h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-5 h-full flex items-center justify-center" style={{ background: GLASS_BG }}>
+          <div className={cn("snap-center shrink-0 w-full h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-5 h-full flex items-center justify-center" style={{ background: GLASS_BG }}>
               <span className="text-[12px] text-muted-foreground/25 font-medium">Coming soon</span>
             </div>
           </div>
