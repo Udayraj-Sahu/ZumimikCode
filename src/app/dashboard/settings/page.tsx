@@ -260,7 +260,7 @@ export default function SettingsPage() {
       <div className="mt-2 space-y-4">
         <PerformanceOverview
           sessions="47"
-          streak="12-Day Streak"
+          streak="12-Day"
           rank="47"
           xp="2,340"
         />
