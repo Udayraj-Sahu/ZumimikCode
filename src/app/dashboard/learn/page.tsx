@@ -172,12 +172,22 @@ export default function LearnPage() {
                     />
                     <m.Icon
                       size={15}
-                      className="relative z-10 transition-all duration-300 ease-out"
-                      style={{ color: isActive ? m.color : "rgba(255,255,255,0.42)", transform: isActive ? "scale(1.12)" : "scale(1)" }}
+                      className="relative z-10 transition-all duration-340"
+                      style={{
+                        color: isActive ? m.color : "rgba(255,255,255,0.42)",
+                        transform: isActive ? "scale(1.14)" : "scale(1)",
+                        filter: isActive ? `drop-shadow(0 0 6px ${m.color}66)` : "none",
+                        transitionProperty: "color, transform, filter",
+                        transitionDuration: "300ms, 360ms, 300ms",
+                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.5, 0.64, 1), ease-out",
+                      }}
                     />
                     <span
                       className="relative z-10 text-[10px] font-semibold leading-none transition-all duration-300 ease-out"
-                      style={{ color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.48)" }}
+                      style={{
+                        color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.48)",
+                        transform: isActive ? "translateY(0px)" : "translateY(1px)",
+                      }}
                     >
                       {m.label}
                     </span>
@@ -195,8 +205,8 @@ export default function LearnPage() {
                   width: indicator.width - 2,
                   clipPath: "url(#learn-tab-active-clip)",
                   background: `linear-gradient(180deg, ${activeMode.color}2E 0%, rgba(255,255,255,0.05) 100%)`,
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 1px 0 0 rgba(255,255,255,0.12), inset -1px 0 0 rgba(255,255,255,0.12), 0 6px 18px rgba(0,0,0,0.4)",
-                  transition: "left 340ms cubic-bezier(0.33, 1, 0.68, 1), width 340ms cubic-bezier(0.33, 1, 0.68, 1)",
+                  boxShadow: `inset 0 1px 0 rgba(255,255,255,0.3), inset 1px 0 0 rgba(255,255,255,0.12), inset -1px 0 0 rgba(255,255,255,0.12), 0 6px 18px rgba(0,0,0,0.4), 0 0 22px ${activeMode.color}26`,
+                  transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
                 }}
               />
             )}
