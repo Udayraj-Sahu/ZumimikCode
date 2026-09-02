@@ -87,7 +87,7 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 ];
 
 const TAB_ACTIVE_FILL =
-  "M 18 0 C 6 0 0 8 0 22 C 2 50 4 78 2 100 L 98 100 C 96 78 98 50 100 22 C 100 8 94 0 82 0 Z";
+  "M 18 0 C 6 0 0 8 0 22 C 2 50 4 78 10 100 L 90 100 C 96 78 98 50 100 22 C 100 8 94 0 82 0 Z";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
@@ -145,7 +145,7 @@ export default function LearnPage() {
           <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
             <defs>
               <clipPath id="learn-tab-active-clip" clipPathUnits="objectBoundingBox">
-                <path d="M 0.18 0 C 0.06 0 0 0.08 0 0.22 C 0.02 0.50 0.04 0.78 0.02 1 L 0.98 1 C 0.96 0.78 0.98 0.50 1 0.22 C 1 0.08 0.94 0 0.82 0 Z" />
+                <path d="M 0.18 0 C 0.06 0 0 0.08 0 0.22 C 0.02 0.50 0.04 0.78 0.10 1 L 0.90 1 C 0.96 0.78 0.98 0.50 1 0.22 C 1 0.08 0.94 0 0.82 0 Z" />
               </clipPath>
             </defs>
           </svg>
@@ -201,11 +201,10 @@ export default function LearnPage() {
             {/* Active curved trapezium — lower, bottom anchored to border line */}
             {indicator.ready && (
               <svg
-                className="absolute bottom-0 z-[5] pointer-events-none"
+                className="absolute top-0 bottom-0 z-[5] pointer-events-none"
                 style={{
                   left: indicator.left + 1,
                   width: indicator.width - 2,
-                  height: "72%",
                   transition: "left 380ms cubic-bezier(0.34, 1.15, 0.64, 1), width 380ms cubic-bezier(0.34, 1.15, 0.64, 1)",
                 }}
                 viewBox="0 0 100 100"
