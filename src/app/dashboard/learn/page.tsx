@@ -164,14 +164,16 @@ export default function LearnPage() {
               })}
             </div>
 
-            {/* Sliding active background */}
+            {/* Sliding active background — trapezium, no border */}
             {indicator.ready && (
               <div
-                className="absolute top-0 bottom-0 rounded-xl border border-white/[0.1] shadow-[0_4px_20px_rgba(0,0,0,0.35)]"
+                className="absolute top-0 bottom-0"
                 style={{
                   left: indicator.left,
                   width: indicator.width,
-                  background: "rgba(255,255,255,0.08)",
+                  background: "linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)",
+                  borderRadius: "0.75rem",
+                  clipPath: "polygon(14px 0, calc(100% - 14px) 0, 100% 100%, 0 100%)",
                   transition: "left 300ms cubic-bezier(0.33, 1, 0.68, 1), width 300ms cubic-bezier(0.33, 1, 0.68, 1)",
                 }}
               />
