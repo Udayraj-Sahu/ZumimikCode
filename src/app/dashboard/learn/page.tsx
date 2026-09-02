@@ -87,9 +87,8 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
-const CURVE_WIDTH = 16;
-const TOP_INSET = 8;
-const BOTTOM_INSET = 4;
+const CURVE_WIDTH = 14;
+const BOTTOM_INSET = 5;
 
 function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number) {
   const right = left + width;
@@ -133,9 +132,10 @@ export default function LearnPage() {
     const row = tabRowRef.current;
     if (!row || !tabPathRef.current) return;
     const base = row.clientHeight - BOTTOM_INSET;
+    const curveTop = Math.max(0, row.clientHeight - 22);
     tabPathRef.current.setAttribute(
       "d",
-      buildTabPath(left, width, TOP_INSET, base, row.clientWidth),
+      buildTabPath(left, width, curveTop, base, row.clientWidth),
     );
   };
 
@@ -191,8 +191,8 @@ export default function LearnPage() {
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
-          {/* Tab mode selector — S-curve underline animates between tabs (lightweight rAF spring) */}
-          <div ref={tabRowRef} className="relative mt-3 mb-4 border-b border-white/[0.08]">
+          {/* Tab mode selector — S-curve underline animates between tabs */}
+          <div ref={tabRowRef} className="relative mt-3 mb-2 border-b border-white/[0.08]">
             <svg
               className="absolute inset-0 pointer-events-none"
               width="100%"
@@ -210,7 +210,7 @@ export default function LearnPage() {
                 style={{ filter: `drop-shadow(0 0 4px ${activeMode.color}66)` }}
               />
             </svg>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-3 gap-2">
               {MODES.map((m) => {
                 const isActive = m.id === mode;
                 return (
@@ -219,26 +219,24 @@ export default function LearnPage() {
                     ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                     type="button"
                     onClick={() => goTo(m.id)}
-                    className="relative flex flex-col items-center justify-center gap-1.5 py-2.5"
+                    className="relative flex flex-col items-center justify-center gap-1.5 pt-3 pb-4"
                   >
                     <m.Icon
-                      size={15}
+                      size={14}
                       className="relative z-10 transition-all duration-300"
                       style={{
                         color: isActive ? m.color : "rgba(255,255,255,0.42)",
-                        transform: isActive ? "translateY(-1px) scale(1.22)" : "translateY(0) scale(1)",
-                        filter: isActive ? `drop-shadow(0 0 8px ${m.color}AA)` : "none",
+                        transform: isActive ? "translateY(-1px) scale(1.15)" : "translateY(0) scale(1)",
+                        filter: isActive ? `drop-shadow(0 0 6px ${m.color}88)` : "none",
                         transitionProperty: "color, transform, filter",
-                        transitionDuration: "300ms, 420ms, 300ms",
-                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.6, 0.64, 1), ease-out",
+                        transitionDuration: "300ms, 380ms, 300ms",
+                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.5, 0.64, 1), ease-out",
                       }}
                     />
                     <span
                       className="relative z-10 text-[10px] font-semibold leading-none transition-all duration-300 ease-out"
                       style={{
-                        color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.48)",
-                        transform: isActive ? "translateY(0px)" : "translateY(1px)",
-                        letterSpacing: isActive ? "0.02em" : "0",
+                        color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.5)",
                       }}
                     >
                       {m.label}
