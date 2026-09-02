@@ -66,14 +66,13 @@ function getInsight(topics: { name: string; value: number }[]): string {
 
 type Mode = "explore" | "adaptive" | "mock";
 
-const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; bg: string; accent: string; subtitle: string }[] = [
-  { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", bg: "linear-gradient(135deg, rgba(52,211,153,0.09) 0%, rgba(34,211,238,0.03) 100%)", accent: "#34D399", subtitle: "Browse topics and track your mastery" },
+const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent: string; subtitle: string }[] = [
+  { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", accent: "#34D399", subtitle: "Browse topics and track your mastery" },
   {
     id: "adaptive",
     label: "Adaptive Learning",
     Icon: Brain,
     color: "#A78BFA",
-    bg: "linear-gradient(135deg, rgba(167,139,250,0.09) 0%, rgba(52,211,153,0.03) 100%)",
     accent: "#A78BFA",
     subtitle: "Sprints tuned to your skill level",
   },
@@ -82,7 +81,6 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; bg: str
     label: "Mock",
     Icon: ClipboardList,
     color: "#FBBF24",
-    bg: "linear-gradient(135deg, rgba(251,191,36,0.09) 0%, rgba(245,158,11,0.03) 100%)",
     accent: "#FBBF24",
     subtitle: "Full-length, exam-style timed tests",
   },
@@ -102,20 +100,21 @@ export default function LearnPage() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
-      {/* LEARN pill — outside the card */}
-      <header className="mb-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
+      {/* LEARN pill — sits on top edge of the card, connected to it */}
+      <header className="mb-0 z-10 relative">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-[rgba(14,17,13,0.95)] backdrop-blur-sm px-4 py-1.5 shadow-[0_0_16px_rgba(199,242,82,0.12)]">
           <BookOpen size={12} className="text-primary" />
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
       </header>
 
-      {/* Outer card wrapping all content, lighter/transparent */}
+      {/* Outer glass card wrapping all content, hangs from the LEARN pill */}
       <div
-        className="relative overflow-hidden rounded-3xl px-5 pt-4 pb-2 transition-colors duration-500"
-        style={{ background: activeMode.bg }}
+        className="relative -mt-3 overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pt-7 pb-4 transition-colors duration-500"
+        style={{ borderColor: GLASS_BORDER, background: `linear-gradient(160deg, ${activeMode.color}14 0%, rgba(255,255,255,0.02) 55%, ${activeMode.color}0A 100%)` }}
       >
-          <div className="absolute inset-0 opacity-[0.05] transition-opacity duration-500" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
+          <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
+          <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
           {/* Tabs */}
           <div className="grid grid-cols-3 gap-1.5 mt-3">
