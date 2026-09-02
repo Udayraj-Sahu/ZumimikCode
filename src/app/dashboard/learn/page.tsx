@@ -221,18 +221,31 @@ export default function LearnPage() {
                     ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                     type="button"
                     onClick={() => goTo(m.id)}
-                    className="relative flex flex-col items-center justify-center gap-1 py-2.5"
+                    className="relative flex flex-col items-center justify-center gap-1.5 py-2.5"
                   >
+                    <span
+                      className="absolute top-1 bottom-1.5 left-1/2 -translate-x-1/2 rounded-full pointer-events-none transition-all duration-400"
+                      style={{
+                        width: isActive ? "100%" : "0%",
+                        background: `radial-gradient(110% 120% at 50% 0%, ${m.color}33 0%, transparent 60%)`,
+                        boxShadow: isActive ? `0 2px 14px ${m.color}33, inset 0 1px 0 rgba(255,255,255,0.08)` : "none",
+                        opacity: isActive ? 1 : 0,
+                        transform: `translateX(-50%) scale(${isActive ? 1 : 0.6}) translateY(${isActive ? 0 : 3}px)`,
+                        transitionProperty: "width, opacity, transform, box-shadow",
+                        transitionDuration: "380ms, 260ms, 340ms, 380ms",
+                        transitionTimingFunction: "cubic-bezier(0.34, 1.3, 0.64, 1), ease-out, cubic-bezier(0.34, 1.3, 0.64, 1), ease-out",
+                      }}
+                    />
                     <m.Icon
                       size={15}
                       className="relative z-10 transition-all duration-300"
                       style={{
                         color: isActive ? m.color : "rgba(255,255,255,0.42)",
-                        transform: isActive ? "scale(1.14)" : "scale(1)",
-                        filter: isActive ? `drop-shadow(0 0 6px ${m.color}66)` : "none",
+                        transform: isActive ? "translateY(-1px) scale(1.22)" : "translateY(0) scale(1)",
+                        filter: isActive ? `drop-shadow(0 0 8px ${m.color}AA)` : "none",
                         transitionProperty: "color, transform, filter",
-                        transitionDuration: "300ms, 360ms, 300ms",
-                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.5, 0.64, 1), ease-out",
+                        transitionDuration: "300ms, 420ms, 300ms",
+                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.6, 0.64, 1), ease-out",
                       }}
                     />
                     <span
@@ -240,6 +253,7 @@ export default function LearnPage() {
                       style={{
                         color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.48)",
                         transform: isActive ? "translateY(0px)" : "translateY(1px)",
+                        letterSpacing: isActive ? "0.02em" : "0",
                       }}
                     >
                       {m.label}
