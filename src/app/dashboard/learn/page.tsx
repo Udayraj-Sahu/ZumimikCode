@@ -245,11 +245,10 @@ export default function LearnPage() {
                     className="relative flex items-center justify-center py-4"
                   >
                     <span
-                      className="relative z-10 text-[11px] font-bold leading-none transition-colors duration-300"
+                      className="relative z-10 text-[12px] font-medium leading-none transition-all duration-300"
                       style={{
-                        color: isActive ? "#ffffff" : "rgba(255,255,255,0.55)",
-                        textShadow: isActive ? `0 0 10px ${m.color}cc` : "none",
-                        letterSpacing: isActive ? "0.06em" : "0.02em",
+                        color: isActive ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.45)",
+                        letterSpacing: "0.04em",
                       }}
                     >
                       {m.label}
