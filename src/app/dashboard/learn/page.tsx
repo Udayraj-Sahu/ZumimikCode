@@ -148,7 +148,7 @@ export default function LearnPage() {
           </svg>
 
           {/* Tabs — inactive: dark angular trapezoids · active: raising rounded island */}
-          <div className="relative mt-3">
+          <div className="relative mt-3 mb-4">
             <div className="grid grid-cols-3 gap-1.5">
               {MODES.map((m) => {
                 const isActive = m.id === mode;
@@ -193,8 +193,7 @@ export default function LearnPage() {
                   width: indicator.width - 2,
                   clipPath: "url(#learn-tab-active-clip)",
                   background: "linear-gradient(180deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 100%)",
-                  border: "1px solid rgba(255,255,255,0.22)",
-                  boxShadow: "0 -1px 0 rgba(255,255,255,0.06) inset, 0 6px 18px rgba(0,0,0,0.45)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), inset 1px 0 0 rgba(255,255,255,0.1), inset -1px 0 0 rgba(255,255,255,0.1), 0 6px 18px rgba(0,0,0,0.45)",
                   transition: "left 340ms cubic-bezier(0.33, 1, 0.68, 1), width 340ms cubic-bezier(0.33, 1, 0.68, 1)",
                 }}
               />
