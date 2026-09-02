@@ -155,10 +155,16 @@ export default function LearnPage() {
                     className="relative flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl"
                   >
                     <span
-                      className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300 ease-out"
+                      className="absolute inset-0 pointer-events-none transition-all duration-400 ease-out"
                       style={{
-                        background: "linear-gradient(180deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.06) 100%)",
+                        borderRadius: m.blob,
+                        background: "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.26) 100%)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.07)",
+                        transform: isActive ? "scale(1)" : "scale(0.97)",
                         opacity: isActive ? 0 : 1,
+                        transitionProperty: "opacity, transform, box-shadow",
+                        transitionDuration: "300ms, 380ms, 300ms",
+                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.2, 0.64, 1), ease-out",
                       }}
                     />
                     <m.Icon
