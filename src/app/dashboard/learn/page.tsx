@@ -142,7 +142,7 @@ export default function LearnPage() {
     const row = tabRowRef.current;
     if (!row) return;
     const base = row.clientHeight - BOTTOM_INSET;
-    const curveTop = Math.max(0, row.clientHeight - 40);
+    const curveTop = Math.max(0, row.clientHeight - 56);
     const full = row.clientWidth;
     if (tabPathRef.current) {
       tabPathRef.current.setAttribute(
@@ -219,10 +219,16 @@ export default function LearnPage() {
               aria-hidden="true"
               focusable="false"
             >
+              <defs>
+                <linearGradient id="learn-tab-sheen" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.16" />
+                  <stop offset="45%" stopColor="#ffffff" stopOpacity="0.05" />
+                  <stop offset="100%" stopColor="#000000" stopOpacity="0.35" />
+                </linearGradient>
+              </defs>
               <path
                 ref={tabFillRef}
-                fill="#0A0C0A"
-                fillOpacity="1"
+                fill="url(#learn-tab-sheen)"
               />
               <path
                 ref={tabPathRef}
