@@ -117,7 +117,7 @@ export default function LearnPage() {
           <div className="absolute inset-0 opacity-[0.07] transition-opacity duration-500" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
 
           {/* Tabs */}
-          <div className="mt-5 grid grid-cols-3 gap-1.5 bg-white/[0.03] border border-white/[0.05] rounded-2xl p-1.5">
+          <div className="grid grid-cols-3 gap-1.5">
             {MODES.map((m) => {
               const isActive = m.id === mode;
               return (
@@ -128,8 +128,8 @@ export default function LearnPage() {
                   className={cn(
                     "relative flex flex-col items-center gap-1 py-2.5 rounded-xl transition-all duration-300 ease-out",
                     isActive
-                      ? "scale-[1.03] bg-white/[0.08] border border-white/[0.1]"
-                      : "border border-transparent hover:bg-white/[0.04]"
+                      ? "scale-[1.03] bg-white/[0.08]"
+                      : "hover:bg-white/[0.04]"
                   )}
                 >
                   <m.Icon
