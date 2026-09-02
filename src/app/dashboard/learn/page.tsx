@@ -111,19 +111,10 @@ export default function LearnPage() {
 
       {/* Mode header band */}
       <div
-        className="relative overflow-hidden rounded-3xl px-5 pt-5 pb-2 transition-colors duration-500"
+        className="relative overflow-hidden rounded-3xl px-5 pt-4 pb-2 transition-colors duration-500"
         style={{ background: activeMode.bg }}
       >
           <div className="absolute inset-0 opacity-[0.07] transition-opacity duration-500" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
-          <div className="relative flex items-center gap-4">
-            <div className="size-11 rounded-2xl flex items-center justify-center shrink-0 transition-colors duration-500" style={{ background: `${activeMode.color}18` }}>
-              <activeMode.Icon size={18} style={{ color: activeMode.color }} />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h1 className="text-[18px] font-bold tracking-[-0.02em] text-foreground leading-tight">{activeMode.label}</h1>
-              <p className="text-[11.5px] text-muted-foreground/45 font-normal mt-0.5">{activeMode.subtitle}</p>
-            </div>
-          </div>
 
           {/* Tabs */}
           <div className="mt-5 grid grid-cols-3 gap-1.5 bg-white/[0.03] border border-white/[0.05] rounded-2xl p-1.5">
