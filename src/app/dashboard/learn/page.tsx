@@ -175,14 +175,15 @@ export default function LearnPage() {
               })}
             </div>
 
-            {/* Active morphing indicator — rounded rectangle that travels between tabs */}
+            {/* Active morphing indicator — rounded-top trapezium that travels between tabs */}
             {indicator.ready && (
               <div
-                className="absolute top-0 bottom-0 z-[5] pointer-events-none rounded-[14px]"
+                className="absolute top-0 bottom-0 z-[5] pointer-events-none"
                 style={{
                   left: indicator.left + 1,
                   width: indicator.width - 2,
-                  borderRadius: "14px",
+                  borderRadius: "12px 12px 14px 14px",
+                  clipPath: "polygon(16px 0, calc(100% - 16px) 0, 100% 100%, 0 100%)",
                   background: "linear-gradient(180deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 100%)",
                   border: "1px solid rgba(255,255,255,0.22)",
                   boxShadow: "0 -1px 0 rgba(255,255,255,0.06) inset, 0 6px 18px rgba(0,0,0,0.45)",
