@@ -87,6 +87,8 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 ];
 
 const TAB_TRAPEZOID = "polygon(14px 0, calc(100% - 14px) 0, 100% 100%, 0 100%)";
+const TAB_ACTIVE_OUTLINE =
+  "M 9 25 Q 12 0 22 0 L 78 0 Q 88 0 91 25 L 100 100 M 0 100 L 9 25";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
@@ -198,17 +200,41 @@ export default function LearnPage() {
 
             {/* Active morphing indicator — rounded-top trapezium that travels between tabs */}
             {indicator.ready && (
-              <div
-                className="absolute top-0 bottom-0 z-[5] pointer-events-none"
-                style={{
-                  left: indicator.left + 1,
-                  width: indicator.width - 2,
-                  clipPath: "url(#learn-tab-active-clip)",
-                  background: `linear-gradient(180deg, ${activeMode.color}2E 0%, rgba(255,255,255,0.05) 100%)`,
-                  boxShadow: `inset 0 1px 0 rgba(255,255,255,0.3), inset 1px 0 0 rgba(255,255,255,0.12), inset -1px 0 0 rgba(255,255,255,0.12), 0 6px 18px rgba(0,0,0,0.4), 0 0 22px ${activeMode.color}26`,
-                  transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
-                }}
-              />
+              <>
+                <div
+                  className="absolute top-0 bottom-0 z-[5] pointer-events-none"
+                  style={{
+                    left: indicator.left + 1,
+                    width: indicator.width - 2,
+                    clipPath: "url(#learn-tab-active-clip)",
+                    background: `linear-gradient(180deg, ${activeMode.color}2E 0%, rgba(255,255,255,0.05) 100%)`,
+                    boxShadow: `0 6px 18px rgba(0,0,0,0.4), 0 0 22px ${activeMode.color}26`,
+                    transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
+                  }}
+                />
+                <svg
+                  className="absolute top-0 bottom-0 z-[6] pointer-events-none"
+                  style={{
+                    left: indicator.left + 1,
+                    width: indicator.width - 2,
+                    transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
+                  }}
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d={TAB_ACTIVE_OUTLINE}
+                    fill="none"
+                    stroke="rgba(255,255,255,0.35)"
+                    strokeWidth="1.5"
+                    vectorEffect="non-scaling-stroke"
+                    strokeLinecap="butt"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </>
             )}
           </div>
 
