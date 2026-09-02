@@ -99,7 +99,7 @@ export default function LearnPage() {
   const topics = data?.topics ?? [];
 
   const activeMode = MODES.find((m) => m.id === mode)!;
-  const outerBg = `linear-gradient(160deg, ${activeMode.color}14 0%, rgba(255,255,255,0.02) 55%, ${activeMode.color}0A 100%)`;
+  const outerBg = `linear-gradient(160deg, ${activeMode.color}1F 0%, rgba(255,255,255,0.03) 55%, ${activeMode.color}14 100%)`;
 
   const tabRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
     explore: null,
