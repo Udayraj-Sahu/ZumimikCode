@@ -66,8 +66,8 @@ function getInsight(topics: { name: string; value: number }[]): string {
 
 type Mode = "explore" | "adaptive" | "mock";
 
-const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent: string; subtitle: string; blob: string }[] = [
-  { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", accent: "#34D399", subtitle: "Browse topics and track your mastery", blob: "50% 50% 46% 54% / 58% 55% 45% 42%" },
+const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent: string; subtitle: string }[] = [
+  { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", accent: "#34D399", subtitle: "Browse topics and track your mastery" },
   {
     id: "adaptive",
     label: "Adaptive Learning",
@@ -75,7 +75,6 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
     color: "#A78BFA",
     accent: "#A78BFA",
     subtitle: "Sprints tuned to your skill level",
-    blob: "48% 52% 54% 46% / 62% 50% 50% 38%",
   },
   {
     id: "mock",
@@ -84,9 +83,13 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
     color: "#FBBF24",
     accent: "#FBBF24",
     subtitle: "Full-length, exam-style timed tests",
-    blob: "52% 48% 46% 54% / 55% 58% 42% 45%",
   },
 ];
+
+const TAB_ACTIVE_FILL =
+  "M 18 0 C 6 0 0 8 0 22 C 2 50 4 78 2 100 L 98 100 C 96 78 98 50 100 22 C 100 8 94 0 82 0 Z";
+const TAB_ACTIVE_STROKE =
+  "M 0 22 C 2 50 4 78 2 100 M 98 100 C 96 78 98 50 100 22 C 100 8 94 0 82 0 L 18 0 C 6 0 0 8 0 22";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
@@ -107,7 +110,6 @@ export default function LearnPage() {
     mock: null,
   });
   const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
-  const [pop, setPop] = useState(false);
 
   useEffect(() => {
     const el = tabRefs.current[mode];
@@ -141,7 +143,16 @@ export default function LearnPage() {
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
-          {/* Tabs — inactive: dark blobs · active: liquid accent blob */}
+          {/* Tab clip path for inactive gel backgrounds */}
+          <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="learn-tab-active-clip" clipPathUnits="objectBoundingBox">
+                <path d="M 0.18 0 C 0.06 0 0 0.08 0 0.22 C 0.02 0.50 0.04 0.78 0.02 1 L 0.98 1 C 0.96 0.78 0.98 0.50 1 0.22 C 1 0.08 0.94 0 0.82 0 Z" />
+              </clipPath>
+            </defs>
+          </svg>
+
+          {/* Tabs — inactive: dark trapezium clips · active: accent trapezium SVG */}
           <div className="relative mt-3 mb-4 border-b border-white/[0.08]">
             <div className="grid grid-cols-3 gap-1.5">
               {MODES.map((m) => {
@@ -151,25 +162,21 @@ export default function LearnPage() {
                     key={m.id}
                     ref={(node) => { tabRefs.current[m.id] = node; }}
                     type="button"
-                    onClick={() => { setMode(m.id); setPop(true); }}
+                    onClick={() => setMode(m.id)}
                     className="relative flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl"
                   >
                     <span
-                      className="absolute inset-0 pointer-events-none transition-all duration-400 ease-out"
+                      className="absolute inset-0 pointer-events-none transition-all duration-300 ease-out"
                       style={{
-                        borderRadius: m.blob,
-                        background: "linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.26) 100%)",
+                        clipPath: "url(#learn-tab-active-clip)",
+                        background: "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.28) 100%)",
                         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.07)",
-                        transform: isActive ? "scale(1)" : "scale(0.97)",
                         opacity: isActive ? 0 : 1,
-                        transitionProperty: "opacity, transform, box-shadow",
-                        transitionDuration: "300ms, 380ms, 300ms",
-                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.2, 0.64, 1), ease-out",
                       }}
                     />
                     <m.Icon
                       size={15}
-                      className="relative z-10 transition-all duration-340"
+                      className="relative z-10 transition-all duration-300"
                       style={{
                         color: isActive ? m.color : "rgba(255,255,255,0.42)",
                         transform: isActive ? "scale(1.14)" : "scale(1)",
@@ -193,20 +200,37 @@ export default function LearnPage() {
               })}
             </div>
 
-            {/* Active liquid blob — slides + squishes its shape between tabs */}
+            {/* Active curved trapezium — slides between tabs, no bottom stroke */}
             {indicator.ready && (
-              <div
-                className={`absolute top-[4px] bottom-0 z-[5] pointer-events-none ${pop ? "blob-pop" : ""}`}
-                onAnimationEnd={() => setPop(false)}
+              <svg
+                className="absolute top-0 bottom-0 z-[5] pointer-events-none"
                 style={{
-                  left: indicator.left + 3,
-                  width: indicator.width - 6,
-                  borderRadius: activeMode.blob,
-                  background: `radial-gradient(120% 130% at 50% -12%, ${activeMode.color}55 0%, transparent 55%), linear-gradient(165deg, ${activeMode.color}30 0%, rgba(255,255,255,0.04) 55%, ${activeMode.color}22 100%)`,
-                  boxShadow: `0 3px 16px ${activeMode.color}40, inset 0 1px 0 rgba(255,255,255,0.22), inset 1px 0 0 rgba(255,255,255,0.06)`,
-                  transition: "left 380ms cubic-bezier(0.3, 1.12, 0.58, 1), width 380ms cubic-bezier(0.3, 1.12, 0.58, 1), border-radius 440ms cubic-bezier(0.3, 1.12, 0.58, 1)",
+                  left: indicator.left + 1,
+                  width: indicator.width - 2,
+                  transition: "left 380ms cubic-bezier(0.34, 1.15, 0.64, 1), width 380ms cubic-bezier(0.34, 1.15, 0.64, 1)",
                 }}
-              />
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <defs>
+                  <linearGradient id="learn-tab-active-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor={activeMode.color} stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="#ffffff" stopOpacity="0.05" />
+                  </linearGradient>
+                </defs>
+                <path d={TAB_ACTIVE_FILL} fill="url(#learn-tab-active-fill)" />
+                <path
+                  d={TAB_ACTIVE_STROKE}
+                  fill="none"
+                  stroke="rgba(255,255,255,0.35)"
+                  strokeWidth="1"
+                  vectorEffect="non-scaling-stroke"
+                  strokeLinecap="butt"
+                  strokeLinejoin="round"
+                />
+              </svg>
             )}
           </div>
 
