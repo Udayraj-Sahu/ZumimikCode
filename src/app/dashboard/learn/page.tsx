@@ -228,7 +228,7 @@ export default function LearnPage() {
                     d={TAB_ACTIVE_OUTLINE}
                     fill="none"
                     stroke="rgba(255,255,255,0.35)"
-                    strokeWidth="1.5"
+                    strokeWidth="1"
                     vectorEffect="non-scaling-stroke"
                     strokeLinecap="butt"
                     strokeLinejoin="round"
