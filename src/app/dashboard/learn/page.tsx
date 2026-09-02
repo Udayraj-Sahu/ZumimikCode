@@ -86,6 +86,11 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
+const TAB_CLIP_OUT = "polygon(16px 0, calc(100% - 16px) 0, 100% 100%, 0 100%)";
+const TAB_CLIP_IN = "polygon(15px 0, calc(100% - 15px) 0, 100% 100%, 0 100%)";
+const TAB_RAD_OUT = "12px 12px 14px 14px";
+const TAB_RAD_IN = "11px 11px 13px 13px";
+
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
@@ -97,6 +102,7 @@ export default function LearnPage() {
   const topics = data?.topics ?? [];
 
   const activeMode = MODES.find((m) => m.id === mode)!;
+  const outerBg = `linear-gradient(160deg, ${activeMode.color}14 0%, rgba(255,255,255,0.02) 55%, ${activeMode.color}0A 100%)`;
 
   const tabRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
     explore: null,
@@ -130,12 +136,12 @@ export default function LearnPage() {
       {/* Outer glass card wrapping all content */}
       <div
         className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pt-4 pb-4 transition-colors duration-500"
-        style={{ borderColor: GLASS_BORDER, background: `linear-gradient(160deg, ${activeMode.color}14 0%, rgba(255,255,255,0.02) 55%, ${activeMode.color}0A 100%)` }}
+        style={{ borderColor: GLASS_BORDER, background: outerBg }}
       >
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
-          {/* Tabs — sliding active indicator */}
+          {/* Tabs — each carries the same trapezium outline as the slider */}
           <div className="relative mt-3">
             <div className="grid grid-cols-3 gap-1.5">
               {MODES.map((m) => {
@@ -148,13 +154,26 @@ export default function LearnPage() {
                     onClick={() => setMode(m.id)}
                     className="relative z-10 flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl"
                   >
+                    <span
+                      className="absolute pointer-events-none transition-all duration-300 ease-out"
+                      style={{
+                        inset: 0,
+                        borderRadius: TAB_RAD_OUT,
+                        clipPath: TAB_CLIP_OUT,
+                        background: isActive ? "rgba(255,255,255,0.16)" : "rgba(255,255,255,0.06)",
+                      }}
+                    />
+                    <span
+                      className="absolute pointer-events-none"
+                      style={{ inset: "1.5px", borderRadius: TAB_RAD_IN, clipPath: TAB_CLIP_IN, background: outerBg }}
+                    />
                     <m.Icon
                       size={15}
-                      className="transition-all duration-300 ease-out"
+                      className="relative transition-all duration-300 ease-out"
                       style={{ color: isActive ? m.color : "rgba(255,255,255,0.4)", transform: isActive ? "scale(1.1)" : "scale(1)" }}
                     />
                     <span
-                      className="text-[10px] font-semibold leading-none transition-all duration-300 ease-out"
+                      className="relative text-[10px] font-semibold leading-none transition-all duration-300 ease-out"
                       style={{ color: isActive ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.45)" }}
                     >
                       {m.label}
@@ -164,19 +183,32 @@ export default function LearnPage() {
               })}
             </div>
 
-            {/* Sliding active background — trapezium, no border */}
+            {/* Sliding active trapezium, rounded top corners — travels between tabs */}
             {indicator.ready && (
-              <div
-                className="absolute top-0 bottom-0"
-                style={{
-                  left: indicator.left,
-                  width: indicator.width,
-                  background: "linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)",
-                  borderRadius: "0.75rem",
-                  clipPath: "polygon(14px 0, calc(100% - 14px) 0, 100% 100%, 0 100%)",
-                  transition: "left 300ms cubic-bezier(0.33, 1, 0.68, 1), width 300ms cubic-bezier(0.33, 1, 0.68, 1)",
-                }}
-              />
+              <>
+                <div
+                  className="absolute top-0 bottom-0 pointer-events-none"
+                  style={{
+                    left: indicator.left,
+                    width: indicator.width,
+                    borderRadius: TAB_RAD_OUT,
+                    clipPath: TAB_CLIP_OUT,
+                    background: "rgba(255,255,255,0.18)",
+                    transition: "left 300ms cubic-bezier(0.33, 1, 0.68, 1), width 300ms cubic-bezier(0.33, 1, 0.68, 1)",
+                  }}
+                />
+                <div
+                  className="absolute top-0 bottom-0 pointer-events-none"
+                  style={{
+                    left: indicator.left + 1.5,
+                    width: indicator.width - 3,
+                    borderRadius: TAB_RAD_IN,
+                    clipPath: TAB_CLIP_IN,
+                    background: "linear-gradient(180deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.05) 100%)",
+                    transition: "left 300ms cubic-bezier(0.33, 1, 0.68, 1), width 300ms cubic-bezier(0.33, 1, 0.68, 1)",
+                  }}
+                />
+              </>
             )}
           </div>
 
