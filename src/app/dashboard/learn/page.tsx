@@ -9,10 +9,10 @@ import {
   Sparkles,
   Plus,
   ArrowRight,
-  ChevronLeft,
   Brain,
   ClipboardList,
   BookOpen,
+  Search,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -65,25 +65,53 @@ function getInsight(topics: { name: string; value: number }[]): string {
   return `${best.name} (${best.value}%) leads. ${worst.name} (${worst.value}%) needs more practice.`;
 }
 
-type Mode = "home" | "explore" | "adaptive" | "mock";
+type Mode = "explore" | "adaptive" | "mock";
 
-const MODES: { id: Exclude<Mode, "home">; label: string; desc: string; Icon: LucideIcon; color: string }[] = [
-  { id: "explore", label: "Topic Explorer", desc: "Browse topics and track your mastery across every subject.", Icon: Grid3x3, color: "#34D399" },
-  { id: "adaptive", label: "Adaptive Learning", desc: "Sprints tuned to your skill level — questions that meet you where you are.", Icon: Brain, color: "#A78BFA" },
-  { id: "mock", label: "Mock Tests", desc: "Full-length, exam-style timed tests to simulate the real thing.", Icon: ClipboardList, color: "#FBBF24" },
+const MODES: { id: Mode; label: string; badge?: string; Icon: LucideIcon; color: string; bg: string; accent: string; subtitle: string; placeholder: string }[] = [
+  {
+    id: "explore",
+    label: "Topic Explorer",
+    Icon: Grid3x3,
+    color: "#34D399",
+    bg: "linear-gradient(135deg, rgba(52,211,153,0.14) 0%, rgba(34,211,238,0.06) 100%)",
+    accent: "#34D399",
+    subtitle: "Browse topics and track your mastery",
+    placeholder: "Search for a topic",
+  },
+  {
+    id: "adaptive",
+    label: "Adaptive Learning",
+    badge: "19 Mins",
+    Icon: Brain,
+    color: "#A78BFA",
+    bg: "linear-gradient(135deg, rgba(167,139,250,0.14) 0%, rgba(52,211,153,0.06) 100%)",
+    accent: "#A78BFA",
+    subtitle: "Sprints tuned to your skill level",
+    placeholder: "Search for a lesson",
+  },
+  {
+    id: "mock",
+    label: "Mock",
+    Icon: ClipboardList,
+    color: "#FBBF24",
+    bg: "linear-gradient(135deg, rgba(251,191,36,0.14) 0%, rgba(245,158,11,0.05) 100%)",
+    accent: "#FBBF24",
+    subtitle: "Full-length, exam-style timed tests",
+    placeholder: "Search for a mock test",
+  },
 ];
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const [mode, setMode] = useState<Mode>("home");
+  const [mode, setMode] = useState<Mode>("explore");
   const [activeDomain, setActiveDomain] = useState(targetExam || "cat");
   const [showAddPrep, setShowAddPrep] = useState(false);
   const { data } = useDashboardData(activeDomain);
   const topics = data?.topics ?? [];
 
-  const activeMode = mode === "home" ? null : MODES.find((m) => m.id === mode);
+  const activeMode = MODES.find((m) => m.id === mode)!;
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
@@ -93,53 +121,72 @@ export default function LearnPage() {
           <BookOpen size={12} className="text-primary" />
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
-        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
-          {activeMode ? activeMode.label : "Choose your path"}
-        </h1>
-        <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
-          {activeMode
-            ? activeMode.desc
-            : "Pick a mode to dive in — explore, adapt, or simulate"}
-        </p>
-      </header>
 
-      {mode === "home" && (
-        <>
-          <div className="flex flex-col gap-3">
-            {MODES.map(({ id, label, desc, Icon, color }) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setMode(id)}
-                className="group relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98] flex items-center gap-4"
-                style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
-              >
-                <div className="absolute inset-0 opacity-[0.06] transition-opacity group-hover:opacity-[0.12]" style={{ background: `radial-gradient(circle at top right, ${color}, transparent 75%)` }} />
-                <div className="size-11 rounded-2xl flex items-center justify-center shrink-0" style={{ background: `${color}15` }}>
-                  <Icon size={18} style={{ color }} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">{label}</h3>
-                  <p className="text-[11px] text-muted-foreground/40 mt-0.5 leading-relaxed">{desc}</p>
-                </div>
-                <ArrowRight size={15} className="text-muted-foreground/30 group-hover:text-foreground/60 transition-colors shrink-0" />
-              </button>
-            ))}
+        {/* Mode header band */}
+        <div
+          className="relative overflow-hidden rounded-3xl border p-5 transition-colors duration-500"
+          style={{ borderColor: GLASS_BORDER, background: activeMode.bg }}
+        >
+          <div className="absolute inset-0 opacity-[0.07] transition-opacity duration-500" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
+          <div className="relative flex items-center gap-4">
+            <div className="size-11 rounded-2xl flex items-center justify-center shrink-0 transition-colors duration-500" style={{ background: `${activeMode.color}18` }}>
+              <activeMode.Icon size={18} style={{ color: activeMode.color }} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-[18px] font-bold tracking-[-0.02em] text-foreground leading-tight">{activeMode.label}</h1>
+              <p className="text-[11.5px] text-muted-foreground/45 font-normal mt-0.5">{activeMode.subtitle}</p>
+            </div>
+            {activeMode.badge && (
+              <div className="rounded-full px-2.5 py-1 text-[9px] font-bold whitespace-nowrap transition-colors duration-500" style={{ background: `${activeMode.color}18`, color: activeMode.color }}>
+                {activeMode.badge}
+              </div>
+            )}
           </div>
-        </>
-      )}
+
+          {/* Tabs */}
+          <div className="mt-5 grid grid-cols-3 gap-1.5 bg-white/[0.03] border border-white/[0.05] rounded-2xl p-1.5">
+            {MODES.map((m) => {
+              const isActive = m.id === mode;
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() => setMode(m.id)}
+                  className={cn(
+                    "relative flex flex-col items-center gap-1 py-2.5 rounded-xl transition-all duration-300 ease-out",
+                    isActive
+                      ? "scale-[1.03] bg-white/[0.08] border border-white/[0.1]"
+                      : "border border-transparent hover:bg-white/[0.04]"
+                  )}
+                >
+                  {m.badge && (
+                    <span className="absolute -top-1.5 right-1/2 translate-x-1/2 rounded-full px-1.5 py-0.5 text-[7.5px] font-semibold whitespace-nowrap" style={{ background: m.color, color: "#0A0C0A" }}>
+                      {m.badge}
+                    </span>
+                  )}
+                  <m.Icon
+                    size={15}
+                    className={cn("transition-colors duration-300", isActive ? "" : "text-muted-foreground/40")}
+                    style={isActive ? { color: m.color } : undefined}
+                  />
+                  <span className={cn("text-[10px] font-semibold leading-none transition-colors duration-300", isActive ? "text-foreground/90" : "text-muted-foreground/45")}>
+                    {m.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Search bar */}
+          <div key={mode} className="mt-3 flex animate-[fadeSlideIn_0.35s_ease-out] items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.04] px-3 py-2.5">
+            <Search size={14} className="shrink-0 text-muted-foreground/40" />
+            <span className="text-[12px] text-muted-foreground/40 flex-1 truncate">{activeMode.placeholder}</span>
+          </div>
+        </div>
+      </header>
 
       {mode === "explore" && (
         <>
-          <button
-            type="button"
-            onClick={() => setMode("home")}
-            className="mb-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground/50 transition-colors hover:text-foreground/80 active:scale-[0.98]"
-          >
-            <ChevronLeft size={14} />
-            All modes
-          </button>
-
           {/* Add Prep CTA */}
           <button
             type="button"
@@ -247,32 +294,30 @@ export default function LearnPage() {
         </>
       )}
 
-      {activeMode && (mode === "adaptive" || mode === "mock") && (
-        <>
-          <button
-            type="button"
-            onClick={() => setMode("home")}
-            className="mb-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground/50 transition-colors hover:text-foreground/80 active:scale-[0.98]"
-          >
-            <ChevronLeft size={14} />
-            All modes
-          </button>
-          <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
-            <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
-            <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
-              <activeMode.Icon size={24} style={{ color: activeMode.color }} />
-            </div>
-            <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
-            <p className="text-[12px] text-muted-foreground/40 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
-              {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
-            </p>
+      {(mode === "adaptive" || mode === "mock") && (
+        <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
+          <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
+          <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
+            <activeMode.Icon size={24} style={{ color: activeMode.color }} />
           </div>
-        </>
+          <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
+          <p className="text-[12px] text-muted-foreground/40 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
+            {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
+          </p>
+        </div>
       )}
 
       {showAddPrep && (
         <AddPrepModal onClose={() => setShowAddPrep(false)} />
       )}
+
+      {/* Keyframe for search bar animation */}
+      <style jsx global>{`
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
