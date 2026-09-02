@@ -94,15 +94,15 @@ function buildTabPath(left: number, width: number, top: number, base: number, fu
   const right = left + width;
   const leftFoot = Math.max(0, left - CURVE_WIDTH);
   const rightFoot = Math.min(fullWidth, right + CURVE_WIDTH);
-  const lc = left - CURVE_WIDTH / 2;
-  const rc = right + CURVE_WIDTH / 2;
+  const lc = Math.max(0, left - CURVE_WIDTH / 2);
+  const rc = Math.min(fullWidth, right + CURVE_WIDTH / 2);
   return `M0,${base} L${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${fullWidth},${base}`;
 }
 
 function buildTabFill(left: number, width: number, top: number, base: number, fullWidth: number) {
   const right = left + width;
-  const lc = left - CURVE_WIDTH / 2;
-  const rc = right + CURVE_WIDTH / 2;
+  const lc = Math.max(0, left - CURVE_WIDTH / 2);
+  const rc = Math.min(fullWidth, right + CURVE_WIDTH / 2);
   const leftFoot = Math.max(0, left - CURVE_WIDTH);
   const rightFoot = Math.min(fullWidth, right + CURVE_WIDTH);
   return `M${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${leftFoot},${base} Z`;
