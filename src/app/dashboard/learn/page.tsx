@@ -87,7 +87,7 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 ];
 
 const TAB_ACTIVE_OUTLINE =
-  "M 9 10 Q 12 0 30 0 L 78 0 Q 90 0 92 20 L 100 100 M 0 100 L 9 10";
+  "M 30 0 L 78 0 Q 90 0 92 20 L 100 100 L 0 100 L 9 10 Q 12 0 30 0 Z";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
