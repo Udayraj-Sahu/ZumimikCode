@@ -86,7 +86,6 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
-const TAB_TRAPEZOID = "polygon(14px 0, calc(100% - 14px) 0, 100% 100%, 0 100%)";
 const TAB_ACTIVE_OUTLINE =
   "M 9 10 Q 12 0 30 0 L 78 0 Q 90 0 92 20 L 100 100 M 0 100 L 9 10";
 
@@ -167,7 +166,7 @@ export default function LearnPage() {
                     <span
                       className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-out"
                       style={{
-                        clipPath: TAB_TRAPEZOID,
+                        clipPath: "url(#learn-tab-active-clip)",
                         background: "linear-gradient(180deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.06) 100%)",
                         opacity: isActive ? 0 : 1,
                       }}
