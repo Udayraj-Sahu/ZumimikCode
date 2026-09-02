@@ -20,7 +20,6 @@ import {
   Radio,
   Flame,
   BookOpen,
-  User,
   Sparkles,
   TrendingUp,
   type LucideIcon,
@@ -330,68 +329,95 @@ export default function DashboardPage() {
         >
           {/* Slide 1: Profile status — teaser or complete card */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/15 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
-              <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.06) 0%, rgba(255,255,255,0.02) 55%, rgba(199,242,82,0.03) 100%)" }}>
+              <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.35), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.4), transparent)" }} />
 
               {profileComplete ? (
                 <>
-                  <div className="flex items-center gap-3">
-                    <div className="size-11 rounded-full flex items-center justify-center text-[#0A0C0A] font-bold text-[14px] shrink-0" style={{ background: "linear-gradient(135deg, #C7F252, #a6dc3a)" }}>
-                      {(firstName?.[0] ?? "?").toUpperCase()}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[13px] font-bold tracking-[-0.02em] text-foreground leading-tight">Profile complete</p>
-                      <p className="text-[10px] text-muted-foreground/40 font-medium mt-0.5">Great to have you, {firstName}</p>
-                    </div>
-                  </div>
-                  <div className="flex-1 flex flex-col justify-center gap-2.5 py-4">
-                    <div className="flex items-center gap-3 rounded-2xl border border-white/[0.05] px-4 py-3" style={{ background: "rgba(255,255,255,0.02)" }}>
-                      <div className="size-8 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(34,211,238,0.12)" }}>
-                        <User size={14} className="text-[#22D3EE]" />
+                  <div className="relative flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="size-11 rounded-full flex items-center justify-center text-[#0A0C0A] font-black text-[16px] shrink-0 shadow-[0_0_18px_rgba(199,242,82,0.35)]" style={{ background: "linear-gradient(135deg, #C7F252, #8fca2a)" }}>
+                        {(firstName?.[0] ?? "?").toUpperCase()}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-[9px] font-semibold text-muted-foreground/35 uppercase tracking-wider">Persona</p>
-                        <p className="text-[12px] font-bold text-foreground/80 truncate">{persona}</p>
+                        <p className="text-[13.5px] font-bold tracking-[-0.02em] text-foreground leading-tight">Profile complete</p>
+                        <p className="text-[10px] text-primary/60 font-medium mt-0.5">Great to have you, {firstName}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3 rounded-2xl border border-white/[0.05] px-4 py-3" style={{ background: "rgba(255,255,255,0.02)" }}>
-                      <div className="size-8 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
-                        <Target size={14} className="text-[#34D399]" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[9px] font-semibold text-muted-foreground/35 uppercase tracking-wider">Goal</p>
-                        <p className="text-[12px] font-bold text-foreground/80 truncate">{goal}</p>
-                      </div>
+                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border border-primary/20 text-[9px] font-bold text-primary" style={{ background: "rgba(199,242,82,0.08)" }}>
+                      <Sparkles size={9} />
+                      100%
                     </div>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    {[0, 1, 2, 3, 4].map((i) => (
-                      <div key={i} className="h-1.5 flex-1 rounded-full bg-primary" />
-                    ))}
+
+                  <div className="relative flex-1 flex flex-col items-center justify-center py-2 text-center">
+                    <div className="relative size-[88px]">
+                      <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="#C7F252" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset="0" />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <Sparkles size={17} className="text-primary" />
+                        <span className="mt-0.5 text-[8px] font-bold text-primary tracking-wide">ALL SET</span>
+                      </div>
+                    </div>
+                    <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">You're all set, {firstName}</h2>
+                    <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let's make it count.</p>
+                    <div className="mt-3 flex items-center gap-1.5">
+                      {["Name", "Persona", "Goal"].map((l) => (
+                        <div key={l} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.08)" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: "#C7F252" }} />
+                          <span className="text-[8px] font-semibold text-foreground/70">{l}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <p className="mt-1.5 text-[10px] text-muted-foreground/35 font-semibold">Your profile is ready — prep tailored to you</p>
+
+                  <p className="relative text-center text-[9.5px] text-muted-foreground/35 font-semibold tracking-[0.14em]">PROFILE READY • STREAKS UNLOCKED</p>
                 </>
               ) : (
                 <>
-                  <div className="flex items-center gap-2.5">
-                    <div className="size-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
-                      <Sparkles size={14} className="text-primary" />
-                    </div>
-                    <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
-                  </div>
-                  <div className="flex-1 flex flex-col justify-center py-4">
-                    <h2 className="text-[24px] font-bold tracking-[-0.03em] text-foreground leading-tight">Complete your<br />details</h2>
-                    <p className="mt-2 text-[12px] text-muted-foreground/45 font-normal leading-relaxed">Tell us who you are and what you're aiming for — we'll tailor your prep, streaks and recommendations.</p>
-                    <div className="mt-5">
-                      <div className="flex items-center gap-1.5 mb-2">
-                        {[0, 1, 2, 3, 4].map((i) => (
-                          <div key={i} className={cn("h-1.5 flex-1 rounded-full transition-colors duration-500", i < profileDone ? "bg-primary" : "bg-white/10")} />
-                        ))}
+                  <div className="relative flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="size-8 rounded-xl flex items-center justify-center shadow-[0_0_14px_rgba(199,242,82,0.2)]" style={{ background: "rgba(199,242,82,0.12)" }}>
+                        <Sparkles size={14} className="text-primary" />
                       </div>
-                      <p className="text-[10px] text-muted-foreground/35 font-semibold">{profileDone} of 5 steps complete</p>
+                      <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
+                    </div>
+                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: profileDone > 0 ? "rgba(199,242,82,0.08)" : "transparent", color: profileDone > 0 ? "#C7F252" : "rgba(255,255,255,0.3)" }}>
+                      {profileDone}/5
                     </div>
                   </div>
-                  <button type="button" onClick={() => setOnboardingOpen(true)} className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C7F252] to-[#a6dc3a] px-5 py-3 text-[12px] font-bold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(199,242,82,0.25)] active:scale-95">
+
+                  <div className="relative flex-1 flex flex-col items-center justify-center py-2 text-center">
+                    <div className="relative size-[88px]">
+                      <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="#C7F252" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset={`${2 * Math.PI * 26 * (1 - profileDone / 5)}`} className="transition-all duration-700" />
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <Sparkles size={17} className="text-primary" />
+                        <span className="mt-0.5 text-[9px] font-black text-foreground/80">{profileDone}/5</span>
+                      </div>
+                    </div>
+                    <h2 className="mt-3 text-[23px] font-black tracking-[-0.03em] text-foreground leading-tight">Finish your profile</h2>
+                    <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you're aiming for — we'll tailor everything to you.</p>
+                    <div className="mt-3 flex items-center gap-1.5">
+                      {[
+                        { label: "Name", done: !!firstName.trim() },
+                        { label: "Persona", done: !!persona },
+                        { label: "Goal", done: !!goal },
+                      ].map((s) => (
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: s.done ? "rgba(199,242,82,0.08)" : "transparent" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: s.done ? "#C7F252" : "rgba(255,255,255,0.15)" }} />
+                          <span className={cn("text-[8px] font-semibold", s.done ? "text-foreground/70" : "text-muted-foreground/35")}>{s.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button type="button" onClick={() => setOnboardingOpen(true)} className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#C7F252] to-[#9fd42f] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all hover:shadow-[0_0_20px_rgba(199,242,82,0.35)] active:scale-95">
                     CONTINUE SETUP
                     <ChevronRight size={14} className="mt-px" />
                   </button>
