@@ -122,12 +122,14 @@ export default function LearnPage() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
-      {/* LEARN pill — above the card */}
-      <header className="mb-4">
+      {/* Page header — matches app pattern */}
+      <header className="mb-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
           <BookOpen size={12} className="text-primary" />
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
+        <h1 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Learn</h1>
+        <p className="mt-1 text-[12px] text-muted-foreground/40 font-normal">Master topics, adaptive sprints &amp; timed mocks.</p>
       </header>
 
       {/* Outer glass card wrapping all content */}
@@ -164,7 +166,7 @@ export default function LearnPage() {
                       className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-out"
                       style={{
                         clipPath: TAB_TRAPEZOID,
-                        background: "rgba(5,8,6,0.55)",
+                        background: "linear-gradient(180deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.06) 100%)",
                         opacity: isActive ? 0 : 1,
                       }}
                     />
@@ -192,8 +194,8 @@ export default function LearnPage() {
                   left: indicator.left + 1,
                   width: indicator.width - 2,
                   clipPath: "url(#learn-tab-active-clip)",
-                  background: "linear-gradient(180deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 100%)",
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), inset 1px 0 0 rgba(255,255,255,0.1), inset -1px 0 0 rgba(255,255,255,0.1), 0 6px 18px rgba(0,0,0,0.45)",
+                  background: `linear-gradient(180deg, ${activeMode.color}2E 0%, rgba(255,255,255,0.05) 100%)`,
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), inset 1px 0 0 rgba(255,255,255,0.12), inset -1px 0 0 rgba(255,255,255,0.12), 0 6px 18px rgba(0,0,0,0.4)",
                   transition: "left 340ms cubic-bezier(0.33, 1, 0.68, 1), width 340ms cubic-bezier(0.33, 1, 0.68, 1)",
                 }}
               />
@@ -206,7 +208,7 @@ export default function LearnPage() {
           <button
             type="button"
             onClick={() => setShowAddPrep(true)}
-            className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 flex items-center justify-center gap-2 text-[13px] font-semibold text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98]"
+            className="w-full rounded-2xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-3.5 flex items-center justify-center gap-2 text-[13px] font-bold tracking-widest uppercase text-[#0A0C0A] shadow-[0_4px_18px_rgba(199,242,82,0.18)] transition-all hover:shadow-[0_0_22px_rgba(199,242,82,0.3)] active:scale-[0.98]"
           >
             <Plus size={15} strokeWidth={2.5} />
             ADD PREP
