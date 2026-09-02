@@ -223,7 +223,6 @@ export default function LearnPage() {
                 ref={tabFillRef}
                 fill="#0A0C0A"
                 fillOpacity="1"
-                style={{ filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.7))" }}
               />
               <path
                 ref={tabPathRef}
@@ -232,7 +231,6 @@ export default function LearnPage() {
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.5))" }}
               />
             </svg>
             <div className="grid grid-cols-3 gap-2">
@@ -261,14 +259,6 @@ export default function LearnPage() {
               })}
             </div>
           </div>
-
-          {/* Active mode subtitle */}
-          <p
-            key={mode}
-            className="text-center text-[11px] text-muted-foreground/50 mb-1 transition-opacity duration-300"
-          >
-            {activeMode.subtitle}
-          </p>
 
       {mode === "explore" && (
         <>
