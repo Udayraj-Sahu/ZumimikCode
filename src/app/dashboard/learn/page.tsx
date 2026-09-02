@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   Grid3x3,
@@ -98,6 +98,25 @@ export default function LearnPage() {
 
   const activeMode = MODES.find((m) => m.id === mode)!;
 
+  const tabRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
+    explore: null,
+    adaptive: null,
+    mock: null,
+  });
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
+
+  useEffect(() => {
+    const el = tabRefs.current[mode];
+    if (el) {
+      const { offsetLeft, offsetWidth } = el;
+      setIndicator((prev) =>
+        prev.left === offsetLeft && prev.width === offsetWidth
+          ? prev
+          : { left: offsetLeft, width: offsetWidth, ready: true },
+      );
+    }
+  }, [mode, topics.length]);
+
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
       {/* LEARN pill — above the card */}
@@ -116,33 +135,47 @@ export default function LearnPage() {
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
-          {/* Tabs */}
-          <div className="grid grid-cols-3 gap-1.5 mt-3">
-            {MODES.map((m) => {
-              const isActive = m.id === mode;
-              return (
-                <button
-                  key={m.id}
-                  type="button"
-                  onClick={() => setMode(m.id)}
-                  className={cn(
-                    "relative flex flex-col items-center gap-1 py-2.5 rounded-xl transition-all duration-300 ease-out",
-                    isActive
-                      ? "scale-[1.03] bg-white/[0.08]"
-                      : "hover:bg-white/[0.04]"
-                  )}
-                >
-                  <m.Icon
-                    size={15}
-                    className={cn("transition-colors duration-300", isActive ? "" : "text-muted-foreground/40")}
-                    style={isActive ? { color: m.color } : undefined}
-                  />
-                  <span className={cn("text-[10px] font-semibold leading-none transition-colors duration-300", isActive ? "text-foreground/90" : "text-muted-foreground/45")}>
-                    {m.label}
-                  </span>
-                </button>
-              );
-            })}
+          {/* Tabs — sliding active indicator */}
+          <div className="relative mt-3">
+            <div className="grid grid-cols-3 gap-1.5">
+              {MODES.map((m) => {
+                const isActive = m.id === mode;
+                return (
+                  <button
+                    key={m.id}
+                    ref={(node) => { tabRefs.current[m.id] = node; }}
+                    type="button"
+                    onClick={() => setMode(m.id)}
+                    className="relative z-10 flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl"
+                  >
+                    <m.Icon
+                      size={15}
+                      className="transition-all duration-300 ease-out"
+                      style={{ color: isActive ? m.color : "rgba(255,255,255,0.4)", transform: isActive ? "scale(1.1)" : "scale(1)" }}
+                    />
+                    <span
+                      className="text-[10px] font-semibold leading-none transition-all duration-300 ease-out"
+                      style={{ color: isActive ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.45)" }}
+                    >
+                      {m.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Sliding active background */}
+            {indicator.ready && (
+              <div
+                className="absolute top-0 bottom-0 rounded-xl border border-white/[0.1] shadow-[0_4px_20px_rgba(0,0,0,0.35)]"
+                style={{
+                  left: indicator.left,
+                  width: indicator.width,
+                  background: "rgba(255,255,255,0.08)",
+                  transition: "left 300ms cubic-bezier(0.33, 1, 0.68, 1), width 300ms cubic-bezier(0.33, 1, 0.68, 1)",
+                }}
+              />
+            )}
           </div>
 
       {mode === "explore" && (
