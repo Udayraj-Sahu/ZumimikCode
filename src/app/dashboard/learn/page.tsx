@@ -138,6 +138,15 @@ export default function LearnPage() {
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
+          {/* Rounded-trapezium clip for the active tab indicator */}
+          <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="learn-tab-active-clip" clipPathUnits="objectBoundingBox">
+                <path d="M 0.22 0 L 0.78 0 Q 0.88 0, 0.91 0.25 L 1 1 L 0 1 L 0.09 0.25 Q 0.12 0, 0.22 0 Z" />
+              </clipPath>
+            </defs>
+          </svg>
+
           {/* Tabs — inactive: dark angular trapezoids · active: raising rounded island */}
           <div className="relative mt-3">
             <div className="grid grid-cols-3 gap-1.5">
@@ -182,8 +191,7 @@ export default function LearnPage() {
                 style={{
                   left: indicator.left + 1,
                   width: indicator.width - 2,
-                  borderRadius: "18px 18px 0 0",
-                  clipPath: "polygon(16px 0, calc(100% - 16px) 0, 100% 100%, 0 100%)",
+                  clipPath: "url(#learn-tab-active-clip)",
                   background: "linear-gradient(180deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 100%)",
                   border: "1px solid rgba(255,255,255,0.22)",
                   boxShadow: "0 -1px 0 rgba(255,255,255,0.06) inset, 0 6px 18px rgba(0,0,0,0.45)",
