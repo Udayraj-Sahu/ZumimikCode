@@ -171,16 +171,6 @@ export default function LearnPage() {
                         opacity: isActive ? 0 : 1,
                       }}
                     />
-                    <svg
-                      className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-out"
-                      style={{ opacity: isActive ? 0 : 1 }}
-                      viewBox="0 0 100 100"
-                      preserveAspectRatio="none"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <path d={TAB_ACTIVE_OUTLINE} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1" vectorEffect="non-scaling-stroke" strokeLinecap="butt" strokeLinejoin="round" />
-                    </svg>
                     <m.Icon
                       size={15}
                       className="relative z-10 transition-all duration-340"
