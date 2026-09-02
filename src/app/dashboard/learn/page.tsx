@@ -22,7 +22,7 @@ import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 
-const GLASS_BG = "rgba(20,23,15,0.92)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 const TOPIC_ICONS: Record<string, LucideIcon> = {
@@ -267,7 +267,7 @@ export default function LearnPage() {
           <button
             type="button"
             onClick={() => setShowAddPrep(true)}
-            className="w-full rounded-2xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-3.5 min-h-[44px] flex items-center justify-center gap-2 text-[13px] font-bold tracking-widest uppercase text-[#0A0C0A] shadow-[0_4px_18px_rgba(199,242,82,0.18)] transition-all hover:shadow-[0_0_22px_rgba(199,242,82,0.3)] active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 min-h-[44px] flex items-center justify-center gap-2 text-[13px] font-semibold tracking-widest uppercase text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Plus size={15} strokeWidth={2.5} />
             ADD PREP
