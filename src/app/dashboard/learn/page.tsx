@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useLayoutEffect } from "react";
+import { animate } from "motion";
 import { useRouter } from "next/navigation";
 import {
   Grid3x3,
@@ -121,7 +122,7 @@ export default function LearnPage() {
   });
   const tabPathRef = useRef<SVGPathElement | null>(null);
   const tabCurrentRef = useRef({ left: 0, width: 0 });
-  const tabRrafRef = useRef(0);
+  const tabMotionRef = useRef<ReturnType<typeof animate> | null>(null);
 
   const measureTab = (tab: Mode) => {
     const btn = tabBtnRefs.current[tab];
@@ -143,7 +144,7 @@ export default function LearnPage() {
     const target = measureTab(mode);
     tabCurrentRef.current = target;
     drawTabPath(target.left, target.width);
-    return () => cancelAnimationFrame(tabRrafRef.current);
+    return () => tabMotionRef.current?.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -153,23 +154,15 @@ export default function LearnPage() {
     const to = measureTab(tab);
     setMode(tab);
 
-    cancelAnimationFrame(tabRrafRef.current);
-    const start = performance.now();
-    const duration = 520;
-    const step = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const left = from.left + (to.left - from.left) * eased;
-      const width = from.width + (to.width - from.width) * eased;
-      tabCurrentRef.current = { left, width };
-      drawTabPath(left, width);
-      if (t < 1) {
-        tabRrafRef.current = requestAnimationFrame(step);
-      } else {
-        drawTabPath(to.left, to.width);
-      }
-    };
-    tabRrafRef.current = requestAnimationFrame(step);
+    tabMotionRef.current?.stop();
+    tabMotionRef.current = animate(from, to, {
+      duration: 0.55,
+      ease: [0.34, 1.2, 0.44, 1],
+      onUpdate: (v) => {
+        tabCurrentRef.current = v;
+        drawTabPath(v.left, v.width);
+      },
+    });
   };
 
   return (
