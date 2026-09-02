@@ -119,7 +119,7 @@ export default function LearnPage() {
   const topics = data?.topics ?? [];
 
   const activeMode = MODES.find((m) => m.id === mode)!;
-  const outerBg = `linear-gradient(160deg, ${activeMode.color}1F 0%, rgba(255,255,255,0.03) 55%, ${activeMode.color}14 100%)`;
+  const outerBg = "linear-gradient(180deg, rgba(20,23,15,0.9) 0%, rgba(10,12,10,0.85) 100%)";
 
   const tabRowRef = useRef<HTMLDivElement | null>(null);
   const tabBtnRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
