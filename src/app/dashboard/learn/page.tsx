@@ -66,12 +66,11 @@ function getInsight(topics: { name: string; value: number }[]): string {
 
 type Mode = "explore" | "adaptive" | "mock";
 
-const MODES: { id: Mode; label: string; badge?: string; Icon: LucideIcon; color: string; bg: string; accent: string; subtitle: string }[] = [
+const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; bg: string; accent: string; subtitle: string }[] = [
   { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", bg: "linear-gradient(135deg, rgba(52,211,153,0.14) 0%, rgba(34,211,238,0.06) 100%)", accent: "#34D399", subtitle: "Browse topics and track your mastery" },
   {
     id: "adaptive",
     label: "Adaptive Learning",
-    badge: "19 Mins",
     Icon: Brain,
     color: "#A78BFA",
     bg: "linear-gradient(135deg, rgba(167,139,250,0.14) 0%, rgba(52,211,153,0.06) 100%)",
@@ -124,11 +123,6 @@ export default function LearnPage() {
               <h1 className="text-[18px] font-bold tracking-[-0.02em] text-foreground leading-tight">{activeMode.label}</h1>
               <p className="text-[11.5px] text-muted-foreground/45 font-normal mt-0.5">{activeMode.subtitle}</p>
             </div>
-            {activeMode.badge && (
-              <div className="rounded-full px-2.5 py-1 text-[9px] font-bold whitespace-nowrap transition-colors duration-500" style={{ background: `${activeMode.color}18`, color: activeMode.color }}>
-                {activeMode.badge}
-              </div>
-            )}
           </div>
 
           {/* Tabs */}
@@ -147,11 +141,6 @@ export default function LearnPage() {
                       : "border border-transparent hover:bg-white/[0.04]"
                   )}
                 >
-                  {m.badge && (
-                    <span className="absolute -top-1.5 right-1/2 translate-x-1/2 rounded-full px-1.5 py-0.5 text-[7.5px] font-semibold whitespace-nowrap" style={{ background: m.color, color: "#0A0C0A" }}>
-                      {m.badge}
-                    </span>
-                  )}
                   <m.Icon
                     size={15}
                     className={cn("transition-colors duration-300", isActive ? "" : "text-muted-foreground/40")}
