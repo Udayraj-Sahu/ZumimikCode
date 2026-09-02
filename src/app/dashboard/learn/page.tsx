@@ -99,12 +99,12 @@ function buildTabPath(left: number, width: number, top: number, base: number, fu
   return `M0,${base} L${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${fullWidth},${base}`;
 }
 
-function buildTabFill(left: number, width: number, top: number, base: number) {
+function buildTabFill(left: number, width: number, top: number, base: number, fullWidth: number) {
   const right = left + width;
   const lc = left - CURVE_WIDTH / 2;
   const rc = right + CURVE_WIDTH / 2;
   const leftFoot = Math.max(0, left - CURVE_WIDTH);
-  const rightFoot = right + CURVE_WIDTH;
+  const rightFoot = Math.min(fullWidth, right + CURVE_WIDTH);
   return `M${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${leftFoot},${base} Z`;
 }
 
@@ -142,17 +142,18 @@ export default function LearnPage() {
     const row = tabRowRef.current;
     if (!row) return;
     const base = row.clientHeight - BOTTOM_INSET;
-    const curveTop = Math.max(0, row.clientHeight - 22);
+    const curveTop = Math.max(0, row.clientHeight - 40);
+    const full = row.clientWidth;
     if (tabPathRef.current) {
       tabPathRef.current.setAttribute(
         "d",
-        buildTabPath(left, width, curveTop, base, row.clientWidth),
+        buildTabPath(left, width, curveTop, base, full),
       );
     }
     if (tabFillRef.current) {
       tabFillRef.current.setAttribute(
         "d",
-        buildTabFill(left, width, curveTop, base),
+        buildTabFill(left, width, curveTop, base, full),
       );
     }
   };
@@ -243,7 +244,7 @@ export default function LearnPage() {
                     ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                     type="button"
                     onClick={() => goTo(m.id)}
-                    className="relative flex items-center justify-center pt-3 pb-4"
+                    className="relative flex items-center justify-center py-4"
                   >
                     <span
                       className="relative z-10 text-[11px] font-semibold leading-none transition-colors duration-300"
