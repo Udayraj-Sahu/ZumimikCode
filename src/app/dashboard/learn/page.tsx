@@ -202,11 +202,10 @@ export default function LearnPage() {
             {/* Active morphing indicator — rounded-top trapezium that travels between tabs */}
             {indicator.ready && (
               <svg
-                className="absolute top-0 bottom-0 z-[5] pointer-events-none overflow-visible"
+                className="absolute top-0 bottom-0 z-[5] pointer-events-none"
                 style={{
                   left: indicator.left + 1,
                   width: indicator.width - 2,
-                  bottom: "-3px",
                   transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
                 }}
                 viewBox="0 0 100 100"
