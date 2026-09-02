@@ -100,17 +100,17 @@ export default function LearnPage() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
-      {/* LEARN pill — sits on top edge of the card, connected to it */}
-      <header className="mb-0 z-10 relative">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-[rgba(14,17,13,0.95)] backdrop-blur-sm px-4 py-1.5 shadow-[0_0_16px_rgba(199,242,82,0.12)]">
+      {/* LEARN pill — above the card */}
+      <header className="mb-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
           <BookOpen size={12} className="text-primary" />
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
       </header>
 
-      {/* Outer glass card wrapping all content, hangs from the LEARN pill */}
+      {/* Outer glass card wrapping all content */}
       <div
-        className="relative -mt-3 overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pt-7 pb-4 transition-colors duration-500"
+        className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pt-4 pb-4 transition-colors duration-500"
         style={{ borderColor: GLASS_BORDER, background: `linear-gradient(160deg, ${activeMode.color}14 0%, rgba(255,255,255,0.02) 55%, ${activeMode.color}0A 100%)` }}
       >
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
