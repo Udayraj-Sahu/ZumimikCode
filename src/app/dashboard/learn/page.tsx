@@ -221,18 +221,18 @@ export default function LearnPage() {
             >
               <path
                 ref={tabFillRef}
-                fill={activeMode.color}
-                fillOpacity="0.12"
-                style={{ filter: `drop-shadow(0 2px 8px ${activeMode.color}40)` }}
+                fill="#0A0C0A"
+                fillOpacity="1"
+                style={{ filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.7))" }}
               />
               <path
                 ref={tabPathRef}
                 fill="none"
-                stroke={activeMode.color}
+                stroke="#ffffff"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                style={{ filter: `drop-shadow(0 0 4px ${activeMode.color}66)` }}
+                style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.5))" }}
               />
             </svg>
             <div className="grid grid-cols-3 gap-2">
