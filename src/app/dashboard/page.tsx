@@ -362,8 +362,8 @@ export default function DashboardPage() {
                         <span className="mt-0.5 text-[8px] font-bold text-primary tracking-wide">ALL SET</span>
                       </div>
                     </div>
-                    <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">You're all set, {firstName}</h2>
-                    <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let's make it count.</p>
+                    <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">You&apos;re all set, {firstName}</h2>
+                    <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let&apos;s make it count.</p>
                     <div className="mt-3 flex items-center gap-1.5">
                       {["Name", "Persona", "Goal"].map((l) => (
                         <div key={l} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.08)" }}>
@@ -402,7 +402,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <h2 className="mt-3 text-[23px] font-black tracking-[-0.03em] text-foreground leading-tight">Finish your profile</h2>
-                    <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you're aiming for — we'll tailor everything to you.</p>
+                    <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for — we&apos;ll tailor everything to you.</p>
                     <div className="mt-3 flex items-center gap-1.5">
                       {[
                         { label: "Name", done: !!firstName.trim() },
