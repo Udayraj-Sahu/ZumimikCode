@@ -12,7 +12,6 @@ import {
   Brain,
   ClipboardList,
   BookOpen,
-  Search,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -67,17 +66,8 @@ function getInsight(topics: { name: string; value: number }[]): string {
 
 type Mode = "explore" | "adaptive" | "mock";
 
-const MODES: { id: Mode; label: string; badge?: string; Icon: LucideIcon; color: string; bg: string; accent: string; subtitle: string; placeholder: string }[] = [
-  {
-    id: "explore",
-    label: "Topic Explorer",
-    Icon: Grid3x3,
-    color: "#34D399",
-    bg: "linear-gradient(135deg, rgba(52,211,153,0.14) 0%, rgba(34,211,238,0.06) 100%)",
-    accent: "#34D399",
-    subtitle: "Browse topics and track your mastery",
-    placeholder: "Search for a topic",
-  },
+const MODES: { id: Mode; label: string; badge?: string; Icon: LucideIcon; color: string; bg: string; accent: string; subtitle: string }[] = [
+  { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", bg: "linear-gradient(135deg, rgba(52,211,153,0.14) 0%, rgba(34,211,238,0.06) 100%)", accent: "#34D399", subtitle: "Browse topics and track your mastery" },
   {
     id: "adaptive",
     label: "Adaptive Learning",
@@ -87,7 +77,6 @@ const MODES: { id: Mode; label: string; badge?: string; Icon: LucideIcon; color:
     bg: "linear-gradient(135deg, rgba(167,139,250,0.14) 0%, rgba(52,211,153,0.06) 100%)",
     accent: "#A78BFA",
     subtitle: "Sprints tuned to your skill level",
-    placeholder: "Search for a lesson",
   },
   {
     id: "mock",
@@ -97,7 +86,6 @@ const MODES: { id: Mode; label: string; badge?: string; Icon: LucideIcon; color:
     bg: "linear-gradient(135deg, rgba(251,191,36,0.14) 0%, rgba(245,158,11,0.05) 100%)",
     accent: "#FBBF24",
     subtitle: "Full-length, exam-style timed tests",
-    placeholder: "Search for a mock test",
   },
 ];
 
@@ -122,11 +110,11 @@ export default function LearnPage() {
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
 
-        {/* Mode header band */}
-        <div
-          className="relative overflow-hidden rounded-3xl border p-5 transition-colors duration-500"
-          style={{ borderColor: GLASS_BORDER, background: activeMode.bg }}
-        >
+      {/* Mode header band */}
+      <div
+        className="relative overflow-hidden rounded-3xl px-5 pt-5 pb-2 transition-colors duration-500"
+        style={{ background: activeMode.bg }}
+      >
           <div className="absolute inset-0 opacity-[0.07] transition-opacity duration-500" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
           <div className="relative flex items-center gap-4">
             <div className="size-11 rounded-2xl flex items-center justify-center shrink-0 transition-colors duration-500" style={{ background: `${activeMode.color}18` }}>
@@ -175,12 +163,6 @@ export default function LearnPage() {
                 </button>
               );
             })}
-          </div>
-
-          {/* Search bar */}
-          <div key={mode} className="mt-3 flex animate-[fadeSlideIn_0.35s_ease-out] items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.04] px-3 py-2.5">
-            <Search size={14} className="shrink-0 text-muted-foreground/40" />
-            <span className="text-[12px] text-muted-foreground/40 flex-1 truncate">{activeMode.placeholder}</span>
           </div>
         </div>
       </header>
@@ -310,14 +292,6 @@ export default function LearnPage() {
       {showAddPrep && (
         <AddPrepModal onClose={() => setShowAddPrep(false)} />
       )}
-
-      {/* Keyframe for search bar animation */}
-      <style jsx global>{`
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(6px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </div>
   );
 }
