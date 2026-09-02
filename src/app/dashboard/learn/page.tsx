@@ -148,7 +148,7 @@ export default function LearnPage() {
           </svg>
 
           {/* Tabs — inactive: dark angular trapezoids · active: raising rounded island */}
-          <div className="relative mt-3 mb-4">
+          <div className="relative mt-3 mb-4 border-b border-white/[0.08] pb-1">
             <div className="grid grid-cols-3 gap-1.5">
               {MODES.map((m) => {
                 const isActive = m.id === mode;
