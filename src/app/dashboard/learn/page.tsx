@@ -204,7 +204,6 @@ export default function LearnPage() {
                 style={{
                   left: indicator.left + 1,
                   width: indicator.width - 2,
-                  boxShadow: `0 6px 18px rgba(0,0,0,0.4), 0 0 22px ${activeMode.color}26`,
                   transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
                 }}
                 viewBox="0 0 100 100"
