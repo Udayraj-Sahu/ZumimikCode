@@ -219,24 +219,13 @@ export default function LearnPage() {
                     ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                     type="button"
                     onClick={() => goTo(m.id)}
-                    className="relative flex flex-col items-center justify-center gap-1.5 pt-3 pb-4"
+                    className="relative flex items-center justify-center pt-3 pb-4"
                   >
-                    <m.Icon
-                      size={14}
-                      className="relative z-10 transition-all duration-300"
-                      style={{
-                        color: isActive ? m.color : "rgba(255,255,255,0.42)",
-                        transform: isActive ? "translateY(-1px) scale(1.15)" : "translateY(0) scale(1)",
-                        filter: isActive ? `drop-shadow(0 0 6px ${m.color}88)` : "none",
-                        transitionProperty: "color, transform, filter",
-                        transitionDuration: "300ms, 380ms, 300ms",
-                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.5, 0.64, 1), ease-out",
-                      }}
-                    />
                     <span
-                      className="relative z-10 text-[10px] font-semibold leading-none transition-all duration-300 ease-out"
+                      className="relative z-10 text-[11px] font-semibold leading-none transition-colors duration-300"
                       style={{
-                        color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.5)",
+                        color: isActive ? "#ffffff" : "rgba(255,255,255,0.55)",
+                        textShadow: isActive ? `0 0 10px ${m.color}66` : "none",
                       }}
                     >
                       {m.label}
