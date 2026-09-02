@@ -211,7 +211,7 @@ export default function LearnPage() {
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
           {/* Tab mode selector — S-curve underline animates between tabs */}
-          <div ref={tabRowRef} className="relative mt-3 mb-2 border-b border-white/[0.08]">
+          <div ref={tabRowRef} className="relative mt-3 mb-2">
             <svg
               className="absolute inset-0 pointer-events-none"
               width="100%"
