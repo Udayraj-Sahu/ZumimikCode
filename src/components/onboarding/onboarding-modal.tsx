@@ -87,6 +87,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const completeRef = useRef<HTMLDivElement>(null);
   const prevStepRef = useRef(0);
 
   const store = useOnboardingStore();
@@ -147,7 +148,19 @@ export function OnboardingModal({ onClose, inline }: Props) {
     if (contentRef.current) {
       gsap.fromTo(contentRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" });
     }
-    setTimeout(() => handleClose(), 2600);
+    setTimeout(() => animateExitUp(), 2300);
+  };
+
+  const animateExitUp = () => {
+    const overlay = overlayRef.current;
+    if (!overlay) { onClose(); return; }
+    if (panelRef.current) {
+      gsap.to(panelRef.current, { y: -40, duration: 0.6, ease: "power2.in" });
+    }
+    if (completeRef.current) {
+      gsap.to(completeRef.current, { y: -110, opacity: 0, duration: 0.6, ease: "power2.in" });
+    }
+    gsap.to(overlay, { opacity: 0, duration: 0.5, onComplete: onClose });
   };
 
   const goNext = () => {
@@ -188,7 +201,9 @@ export function OnboardingModal({ onClose, inline }: Props) {
       {/* Content */}
       <div className={cn("flex-1 min-h-0 px-5", completed ? "overflow-hidden" : "overflow-y-auto pt-2 pb-4 scroll-smooth")} style={{ scrollbarWidth: "none" }}>
         {completed ? (
-          <CompletionScreen />
+          <div ref={completeRef} className="h-full flex flex-col">
+            <CompletionScreen />
+          </div>
         ) : (
           <div ref={contentRef} className="flex flex-col">
             {step === 0 && (
@@ -641,8 +656,6 @@ function CompletionScreen() {
 
 function CelebrationAvatar() {
   const avatarRef = useRef<HTMLDivElement>(null);
-  const eyeLRef = useRef<HTMLDivElement>(null);
-  const eyeRRef = useRef<HTMLDivElement>(null);
   const sparkleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -657,12 +670,8 @@ function CelebrationAvatar() {
         { opacity: [0, 1, 0] as never, scale: [0, 1, 0.4] as never, x: Math.cos(angle) * 26, y: Math.sin(angle) * 26, duration: 1.4, ease: "power1.out", repeat: -1, repeatDelay: 0.9, delay: i * 0.18 },
       );
     });
-    const blink = gsap.timeline({ repeat: -1, repeatDelay: 2.6 });
-    blink.to([eyeLRef.current, eyeRRef.current], { scaleY: 0.12, duration: 0.09, ease: "power2.in" })
-      .to([eyeLRef.current, eyeRRef.current], { scaleY: 1, duration: 0.15, ease: "power2.out" });
     return () => {
       tl.kill();
-      blink.kill();
       sparks.forEach((s) => gsap.killTweensOf(s));
     };
   }, []);
@@ -679,8 +688,8 @@ function CelebrationAvatar() {
       <div ref={avatarRef}>
         <div className="relative size-16 rounded-2xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.28), rgba(34,211,238,0.10))", border: "1px solid rgba(167,139,250,0.30)", boxShadow: "0 8px 30px rgba(139,92,246,0.18)" }}>
           <div className="flex items-center gap-3">
-            <div ref={eyeLRef} className="size-2 rounded-full bg-[#A78BFA]" />
-            <div ref={eyeRRef} className="size-2 rounded-full bg-[#A78BFA]" />
+            <div className="size-2 rounded-full bg-[#A78BFA]" />
+            <div className="size-2 rounded-full bg-[#A78BFA]" />
           </div>
           <div className="absolute bottom-4.5 left-1/2 -translate-x-1/2 w-4 h-1.5 rounded-b-full border-b-[1.5px] border-[#A78BFA]/70" />
           <div className="absolute -top-1.5 -right-1.5 text-[10px] text-[#A78BFA]">
