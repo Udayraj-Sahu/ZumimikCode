@@ -77,6 +77,7 @@ const YEARS = Array.from({ length: 30 }, (_, i) => 2010 - i);
 const TOTAL_STEPS = 5;
 const STEP_LABELS = ["Name", "Who", "Goal", "Vibe", "Details"];
 const STEP_COLORS = ["#C8FF4D", "#22D3EE", "#34D399", "#A855F7", "#FF5C5C"];
+const STEP_ICONS = [User, Users, Target, Brain, ClipboardList];
 
 type Props = { onClose: () => void; inline?: boolean };
 
@@ -194,8 +195,56 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
   const panel = (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="sticky top-0 z-10 px-5 pt-4 pb-2">
+      {/* Header with 5 step icons */}
+      <div className="sticky top-0 z-10 px-5 pt-4 pb-3 bg-[rgba(14,17,13,0.98)]">
+        <div className="flex items-center justify-between mb-3">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="grid size-8 place-items-center rounded-lg text-muted-foreground/50 hover:text-foreground/80 transition-colors active:scale-95"
+          >
+            <X size={16} />
+          </button>
+          <div className="flex items-center gap-2">
+            {STEP_LABELS.map((label, i) => {
+              const StepIcon = STEP_ICONS[i];
+              const isActive = i === step;
+              const isDone = i < step;
+              return (
+                <div
+                  key={label}
+                  className={cn(
+                    "flex items-center justify-center rounded-full transition-all duration-300",
+                    isActive
+                      ? "size-8 bg-[#C8FF4D]/15 ring-2 ring-[#C8FF4D]/40"
+                      : isDone
+                        ? "size-6 bg-[#C8FF4D]/10"
+                        : "size-6 bg-white/[0.05]",
+                  )}
+                >
+                  {isDone ? (
+                    <Check size={10} className="text-[#C8FF4D]" />
+                  ) : (
+                    <StepIcon
+                      size={isActive ? 14 : 10}
+                      className={cn(
+                        "transition-colors duration-300",
+                        isActive ? "text-[#C8FF4D]" : "text-muted-foreground/40",
+                      )}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* Progress bar */}
+        <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500 ease-out"
+            style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%`, background: "#C8FF4D" }}
+          />
+        </div>
       </div>
 
       {/* Content */}
