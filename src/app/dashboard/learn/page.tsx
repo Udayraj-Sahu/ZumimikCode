@@ -66,8 +66,8 @@ function getInsight(topics: { name: string; value: number }[]): string {
 
 type Mode = "explore" | "adaptive" | "mock";
 
-const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent: string; subtitle: string }[] = [
-  { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", accent: "#34D399", subtitle: "Browse topics and track your mastery" },
+const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent: string; subtitle: string; blob: string }[] = [
+  { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", accent: "#34D399", subtitle: "Browse topics and track your mastery", blob: "50% 50% 46% 54% / 58% 55% 45% 42%" },
   {
     id: "adaptive",
     label: "Adaptive Learning",
@@ -75,6 +75,7 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
     color: "#A78BFA",
     accent: "#A78BFA",
     subtitle: "Sprints tuned to your skill level",
+    blob: "48% 52% 54% 46% / 62% 50% 50% 38%",
   },
   {
     id: "mock",
@@ -83,13 +84,9 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
     color: "#FBBF24",
     accent: "#FBBF24",
     subtitle: "Full-length, exam-style timed tests",
+    blob: "52% 48% 46% 54% / 55% 58% 42% 45%",
   },
 ];
-
-const TAB_ACTIVE_FILL =
-  "M 0 100 C 4 97 6 90 8 78 L 11 31 C 13 16 19 4 30 2 C 41 0 59 0 70 2 C 81 4 88 16 89 31 L 93 78 C 94 90 96 97 100 100 Z";
-const TAB_ACTIVE_STROKE =
-  "M 0 100 C 4 97 6 90 8 78 L 11 31 C 13 16 19 4 30 2 C 41 0 59 0 70 2 C 81 4 88 16 89 31 L 93 78 C 94 90 96 97 100 100";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
@@ -110,6 +107,7 @@ export default function LearnPage() {
     mock: null,
   });
   const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
+  const [pop, setPop] = useState(false);
 
   useEffect(() => {
     const el = tabRefs.current[mode];
@@ -143,16 +141,7 @@ export default function LearnPage() {
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
-          {/* Rounded-trapezium clip for the active tab indicator */}
-          <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
-            <defs>
-              <clipPath id="learn-tab-active-clip" clipPathUnits="objectBoundingBox">
-                <path d="M 0 1 C 0.04 0.97 0.06 0.90 0.08 0.78 L 0.11 0.31 C 0.13 0.16 0.19 0.04 0.30 0.02 C 0.41 0 0.59 0 0.70 0.02 C 0.81 0.04 0.88 0.16 0.89 0.31 L 0.93 0.78 C 0.94 0.90 0.96 0.97 1 1 Z" />
-              </clipPath>
-            </defs>
-          </svg>
-
-          {/* Tabs — inactive: dark angular trapezoids · active: raising rounded island */}
+          {/* Tabs — inactive: dark blobs · active: liquid accent blob */}
           <div className="relative mt-3 mb-4 border-b border-white/[0.08]">
             <div className="grid grid-cols-3 gap-1.5">
               {MODES.map((m) => {
@@ -162,13 +151,12 @@ export default function LearnPage() {
                     key={m.id}
                     ref={(node) => { tabRefs.current[m.id] = node; }}
                     type="button"
-                    onClick={() => setMode(m.id)}
+                    onClick={() => { setMode(m.id); setPop(true); }}
                     className="relative flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl"
                   >
                     <span
-                      className="absolute inset-0 pointer-events-none transition-opacity duration-300 ease-out"
+                      className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300 ease-out"
                       style={{
-                        clipPath: "url(#learn-tab-active-clip)",
                         background: "linear-gradient(180deg, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.06) 100%)",
                         opacity: isActive ? 0 : 1,
                       }}
@@ -199,40 +187,20 @@ export default function LearnPage() {
               })}
             </div>
 
-            {/* Active morphing indicator — rounded-top trapezium that travels between tabs */}
+            {/* Active liquid blob — slides + squishes its shape between tabs */}
             {indicator.ready && (
-              <svg
-                className="absolute top-0 bottom-0 z-[5] pointer-events-none"
+              <div
+                className={`absolute top-[4px] bottom-0 z-[5] pointer-events-none ${pop ? "blob-pop" : ""}`}
+                onAnimationEnd={() => setPop(false)}
                 style={{
-                  left: indicator.left + 1,
-                  width: indicator.width - 2,
-                  transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
+                  left: indicator.left + 3,
+                  width: indicator.width - 6,
+                  borderRadius: activeMode.blob,
+                  background: `radial-gradient(120% 130% at 50% -12%, ${activeMode.color}55 0%, transparent 55%), linear-gradient(165deg, ${activeMode.color}30 0%, rgba(255,255,255,0.04) 55%, ${activeMode.color}22 100%)`,
+                  boxShadow: `0 3px 16px ${activeMode.color}40, inset 0 1px 0 rgba(255,255,255,0.22), inset 1px 0 0 rgba(255,255,255,0.06)`,
+                  transition: "left 380ms cubic-bezier(0.3, 1.12, 0.58, 1), width 380ms cubic-bezier(0.3, 1.12, 0.58, 1), border-radius 440ms cubic-bezier(0.3, 1.12, 0.58, 1)",
                 }}
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <defs>
-                  <linearGradient id="learn-tab-active-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={activeMode.color} stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#ffffff" stopOpacity="0.05" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d={TAB_ACTIVE_FILL}
-                  fill="url(#learn-tab-active-fill)"
-                />
-                <path
-                  d={TAB_ACTIVE_STROKE}
-                  fill="none"
-                  stroke="rgba(255,255,255,0.35)"
-                  strokeWidth="1"
-                  vectorEffect="non-scaling-stroke"
-                  strokeLinecap="butt"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              />
             )}
           </div>
 
