@@ -196,6 +196,20 @@ export default function LearnPage() {
             {/* Active liquid blob — slides + squishes its shape between tabs */}
             {indicator.ready && (
               <div
+                className="blob-breathe absolute z-[4] pointer-events-none rounded-full"
+                style={{
+                  left: indicator.left + indicator.width / 2 - 27,
+                  top: -6,
+                  width: 54,
+                  height: 54,
+                  background: `radial-gradient(circle, ${activeMode.color}59 0%, transparent 65%)`,
+                  boxShadow: `0 0 26px 2px ${activeMode.color}47`,
+                  transition: "left 380ms cubic-bezier(0.3, 1.12, 0.58, 1)",
+                }}
+              />
+            )}
+            {indicator.ready && (
+              <div
                 className={`absolute top-[4px] bottom-0 z-[5] pointer-events-none ${pop ? "blob-pop" : ""}`}
                 onAnimationEnd={() => setPop(false)}
                 style={{
