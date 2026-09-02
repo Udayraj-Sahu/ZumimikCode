@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Grid3x3,
@@ -86,9 +86,6 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
-const TAB_ACTIVE_FILL =
-  "M 18 0 C 6 0 0 8 0 22 C 2 50 4 78 10 100 L 90 100 C 96 78 98 50 100 22 C 100 8 94 0 82 0 Z";
-
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
@@ -101,25 +98,6 @@ export default function LearnPage() {
 
   const activeMode = MODES.find((m) => m.id === mode)!;
   const outerBg = `linear-gradient(160deg, ${activeMode.color}1F 0%, rgba(255,255,255,0.03) 55%, ${activeMode.color}14 100%)`;
-
-  const tabRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
-    explore: null,
-    adaptive: null,
-    mock: null,
-  });
-  const [indicator, setIndicator] = useState({ left: 0, width: 0, ready: false });
-
-  useEffect(() => {
-    const el = tabRefs.current[mode];
-    if (el) {
-      const { offsetLeft, offsetWidth } = el;
-      setIndicator((prev) =>
-        prev.left === offsetLeft && prev.width === offsetWidth
-          ? prev
-          : { left: offsetLeft, width: offsetWidth, ready: true },
-      );
-    }
-  }, [mode, topics.length]);
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
@@ -150,7 +128,7 @@ export default function LearnPage() {
             </defs>
           </svg>
 
-          {/* Tabs — inactive: dark trapezium clips · active: accent trapezium SVG */}
+          {/* Tabs — inactive: dark trapezium clips */}
           <div className="relative mt-3 mb-4 border-b border-white/[0.08]">
             <div className="grid grid-cols-3 gap-1.5">
               {MODES.map((m) => {
@@ -158,7 +136,6 @@ export default function LearnPage() {
                 return (
                   <button
                     key={m.id}
-                    ref={(node) => { tabRefs.current[m.id] = node; }}
                     type="button"
                     onClick={() => setMode(m.id)}
                     className="relative flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl"
@@ -197,30 +174,6 @@ export default function LearnPage() {
                 );
               })}
             </div>
-
-            {/* Active curved trapezium — lower, bottom anchored to border line */}
-            {indicator.ready && (
-              <svg
-                className="absolute top-0 bottom-0 z-[5] pointer-events-none"
-                style={{
-                  left: indicator.left + 1,
-                  width: indicator.width - 2,
-                  transition: "left 380ms cubic-bezier(0.34, 1.15, 0.64, 1), width 380ms cubic-bezier(0.34, 1.15, 0.64, 1)",
-                }}
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <defs>
-                  <linearGradient id="learn-tab-active-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor={activeMode.color} stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#ffffff" stopOpacity="0.05" />
-                  </linearGradient>
-                </defs>
-                <path d={TAB_ACTIVE_FILL} fill="url(#learn-tab-active-fill)" />
-              </svg>
-            )}
           </div>
 
       {mode === "explore" && (
