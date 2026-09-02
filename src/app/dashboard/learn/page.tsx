@@ -182,7 +182,7 @@ export default function LearnPage() {
                 style={{
                   left: indicator.left + 1,
                   width: indicator.width - 2,
-                  borderRadius: "12px 12px 0 0",
+                  borderRadius: "18px 18px 0 0",
                   clipPath: "polygon(16px 0, calc(100% - 16px) 0, 100% 100%, 0 100%)",
                   background: "linear-gradient(180deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 100%)",
                   border: "1px solid rgba(255,255,255,0.22)",
