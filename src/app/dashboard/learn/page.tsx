@@ -86,15 +86,18 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
-const CURVE_WIDTH = 16;
+const CURVE_SPAN = 10;
 const TOP_INSET = 8;
 const BOTTOM_INSET = 4;
 
 function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number) {
   const right = left + width;
-  const lc = left - CURVE_WIDTH / 2;
-  const rc = right + CURVE_WIDTH / 2;
-  return `M0,${base} L${left - CURVE_WIDTH},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${right + CURVE_WIDTH},${base} L${fullWidth},${base}`;
+  const leftFoot = Math.max(0, left - CURVE_SPAN);
+  let rightFoot = right + CURVE_SPAN;
+  rightFoot = Math.min(fullWidth, rightFoot);
+  const lc = (leftFoot + left) / 2;
+  const rc = (right + rightFoot) / 2;
+  return `M0,${base} L${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${fullWidth},${base}`;
 }
 
 export default function LearnPage() {
@@ -151,24 +154,20 @@ export default function LearnPage() {
     setMode(tab);
 
     cancelAnimationFrame(tabRrafRef.current);
-    let left = from.left;
-    let width = from.width;
-    let vl = 0;
-    let vw = 0;
-    const stiffness = 0.3;
-    const damping = 0.78;
-    const step = () => {
-      vl = (vl + (to.left - left) * stiffness) * damping;
-      vw = (vw + (to.width - width) * stiffness) * damping;
-      left += vl;
-      width += vw;
+    const start = performance.now();
+    const duration = 520;
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const left = from.left + (to.left - from.left) * eased;
+      const width = from.width + (to.width - from.width) * eased;
       tabCurrentRef.current = { left, width };
       drawTabPath(left, width);
-      if (Math.abs(to.left - left) < 0.5 && Math.abs(to.width - width) < 0.5 && Math.abs(vl) < 0.5 && Math.abs(vw) < 0.5) {
+      if (t < 1) {
+        tabRrafRef.current = requestAnimationFrame(step);
+      } else {
         drawTabPath(to.left, to.width);
-        return;
       }
-      tabRrafRef.current = requestAnimationFrame(step);
     };
     tabRrafRef.current = requestAnimationFrame(step);
   };
@@ -223,19 +222,6 @@ export default function LearnPage() {
                     onClick={() => goTo(m.id)}
                     className="relative flex flex-col items-center justify-center gap-1.5 py-2.5"
                   >
-                    <span
-                      className="absolute top-1 bottom-1.5 left-1/2 -translate-x-1/2 rounded-full pointer-events-none transition-all duration-400"
-                      style={{
-                        width: isActive ? "100%" : "0%",
-                        background: `radial-gradient(110% 120% at 50% 0%, ${m.color}33 0%, transparent 60%)`,
-                        boxShadow: isActive ? `0 2px 14px ${m.color}33, inset 0 1px 0 rgba(255,255,255,0.08)` : "none",
-                        opacity: isActive ? 1 : 0,
-                        transform: `translateX(-50%) scale(${isActive ? 1 : 0.6}) translateY(${isActive ? 0 : 3}px)`,
-                        transitionProperty: "width, opacity, transform, box-shadow",
-                        transitionDuration: "380ms, 260ms, 340ms, 380ms",
-                        transitionTimingFunction: "cubic-bezier(0.34, 1.3, 0.64, 1), ease-out, cubic-bezier(0.34, 1.3, 0.64, 1), ease-out",
-                      }}
-                    />
                     <m.Icon
                       size={15}
                       className="relative z-10 transition-all duration-300"
