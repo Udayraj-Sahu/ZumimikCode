@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Grid3x3,
@@ -86,6 +86,17 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
+const CURVE_WIDTH = 16;
+const TOP_INSET = 8;
+const BOTTOM_INSET = 4;
+
+function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number) {
+  const right = left + width;
+  const lc = left - CURVE_WIDTH / 2;
+  const rc = right + CURVE_WIDTH / 2;
+  return `M0,${base} L${left - CURVE_WIDTH},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${right + CURVE_WIDTH},${base} L${fullWidth},${base}`;
+}
+
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
@@ -98,6 +109,69 @@ export default function LearnPage() {
 
   const activeMode = MODES.find((m) => m.id === mode)!;
   const outerBg = `linear-gradient(160deg, ${activeMode.color}1F 0%, rgba(255,255,255,0.03) 55%, ${activeMode.color}14 100%)`;
+
+  const tabRowRef = useRef<HTMLDivElement | null>(null);
+  const tabBtnRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
+    explore: null,
+    adaptive: null,
+    mock: null,
+  });
+  const tabPathRef = useRef<SVGPathElement | null>(null);
+  const tabCurrentRef = useRef({ left: 0, width: 0 });
+  const tabRrafRef = useRef(0);
+
+  const measureTab = (tab: Mode) => {
+    const btn = tabBtnRefs.current[tab];
+    if (!btn) return { left: 0, width: 0 };
+    return { left: btn.offsetLeft, width: btn.offsetWidth };
+  };
+
+  const drawTabPath = (left: number, width: number) => {
+    const row = tabRowRef.current;
+    if (!row || !tabPathRef.current) return;
+    const base = row.clientHeight - BOTTOM_INSET;
+    tabPathRef.current.setAttribute(
+      "d",
+      buildTabPath(left, width, TOP_INSET, base, row.clientWidth),
+    );
+  };
+
+  useLayoutEffect(() => {
+    const target = measureTab(mode);
+    tabCurrentRef.current = target;
+    drawTabPath(target.left, target.width);
+    return () => cancelAnimationFrame(tabRrafRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const goTo = (tab: Mode) => {
+    if (tab === mode) return;
+    const from = tabCurrentRef.current;
+    const to = measureTab(tab);
+    setMode(tab);
+
+    cancelAnimationFrame(tabRrafRef.current);
+    let left = from.left;
+    let width = from.width;
+    let vl = 0;
+    let vw = 0;
+    const stiffness = 0.3;
+    const damping = 0.78;
+    const step = () => {
+      vl = (vl + (to.left - left) * stiffness) * damping;
+      vw = (vw + (to.width - width) * stiffness) * damping;
+      left += vl;
+      width += vw;
+      tabCurrentRef.current = { left, width };
+      drawTabPath(left, width);
+      if (Math.abs(to.left - left) < 0.5 && Math.abs(to.width - width) < 0.5 && Math.abs(vl) < 0.5 && Math.abs(vw) < 0.5) {
+        drawTabPath(to.left, to.width);
+        return;
+      }
+      tabRrafRef.current = requestAnimationFrame(step);
+    };
+    tabRrafRef.current = requestAnimationFrame(step);
+  };
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
@@ -119,36 +193,36 @@ export default function LearnPage() {
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
-          {/* Tab clip path for inactive gel backgrounds */}
-          <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
-            <defs>
-              <clipPath id="learn-tab-active-clip" clipPathUnits="objectBoundingBox">
-                <path d="M 0.18 0 C 0.06 0 0 0.08 0 0.22 C 0.02 0.50 0.04 0.78 0.10 1 L 0.90 1 C 0.96 0.78 0.98 0.50 1 0.22 C 1 0.08 0.94 0 0.82 0 Z" />
-              </clipPath>
-            </defs>
-          </svg>
-
-          {/* Tabs — inactive: dark trapezium clips */}
-          <div className="relative mt-3 mb-4 border-b border-white/[0.08]">
+          {/* Tab mode selector — S-curve underline animates between tabs (lightweight rAF spring) */}
+          <div ref={tabRowRef} className="relative mt-3 mb-4 border-b border-white/[0.08]">
+            <svg
+              className="absolute inset-0 pointer-events-none"
+              width="100%"
+              height="100%"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                ref={tabPathRef}
+                fill="none"
+                stroke={activeMode.color}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ filter: `drop-shadow(0 0 4px ${activeMode.color}66)` }}
+              />
+            </svg>
             <div className="grid grid-cols-3 gap-1.5">
               {MODES.map((m) => {
                 const isActive = m.id === mode;
                 return (
                   <button
                     key={m.id}
+                    ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                     type="button"
-                    onClick={() => setMode(m.id)}
-                    className="relative flex flex-col items-center justify-center gap-1 py-2.5 rounded-xl"
+                    onClick={() => goTo(m.id)}
+                    className="relative flex flex-col items-center justify-center gap-1 py-2.5"
                   >
-                    <span
-                      className="absolute inset-0 pointer-events-none transition-all duration-300 ease-out"
-                      style={{
-                        clipPath: "url(#learn-tab-active-clip)",
-                        background: "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.28) 100%)",
-                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.07)",
-                        opacity: isActive ? 0 : 1,
-                      }}
-                    />
                     <m.Icon
                       size={15}
                       className="relative z-10 transition-all duration-300"
