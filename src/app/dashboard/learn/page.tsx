@@ -88,8 +88,6 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 
 const TAB_ACTIVE_FILL =
   "M 18 0 C 6 0 0 8 0 22 C 2 50 4 78 2 100 L 98 100 C 96 78 98 50 100 22 C 100 8 94 0 82 0 Z";
-const TAB_ACTIVE_STROKE =
-  "M 0 22 C 2 50 4 78 2 100 M 98 100 C 96 78 98 50 100 22 C 100 8 94 0 82 0 L 18 0 C 6 0 0 8 0 22";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
@@ -221,15 +219,6 @@ export default function LearnPage() {
                   </linearGradient>
                 </defs>
                 <path d={TAB_ACTIVE_FILL} fill="url(#learn-tab-active-fill)" />
-                <path
-                  d={TAB_ACTIVE_STROKE}
-                  fill="none"
-                  stroke="rgba(255,255,255,0.35)"
-                  strokeWidth="1"
-                  vectorEffect="non-scaling-stroke"
-                  strokeLinecap="butt"
-                  strokeLinejoin="round"
-                />
               </svg>
             )}
           </div>
