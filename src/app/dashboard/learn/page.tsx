@@ -99,14 +99,6 @@ function buildTabFill(left: number, width: number, base: number) {
   return `M${left - CURVE_WIDTH},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${right + CURVE_WIDTH},${base} Z`;
 }
 
-function buildTabLine(left: number, width: number, base: number) {
-  const right = left + width;
-  const top = base - TAB_HEIGHT;
-  const lc = left - CURVE_WIDTH / 2;
-  const rc = right + CURVE_WIDTH / 2;
-  return `M${left - CURVE_WIDTH},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${right + CURVE_WIDTH},${base}`;
-}
-
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
@@ -127,7 +119,6 @@ export default function LearnPage() {
     mock: null,
   });
   const tabPathRef = useRef<SVGPathElement | null>(null);
-  const tabLineRef = useRef<SVGPathElement | null>(null);
   const tabCurrentRef = useRef({ left: 0, width: 0 });
   const tabMotionRef = useRef<ReturnType<typeof animate> | null>(null);
 
@@ -139,14 +130,12 @@ export default function LearnPage() {
 
   const drawTabPath = (left: number, width: number) => {
     const row = tabRowRef.current;
-    if (!row) return;
+    if (!row || !tabPathRef.current) return;
     const base = row.clientHeight - BOTTOM_INSET;
-    if (tabPathRef.current) {
-      tabPathRef.current.setAttribute("d", buildTabFill(left, width, base));
-    }
-    if (tabLineRef.current) {
-      tabLineRef.current.setAttribute("d", buildTabLine(left, width, base));
-    }
+    tabPathRef.current.setAttribute(
+      "d",
+      buildTabFill(left, width, base),
+    );
   };
 
   useLayoutEffect(() => {
@@ -201,7 +190,7 @@ export default function LearnPage() {
           <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
           <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
 
-          {/* Tab mode selector — filled pill + S-curve line slides between tabs */}
+          {/* Tab mode selector — filled pill slides + pops between tabs */}
           <div ref={tabRowRef} className="relative mt-3 mb-2 border-b border-white/[0.08]">
             <svg
               className="absolute inset-0 pointer-events-none"
@@ -213,18 +202,12 @@ export default function LearnPage() {
               <path
                 ref={tabPathRef}
                 fill={activeMode.color}
-                fillOpacity="0.14"
-                style={{ filter: `drop-shadow(0 3px 10px ${activeMode.color}40)` }}
-              />
-              <path
-                ref={tabLineRef}
-                fill="none"
+                fillOpacity="0.16"
                 stroke={activeMode.color}
-                strokeWidth="1.5"
-                strokeOpacity="0.9"
-                strokeLinecap="round"
+                strokeOpacity="0.5"
+                strokeWidth="1"
                 strokeLinejoin="round"
-                style={{ filter: `drop-shadow(0 0 4px ${activeMode.color}88)` }}
+                style={{ filter: `drop-shadow(0 4px 12px ${activeMode.color}45)` }}
               />
             </svg>
             <div className="grid grid-cols-3 gap-2">
@@ -236,24 +219,13 @@ export default function LearnPage() {
                     ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                     type="button"
                     onClick={() => goTo(m.id)}
-                    className="relative flex flex-col items-center justify-center gap-1.5 py-4"
+                    className="relative flex items-center justify-center py-4"
                   >
-                    <m.Icon
-                      size={14}
-                      className="relative z-10 transition-all duration-300"
-                      style={{
-                        color: isActive ? m.color : "rgba(255,255,255,0.42)",
-                        transform: isActive ? "translateY(-1px) scale(1.15)" : "translateY(0) scale(1)",
-                        filter: isActive ? `drop-shadow(0 0 6px ${m.color}88)` : "none",
-                        transitionProperty: "color, transform, filter",
-                        transitionDuration: "300ms, 380ms, 300ms",
-                        transitionTimingFunction: "ease-out, cubic-bezier(0.34, 1.5, 0.64, 1), ease-out",
-                      }}
-                    />
                     <span
-                      className="relative z-10 text-[10px] font-semibold leading-none transition-all duration-300 ease-out"
+                      className="relative z-10 text-[11px] font-semibold leading-none transition-all duration-300 ease-out"
                       style={{
-                        color: isActive ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.5)",
+                        color: isActive ? "#ffffff" : "rgba(255,255,255,0.55)",
+                        textShadow: isActive ? `0 0 10px ${m.color}66` : "none",
                       }}
                     >
                       {m.label}
