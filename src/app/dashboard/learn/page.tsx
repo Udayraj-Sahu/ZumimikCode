@@ -22,7 +22,7 @@ import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BG = "rgba(20,23,15,0.92)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 const TOPIC_ICONS: Record<string, LucideIcon> = {
