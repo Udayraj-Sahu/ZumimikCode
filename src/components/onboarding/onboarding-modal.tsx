@@ -627,25 +627,29 @@ function CompletionScreen() {
   const name = store.firstName?.trim() || "Champion";
 
   return (
-    <div className="h-full flex flex-col justify-center text-center px-1">
-      <div className="flex flex-col items-center pb-4">
-        <CelebrationAvatar />
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
+    <div className="h-full flex flex-col justify-between py-5 text-center px-1">
+      <div className="flex flex-col items-center">
+        <div className="relative">
+          <div className="absolute -inset-8 rounded-full opacity-30 blur-2xl pointer-events-none" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.45), transparent 70%)" }} />
+          <CelebrationAvatar />
+        </div>
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
           <Sparkles size={12} className="text-[#C8FF4D]" />
           <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">Profile complete</span>
         </div>
-        <h2 className="mt-3 text-[19px] font-black tracking-[-0.03em] text-foreground">
+        <h2 className="mt-4 text-[24px] font-black tracking-[-0.03em] text-foreground">
           You&apos;re all set, <span className="text-[#C8FF4D]">{name}</span>!
         </h2>
-        <p className="mt-1 text-[11px] text-muted-foreground/40 font-medium">Let&apos;s start your fight</p>
+        <p className="mt-1.5 text-[12px] text-muted-foreground/40 font-medium">Let&apos;s start your fight</p>
       </div>
 
-      <div ref={boxRef} className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-4">
+      <div ref={boxRef} className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-5 mt-8">
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(167,139,250,0.35), transparent)" }} />
         <div className="relative flex items-center justify-around gap-2">
           {[{ l: "PERSONA", v: store.persona || "Student" }, { l: "GOAL", v: store.goal || "Master math" }].map((item) => (
-            <div key={item.l} className="flex flex-col items-center gap-0.5">
-              <span className="text-[7.5px] font-bold tracking-[0.16em] text-muted-foreground/30 uppercase">{item.l}</span>
-              <span className="text-[11px] font-bold text-foreground/70">{item.v}</span>
+            <div key={item.l} className="flex flex-col items-center gap-1">
+              <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/30 uppercase">{item.l}</span>
+              <span className="text-[13px] font-bold text-foreground/70">{item.v}</span>
             </div>
           ))}
         </div>
@@ -667,7 +671,7 @@ function CelebrationAvatar() {
       const angle = (i / sparks.length) * Math.PI * 2;
       gsap.fromTo(s,
         { opacity: 0, scale: 0, x: 0, y: 0 },
-        { opacity: [0, 1, 0] as never, scale: [0, 1, 0.4] as never, x: Math.cos(angle) * 26, y: Math.sin(angle) * 26, duration: 1.4, ease: "power1.out", repeat: -1, repeatDelay: 0.9, delay: i * 0.18 },
+        { opacity: [0, 1, 0] as never, scale: [0, 1, 0.4] as never, x: Math.cos(angle) * 34, y: Math.sin(angle) * 34, duration: 1.4, ease: "power1.out", repeat: -1, repeatDelay: 0.9, delay: i * 0.18 },
       );
     });
     return () => {
@@ -686,12 +690,12 @@ function CelebrationAvatar() {
         ))}
       </div>
       <div ref={avatarRef}>
-        <div className="relative size-16 rounded-2xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.28), rgba(34,211,238,0.10))", border: "1px solid rgba(167,139,250,0.30)", boxShadow: "0 8px 30px rgba(139,92,246,0.18)" }}>
+        <div className="relative size-20 rounded-2xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.28), rgba(34,211,238,0.10))", border: "1px solid rgba(167,139,250,0.30)", boxShadow: "0 8px 30px rgba(139,92,246,0.18)" }}>
           <div className="flex items-center gap-3">
-            <div className="size-2 rounded-full bg-[#A78BFA]" />
-            <div className="size-2 rounded-full bg-[#A78BFA]" />
+            <div className="size-2.5 rounded-full bg-[#A78BFA]" />
+            <div className="size-2.5 rounded-full bg-[#A78BFA]" />
           </div>
-          <div className="absolute bottom-4.5 left-1/2 -translate-x-1/2 w-4 h-1.5 rounded-b-full border-b-[1.5px] border-[#A78BFA]/70" />
+          <div className="absolute bottom-5.5 left-1/2 -translate-x-1/2 w-5 h-2 rounded-b-full border-b-[1.5px] border-[#A78BFA]/70" />
           <div className="absolute -top-1.5 -right-1.5 text-[10px] text-[#A78BFA]">
             <Sparkles size={10} fill="currentColor" />
           </div>
