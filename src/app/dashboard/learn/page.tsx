@@ -199,7 +199,7 @@ export default function LearnPage() {
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
         <h1 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Learn</h1>
-        <p className="mt-1 text-[12px] text-muted-foreground/40 font-normal">Master topics, adaptive sprints &amp; timed mocks.</p>
+        <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Master topics, adaptive sprints &amp; timed mocks.</p>
       </header>
 
       {/* Outer glass card wrapping all content */}
@@ -267,7 +267,7 @@ export default function LearnPage() {
           <button
             type="button"
             onClick={() => setShowAddPrep(true)}
-            className="w-full rounded-2xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-3.5 flex items-center justify-center gap-2 text-[13px] font-bold tracking-widest uppercase text-[#0A0C0A] shadow-[0_4px_18px_rgba(199,242,82,0.18)] transition-all hover:shadow-[0_0_22px_rgba(199,242,82,0.3)] active:scale-[0.98]"
+            className="w-full rounded-2xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-3.5 min-h-[44px] flex items-center justify-center gap-2 text-[13px] font-bold tracking-widest uppercase text-[#0A0C0A] shadow-[0_4px_18px_rgba(199,242,82,0.18)] transition-all hover:shadow-[0_0_22px_rgba(199,242,82,0.3)] active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Plus size={15} strokeWidth={2.5} />
             ADD PREP
@@ -336,7 +336,7 @@ export default function LearnPage() {
             {topics.length === 0 && (
               <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
                 <BookOpen size={24} className="mx-auto text-muted-foreground/25 mb-3" />
-                <p className="text-[13px] text-muted-foreground/40 font-normal">No topics yet. Add a prep to get started.</p>
+                <p className="text-[13px] text-muted-foreground/45 font-normal">No topics yet. Add a prep to get started.</p>
               </div>
             )}
           </div>
@@ -377,7 +377,7 @@ export default function LearnPage() {
             <activeMode.Icon size={24} style={{ color: activeMode.color }} />
           </div>
           <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
-          <p className="text-[12px] text-muted-foreground/40 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
+          <p className="text-[12px] text-muted-foreground/45 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
             {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
           </p>
         </div>
