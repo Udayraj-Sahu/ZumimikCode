@@ -87,9 +87,9 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 ];
 
 const TAB_ACTIVE_FILL =
-  "M 30 0 L 78 0 Q 90 0 92 20 L 100 100 L 0 100 L 9 10 Q 12 0 30 0 Z";
+  "M 0 100 C 4 97 6 90 8 78 L 11 31 C 13 16 19 4 30 2 C 41 0 59 0 70 2 C 81 4 88 16 89 31 L 93 78 C 94 90 96 97 100 100 Z";
 const TAB_ACTIVE_STROKE =
-  "M 9 10 Q 12 0 30 0 L 78 0 Q 90 0 92 20 L 100 100 M 0 100 L 9 10";
+  "M 0 100 C 4 97 6 90 8 78 L 11 31 C 13 16 19 4 30 2 C 41 0 59 0 70 2 C 81 4 88 16 89 31 L 93 78 C 94 90 96 97 100 100";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
@@ -147,7 +147,7 @@ export default function LearnPage() {
           <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
             <defs>
               <clipPath id="learn-tab-active-clip" clipPathUnits="objectBoundingBox">
-                <path d="M 0.30 0 L 0.78 0 Q 0.90 0, 0.92 0.20 L 1 1 L 0 1 L 0.09 0.10 Q 0.12 0, 0.30 0 Z" />
+                <path d="M 0 1 C 0.04 0.97 0.06 0.90 0.08 0.78 L 0.11 0.31 C 0.13 0.16 0.19 0.04 0.30 0.02 C 0.41 0 0.59 0 0.70 0.02 C 0.81 0.04 0.88 0.16 0.89 0.31 L 0.93 0.78 C 0.94 0.90 0.96 0.97 1 1 Z" />
               </clipPath>
             </defs>
           </svg>
