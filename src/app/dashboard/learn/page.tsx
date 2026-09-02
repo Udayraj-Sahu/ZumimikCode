@@ -88,7 +88,7 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 
 const TAB_TRAPEZOID = "polygon(14px 0, calc(100% - 14px) 0, 100% 100%, 0 100%)";
 const TAB_ACTIVE_OUTLINE =
-  "M 9 25 Q 12 0 22 0 L 78 0 Q 88 0 91 25 L 100 100 M 0 100 L 9 25";
+  "M 9 10 Q 12 0 30 0 L 78 0 Q 90 0 92 20 L 100 100 M 0 100 L 9 10";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
@@ -146,7 +146,7 @@ export default function LearnPage() {
           <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
             <defs>
               <clipPath id="learn-tab-active-clip" clipPathUnits="objectBoundingBox">
-                <path d="M 0.22 0 L 0.78 0 Q 0.88 0, 0.91 0.25 L 1 1 L 0 1 L 0.09 0.25 Q 0.12 0, 0.22 0 Z" />
+                <path d="M 0.30 0 L 0.78 0 Q 0.90 0, 0.92 0.20 L 1 1 L 0 1 L 0.09 0.10 Q 0.12 0, 0.30 0 Z" />
               </clipPath>
             </defs>
           </svg>
