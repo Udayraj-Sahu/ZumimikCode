@@ -87,17 +87,16 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
-const CURVE_SPAN = 10;
+const CURVE_WIDTH = 16;
 const TOP_INSET = 8;
 const BOTTOM_INSET = 4;
 
 function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number) {
   const right = left + width;
-  const leftFoot = Math.max(0, left - CURVE_SPAN);
-  let rightFoot = right + CURVE_SPAN;
-  rightFoot = Math.min(fullWidth, rightFoot);
-  const lc = (leftFoot + left) / 2;
-  const rc = (right + rightFoot) / 2;
+  const leftFoot = Math.max(0, left - CURVE_WIDTH);
+  const rightFoot = Math.min(fullWidth, right + CURVE_WIDTH);
+  const lc = left - CURVE_WIDTH / 2;
+  const rc = right + CURVE_WIDTH / 2;
   return `M0,${base} L${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${fullWidth},${base}`;
 }
 
@@ -155,12 +154,19 @@ export default function LearnPage() {
     setMode(tab);
 
     tabMotionRef.current?.stop();
-    tabMotionRef.current = animate(from, to, {
-      duration: 0.55,
-      ease: [0.34, 1.2, 0.44, 1],
-      onUpdate: (v) => {
-        tabCurrentRef.current = v;
-        drawTabPath(v.left, v.width);
+    tabMotionRef.current = animate(0, 1, {
+      type: "spring",
+      stiffness: 380,
+      damping: 32,
+      onUpdate: (t) => {
+        const left = from.left + (to.left - from.left) * t;
+        const width = from.width + (to.width - from.width) * t;
+        tabCurrentRef.current = { left, width };
+        drawTabPath(left, width);
+      },
+      onComplete: () => {
+        tabCurrentRef.current = to;
+        drawTabPath(to.left, to.width);
       },
     });
   };
