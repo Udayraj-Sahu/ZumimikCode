@@ -87,7 +87,7 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 ];
 
 const TAB_ACTIVE_FILL =
-  "M 18 0 C 6 0 0 8 0 22 C 2 50 4 78 10 80 L 90 80 C 96 78 98 50 100 22 C 100 8 94 0 82 0 Z";
+  "M 18 0 C 6 0 0 8 0 22 C 2 50 4 78 10 100 L 90 100 C 96 78 98 50 100 22 C 100 8 94 0 82 0 Z";
 
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
