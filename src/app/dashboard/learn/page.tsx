@@ -247,10 +247,11 @@ export default function LearnPage() {
                     className="relative flex items-center justify-center py-4"
                   >
                     <span
-                      className="relative z-10 text-[11px] font-semibold leading-none transition-colors duration-300"
+                      className="relative z-10 text-[11px] font-bold leading-none transition-colors duration-300"
                       style={{
                         color: isActive ? "#ffffff" : "rgba(255,255,255,0.55)",
-                        textShadow: isActive ? `0 0 10px ${m.color}66` : "none",
+                        textShadow: isActive ? `0 0 10px ${m.color}cc` : "none",
+                        letterSpacing: isActive ? "0.06em" : "0.02em",
                       }}
                     >
                       {m.label}
@@ -260,6 +261,14 @@ export default function LearnPage() {
               })}
             </div>
           </div>
+
+          {/* Active mode subtitle */}
+          <p
+            key={mode}
+            className="text-center text-[11px] text-muted-foreground/50 mb-1 transition-opacity duration-300"
+          >
+            {activeMode.subtitle}
+          </p>
 
       {mode === "explore" && (
         <>
@@ -315,9 +324,12 @@ export default function LearnPage() {
                       </div>
                       <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">{topic.name}</h3>
                     </div>
-                    <span className="text-[13px] font-bold tracking-[-0.02em]" style={{ color }}>
-                      {topic.value}%
-                    </span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-[13px] font-bold tracking-[-0.02em]" style={{ color }}>
+                        {topic.value}%
+                      </span>
+                      <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground/40">mastery</span>
+                    </div>
                   </div>
                   <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
                     <div
