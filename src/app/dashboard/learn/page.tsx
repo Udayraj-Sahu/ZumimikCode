@@ -228,7 +228,7 @@ export default function LearnPage() {
                 ref={tabPathRef}
                 fill="none"
                 stroke="#ffffff"
-                strokeWidth="1.5"
+                strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
