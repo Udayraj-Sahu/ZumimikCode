@@ -194,11 +194,7 @@ export default function LearnPage() {
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
       {/* Page header — matches app pattern */}
       <header className="mb-5">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
-          <BookOpen size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
-        </div>
-        <h1 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Learn</h1>
+        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Choose Your path</h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Master topics, adaptive sprints &amp; timed mocks.</p>
       </header>
 
