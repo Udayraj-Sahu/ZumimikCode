@@ -99,6 +99,15 @@ function buildTabPath(left: number, width: number, top: number, base: number, fu
   return `M0,${base} L${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${fullWidth},${base}`;
 }
 
+function buildTabFill(left: number, width: number, top: number, base: number) {
+  const right = left + width;
+  const lc = left - CURVE_WIDTH / 2;
+  const rc = right + CURVE_WIDTH / 2;
+  const leftFoot = Math.max(0, left - CURVE_WIDTH);
+  const rightFoot = right + CURVE_WIDTH;
+  return `M${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${leftFoot},${base} Z`;
+}
+
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
@@ -119,6 +128,7 @@ export default function LearnPage() {
     mock: null,
   });
   const tabPathRef = useRef<SVGPathElement | null>(null);
+  const tabFillRef = useRef<SVGPathElement | null>(null);
   const tabCurrentRef = useRef({ left: 0, width: 0 });
   const tabMotionRef = useRef<ReturnType<typeof animate> | null>(null);
 
@@ -130,13 +140,21 @@ export default function LearnPage() {
 
   const drawTabPath = (left: number, width: number) => {
     const row = tabRowRef.current;
-    if (!row || !tabPathRef.current) return;
+    if (!row) return;
     const base = row.clientHeight - BOTTOM_INSET;
     const curveTop = Math.max(0, row.clientHeight - 22);
-    tabPathRef.current.setAttribute(
-      "d",
-      buildTabPath(left, width, curveTop, base, row.clientWidth),
-    );
+    if (tabPathRef.current) {
+      tabPathRef.current.setAttribute(
+        "d",
+        buildTabPath(left, width, curveTop, base, row.clientWidth),
+      );
+    }
+    if (tabFillRef.current) {
+      tabFillRef.current.setAttribute(
+        "d",
+        buildTabFill(left, width, curveTop, base),
+      );
+    }
   };
 
   useLayoutEffect(() => {
@@ -200,6 +218,12 @@ export default function LearnPage() {
               aria-hidden="true"
               focusable="false"
             >
+              <path
+                ref={tabFillRef}
+                fill={activeMode.color}
+                fillOpacity="0.12"
+                style={{ filter: `drop-shadow(0 2px 8px ${activeMode.color}40)` }}
+              />
               <path
                 ref={tabPathRef}
                 fill="none"
