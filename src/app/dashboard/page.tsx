@@ -199,12 +199,17 @@ export default function DashboardPage() {
   usePageMeta("Dashboard — Exam Arena");
   const router = useRouter();
   const firstName = useOnboardingStore((s) => s.firstName);
+  const persona = useOnboardingStore((s) => s.persona);
+  const goal = useOnboardingStore((s) => s.goal);
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data } = useDashboardData(targetExam);
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
+
+  const profileDone = [firstName.trim(), persona, goal].filter(Boolean).length;
 
   const handleCarouselScroll = useCallback(() => {
     if (!carouselRef.current) return;
@@ -322,13 +327,32 @@ export default function DashboardPage() {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch", width: "100%" }}
           onScroll={handleCarouselScroll}
         >
-          {/* Slide 1: Complete Account Details — inline onboarding */}
+          {/* Slide 1: Complete your details — opens onboarding bottom sheet */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto rounded-3xl border border-primary/15 overflow-hidden h-full flex flex-col relative" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/15 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25), transparent)" }} />
-              <div className="flex-1 overflow-y-auto min-h-0 relative" style={{ scrollbarWidth: "none" }}>
-                <OnboardingModal onClose={() => {}} inline />
+              <div className="flex items-center gap-2.5">
+                <div className="size-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                  <Sparkles size={14} className="text-primary" />
+                </div>
+                <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
               </div>
+              <div className="flex-1 flex flex-col justify-center py-4">
+                <h2 className="text-[24px] font-bold tracking-[-0.03em] text-foreground leading-tight">Complete your<br />details</h2>
+                <p className="mt-2 text-[12px] text-muted-foreground/45 font-normal leading-relaxed">Tell us who you are and what you're aiming for — we'll tailor your prep, streaks and recommendations.</p>
+                <div className="mt-5">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <div key={i} className={cn("h-1.5 flex-1 rounded-full transition-colors duration-500", i < profileDone ? "bg-primary" : "bg-white/10")} />
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/35 font-semibold">{profileDone} of 5 steps complete</p>
+                </div>
+              </div>
+              <button type="button" onClick={() => setOnboardingOpen(true)} className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#C7F252] to-[#a6dc3a] px-5 py-3 text-[12px] font-bold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(199,242,82,0.25)] active:scale-95">
+                CONTINUE SETUP
+                <ChevronRight size={14} className="mt-px" />
+              </button>
             </div>
           </div>
 
@@ -712,6 +736,10 @@ export default function DashboardPage() {
 
       {habitModalOpen && (
         <HabitTrackerModal onClose={() => setHabitModalOpen(false)} />
+      )}
+
+      {onboardingOpen && (
+        <OnboardingModal onClose={() => setOnboardingOpen(false)} />
       )}
     </div>
   );
