@@ -301,24 +301,6 @@ export function OnboardingModal({ onClose, inline }: Props) {
       {/* Footer */}
       {!completed && (
         <div className="sticky bottom-0 px-5 pb-5 pt-3">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            {STEP_LABELS.map((label, i) => {
-              const isActive = i === step;
-              const isDone = i < step;
-              return (
-                <div
-                  key={i}
-                  className={cn(
-                    "rounded-full transition-all duration-400",
-                    isActive ? "h-2 w-2" : isDone ? "h-1.5 w-1.5" : "h-1.5 w-1.5"
-                  )}
-                  style={{
-                    background: isActive || isDone ? "#C8FF4D" : "rgba(255,255,255,0.15)",
-                  }}
-                />
-              );
-            })}
-          </div>
           <div className="flex items-center justify-between">
             {step > 0 ? (
               <button
