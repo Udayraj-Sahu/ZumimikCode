@@ -199,41 +199,34 @@ export default function LearnPage() {
 
             {/* Active morphing indicator — rounded-top trapezium that travels between tabs */}
             {indicator.ready && (
-              <>
-                <div
-                  className="absolute top-0 bottom-0 z-[5] pointer-events-none"
-                  style={{
-                    left: indicator.left + 1,
-                    width: indicator.width - 2,
-                    clipPath: "url(#learn-tab-active-clip)",
-                    background: `linear-gradient(180deg, ${activeMode.color}2E 0%, rgba(255,255,255,0.05) 100%)`,
-                    boxShadow: `0 6px 18px rgba(0,0,0,0.4), 0 0 22px ${activeMode.color}26`,
-                    transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
-                  }}
+              <svg
+                className="absolute top-0 bottom-0 z-[5] pointer-events-none"
+                style={{
+                  left: indicator.left + 1,
+                  width: indicator.width - 2,
+                  boxShadow: `0 6px 18px rgba(0,0,0,0.4), 0 0 22px ${activeMode.color}26`,
+                  transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
+                }}
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <defs>
+                  <linearGradient id="learn-tab-active-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor={activeMode.color} stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="#ffffff" stopOpacity="0.05" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d={TAB_ACTIVE_OUTLINE}
+                  fill="url(#learn-tab-active-fill)"
+                  stroke="rgba(255,255,255,0.35)"
+                  strokeWidth="1"
+                  vectorEffect="non-scaling-stroke"
+                  strokeLinejoin="round"
                 />
-                <svg
-                  className="absolute top-0 bottom-0 z-[6] pointer-events-none"
-                  style={{
-                    left: indicator.left + 1,
-                    width: indicator.width - 2,
-                    transition: "left 360ms cubic-bezier(0.34, 1.15, 0.64, 1), width 360ms cubic-bezier(0.34, 1.15, 0.64, 1)",
-                  }}
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <path
-                    d={TAB_ACTIVE_OUTLINE}
-                    fill="none"
-                    stroke="rgba(255,255,255,0.35)"
-                    strokeWidth="1"
-                    vectorEffect="non-scaling-stroke"
-                    strokeLinecap="butt"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </>
+              </svg>
             )}
           </div>
 
