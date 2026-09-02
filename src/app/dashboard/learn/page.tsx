@@ -9,6 +9,9 @@ import {
   Sparkles,
   Plus,
   ArrowRight,
+  ChevronLeft,
+  Brain,
+  ClipboardList,
   BookOpen,
   type LucideIcon,
 } from "lucide-react";
@@ -62,14 +65,25 @@ function getInsight(topics: { name: string; value: number }[]): string {
   return `${best.name} (${best.value}%) leads. ${worst.name} (${worst.value}%) needs more practice.`;
 }
 
+type Mode = "home" | "explore" | "adaptive" | "mock";
+
+const MODES: { id: Exclude<Mode, "home">; label: string; desc: string; Icon: LucideIcon; color: string }[] = [
+  { id: "explore", label: "Topic Explorer", desc: "Browse topics and track your mastery across every subject.", Icon: Grid3x3, color: "#34D399" },
+  { id: "adaptive", label: "Adaptive Learning", desc: "Sprints tuned to your skill level — questions that meet you where you are.", Icon: Brain, color: "#A78BFA" },
+  { id: "mock", label: "Mock Tests", desc: "Full-length, exam-style timed tests to simulate the real thing.", Icon: ClipboardList, color: "#FBBF24" },
+];
+
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
+  const [mode, setMode] = useState<Mode>("home");
   const [activeDomain, setActiveDomain] = useState(targetExam || "cat");
   const [showAddPrep, setShowAddPrep] = useState(false);
   const { data } = useDashboardData(activeDomain);
   const topics = data?.topics ?? [];
+
+  const activeMode = mode === "home" ? null : MODES.find((m) => m.id === mode);
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
@@ -80,117 +94,181 @@ export default function LearnPage() {
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
-          Topic Explorer
+          {activeMode ? activeMode.label : "Choose your path"}
         </h1>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
-          Navigate the mathematical landscape
+          {activeMode
+            ? activeMode.desc
+            : "Pick a mode to dive in — explore, adapt, or simulate"}
         </p>
       </header>
 
-      {/* Add Prep CTA */}
-      <button
-        type="button"
-        onClick={() => setShowAddPrep(true)}
-        className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 flex items-center justify-center gap-2 text-[13px] font-semibold text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98]"
-      >
-        <Plus size={15} strokeWidth={2.5} />
-        ADD PREP
-      </button>
-
-      {/* Exam Tabs */}
-      <div className="rounded-3xl border backdrop-blur-xl p-4 mt-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-        <p className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(DOMAIN_LABELS).map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setActiveDomain(id)}
-              className={cn(
-                "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
-                activeDomain === id
-                  ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
-                  : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]"
-              )}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Topic Cards */}
-      <div className="flex flex-col gap-3 mt-5">
-        {topics.map((topic, i) => {
-          const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
-          const color = TOPIC_COLORS[i % TOPIC_COLORS.length];
-          return (
-            <button
-              key={topic.name}
-              type="button"
-              onClick={() => router.push("/dashboard/explorer")}
-              className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
-              style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-xl flex items-center justify-center" style={{ background: `${color}15` }}>
-                    <Icon size={16} style={{ color }} />
-                  </div>
-                  <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">{topic.name}</h3>
+      {mode === "home" && (
+        <>
+          <div className="flex flex-col gap-3">
+            {MODES.map(({ id, label, desc, Icon, color }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setMode(id)}
+                className="group relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98] flex items-center gap-4"
+                style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+              >
+                <div className="absolute inset-0 opacity-[0.06] transition-opacity group-hover:opacity-[0.12]" style={{ background: `radial-gradient(circle at top right, ${color}, transparent 75%)` }} />
+                <div className="size-11 rounded-2xl flex items-center justify-center shrink-0" style={{ background: `${color}15` }}>
+                  <Icon size={18} style={{ color }} />
                 </div>
-                <span className="text-[13px] font-bold tracking-[-0.02em]" style={{ color }}>
-                  {topic.value}%
-                </span>
-              </div>
-              <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-700"
-                  style={{
-                    width: `${topic.value}%`,
-                    background: `linear-gradient(90deg, ${color}88, ${color})`,
-                    boxShadow: `0 0 8px ${color}40`,
-                  }}
-                />
-              </div>
-            </button>
-          );
-        })}
-
-        {topics.length === 0 && (
-          <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
-            <BookOpen size={24} className="mx-auto text-muted-foreground/25 mb-3" />
-            <p className="text-[13px] text-muted-foreground/40 font-normal">No topics yet. Add a prep to get started.</p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">{label}</h3>
+                  <p className="text-[11px] text-muted-foreground/40 mt-0.5 leading-relaxed">{desc}</p>
+                </div>
+                <ArrowRight size={15} className="text-muted-foreground/30 group-hover:text-foreground/60 transition-colors shrink-0" />
+              </button>
+            ))}
           </div>
-        )}
-      </div>
-
-      {/* Sensei Insight */}
-      {topics.length > 0 && (
-        <div className="relative rounded-3xl border backdrop-blur-xl p-5 mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
-          <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#3B82F6] to-[#22D3EE]" />
-          <div className="flex items-center gap-2.5 mb-3">
-            <div className="h-7 w-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
-              <Sparkles size={14} className="text-[#3B82F6]" />
-            </div>
-            <p className="text-[10px] font-semibold tracking-[0.18em] text-[#3B82F6]/70 uppercase">SENSEI INSIGHT</p>
-          </div>
-          <p className="text-[13px] text-foreground/70 font-normal leading-relaxed pl-1 italic">
-            &ldquo;{getInsight(topics)}&rdquo;
-          </p>
-        </div>
+        </>
       )}
 
-      {/* Explore Techniques */}
-      <button
-        type="button"
-        onClick={() => router.push("/dashboard/explorer")}
-        className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
-        style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
-      >
-        EXPLORE TECHNIQUES
-        <ArrowRight size={14} />
-      </button>
+      {mode === "explore" && (
+        <>
+          <button
+            type="button"
+            onClick={() => setMode("home")}
+            className="mb-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground/50 transition-colors hover:text-foreground/80 active:scale-[0.98]"
+          >
+            <ChevronLeft size={14} />
+            All modes
+          </button>
+
+          {/* Add Prep CTA */}
+          <button
+            type="button"
+            onClick={() => setShowAddPrep(true)}
+            className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 flex items-center justify-center gap-2 text-[13px] font-semibold text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98]"
+          >
+            <Plus size={15} strokeWidth={2.5} />
+            ADD PREP
+          </button>
+
+          {/* Exam Tabs */}
+          <div className="rounded-3xl border backdrop-blur-xl p-4 mt-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <p className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(DOMAIN_LABELS).map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setActiveDomain(id)}
+                  className={cn(
+                    "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
+                    activeDomain === id
+                      ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
+                      : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]"
+                  )}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Topic Cards */}
+          <div className="flex flex-col gap-3 mt-5">
+            {topics.map((topic, i) => {
+              const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
+              const color = TOPIC_COLORS[i % TOPIC_COLORS.length];
+              return (
+                <button
+                  key={topic.name}
+                  type="button"
+                  onClick={() => router.push("/dashboard/explorer")}
+                  className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                  style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-xl flex items-center justify-center" style={{ background: `${color}15` }}>
+                        <Icon size={16} style={{ color }} />
+                      </div>
+                      <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">{topic.name}</h3>
+                    </div>
+                    <span className="text-[13px] font-bold tracking-[-0.02em]" style={{ color }}>
+                      {topic.value}%
+                    </span>
+                  </div>
+                  <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{
+                        width: `${topic.value}%`,
+                        background: `linear-gradient(90deg, ${color}88, ${color})`,
+                        boxShadow: `0 0 8px ${color}40`,
+                      }}
+                    />
+                  </div>
+                </button>
+              );
+            })}
+
+            {topics.length === 0 && (
+              <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
+                <BookOpen size={24} className="mx-auto text-muted-foreground/25 mb-3" />
+                <p className="text-[13px] text-muted-foreground/40 font-normal">No topics yet. Add a prep to get started.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Sensei Insight */}
+          {topics.length > 0 && (
+            <div className="relative rounded-3xl border backdrop-blur-xl p-5 mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
+              <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#3B82F6] to-[#22D3EE]" />
+              <div className="flex items-center gap-2.5 mb-3">
+                <div className="h-7 w-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
+                  <Sparkles size={14} className="text-[#3B82F6]" />
+                </div>
+                <p className="text-[10px] font-semibold tracking-[0.18em] text-[#3B82F6]/70 uppercase">SENSEI INSIGHT</p>
+              </div>
+              <p className="text-[13px] text-foreground/70 font-normal leading-relaxed pl-1 italic">
+                &ldquo;{getInsight(topics)}&rdquo;
+              </p>
+            </div>
+          )}
+
+          {/* Explore Techniques */}
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard/explorer")}
+            className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+            style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+          >
+            EXPLORE TECHNIQUES
+            <ArrowRight size={14} />
+          </button>
+        </>
+      )}
+
+      {activeMode && (mode === "adaptive" || mode === "mock") && (
+        <>
+          <button
+            type="button"
+            onClick={() => setMode("home")}
+            className="mb-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground/50 transition-colors hover:text-foreground/80 active:scale-[0.98]"
+          >
+            <ChevronLeft size={14} />
+            All modes
+          </button>
+          <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
+            <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
+            <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
+              <activeMode.Icon size={24} style={{ color: activeMode.color }} />
+            </div>
+            <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
+            <p className="text-[12px] text-muted-foreground/40 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
+              {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
+            </p>
+          </div>
+        </>
+      )}
 
       {showAddPrep && (
         <AddPrepModal onClose={() => setShowAddPrep(false)} />
