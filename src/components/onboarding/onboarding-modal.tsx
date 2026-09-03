@@ -49,6 +49,14 @@ const GOAL_OPTIONS = [
   { label: "Just exploring", icon: Compass, color: "#8B9086", desc: "Seeing what's here" },
 ];
 
+function examIdForGoal(goal: string | null): string {
+  if (!goal) return "vedic-math";
+  if (goal.includes("CAT")) return "cat";
+  if (goal.includes("GMAT")) return "gmat";
+  if (goal.includes("GRE")) return "gre";
+  return "vedic-math";
+}
+
 const TRIGGER_GROUPED = [
   {
     label: "Life Stage",
@@ -126,6 +134,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     store.setFirstName(localFirstName);
     store.setPersona(localPersona);
     store.setGoal(localGoal);
+    store.setTargetExam(examIdForGoal(localGoal));
     store.setSex(localSex);
     store.setDob(localDob);
     store.setCurrentStep(step);
@@ -154,6 +163,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     });
     store.setSex(localSex);
     store.setDob(localDob);
+    store.setTargetExam(examIdForGoal(localGoal));
     store.finishOnboarding();
     setCompleted(true);
     if (contentRef.current) {
