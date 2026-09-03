@@ -91,62 +91,46 @@ const CURVE_WIDTH = 14;
 const BOTTOM_INSET = 5;
 const CARD_RADIUS = 24;
 
-// Single shared shape for both the fill and its outline (stroke), so they always match.
-// At the extreme left/right a tab expands its panel down the full height of the card,
-// hugging the card's rounded corner + side so the slider "covers" the card edge.
-function buildShape(
-  left: number,
-  width: number,
-  top: number,
-  base: number,
-  fullWidth: number,
-  cardHeight: number,
-  r = CARD_RADIUS,
-) {
+function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number, r = CARD_RADIUS) {
   const right = left + width;
   const lc = Math.max(0, left - CURVE_WIDTH / 2);
   const rc = Math.min(fullWidth, right + CURVE_WIDTH / 2);
-  const footL = Math.max(0, left - CURVE_WIDTH);
-  const footR = Math.min(fullWidth, right + CURVE_WIDTH);
   const atLeft = left <= r;
   const atRight = right >= fullWidth - r;
-  const cardBase = cardHeight - BOTTOM_INSET;
 
-  if (atLeft) {
-    // Panel covers the full left edge of the card, from corner to bottom.
-    return (
-      `M0,${cardBase}` +
-      ` L0,${top + r}` +
-      ` A${r},${r} 0 0 1 ${r},${top}` +
-      ` L${right},${top}` +
-      ` C${rc},${top} ${rc},${base} ${footR},${base}` +
-      ` L${footR},${cardBase}` +
-      ` Z`
-    );
-  }
+  const leftTop = atLeft
+    ? `C${lc},${base} ${lc},${top + r} ${left},${top + r} A${r},${r} 0 0 1 ${left + r},${top}`
+    : `C${lc},${base} ${lc},${top} ${left},${top}`;
 
-  if (atRight) {
-    // Panel covers the full right edge of the card, from corner to bottom.
-    return (
-      `M0,${cardBase}` +
-      ` L${footL},${cardBase}` +
-      ` L${footL},${base}` +
-      ` C${lc},${base} ${lc},${top} ${left},${top}` +
-      ` L${Math.min(fullWidth, right - r)},${top}` +
-      ` A${r},${r} 0 0 1 ${Math.min(fullWidth, right)},${top + r}` +
-      ` L${Math.min(fullWidth, right)},${cardBase}` +
-      ` Z`
-    );
-  }
+  const topRun = atRight ? `L${right - r},${top}` : `L${right},${top}`;
 
-  // Middle tab: compact S-curve shape within the tab row.
-  return (
-    `M${footL},${base}` +
-    ` C${lc},${base} ${lc},${top} ${left},${top}` +
-    ` L${right},${top}` +
-    ` C${rc},${top} ${rc},${base} ${footR},${base}` +
-    ` Z`
-  );
+  const rightTop = atRight
+    ? `A${r},${r} 0 0 1 ${right},${top + r} C${rc},${top + r} ${rc},${base} ${Math.min(fullWidth, right + CURVE_WIDTH)},${base}`
+    : `C${rc},${top} ${rc},${base} ${Math.min(fullWidth, right + CURVE_WIDTH)},${base}`;
+
+  return `M0,${base} L${Math.max(0, left - CURVE_WIDTH)},${base} ${leftTop} ${topRun} ${rightTop} L${fullWidth},${base}`;
+}
+
+function buildTabFill(left: number, width: number, top: number, base: number, fullWidth: number, r = CARD_RADIUS) {
+  const right = left + width;
+  const lc = Math.max(0, left - CURVE_WIDTH / 2);
+  const rc = Math.min(fullWidth, right + CURVE_WIDTH / 2);
+  const leftFoot = Math.max(0, left - CURVE_WIDTH);
+  const rightFoot = Math.min(fullWidth, right + CURVE_WIDTH);
+  const atLeft = left <= r;
+  const atRight = right >= fullWidth - r;
+
+  const leftTop = atLeft
+    ? `C${lc},${base} ${lc},${top + r} ${left},${top + r} A${r},${r} 0 0 1 ${left + r},${top}`
+    : `C${lc},${base} ${lc},${top} ${left},${top}`;
+
+  const topRun = atRight ? `L${right - r},${top}` : `L${right},${top}`;
+
+  const rightTop = atRight
+    ? `A${r},${r} 0 0 1 ${right},${top + r} C${rc},${top + r} ${rc},${base} ${rightFoot},${base}`
+    : `C${rc},${top} ${rc},${base} ${rightFoot},${base}`;
+
+  return `M${leftFoot},${base} ${leftTop} ${topRun} ${rightTop} L${leftFoot},${base} Z`;
 }
 
 function hexToRgb(hex: string) {
@@ -192,7 +176,6 @@ export default function LearnPage() {
   const outerBg = "linear-gradient(180deg, rgba(20,23,15,0.9) 0%, rgba(10,12,10,0.85) 100%)";
 
   const tabRowRef = useRef<HTMLDivElement | null>(null);
-  const cardRef = useRef<HTMLDivElement | null>(null);
   const tabBtnRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
     explore: null,
     adaptive: null,
@@ -219,20 +202,23 @@ export default function LearnPage() {
   };
 
   const drawTabPath = (left: number, width: number, color?: string) => {
-    const card = cardRef.current;
     const row = tabRowRef.current;
-    if (!card || !row) return;
+    if (!row) return;
     const base = row.clientHeight - BOTTOM_INSET;
     const curveTop = Math.max(0, row.clientHeight - 56);
-    const full = card.clientWidth;
-    const cardHeight = card.clientHeight;
-    const d = buildShape(left, width, curveTop, base, full, cardHeight);
+    const full = row.clientWidth;
     if (tabPathRef.current) {
-      tabPathRef.current.setAttribute("d", d);
+      tabPathRef.current.setAttribute(
+        "d",
+        buildTabPath(left, width, curveTop, base, full),
+      );
       if (color) tabPathRef.current.setAttribute("stroke", color);
     }
     if (tabFillRef.current) {
-      tabFillRef.current.setAttribute("d", d);
+      tabFillRef.current.setAttribute(
+        "d",
+        buildTabFill(left, width, curveTop, base, full),
+      );
     }
   };
 
@@ -316,44 +302,41 @@ export default function LearnPage() {
 
       {/* Outer glass card wrapping all content */}
       <div
-        ref={cardRef}
         className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pb-4 transition-colors duration-500"
         style={{ borderColor: GLASS_BORDER, background: outerBg }}
       >
           <div ref={glowTopRef} className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" />
           <div ref={glowBottomRef} className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" />
 
-          {/* Slider fill + outline — spans the whole card so edge tabs can cover the card */}
-          <svg
-            className="absolute inset-0 pointer-events-none"
-            width="100%"
-            height="100%"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <defs>
-              <linearGradient id="learn-tab-sheen" x1="0" y1="0" x2="0" y2="1">
-                <stop ref={sheenStopTopRef} offset="0%" stopColor="#34D399" stopOpacity="0.5" />
-                <stop ref={sheenStopMidRef} offset="45%" stopColor="#34D399" stopOpacity="0.18" />
-                <stop offset="100%" stopColor="#000000" stopOpacity="0.22" />
-              </linearGradient>
-            </defs>
-            <path
-              ref={tabFillRef}
-              fill="url(#learn-tab-sheen)"
-            />
-            <path
-              ref={tabPathRef}
-              fill="none"
-              stroke="#ffffff"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-
-          {/* Tab mode selector */}
+          {/* Tab mode selector — S-curve underline animates between tabs */}
           <div ref={tabRowRef} className="relative -mx-5 mb-2">
+            <svg
+              className="absolute inset-0 pointer-events-none"
+              width="100%"
+              height="100%"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <defs>
+                <linearGradient id="learn-tab-sheen" x1="0" y1="0" x2="0" y2="1">
+                  <stop ref={sheenStopTopRef} offset="0%" stopColor="#34D399" stopOpacity="0.22" />
+                  <stop ref={sheenStopMidRef} offset="45%" stopColor="#34D399" stopOpacity="0.08" />
+                  <stop offset="100%" stopColor="#000000" stopOpacity="0.35" />
+                </linearGradient>
+              </defs>
+              <path
+                ref={tabFillRef}
+                fill="url(#learn-tab-sheen)"
+              />
+              <path
+                ref={tabPathRef}
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
             <div className="grid grid-cols-3 gap-2">
               {MODES.map((m) => (
                 <button
