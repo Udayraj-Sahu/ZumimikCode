@@ -487,61 +487,36 @@ export function HabitTrackerModal({ onClose }: Props) {
                     </button>
 
                     {isEditing && (
-                      <div className="mx-2 rounded-2xl px-4 py-4 space-y-3" style={{ background: VIOLET_DIM, border: `1px solid ${VIOLET_GLOW}` }}>
+                      <div className="mx-2 mt-1 rounded-xl px-3 py-3 space-y-2.5" style={{ background: VIOLET_DIM, border: `1px solid ${VIOLET_GLOW}` }}>
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="grid size-8 place-items-center rounded-xl" style={{ background: "rgba(52,211,153,0.15)" }}>
-                              <Clock size={14} style={{ color: VIOLET }} />
-                            </div>
-                            <p className="text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: `${VIOLET}cc` }}>
+                          <div className="flex items-center gap-1.5">
+                            <Clock size={12} style={{ color: VIOLET }} />
+                            <p className="text-[9px] font-bold uppercase tracking-[0.12em]" style={{ color: `${VIOLET}cc` }}>
                               Daily Reminder
                             </p>
                           </div>
                           <button type="button" onClick={(e) => { e.stopPropagation(); setEditingReminder(null); }} className="text-muted-foreground/40 hover:text-foreground transition-colors">
-                            <X size={14} />
+                            <X size={12} />
                           </button>
                         </div>
 
-                        <div className="flex items-center justify-center gap-3 rounded-xl py-3 border border-white/[0.06] bg-black/20">
-                          <Clock size={16} style={{ color: VIOLET }} />
+                        <div className="flex items-center justify-center gap-2 rounded-lg py-2 border border-white/[0.06] bg-black/20">
+                          <Clock size={13} style={{ color: VIOLET }} />
                           <input
                             type="time"
                             value={draftTime}
                             onChange={(e) => { if (e.target.value) setDraftTime(e.target.value); }}
-                            className="bg-transparent border-none text-[22px] font-bold tracking-wider text-foreground font-mono outline-none [color-scheme:dark] cursor-pointer text-center w-[130px]"
+                            className="bg-transparent border-none text-[18px] font-bold tracking-wider text-foreground font-mono outline-none [color-scheme:dark] cursor-pointer text-center w-[110px] leading-none"
                           />
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-2">
-                          {[
-                            { label: "Morning", time: "08:00" },
-                            { label: "Afternoon", time: "13:00" },
-                            { label: "Evening", time: "18:00" },
-                          ].map((p) => (
-                            <button
-                              key={p.label}
-                              type="button"
-                              onClick={(e) => { e.stopPropagation(); setDraftTime(p.time); }}
-                              className={cn(
-                                "rounded-xl py-2 text-[11px] font-semibold transition-all border",
-                                draftTime === p.time
-                                  ? "border-[rgba(52,211,153,0.5)] bg-[rgba(52,211,153,0.15)]"
-                                  : "border-white/[0.06] bg-white/[0.03] text-muted-foreground/60 hover:bg-white/[0.07]",
-                              )}
-                              style={draftTime === p.time ? { color: VIOLET } : undefined}
-                            >
-                              {p.label}
-                            </button>
-                          ))}
                         </div>
 
                         <button
                           type="button"
                           onClick={() => handleSetTime(h.id, draftTime, h.name)}
-                          className="w-full flex items-center justify-center gap-2 rounded-xl py-2.5 text-[12px] font-bold uppercase tracking-widest text-[#0A0C0A] transition-all active:scale-[0.98]"
-                          style={{ background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 14px ${VIOLET_GLOW}` }}
+                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-[10px] font-bold uppercase tracking-widest text-[#0A0C0A] transition-all active:scale-[0.98]"
+                          style={{ background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }}
                         >
-                          <Bell size={13} /> Set reminder
+                          <Bell size={11} /> Set reminder
                         </button>
                       </div>
                     )}
