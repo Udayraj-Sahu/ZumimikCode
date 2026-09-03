@@ -147,8 +147,6 @@ function lerpColor(a: string, b: string, t: number): string {
   return `rgb(${r},${g},${bl})`;
 }
 
-const LABEL_INACTIVE = "rgba(255,255,255,0.45)";
-
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
@@ -176,6 +174,7 @@ export default function LearnPage() {
   const outerBg = "linear-gradient(180deg, rgba(20,23,15,0.9) 0%, rgba(10,12,10,0.85) 100%)";
 
   const tabRowRef = useRef<HTMLDivElement | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const tabBtnRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
     explore: null,
     adaptive: null,
@@ -188,9 +187,6 @@ export default function LearnPage() {
   });
   const tabPathRef = useRef<SVGPathElement | null>(null);
   const tabFillRef = useRef<SVGPathElement | null>(null);
-  const sheenStopTopRef = useRef<SVGStopElement | null>(null);
-  const sheenStopMidRef = useRef<SVGStopElement | null>(null);
-  const sheenStopBottomRef = useRef<SVGStopElement | null>(null);
   const glowTopRef = useRef<HTMLDivElement | null>(null);
   const glowBottomRef = useRef<HTMLDivElement | null>(null);
   const tabCurrentRef = useRef({ left: 0, width: 0 });
@@ -202,7 +198,7 @@ export default function LearnPage() {
     return { left: btn.offsetLeft, width: btn.offsetWidth };
   };
 
-  const drawTabPath = (left: number, width: number, color?: string) => {
+  const drawTabPath = (left: number, width: number) => {
     const row = tabRowRef.current;
     if (!row) return;
     const base = row.clientHeight - BOTTOM_INSET;
@@ -213,7 +209,6 @@ export default function LearnPage() {
         "d",
         buildTabPath(left, width, curveTop, base, full),
       );
-      if (color) tabPathRef.current.setAttribute("stroke", color);
     }
     if (tabFillRef.current) {
       tabFillRef.current.setAttribute(
@@ -224,40 +219,20 @@ export default function LearnPage() {
   };
 
   const setGlow = (color: string) => {
+    cardRef.current?.style.setProperty("--accent", color);
     if (glowTopRef.current) {
       glowTopRef.current.style.background = `radial-gradient(circle, ${color}33, transparent)`;
     }
     if (glowBottomRef.current) {
       glowBottomRef.current.style.background = `radial-gradient(circle, ${color}44, transparent)`;
     }
-    if (sheenStopTopRef.current) {
-      sheenStopTopRef.current.setAttribute("stopColor", color);
-      sheenStopTopRef.current.setAttribute("stopOpacity", "0.4");
-    }
-    if (sheenStopMidRef.current) {
-      sheenStopMidRef.current.setAttribute("stopColor", color);
-      sheenStopMidRef.current.setAttribute("stopOpacity", "0.16");
-    }
-    if (sheenStopBottomRef.current) {
-      sheenStopBottomRef.current.setAttribute("stopColor", color);
-      sheenStopBottomRef.current.setAttribute("stopOpacity", "0.03");
-    }
-  };
-
-  const setLabels = (active: Mode, color: string) => {
-    (MODES as { id: Mode }[]).forEach((m) => {
-      const el = tabLabelRefs.current[m.id];
-      if (!el) return;
-      el.style.color = m.id === active ? color : LABEL_INACTIVE;
-    });
   };
 
   useLayoutEffect(() => {
     const target = measureTab(mode);
     tabCurrentRef.current = target;
-    drawTabPath(target.left, target.width, activeMode.color);
+    drawTabPath(target.left, target.width);
     setGlow(activeMode.color);
-    setLabels(mode, activeMode.color);
     return () => tabMotionRef.current?.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -280,15 +255,13 @@ export default function LearnPage() {
         const width = from.width + (to.width - from.width) * t;
         const color = lerpColor(fromColor, toColor, t);
         tabCurrentRef.current = { left, width };
-        drawTabPath(left, width, color);
+        drawTabPath(left, width);
         setGlow(color);
-        setLabels(tab, color);
       },
       onComplete: () => {
         tabCurrentRef.current = to;
-        drawTabPath(to.left, to.width, toColor);
+        drawTabPath(to.left, to.width);
         setGlow(toColor);
-        setLabels(tab, toColor);
       },
     });
   };
@@ -307,6 +280,7 @@ export default function LearnPage() {
 
       {/* Outer glass card wrapping all content */}
       <div
+        ref={cardRef}
         className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pb-4 transition-colors duration-500"
         style={{ borderColor: GLASS_BORDER, background: outerBg }}
       >
@@ -324,9 +298,9 @@ export default function LearnPage() {
             >
               <defs>
                 <linearGradient id="learn-tab-sheen" x1="0" y1="0" x2="0" y2="1">
-                  <stop ref={sheenStopTopRef} offset="0%" />
-                  <stop ref={sheenStopMidRef} offset="45%" />
-                  <stop ref={sheenStopBottomRef} offset="100%" />
+                  <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.4" />
+                  <stop offset="45%" stopColor="var(--accent)" stopOpacity="0.16" />
+                  <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.03" />
                 </linearGradient>
               </defs>
               <path
@@ -336,13 +310,16 @@ export default function LearnPage() {
               <path
                 ref={tabPathRef}
                 fill="none"
+                stroke="var(--accent)"
                 strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
             <div className="grid grid-cols-3 gap-2">
-              {MODES.map((m) => (
+              {MODES.map((m) => {
+                const isActive = m.id === mode;
+                return (
                 <button
                   key={m.id}
                   ref={(el) => { tabBtnRefs.current[m.id] = el; }}
@@ -352,16 +329,17 @@ export default function LearnPage() {
                 >
                   <span
                     ref={(el) => { tabLabelRefs.current[m.id] = el; }}
-                    className="relative z-10 text-[12px] font-medium leading-none transition-opacity duration-300"
+                    className="relative z-10 text-[12px] font-medium leading-none transition-colors duration-300"
                     style={{
-                      color: "rgba(255,255,255,0.45)",
+                      color: isActive ? "var(--accent)" : "rgba(255,255,255,0.45)",
                       letterSpacing: "0.04em",
                     }}
                   >
                     {m.label}
                   </span>
                 </button>
-              ))}
+                );
+              })}
             </div>
           </div>
 
