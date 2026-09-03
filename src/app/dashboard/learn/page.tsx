@@ -330,13 +330,8 @@ export default function LearnPage() {
                   ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                   type="button"
                   onClick={() => goTo(m.id)}
-                  className="relative flex flex-col items-center justify-center gap-1.5 py-4"
+                  className="relative flex items-center justify-center py-4"
                 >
-                  <m.Icon
-                    size={16}
-                    strokeWidth={2}
-                    style={{ color: isActive ? "var(--accent)" : "rgba(255,255,255,0.4)" }}
-                  />
                   <span
                     ref={(el) => { tabLabelRefs.current[m.id] = el; }}
                     className={`relative z-10 text-[12px] leading-none transition-colors duration-300 ${isActive ? "font-semibold" : "font-medium"}`}
