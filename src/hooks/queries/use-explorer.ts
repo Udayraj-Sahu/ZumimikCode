@@ -3,20 +3,22 @@ import { getSubjectTree, getLeafTechniques } from "@/services/explorer";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { TopicNode } from "@/lib/types/technique";
 
-export function useSubjectTree() {
+export function useSubjectTree(domain?: string) {
   const targetExam = useOnboardingStore((s) => s.targetExam);
+  const activeDomain = domain || targetExam || "vedic-math";
   return useQuery<TopicNode[]>({
-    queryKey: ["subject-tree", targetExam],
-    queryFn: () => getSubjectTree(targetExam || "vedic-math"),
-    enabled: !!targetExam,
+    queryKey: ["subject-tree", activeDomain],
+    queryFn: () => getSubjectTree(activeDomain),
+    enabled: !!activeDomain,
   });
 }
 
-export function useLeafTechniques() {
+export function useLeafTechniques(domain?: string) {
   const targetExam = useOnboardingStore((s) => s.targetExam);
+  const activeDomain = domain || targetExam || "vedic-math";
   return useQuery<TopicNode[]>({
-    queryKey: ["leaf-techniques", targetExam],
-    queryFn: () => getLeafTechniques(targetExam || "vedic-math"),
-    enabled: !!targetExam,
+    queryKey: ["leaf-techniques", activeDomain],
+    queryFn: () => getLeafTechniques(activeDomain),
+    enabled: !!activeDomain,
   });
 }
