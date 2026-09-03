@@ -324,9 +324,9 @@ export default function LearnPage() {
             >
               <defs>
                 <linearGradient id="learn-tab-sheen" x1="0" y1="0" x2="0" y2="1">
-                  <stop ref={sheenStopTopRef} offset="0%" stopColor="#34D399" stopOpacity="0.4" />
-                  <stop ref={sheenStopMidRef} offset="45%" stopColor="#34D399" stopOpacity="0.16" />
-                  <stop ref={sheenStopBottomRef} offset="100%" stopColor="#34D399" stopOpacity="0.03" />
+                  <stop ref={sheenStopTopRef} offset="0%" />
+                  <stop ref={sheenStopMidRef} offset="45%" />
+                  <stop ref={sheenStopBottomRef} offset="100%" />
                 </linearGradient>
               </defs>
               <path
@@ -336,7 +336,6 @@ export default function LearnPage() {
               <path
                 ref={tabPathRef}
                 fill="none"
-                stroke="#ffffff"
                 strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
