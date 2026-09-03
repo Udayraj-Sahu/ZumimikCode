@@ -190,6 +190,7 @@ export default function LearnPage() {
   const tabFillRef = useRef<SVGPathElement | null>(null);
   const sheenStopTopRef = useRef<SVGStopElement | null>(null);
   const sheenStopMidRef = useRef<SVGStopElement | null>(null);
+  const sheenStopBottomRef = useRef<SVGStopElement | null>(null);
   const glowTopRef = useRef<HTMLDivElement | null>(null);
   const glowBottomRef = useRef<HTMLDivElement | null>(null);
   const tabCurrentRef = useRef({ left: 0, width: 0 });
@@ -231,11 +232,15 @@ export default function LearnPage() {
     }
     if (sheenStopTopRef.current) {
       sheenStopTopRef.current.setAttribute("stopColor", color);
-      sheenStopTopRef.current.setAttribute("stopOpacity", "0.22");
+      sheenStopTopRef.current.setAttribute("stopOpacity", "0.4");
     }
     if (sheenStopMidRef.current) {
       sheenStopMidRef.current.setAttribute("stopColor", color);
-      sheenStopMidRef.current.setAttribute("stopOpacity", "0.08");
+      sheenStopMidRef.current.setAttribute("stopOpacity", "0.16");
+    }
+    if (sheenStopBottomRef.current) {
+      sheenStopBottomRef.current.setAttribute("stopColor", color);
+      sheenStopBottomRef.current.setAttribute("stopOpacity", "0.03");
     }
   };
 
@@ -319,9 +324,9 @@ export default function LearnPage() {
             >
               <defs>
                 <linearGradient id="learn-tab-sheen" x1="0" y1="0" x2="0" y2="1">
-                  <stop ref={sheenStopTopRef} offset="0%" stopColor="#34D399" stopOpacity="0.22" />
-                  <stop ref={sheenStopMidRef} offset="45%" stopColor="#34D399" stopOpacity="0.08" />
-                  <stop offset="100%" stopColor="#000000" stopOpacity="0.35" />
+                  <stop ref={sheenStopTopRef} offset="0%" stopColor="#34D399" stopOpacity="0.4" />
+                  <stop ref={sheenStopMidRef} offset="45%" stopColor="#34D399" stopOpacity="0.16" />
+                  <stop ref={sheenStopBottomRef} offset="100%" stopColor="#34D399" stopOpacity="0.03" />
                 </linearGradient>
               </defs>
               <path
