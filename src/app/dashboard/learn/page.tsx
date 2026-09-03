@@ -302,15 +302,20 @@ export default function LearnPage() {
                   <stop offset="45%" stopColor="var(--accent)" stopOpacity="0.16" />
                   <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.03" />
                 </linearGradient>
+                <filter id="learn-tab-blur" x="-20%" y="-40%" width="140%" height="220%">
+                  <feGaussianBlur stdDeviation="2.5" />
+                </filter>
               </defs>
               <path
                 ref={tabFillRef}
                 fill="url(#learn-tab-sheen)"
+                filter="url(#learn-tab-blur)"
               />
               <path
                 ref={tabPathRef}
                 fill="none"
                 stroke="var(--accent)"
+                strokeOpacity="0.55"
                 strokeWidth="1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
