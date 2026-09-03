@@ -281,14 +281,14 @@ export default function LearnPage() {
       {/* Outer glass card wrapping all content */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pb-4 transition-colors duration-500"
+        className="relative rounded-3xl border backdrop-blur-xl px-5 pb-4 pt-8 transition-colors duration-500"
         style={{ borderColor: GLASS_BORDER, background: outerBg }}
       >
           <div ref={glowTopRef} className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" />
           <div ref={glowBottomRef} className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" />
 
           {/* Tab mode selector — S-curve underline animates between tabs */}
-          <div ref={tabRowRef} className="relative -mx-5 mb-2">
+          <div ref={tabRowRef} className="relative -mx-5 -mt-12 mb-2">
             <svg
               className="absolute inset-0 pointer-events-none"
               width="100%"
