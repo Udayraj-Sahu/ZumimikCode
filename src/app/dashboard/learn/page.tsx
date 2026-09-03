@@ -302,8 +302,8 @@ export default function LearnPage() {
                   <stop offset="45%" stopColor="var(--accent)" stopOpacity="0.16" />
                   <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.03" />
                 </linearGradient>
-                <filter id="learn-tab-blur" x="-20%" y="-40%" width="140%" height="220%">
-                  <feGaussianBlur stdDeviation="2.5" />
+                <filter id="learn-tab-blur" x="-30%" y="-60%" width="160%" height="260%">
+                  <feGaussianBlur stdDeviation="5" />
                 </filter>
               </defs>
               <path
