@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useMemo, useEffect } from "react";
 import { animate } from "motion";
 import { useRouter } from "next/navigation";
 import {
@@ -112,11 +112,24 @@ export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
+  const activePreps = useOnboardingStore((s) => s.activePreps);
   const [mode, setMode] = useState<Mode>("explore");
   const [activeDomain, setActiveDomain] = useState(targetExam || "cat");
   const [showAddPrep, setShowAddPrep] = useState(false);
   const { data } = useDashboardData(activeDomain);
   const topics = data?.topics ?? [];
+
+  const prepExams = useMemo(() => {
+    const union = new Set<string>(activePreps);
+    if (targetExam) union.add(targetExam);
+    return [...union].filter((id) => id in DOMAIN_LABELS);
+  }, [activePreps, targetExam]);
+
+  useEffect(() => {
+    if (prepExams.length > 0 && !prepExams.includes(activeDomain)) {
+      setActiveDomain(prepExams[0]);
+    }
+  }, [prepExams, activeDomain]);
 
   const activeMode = MODES.find((m) => m.id === mode)!;
   const outerBg = "linear-gradient(180deg, rgba(20,23,15,0.9) 0%, rgba(10,12,10,0.85) 100%)";
@@ -281,7 +294,7 @@ export default function LearnPage() {
           <div className="rounded-3xl border backdrop-blur-xl p-4 mt-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
             <p className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
             <div className="flex flex-wrap gap-2">
-              {Object.entries(DOMAIN_LABELS).map(([id, label]) => (
+              {prepExams.map((id) => (
                 <button
                   key={id}
                   type="button"
@@ -293,7 +306,7 @@ export default function LearnPage() {
                       : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]"
                   )}
                 >
-                  {label}
+                  {DOMAIN_LABELS[id]}
                 </button>
               ))}
             </div>
