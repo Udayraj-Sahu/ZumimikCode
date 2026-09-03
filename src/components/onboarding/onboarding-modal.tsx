@@ -29,7 +29,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useOnboardingStore, examIdForGoal } from "@/stores/onboarding-store";
 
 const PERSONA_OPTIONS = [
   { label: "Student", icon: GraduationCap, color: "#34D399", desc: "Currently studying" },
@@ -48,14 +48,6 @@ const GOAL_OPTIONS = [
   { label: "Help with school stuff", icon: School, color: "#FB7185", desc: "Academic support" },
   { label: "Just exploring", icon: Compass, color: "#8B9086", desc: "Seeing what's here" },
 ];
-
-function examIdForGoal(goal: string | null): string {
-  if (!goal) return "vedic-math";
-  if (goal.includes("CAT")) return "cat";
-  if (goal.includes("GMAT")) return "gmat";
-  if (goal.includes("GRE")) return "gre";
-  return "vedic-math";
-}
 
 const TRIGGER_GROUPED = [
   {
