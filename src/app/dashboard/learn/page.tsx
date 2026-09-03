@@ -288,7 +288,7 @@ export default function LearnPage() {
           <div ref={glowBottomRef} className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" />
 
           {/* Tab mode selector — S-curve underline animates between tabs */}
-          <div ref={tabRowRef} className="relative -mx-5 -mt-12 mb-2">
+          <div ref={tabRowRef} className="relative -mx-5 -mt-16 mb-2">
             <svg
               className="absolute inset-0 pointer-events-none"
               width="100%"
