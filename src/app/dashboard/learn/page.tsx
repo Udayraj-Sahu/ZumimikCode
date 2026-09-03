@@ -108,6 +108,22 @@ function buildTabFill(left: number, width: number, top: number, base: number, fu
   return `M${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${leftFoot},${base} Z`;
 }
 
+function hexToRgb(hex: string) {
+  const n = parseInt(hex.replace("#", ""), 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+
+function lerpColor(a: string, b: string, t: number): string {
+  const pa = hexToRgb(a);
+  const pb = hexToRgb(b);
+  const r = Math.round(pa.r + (pb.r - pa.r) * t);
+  const g = Math.round(pa.g + (pb.g - pa.g) * t);
+  const bl = Math.round(pa.b + (pb.b - pa.b) * t);
+  return `rgb(${r},${g},${bl})`;
+}
+
+const LABEL_INACTIVE = "rgba(255,255,255,0.45)";
+
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
@@ -140,8 +156,15 @@ export default function LearnPage() {
     adaptive: null,
     mock: null,
   });
+  const tabLabelRefs = useRef<Record<Mode, HTMLSpanElement | null>>({
+    explore: null,
+    adaptive: null,
+    mock: null,
+  });
   const tabPathRef = useRef<SVGPathElement | null>(null);
   const tabFillRef = useRef<SVGPathElement | null>(null);
+  const glowTopRef = useRef<HTMLDivElement | null>(null);
+  const glowBottomRef = useRef<HTMLDivElement | null>(null);
   const tabCurrentRef = useRef({ left: 0, width: 0 });
   const tabMotionRef = useRef<ReturnType<typeof animate> | null>(null);
 
@@ -151,7 +174,7 @@ export default function LearnPage() {
     return { left: btn.offsetLeft, width: btn.offsetWidth };
   };
 
-  const drawTabPath = (left: number, width: number) => {
+  const drawTabPath = (left: number, width: number, color?: string) => {
     const row = tabRowRef.current;
     if (!row) return;
     const base = row.clientHeight - BOTTOM_INSET;
@@ -162,6 +185,7 @@ export default function LearnPage() {
         "d",
         buildTabPath(left, width, curveTop, base, full),
       );
+      if (color) tabPathRef.current.setAttribute("stroke", color);
     }
     if (tabFillRef.current) {
       tabFillRef.current.setAttribute(
@@ -171,16 +195,37 @@ export default function LearnPage() {
     }
   };
 
+  const setGlow = (color: string) => {
+    if (glowTopRef.current) {
+      glowTopRef.current.style.background = `radial-gradient(circle, ${color}33, transparent)`;
+    }
+    if (glowBottomRef.current) {
+      glowBottomRef.current.style.background = `radial-gradient(circle, ${color}44, transparent)`;
+    }
+  };
+
+  const setLabels = (active: Mode, color: string) => {
+    (MODES as { id: Mode }[]).forEach((m) => {
+      const el = tabLabelRefs.current[m.id];
+      if (!el) return;
+      el.style.color = m.id === active ? color : LABEL_INACTIVE;
+    });
+  };
+
   useLayoutEffect(() => {
     const target = measureTab(mode);
     tabCurrentRef.current = target;
-    drawTabPath(target.left, target.width);
+    drawTabPath(target.left, target.width, activeMode.color);
+    setGlow(activeMode.color);
+    setLabels(mode, activeMode.color);
     return () => tabMotionRef.current?.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const goTo = (tab: Mode) => {
     if (tab === mode) return;
+    const fromColor = activeMode.color;
+    const toColor = MODES.find((m) => m.id === tab)!.color;
     const from = tabCurrentRef.current;
     const to = measureTab(tab);
     setMode(tab);
@@ -193,12 +238,17 @@ export default function LearnPage() {
       onUpdate: (t) => {
         const left = from.left + (to.left - from.left) * t;
         const width = from.width + (to.width - from.width) * t;
+        const color = lerpColor(fromColor, toColor, t);
         tabCurrentRef.current = { left, width };
-        drawTabPath(left, width);
+        drawTabPath(left, width, color);
+        setGlow(color);
+        setLabels(tab, color);
       },
       onComplete: () => {
         tabCurrentRef.current = to;
-        drawTabPath(to.left, to.width);
+        drawTabPath(to.left, to.width, toColor);
+        setGlow(toColor);
+        setLabels(tab, toColor);
       },
     });
   };
@@ -220,8 +270,8 @@ export default function LearnPage() {
         className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pt-4 pb-4 transition-colors duration-500"
         style={{ borderColor: GLASS_BORDER, background: outerBg }}
       >
-          <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}33, transparent)` }} />
-          <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" style={{ background: `radial-gradient(circle, ${activeMode.color}44, transparent)` }} />
+          <div ref={glowTopRef} className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" />
+          <div ref={glowBottomRef} className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" />
 
           {/* Tab mode selector — S-curve underline animates between tabs */}
           <div ref={tabRowRef} className="relative mt-3 mb-2">
@@ -253,28 +303,26 @@ export default function LearnPage() {
               />
             </svg>
             <div className="grid grid-cols-3 gap-2">
-              {MODES.map((m) => {
-                const isActive = m.id === mode;
-                return (
-                  <button
-                    key={m.id}
-                    ref={(el) => { tabBtnRefs.current[m.id] = el; }}
-                    type="button"
-                    onClick={() => goTo(m.id)}
-                    className="relative flex items-center justify-center py-4"
+              {MODES.map((m) => (
+                <button
+                  key={m.id}
+                  ref={(el) => { tabBtnRefs.current[m.id] = el; }}
+                  type="button"
+                  onClick={() => goTo(m.id)}
+                  className="relative flex items-center justify-center py-4"
+                >
+                  <span
+                    ref={(el) => { tabLabelRefs.current[m.id] = el; }}
+                    className="relative z-10 text-[12px] font-medium leading-none transition-opacity duration-300"
+                    style={{
+                      color: "rgba(255,255,255,0.45)",
+                      letterSpacing: "0.04em",
+                    }}
                   >
-                    <span
-                      className="relative z-10 text-[12px] font-medium leading-none transition-all duration-300"
-                      style={{
-                        color: isActive ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.45)",
-                        letterSpacing: "0.04em",
-                      }}
-                    >
-                      {m.label}
-                    </span>
-                  </button>
-                );
-              })}
+                    {m.label}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
 
