@@ -32,6 +32,7 @@ import { useHabitStore } from "@/stores/habit-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
+import { InviteCard } from "@/components/dashboard/invite-card";
 
 const ACCENT = "#C7F252";
 const GLASS_BG = "rgba(255,255,255,0.04)";
@@ -816,10 +817,14 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* Invite Friends & Referral */}
+      <div ref={animateSection} data-section-index={11} className="px-5 mt-4">
+        <InviteCard />
+      </div>
+
       {habitModalOpen && (
         <HabitTrackerModal onClose={() => setHabitModalOpen(false)} />
       )}
-
       {onboardingOpen && (
         <OnboardingModal onClose={() => setOnboardingOpen(false)} />
       )}
