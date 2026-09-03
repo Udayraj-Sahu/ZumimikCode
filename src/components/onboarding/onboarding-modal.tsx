@@ -82,7 +82,8 @@ const STEP_ICONS = [User, Users, Target, Brain, ClipboardList];
 type Props = { onClose: () => void; inline?: boolean };
 
 export function OnboardingModal({ onClose, inline }: Props) {
-  const [step, setStep] = useState(0);
+  const store = useOnboardingStore();
+  const [step, setStep] = useState(store.firstName ? store.currentStep : 0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [completed, setCompleted] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -91,7 +92,6 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const completeRef = useRef<HTMLDivElement>(null);
   const prevStepRef = useRef(0);
 
-  const store = useOnboardingStore();
   const [localFirstName, setLocalFirstName] = useState(store.firstName);
   const [localPersona, setLocalPersona] = useState<string | null>(store.persona);
   const [localGoal, setLocalGoal] = useState<string | null>(store.goal);
@@ -122,7 +122,17 @@ export function OnboardingModal({ onClose, inline }: Props) {
     );
   }, []);
 
+  const persistPartial = () => {
+    store.setFirstName(localFirstName);
+    store.setPersona(localPersona);
+    store.setGoal(localGoal);
+    store.setSex(localSex);
+    store.setDob(localDob);
+    store.setCurrentStep(step);
+  };
+
   const handleClose = () => {
+    persistPartial();
     if (inline) { onClose(); return; }
     if (overlayRef.current && panelRef.current) {
       gsap.to(panelRef.current, { opacity: 0, y: 20, scale: 0.97, duration: 0.2, ease: "power2.in" });
@@ -185,6 +195,13 @@ export function OnboardingModal({ onClose, inline }: Props) {
       animateStepTransition(direction);
     }
   }, [step, direction, animateStepTransition]);
+
+  useEffect(() => {
+    if (prevStepRef.current !== step) {
+      store.setCurrentStep(step);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   const canNext =
     (step === 0 && localFirstName.trim().length > 0) ||

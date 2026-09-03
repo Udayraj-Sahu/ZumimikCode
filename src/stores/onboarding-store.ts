@@ -24,6 +24,7 @@ type OnboardingState = {
   setTargetExam: (exam: string) => void;
   setLevel: (level: string) => void;
   nextStep: () => void;
+  setCurrentStep: (step: number) => void;
   completeOnboarding: () => void;
   finishOnboarding: () => void;
   reset: () => void;
@@ -74,6 +75,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       setLevel: (level) => set({ level }),
 
       nextStep: () => set((s) => ({ currentStep: s.currentStep + 1 })),
+      setCurrentStep: (step) => set({ currentStep: step }),
 
       completeOnboarding: () => set({ isOnboarded: true }),
 
