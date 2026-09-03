@@ -163,6 +163,8 @@ export default function LearnPage() {
   });
   const tabPathRef = useRef<SVGPathElement | null>(null);
   const tabFillRef = useRef<SVGPathElement | null>(null);
+  const sheenStopTopRef = useRef<SVGStopElement | null>(null);
+  const sheenStopMidRef = useRef<SVGStopElement | null>(null);
   const glowTopRef = useRef<HTMLDivElement | null>(null);
   const glowBottomRef = useRef<HTMLDivElement | null>(null);
   const tabCurrentRef = useRef({ left: 0, width: 0 });
@@ -201,6 +203,14 @@ export default function LearnPage() {
     }
     if (glowBottomRef.current) {
       glowBottomRef.current.style.background = `radial-gradient(circle, ${color}44, transparent)`;
+    }
+    if (sheenStopTopRef.current) {
+      sheenStopTopRef.current.setAttribute("stopColor", color);
+      sheenStopTopRef.current.setAttribute("stopOpacity", "0.22");
+    }
+    if (sheenStopMidRef.current) {
+      sheenStopMidRef.current.setAttribute("stopColor", color);
+      sheenStopMidRef.current.setAttribute("stopOpacity", "0.08");
     }
   };
 
@@ -284,8 +294,8 @@ export default function LearnPage() {
             >
               <defs>
                 <linearGradient id="learn-tab-sheen" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.16" />
-                  <stop offset="45%" stopColor="#ffffff" stopOpacity="0.05" />
+                  <stop ref={sheenStopTopRef} offset="0%" stopColor="#34D399" stopOpacity="0.22" />
+                  <stop ref={sheenStopMidRef} offset="45%" stopColor="#34D399" stopOpacity="0.08" />
                   <stop offset="100%" stopColor="#000000" stopOpacity="0.35" />
                 </linearGradient>
               </defs>
