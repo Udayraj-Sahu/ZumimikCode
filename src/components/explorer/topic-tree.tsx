@@ -2,31 +2,153 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import { ChevronRight, ChevronDown, BookOpen, GraduationCap } from "lucide-react";
+import { ChevronRight, ChevronDown, BookOpen, GraduationCap, Play, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TopicNode } from "@/lib/types/technique";
 import PrerequisiteLock from "./prerequisite-lock";
 
-const TYPE_COLORS: Record<string, string> = {
-  subject: "text-primary",
-  topic: "text-chart-3",
-  subtopic: "text-chart-4",
-  technique: "text-foreground",
+const TYPE_STYLE: Record<
+  string,
+  { chip: string; icon: string; border: string; glow: string; bar: string }
+> = {
+  subject: {
+    chip: "bg-primary/15 text-primary",
+    icon: "text-primary",
+    border: "border-primary/20",
+    glow: "0 8px 30px -12px rgba(199,242,82,0.35)",
+    bar: "bg-gradient-to-r from-primary to-[#a8e62e]",
+  },
+  topic: {
+    chip: "bg-chart-3/15 text-chart-3",
+    icon: "text-chart-3",
+    border: "border-chart-3/20",
+    glow: "0 8px 30px -12px rgba(34,211,238,0.3)",
+    bar: "bg-gradient-to-r from-chart-3 to-[#38bdf8]",
+  },
+  subtopic: {
+    chip: "bg-chart-4/15 text-chart-4",
+    icon: "text-chart-4",
+    border: "border-chart-4/20",
+    glow: "0 8px 30px -12px rgba(167,139,250,0.3)",
+    bar: "bg-gradient-to-r from-chart-4 to-[#a78bfa]",
+  },
+  technique: {
+    chip: "bg-white/[0.08] text-foreground/80",
+    icon: "text-chart-3",
+    border: "border-white/[0.08]",
+    glow: "0 8px 30px -12px rgba(255,255,255,0.12)",
+    bar: "bg-white/[0.2]",
+  },
 };
 
-const TYPE_BG: Record<string, string> = {
-  subject: "border-primary/15",
-  topic: "border-chart-3/15",
-  subtopic: "border-chart-4/15",
-  technique: "border-white/[0.06]",
-};
+function NodeCard({
+  node,
+  depth,
+  expanded,
+  isLocked,
+  onToggle,
+  masteredTechniqueIds,
+  prerequisiteLabels,
+}: {
+  node: TopicNode;
+  depth: number;
+  expanded: boolean;
+  isLocked: boolean;
+  onToggle: () => void;
+  masteredTechniqueIds: string[];
+  prerequisiteLabels: Record<string, string>;
+}) {
+  const hasChildren = node.children && node.children.length > 0;
+  const isTechnique = node.type === "technique";
+  const style = TYPE_STYLE[node.type] ?? TYPE_STYLE.technique;
+  const mastery = node.masteryLevel;
 
-const TYPE_GLOW: Record<string, string> = {
-  subject: "0 0 0 1px rgba(199,242,82,0.06)",
-  topic: "0 0 0 1px rgba(34,211,238,0.05)",
-  subtopic: "0 0 0 1px rgba(167,139,250,0.05)",
-  technique: "0 1px 0 rgba(0,0,0,0.2)",
-};
+  const content = (
+    <>
+      <div
+        className={cn(
+          "grid size-9 shrink-0 place-items-center rounded-xl border border-white/[0.05]",
+          style.chip,
+        )}
+      >
+        {isTechnique ? (
+          <BookOpen size={16} className={style.icon} />
+        ) : (
+          <GraduationCap size={16} className={style.icon} />
+        )}
+      </div>
+
+      {isTechnique && node.techniqueId && !isLocked ? (
+        <Link
+          href={`/dashboard/technique/${node.techniqueId}`}
+          className="flex-1 min-w-0 text-[14px] font-semibold text-foreground outline-none hover:text-primary active:text-primary focus-visible:ring-2 focus-visible:ring-ring rounded"
+        >
+          {node.title}
+        </Link>
+      ) : (
+        <span className="flex-1 min-w-0 text-[14px] font-semibold text-foreground">{node.title}</span>
+      )}
+
+      {mastery !== undefined && (
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="hidden sm:block h-1.5 w-16 overflow-hidden rounded-full bg-white/[0.06]">
+            <div
+              className={cn("h-full rounded-full transition-all duration-700", style.bar)}
+              style={{ width: `${Math.min(100, mastery)}%` }}
+            />
+          </div>
+          <span className="text-[11px] font-bold font-mono text-muted-foreground/60">{mastery}%</span>
+        </div>
+      )}
+
+      {isTechnique && node.techniqueId && !isLocked && (
+        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground opacity-0 transition-opacity group-hover:opacity-100">
+          <Play size={12} className="ml-0.5" />
+        </span>
+      )}
+
+      {hasChildren && (
+        <button
+          type="button"
+          onClick={onToggle}
+          className="grid size-7 shrink-0 place-items-center rounded-full text-muted-foreground/50 outline-none transition-colors hover:bg-white/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label={expanded ? "Collapse" : "Expand"}
+        >
+          {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        </button>
+      )}
+
+      {isLocked && <Lock size={13} className="shrink-0 text-muted-foreground/40" />}
+    </>
+  );
+
+  return (
+    <div className="relative">
+      {hasChildren && (
+        <span
+          className="absolute left-[18px] top-full h-3 w-px bg-gradient-to-b from-white/[0.12] to-transparent"
+          aria-hidden="true"
+        />
+      )}
+      <div
+        className={cn(
+          "group relative flex items-center gap-3 rounded-2xl border p-3 backdrop-blur-xl transition-all duration-200 hover:-translate-y-px active:translate-y-0",
+          style.border,
+          isLocked && "opacity-60",
+          hasChildren && "cursor-pointer",
+        )}
+        style={{
+          marginLeft: depth * 22,
+          background: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
+          boxShadow: style.glow,
+        }}
+        onClick={hasChildren ? onToggle : undefined}
+      >
+        {content}
+      </div>
+    </div>
+  );
+}
 
 function TreeNode({
   node,
@@ -42,7 +164,6 @@ function TreeNode({
   const [expanded, setExpanded] = useState(depth < 2);
   const hasChildren = node.children && node.children.length > 0;
   const isTechnique = node.type === "technique";
-
   const isLocked = isTechnique && !!node.techniqueId && !masteredTechniqueIds.includes(node.techniqueId);
 
   const toggle = useCallback(() => {
@@ -51,59 +172,20 @@ function TreeNode({
 
   return (
     <div className="relative">
-      <div
-        className={cn(
-          "flex items-center gap-2 rounded-2xl border px-3 py-2.5 backdrop-blur-xl transition-all hover:brightness-110 active:brightness-125 cursor-pointer",
-          TYPE_BG[node.type],
-          isLocked && "opacity-60",
-        )}
-        style={{
-          marginLeft: depth * 16,
-          background: "rgba(255,255,255,0.04)",
-          boxShadow: TYPE_GLOW[node.type] ?? undefined,
-        }}
-      >
-        {hasChildren ? (
-          <button
-            type="button"
-            onClick={toggle}
-            className="grid size-11 shrink-0 place-items-center rounded text-muted-foreground outline-none hover:bg-muted active:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label={expanded ? "Collapse" : "Expand"}
-          >
-            {expanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-          </button>
-        ) : (
-          <span className="size-11 shrink-0" />
-        )}
+      <NodeCard
+        node={node}
+        depth={depth}
+        expanded={expanded}
+        isLocked={isLocked}
+        onToggle={toggle}
+        masteredTechniqueIds={masteredTechniqueIds}
+        prerequisiteLabels={prerequisiteLabels}
+      />
 
-        {isTechnique ? (
-          <BookOpen size={15} className="shrink-0 text-chart-3" />
-        ) : (
-          <GraduationCap size={15} className={cn("shrink-0", TYPE_COLORS[node.type])} />
-        )}
-
-        {isTechnique && node.techniqueId && !isLocked ? (
-          <Link
-            href={`/dashboard/technique/${node.techniqueId}`}
-            className="flex-1 text-fluid-sm font-semibold text-foreground outline-none hover:text-primary active:text-primary focus-visible:ring-2 focus-visible:ring-ring rounded px-2 py-2 min-h-[44px] flex items-center"
-          >
-            {node.title}
-          </Link>
-        ) : (
-          <span className="flex-1 text-fluid-sm font-semibold text-foreground">{node.title}</span>
-        )}
-
-        {node.masteryLevel !== undefined && (
-          <span className="text-fluid-xs font-mono text-muted-foreground/50">{node.masteryLevel}%</span>
-        )}
-      </div>
-
-      {isLocked && (
-        <PrerequisiteLock label={prerequisiteLabels[node.techniqueId!]} />
-      )}
+      {isLocked && <PrerequisiteLock label={prerequisiteLabels[node.techniqueId!]} />}
 
       {hasChildren && expanded && (
-        <div className="mt-1 flex flex-col gap-1">
+        <div className="mt-1.5 flex flex-col gap-1.5">
           {node.children!.map((child) => (
             <TreeNode
               key={child.id}
@@ -136,8 +218,8 @@ export function TopicTree({
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="h-14 rounded-2xl border border-white/[0.06] backdrop-blur-xl"
-            style={{ marginLeft: (i % 3) * 16, background: "rgba(255,255,255,0.04)" }}
+            className="h-16 rounded-2xl border border-white/[0.06]"
+            style={{ marginLeft: (i % 3) * 22, background: "rgba(255,255,255,0.04)" }}
           />
         ))}
       </div>
