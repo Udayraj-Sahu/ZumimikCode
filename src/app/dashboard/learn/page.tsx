@@ -274,7 +274,7 @@ export default function LearnPage() {
           <BookOpen size={12} className="text-primary" />
           <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
-        <h1 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Choose Your path</h1>
+        <h1 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Choose Your Path</h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Master topics, adaptive sprints &amp; timed mocks.</p>
       </header>
 
@@ -330,14 +330,19 @@ export default function LearnPage() {
                   ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                   type="button"
                   onClick={() => goTo(m.id)}
-                  className="relative flex items-center justify-center py-4"
+                  className="relative flex flex-col items-center justify-center gap-1.5 py-4"
                 >
+                  <m.Icon
+                    size={16}
+                    strokeWidth={2}
+                    style={{ color: isActive ? "var(--accent)" : "rgba(255,255,255,0.4)" }}
+                  />
                   <span
                     ref={(el) => { tabLabelRefs.current[m.id] = el; }}
-                    className="relative z-10 text-[12px] font-medium leading-none transition-colors duration-300"
+                    className={`relative z-10 text-[12px] leading-none transition-colors duration-300 ${isActive ? "font-semibold" : "font-medium"}`}
                     style={{
-                      color: isActive ? "var(--accent)" : "rgba(255,255,255,0.45)",
-                      letterSpacing: "0.04em",
+                      color: isActive ? "var(--accent)" : "rgba(255,255,255,0.55)",
+                      letterSpacing: "0.02em",
                     }}
                   >
                     {m.label}
@@ -406,7 +411,7 @@ export default function LearnPage() {
                       <span className="text-[13px] font-bold tracking-[-0.02em]" style={{ color }}>
                         {topic.value}%
                       </span>
-                      <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground/40">mastery</span>
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50">mastery</span>
                     </div>
                   </div>
                   <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
