@@ -15,10 +15,17 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 const TYPE_BG: Record<string, string> = {
-  subject: "bg-primary/5 border-primary/10",
-  topic: "bg-chart-3/5 border-chart-3/10",
-  subtopic: "bg-chart-4/5 border-chart-4/10",
-  technique: "bg-card border-border/40",
+  subject: "border-primary/15",
+  topic: "border-chart-3/15",
+  subtopic: "border-chart-4/15",
+  technique: "border-white/[0.06]",
+};
+
+const TYPE_GLOW: Record<string, string> = {
+  subject: "0 0 0 1px rgba(199,242,82,0.06)",
+  topic: "0 0 0 1px rgba(34,211,238,0.05)",
+  subtopic: "0 0 0 1px rgba(167,139,250,0.05)",
+  technique: "0 1px 0 rgba(0,0,0,0.2)",
 };
 
 function TreeNode({
@@ -46,11 +53,15 @@ function TreeNode({
     <div className="relative">
       <div
         className={cn(
-          "flex items-center gap-2 rounded-lg border px-3 py-2.5 transition-all hover:brightness-110 active:brightness-125 cursor-pointer",
+          "flex items-center gap-2 rounded-2xl border px-3 py-2.5 backdrop-blur-xl transition-all hover:brightness-110 active:brightness-125 cursor-pointer",
           TYPE_BG[node.type],
           isLocked && "opacity-60",
         )}
-        style={{ marginLeft: depth * 16 }}
+        style={{
+          marginLeft: depth * 16,
+          background: "rgba(255,255,255,0.04)",
+          boxShadow: TYPE_GLOW[node.type] ?? undefined,
+        }}
       >
         {hasChildren ? (
           <button
@@ -123,7 +134,11 @@ export function TopicTree({
     return (
       <div className="flex flex-col gap-2 animate-pulse">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="h-12 rounded-lg bg-card" style={{ marginLeft: (i % 3) * 16 }} />
+          <div
+            key={i}
+            className="h-14 rounded-2xl border border-white/[0.06] backdrop-blur-xl"
+            style={{ marginLeft: (i % 3) * 16, background: "rgba(255,255,255,0.04)" }}
+          />
         ))}
       </div>
     );
@@ -131,10 +146,10 @@ export function TopicTree({
 
   if (trees.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border/40 bg-card/50 p-8 text-center">
+      <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-white/[0.08] backdrop-blur-xl p-10 text-center" style={{ background: "rgba(255,255,255,0.03)" }}>
         <GraduationCap size={32} className="text-muted-foreground/30" />
-        <p className="text-fluid-sm font-semibold text-muted-foreground">No subjects available yet</p>
-        <p className="text-fluid-xs text-muted-foreground/50">Complete onboarding to unlock your exam&apos;s topic tree.</p>
+        <p className="text-[14px] font-semibold text-muted-foreground">No subjects available yet</p>
+        <p className="text-[12px] text-muted-foreground/50">Complete onboarding to unlock your exam&apos;s topic tree.</p>
       </div>
     );
   }
