@@ -89,23 +89,48 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 
 const CURVE_WIDTH = 14;
 const BOTTOM_INSET = 5;
+const CARD_RADIUS = 24;
 
-function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number) {
+function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number, r = CARD_RADIUS) {
   const right = left + width;
-  const leftFoot = Math.max(0, left - CURVE_WIDTH);
-  const rightFoot = Math.min(fullWidth, right + CURVE_WIDTH);
   const lc = Math.max(0, left - CURVE_WIDTH / 2);
   const rc = Math.min(fullWidth, right + CURVE_WIDTH / 2);
-  return `M0,${base} L${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${fullWidth},${base}`;
+  const atLeft = left <= r;
+  const atRight = right >= fullWidth - r;
+
+  const leftTop = atLeft
+    ? `C${lc},${base} ${lc},${top + r} ${left},${top + r} A${r},${r} 0 0 1 ${left + r},${top}`
+    : `C${lc},${base} ${lc},${top} ${left},${top}`;
+
+  const topRun = atRight ? `L${right - r},${top}` : `L${right},${top}`;
+
+  const rightTop = atRight
+    ? `A${r},${r} 0 0 1 ${right},${top + r} C${rc},${top + r} ${rc},${base} ${Math.min(fullWidth, right + CURVE_WIDTH)},${base}`
+    : `C${rc},${top} ${rc},${base} ${Math.min(fullWidth, right + CURVE_WIDTH)},${base}`;
+
+  return `M0,${base} L${Math.max(0, left - CURVE_WIDTH)},${base} ${leftTop} ${topRun} ${rightTop} L${fullWidth},${base}`;
 }
 
-function buildTabFill(left: number, width: number, top: number, base: number, fullWidth: number) {
+function buildTabFill(left: number, width: number, top: number, base: number, fullWidth: number, r = CARD_RADIUS) {
   const right = left + width;
   const lc = Math.max(0, left - CURVE_WIDTH / 2);
   const rc = Math.min(fullWidth, right + CURVE_WIDTH / 2);
   const leftFoot = Math.max(0, left - CURVE_WIDTH);
   const rightFoot = Math.min(fullWidth, right + CURVE_WIDTH);
-  return `M${leftFoot},${base} C${lc},${base} ${lc},${top} ${left},${top} L${right},${top} C${rc},${top} ${rc},${base} ${rightFoot},${base} L${leftFoot},${base} Z`;
+  const atLeft = left <= r;
+  const atRight = right >= fullWidth - r;
+
+  const leftTop = atLeft
+    ? `C${lc},${base} ${lc},${top + r} ${left},${top + r} A${r},${r} 0 0 1 ${left + r},${top}`
+    : `C${lc},${base} ${lc},${top} ${left},${top}`;
+
+  const topRun = atRight ? `L${right - r},${top}` : `L${right},${top}`;
+
+  const rightTop = atRight
+    ? `A${r},${r} 0 0 1 ${right},${top + r} C${rc},${top + r} ${rc},${base} ${rightFoot},${base}`
+    : `C${rc},${top} ${rc},${base} ${rightFoot},${base}`;
+
+  return `M${leftFoot},${base} ${leftTop} ${topRun} ${rightTop} L${leftFoot},${base} Z`;
 }
 
 function hexToRgb(hex: string) {
