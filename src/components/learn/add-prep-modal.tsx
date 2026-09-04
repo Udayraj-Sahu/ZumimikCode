@@ -35,6 +35,8 @@ export function AddPrepModal({ onClose }: Props) {
   const { data } = useDashboardData(selectedExam ?? undefined);
   const topics = data?.topics ?? [];
 
+  const orderedExams = [...EXAMS.filter((e) => e.id === targetExam), ...EXAMS.filter((e) => e.id !== targetExam)];
+
   useEffect(() => {
     if (overlayRef.current && dialogRef.current) {
       gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
@@ -88,7 +90,7 @@ export function AddPrepModal({ onClose }: Props) {
               <p className="text-fluid-xs text-muted-foreground/60 mb-1">
                 Choose an exam or subject to see your progress
               </p>
-              {EXAMS.map((exam) => {
+              {orderedExams.map((exam) => {
                 const Icon = exam.icon;
                 const isOnboarding = exam.id === targetExam;
                 const alreadyAdded = isOnboarding || activePreps.includes(exam.id);

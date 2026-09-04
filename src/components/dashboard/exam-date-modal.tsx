@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
-import { X, Calendar } from "lucide-react";
+import { X, Calendar, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const MONTHS = [
@@ -34,6 +34,8 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
   });
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -76,7 +78,16 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
 
   const handleConfirm = () => {
     const iso = `${selected.year}-${String(MONTHS.indexOf(selected.month) + 1).padStart(2, "0")}-${String(Number(selected.day)).padStart(2, "0")}`;
+    const picked = new Date(Number(selected.year), MONTHS.indexOf(selected.month), Number(selected.day));
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (picked.getTime() <= today.getTime()) {
+      setError("Pick a future date — your exam date must be after today.");
+      return;
+    }
+    setError(null);
     onConfirm(iso);
+    onClose();
   };
 
   return createPortal(
@@ -117,21 +128,21 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
               <ScrollColumn
                 items={days.map((d) => ({ value: d, label: d }))}
                 selected={selected.day}
-                onSelect={(v) => setSelected((s) => ({ ...s, day: v }))}
+                onSelect={(v) => { setSelected((s) => ({ ...s, day: v })); setError(null); }}
                 label="DD"
               />
               <div className="w-px bg-white/[0.06] my-3" />
               <ScrollColumn
                 items={MONTHS.map((m) => ({ value: m, label: m.slice(0, 3) }))}
                 selected={selected.month}
-                onSelect={(v) => setSelected((s) => ({ ...s, month: v }))}
+                onSelect={(v) => { setSelected((s) => ({ ...s, month: v })); setError(null); }}
                 label="MM"
               />
               <div className="w-px bg-white/[0.06] my-3" />
               <ScrollColumn
                 items={years.map((y) => ({ value: y, label: y }))}
                 selected={selected.year}
-                onSelect={(v) => setSelected((s) => ({ ...s, year: v }))}
+                onSelect={(v) => { setSelected((s) => ({ ...s, year: v })); setError(null); }}
                 label="YYYY"
               />
             </div>
@@ -140,6 +151,13 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
           <div className="mt-5 flex items-center justify-center rounded-2xl border border-primary/20 bg-primary/[0.06] px-4 py-3 text-fluid-sm font-bold text-primary">
             {selected.month.slice(0, 3)} {selected.day}, {selected.year}
           </div>
+
+          {error && (
+            <div className="mt-3 flex items-center gap-2.5 rounded-2xl border border-destructive/30 bg-destructive/10 px-4 py-3">
+              <AlertCircle size={15} className="shrink-0 text-destructive" />
+              <span className="text-fluid-xs font-semibold text-destructive">{error}</span>
+            </div>
+          )}
         </div>
 
         <div className="sticky bottom-0 bg-card/95 backdrop-blur-sm px-5 pb-5 pt-3 border-t border-border/40 flex gap-3">

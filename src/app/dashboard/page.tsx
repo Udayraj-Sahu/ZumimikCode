@@ -220,9 +220,10 @@ export default function DashboardPage() {
   const profileComplete = profileDone === 3;
 
   const prepExams = useMemo(() => {
-    const union = new Set<string>(activePreps);
-    if (targetExam) union.add(targetExam);
-    return [...union].filter((id) => id in DOMAIN_LABELS);
+    const others = activePreps.filter((id) => id !== targetExam && id in DOMAIN_LABELS);
+    const list = [...others];
+    if (targetExam && targetExam in DOMAIN_LABELS) list.unshift(targetExam);
+    return list;
   }, [activePreps, targetExam]);
 
   const handleCarouselScroll = useCallback(() => {
