@@ -139,7 +139,7 @@ function MockRunContent() {
 
   if (!paperId) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 text-center">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 text-center">
         <p className="text-[13px] text-muted-foreground">No mock paper selected.</p>
         <button
           type="button"
@@ -154,7 +154,7 @@ function MockRunContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 text-center">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 text-center">
         <p className="text-[13px] font-semibold text-destructive">Failed to load mock paper.</p>
         <p className="mt-2 text-[12px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
         <div className="mt-6 flex justify-center gap-3">
@@ -180,7 +180,7 @@ function MockRunContent() {
 
   if (isLoading || !data) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 animate-pulse">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
         <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
         <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
         <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
@@ -194,7 +194,7 @@ function MockRunContent() {
   const isTimerLow = timeLeft <= 120;
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="pb-3 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <FileText size={10} className="text-primary" />
@@ -330,7 +330,7 @@ function MockRunContent() {
 export default function MockRunPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 animate-pulse">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
         <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
         <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
         <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
