@@ -4,7 +4,6 @@ import { useState, useCallback, useMemo, useEffect, Suspense } from "react";
 import gsap from "gsap";
 import { AnimatePresence, motion } from "motion/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { useSubjectTree } from "@/hooks/queries/use-explorer";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -117,55 +116,95 @@ function ExplorerContent() {
         <p className="mt-1.5 text-[12px] text-muted-foreground/45 font-normal">Tap nodes to branch out and explore your study map.</p>
       </div>
 
-      {/* Exam switcher */}
+      {/* Exam switcher — sliding segmented control */}
       {prepExams.length > 1 && (
         <div ref={animateSection} data-section-index={0} className="relative mt-7">
-          <div className="rounded-3xl border p-1.5" style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}>
-            <div className="flex gap-1.5 overflow-x-auto scrollbar-thin">
-              {prepExams.map((id) => {
-                const active = activeDomain === id;
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => handleExamSwitch(id)}
-                    className={cn(
-                      "flex flex-1 items-center justify-center gap-2 rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none transition-all duration-200 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-ring",
-                      active
-                        ? "bg-gradient-to-r from-[#C7F252] to-[#a8e62e] text-[#0A0C0A] shadow-[0_0_20px_-6px_var(--primary)]"
-                        : "text-muted-foreground/60 hover:text-foreground hover:bg-white/[0.04]",
-                    )}
-                  >
-                    <GraduationCap size={14} />
-                    {DOMAIN_LABELS[id] ?? id}
-                  </button>
-                );
-              })}
-            </div>
+          <div
+            className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
+          >
+            {prepExams.map((id) => {
+              const active = activeDomain === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => handleExamSwitch(id)}
+                  className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                >
+                  {active && (
+                    <motion.div
+                      layoutId="explorer-exam-slider"
+                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                      className="absolute inset-0 rounded-2xl"
+                      style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)" }}
+                    />
+                  )}
+                  <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
+                    <GraduationCap size={14} className="relative" />
+                    <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
 
       {/* Subject tabs */}
       {subjects.length > 1 && (
-        <div ref={animateSection} data-section-index={1} className="relative mt-6 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
+        <div ref={animateSection} data-section-index={1} className="relative mt-6 flex items-center gap-2.5 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {subjects.map((subject, idx) => {
             const active = activeSubject === idx;
             return (
-              <button
+              <motion.button
                 key={subject.id}
                 type="button"
                 onClick={() => handleSubjectSwitch(idx)}
-                className={cn(
-                  "shrink-0 flex items-center gap-1.5 rounded-full border px-4 py-2 text-[11px] font-semibold tracking-wide outline-none transition-all whitespace-nowrap focus-visible:ring-2 focus-visible:ring-ring",
-                  active
-                    ? "border-primary/40 bg-primary/10 text-primary"
-                    : "border-white/[0.07] text-muted-foreground hover:text-foreground hover:border-white/[0.14]",
-                )}
+                initial={false}
+                animate={{ y: active ? -2 : 0, scale: active ? 1.04 : 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                className="relative shrink-0"
               >
-                <GraduationCap size={12} />
-                {subject.title}
-              </button>
+                <div
+                  className="absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
+                  style={{
+                    opacity: active ? 1 : 0,
+                    background: "linear-gradient(90deg, transparent, rgba(199,242,82,0.8), transparent)",
+                  }}
+                />
+                <div
+                  className="relative flex items-center gap-1.5 rounded-full border px-4 py-2 text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-500 ease-out focus-visible:ring-2 focus-visible:ring-ring"
+                  style={
+                    active
+                      ? {
+                          borderColor: "rgba(199,242,82,0.35)",
+                          background: "linear-gradient(180deg, rgba(199,242,82,0.18), rgba(199,242,82,0.05))",
+                          color: "var(--primary)",
+                          boxShadow:
+                            "0 8px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.35)",
+                        }
+                      : {
+                          borderColor: "rgba(255,255,255,0.07)",
+                          background: "rgba(255,255,255,0.02)",
+                          color: "rgba(255,255,255,0.5)",
+                          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4)",
+                        }
+                  }
+                >
+                  <GraduationCap size={12} className={active ? "text-primary" : "text-muted-foreground"} />
+                  <span
+                    style={
+                      active
+                        ? { textShadow: "0 1px 1px rgba(0,0,0,0.6)" }
+                        : { textShadow: "0 1px 2px rgba(0,0,0,0.7)" }
+                    }
+                  >
+                    {subject.title}
+                  </span>
+                </div>
+              </motion.button>
             );
           })}
         </div>
@@ -179,7 +218,7 @@ function ExplorerContent() {
             initial={{ opacity: 0, x: slideDir * 24 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: slideDir * -24 }}
-            transition={{ duration: 0.24, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
             <MindMap
               tree={(activeSubject < subjects.length ? subjects[activeSubject] : subjects[0]) ?? null}

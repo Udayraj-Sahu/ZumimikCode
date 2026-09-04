@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef, useLayoutEffect, useMemo, useEffect } from "react";
-import { animate } from "motion";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useRouter } from "next/navigation";
 import {
   Grid3x3,
@@ -88,70 +87,6 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
-const BOTTOM_INSET = 5;
-const CURVE_WIDTH = 14;
-const CARD_RADIUS = 24;
-
-function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number, r = CARD_RADIUS) {
-  const right = left + width;
-  const lc = Math.max(0, left - CURVE_WIDTH / 2);
-  const rc = Math.min(fullWidth, right + CURVE_WIDTH / 2);
-  const atLeft = left <= r;
-  const atRight = right >= fullWidth - r;
-
-  const leftTop = atLeft
-    ? `C${lc},${base} ${lc},${top + r} ${left},${top + r} A${r},${r} 0 0 1 ${left + r},${top}`
-    : `C${lc},${base} ${lc},${top} ${left},${top}`;
-
-  const topRun = atRight ? `L${right - r},${top}` : `L${right},${top}`;
-
-  const rightTop = atRight
-    ? `A${r},${r} 0 0 1 ${right},${top + r} C${rc},${top + r} ${rc},${base} ${Math.min(fullWidth, right + CURVE_WIDTH)},${base}`
-    : `C${rc},${top} ${rc},${base} ${Math.min(fullWidth, right + CURVE_WIDTH)},${base}`;
-
-  return `M0,${base} L${Math.max(0, left - CURVE_WIDTH)},${base} ${leftTop} ${topRun} ${rightTop} L${fullWidth},${base}`;
-}
-
-function buildTabFill(left: number, width: number, top: number, base: number, fullWidth: number) {
-  const right = left + width;
-  const r = 14;
-  const x0 = Math.max(0, left + CURVE_WIDTH / 2);
-  const x1 = Math.min(fullWidth, right - CURVE_WIDTH / 2);
-  const yTop = top + 3;
-  const yBot = base;
-
-  if (x1 - x0 < r * 2) {
-    return `M${x0},${yTop} L${x1},${yTop} L${x1},${yBot} L${x0},${yBot} Z`;
-  }
-
-  return (
-    `M${x0 + r},${yTop} ` +
-    `L${x1 - r},${yTop} ` +
-    `A${r},${r} 0 0 1 ${x1},${yTop + r} ` +
-    `L${x1},${yBot - r} ` +
-    `A${r},${r} 0 0 1 ${x1 - r},${yBot} ` +
-    `L${x0 + r},${yBot} ` +
-    `A${r},${r} 0 0 1 ${x0},${yBot - r} ` +
-    `L${x0},${yTop + r} ` +
-    `A${r},${r} 0 0 1 ${x0 + r},${yTop} ` +
-    `Z`
-  );
-}
-
-function hexToRgb(hex: string) {
-  const n = parseInt(hex.replace("#", ""), 16);
-  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
-}
-
-function lerpColor(a: string, b: string, t: number): string {
-  const pa = hexToRgb(a);
-  const pb = hexToRgb(b);
-  const r = Math.round(pa.r + (pb.r - pa.r) * t);
-  const g = Math.round(pa.g + (pb.g - pa.g) * t);
-  const bl = Math.round(pa.b + (pb.b - pa.b) * t);
-  return `rgb(${r},${g},${bl})`;
-}
-
 export default function LearnPage() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
@@ -180,50 +115,9 @@ export default function LearnPage() {
   const activeMode = MODES.find((m) => m.id === mode)!;
   const outerBg = "linear-gradient(180deg, rgba(20,23,15,0.9) 0%, rgba(10,12,10,0.85) 100%)";
 
-  const tabRowRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const tabBtnRefs = useRef<Record<Mode, HTMLButtonElement | null>>({
-    explore: null,
-    adaptive: null,
-    mock: null,
-  });
-  const tabLabelRefs = useRef<Record<Mode, HTMLSpanElement | null>>({
-    explore: null,
-    adaptive: null,
-    mock: null,
-  });
-  const tabPathRef = useRef<SVGPathElement | null>(null);
-  const tabFillRef = useRef<SVGPathElement | null>(null);
   const glowTopRef = useRef<HTMLDivElement | null>(null);
   const glowBottomRef = useRef<HTMLDivElement | null>(null);
-  const tabCurrentRef = useRef({ left: 0, width: 0 });
-  const tabMotionRef = useRef<ReturnType<typeof animate> | null>(null);
-
-  const measureTab = (tab: Mode) => {
-    const btn = tabBtnRefs.current[tab];
-    if (!btn) return { left: 0, width: 0 };
-    return { left: btn.offsetLeft, width: btn.offsetWidth };
-  };
-
-  const drawTabPath = (left: number, width: number) => {
-    const row = tabRowRef.current;
-    if (!row) return;
-    const base = row.clientHeight - BOTTOM_INSET;
-    const curveTop = Math.max(0, row.clientHeight - 56);
-    const full = row.clientWidth;
-    if (tabPathRef.current) {
-      tabPathRef.current.setAttribute(
-        "d",
-        buildTabPath(left, width, curveTop, base, full),
-      );
-    }
-    if (tabFillRef.current) {
-      tabFillRef.current.setAttribute(
-        "d",
-        buildTabFill(left, width, curveTop, base, full),
-      );
-    }
-  };
 
   const setGlow = (color: string) => {
     cardRef.current?.style.setProperty("--accent", color);
@@ -236,41 +130,14 @@ export default function LearnPage() {
   };
 
   useLayoutEffect(() => {
-    const target = measureTab(mode);
-    tabCurrentRef.current = target;
-    drawTabPath(target.left, target.width);
     setGlow(activeMode.color);
-    return () => tabMotionRef.current?.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const goTo = (tab: Mode) => {
     if (tab === mode) return;
-    const fromColor = activeMode.color;
-    const toColor = MODES.find((m) => m.id === tab)!.color;
-    const from = tabCurrentRef.current;
-    const to = measureTab(tab);
     setMode(tab);
-
-    tabMotionRef.current?.stop();
-    tabMotionRef.current = animate(0, 1, {
-      type: "spring",
-      stiffness: 380,
-      damping: 32,
-      onUpdate: (t) => {
-        const left = from.left + (to.left - from.left) * t;
-        const width = from.width + (to.width - from.width) * t;
-        const color = lerpColor(fromColor, toColor, t);
-        tabCurrentRef.current = { left, width };
-        drawTabPath(left, width);
-        setGlow(color);
-      },
-      onComplete: () => {
-        tabCurrentRef.current = to;
-        drawTabPath(to.left, to.width);
-        setGlow(toColor);
-      },
-    });
+    setGlow(MODES.find((m) => m.id === tab)!.color);
   };
 
   return (
@@ -294,75 +161,96 @@ export default function LearnPage() {
           <div ref={glowTopRef} className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" />
           <div ref={glowBottomRef} className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" />
 
-          {/* Tab mode selector — S-curve underline animates between tabs */}
-          <div ref={tabRowRef} className="relative -mx-5 -mt-5 mb-2">
-            <svg
-              className="absolute inset-0 pointer-events-none"
-              width="100%"
-              height="100%"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <defs>
-                <linearGradient id="learn-tab-sheen" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.4" />
-                  <stop offset="45%" stopColor="var(--accent)" stopOpacity="0.16" />
-                  <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.03" />
-                </linearGradient>
-                <filter id="learn-tab-blur" x="-30%" y="-60%" width="160%" height="260%">
-                  <feGaussianBlur stdDeviation="5" />
-                </filter>
-              </defs>
-              <path
-                ref={tabFillRef}
-                fill="url(#learn-tab-sheen)"
-                filter="url(#learn-tab-blur)"
-              />
-              <path
-                ref={tabPathRef}
-                fill="none"
-                stroke="var(--accent)"
-                strokeOpacity="0.55"
-                strokeWidth="1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <div className="grid grid-cols-3 gap-2">
+          {/* Tab mode selector — 3D push keys: active pops up, others sit flat/sunken */}
+          <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5">
+            <div className="grid grid-cols-3 gap-2.5">
               {MODES.map((m) => {
                 const isActive = m.id === mode;
                 return (
-                <motion.button
-                  key={m.id}
-                  ref={(el) => { tabBtnRefs.current[m.id] = el; }}
-                  type="button"
-                  onClick={() => goTo(m.id)}
-                  initial={false}
-                  animate={
-                    isActive
-                      ? { y: -1, scale: 1 }
-                      : { y: 0, scale: 0.995 }
-                  }
-                  transition={{ type: "spring", stiffness: 380, damping: 26 }}
-                  className="relative flex items-center justify-center py-4 rounded-xl"
-                >
-                  <span
-                    ref={(el) => { tabLabelRefs.current[m.id] = el; }}
-                    className={`relative z-10 text-[12px] leading-none transition-colors duration-300 ${isActive ? "font-semibold" : "font-medium"}`}
-                    style={{
-                      color: isActive ? "var(--accent)" : "rgba(255,255,255,0.55)",
-                      letterSpacing: "0.02em",
-                    }}
+                  <motion.button
+                    key={m.id}
+                    type="button"
+                    onClick={() => goTo(m.id)}
+                    initial={false}
+                    animate={{ y: isActive ? -2 : 0, scale: isActive ? 1.02 : 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                    className="relative"
                   >
-                    {m.label}
-                  </span>
-                </motion.button>
+                    {/* Top light bevel — only on the raised active key */}
+                    <div
+                      className="absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
+                      style={{
+                        opacity: isActive ? 1 : 0,
+                        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)",
+                      }}
+                    />
+                    <div
+                      className={`flex flex-col items-center justify-center gap-1.5 py-4 rounded-2xl transition-all duration-500 ease-out ${isActive ? "font-semibold" : "font-medium"}`}
+                      style={
+                        isActive
+                          ? {
+                              background: "linear-gradient(180deg, rgba(199,242,82,0.18), rgba(199,242,82,0.05))",
+                              boxShadow:
+                                "0 8px 18px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.35)",
+                            }
+                          : {
+                              background: "rgba(255,255,255,0.02)",
+                              boxShadow: "inset 0 2px 4px rgba(0,0,0,0.5), inset 0 -1px 1px rgba(255,255,255,0.04)",
+                            }
+                      }
+                    >
+                      <motion.span
+                        animate={{ scale: isActive ? 1.05 : 1 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        className="block"
+                      >
+                        <m.Icon
+                          size={16}
+                          strokeWidth={2.2}
+                          style={{ color: isActive ? "var(--accent)" : "rgba(255,255,255,0.45)" }}
+                        />
+                      </motion.span>
+                      <span
+                        className="relative z-10 text-[11px] leading-none tracking-[0.02em] transition-colors duration-500 ease-out"
+                        style={
+                          isActive
+                            ? {
+                                color: "var(--accent)",
+                                textShadow: "0 1px 1px rgba(0,0,0,0.6)",
+                              }
+                            : {
+                                color: "rgba(255,255,255,0.5)",
+                                textShadow: "0 1px 2px rgba(0,0,0,0.8)",
+                              }
+                        }
+                      >
+                        {m.label}
+                      </span>
+                    </div>
+                    {/* Bottom drop shadow for the raised key */}
+                    <div
+                      className="absolute -bottom-2 left-2 right-2 h-3 rounded-full transition-opacity duration-500 ease-out pointer-events-none"
+                      style={{
+                        opacity: isActive ? 1 : 0,
+                        background: "radial-gradient(ellipse at center, rgba(0,0,0,0.5), transparent 70%)",
+                        filter: "blur(4px)",
+                      }}
+                    />
+                  </motion.button>
                 );
               })}
             </div>
           </div>
 
-      {mode === "explore" && (
+      <AnimatePresence mode="wait" initial={false}>
+        {mode === "explore" && (
+        <motion.div
+          key="explore"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        >
         <>
           {/* Add Prep CTA */}
           <button
@@ -472,20 +360,30 @@ export default function LearnPage() {
             <ArrowRight size={14} />
           </button>
         </>
-      )}
+        </motion.div>
+        )}
 
-      {(mode === "adaptive" || mode === "mock") && (
-        <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
-          <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
-          <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
-            <activeMode.Icon size={24} style={{ color: activeMode.color }} />
+        {(mode === "adaptive" || mode === "mock") && (
+        <motion.div
+          key="adaptive-mock"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
+            <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
+            <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
+              <activeMode.Icon size={24} style={{ color: activeMode.color }} />
+            </div>
+            <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
+            <p className="text-[12px] text-muted-foreground/45 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
+              {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
+            </p>
           </div>
-          <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
-          <p className="text-[12px] text-muted-foreground/45 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
-            {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
-          </p>
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
 
       {showAddPrep && (
         <AddPrepModal onClose={() => setShowAddPrep(false)} />
