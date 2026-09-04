@@ -26,6 +26,7 @@ type Props = { onClose: () => void };
 export function AddPrepModal({ onClose }: Props) {
   const [selectedExam, setSelectedExam] = useState<string | null>(null);
   const addActivePrep = useOnboardingStore((s) => s.addActivePrep);
+  const removeActivePrep = useOnboardingStore((s) => s.removeActivePrep);
   const activePreps = useOnboardingStore((s) => s.activePreps);
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -92,7 +93,13 @@ export function AddPrepModal({ onClose }: Props) {
                   <button
                     key={exam.id}
                     type="button"
-                    onClick={() => setSelectedExam(exam.id)}
+                    onClick={() => {
+                      if (alreadyAdded) {
+                        removeActivePrep(exam.id);
+                      } else {
+                        setSelectedExam(exam.id);
+                      }
+                    }}
                     className={cn(
                       "flex items-center gap-3 rounded-2xl border p-4 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring",
                       alreadyAdded
@@ -107,7 +114,9 @@ export function AddPrepModal({ onClose }: Props) {
                       {exam.label}
                     </span>
                     {alreadyAdded && (
-                      <span className="text-[10px] font-bold text-primary tracking-wide">ADDED</span>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary tracking-wide">
+                        <X size={11} /> REMOVE
+                      </span>
                     )}
                   </button>
                 );

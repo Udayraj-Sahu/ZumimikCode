@@ -46,6 +46,7 @@ type OnboardingState = {
   setSex: (sex: string | null) => void;
   setDob: (dob: { day: number; month: string; year: number }) => void;
   addActivePrep: (prep: string) => void;
+  removeActivePrep: (prep: string) => void;
   setActiveLearnDomain: (domain: string) => void;
   setExamDate: (domain: string, date: string) => void;
 };
@@ -113,6 +114,10 @@ export const useOnboardingStore = create<OnboardingState>()(
           activePreps: s.activePreps.includes(prep)
             ? s.activePreps
             : [...s.activePreps, prep],
+        })),
+      removeActivePrep: (prep) =>
+        set((s) => ({
+          activePreps: s.activePreps.filter((p) => p !== prep),
         })),
       setActiveLearnDomain: (domain) => set({ activeLearnDomain: domain }),
       setExamDate: (domain, date) =>

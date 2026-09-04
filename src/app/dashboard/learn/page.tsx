@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useLayoutEffect, useMemo, useEffect } from "react";
+import { useState, useRef, useLayoutEffect, useMemo, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Grid3x3,
   Sigma,
@@ -13,17 +13,31 @@ import {
   Brain,
   ClipboardList,
   BookOpen,
+  FileText,
+  Play,
+  Lock,
+  GraduationCap,
+  ChevronUp,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
+import { useMockPapers } from "@/hooks/queries/use-mock-exam";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
+function formatDuration(minutes: number): string {
+  if (minutes >= 60) {
+    const h = minutes / 60;
+    return h === 1 ? "1 hour" : `${h} hours`;
+  }
+  return `${minutes} min`;
+}
 
 const TOPIC_ICONS: Record<string, LucideIcon> = {
   Addition: Grid3x3,
@@ -87,17 +101,24 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
-export default function LearnPage() {
+function LearnPageContent() {
   usePageMeta("Learn — Exam Arena");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const activePreps = useOnboardingStore((s) => s.activePreps);
   const activeLearnDomain = useOnboardingStore((s) => s.activeLearnDomain);
   const setActiveLearnDomain = useOnboardingStore((s) => s.setActiveLearnDomain);
-  const [mode, setMode] = useState<Mode>("explore");
+  const [mode, setMode] = useState<Mode>(() => {
+    const m = searchParams.get("mode");
+    return m === "mock" || m === "adaptive" ? m : "explore";
+  });
   const [activeDomain, setActiveDomain] = useState(activeLearnDomain || targetExam || "cat");
   const [showAddPrep, setShowAddPrep] = useState(false);
+  const [statsCollapsed, setStatsCollapsed] = useState(true);
+  const [mockSection, setMockSection] = useState<string>("all");
   const { data } = useDashboardData(activeDomain);
+  const { data: mockPapers, isLoading: mockLoading } = useMockPapers(activeDomain);
   const topics = data?.topics ?? [];
 
   const prepExams = useMemo(() => {
@@ -106,11 +127,36 @@ export default function LearnPage() {
     return [...union].filter((id) => id in DOMAIN_LABELS);
   }, [activePreps, targetExam]);
 
+  const mockStats = useMemo(() => {
+    if (prepExams.length === 0) {
+      return { accuracy: "--", questions: "--", percentile: "--", speed: "--" };
+    }
+    if (prepExams.length === 1) {
+      return { accuracy: "87%", questions: "1,247", percentile: "64%ile", speed: "47s" };
+    }
+    return { accuracy: "91%", questions: "2,845", percentile: "78%ile", speed: "42s" };
+  }, [prepExams.length]);
+
   useEffect(() => {
     if (prepExams.length > 0 && !prepExams.includes(activeDomain)) {
       setActiveDomain(prepExams[0]);
     }
   }, [prepExams, activeDomain]);
+
+  useEffect(() => {
+    const m = searchParams.get("mode");
+    if (m === "mock" || m === "adaptive") {
+      setMode(m);
+    }
+  }, [searchParams]);
+
+  const prevMockDomainRef = useRef(activeDomain);
+  useEffect(() => {
+    if (prevMockDomainRef.current !== activeDomain) {
+      prevMockDomainRef.current = activeDomain;
+      setMockSection("all");
+    }
+  }, [activeDomain]);
 
   const activeMode = MODES.find((m) => m.id === mode)!;
   const outerBg = "linear-gradient(180deg, rgba(20,23,15,0.9) 0%, rgba(10,12,10,0.85) 100%)";
@@ -363,9 +409,9 @@ export default function LearnPage() {
         </motion.div>
         )}
 
-        {(mode === "adaptive" || mode === "mock") && (
+        {mode === "adaptive" && (
         <motion.div
-          key="adaptive-mock"
+          key="adaptive"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
@@ -383,12 +429,234 @@ export default function LearnPage() {
           </div>
         </motion.div>
         )}
+
+        {mode === "mock" && (
+        <motion.div
+          key="mock"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Header */}
+          <div className="relative mb-5">
+            <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
+              {DOMAIN_LABELS[activeDomain] || "Mock"} <span className="bg-gradient-to-r from-primary to-[#d4ff6e] bg-clip-text text-transparent">Papers</span>
+            </h2>
+            <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Full-length and sectional timed tests.</p>
+          </div>
+
+          {/* Exam switcher — sliding segmented control */}
+          {prepExams.length > 1 && (
+            <div className="relative mt-2 mb-5">
+              <div
+                className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
+              >
+                {prepExams.map((id) => {
+                  const active = activeDomain === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setActiveDomain(id)}
+                      className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                    >
+                      {active && (
+                        <motion.div
+                          layoutId="mock-exam-slider"
+                          transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                          className="absolute inset-0 rounded-2xl"
+                          style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)" }}
+                        />
+                      )}
+                      <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
+                        <GraduationCap size={14} className="relative" />
+                        <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Stats card */}
+          <div className="relative rounded-3xl border backdrop-blur-xl mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+            <div className="absolute -top-10 -right-10 size-32 rounded-full opacity-[0.07] pointer-events-none" style={{ background: `radial-gradient(circle, ${activeMode.color}, transparent 70%)` }} />
+
+            <button
+              type="button"
+              onClick={() => setStatsCollapsed((v) => !v)}
+              className="w-full flex items-center justify-between gap-2 px-5 py-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              aria-expanded={!statsCollapsed}
+            >
+              <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">Your Stats</span>
+              <span className="grid size-6 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
+                <ChevronUp size={12} className="transition-transform duration-300" style={{ transform: statsCollapsed ? "rotate(180deg)" : "none" }} />
+              </span>
+            </button>
+
+            <AnimatePresence initial={false}>
+              {!statsCollapsed && (
+                <motion.div
+                  key="stats-body"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-5 pb-5">
+                    {prepExams.length === 0 ? (
+                      <div className="flex flex-col items-center gap-3 py-6 text-center">
+                        <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+                          <Lock size={16} className="text-muted-foreground/45" />
+                        </span>
+                        <span className="text-[12px] text-muted-foreground/50">Select a prep to view your progress</span>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-2.5">
+                        <StatBox value={mockStats.accuracy} label="Accuracy" />
+                        <StatBox value={mockStats.questions} label="Questions" />
+                        <StatBox value={mockStats.percentile} label="Percentile" />
+                        <StatBox value={mockStats.speed} label="Speed" />
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Section filter chips */}
+          {(() => {
+            const sectionSet = new Set<string>();
+            (mockPapers ?? []).forEach((p) => p.sections.forEach((s) => sectionSet.add(s.label)));
+            const sections = ["all", ...Array.from(sectionSet)];
+            return (
+              <div className="flex items-center gap-2 overflow-x-auto mt-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {sections.map((sec) => (
+                  <button
+                    key={sec}
+                    type="button"
+                    onClick={() => setMockSection(sec)}
+                    className={cn(
+                      "shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-semibold transition-all",
+                      mockSection === sec
+                        ? "bg-gradient-to-r from-primary to-[#a8e62e] text-[#0A0C0A]"
+                        : "border border-white/[0.07] text-muted-foreground/60 hover:bg-white/[0.05]",
+                    )}
+                  >
+                    {sec === "all" ? "All" : sec}
+                  </button>
+                ))}
+              </div>
+            );
+          })()}
+
+          {/* Paper list */}
+          <div className="flex flex-col gap-3 mt-5">
+            {mockLoading && (
+              <div className="flex flex-col gap-3">
+                {[0, 1].map((i) => (
+                  <div key={i} className="rounded-3xl border backdrop-blur-xl p-5 animate-pulse" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+                    <div className="h-4 w-2/3 rounded bg-white/[0.06] mb-3" />
+                    <div className="h-3 w-1/2 rounded bg-white/[0.04]" />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {!mockLoading && (mockPapers ?? [])
+              .filter((p) => mockSection === "all" || p.sections.some((s) => s.label === mockSection))
+              .map((paper) => (
+                <div
+                  key={paper.id}
+                  className="group rounded-3xl border backdrop-blur-xl p-5 transition-all hover:bg-white/[0.05]"
+                  style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <div className="size-8 shrink-0 rounded-lg grid place-items-center" style={{ background: `${paper.accent}1a` }}>
+                          <FileText size={14} style={{ color: paper.accent }} />
+                        </div>
+                        <h3 className="text-[13.5px] font-semibold tracking-[-0.01em] text-foreground leading-snug">{paper.title}</h3>
+                      </div>
+                    </div>
+                    <div className="shrink-0 grid size-7 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
+                      <ArrowRight size={12} />
+                    </div>
+                  </div>
+
+                  <p className="text-[10px] text-muted-foreground/50 mt-3 font-normal">
+                    {paper.sections.map((s) => s.label).join(" | ")} • {paper.totalQuestions} Questions • {formatDuration(paper.durationMinutes)}
+                  </p>
+
+                  <div className="flex items-center justify-between mt-4 gap-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {paper.sections.map((s) => (
+                        <span key={s.id} className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07]" style={{ color: paper.accent, background: `${paper.accent}0d` }}>
+                          {s.label} · {s.questions}
+                        </span>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => router.push(`/dashboard/mock/run?paper=${paper.id}&domain=${activeDomain}`)}
+                      className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <Play size={12} strokeWidth={2.5} /> Take Test
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+            {!mockLoading && (mockPapers ?? []).length === 0 && (
+              <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
+                <FileText size={24} className="mx-auto text-muted-foreground/25 mb-3" />
+                <p className="text-[13px] text-muted-foreground/45 font-normal">No papers yet for {DOMAIN_LABELS[activeDomain] || "this exam"}.</p>
+                <button
+                  type="button"
+                  onClick={() => setShowAddPrep(true)}
+                  className="mt-4 text-[11px] font-bold uppercase tracking-wider text-primary"
+                >
+                  Add a prep
+                </button>
+              </div>
+            )}
+          </div>
+        </motion.div>
+        )}
       </AnimatePresence>
 
       {showAddPrep && (
         <AddPrepModal onClose={() => setShowAddPrep(false)} />
       )}
       </div>
+    </div>
+  );
+}
+
+export default function LearnPage() {
+  return (
+    <Suspense fallback={null}>
+      <LearnPageContent />
+    </Suspense>
+  );
+}
+
+function StatBox({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3.5">
+      <div className="flex items-center justify-between">
+        <span className="size-1.5 rounded-full bg-primary/70" />
+        <ArrowRight size={10} className="text-muted-foreground/40" />
+      </div>
+      <div className="mt-2.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-none">{value}</div>
+      <div className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/45">{label}</div>
     </div>
   );
 }
