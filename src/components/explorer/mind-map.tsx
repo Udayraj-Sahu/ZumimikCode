@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { BookOpen, ChevronLeft, ChevronDown, Layers } from "lucide-react";
+import { BookOpen, ChevronDown, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TopicNode } from "@/lib/types/technique";
 
@@ -56,11 +56,6 @@ export function MindMap({
     }
   }, [tree, focusNodeId]);
 
-  const goUp = () => {
-    if (path.length === 0) return;
-    setPath((p) => p.slice(0, -1));
-  };
-
   const handleNodeClick = (node: TopicNode) => {
     if (node.children && node.children.length > 0) {
       toggleExpanded(node.id);
@@ -71,28 +66,14 @@ export function MindMap({
 
   return (
     <div className="relative w-full select-none">
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <button
-          type="button"
-          onClick={goUp}
-          disabled={path.length === 0}
-          className={cn(
-            "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
-            path.length === 0
-              ? "border-white/[0.06] text-muted-foreground/30"
-              : "border-white/[0.08] bg-white/[0.04] text-muted-foreground/70 hover:text-foreground",
-          )}
-        >
-          <ChevronLeft size={13} />
-          Back
-        </button>
+      <div className="mb-3 flex items-center justify-center gap-2">
         <p className="text-[10px] font-medium text-muted-foreground/35">
-          {path.length === 0 ? "Click the main branch to explore" : "Click a branch to keep drilling"}
+          Tap a branch to expand or collapse its topics
         </p>
       </div>
 
       <div
-        className="relative w-full overflow-hidden rounded-[28px] border"
+        className="relative w-full overflow-x-auto rounded-[28px] border"
         style={{
           borderColor: "rgba(255,255,255,0.08)",
           background: "rgba(255,255,255,0.025)",
@@ -109,8 +90,21 @@ export function MindMap({
           </div>
         ) : (
           <div className="relative px-4 pb-6">
-            <div className="flex flex-col items-center pt-6">
-              {nodes(centerNode, expanded, handleNodeClick, 0, focusNodeId)}
+            <div className="flex w-full flex-col pt-6">
+              {path.length === 0 && root && root.children && root.children.length > 0 ? (
+                <div className="flex flex-col">
+                  <div className="relative ml-3">
+                    <span className="absolute left-0 top-0 bottom-0 w-px bg-white/[0.08]" />
+                    {root.children.map((c) => (
+                      <TreeChild key={c.id}>
+                        {nodes(c, expanded, handleNodeClick, 1, focusNodeId)}
+                      </TreeChild>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                nodes(centerNode, expanded, handleNodeClick, 0, focusNodeId)
+              )}
             </div>
           </div>
         )}
@@ -140,35 +134,55 @@ function nodes(
   const hasChildren = !!root.children && root.children.length > 0;
 
   const row = (
-    <BranchNode
-      key={root.id}
-      node={root}
-      meta={meta}
-      depth={depth}
-      isOpen={isOpen}
-      hasChildren={hasChildren}
-      isFocus={root.id === focusNodeId}
-      onSelect={() => onSelect(root)}
-    />
+    <div key={`row-${root.id}`} className={cn("flex", depth === 0 && "justify-center")}>
+      <BranchNode
+        node={root}
+        meta={meta}
+        depth={depth}
+        isOpen={isOpen}
+        hasChildren={hasChildren}
+        isFocus={root.id === focusNodeId}
+        onSelect={() => onSelect(root)}
+      />
+    </div>
   );
 
-  if (!hasChildren || !isOpen) return row;
-
-  return (
-    <div key={root.id} className="flex flex-col items-center">
-      {row}
+  const childrenContent =
+    hasChildren && isOpen ? (
       <AnimatePresence initial={false}>
         <motion.div
-          className="flex flex-col items-center overflow-hidden"
+          className="overflow-hidden"
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
-          {root
-            .children!.map((c) => nodes(c, expanded, onSelect, depth + 1, focusNodeId))}
+          <div className="relative ml-3">
+            <span className="absolute left-0 top-0 bottom-0 w-px bg-white/[0.08]" />
+            {root.children!.map((c) => (
+              <TreeChild key={c.id}>{nodes(c, expanded, onSelect, depth + 1, focusNodeId)}</TreeChild>
+            ))}
+          </div>
         </motion.div>
       </AnimatePresence>
+    ) : null;
+
+  return (
+    <div key={root.id} className="relative flex flex-col">
+      {row}
+      {childrenContent}
+    </div>
+  );
+}
+
+function TreeChild({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative pl-4">
+      <span
+        className="absolute left-0 top-0 h-[30px] w-4 border-b-2 rounded-bl-xl"
+        style={{ borderColor: "rgba(255,255,255,0.14)" }}
+      />
+      {children}
     </div>
   );
 }
