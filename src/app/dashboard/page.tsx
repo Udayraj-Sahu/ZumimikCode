@@ -22,6 +22,8 @@ import {
   BookOpen,
   Sparkles,
   TrendingUp,
+  GraduationCap,
+  Pencil,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -202,6 +204,9 @@ export default function DashboardPage() {
   const persona = useOnboardingStore((s) => s.persona);
   const goal = useOnboardingStore((s) => s.goal);
   const targetExam = useOnboardingStore((s) => s.targetExam);
+  const activePreps = useOnboardingStore((s) => s.activePreps);
+  const examDates = useOnboardingStore((s) => s.examDates);
+  const setExamDate = useOnboardingStore((s) => s.setExamDate);
   const { data } = useDashboardData(targetExam);
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
@@ -211,6 +216,12 @@ export default function DashboardPage() {
 
   const profileDone = [firstName.trim(), persona, goal].filter(Boolean).length;
   const profileComplete = profileDone === 3;
+
+  const prepExams = useMemo(() => {
+    const union = new Set<string>(activePreps);
+    if (targetExam) union.add(targetExam);
+    return [...union].filter((id) => id in DOMAIN_LABELS);
+  }, [activePreps, targetExam]);
 
   const handleCarouselScroll = useCallback(() => {
     if (!carouselRef.current) return;
@@ -238,6 +249,7 @@ export default function DashboardPage() {
   }, [carouselIndex]);
 
   const topics = data?.topics ?? FALLBACK_TOPICS;
+  const overallMastery = topics.length > 0 ? Math.round(topics.reduce((sum, t) => sum + t.value, 0) / topics.length) : 0;
   const radarAxes = data?.radarAxes ?? FALLBACK_RADAR;
   const stats = data?.stats ?? FALLBACK_STATS;
   const streak = data?.streak ?? FALLBACK_STREAK;
@@ -608,10 +620,145 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Slide 5: Placeholder */}
+          {/* Slide 5: Exam Prep Readiness */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-5 h-full flex items-center justify-center" style={{ background: GLASS_BG }}>
-              <span className="text-[12px] text-muted-foreground/25 font-medium">Coming soon</span>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(199,242,82,0.08) 0%, rgba(34,211,238,0.05) 50%, rgba(255,255,255,0.02) 100%)" }}>
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.4), transparent)" }} />
+
+              {(() => {
+                const masteredCount = topics.filter((t) => t.value >= 80).length;
+                const examDate = examDates[targetExam];
+                const rawDays = examDate ? Math.ceil((new Date(examDate).getTime() - Date.now()) / 86400000) : 0;
+                const daysLeft = examDate ? Math.max(0, rawDays) : 0;
+                const hoursLeft = daysLeft !== 0 ? Math.max(0, Math.round(daysLeft * 3.5)) : 0;
+                const examLabel = (DOMAIN_LABELS[targetExam] || targetExam).toUpperCase();
+
+                return (
+                  <>
+                    {/* Readiness section */}
+                    <div className="relative p-5 flex-1 flex flex-col justify-center">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                            <GraduationCap size={15} className="text-primary" />
+                          </div>
+                          <SectionLabel>YOUR PROGRESS</SectionLabel>
+                        </div>
+                        {prepExams.length > 1 && (
+                          <span className="text-[9px] font-bold text-primary/60 bg-primary/10 border border-primary/15 rounded-full px-2 py-0.5">{prepExams.length} preps</span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-5 mt-2">
+                        <div className="relative shrink-0">
+                          <svg width="92" height="92" viewBox="0 0 92 92">
+                            <circle cx="46" cy="46" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="7" />
+                            <circle
+                              cx="46" cy="46" r="40" fill="none"
+                              stroke={overallMastery >= 80 ? "#34D399" : overallMastery >= 60 ? "#22D3EE" : "#FBBF24"}
+                              strokeWidth="7" strokeLinecap="round"
+                              strokeDasharray={`${2 * Math.PI * 40}`}
+                              strokeDashoffset={`${2 * Math.PI * 40 * (1 - overallMastery / 100)}`}
+                              transform="rotate(-90 46 46)"
+                              className="transition-all duration-700"
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <span className="text-[20px] font-bold text-foreground leading-none">{overallMastery}%</span>
+                            <span className="text-[7.5px] text-muted-foreground/35 font-semibold mt-0.5">ready</span>
+                          </div>
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[11px] font-bold tracking-[0.14em] text-muted-foreground/50 uppercase">Curriculum preparedness</p>
+                          <p className="text-[12px] text-foreground/80 font-normal leading-snug mt-1">
+                            You&apos;ve covered <span className="font-bold text-foreground">{masteredCount} of {topics.length || 1}</span> topics expected for {DOMAIN_LABELS[targetExam] || targetExam}.
+                          </p>
+                          <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/10 border border-[#34D399]/20 px-2.5 py-1">
+                            <span className="size-1.5 rounded-full bg-[#34D399]" />
+                            <span className="text-[9px] font-bold text-[#34D399]">On track</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Exam date picker */}
+                      <div className="mt-4">
+                        {examDate ? (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const input = document.createElement("input");
+                              input.type = "date";
+                              input.value = examDate;
+                              input.className = "fixed opacity-0 pointer-events-none";
+                              document.body.appendChild(input);
+                              input.showPicker?.();
+                              input.addEventListener("change", () => { if (input.value) setExamDate(targetExam, input.value); input.remove(); });
+                              input.addEventListener("blur", () => setTimeout(() => input.remove(), 200));
+                            }}
+                            className="w-full flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                                <Calendar size={12} className="text-primary" />
+                              </div>
+                              <span className="text-[10px] font-semibold text-foreground">Exam {new Date(examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                            </div>
+                            <Pencil size={11} className="text-muted-foreground/30" />
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const input = document.createElement("input");
+                              input.type = "date";
+                              input.className = "fixed opacity-0 pointer-events-none";
+                              document.body.appendChild(input);
+                              input.showPicker?.();
+                              input.addEventListener("change", () => { if (input.value) setExamDate(targetExam, input.value); input.remove(); });
+                              input.addEventListener("blur", () => setTimeout(() => input.remove(), 200));
+                            }}
+                            className="w-full flex items-center justify-between rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-left transition-all hover:bg-primary/[0.08] active:scale-[0.98]"
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                                <Calendar size={12} className="text-primary" />
+                              </div>
+                              <div>
+                                <span className="text-[11px] font-semibold text-primary block">Set exam date</span>
+                                <span className="text-[9px] text-primary/50">Unlock your countdown</span>
+                              </div>
+                            </div>
+                            <ChevronRight size={14} className="text-primary/40" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Countdown section */}
+                    <div className="relative flex-1 flex flex-col items-center justify-center px-5 py-5 text-center border-t border-white/[0.06]">
+                      <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, rgba(199,242,82,0.18), transparent 60%)" }} />
+                      {examDate ? (
+                        <>
+                          <p className="relative text-[10px] font-bold tracking-[0.28em] text-primary/70">{daysLeft} DAYS</p>
+                          <p className="relative text-[44px] font-black italic tracking-tighter leading-none text-white mt-1">
+                            {hoursLeft.toLocaleString()}
+                            <span className="text-[20px] font-bold not-italic align-top ml-1 text-primary">HR</span>
+                          </p>
+                          <p className="relative text-[10px] font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="relative text-[10px] font-bold tracking-[0.28em] text-primary/70">SET YOUR TARGET</p>
+                          <p className="relative text-[20px] font-black italic tracking-tighter leading-none text-white mt-1">COUNTDOWN</p>
+                          <p className="relative text-[10px] font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
+                        </>
+                      )}
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>

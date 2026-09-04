@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import gsap from "gsap";
-import { ArrowLeft } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import { useTechnique } from "@/hooks/queries/use-technique";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { QuickReferenceCard } from "@/components/technique/quick-reference-card";
@@ -55,22 +55,9 @@ export function ClientTechniquePage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
       <div ref={headerRef} className="text-center">
-        <button
-          type="button"
-          onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard/explorer"); }}
-          className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring mb-3"
-          style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
-        >
-          <ArrowLeft size={14} /> Back
-        </button>
-
-        <div
-          className="inline-flex items-center rounded-full px-3 py-1 mb-2"
-          style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
-        >
-          <span className="text-[10px] font-semibold tracking-[0.15em] text-muted-foreground/60">
-            EXAM ARENA
-          </span>
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
+          <Lightbulb size={12} className="text-primary" />
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">TECHNIQUE</span>
         </div>
 
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">

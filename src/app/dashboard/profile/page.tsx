@@ -1,6 +1,6 @@
 "use client";
 
-import { Zap, Trophy, Target, Star, Flame, Shield, Swords, Medal } from "lucide-react";
+import { Zap, Trophy, Target, Star, Flame, Shield, Swords, Medal, User } from "lucide-react";
 import { useProfileData } from "@/hooks/queries/use-profile";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
@@ -25,10 +25,11 @@ export default function ProfilePage() {
   return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="pt-5 pb-4 border-b border-border mb-5 text-center">
-          <p className="text-fluid-xs font-semibold tracking-[0.15em] text-muted-foreground/60">
-            EXAM ARENA
-          </p>
-          <p className="text-fluid-xl font-bold tracking-tight text-foreground mt-0.5">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
+            <User size={12} className="text-primary" />
+            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">PROFILE</span>
+          </div>
+          <p className="text-fluid-xl font-bold tracking-tight text-foreground">
             Profile
           </p>
         </div>

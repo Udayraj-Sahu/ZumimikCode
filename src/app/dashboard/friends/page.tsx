@@ -44,7 +44,7 @@ export default function FriendsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Users size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">FRIENDS</span>
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Friends</h1>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Compete and stay motivated together</p>

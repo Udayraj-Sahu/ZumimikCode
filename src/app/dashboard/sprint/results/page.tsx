@@ -65,7 +65,7 @@ export default function SprintResultsPage() {
       <div ref={resultRef}>
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
           <BarChart3 size={10} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</span>
         </div>
         <h1 className="text-center text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
           Sprint Results

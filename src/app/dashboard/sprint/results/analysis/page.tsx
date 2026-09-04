@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, BrainCircuit, Check, X, BookOpen } from "lucide-react";
+import { ChevronLeft, BrainCircuit, Check, X, BookOpen, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintStore } from "@/stores/sprint-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -166,7 +166,8 @@ export default function AnalysisPage() {
         </button>
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-1">
-            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
+            <TrendingUp size={12} className="text-primary" />
+            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
           </div>
           <h1 className="text-[16px] font-bold tracking-[-0.02em] text-foreground leading-tight">Analysis</h1>
           <p className="text-[10px] text-muted-foreground/45 font-normal">

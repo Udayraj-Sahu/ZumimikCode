@@ -203,7 +203,7 @@ function SprintContent() {
       <div ref={headerRef} className="pb-3 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Zap size={10} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">SPRINT</span>
         </div>
         <div className="flex items-center justify-between">
           <button
