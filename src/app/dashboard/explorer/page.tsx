@@ -103,7 +103,7 @@ function ExplorerContent() {
   const label = DOMAIN_LABELS[activeDomain] ?? activeDomain;
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 overflow-x-hidden">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 overflow-x-hidden">
       {/* Header */}
       <div ref={headerRef} className="relative text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 mb-4">

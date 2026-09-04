@@ -223,7 +223,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <main className="lg:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pb-28 lg:pb-0">
+      <main className="lg:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pb-24 lg:pb-0">
         <div key={pathname} ref={pageRef}>
           {children}
         </div>

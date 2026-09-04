@@ -26,7 +26,7 @@ export default function AnalyticsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen px-5 pt-6 pb-6 flex items-center justify-center">
+      <div className="min-h-screen px-5 pt-6 pb-4 flex items-center justify-center">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
@@ -34,7 +34,7 @@ export default function AnalyticsPage() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen px-5 pt-6 pb-6 flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen px-5 pt-6 pb-4 flex flex-col items-center justify-center gap-4">
         <p className="text-[13px] text-muted-foreground">Failed to load analytics.</p>
         <button
           type="button"
@@ -50,7 +50,7 @@ export default function AnalyticsPage() {
   const { stats, weekly, recent } = data;
 
   return (
-      <div className="min-h-screen px-5 pt-6 pb-6 max-w-5xl mx-auto">
+      <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
         <div ref={headerRef} className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <TrendingUp size={12} className="text-primary" />

@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
+import { ExamDateModal } from "@/components/dashboard/exam-date-modal";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useHabitStore } from "@/stores/habit-store";
@@ -211,6 +212,7 @@ export default function DashboardPage() {
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [examDateOpen, setExamDateOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
 
@@ -687,16 +689,7 @@ export default function DashboardPage() {
                         {examDate ? (
                           <button
                             type="button"
-                            onClick={() => {
-                              const input = document.createElement("input");
-                              input.type = "date";
-                              input.value = examDate;
-                              input.className = "fixed opacity-0 pointer-events-none";
-                              document.body.appendChild(input);
-                              input.showPicker?.();
-                              input.addEventListener("change", () => { if (input.value) setExamDate(targetExam, input.value); input.remove(); });
-                              input.addEventListener("blur", () => setTimeout(() => input.remove(), 200));
-                            }}
+                            onClick={() => setExamDateOpen(true)}
                             className="w-full flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
                           >
                             <div className="flex items-center gap-2.5">
@@ -710,15 +703,7 @@ export default function DashboardPage() {
                         ) : (
                           <button
                             type="button"
-                            onClick={() => {
-                              const input = document.createElement("input");
-                              input.type = "date";
-                              input.className = "fixed opacity-0 pointer-events-none";
-                              document.body.appendChild(input);
-                              input.showPicker?.();
-                              input.addEventListener("change", () => { if (input.value) setExamDate(targetExam, input.value); input.remove(); });
-                              input.addEventListener("blur", () => setTimeout(() => input.remove(), 200));
-                            }}
+                            onClick={() => setExamDateOpen(true)}
                             className="w-full flex items-center justify-between rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-left transition-all hover:bg-primary/[0.08] active:scale-[0.98]"
                           >
                             <div className="flex items-center gap-2.5">
@@ -975,6 +960,12 @@ export default function DashboardPage() {
       {onboardingOpen && (
         <OnboardingModal onClose={() => setOnboardingOpen(false)} />
       )}
+      <ExamDateModal
+        open={examDateOpen}
+        initialValue={examDates[targetExam]}
+        onConfirm={(d) => setExamDate(targetExam, d)}
+        onClose={() => setExamDateOpen(false)}
+      />
     </div>
   );
 }

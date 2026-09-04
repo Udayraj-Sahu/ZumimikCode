@@ -8,7 +8,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useReferralStore } from "@/stores/referral-store";
 import { cn } from "@/lib/utils";
 
-const ACCENT = "#C7F252";
+const ACCENT = "#22D3EE";
 
 export function InviteCard() {
   const firstName = useOnboardingStore((s) => s.firstName);
@@ -52,13 +52,16 @@ export function InviteCard() {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border p-5" style={{ borderColor: "rgba(199,242,82,0.16)", background: "linear-gradient(135deg, rgba(199,242,82,0.05) 0%, rgba(255,255,255,0.02) 60%)" }}>
-      <div className="absolute -top-10 -right-10 size-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.4), transparent)" }} />
+    <div
+      className="relative overflow-hidden rounded-3xl border p-5"
+      style={{ borderColor: "rgba(34,211,238,0.14)", background: "linear-gradient(135deg, rgba(34,211,238,0.05) 0%, rgba(255,255,255,0.02) 60%)" }}
+    >
+      <div className="absolute -top-12 -right-12 size-32 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.45), transparent 70%)" }} />
 
       <div className="relative flex items-center gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: `${ACCENT}1A` }}>
-            <Users2 size={15} style={{ color: ACCENT }} />
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl" style={{ background: `${ACCENT}1A`, boxShadow: `inset 0 0 0 1px ${ACCENT}22` }}>
+            <Users2 size={16} style={{ color: ACCENT }} />
           </div>
           <div>
             <p className="text-[15px] font-bold tracking-[-0.02em] text-foreground leading-tight">Invite friends</p>
@@ -72,32 +75,32 @@ export function InviteCard() {
       </div>
 
       <div className="relative mt-4 flex items-center gap-2">
-        <div className="flex-1 rounded-xl border px-4 py-3 text-center" style={{ borderColor: "rgba(199,242,82,0.22)", background: "rgba(199,242,82,0.06)" }}>
-          <span className="text-[16px] font-extrabold tracking-[0.14em] text-primary select-all">{code ?? "—"}</span>
+        <div className="flex-1 rounded-xl border px-4 py-3 text-center" style={{ borderColor: "rgba(34,211,238,0.22)", background: "rgba(34,211,238,0.06)" }}>
+          <span className="text-[16px] font-extrabold tracking-[0.14em] text-foreground select-all">{code ?? "—"}</span>
         </div>
         <button
           type="button"
           onClick={handleCopy}
           className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[11px] font-bold text-[#0A0C0A] transition-all active:scale-95"
-          style={{ background: copied ? "#34D399" : "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+          style={{ background: copied ? "#34D399" : `linear-gradient(90deg, ${ACCENT}, #06b6d4)` }}
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
           {copied ? "Copied" : "Copy"}
         </button>
       </div>
 
-      <div className="relative mt-2.5">
-        <button
-          type="button"
-          onClick={handleShare}
-          className={cn(
-            "flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.04] py-3 text-[11px] font-bold text-foreground/80 transition-all hover:bg-white/[0.07] active:scale-[0.98]",
-          )}
-        >
-          <Share2 size={14} className="text-[#22D3EE]" />
-          Share invite link
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={handleShare}
+        className="relative mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.04] py-3 text-[11px] font-bold text-foreground/80 transition-all hover:bg-white/[0.07] active:scale-[0.98]"
+      >
+        <Share2 size={14} className="text-[#22D3EE]" />
+        Share invite link
+      </button>
+
+      <p className="relative mt-3 text-[10px] text-muted-foreground/35 font-normal">
+        Your friend gets a head start with 50 bonus XP when they sign up.
+      </p>
     </div>
   );
 }

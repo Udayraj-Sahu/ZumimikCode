@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import {
   ArrowRight,
@@ -12,11 +12,20 @@ import {
   Swords,
   QrCode,
   Loader2,
+  RefreshCw,
+  Timer,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
+import {
+  useCreatePairingSession,
+  usePollPairingStatus,
+} from "@/hooks/queries/use-pairing";
+import type { PairingStatus } from "@/lib/types/pairing";
 
 const ACCENT = "#C7F252";
+const POLL_INTERVAL_MS = 2500;
+const SESSION_TTL_MS = 120_000;
 
 function hash8(v: string): number {
   let h = 2166136261;
@@ -53,22 +62,34 @@ function QrGrid({ token }: { token: string }) {
   );
 }
 
+function countdownTo(expiresAt: string): string {
+  const diff = new Date(expiresAt).getTime() - Date.now();
+  const secs = Math.max(0, Math.floor(diff / 1000));
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
 export default function AuthPage() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const setToken = useAuthStore((s) => s.setToken);
+  const setRefreshToken = useAuthStore((s) => s.setRefreshToken);
   const router = useRouter();
 
-  const [token] = useState<string>(() => {
-    const arr = new Uint8Array(8);
-    if (typeof crypto !== "undefined" && crypto.getRandomValues) crypto.getRandomValues(arr);
-    else for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256);
-    return Array.from(arr, (b) => b.toString(16).padStart(2, "0")).join("").toUpperCase();
-  });
-  const [linked, setLinked] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [loggingIn, setLoggingIn] = useState(false);
+  const createSession = useCreatePairingSession();
+  const pollStatus = usePollPairingStatus();
 
-  const linkText = `Exam Arena Web Login\nOpen on your phone: https://examarena.app/link\nPairing code: ${token}`;
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [code, setCode] = useState<string>("");
+  const [status, setStatus] = useState<PairingStatus>("pending");
+  const [expiresAt, setExpiresAt] = useState<string>("");
+  const [now, setNow] = useState(Date.now());
+  const [copied, setCopied] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [alreadyApproved, setAlreadyApproved] = useState(false);
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const bootstrapped = useRef(false);
 
   useEffect(() => {
     if (isAuthenticated) return;
@@ -84,25 +105,83 @@ export default function AuthPage() {
     if (isAuthenticated) router.replace("/dashboard");
   }, [isAuthenticated, router]);
 
+  // Create a new pairing session on mount (or when retrying)
+  const boot = useRef<(() => void) | null>(null);
+  boot.current = () => {
+    setCreateError(null);
+    setAlreadyApproved(false);
+    createSession.mutate(undefined, {
+      onSuccess: (session) => {
+        setSessionId(session.sessionId);
+        setCode(session.code);
+        setStatus(session.status);
+        setExpiresAt(session.expiresAt);
+        setNow(Date.now());
+      },
+      onError: () => setCreateError("Could not start a pairing session. Please try again."),
+    });
+  };
+
+  useEffect(() => {
+    if (bootstrapped.current) return;
+    bootstrapped.current = true;
+    boot.current?.();
+  }, []);
+
+  // Countdown ticker
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Poll the session until approved or expired
+  useEffect(() => {
+    if (!sessionId) return;
+    if (pollingRef.current) clearInterval(pollingRef.current);
+
+    const tick = async () => {
+      try {
+        const session = await pollStatus.mutateAsync(sessionId);
+        setStatus(session.status);
+        setExpiresAt(session.expiresAt);
+        if (session.status === "approved") {
+          if (pollingRef.current) clearInterval(pollingRef.current);
+          setAlreadyApproved(true);
+        } else if (session.status === "expired") {
+          if (pollingRef.current) clearInterval(pollingRef.current);
+        }
+      } catch {
+        // transient poll error — keep polling
+      }
+    };
+    tick();
+    pollingRef.current = setInterval(tick, POLL_INTERVAL_MS);
+    return () => {
+      if (pollingRef.current) clearInterval(pollingRef.current);
+    };
+  }, [sessionId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // When approved, finish login on the web side
+  useEffect(() => {
+    if (alreadyApproved && sessionId) {
+      setToken("web-session-login");
+      setRefreshToken("web-session-refresh");
+    }
+  }, [alreadyApproved, sessionId, setToken, setRefreshToken]);
+
+  const expired = status === "expired" || (!!expiresAt && new Date(expiresAt).getTime() - Date.now() <= 0);
+  const showScannerHint = status !== "approved" && !expired && !createError;
+
   const handleCopy = async () => {
+    if (!code) return;
     try {
-      await navigator.clipboard.writeText(token);
+      await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
       setCopied(false);
     }
   };
-
-  const simulateScan = () => {
-    setLinked(true);
-    setTimeout(() => setLoggingIn(true), 600);
-    setTimeout(() => {
-      setToken("web-session-login");
-    }, 1600);
-  };
-
-  const displayName = "Champion";
 
   return (
     <main id="auth-root" className="relative flex min-h-dvh items-center justify-center bg-background overflow-hidden px-6" style={{ opacity: 0 }}>
@@ -133,19 +212,56 @@ export default function AuthPage() {
             </div>
           </div>
 
-          {!linked ? (
+          {createError ? (
+            <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
+              <p className="text-[13px] font-bold text-foreground">Could not start session</p>
+              <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">{createError}</p>
+              <button
+                type="button"
+                onClick={() => boot.current?.()}
+                className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[#0A0C0A] transition-all active:scale-95"
+                style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+              >
+                <RefreshCw size={13} /> Retry
+              </button>
+            </div>
+          ) : !showScannerHint && (status === "approved" || alreadyApproved) ? (
+            <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
+              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(52,211,153,0.12)" }}>
+                <Check size={24} className="text-[#34D399]" />
+              </div>
+              <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Linked successfully</p>
+              <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">Redirecting to your dashboard…</p>
+            </div>
+          ) : expired ? (
+            <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
+              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(255,92,92,0.12)" }}>
+                <Timer size={24} className="text-[#ff5c5c]" />
+              </div>
+              <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Code expired</p>
+              <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">This pairing code is no longer valid.</p>
+              <button
+                type="button"
+                onClick={() => boot.current?.()}
+                className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[#0A0C0A] transition-all active:scale-95"
+                style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+              >
+                <RefreshCw size={13} /> Generate new code
+              </button>
+            </div>
+          ) : (
             <>
               <div className="mt-5 flex justify-center">
                 <div className="relative">
-                  <QrGrid token={token} />
+                  <QrGrid token={code || "PENDING"} />
                   <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "0 0 30px rgba(199,242,82,0.25) inset" }} />
                 </div>
               </div>
 
               <div className="mt-4 flex items-center justify-center gap-2">
-                <button type="button" onClick={handleCopy} className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[11px] font-bold text-foreground/70 transition-all hover:bg-white/[0.07] active:scale-95">
+                <button type="button" onClick={handleCopy} disabled={!code} className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[11px] font-bold text-foreground/70 transition-all hover:bg-white/[0.07] active:scale-95 disabled:opacity-50">
                   {copied ? <Check size={13} className="text-[#34D399]" /> : <Copy size={13} />}
-                  {copied ? "Code copied" : "Copy pairing code"}
+                  {copied ? "Code copied" : code ? `Code: ${code}` : "Generating code…"}
                 </button>
               </div>
 
@@ -161,46 +277,46 @@ export default function AuthPage() {
                       <div className="grid size-7 place-items-center rounded-lg" style={{ background: "rgba(255,255,255,0.05)" }}>
                         <Icon size={13} className="text-foreground/60" />
                       </div>
-                      <span className="text-[12px] text-muted-foreground/70 font-medium">{s.text}</span>
+                      <span className="flex-1 text-[12px] text-muted-foreground/70 font-medium">{s.text}</span>
+                      {i === 0 && status === "scanned" && (
+                        <span className="flex items-center gap-1 text-[10px] font-bold text-[#34D399]">
+                          <Loader2 size={11} className="animate-spin" /> Device detected
+                        </span>
+                      )}
                     </li>
                   );
                 })}
               </ol>
             </>
-          ) : (
-            <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
-              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(52,211,153,0.12)" }}>
-                <Loader2 size={24} className={loggingIn && !isAuthenticated ? "animate-spin text-[#34D399]" : "text-[#34D399]"} />
-              </div>
-              <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">
-                {loggingIn && !isAuthenticated ? "Linking and signing in..." : "Linked successfully"}
-              </p>
-              <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">
-                {loggingIn && !isAuthenticated ? "Hold on, linking your browser..." : `Welcome back, ${displayName}`}
-              </p>
+          )}
+
+          {showScannerHint && (
+            <div className="mt-5 flex items-center justify-center gap-2 text-[10px] text-muted-foreground/40">
+              <Timer size={11} />
+              Code expires in {expiresAt ? countdownTo(expiresAt) : "--:--"}
             </div>
           )}
 
-          {!linked && (
+          {showScannerHint && status === "pending" && (
             <button
               type="button"
-              onClick={simulateScan}
+              onClick={() => boot.current?.()}
               className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95"
               style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
             >
-              Simulate scan on this device <ArrowRight size={15} />
+              <RefreshCw size={15} /> New code
             </button>
           )}
 
           <div className="mt-4 flex items-center justify-center gap-1.5 text-[10px] text-muted-foreground/35">
             <Lock size={11} />
-            End-to-end secured pairing
+            End-to-end secured pairing · session expires in ~2 min
           </div>
         </div>
 
         <p className="mt-5 text-center text-[10.5px] text-muted-foreground/35 leading-relaxed">
-          Pairing your phone links this browser session to your Exam Arena account.<br />
-          <span className="text-muted-foreground/50">Enjoy this summary? Great. You can lock a real backend in later.</span>
+          Scan the QR from your phone&apos;s Exam Arena app (<span className="text-muted-foreground/50">Scan to login on web</span>) to link this browser.<br />
+          <span className="text-muted-foreground/40">In preview, the flow is simulated end-to-end.</span>
         </p>
       </div>
     </main>

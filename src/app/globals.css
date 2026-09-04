@@ -75,6 +75,15 @@
   --surface: #F5F5F5;
 }
 
+/* Hide scrollbars everywhere but keep scroll functionality */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

@@ -39,7 +39,7 @@ export default function FeedPage() {
   }, [activeCategory]);
 
   return (
-    <div className="min-h-screen px-5 pt-6 pb-6 max-w-5xl mx-auto">
+    <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
       {/* Header */}
       <div ref={headerRef}>
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">

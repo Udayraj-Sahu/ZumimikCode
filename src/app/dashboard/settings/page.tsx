@@ -250,7 +250,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-6 max-w-5xl mx-auto">
+    <div className="min-h-screen bg-background pb-4 max-w-5xl mx-auto">
       {/* Ambient glow */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.2) 0%, transparent 70%)" }} />
 
@@ -305,7 +305,7 @@ export default function SettingsPage() {
             <Row icon={<Calendar className="h-5 w-5" />} title="Class Calendar" subtitle="Schedule & planning" onClick={() => router.push("/dashboard/planner")} />
             <Row icon={<Phone className="h-5 w-5" />} title="Call Reminder" subtitle="Coming soon" />
             <Row icon={<DollarSign className="h-5 w-5" />} title="Payments" subtitle="Coming soon" />
-            <Row icon={<Laptop className="h-5 w-5" />} title="Logged-in Devices" subtitle="Coming soon" />
+            <Row icon={<Laptop className="h-5 w-5" />} title="Linked Devices" subtitle="Manage logged-in devices" onClick={() => router.push("/dashboard/settings/linked-devices")} />
           </div>
         </CollapsibleSection>
 

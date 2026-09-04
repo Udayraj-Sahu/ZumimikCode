@@ -233,10 +233,11 @@ Representative query hooks: `use-dashboard`, `use-analytics`, `use-sprint`, `use
 - Copy code (clipboard) and Share (Capacitor `Share` on native, Web Share API on web).
 - Tracks `invitesSent` / `friendsJoined` locally until backend wiring exists.
 
-### Scan-to-Login (`/auth`)
-- WhatsApp-Web-style "Link the app" screen: QR-style frame + copyable pairing code + step list.
-- "Simulate scan" button completes a mocked local login.
-- Ready for backend pairing endpoints (see `BACKEND_HANDOFF.md`).
+### Scan-to-Login (WhatsApp-style device pairing)
+- **Web side** — `/auth` (`src/app/auth/page.tsx`): creates a pairing session on mount, renders a QR-style frame + copyable 8-char code, live ~2-min expiry countdown, and polls the session every 2.5s until `approved` (shows "Device detected" when the app scans, and `expired` with a "New code" retry).
+- **App side** — `/dashboard/scan-to-login`: the phone flow where the user enters the code, confirms the detected device, and links the browser.
+- **Device management** — `/dashboard/settings/linked-devices`: lists linked sessions (with "This device" badge), revokes/logs out devices, and links new ones.
+- **Mock** — `src/lib/mock/pairing.ts` holds an in-memory coordinator shared by the web + app screens, so the whole flow is testable locally in one browser. In `NEXT_PUBLIC_API_MOCK=false` the service hits the real endpoints (see `BACKEND_HANDOFF.md`).
 
 ---
 
@@ -309,10 +310,13 @@ App identity: `appId: "com.examarena.app"`, `appName: "Exam Arena"`, `webDir: "o
 
 ## 🔗 Backend Handoff
 
-Two features need real backends. The full contract lives in **`BACKEND_HANDOFF.md`**:
+**`BACKEND_HANDOFF.md`** is the single canonical handoff — it documents **every** frontend feature and its API contract (auth, pairing/linked-devices, referral, dashboard, sprint, practice, mock exam, flashcards, explorer, techniques, templates, duel, history/reports, analytics, profile/settings, social, notifications/planner/help/achievements, content feedback, offline sync) plus shared type shapes, conventions, and a suggested build order.
 
-1. **Referral / Invite** — `POST /referral/code`, `GET /referral/me`, `POST /referral/redeem`, `GET /referral/notification`.
-2. **Scan-to-login pairing** — `POST /pairing/session`, `GET /pairing/session/:id`, `POST .../scan`, `POST .../approve`, `POST .../revoke`, `GET /pairing/sessions` (short-lived sessions, ~120s TTL, web polls status, approve issues fresh web token).
+Highest-priority items to build first (full contract in `BACKEND_HANDOFF.md`):
+
+1. **Auth (Firebase)** — `POST /auth/google`, `POST /auth/phone`, `POST /auth/refresh`. Blocks everything else in non-mock mode.
+2. **Scan-to-login pairing + Linked Devices** — the frontend (web `/auth`, app `/dashboard/scan-to-login`, `settings/linked-devices`) is **fully built and mock-testable**. The backend team implements `POST /pairing/session`, `GET /pairing/session/:id`, `POST .../scan`, `POST .../approve`, `POST .../revoke`, `GET /pairing/sessions` (short-lived ~120s sessions, web polls every 2.5s, approve issues a fresh web-bound token, cap ~5 device sessions per user). See `BACKEND_HANDOFF.md` §2.
+3. **Referral / Invite** — `POST /referral/code`, `GET /referral/me`, `POST /referral/redeem`, `GET /referral/notification`. See `BACKEND_HANDOFF.md` §1.
 
 ---
 

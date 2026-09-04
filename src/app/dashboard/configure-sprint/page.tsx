@@ -52,7 +52,7 @@ export default function ConfigureSprintPage() {
 
   if (isLoading || !data) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 flex items-center justify-center">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 flex items-center justify-center">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
@@ -61,7 +61,7 @@ export default function ConfigureSprintPage() {
   const { topics, config } = data;
 
   return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
         <div ref={headerRef} className="text-center mb-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <BookOpen size={12} className="text-primary" />
