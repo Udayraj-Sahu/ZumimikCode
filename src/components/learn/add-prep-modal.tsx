@@ -3,12 +3,13 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
-import { X, GraduationCap, Calculator, BookOpen, Landmark, Check, AlertCircle, Clock } from "lucide-react";
+import { X, GraduationCap, Calculator, BookOpen, Landmark, Percent, Check, AlertCircle, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 
 const EXAMS = [
+  { id: "vedic-math", label: "Vedic Math", icon: Percent },
   { id: "cat", label: "CAT", icon: GraduationCap },
   { id: "gmat", label: "GMAT", icon: Calculator },
   { id: "gre", label: "GRE", icon: BookOpen },
@@ -28,6 +29,7 @@ export function AddPrepModal({ onClose }: Props) {
   const addActivePrep = useOnboardingStore((s) => s.addActivePrep);
   const removeActivePrep = useOnboardingStore((s) => s.removeActivePrep);
   const activePreps = useOnboardingStore((s) => s.activePreps);
+  const targetExam = useOnboardingStore((s) => s.targetExam);
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const { data } = useDashboardData(selectedExam ?? undefined);
@@ -88,14 +90,19 @@ export function AddPrepModal({ onClose }: Props) {
               </p>
               {EXAMS.map((exam) => {
                 const Icon = exam.icon;
-                const alreadyAdded = activePreps.includes(exam.id);
+                const isOnboarding = exam.id === targetExam;
+                const alreadyAdded = isOnboarding || activePreps.includes(exam.id);
                 return (
                   <button
                     key={exam.id}
                     type="button"
                     onClick={() => {
                       if (alreadyAdded) {
-                        removeActivePrep(exam.id);
+                        if (isOnboarding) {
+                          setSelectedExam(exam.id);
+                        } else {
+                          removeActivePrep(exam.id);
+                        }
                       } else {
                         setSelectedExam(exam.id);
                       }
@@ -110,14 +117,23 @@ export function AddPrepModal({ onClose }: Props) {
                     <span className="grid size-10 place-items-center rounded-xl border border-border/40 bg-muted/50">
                       <Icon size={18} className="text-muted-foreground/70" />
                     </span>
-                    <span className="flex-1 text-left text-fluid-sm font-bold text-foreground">
-                      {exam.label}
+                    <span className="flex-1 text-left">
+                      <span className="block text-fluid-sm font-bold text-foreground">
+                        {exam.label}
+                      </span>
+                      {isOnboarding && (
+                        <span className="text-[10px] font-medium text-primary/70">Your primary exam</span>
+                      )}
                     </span>
-                    {alreadyAdded && (
+                    {isOnboarding ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary tracking-wide">
+                        <Check size={11} /> PRIMARY
+                      </span>
+                    ) : alreadyAdded ? (
                       <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary tracking-wide">
                         <X size={11} /> REMOVE
                       </span>
-                    )}
+                    ) : null}
                   </button>
                 );
               })}

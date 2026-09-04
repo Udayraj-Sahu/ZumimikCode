@@ -122,9 +122,10 @@ function LearnPageContent() {
   const topics = data?.topics ?? [];
 
   const prepExams = useMemo(() => {
-    const union = new Set<string>(activePreps);
-    if (targetExam) union.add(targetExam);
-    return [...union].filter((id) => id in DOMAIN_LABELS);
+    const others = activePreps.filter((id) => id !== targetExam && id in DOMAIN_LABELS);
+    const list = [...others];
+    if (targetExam && targetExam in DOMAIN_LABELS) list.unshift(targetExam);
+    return list;
   }, [activePreps, targetExam]);
 
   const mockStats = useMemo(() => {
@@ -187,7 +188,7 @@ function LearnPageContent() {
   };
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       {/* Page header — matches app pattern */}
       <header className="mb-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
@@ -498,36 +499,32 @@ function LearnPageContent() {
               </span>
             </button>
 
-            <AnimatePresence initial={false}>
-              {!statsCollapsed && (
-                <motion.div
-                  key="stats-body"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className="overflow-hidden"
-                >
-                  <div className="px-5 pb-5">
-                    {prepExams.length === 0 ? (
-                      <div className="flex flex-col items-center gap-3 py-6 text-center">
-                        <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
-                          <Lock size={16} className="text-muted-foreground/45" />
-                        </span>
-                        <span className="text-[12px] text-muted-foreground/50">Select a prep to view your progress</span>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-2 gap-2.5">
-                        <StatBox value={mockStats.accuracy} label="Accuracy" />
-                        <StatBox value={mockStats.questions} label="Questions" />
-                        <StatBox value={mockStats.percentile} label="Percentile" />
-                        <StatBox value={mockStats.speed} label="Speed" />
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
+            <div
+              className={cn(
+                "grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                statsCollapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]",
               )}
-            </AnimatePresence>
+            >
+              <div className="overflow-hidden min-h-0">
+                <div className="px-5 pb-5">
+                  {prepExams.length === 0 ? (
+                    <div className="flex flex-col items-center gap-3 py-6 text-center">
+                      <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+                        <Lock size={16} className="text-muted-foreground/45" />
+                      </span>
+                      <span className="text-[12px] text-muted-foreground/50">Select a prep to view your progress</span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <StatBox value={mockStats.accuracy} label="Accuracy" />
+                      <StatBox value={mockStats.questions} label="Questions" />
+                      <StatBox value={mockStats.percentile} label="Percentile" />
+                      <StatBox value={mockStats.speed} label="Speed" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Section filter chips */}
