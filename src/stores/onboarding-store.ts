@@ -27,6 +27,7 @@ type OnboardingState = {
   sex: string | null;
   dob: { day: number; month: string; year: number };
   activePreps: string[];
+  activeLearnDomain: string;
 
   setAuthData: (data: { name?: string; email?: string; phone?: string; authMethod: "google" | "phone" }) => void;
   setTargetExam: (exam: string) => void;
@@ -44,6 +45,7 @@ type OnboardingState = {
   setSex: (sex: string | null) => void;
   setDob: (dob: { day: number; month: string; year: number }) => void;
   addActivePrep: (prep: string) => void;
+  setActiveLearnDomain: (domain: string) => void;
 };
 
 const initial = {
@@ -63,6 +65,7 @@ const initial = {
   sex: null as string | null,
   dob: { day: 1, month: "January", year: 2000 },
   activePreps: [] as string[],
+  activeLearnDomain: "",
 };
 
 export const useOnboardingStore = create<OnboardingState>()(
@@ -108,6 +111,7 @@ export const useOnboardingStore = create<OnboardingState>()(
             ? s.activePreps
             : [...s.activePreps, prep],
         })),
+      setActiveLearnDomain: (domain) => set({ activeLearnDomain: domain }),
       finishOnboarding: () => set({ isOnboarded: true }),
     }),
     {

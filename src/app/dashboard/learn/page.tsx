@@ -2,6 +2,7 @@
 
 import { useState, useRef, useLayoutEffect, useMemo, useEffect } from "react";
 import { animate } from "motion";
+import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 import {
   Grid3x3,
@@ -87,8 +88,8 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
   },
 ];
 
-const CURVE_WIDTH = 14;
 const BOTTOM_INSET = 5;
+const CURVE_WIDTH = 14;
 const CARD_RADIUS = 24;
 
 function buildTabPath(left: number, width: number, top: number, base: number, fullWidth: number, r = CARD_RADIUS) {
@@ -111,26 +112,30 @@ function buildTabPath(left: number, width: number, top: number, base: number, fu
   return `M0,${base} L${Math.max(0, left - CURVE_WIDTH)},${base} ${leftTop} ${topRun} ${rightTop} L${fullWidth},${base}`;
 }
 
-function buildTabFill(left: number, width: number, top: number, base: number, fullWidth: number, r = CARD_RADIUS) {
+function buildTabFill(left: number, width: number, top: number, base: number, fullWidth: number) {
   const right = left + width;
-  const lc = Math.max(0, left - CURVE_WIDTH / 2);
-  const rc = Math.min(fullWidth, right + CURVE_WIDTH / 2);
-  const leftFoot = Math.max(0, left - CURVE_WIDTH);
-  const rightFoot = Math.min(fullWidth, right + CURVE_WIDTH);
-  const atLeft = left <= r;
-  const atRight = right >= fullWidth - r;
+  const r = 14;
+  const x0 = Math.max(0, left + CURVE_WIDTH / 2);
+  const x1 = Math.min(fullWidth, right - CURVE_WIDTH / 2);
+  const yTop = top + 3;
+  const yBot = base;
 
-  const leftTop = atLeft
-    ? `C${lc},${base} ${lc},${top + r} ${left},${top + r} A${r},${r} 0 0 1 ${left + r},${top}`
-    : `C${lc},${base} ${lc},${top} ${left},${top}`;
+  if (x1 - x0 < r * 2) {
+    return `M${x0},${yTop} L${x1},${yTop} L${x1},${yBot} L${x0},${yBot} Z`;
+  }
 
-  const topRun = atRight ? `L${right - r},${top}` : `L${right},${top}`;
-
-  const rightTop = atRight
-    ? `A${r},${r} 0 0 1 ${right},${top + r} C${rc},${top + r} ${rc},${base} ${rightFoot},${base}`
-    : `C${rc},${top} ${rc},${base} ${rightFoot},${base}`;
-
-  return `M${leftFoot},${base} ${leftTop} ${topRun} ${rightTop} L${leftFoot},${base} Z`;
+  return (
+    `M${x0 + r},${yTop} ` +
+    `L${x1 - r},${yTop} ` +
+    `A${r},${r} 0 0 1 ${x1},${yTop + r} ` +
+    `L${x1},${yBot - r} ` +
+    `A${r},${r} 0 0 1 ${x1 - r},${yBot} ` +
+    `L${x0 + r},${yBot} ` +
+    `A${r},${r} 0 0 1 ${x0},${yBot - r} ` +
+    `L${x0},${yTop + r} ` +
+    `A${r},${r} 0 0 1 ${x0 + r},${yTop} ` +
+    `Z`
+  );
 }
 
 function hexToRgb(hex: string) {
@@ -152,8 +157,10 @@ export default function LearnPage() {
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const activePreps = useOnboardingStore((s) => s.activePreps);
+  const activeLearnDomain = useOnboardingStore((s) => s.activeLearnDomain);
+  const setActiveLearnDomain = useOnboardingStore((s) => s.setActiveLearnDomain);
   const [mode, setMode] = useState<Mode>("explore");
-  const [activeDomain, setActiveDomain] = useState(targetExam || "cat");
+  const [activeDomain, setActiveDomain] = useState(activeLearnDomain || targetExam || "cat");
   const [showAddPrep, setShowAddPrep] = useState(false);
   const { data } = useDashboardData(activeDomain);
   const topics = data?.topics ?? [];
@@ -325,12 +332,19 @@ export default function LearnPage() {
               {MODES.map((m) => {
                 const isActive = m.id === mode;
                 return (
-                <button
+                <motion.button
                   key={m.id}
                   ref={(el) => { tabBtnRefs.current[m.id] = el; }}
                   type="button"
                   onClick={() => goTo(m.id)}
-                  className="relative flex items-center justify-center py-4"
+                  initial={false}
+                  animate={
+                    isActive
+                      ? { y: -1, scale: 1 }
+                      : { y: 0, scale: 0.995 }
+                  }
+                  transition={{ type: "spring", stiffness: 380, damping: 26 }}
+                  className="relative flex items-center justify-center py-4 rounded-xl"
                 >
                   <span
                     ref={(el) => { tabLabelRefs.current[m.id] = el; }}
@@ -342,7 +356,7 @@ export default function LearnPage() {
                   >
                     {m.label}
                   </span>
-                </button>
+                </motion.button>
                 );
               })}
             </div>
@@ -368,7 +382,7 @@ export default function LearnPage() {
                 <button
                   key={id}
                   type="button"
-                  onClick={() => setActiveDomain(id)}
+                  onClick={() => { setActiveDomain(id); setActiveLearnDomain(id); }}
                   className={cn(
                     "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
                     activeDomain === id
@@ -391,7 +405,7 @@ export default function LearnPage() {
                 <button
                   key={topic.name}
                   type="button"
-                  onClick={() => router.push("/dashboard/explorer")}
+                  onClick={() => router.push(`/dashboard/explorer?domain=${activeDomain}&topic=${encodeURIComponent(topic.name.toLowerCase())}`)}
                   className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
                   style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                 >

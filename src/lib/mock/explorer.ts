@@ -107,6 +107,113 @@ const SUBJECT_TREES: Record<string, TopicNode[]> = {
       ],
     },
   ],
+  cat: [
+    {
+      id: "cat",
+      type: "subject",
+      title: "CAT",
+      slug: "cat",
+      description: "Common Admission Test preparation for MBA entrance",
+      children: [
+        {
+          id: "cat-quant",
+          type: "topic",
+          title: "Quantitative Aptitude",
+          slug: "cat-quantitative",
+          children: [
+            {
+              id: "arithmetic",
+              type: "subtopic",
+              title: "Arithmetic",
+              slug: "cat-arithmetic",
+              children: [
+                { id: "cat-percentage", type: "technique", title: "Percentages & Profit", slug: "cat-percentage", techniqueId: "cat-percentage" },
+                { id: "cat-ratio", type: "technique", title: "Ratio & Proportion", slug: "cat-ratio", techniqueId: "cat-ratio" },
+              ],
+            },
+            {
+              id: "algebra",
+              type: "subtopic",
+              title: "Algebra",
+              slug: "cat-algebra",
+              children: [
+                { id: "cat-quadratic", type: "technique", title: "Quadratic Equations", slug: "cat-quadratic", techniqueId: "cat-quadratic" },
+              ],
+            },
+            {
+              id: "geometry",
+              type: "subtopic",
+              title: "Geometry",
+              slug: "cat-geometry",
+              children: [
+                { id: "cat-triangles", type: "technique", title: "Triangles & Circles", slug: "cat-triangles", techniqueId: "cat-triangles" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "cat-verbal",
+          type: "topic",
+          title: "Verbal Ability",
+          slug: "cat-verbal",
+          children: [
+            {
+              id: "reading-comp",
+              type: "subtopic",
+              title: "Reading Comprehension",
+              slug: "cat-reading-comprehension",
+              children: [
+                { id: "cat-rc", type: "technique", title: "RC Strategy", slug: "cat-rc", techniqueId: "cat-rc" },
+              ],
+            },
+            {
+              id: "sentence-correction-cat",
+              type: "subtopic",
+              title: "Sentence Correction",
+              slug: "cat-sentence-correction",
+              children: [
+                { id: "cat-sc", type: "technique", title: "Error Spotting", slug: "cat-sc", techniqueId: "cat-sc" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "cat-logical",
+          type: "topic",
+          title: "Logical Reasoning",
+          slug: "cat-logical",
+          children: [
+            {
+              id: "arrangements",
+              type: "subtopic",
+              title: "Arrangements & Puzzles",
+              slug: "cat-arrangements",
+              children: [
+                { id: "cat-seating", type: "technique", title: "Seating Arrangements", slug: "cat-seating", techniqueId: "cat-seating" },
+              ],
+            },
+          ],
+        },
+        {
+          id: "cat-di",
+          type: "topic",
+          title: "Data Interpretation",
+          slug: "cat-data-interpretation",
+          children: [
+            {
+              id: "tables-charts",
+              type: "subtopic",
+              title: "Tables & Charts",
+              slug: "cat-tables-charts",
+              children: [
+                { id: "cat-tables", type: "technique", title: "Data Tables", slug: "cat-tables", techniqueId: "cat-tables" },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
   gmat: [
     {
       id: "gmat",
@@ -249,10 +356,7 @@ export const SUBJECT_EDGES: TopicEdge[] = [
 ];
 
 export function getSubjectTree(domain: string): TopicNode[] {
-  const tree = SUBJECT_TREES[domain] ?? [];
-  if (tree.length > 0) return tree;
-  if (domain === "cat") return SUBJECT_TREES["gmat"] ?? [];
-  return [];
+  return SUBJECT_TREES[domain] ?? [];
 }
 
 export function findNodeById(tree: TopicNode[], id: string): TopicNode | null {
