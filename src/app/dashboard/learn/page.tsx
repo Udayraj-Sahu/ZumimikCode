@@ -314,7 +314,7 @@ function LearnPageContent() {
             <p className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
             {prepExams.length === 0 ? (
               <div className="flex items-center justify-center py-4">
-                <span className="text-[12px] text-muted-foreground/50">No exam selected</span>
+                <span className="text-[12px] text-muted-foreground/50">Select exam via add prep</span>
               </div>
             ) : (
               <div className="flex flex-wrap gap-2">
@@ -411,13 +411,6 @@ function LearnPageContent() {
                 <Lock size={16} className="text-muted-foreground/45" />
               </span>
               <span className="text-[13px] text-muted-foreground/50">Select an exam to explore techniques</span>
-              <button
-                type="button"
-                onClick={() => setShowAddPrep(true)}
-                className="mt-1 flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
-              >
-                <Plus size={12} strokeWidth={3} /> Add Prep
-              </button>
             </div>
           ) : (
             <button
@@ -447,14 +440,7 @@ function LearnPageContent() {
               <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
                 <Lock size={16} className="text-muted-foreground/45" />
               </span>
-              <span className="text-[13px] text-muted-foreground/50">Select an exam first to practice</span>
-              <button
-                type="button"
-                onClick={() => setShowAddPrep(true)}
-                className="mt-1 flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
-              >
-                <Plus size={12} strokeWidth={3} /> Add Prep
-              </button>
+              <span className="text-[13px] text-muted-foreground/50">Select exam via add prep</span>
             </div>
           ) : (
             <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
