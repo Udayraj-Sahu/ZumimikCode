@@ -27,7 +27,6 @@ import RendererRouter from "@/components/renderers/RendererRouter";
 import type { Question } from "@/lib/types/sprint-session";
 import type { SolveAlongTemplate, RenderMode } from "@/lib/types/template";
 import { DOMAIN_LABELS } from "@/lib/types/template";
-import { CompleteSetupGate } from "@/components/dashboard/complete-setup-gate";
 
 type PracticeType = "mcq" | "templates";
 type Phase = "config" | "active" | "done";
@@ -199,10 +198,6 @@ export default function PracticePage() {
   };
 
   const question: Question | null = session?.questions[currentIndex] ?? null;
-
-  if (!targetExam) {
-    return <CompleteSetupGate />;
-  }
 
   /* ================================================================ */
   /*  CONFIG PHASE                                                     */
