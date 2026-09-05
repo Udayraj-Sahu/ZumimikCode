@@ -457,7 +457,7 @@ function LearnPageContent() {
         </motion.div>
         )}
 
-        {mode === "mock" && prepExams.length > 0 && (
+        {mode === "mock" && (
         <motion.div
           key="mock"
           initial={{ opacity: 0, y: 10 }}
