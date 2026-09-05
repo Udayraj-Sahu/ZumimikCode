@@ -58,7 +58,7 @@ export function InviteCard() {
     >
       <div className="absolute -top-12 -right-12 size-32 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.45), transparent 70%)" }} />
 
-      <div className="relative flex items-center gap-3">
+      <div className="relative flex flex-wrap items-center gap-x-3 gap-y-2">
         <div className="flex items-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl" style={{ background: `${ACCENT}1A`, boxShadow: `inset 0 0 0 1px ${ACCENT}22` }}>
             <Users2 size={16} style={{ color: ACCENT }} />

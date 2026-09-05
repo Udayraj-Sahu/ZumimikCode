@@ -34,7 +34,7 @@ function Divider() {
 
 export function AchievementWall() {
   return (
-    <section id="champions" className="relative bg-background">
+    <section id="champions" className="relative bg-background overflow-hidden">
       <div style={{ padding: "120px clamp(24px, 6vw, 120px)", position: "relative" }}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
           <WallRegion>

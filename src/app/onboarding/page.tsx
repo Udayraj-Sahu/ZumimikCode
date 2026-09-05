@@ -134,7 +134,7 @@ export default function OnboardingPage() {
         </div>
 
         {/* Feature pills */}
-        <div ref={featuresRef} className="flex items-center gap-3 mb-12">
+        <div ref={featuresRef} className="flex flex-wrap items-center justify-center gap-3 mb-12">
           {FEATURES.map((f) => {
             const Icon = f.icon;
             return (

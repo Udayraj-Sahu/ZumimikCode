@@ -85,7 +85,7 @@ export function AIScanLine() {
           display: "flex", alignItems: "center", gap: "8px", zIndex: 3
         }}>
           <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: typeColor(ins.type), flexShrink: 0 }} />
-          <span className="font-sans" style={{ fontSize: "12px", color: typeColor(ins.type), whiteSpace: "nowrap", letterSpacing: "0.05em" }}>{ins.label}</span>
+          <span className="font-sans truncate" style={{ fontSize: "12px", color: typeColor(ins.type), letterSpacing: "0.05em", maxWidth: "90px" }}>{ins.label}</span>
         </div>
       ))}
 

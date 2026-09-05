@@ -210,7 +210,7 @@ function LearnPageContent() {
 
           {/* Tab mode selector — 3D push keys: active pops up, others sit flat/sunken */}
           <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5">
-            <div className="grid grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {MODES.map((m) => {
                 const isActive = m.id === mode;
                 return (
