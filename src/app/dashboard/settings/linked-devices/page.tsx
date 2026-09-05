@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import { Monitor, Smartphone, Globe, LogOut, Plus, ShieldCheck, ArrowLeft } from "lucide-react";
+import { Monitor, Smartphone, Globe, LogOut, Plus, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLinkedDevices, useRevokeDevice } from "@/hooks/queries/use-linked-devices";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -57,15 +57,6 @@ export default function LinkedDevicesPage() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-      {/* Back */}
-      <button
-        type="button"
-        onClick={() => router.push("/dashboard/settings")}
-        className="mb-4 flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground/50 transition-colors hover:text-foreground/70"
-      >
-        <ArrowLeft size={14} /> Settings
-      </button>
-
       {/* Header */}
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">

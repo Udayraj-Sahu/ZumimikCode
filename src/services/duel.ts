@@ -11,7 +11,7 @@ function delay(ms: number) {
 export async function getDuelTopics(domain?: string): Promise<DuelTopic[]> {
   if (IS_MOCK) {
     await delay(100);
-    return mockGetDuelTopics(domain ?? "vedic-math");
+    return mockGetDuelTopics(domain ?? "cat");
   }
   const params = domain ? `?domain=${domain}` : "";
   return apiGet<DuelTopic[]>(`/duel/topics${params}`);

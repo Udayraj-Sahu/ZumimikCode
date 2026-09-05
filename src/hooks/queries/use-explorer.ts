@@ -5,7 +5,7 @@ import type { TopicNode } from "@/lib/types/technique";
 
 export function useSubjectTree(domain?: string) {
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const activeDomain = domain || targetExam || "vedic-math";
+  const activeDomain = domain || targetExam || "cat";
   return useQuery<TopicNode[]>({
     queryKey: ["subject-tree", activeDomain],
     queryFn: () => getSubjectTree(activeDomain),
@@ -15,7 +15,7 @@ export function useSubjectTree(domain?: string) {
 
 export function useLeafTechniques(domain?: string) {
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const activeDomain = domain || targetExam || "vedic-math";
+  const activeDomain = domain || targetExam || "cat";
   return useQuery<TopicNode[]>({
     queryKey: ["leaf-techniques", activeDomain],
     queryFn: () => getLeafTechniques(activeDomain),

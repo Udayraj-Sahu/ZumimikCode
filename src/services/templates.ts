@@ -49,7 +49,7 @@ export async function getTemplatesByCategory(
     const { getTemplatesByCategory: mockGetByCat } = await import("@/lib/mock/templates");
     const real = mockGetByCat(category, domain);
     if (real.length > 0) return real;
-    return generateFallbackTemplates(domain ?? "vedic-math", category);
+    return generateFallbackTemplates(domain ?? "cat", category);
   }
   const params = new URLSearchParams({ category });
   if (domain) params.set("domain", domain);

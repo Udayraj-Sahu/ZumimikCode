@@ -1,12 +1,4 @@
 export const TOPIC_TO_CATEGORY: Record<string, Record<string, string[]>> = {
-  "vedic-math": {
-    addition: ["addition"],
-    subtraction: ["subtraction"],
-    multiplication: ["multiplication"],
-    division: ["division"],
-    squares: ["squares"],
-    mixed: ["addition", "subtraction", "multiplication", "division", "squares"],
-  },
   gmat: {
     ps: ["problem_solving"],
     ds: ["data_sufficiency"],

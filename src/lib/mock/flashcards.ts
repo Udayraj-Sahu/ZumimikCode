@@ -1,50 +1,6 @@
 export type Flashcard = { front: string; back: string };
 
 export const FLASHCARDS_BY_DOMAIN: Record<string, Record<string, Flashcard[]>> = {
-  "vedic-math": {
-    addition: [
-      { front: "142 + 387", back: "529" },
-      { front: "256 + 189", back: "445" },
-      { front: "574 + 298", back: "872" },
-      { front: "1,234 + 567", back: "1,801" },
-      { front: "3,456 + 789", back: "4,245" },
-      { front: "99 + 99", back: "198" },
-      { front: "750 + 250", back: "1,000" },
-    ],
-    subtraction: [
-      { front: "500 - 237", back: "263" },
-      { front: "1,000 - 456", back: "544" },
-      { front: "800 - 329", back: "471" },
-      { front: "2,500 - 1,750", back: "750" },
-      { front: "10,000 - 1", back: "9,999" },
-    ],
-    multiplication: [
-      { front: "12 × 15", back: "180" },
-      { front: "25 × 8", back: "200" },
-      { front: "11 × 11", back: "121" },
-      { front: "50 × 50", back: "2,500" },
-      { front: "125 × 8", back: "1,000" },
-    ],
-    division: [
-      { front: "144 ÷ 12", back: "12" },
-      { front: "500 ÷ 25", back: "20" },
-      { front: "1,000 ÷ 8", back: "125" },
-      { front: "256 ÷ 16", back: "16" },
-    ],
-    squares: [
-      { front: "12²", back: "144" },
-      { front: "15²", back: "225" },
-      { front: "20²", back: "400" },
-      { front: "25²", back: "625" },
-      { front: "30²", back: "900" },
-    ],
-    mixed: [
-      { front: "(12 × 5) + 20", back: "80" },
-      { front: "100 - (7 × 7)", back: "51" },
-      { front: "(150 ÷ 3) × 2", back: "100" },
-      { front: "8 × 8 - 8", back: "56" },
-    ],
-  },
   gmat: {
     ps: [
       { front: "15% of 200", back: "30" },

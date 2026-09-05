@@ -118,7 +118,6 @@ export const TemplateSessionSchema = z.object({
 });
 
 export const DOMAINS = [
-  { id: "vedic-math", label: "Vedic Math" },
   { id: "gmat", label: "GMAT" },
   { id: "cat", label: "CAT" },
   { id: "gre", label: "GRE" },
@@ -126,7 +125,6 @@ export const DOMAINS = [
 ] as const;
 
 export const DOMAIN_LABELS: Record<string, string> = {
-  "vedic-math": "Vedic Math",
   gmat: "GMAT",
   cat: "CAT",
   gre: "GRE",

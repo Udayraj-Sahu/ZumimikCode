@@ -11,7 +11,7 @@ function delay(ms: number) {
 export async function getSprintTopics(domain?: string): Promise<SprintTopic[]> {
   if (IS_MOCK) {
     await delay(200);
-    return getTopicsByDomain(domain ?? "vedic-math");
+    return getTopicsByDomain(domain ?? "cat");
   }
   const params = domain ? `?domain=${domain}` : "";
   return apiGet<SprintTopic[]>(`/sprint/topics${params}`);

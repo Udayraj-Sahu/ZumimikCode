@@ -3,13 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
-import { X, GraduationCap, Calculator, BookOpen, Landmark, Percent, Check, AlertCircle, Clock } from "lucide-react";
+import { X, GraduationCap, Calculator, BookOpen, Landmark, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 
 const EXAMS = [
-  { id: "vedic-math", label: "Vedic Math", icon: Percent },
   { id: "cat", label: "CAT", icon: GraduationCap },
   { id: "gmat", label: "GMAT", icon: Calculator },
   { id: "gre", label: "GRE", icon: BookOpen },

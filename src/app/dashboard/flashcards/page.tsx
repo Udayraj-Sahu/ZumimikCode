@@ -10,6 +10,7 @@ import type { SprintTopic } from "@/lib/types/sprint";
 import { getFlashcards } from "@/lib/mock/flashcards";
 import type { Flashcard } from "@/lib/mock/flashcards";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { CompleteSetupGate } from "@/components/dashboard/complete-setup-gate";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -17,7 +18,7 @@ const GLASS_BORDER = "rgba(255,255,255,0.08)";
 export default function FlashcardsPage() {
   usePageMeta("Flashcards — Exam Arena");
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domain = targetExam || "vedic-math";
+  const domain = targetExam || "cat";
   const topics = getTopicsByDomain(domain);
   const defaultTopic = topics.length > 0 ? topics[0].id : "addition";
   const [topic, setTopic] = useState(defaultTopic);
@@ -82,6 +83,10 @@ export default function FlashcardsPage() {
     setFlipped(false);
     setKnown([]);
   };
+
+  if (!targetExam) {
+    return <CompleteSetupGate />;
+  }
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">

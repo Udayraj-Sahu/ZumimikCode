@@ -116,25 +116,7 @@ const BANKING_PAPERS: MockPaper[] = [
   }),
 ];
 
-const VEDIC_PAPERS: MockPaper[] = [
-  buildPaper({
-    id: "vedic-speed-test",
-    domain: "vedic-math",
-    title: "Vedic Math Speed Test",
-    shortLabel: "Speed Test",
-    description: "Timed arithmetic drills across addition to mental squares.",
-    sections: [
-      { id: "add", label: "Addition", topic: "addition", questions: 10, minutes: 5 },
-      { id: "mul", label: "Multiplication", topic: "multiplication", questions: 10, minutes: 5 },
-      { id: "squares", label: "Squares", topic: "squares", questions: 8, minutes: 4 },
-    ],
-    difficulty: "Beginner",
-    accent: "#22D3EE",
-  }),
-];
-
 export const MOCK_PAPERS_BY_DOMAIN: Record<string, MockPaper[]> = {
-  "vedic-math": VEDIC_PAPERS,
   gmat: GMAT_PAPERS,
   cat: CAT_PAPERS,
   gre: GRE_PAPERS,

@@ -3,14 +3,6 @@ import type { Question, SprintSession, TrustStatus } from "@/lib/types/sprint-se
 const TOTAL_TIME_PER_QUESTION = 30;
 
 const TOPIC_TECHNIQUE_MAP: Record<string, Record<string, string[]>> = {
-  "vedic-math": {
-    addition: [],
-    subtraction: [],
-    multiplication: ["nikhilam-base-100", "nikhilam-base-1000", "vert-cross-2digit"],
-    division: ["direct-division"],
-    squares: ["digital-root-check"],
-    mixed: ["nikhilam-base-100", "direct-division", "digital-root-check"],
-  },
   gmat: {
     ps: ["work-rate", "speed-distance"],
     ds: ["data-sufficiency"],
@@ -55,67 +47,6 @@ function enrichQuestion(q: Question, domain: string, topic: string): Question {
     variantGroupId: undefined,
   };
 }
-
-// ── VEDIC MATH (original arithmetic) ─────────────
-const VM_QUESTIONS: Record<string, Question[]> = {
-  addition: [
-    { id: "add1", text: "What is 142 + 387?", options: ["429", "529", "539", "439"], correctIndex: 1, timeLimit: 15 },
-    { id: "add2", text: "What is 256 + 189?", options: ["435", "445", "425", "455"], correctIndex: 1, timeLimit: 15 },
-    { id: "add3", text: "What is 574 + 298?", options: ["862", "872", "852", "882"], correctIndex: 1, timeLimit: 15 },
-    { id: "add4", text: "What is 1,234 + 567?", options: ["1,791", "1,801", "1,811", "1,781"], correctIndex: 1, timeLimit: 20 },
-    { id: "add5", text: "What is 3,456 + 789?", options: ["4,235", "4,245", "4,225", "4,255"], correctIndex: 1, timeLimit: 20 },
-    { id: "add6", text: "What is 99 + 99?", options: ["188", "198", "208", "178"], correctIndex: 1, timeLimit: 10 },
-    { id: "add7", text: "What is 750 + 250?", options: ["900", "950", "1,000", "1,050"], correctIndex: 2, timeLimit: 10 },
-    { id: "add8", text: "What is 1,999 + 1?", options: ["1,990", "2,000", "2,010", "1,999"], correctIndex: 1, timeLimit: 10 },
-    { id: "add9", text: "What is 125 + 75?", options: ["190", "200", "210", "195"], correctIndex: 1, timeLimit: 10 },
-    { id: "add10", text: "What is 2,468 + 3,579?", options: ["6,037", "6,047", "6,027", "6,057"], correctIndex: 1, timeLimit: 25 },
-  ],
-  subtraction: [
-    { id: "sub1", text: "What is 500 - 237?", options: ["263", "273", "253", "283"], correctIndex: 0, timeLimit: 15 },
-    { id: "sub2", text: "What is 1,000 - 456?", options: ["554", "544", "564", "534"], correctIndex: 1, timeLimit: 15 },
-    { id: "sub3", text: "What is 800 - 329?", options: ["461", "471", "481", "451"], correctIndex: 1, timeLimit: 15 },
-    { id: "sub4", text: "What is 2,500 - 1,750?", options: ["750", "650", "850", "950"], correctIndex: 0, timeLimit: 15 },
-    { id: "sub5", text: "What is 10,000 - 1?", options: ["9,999", "9,990", "9,909", "9,099"], correctIndex: 0, timeLimit: 10 },
-    { id: "sub6", text: "What is 600 - 298?", options: ["302", "312", "292", "322"], correctIndex: 0, timeLimit: 15 },
-    { id: "sub7", text: "What is 1,234 - 567?", options: ["667", "677", "657", "687"], correctIndex: 0, timeLimit: 20 },
-    { id: "sub8", text: "What is 3,000 - 1,500?", options: ["1,600", "1,400", "1,500", "1,550"], correctIndex: 2, timeLimit: 10 },
-  ],
-  multiplication: [
-    { id: "mul1", text: "What is 12 × 15?", options: ["160", "170", "180", "190"], correctIndex: 2, timeLimit: 15 },
-    { id: "mul2", text: "What is 25 × 8?", options: ["180", "190", "200", "210"], correctIndex: 2, timeLimit: 10 },
-    { id: "mul3", text: "What is 11 × 11?", options: ["111", "121", "131", "141"], correctIndex: 1, timeLimit: 10 },
-    { id: "mul4", text: "What is 50 × 50?", options: ["2,000", "2,500", "3,000", "3,500"], correctIndex: 1, timeLimit: 10 },
-    { id: "mul5", text: "What is 7 × 13?", options: ["81", "91", "101", "111"], correctIndex: 1, timeLimit: 10 },
-    { id: "mul6", text: "What is 16 × 25?", options: ["300", "350", "400", "450"], correctIndex: 2, timeLimit: 15 },
-    { id: "mul7", text: "What is 125 × 8?", options: ["1,000", "1,100", "900", "1,200"], correctIndex: 0, timeLimit: 15 },
-  ],
-  division: [
-    { id: "div1", text: "What is 144 ÷ 12?", options: ["10", "11", "12", "13"], correctIndex: 2, timeLimit: 10 },
-    { id: "div2", text: "What is 500 ÷ 25?", options: ["15", "20", "25", "30"], correctIndex: 1, timeLimit: 15 },
-    { id: "div3", text: "What is 1,000 ÷ 8?", options: ["120", "125", "130", "135"], correctIndex: 1, timeLimit: 15 },
-    { id: "div4", text: "What is 360 ÷ 12?", options: ["20", "25", "30", "35"], correctIndex: 2, timeLimit: 10 },
-    { id: "div5", text: "What is 99 ÷ 9?", options: ["9", "10", "11", "12"], correctIndex: 2, timeLimit: 10 },
-    { id: "div6", text: "What is 256 ÷ 16?", options: ["14", "15", "16", "17"], correctIndex: 2, timeLimit: 15 },
-  ],
-  squares: [
-    { id: "sq1", text: "What is 12²?", options: ["134", "144", "154", "164"], correctIndex: 1, timeLimit: 10 },
-    { id: "sq2", text: "What is 15²?", options: ["215", "225", "235", "245"], correctIndex: 1, timeLimit: 10 },
-    { id: "sq3", text: "What is 20²?", options: ["200", "300", "400", "500"], correctIndex: 2, timeLimit: 5 },
-    { id: "sq4", text: "What is 25²?", options: ["525", "575", "625", "675"], correctIndex: 2, timeLimit: 10 },
-    { id: "sq5", text: "What is 30²?", options: ["600", "700", "800", "900"], correctIndex: 3, timeLimit: 5 },
-    { id: "sq6", text: "What is 11²?", options: ["111", "121", "131", "141"], correctIndex: 1, timeLimit: 5 },
-    { id: "sq7", text: "What is 13²?", options: ["149", "159", "169", "179"], correctIndex: 2, timeLimit: 10 },
-  ],
-  mixed: [
-    { id: "mix1", text: "What is (12 × 5) + 20?", options: ["60", "70", "80", "90"], correctIndex: 2, timeLimit: 20 },
-    { id: "mix2", text: "What is 100 - (7 × 7)?", options: ["41", "51", "61", "71"], correctIndex: 1, timeLimit: 20 },
-    { id: "mix3", text: "What is (150 ÷ 3) × 2?", options: ["50", "75", "100", "125"], correctIndex: 2, timeLimit: 20 },
-    { id: "mix4", text: "What is 25 + 36 - 14?", options: ["47", "57", "37", "67"], correctIndex: 0, timeLimit: 15 },
-    { id: "mix5", text: "What is 8 × 8 - 8?", options: ["48", "56", "64", "72"], correctIndex: 1, timeLimit: 15 },
-    { id: "mix6", text: "What is (100 + 50) ÷ 5?", options: ["20", "25", "30", "35"], correctIndex: 2, timeLimit: 20 },
-    { id: "mix7", text: "What is 7 × 11 + 3?", options: ["70", "77", "80", "87"], correctIndex: 2, timeLimit: 20 },
-  ],
-};
 
 // ── GMAT ──────────────────────────────────────────
 const GMAT_QUESTIONS: Record<string, Question[]> = {
@@ -260,7 +191,6 @@ const BANKING_QUESTIONS: Record<string, Question[]> = {
 };
 
 const QUESTIONS_BY_DOMAIN: Record<string, Record<string, Question[]>> = {
-  "vedic-math": VM_QUESTIONS,
   gmat: GMAT_QUESTIONS,
   cat: CAT_QUESTIONS,
   gre: GRE_QUESTIONS,
@@ -268,14 +198,6 @@ const QUESTIONS_BY_DOMAIN: Record<string, Record<string, Question[]>> = {
 };
 
 const TOPIC_LABELS: Record<string, Record<string, string>> = {
-  "vedic-math": {
-    addition: "Rapid Addition",
-    subtraction: "Fast Subtraction",
-    multiplication: "Speed Mult.",
-    division: "Quick Division",
-    squares: "Mental Squares",
-    mixed: "Mixed Challenge",
-  },
   gmat: {
     ps: "Problem Solving",
     ds: "Data Sufficiency",
@@ -319,9 +241,9 @@ export function generateSprintSession(
   difficulty: string,
   domain?: string,
 ): SprintSession {
-  const d = domain ?? "vedic-math";
-  const pool = QUESTIONS_BY_DOMAIN[d]?.[topic] ?? QUESTIONS_BY_DOMAIN["vedic-math"]?.addition ?? [];
-  const labels = TOPIC_LABELS[d] ?? TOPIC_LABELS["vedic-math"];
+  const d = domain ?? "cat";
+  const pool = QUESTIONS_BY_DOMAIN[d]?.[topic] ?? [];
+  const labels = TOPIC_LABELS[d] ?? TOPIC_LABELS["cat"];
 
   const shuffled = shuffle(pool);
   const selected = shuffled.slice(0, Math.min(length, shuffled.length));

@@ -1,15 +1,7 @@
-import { Zap, Minus, X, Percent, Square, Shuffle, Calculator, BrainCircuit, BookOpen, ListChecks, BarChart3, Sigma, FileText, Globe, Monitor } from "lucide-react";
+import { Minus, Calculator, BrainCircuit, BookOpen, ListChecks, BarChart3, Sigma, FileText, Globe, Monitor } from "lucide-react";
 import type { SprintTopic, SprintConfig } from "@/lib/types/sprint";
 
 const SPRINT_TOPICS_BY_DOMAIN: Record<string, SprintTopic[]> = {
-  "vedic-math": [
-    { id: "addition", label: "Rapid Addition", icon: Zap, color: "text-primary" },
-    { id: "subtraction", label: "Fast Subtraction", icon: Minus, color: "text-secondary" },
-    { id: "multiplication", label: "Speed Mult.", icon: X, color: "text-chart-4" },
-    { id: "division", label: "Quick Division", icon: Percent, color: "text-chart-3" },
-    { id: "squares", label: "Mental Squares", icon: Square, color: "text-chart-3" },
-    { id: "mixed", label: "Mixed Challenge", icon: Shuffle, color: "text-foreground" },
-  ],
   gmat: [
     { id: "ps", label: "Problem Solving", icon: Calculator, color: "text-chart-3" },
     { id: "ds", label: "Data Sufficiency", icon: ListChecks, color: "text-chart-4" },
@@ -44,7 +36,7 @@ export const SPRINT_CONFIG: SprintConfig = {
 };
 
 export function getTopicsByDomain(domain: string): SprintTopic[] {
-  return SPRINT_TOPICS_BY_DOMAIN[domain] ?? SPRINT_TOPICS_BY_DOMAIN["vedic-math"] ?? [];
+  return SPRINT_TOPICS_BY_DOMAIN[domain] ?? SPRINT_TOPICS_BY_DOMAIN["cat"] ?? [];
 }
 
-export const SPRINT_TOPICS = getTopicsByDomain("vedic-math");
+export const SPRINT_TOPICS = getTopicsByDomain("cat");

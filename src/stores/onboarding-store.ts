@@ -3,11 +3,10 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { safeLocalStorage } from "@/lib/browser";
 
 export function examIdForGoal(goal: string | null): string {
-  if (!goal) return "vedic-math";
-  if (goal.includes("CAT")) return "cat";
-  if (goal.includes("GMAT")) return "gmat";
-  if (goal.includes("GRE")) return "gre";
-  return "vedic-math";
+  if (goal?.includes("CAT")) return "cat";
+  if (goal?.includes("GMAT")) return "gmat";
+  if (goal?.includes("GRE")) return "gre";
+  return "cat";
 }
 
 type OnboardingState = {
@@ -129,13 +128,7 @@ export const useOnboardingStore = create<OnboardingState>()(
     {
       name: "exam-arena-onboarding",
       storage: createJSONStorage(() => safeLocalStorage),
-      merge: (persisted, current) => {
-        const base = { ...current, ...(persisted as Partial<OnboardingState>) };
-        if (base.isOnboarded && !base.targetExam) {
-          base.targetExam = examIdForGoal(base.goal ?? null);
-        }
-        return base;
-      },
+      merge: (persisted, current) => ({ ...current, ...(persisted as Partial<OnboardingState>) }),
     },
   ),
 );

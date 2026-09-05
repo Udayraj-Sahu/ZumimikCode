@@ -10,6 +10,7 @@ import type { SprintTopic } from "@/lib/types/sprint";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { Question } from "@/lib/types/sprint-session";
+import { CompleteSetupGate } from "@/components/dashboard/complete-setup-gate";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -17,7 +18,7 @@ const GLASS_BORDER = "rgba(255,255,255,0.08)";
 export default function QuestionsPage() {
   usePageMeta("Question Bank — Exam Arena");
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domain = targetExam || "vedic-math";
+  const domain = targetExam || "cat";
   const topics = getTopicsByDomain(domain);
   const defaultTopic = topics.length > 0 ? topics[0].id : "addition";
   const [topic, setTopic] = useState(defaultTopic);
@@ -50,6 +51,10 @@ export default function QuestionsPage() {
   const questions = (session?.questions ?? []).filter((q) =>
     !search || q.text.toLowerCase().includes(search.toLowerCase()),
   );
+
+  if (!targetExam) {
+    return <CompleteSetupGate />;
+  }
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">

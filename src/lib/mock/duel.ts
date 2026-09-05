@@ -1,14 +1,6 @@
 import type { DuelTopic, DuelOpponent, DuelResult } from "@/lib/types/duel";
 
 const DUEL_TOPICS_BY_DOMAIN: Record<string, DuelTopic[]> = {
-  "vedic-math": [
-    { id: "addition", label: "Rapid Addition" },
-    { id: "subtraction", label: "Fast Subtraction" },
-    { id: "multiplication", label: "Speed Mult." },
-    { id: "division", label: "Quick Division" },
-    { id: "squares", label: "Mental Squares" },
-    { id: "mixed", label: "Mixed Challenge" },
-  ],
   gmat: [
     { id: "ps", label: "Problem Solving" },
     { id: "ds", label: "Data Sufficiency" },
@@ -44,7 +36,7 @@ export const DUEL_OPPONENTS: DuelOpponent[] = [
 ];
 
 export function getDuelTopics(domain: string): DuelTopic[] {
-  return DUEL_TOPICS_BY_DOMAIN[domain] ?? DUEL_TOPICS_BY_DOMAIN["vedic-math"] ?? [];
+  return DUEL_TOPICS_BY_DOMAIN[domain] ?? DUEL_TOPICS_BY_DOMAIN["cat"] ?? [];
 }
 
 export function generateDuelResult(yourCorrect: number, total: number): DuelResult {

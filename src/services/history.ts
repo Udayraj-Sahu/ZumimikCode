@@ -20,7 +20,7 @@ export async function getHistory(domain?: string): Promise<HistoryEntry[]> {
 export async function getTopicFilterOptions(domain?: string): Promise<{ id: string; label: string }[]> {
   if (IS_MOCK) {
     await delay(50);
-    return getTopicFilters(domain ?? "vedic-math");
+    return getTopicFilters(domain ?? "cat");
   }
   const params = domain ? `?domain=${domain}` : "";
   return apiGet<{ id: string; label: string }[]>(`/history/filters${params}`);

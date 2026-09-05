@@ -1,82 +1,6 @@
 import type { TopicNode, TopicEdge } from "@/lib/types/technique";
 
 const SUBJECT_TREES: Record<string, TopicNode[]> = {
-  "vedic-math": [
-    {
-      id: "vedic-math",
-      type: "subject",
-      title: "Vedic Math",
-      slug: "vedic-math",
-      description: "Ancient Indian mathematical techniques for fast mental calculation",
-      children: [
-        {
-          id: "multiplication",
-          type: "topic",
-          title: "Multiplication",
-          slug: "multiplication",
-          children: [
-            {
-              id: "nikhilam",
-              type: "subtopic",
-              title: "Nikhilam Sutra",
-              slug: "nikhilam",
-              description: "Multiplication using base numbers (powers of 10)",
-              children: [
-                { id: "nikhilam-base-100", type: "technique", title: "Nikhilam Base 100", slug: "nikhilam-base-100", techniqueId: "nikhilam-base-100" },
-                { id: "nikhilam-base-1000", type: "technique", title: "Nikhilam Base 1000", slug: "nikhilam-base-1000", techniqueId: "nikhilam-base-1000" },
-              ],
-            },
-            {
-              id: "vert-cross",
-              type: "subtopic",
-              title: "Vertical & Crosswise",
-              slug: "vert-cross",
-              description: "Single-line multiplication using crosswise addition",
-              children: [
-                { id: "vert-cross-2digit", type: "technique", title: "Vert & Crosswise (2-digit)", slug: "vert-cross-2digit", techniqueId: "vert-cross-2digit" },
-              ],
-            },
-          ],
-        },
-        {
-          id: "division",
-          type: "topic",
-          title: "Division",
-          slug: "division",
-          children: [
-            {
-              id: "direct",
-              type: "subtopic",
-              title: "Direct Division",
-              slug: "direct",
-              description: "Digit-by-digit division with flag method",
-              children: [
-                { id: "direct-division", type: "technique", title: "Direct Division", slug: "direct-division", techniqueId: "direct-division" },
-              ],
-            },
-          ],
-        },
-        {
-          id: "squares",
-          type: "topic",
-          title: "Squares & Roots",
-          slug: "squares",
-          children: [
-            {
-              id: "digital-root",
-              type: "subtopic",
-              title: "Digital Root",
-              slug: "digital-root",
-              description: "Sum of digits reduced to single digit for verification",
-              children: [
-                { id: "digital-root-check", type: "technique", title: "Digital Root Check", slug: "digital-root-check", techniqueId: "digital-root" },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ],
   "fundamental-math": [
     {
       id: "fundamental-math",
@@ -344,10 +268,6 @@ const SUBJECT_TREES: Record<string, TopicNode[]> = {
 };
 
 export const SUBJECT_EDGES: TopicEdge[] = [
-  { sourceId: "nikhilam-base-100", targetId: "digital-root-check", type: "REQUIRES", label: "Digital root helps verify nikhilam results" },
-  { sourceId: "nikhilam-base-1000", targetId: "nikhilam-base-100", type: "REQUIRES", label: "Base 1000 extends Base 100 concepts" },
-  { sourceId: "vert-cross-2digit", targetId: "nikhilam-base-100", type: "REQUIRES", label: "Vertical & crosswise builds on nikhilam" },
-  { sourceId: "direct-division", targetId: "digital-root-check", type: "REQUIRES", label: "Digital root verifies division results" },
   { sourceId: "prime-factorization", targetId: "number-system-factors", type: "REQUIRES", label: "Understand factors before prime factorization" },
   { sourceId: "lcm-gcd", targetId: "prime-factorization", type: "REQUIRES", label: "Prime factorization is needed for LCM/GCD" },
   { sourceId: "speed-distance", targetId: "work-rate", type: "FRONTIER_OF", label: "Work rate uses rate concepts from speed-distance" },

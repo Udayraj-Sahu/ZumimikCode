@@ -8,6 +8,7 @@ import { useSubjectTree } from "@/hooks/queries/use-explorer";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { MindMap } from "@/components/explorer/mind-map";
+import { CompleteSetupGate } from "@/components/dashboard/complete-setup-gate";
 import { Compass, GraduationCap } from "lucide-react";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { getTechniqueIdsForTopic } from "@/lib/mock/topic-node-map";
@@ -23,11 +24,8 @@ function findNodeInTrees(trees: TopicNode[], domain: string, topic: string): { s
     if (nodeInTree(trees[i], topic)) return { subjectIndex: i, nodeId: topic };
   }
   const techs = getTechniqueIdsForTopic(domain, topic);
-  const techniqueId = techs[0];
-  if (techniqueId) {
-    for (let i = 0; i < trees.length; i++) {
-      if (nodeInTree(trees[i], techniqueId)) return { subjectIndex: i, nodeId: techniqueId };
-    }
+  for (let i = 0; i < trees.length; i++) {
+    if (techs.some((id) => nodeInTree(trees[i], id))) return { subjectIndex: i, nodeId: null };
   }
   return { subjectIndex: -1, nodeId: null };
 }
@@ -50,7 +48,7 @@ function ExplorerContent() {
   const urlTopic = searchParams.get("topic");
   const initialDomain = urlDomain && prepExams.includes(urlDomain) ? urlDomain : null;
 
-  const [activeDomain, setActiveDomain] = useState(() => initialDomain || prepExams[0] || targetExam || "vedic-math");
+  const [activeDomain, setActiveDomain] = useState(() => initialDomain || prepExams[0] || "");
   const [activeSubject, setActiveSubject] = useState(0);
   const [slideDir, setSlideDir] = useState(1);
   const [focusNodeId, setFocusNodeId] = useState<string | null>(null);
@@ -102,6 +100,10 @@ function ExplorerContent() {
   }, []);
 
   const label = DOMAIN_LABELS[activeDomain] ?? activeDomain;
+
+  if (prepExams.length === 0) {
+    return <CompleteSetupGate />;
+  }
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 overflow-x-hidden">

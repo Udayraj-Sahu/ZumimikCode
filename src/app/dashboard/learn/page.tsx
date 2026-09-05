@@ -27,6 +27,7 @@ import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { useMockPapers } from "@/hooks/queries/use-mock-exam";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
+import { CompleteSetupGate } from "@/components/dashboard/complete-setup-gate";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -113,7 +114,7 @@ function LearnPageContent() {
     const m = searchParams.get("mode");
     return m === "mock" || m === "adaptive" ? m : "explore";
   });
-  const [activeDomain, setActiveDomain] = useState(activeLearnDomain || targetExam || "cat");
+  const [activeDomain, setActiveDomain] = useState(activeLearnDomain || targetExam || "");
   const [showAddPrep, setShowAddPrep] = useState(false);
   const [statsCollapsed, setStatsCollapsed] = useState(true);
   const [mockSection, setMockSection] = useState<string>("all");
@@ -186,6 +187,10 @@ function LearnPageContent() {
     setMode(tab);
     setGlow(MODES.find((m) => m.id === tab)!.color);
   };
+
+  if (prepExams.length === 0) {
+    return <CompleteSetupGate />;
+  }
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">

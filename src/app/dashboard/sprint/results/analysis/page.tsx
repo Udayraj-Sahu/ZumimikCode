@@ -23,7 +23,7 @@ export default function AnalysisPage() {
   const lastResult = useSprintStore((s) => s.lastResult);
   const lastSession = useSprintStore((s) => s.lastSession);
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domain = targetExam || "vedic-math";
+  const domain = targetExam || "cat";
 
   const result: SprintResult | null = lastResult;
   const session = lastSession;

@@ -10,13 +10,6 @@ export const FEED_CATEGORIES = ["Explore", "Quant", "Verbal", "DI", "LR", "GK"] 
 
 export const FEED_STORIES: FeedStory[] = [
   {
-    id: "vedic-math",
-    thumbnailUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=120&h=120&fit=crop",
-    eyebrow: "Vedic Math shortcuts",
-    subtitle: "Master 3 mental calculation tricks for speed math",
-    readTime: "5 min read",
-  },
-  {
     id: "rc-strategy",
     thumbnailUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=120&h=120&fit=crop",
     eyebrow: "RC passage strategy",

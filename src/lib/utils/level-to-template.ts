@@ -9,7 +9,7 @@ export function exampleToTemplate(
 ): SolveAlongTemplate {
   return {
     id: `${techniqueName}-${level}-${index}`.toLowerCase().replace(/\s+/g, "-"),
-    domain: "vedic-math",
+    domain: "cat",
     concept: {
       technique_name: techniqueName,
       category: "technique",

@@ -67,26 +67,6 @@ const DASHBOARD_DATA_BY_DOMAIN: Record<string, {
   upcoming: UpcomingEvent[];
   recent: HomeRecentActivityItem[];
 }> = {
-  "vedic-math": {
-    topics: [
-      { name: "Addition", value: 92, color: "primary" },
-      { name: "Subtraction", value: 78, color: "primary" },
-      { name: "Multiplication", value: 64, color: "primary" },
-      { name: "Division", value: 85, color: "primary" },
-      { name: "Squares", value: 41, color: "primary" },
-    ],
-    stats: { accuracy: 87, questions: 1247, percentile: 64, speed: 47 },
-    upcoming: [
-      { title: "Sprint Duel", time: "Today, 8PM", tag: "LIVE" },
-      { title: "Vedic Math Challenge", time: "Thu, 10AM", tag: "MOCK" },
-      { title: "Group Challenge", time: "Sat, 3PM", tag: "GROUP" },
-    ],
-    recent: [
-      { label: "Speed Mult. Sprint", score: "22/25", time: "2h ago" },
-      { label: "Division Set #14", score: "18/20", time: "Yesterday" },
-      { label: "Full Vedic Mock", score: "142/200", time: "2d ago" },
-    ],
-  },
   gmat: {
     topics: [
       { name: "Problem Solving", value: 85, color: "primary" },

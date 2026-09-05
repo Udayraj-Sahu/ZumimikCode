@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { SectionHeading } from "@/components/SectionHeading";
 
 const LIVE_EXAMS = [
-  { id: "vedic-math", name: "VEDIC MATH", full: "Vedic Mathematics", difficulty: 94, students: "1.2M", topRank: "Aryan Mehta — AIR 3", color: "#3B82F6", glow: "rgba(200,255,90,0.3)", symbol: "∑" },
   { id: "gmat", name: "GMAT", full: "Graduate Management Admission Test", difficulty: 91, students: "2.1M", topRank: "Priya Sharma — AIR 7", color: "#C8FF5A", glow: "rgba(200,255,90,0.3)", symbol: "⊕" },
   { id: "cat", name: "CAT", full: "Common Admission Test", difficulty: 97, students: "900K", topRank: "Rohan Das — Rank 2", color: "#F59E0B", glow: "rgba(245,158,11,0.3)", symbol: "◎" },
   { id: "gre", name: "GRE", full: "Graduate Record Examination", difficulty: 78, students: "3.4M", topRank: "Kavya Nair — Score 198", color: "#EF4444", glow: "rgba(239,68,68,0.3)", symbol: "◆" },

@@ -78,7 +78,7 @@ export default function HistoryPage() {
   usePageMeta("Sprint History — Exam Arena");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domain = targetExam || "vedic-math";
+  const domain = targetExam || "cat";
   const TOPICS_FILTER_HISTORY = getTopicFilters(domain);
   const { data: entries, isLoading, error } = useHistory(targetExam);
   const [topicFilter, setTopicFilter] = useState("all");
