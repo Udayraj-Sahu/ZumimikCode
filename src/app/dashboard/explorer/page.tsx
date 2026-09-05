@@ -100,6 +100,17 @@ function ExplorerContent() {
 
   const label = DOMAIN_LABELS[activeDomain] ?? activeDomain;
 
+  if (prepExams.length === 0) {
+    return (
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 flex items-center justify-center">
+        <div className="text-center">
+          <Compass size={32} className="mx-auto text-muted-foreground/25 mb-3" />
+          <p className="text-[13px] text-muted-foreground/45">No exam selected. Add a prep to explore topics.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 overflow-x-hidden">
       {/* Header */}

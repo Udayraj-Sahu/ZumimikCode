@@ -299,36 +299,39 @@ function LearnPageContent() {
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
         <>
-          {/* Add Prep CTA */}
-          <button
-            type="button"
-            onClick={() => setShowAddPrep(true)}
-            className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 min-h-[44px] flex items-center justify-center gap-2 text-[13px] font-semibold tracking-widest uppercase text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <Plus size={15} strokeWidth={2.5} />
-            ADD PREP
-          </button>
-
           {/* Exam Tabs */}
           <div className="rounded-3xl border backdrop-blur-xl p-4 mt-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
             <p className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
-            <div className="flex flex-wrap gap-2">
-              {prepExams.map((id) => (
+            {prepExams.length === 0 ? (
+              <div className="flex flex-col items-center gap-3 py-4 text-center">
+                <span className="text-[12px] text-muted-foreground/50">No exam selected</span>
                 <button
-                  key={id}
                   type="button"
-                  onClick={() => { setActiveDomain(id); setActiveLearnDomain(id); }}
-                  className={cn(
-                    "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
-                    activeDomain === id
-                      ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
-                      : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]"
-                  )}
+                  onClick={() => setShowAddPrep(true)}
+                  className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
                 >
-                  {DOMAIN_LABELS[id]}
+                  <Plus size={12} strokeWidth={3} /> Add Prep
                 </button>
-              ))}
-            </div>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {prepExams.map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => { setActiveDomain(id); setActiveLearnDomain(id); }}
+                    className={cn(
+                      "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
+                      activeDomain === id
+                        ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
+                        : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]"
+                    )}
+                  >
+                    {DOMAIN_LABELS[id]}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Topic Cards */}
