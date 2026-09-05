@@ -563,7 +563,7 @@ function LearnPageContent() {
           </div>
 
           {/* Section filter chips */}
-          {(() => {
+          {prepExams.length > 0 && (() => {
             const sectionSet = new Set<string>();
             (mockPapers ?? []).forEach((p) => p.sections.forEach((s) => sectionSet.add(s.label)));
             const sections = ["all", ...Array.from(sectionSet)];
