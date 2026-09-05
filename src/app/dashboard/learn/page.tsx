@@ -457,7 +457,7 @@ function LearnPageContent() {
         </motion.div>
         )}
 
-        {mode === "mock" && (
+        {mode === "mock" && prepExams.length > 0 && (
         <motion.div
           key="mock"
           initial={{ opacity: 0, y: 10 }}
@@ -466,11 +466,20 @@ function LearnPageContent() {
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
           {/* Header */}
-          <div className="relative mb-5">
-            <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
-              {DOMAIN_LABELS[activeDomain] || "Mock"} <span className="bg-gradient-to-r from-primary to-[#d4ff6e] bg-clip-text text-transparent">Papers</span>
-            </h2>
-            <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Full-length and sectional timed tests.</p>
+          <div className="relative mb-5 flex items-start justify-between gap-3">
+            <div>
+              <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
+                {DOMAIN_LABELS[activeDomain] || "Mock"} <span className="bg-gradient-to-r from-primary to-[#d4ff6e] bg-clip-text text-transparent">Papers</span>
+              </h2>
+              <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Full-length and sectional timed tests.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowAddPrep(true)}
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+            >
+              <Plus size={12} strokeWidth={3} /> ADD PREP
+            </button>
           </div>
 
           {/* Exam switcher — sliding segmented control */}
@@ -641,13 +650,6 @@ function LearnPageContent() {
               <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
                 <FileText size={24} className="mx-auto text-muted-foreground/25 mb-3" />
                 <p className="text-[13px] text-muted-foreground/45 font-normal">No papers yet for {DOMAIN_LABELS[activeDomain] || "this exam"}.</p>
-                <button
-                  type="button"
-                  onClick={() => setShowAddPrep(true)}
-                  className="mt-4 text-[11px] font-bold uppercase tracking-wider text-primary"
-                >
-                  Add a prep
-                </button>
               </div>
             )}
           </div>
