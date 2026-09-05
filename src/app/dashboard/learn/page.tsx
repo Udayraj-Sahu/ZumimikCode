@@ -299,19 +299,22 @@ function LearnPageContent() {
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
         <>
+          {/* Add Prep CTA */}
+          <button
+            type="button"
+            onClick={() => setShowAddPrep(true)}
+            className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 min-h-[44px] flex items-center justify-center gap-2 text-[13px] font-semibold tracking-widest uppercase text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <Plus size={15} strokeWidth={2.5} />
+            ADD PREP
+          </button>
+
           {/* Exam Tabs */}
           <div className="rounded-3xl border backdrop-blur-xl p-4 mt-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
             <p className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
             {prepExams.length === 0 ? (
-              <div className="flex flex-col items-center gap-3 py-4 text-center">
+              <div className="flex items-center justify-center py-4">
                 <span className="text-[12px] text-muted-foreground/50">No exam selected</span>
-                <button
-                  type="button"
-                  onClick={() => setShowAddPrep(true)}
-                  className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
-                >
-                  <Plus size={12} strokeWidth={3} /> Add Prep
-                </button>
               </div>
             ) : (
               <div className="flex flex-wrap gap-2">
