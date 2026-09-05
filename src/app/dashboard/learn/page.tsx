@@ -338,6 +338,7 @@ function LearnPageContent() {
           </div>
 
           {/* Topic Cards */}
+          {prepExams.length > 0 && (
           <div className="flex flex-col gap-3 mt-5">
             {topics.map((topic, i) => {
               const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
@@ -385,9 +386,10 @@ function LearnPageContent() {
               </div>
             )}
           </div>
+          )}
 
           {/* Sensei Insight */}
-          {topics.length > 0 && (
+          {prepExams.length > 0 && topics.length > 0 && (
             <div className="relative rounded-3xl border backdrop-blur-xl p-5 mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
               <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#3B82F6] to-[#22D3EE]" />
               <div className="flex items-center gap-2.5 mb-3">
