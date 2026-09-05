@@ -402,15 +402,31 @@ function LearnPageContent() {
           )}
 
           {/* Explore Techniques */}
-          <button
-            type="button"
-            onClick={() => router.push("/dashboard/explorer")}
-            className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
-            style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
-          >
-            EXPLORE TECHNIQUES
-            <ArrowRight size={14} />
-          </button>
+          {prepExams.length === 0 ? (
+            <div className="flex flex-col items-center gap-3 py-8 text-center rounded-3xl border border-dashed border-white/[0.08] mt-5" style={{ background: GLASS_BG }}>
+              <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+                <Lock size={16} className="text-muted-foreground/45" />
+              </span>
+              <span className="text-[13px] text-muted-foreground/50">Select an exam to explore techniques</span>
+              <button
+                type="button"
+                onClick={() => setShowAddPrep(true)}
+                className="mt-1 flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+              >
+                <Plus size={12} strokeWidth={3} /> Add Prep
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => router.push("/dashboard/explorer")}
+              className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+              style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+            >
+              EXPLORE TECHNIQUES
+              <ArrowRight size={14} />
+            </button>
+          )}
         </>
         </motion.div>
         )}
@@ -423,16 +439,32 @@ function LearnPageContent() {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
-            <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
-            <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
-              <activeMode.Icon size={24} style={{ color: activeMode.color }} />
+          {prepExams.length === 0 ? (
+            <div className="flex flex-col items-center gap-3 py-10 text-center rounded-3xl border border-dashed border-white/[0.08]" style={{ background: GLASS_BG }}>
+              <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+                <Lock size={16} className="text-muted-foreground/45" />
+              </span>
+              <span className="text-[13px] text-muted-foreground/50">Select an exam first to practice</span>
+              <button
+                type="button"
+                onClick={() => setShowAddPrep(true)}
+                className="mt-1 flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+              >
+                <Plus size={12} strokeWidth={3} /> Add Prep
+              </button>
             </div>
-            <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
-            <p className="text-[12px] text-muted-foreground/45 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
-              {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
-            </p>
-          </div>
+          ) : (
+            <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
+              <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
+              <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
+                <activeMode.Icon size={24} style={{ color: activeMode.color }} />
+              </div>
+              <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
+              <p className="text-[12px] text-muted-foreground/45 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
+                {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
+              </p>
+            </div>
+          )}
         </motion.div>
         )}
 
