@@ -104,17 +104,19 @@ function ExplorerContent() {
 
   if (prepExams.length === 0) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 flex items-center justify-center">
-        <div className="flex flex-col items-center text-center">
-          {/* Branded header */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 mb-6">
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+        {/* Branded header at top */}
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5">
             <Compass size={12} className="text-primary" />
             <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
           </div>
+        </div>
 
+        <div className="flex items-center justify-center pt-14 pb-10">
           <div className="relative w-full max-w-sm rounded-3xl border border-white/[0.08] backdrop-blur-xl px-6 py-8" style={{ background: "rgba(255,255,255,0.04)" }}>
             <div className="absolute -top-12 -right-12 size-40 rounded-full opacity-[0.07] pointer-events-none" style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }} />
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-4 text-center">
               <span className="relative grid size-14 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
                 <Lock size={20} className="text-muted-foreground/45" />
               </span>
