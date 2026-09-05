@@ -62,7 +62,11 @@ export default function OnboardingPage() {
     return () => { tl.kill(); };
   }, [isAuthenticated]);
 
-  if (isAuthenticated) return <div className="fixed inset-0 bg-background" />;
+  useEffect(() => {
+    if (isAuthenticated) router.replace("/dashboard");
+  }, [isAuthenticated, router]);
+
+  if (isAuthenticated) return null;
 
   const handleLogin = (method: "google" | "phone") => {
     const name = method === "google" ? "Google User" : "Phone User";
