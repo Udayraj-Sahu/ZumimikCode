@@ -8,10 +8,11 @@ import { useSubjectTree } from "@/hooks/queries/use-explorer";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { MindMap } from "@/components/explorer/mind-map";
-import { Compass, GraduationCap } from "lucide-react";
+import { Compass, GraduationCap, Lock, Plus, ArrowRight } from "lucide-react";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { getTechniqueIdsForTopic } from "@/lib/mock/topic-node-map";
 import type { TopicNode } from "@/lib/types/technique";
+import { AddPrepModal } from "@/components/learn/add-prep-modal";
 
 function nodeInTree(node: TopicNode, id: string): boolean {
   if (node.id === id || node.slug === id) return true;
@@ -52,6 +53,7 @@ function ExplorerContent() {
   const [slideDir, setSlideDir] = useState(1);
   const [focusNodeId, setFocusNodeId] = useState<string | null>(null);
   const [paramsProcessed, setParamsProcessed] = useState(false);
+  const [showAddPrep, setShowAddPrep] = useState(false);
 
   const { data: trees, isLoading } = useSubjectTree(activeDomain);
   const subjects = trees ?? [];
@@ -103,10 +105,38 @@ function ExplorerContent() {
   if (prepExams.length === 0) {
     return (
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 flex items-center justify-center">
-        <div className="text-center">
-          <Compass size={32} className="mx-auto text-muted-foreground/25 mb-3" />
-          <p className="text-[13px] text-muted-foreground/45">No exam selected. Add a prep to explore topics.</p>
+        <div className="flex flex-col items-center text-center">
+          {/* Branded header */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 mb-6">
+            <Compass size={12} className="text-primary" />
+            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
+          </div>
+
+          <div className="relative w-full max-w-sm rounded-3xl border border-white/[0.08] backdrop-blur-xl px-6 py-8" style={{ background: "rgba(255,255,255,0.04)" }}>
+            <div className="absolute -top-12 -right-12 size-40 rounded-full opacity-[0.07] pointer-events-none" style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }} />
+            <div className="flex flex-col items-center gap-4">
+              <span className="relative grid size-14 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+                <Lock size={20} className="text-muted-foreground/45" />
+              </span>
+              <div>
+                <h1 className="text-[18px] font-bold tracking-[-0.02em] text-foreground">No exam selected</h1>
+                <p className="mt-1.5 text-[12px] text-muted-foreground/45 font-normal leading-relaxed max-w-[240px] mx-auto">
+                  Add a prep to explore topics and techniques in your study map.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowAddPrep(true)}
+                className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-[12px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.97] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <Plus size={13} strokeWidth={3} /> ADD PREP
+                <ArrowRight size={13} strokeWidth={2.5} />
+              </button>
+            </div>
+          </div>
         </div>
+
+        {showAddPrep && <AddPrepModal onClose={() => setShowAddPrep(false)} />}
       </div>
     );
   }
