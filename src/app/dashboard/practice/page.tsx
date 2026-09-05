@@ -40,7 +40,7 @@ export default function PracticePage() {
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domain = targetExam || "cat";
+  const domain = targetExam;
   const sprintTopics = getTopicsByDomain(domain);
   const domainLabel = DOMAIN_LABELS[targetExam] || targetExam || "Templates";
   const searchParams = useSearchParams();

@@ -18,7 +18,7 @@ const GLASS_BORDER = "rgba(255,255,255,0.08)";
 export default function FlashcardsPage() {
   usePageMeta("Flashcards — Exam Arena");
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domain = targetExam || "cat";
+  const domain = targetExam;
   const topics = getTopicsByDomain(domain);
   const defaultTopic = topics.length > 0 ? topics[0].id : "addition";
   const [topic, setTopic] = useState(defaultTopic);

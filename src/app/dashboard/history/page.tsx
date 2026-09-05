@@ -78,7 +78,7 @@ export default function HistoryPage() {
   usePageMeta("Sprint History — Exam Arena");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domain = targetExam || "cat";
+  const domain = targetExam;
   const TOPICS_FILTER_HISTORY = getTopicFilters(domain);
   const { data: entries, isLoading, error } = useHistory(targetExam);
   const [topicFilter, setTopicFilter] = useState("all");

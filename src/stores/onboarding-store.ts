@@ -6,7 +6,7 @@ export function examIdForGoal(goal: string | null): string {
   if (goal?.includes("CAT")) return "cat";
   if (goal?.includes("GMAT")) return "gmat";
   if (goal?.includes("GRE")) return "gre";
-  return "cat";
+  return "";
 }
 
 type OnboardingState = {
