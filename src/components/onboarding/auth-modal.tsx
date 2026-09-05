@@ -17,7 +17,6 @@ export function AuthModal({ onClose }: AuthModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const completeOnboarding = useOnboardingStore((s) => s.completeOnboarding);
   const setAuthData = useOnboardingStore((s) => s.setAuthData);
   const authLogin = useAuthStore((s) => s.login);
   const authLoginWithFirebase = useAuthStore((s) => s.loginWithFirebase);
@@ -43,7 +42,6 @@ export function AuthModal({ onClose }: AuthModalProps) {
     authMethod: "google" | "phone";
   }) => {
     setAuthData(data);
-    completeOnboarding();
     if (data.idToken) {
       await authLoginWithFirebase(data.idToken, data.authMethod);
     } else {

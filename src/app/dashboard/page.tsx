@@ -208,6 +208,7 @@ export default function DashboardPage() {
   const activePreps = useOnboardingStore((s) => s.activePreps);
   const examDates = useOnboardingStore((s) => s.examDates);
   const setExamDate = useOnboardingStore((s) => s.setExamDate);
+  const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
   const { data } = useDashboardData(targetExam);
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
@@ -217,7 +218,7 @@ export default function DashboardPage() {
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   const profileDone = [firstName.trim(), persona, goal].filter(Boolean).length;
-  const profileComplete = profileDone === 3;
+  const profileComplete = isOnboarded;
 
   const prepExams = useMemo(() => {
     const others = activePreps.filter((id) => id !== targetExam && id in DOMAIN_LABELS);

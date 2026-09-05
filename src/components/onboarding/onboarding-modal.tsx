@@ -100,10 +100,10 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const [localDob, setLocalDob] = useState(store.dob);
 
   useEffect(() => {
-    if (store.firstName && store.persona && store.goal) {
+    if (store.isOnboarded) {
       setCompleted(true);
     }
-  }, [store.firstName, store.persona, store.goal]);
+  }, [store.isOnboarded]);
 
   useEffect(() => {
     if (inline) return;
