@@ -8,7 +8,7 @@ import { useLeaderboard } from "@/hooks/queries/use-leaderboard";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { LeaderboardEntry } from "@/lib/types/dashboard";
 
-const PERIODS = ["week", "month", "all"] as const;
+const PERIODS = ["all", "week", "month"] as const;
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
