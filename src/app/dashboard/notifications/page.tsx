@@ -79,7 +79,7 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("all")}
           className={cn(
-            "rounded-xl px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "all"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -92,7 +92,7 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("unread")}
           className={cn(
-            "rounded-xl px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "unread"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
