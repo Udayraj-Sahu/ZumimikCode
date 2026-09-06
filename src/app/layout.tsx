@@ -3,7 +3,6 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
 import { OnlineProvider } from "@/providers/online-provider";
-import { ThemeProvider } from "@/providers/theme-provider";
 import { CapacitorInit } from "./capacitor-init";
 import { AppEntry } from "@/components/ui/app-entry";
 
@@ -102,10 +101,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           />
           <QueryProvider>
             <OnlineProvider>
-              <ThemeProvider>
-                <CapacitorInit />
-                <AppEntry>{children}</AppEntry>
-              </ThemeProvider>
+              <CapacitorInit />
+              <AppEntry>{children}</AppEntry>
             </OnlineProvider>
           </QueryProvider>
         </div>

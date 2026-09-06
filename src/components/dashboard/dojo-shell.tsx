@@ -4,11 +4,10 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef, useEffect, useCallback, useState } from "react";
 import gsap from "gsap";
-import { LogOut, Zap, Flame, Sun, Moon, MoreHorizontal } from "lucide-react";
+import { LogOut, Zap, Flame, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useAuthStore } from "@/stores/auth-store";
-import { useThemeStore } from "@/stores/theme-store";
 import { Walkthrough } from "@/components/dashboard/walkthrough";
 import { RatePrompt } from "@/components/dashboard/rate-prompt";
 
@@ -40,7 +39,6 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
   const user = useAuthStore((s) => s.user);
-  const { theme, toggleTheme } = useThemeStore();
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
@@ -203,14 +201,6 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
             <span className="flex-1 truncate text-[12.5px] font-bold uppercase tracking-[0.5px] text-chrome-foreground/60">
               {displayName}
             </span>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-              className="grid size-11 shrink-0 place-items-center rounded-lg text-chrome-muted outline-none transition-colors hover:bg-white/5 hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              {theme === "dark" ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}
-            </button>
             <button
               type="button"
               onClick={() => { logout(); router.push("/"); }}
