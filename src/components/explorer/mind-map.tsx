@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -252,7 +252,7 @@ function BranchNode({
             style={depth === 0 ? undefined : { color: meta.color }}
           >
             {meta.label}
-            {hasChildren ? ` Â· ${node.children!.length}` : ""}
+            {hasChildren ? ` · ${node.children!.length}` : ""}
           </span>
         </span>
         {hasChildren && (

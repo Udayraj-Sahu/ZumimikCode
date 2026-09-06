@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -23,7 +23,7 @@ function formatTime(s: number): string {
 }
 
 function MockRunContent() {
-  usePageMeta("Mock Test â€” Exam Arena");
+  usePageMeta("Mock Test — Exam Arena");
   const router = useRouter();
   const searchParams = useSearchParams();
   const paperId = searchParams.get("paper") ?? "";

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useLayoutEffect, useMemo, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -102,7 +102,7 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 ];
 
 function LearnPageContent() {
-  usePageMeta("Learn â€” Exam Arena");
+  usePageMeta("Learn — Exam Arena");
   const router = useRouter();
   const searchParams = useSearchParams();
   const targetExam = useOnboardingStore((s) => s.targetExam);
@@ -188,7 +188,7 @@ function LearnPageContent() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-      {/* Page header â€” matches app pattern */}
+      {/* Page header — matches app pattern */}
       <header className="mb-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
           <BookOpen size={12} className="text-primary" />
@@ -207,7 +207,7 @@ function LearnPageContent() {
           <div ref={glowTopRef} className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" />
           <div ref={glowBottomRef} className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" />
 
-          {/* Tab mode selector â€” 3D push keys: active pops up, others sit flat/sunken */}
+          {/* Tab mode selector — 3D push keys: active pops up, others sit flat/sunken */}
           <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5">
             <div className="grid grid-cols-3 gap-2.5">
               {MODES.map((m) => {
@@ -222,7 +222,7 @@ function LearnPageContent() {
                     transition={{ type: "spring", stiffness: 260, damping: 30 }}
                     className="relative"
                   >
-                    {/* Top light bevel â€” only on the raised active key */}
+                    {/* Top light bevel — only on the raised active key */}
                     <div
                       className="absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
                       style={{
@@ -481,7 +481,7 @@ function LearnPageContent() {
             </button>
           </div>
 
-          {/* Exam switcher â€” sliding segmented control */}
+          {/* Exam switcher — sliding segmented control */}
           {prepExams.length > 1 && (
             <div className="relative mt-2 mb-5">
               <div
@@ -623,14 +623,14 @@ function LearnPageContent() {
                   </div>
 
                   <p className="text-micro text-muted-foreground/50 mt-3 font-normal">
-                    {paper.sections.map((s) => s.label).join(" | ")} â€¢ {paper.totalQuestions} Questions â€¢ {formatDuration(paper.durationMinutes)}
+                    {paper.sections.map((s) => s.label).join(" | ")} • {paper.totalQuestions} Questions • {formatDuration(paper.durationMinutes)}
                   </p>
 
                   <div className="flex items-center justify-between mt-4 gap-3">
                     <div className="flex flex-wrap gap-1.5">
                       {paper.sections.map((s) => (
                         <span key={s.id} className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07]" style={{ color: paper.accent, background: `${paper.accent}0d` }}>
-                          {s.label} Â· {s.questions}
+                          {s.label} · {s.questions}
                         </span>
                       ))}
                     </div>

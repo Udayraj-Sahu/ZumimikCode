@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ function timeAgo(lastActive: string): string {
 }
 
 export default function LinkedDevicesPage() {
-  usePageMeta("Linked Devices â€” Exam Arena");
+  usePageMeta("Linked Devices — Exam Arena");
   const router = useRouter();
   const { data: devices, isLoading, error } = useLinkedDevices();
   const revoke = useRevokeDevice();
@@ -120,7 +120,7 @@ export default function LinkedDevicesPage() {
                     <p className={cn("text-micro font-normal mt-0.5", device.current ? "text-primary/70" : "text-muted-foreground/55")}>
                       {device.current
                         ? timeAgo(device.lastActive)
-                        : `${timeAgo(device.lastActive)} Â· ${device.addedAt}`}
+                        : `${timeAgo(device.lastActive)} · ${device.addedAt}`}
                     </p>
                   </div>
                   <button
@@ -150,7 +150,7 @@ export default function LinkedDevicesPage() {
 
       {confirmingId && (
         <p className="mt-3 px-1 text-center text-micro text-muted-foreground/40 font-normal">
-          Tap again to confirm â€” this sign-out takes effect immediately.
+          Tap again to confirm — this sign-out takes effect immediately.
         </p>
       )}
 

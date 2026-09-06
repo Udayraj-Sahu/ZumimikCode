@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -143,9 +143,9 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         <span className="flex items-center gap-1 font-semibold text-primary">
           <Shield className="h-3 w-3" /> {badge}
         </span>
-        <span className="text-muted-foreground/30">Â·</span>
+        <span className="text-muted-foreground/30">·</span>
         <span className="text-muted-foreground/40 font-normal">Lv. 04</span>
-        <span className="text-muted-foreground/30">Â·</span>
+        <span className="text-muted-foreground/30">·</span>
         <span className="text-muted-foreground/40 font-normal">Mumbai, India</span>
       </div>
       <button type="button" onClick={onEdit} className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.05em] text-primary">
@@ -176,8 +176,8 @@ function PerformanceOverview({ sessions, streak, rank, xp }: { sessions: string;
     <div className="px-4">
       <SectionLabel>PERFORMANCE OVERVIEW</SectionLabel>
       <div className="grid grid-cols-2 gap-3">
-        <StatCard icon={<span className="text-lg">ðŸŽ¯</span>} value={sessions} label="Sessions" />
-        <StatCard icon={<span className="text-lg">ðŸ”¥</span>} value={streak} label="Streak" />
+        <StatCard icon={<span className="text-lg">🎯</span>} value={sessions} label="Sessions" />
+        <StatCard icon={<span className="text-lg">🔥</span>} value={streak} label="Streak" />
         <StatCard icon={<Trophy className="h-5 w-5" />} value={`#${rank}`} label="Rank" />
         <StatCard icon={<Zap className="h-5 w-5" />} value={xp} label="XP" />
       </div>
@@ -221,7 +221,7 @@ function SubscriptionCard() {
           </li>
         </ul>
         <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-primary to-[#a8e62e] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-primary-foreground shadow-[0_0_20px_rgba(199,242,82,0.25)] transition-all hover:shadow-[0_0_30px_rgba(199,242,82,0.35)] active:scale-[0.98]">
-          Upgrade to Pro â€” $9.99/mo
+          Upgrade to Pro — $9.99/mo
         </button>
       </div>
     </div>
@@ -232,7 +232,7 @@ function SubscriptionCard() {
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function SettingsPage() {
-  usePageMeta("Settings â€” Exam Arena");
+  usePageMeta("Settings — Exam Arena");
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
   const firstName = useOnboardingStore((s) => s.firstName);

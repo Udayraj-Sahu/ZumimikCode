@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -113,7 +113,7 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function PlayPage() {
-  usePageMeta("Play â€” Exam Arena");
+  usePageMeta("Play — Exam Arena");
   const [activeTab, setActiveTab] = useState<TabId>("math");
   const modes = MODES_BY_TAB[activeTab];
   const comingSoon = COMING_SOON[activeTab];

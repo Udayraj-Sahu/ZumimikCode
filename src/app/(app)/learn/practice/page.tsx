@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -35,7 +35,7 @@ const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function PracticePage() {
-  usePageMeta("Practice â€” Exam Arena");
+  usePageMeta("Practice — Exam Arena");
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);
@@ -245,7 +245,7 @@ export default function PracticePage() {
           </div>
         </div>
 
-        {/* â”€â”€ MCQ CONFIG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── MCQ CONFIG ──────────────────────────────────────────── */}
         {practiceType === "mcq" && (
           <>
             <div ref={animateSection} data-section-index="1" className="mb-5">
@@ -315,7 +315,7 @@ export default function PracticePage() {
           </>
         )}
 
-        {/* â”€â”€ TEMPLATES: NO EXAM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── TEMPLATES: NO EXAM ──────────────────────────────────── */}
         {practiceType === "templates" && !targetExam && (
           <div ref={animateSection} data-section-index="1" className="mt-2">
             <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-8 text-center" style={{ background: GLASS_BG }}>
@@ -337,7 +337,7 @@ export default function PracticePage() {
           </div>
         )}
 
-        {/* â”€â”€ TEMPLATES: WITH EXAM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {/* ── TEMPLATES: WITH EXAM ────────────────────────────────── */}
         {practiceType === "templates" && targetExam && (
           <>
             <div ref={animateSection} data-section-index="1" className="mb-5">
@@ -404,8 +404,8 @@ export default function PracticePage() {
                 })}
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground/55 font-normal">
-                {renderMode === "solve_along" && "Step-by-step reveal â€” learn the technique"}
-                {renderMode === "quick" && "All steps visible â€” speed practice"}
+                {renderMode === "solve_along" && "Step-by-step reveal — learn the technique"}
+                {renderMode === "quick" && "All steps visible — speed practice"}
                 {renderMode === "guided" && "Auto-advancing steps with hints"}
               </p>
             </div>
@@ -428,7 +428,7 @@ export default function PracticePage() {
   }
 
   /* ================================================================ */
-  /*  DONE PHASE â€” MCQ RESULTS                                        */
+  /*  DONE PHASE — MCQ RESULTS                                        */
   /* ================================================================ */
   if (phase === "done" && completed) {
     const accuracy = Math.round((completed.correct / completed.total) * 100);
@@ -489,7 +489,7 @@ export default function PracticePage() {
   }
 
   /* ================================================================ */
-  /*  TEMPLATE DONE â€” TECHNIQUE LEARNED                               */
+  /*  TEMPLATE DONE — TECHNIQUE LEARNED                               */
   /* ================================================================ */
   if (practiceType === "templates" && rendererPhase === "done" && completed) {
     const sprintTopic = searchParams.get("topic") || "";

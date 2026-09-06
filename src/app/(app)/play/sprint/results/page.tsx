@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ function formatTime(s: number): string {
 }
 
 export default function SprintResultsPage() {
-  usePageMeta("Sprint Results â€” Exam Arena");
+  usePageMeta("Sprint Results — Exam Arena");
   const router = useRouter();
   const lastResult = useSprintStore((s) => s.lastResult);
   const lastSession = useSprintStore((s) => s.lastSession);
@@ -75,7 +75,7 @@ export default function SprintResultsPage() {
         </p>
       </div>
 
-      {/* Score row â€” 4 stat cards */}
+      {/* Score row — 4 stat cards */}
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
           <p className="text-micro font-bold uppercase tracking-wider text-primary">Accuracy</p>

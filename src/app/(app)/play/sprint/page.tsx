@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,7 +24,7 @@ function formatTime(s: number): string {
 }
 
 function SprintContent() {
-  usePageMeta("Sprint â€” Exam Arena");
+  usePageMeta("Sprint — Exam Arena");
   const router = useRouter();
   const searchParams = useSearchParams();
   const topic = searchParams.get("topic") ?? "";

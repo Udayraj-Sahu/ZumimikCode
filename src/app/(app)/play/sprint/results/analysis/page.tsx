@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function AnalysisPage() {
-  usePageMeta("Analysis â€” Exam Arena");
+  usePageMeta("Analysis — Exam Arena");
   const router = useRouter();
 
   const lastResult = useSprintStore((s) => s.lastResult);

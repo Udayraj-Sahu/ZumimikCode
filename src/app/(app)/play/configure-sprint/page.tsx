@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function ConfigureSprintPage() {
-  usePageMeta("Configure Sprint â€” Exam Arena");
+  usePageMeta("Configure Sprint — Exam Arena");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data, isLoading } = useSprintTopics(targetExam);

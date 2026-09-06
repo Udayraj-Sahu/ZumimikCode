@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -16,7 +16,7 @@ export function ClientTechniquePage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { data: technique, isLoading, error } = useTechnique(params.id);
-  usePageMeta(technique ? `${technique.name} â€” Exam Arena` : "Technique â€” Exam Arena");
+  usePageMeta(technique ? `${technique.name} — Exam Arena` : "Technique — Exam Arena");
 
   const headerRef = useCallback((el: HTMLDivElement | null) => {
     if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
@@ -66,7 +66,7 @@ export function ClientTechniquePage() {
 
         {technique.topicPath.length > 0 && (
           <p className="text-[11px] text-muted-foreground/50 mt-1">
-            {technique.topicPath.join(" â€º ")}
+            {technique.topicPath.join(" › ")}
           </p>
         )}
       </div>

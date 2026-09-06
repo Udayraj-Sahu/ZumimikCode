@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -199,7 +199,7 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function DashboardPage() {
-  usePageMeta("Dashboard â€” Exam Arena");
+  usePageMeta("Dashboard — Exam Arena");
   const router = useRouter();
   const firstName = useOnboardingStore((s) => s.firstName);
   const persona = useOnboardingStore((s) => s.persona);
@@ -344,7 +344,7 @@ export default function DashboardPage() {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch", width: "100%" }}
           onScroll={handleCarouselScroll}
         >
-          {/* Slide 1: Profile status â€” teaser or complete card */}
+          {/* Slide 1: Profile status — teaser or complete card */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
             <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.06) 0%, rgba(255,255,255,0.02) 55%, rgba(199,242,82,0.03) 100%)" }}>
               <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.35), transparent)" }} />
@@ -380,7 +380,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">You&apos;re all set, {firstName}</h2>
-                    <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal â€” let&apos;s make it count.</p>
+                    <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let&apos;s make it count.</p>
                     <div className="mt-3 flex items-center gap-1.5">
                       {["Name", "Persona", "Goal"].map((l) => (
                         <div key={l} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.08)" }}>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <p className="relative text-center text-[9.5px] text-muted-foreground/60 font-semibold tracking-[0.14em]">PROFILE READY â€¢ STREAKS UNLOCKED</p>
+                  <p className="relative text-center text-[9.5px] text-muted-foreground/60 font-semibold tracking-[0.14em]">PROFILE READY • STREAKS UNLOCKED</p>
                 </>
               ) : (
                 <>
@@ -419,7 +419,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <h2 className="mt-3 text-[23px] font-black tracking-[-0.03em] text-foreground leading-tight">Finish your profile</h2>
-                    <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for â€” we&apos;ll tailor everything to you.</p>
+                    <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for — we&apos;ll tailor everything to you.</p>
                     <div className="mt-3 flex items-center gap-1.5">
                       {[
                         { label: "Name", done: !!firstName.trim() },
@@ -527,7 +527,7 @@ export default function DashboardPage() {
               <div className="relative h-px w-full bg-white/[0.05]" />
               <SectionLabel className="text-[#34D399] mt-3.5">DAILY HABITS</SectionLabel>
               <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-              <p className="relative mt-0.5 text-[11px] text-muted-foreground/60 font-normal">Daily check-ins Â· Streaks Â· Stay accountable</p>
+              <p className="relative mt-0.5 text-[11px] text-muted-foreground/60 font-normal">Daily check-ins · Streaks · Stay accountable</p>
               <div className="relative mt-3 flex-1 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="68" height="68" viewBox="0 0 64 64">
@@ -601,7 +601,7 @@ export default function DashboardPage() {
                 icon={Play}
                 iconFill
                 title="Master with templates"
-                desc="Guided exercises Â· Build speed & accuracy"
+                desc="Guided exercises · Build speed & accuracy"
                 cta="PRACTICE NOW"
                 ctaFrom="#22D3EE"
                 ctaTo="#06B6D4"
@@ -614,7 +614,7 @@ export default function DashboardPage() {
                 label="TECHNIQUE LIBRARY"
                 icon={BookOpen}
                 title="Learn a technique"
-                desc="Browse core methods Â· Master each approach"
+                desc="Browse core methods · Master each approach"
                 cta="EXPLORE TECHNIQUES"
                 ctaFrom="#F59E0B"
                 ctaTo="#D97706"
@@ -938,7 +938,7 @@ export default function DashboardPage() {
                     "text-[13px] font-bold w-8 tracking-[-0.01em]",
                     l.rank === 1 ? "text-[#FFD700]" : l.rank === 2 ? "text-[#C0C0C0]" : l.rank === 3 ? "text-[#CD7F32]" : "text-muted-foreground/60"
                   )}>
-                    {l.rank <= 3 ? ["ðŸ¥‡", "ðŸ¥ˆ", "ðŸ¥‰"][l.rank - 1] : `#${l.rank}`}
+                    {l.rank <= 3 ? ["🥇", "🥈", "🥉"][l.rank - 1] : `#${l.rank}`}
                   </span>
                   <span className={cn("text-[13px]", l.me ? "font-bold text-primary" : "font-medium text-foreground/65")}>
                     {l.name}

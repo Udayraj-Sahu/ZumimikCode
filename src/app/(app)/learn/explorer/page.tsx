@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useCallback, useMemo, useEffect, Suspense } from "react";
 import gsap from "gsap";
@@ -31,7 +31,7 @@ function findNodeInTrees(trees: TopicNode[], domain: string, topic: string): { s
 }
 
 function ExplorerContent() {
-  usePageMeta("Topic Explorer â€” Exam Arena");
+  usePageMeta("Topic Explorer — Exam Arena");
   const searchParams = useSearchParams();
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
@@ -157,7 +157,7 @@ function ExplorerContent() {
         <p className="mt-1.5 text-[12px] text-muted-foreground/45 font-normal">Tap nodes to branch out and explore your study map.</p>
       </div>
 
-      {/* Exam switcher â€” sliding segmented control */}
+      {/* Exam switcher — sliding segmented control */}
       {prepExams.length > 1 && (
         <div ref={animateSection} data-section-index={0} className="relative mt-7">
           <div

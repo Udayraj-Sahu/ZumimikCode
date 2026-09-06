@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,7 @@ const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function EditProfilePage() {
-  usePageMeta("Edit Profile â€” Exam Arena");
+  usePageMeta("Edit Profile — Exam Arena");
   const router = useRouter();
   const { data } = useProfileData();
   const profile = data?.profile;
