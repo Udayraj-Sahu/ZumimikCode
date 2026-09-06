@@ -136,9 +136,9 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         type="button"
         onClick={toggleTheme}
         aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-        className="absolute top-6 right-4 grid size-11 place-items-center rounded-full border border-white/[0.06] bg-white/[0.04] text-muted-foreground/60 outline-none backdrop-blur-sm transition-colors hover:bg-white/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        className="absolute top-7 right-4 grid size-9 place-items-center rounded-full border border-white/[0.06] bg-white/[0.04] text-muted-foreground/60 outline-none backdrop-blur-sm transition-colors hover:bg-white/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
       >
-        {theme === "dark" ? <Sun className="size-5" aria-hidden="true" /> : <Moon className="size-5" aria-hidden="true" />}
+        {theme === "dark" ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}
       </button>
       <div className="relative inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
         <Settings size={12} className="text-primary" />
