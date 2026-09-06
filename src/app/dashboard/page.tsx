@@ -777,7 +777,7 @@ export default function DashboardPage() {
                 key={q.label}
                 type="button"
                 onClick={() => router.push(q.href)}
-                className="group flex flex-col items-center gap-3 rounded-2xl border border-white/[0.04] bg-[#0d0d0d] py-4 transition-all hover:bg-[#141414] active:scale-95"
+                className="group flex flex-col items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] py-4 transition-all hover:bg-white/[0.07] active:scale-95"
               >
                 <div className="relative">
                   <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md" style={{ background: q.color }} />
