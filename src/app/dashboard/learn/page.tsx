@@ -179,12 +179,11 @@ function LearnPageContent() {
   useLayoutEffect(() => {
     setGlow(activeMode.color);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeMode.color]);
 
   const goTo = (tab: Mode) => {
     if (tab === mode) return;
     setMode(tab);
-    setGlow(MODES.find((m) => m.id === tab)!.color);
   };
 
   return (
