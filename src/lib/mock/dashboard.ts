@@ -1,4 +1,4 @@
-import type { NavItem, Topic, RadarAxis, Metric, DashboardStats, StreakData, UpcomingEvent, LeaderboardEntry, HomeRecentActivityItem } from "@/lib/types/dashboard";
+﻿import type { NavItem, Topic, RadarAxis, Metric, DashboardStats, StreakData, UpcomingEvent, LeaderboardEntry, HomeRecentActivityItem } from "@/lib/types/dashboard";
 import {
   Home,
   Zap,
@@ -24,27 +24,27 @@ import {
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: Home, section: "Main" },
-  { label: "Sprints", href: "/dashboard/configure-sprint", icon: Zap, section: "Training" },
-  { label: "History", href: "/dashboard/history", icon: Clock, section: "Training" },
-  { label: "Practice", href: "/dashboard/practice", icon: BookOpen, section: "Training" },
+  { label: "Sprints", href: "/play/configure-sprint", icon: Zap, section: "Training" },
+  { label: "History", href: "/settings/history", icon: Clock, section: "Training" },
+  { label: "Practice", href: "/learn/practice", icon: BookOpen, section: "Training" },
   { label: "Analytics", href: "/dashboard/analytics", icon: LineChart, section: "Training" },
-  { label: "Leaderboard", href: "/dashboard/leaderboard", icon: Trophy, section: "Training" },
-  { label: "Profile", href: "/dashboard/profile", icon: User, section: "Account" },
-  { label: "Achievements", href: "/dashboard/achievements", icon: Award, section: "Account" },
-  { label: "Duel", href: "/dashboard/duel", icon: Swords, section: "Account" },
-  { label: "Settings", href: "/dashboard/settings", icon: Settings, section: "Account" },
+  { label: "Leaderboard", href: "/settings/leaderboard", icon: Trophy, section: "Training" },
+  { label: "Profile", href: "/settings/profile", icon: User, section: "Account" },
+  { label: "Achievements", href: "/settings/achievements", icon: Award, section: "Account" },
+  { label: "Duel", href: "/play/duel", icon: Swords, section: "Account" },
+  { label: "Settings", href: "/settings", icon: Settings, section: "Account" },
   { label: "Friends", href: "/dashboard/friends", icon: Users, section: "Account" },
-  { label: "Planner", href: "/dashboard/planner", icon: Calendar, section: "Support" },
-  { label: "Reports", href: "/dashboard/reports", icon: FileText, section: "Support" },
-  { label: "Notifications", href: "/dashboard/notifications", icon: Bell, section: "Support" },
-  { label: "Help & About", href: "/dashboard/help", icon: HelpCircle, section: "Support" },
+  { label: "Planner", href: "/settings/planner", icon: Calendar, section: "Support" },
+  { label: "Reports", href: "/settings/reports", icon: FileText, section: "Support" },
+  { label: "Notifications", href: "/settings/notifications", icon: Bell, section: "Support" },
+  { label: "Help & About", href: "/settings/help", icon: HelpCircle, section: "Support" },
 ];
 
 export const MOBILE_NAV: NavItem[] = [
   { label: "Home", href: "/dashboard", icon: Home },
-  { label: "Learn", href: "/dashboard/learn", icon: BookOpen },
-  { label: "Play", href: "/dashboard/play", icon: Zap },
-  { label: "Settings", href: "/dashboard/settings", icon: Settings },
+  { label: "Learn", href: "/learn", icon: BookOpen },
+  { label: "Play", href: "/play", icon: Zap },
+  { label: "Settings", href: "/settings", icon: Settings },
 ];
 
 const RADAR_AXES: RadarAxis[] = [

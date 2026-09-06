@@ -1,0 +1,101 @@
+﻿"use client";
+
+import { useCallback } from "react";
+import { useParams, useRouter } from "next/navigation";
+import gsap from "gsap";
+import { Lightbulb } from "lucide-react";
+import { useTechnique } from "@/hooks/queries/use-technique";
+import { usePageMeta } from "@/hooks/use-page-meta";
+import { QuickReferenceCard } from "@/components/technique/quick-reference-card";
+import { DifficultyTabs } from "@/components/technique/difficulty-tabs";
+
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
+export function ClientTechniquePage() {
+  const params = useParams<{ id: string }>();
+  const router = useRouter();
+  const { data: technique, isLoading, error } = useTechnique(params.id);
+  usePageMeta(technique ? `${technique.name} â€” Exam Arena` : "Technique â€” Exam Arena");
+
+  const headerRef = useCallback((el: HTMLDivElement | null) => {
+    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 animate-pulse">
+        <div className="h-10 w-32 rounded-xl mb-4" style={{ background: GLASS_BG }} />
+        <div className="h-32 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
+        <div className="h-64 rounded-3xl" style={{ background: GLASS_BG }} />
+      </div>
+    );
+  }
+
+  if (error || !technique) {
+    return (
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
+        <div
+          className="flex flex-col items-center gap-4 rounded-3xl p-8 text-center"
+          style={{ background: GLASS_BG, border: `1px solid rgba(239,68,68,0.12)` }}
+        >
+          <p className="text-[13px] font-semibold text-destructive">Technique not found</p>
+          <button
+            type="button"
+            onClick={() => { if (window.history.length > 1) router.back(); else router.push("/learn/explorer"); }}
+            className="rounded-xl bg-primary px-5 py-2.5 text-micro font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
+      <div ref={headerRef} className="text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
+          <Lightbulb size={12} className="text-primary" />
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">TECHNIQUE</span>
+        </div>
+
+        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
+          {technique.name}
+        </h1>
+
+        {technique.topicPath.length > 0 && (
+          <p className="text-[11px] text-muted-foreground/50 mt-1">
+            {technique.topicPath.join(" â€º ")}
+          </p>
+        )}
+      </div>
+
+      {/* Quick Reference Card */}
+      <div className="mt-6">
+        <div
+          className="inline-flex items-center rounded-full px-3 py-1 mb-3"
+          style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
+        >
+          <p className="text-micro font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
+            Quick Reference
+          </p>
+        </div>
+        <QuickReferenceCard card={technique.quickReference} />
+      </div>
+
+      {/* Difficulty Levels */}
+      <div className="mt-8">
+        <div
+          className="inline-flex items-center rounded-full px-3 py-1 mb-3"
+          style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
+        >
+          <p className="text-micro font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
+            Difficulty Levels
+          </p>
+        </div>
+        <DifficultyTabs levels={technique.levels} techniqueName={technique.name} />
+      </div>
+    </div>
+  );
+}

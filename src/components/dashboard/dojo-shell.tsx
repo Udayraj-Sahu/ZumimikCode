@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,23 +13,23 @@ import { RatePrompt } from "@/components/dashboard/rate-prompt";
 
 const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: "Arena", href: "/dashboard" },
-  { label: "Quests", href: "/dashboard/configure-sprint" },
-  { label: "Compete", href: "/dashboard/duel" },
-  { label: "Practice", href: "/dashboard/practice" },
+  { label: "Quests", href: "/play/configure-sprint" },
+  { label: "Compete", href: "/play/duel" },
+  { label: "Practice", href: "/learn/practice" },
   { label: "Analytics", href: "/dashboard/analytics" },
 ];
 
 const FLYOUT_HREFS = [
-  "/dashboard/leaderboard",
-  "/dashboard/history",
-  "/dashboard/achievements",
-  "/dashboard/settings",
+  "/settings/leaderboard",
+  "/settings/history",
+  "/settings/achievements",
+  "/settings",
   "/dashboard/friends",
-  "/dashboard/planner",
-  "/dashboard/reports",
-  "/dashboard/notifications",
-  "/dashboard/help",
-  "/dashboard/profile",
+  "/settings/planner",
+  "/settings/reports",
+  "/settings/notifications",
+  "/settings/help",
+  "/settings/profile",
 ];
 
 const NAV_BY_HREF = new Map(NAV_ITEMS.map((item) => [item.href, item]));
@@ -187,7 +187,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
         {/* Bottom */}
         <div data-sidebar-section className="mt-auto flex flex-col gap-4 pt-4">
           <Link
-            href="/dashboard/configure-sprint"
+            href="/play/configure-sprint"
             className="flex items-center justify-center gap-2 rounded-[10px] bg-primary px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Zap className="size-4" aria-hidden="true" />

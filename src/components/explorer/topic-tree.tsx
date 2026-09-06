@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
@@ -80,7 +80,7 @@ function NodeCard({
 
       {isTechnique && node.techniqueId && !isLocked ? (
         <Link
-          href={`/dashboard/technique/${node.techniqueId}`}
+          href={`/learn/technique/${node.techniqueId}`}
           className="flex-1 min-w-0 text-[14px] font-semibold text-foreground outline-none hover:text-primary active:text-primary focus-visible:ring-2 focus-visible:ring-ring rounded"
         >
           {node.title}

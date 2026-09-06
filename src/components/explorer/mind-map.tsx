@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -60,7 +60,7 @@ export function MindMap({
     if (node.children && node.children.length > 0) {
       toggleExpanded(node.id);
     } else if (node.type === "technique" && node.techniqueId) {
-      router.push(`/dashboard/technique/${node.techniqueId}`);
+      router.push(`/learn/technique/${node.techniqueId}`);
     }
   };
 
@@ -252,7 +252,7 @@ function BranchNode({
             style={depth === 0 ? undefined : { color: meta.color }}
           >
             {meta.label}
-            {hasChildren ? ` · ${node.children!.length}` : ""}
+            {hasChildren ? ` Â· ${node.children!.length}` : ""}
           </span>
         </span>
         {hasChildren && (
