@@ -132,17 +132,19 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
   return (
     <div className="relative flex flex-col items-center px-6 pt-6 pb-1 text-center">
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
-      <button
-        type="button"
-        onClick={toggleTheme}
-        aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-        className="absolute top-7 right-4 grid size-9 place-items-center rounded-full border border-white/[0.06] bg-white/[0.04] text-muted-foreground/60 outline-none backdrop-blur-sm transition-colors hover:bg-white/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        {theme === "dark" ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}
-      </button>
-      <div className="relative inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
-        <Settings size={12} className="text-primary" />
-        <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
+      <div className="relative mb-3 flex items-center gap-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
+          <Settings size={12} className="text-primary" />
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
+        </div>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+          className="grid size-9 place-items-center rounded-full border border-white/[0.06] bg-white/[0.04] text-muted-foreground/60 outline-none backdrop-blur-sm transition-colors hover:bg-white/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          {theme === "dark" ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}
+        </button>
       </div>
       <div className="relative">
         <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 backdrop-blur-sm">
