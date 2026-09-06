@@ -8,8 +8,8 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { MOCK_CLUBS, CLUB_FILTERS, type ClubFilter } from "@/lib/mock/clubs";
 import type { Club } from "@/lib/types/clubs";
 
-const GLASS_BG = "rgb(var(--glass) / 0.04)";
-const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 type Tab = "find" | "yours";
 
@@ -19,7 +19,7 @@ function formatMembers(n: number): string {
 }
 
 export default function ClubsPage() {
-  usePageMeta("Clubs â€” Exam Arena");
+  usePageMeta("Clubs — Exam Arena");
   const [tab, setTab] = useState<Tab>("find");
   const [activeFilter, setActiveFilter] = useState<ClubFilter>("All");
   const listRef = useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ export default function ClubsPage() {
   return (
     <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
       <div ref={headerRef}>
-        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Users size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">CLUBS</span>
         </div>
@@ -66,14 +66,14 @@ export default function ClubsPage() {
           </div>
           <button
             type="button"
-            className="grid size-10 place-items-center rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-xl text-muted-foreground outline-none transition-colors hover:bg-glass/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-10 place-items-center rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl text-muted-foreground outline-none transition-colors hover:bg-white/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Search size={18} />
           </button>
         </div>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 p-1 rounded-3xl border border-glass/[0.06] bg-glass/[0.02]">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 p-1 rounded-3xl border border-white/[0.06] bg-white/[0.02]">
         {(["find", "yours"] as Tab[]).map((t) => (
           <button
             key={t}
@@ -99,7 +99,7 @@ export default function ClubsPage() {
               "rounded-full px-3.5 py-2 text-micro font-semibold whitespace-nowrap outline-none transition-all border focus-visible:ring-2 focus-visible:ring-ring",
               activeFilter === f
                 ? "bg-primary text-primary-foreground border-primary"
-                : "text-foreground/80 border-glass/[0.06] bg-glass/[0.04] backdrop-blur-xl hover:bg-glass/[0.08]",
+                : "text-foreground/80 border-white/[0.06] bg-white/[0.04] backdrop-blur-xl hover:bg-white/[0.08]",
             )}
           >
             {f}
@@ -140,13 +140,13 @@ function ClubCard({ club }: { club: Club }) {
     <div
       ref={cardRef}
       data-club-item
-      className="flex items-center gap-3.5 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+      className="flex items-center gap-3.5 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
       style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
     >
       <img
         src={club.coverUrl}
         alt={club.name}
-        className="w-[52px] h-[70px] shrink-0 rounded-xl object-cover border border-glass/[0.06]"
+        className="w-[52px] h-[70px] shrink-0 rounded-xl object-cover border border-white/[0.06]"
       />
       <div className="flex-1 min-w-0">
         <p className="text-[11px] text-muted-foreground/50 truncate">

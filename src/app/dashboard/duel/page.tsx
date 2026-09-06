@@ -14,13 +14,13 @@ import { DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
 import type { DuelOpponent, DuelResult } from "@/lib/types/duel";
 import type { Question } from "@/lib/types/sprint-session";
 
-const GLASS_BG = "rgb(var(--glass) / 0.04)";
-const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 type Phase = "config" | "active" | "done";
 
 export default function DuelPage() {
-  usePageMeta("Duel â€” Exam Arena");
+  usePageMeta("Duel — Exam Arena");
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);
@@ -130,7 +130,7 @@ export default function DuelPage() {
     return (
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
         <div ref={headerRef} className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <Swords size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">DUEL</span>
           </div>
@@ -148,8 +148,8 @@ export default function DuelPage() {
                 className={cn(
                   "rounded-xl border py-3 px-3 text-micro font-bold text-center outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                   topic === t.id
-                    ? "border-primary bg-primary/10 shadow-[0_0_0_1px_rgb(rgb(rgb(var(--primary))))] text-foreground"
-                    : "border-glass/[0.06] text-muted-foreground hover:bg-glass/[0.06] active:bg-glass/[0.08]",
+                    ? "border-primary bg-primary/10 shadow-[0_0_0_1px_var(--primary)] text-foreground"
+                    : "border-white/[0.06] text-muted-foreground hover:bg-white/[0.06] active:bg-white/[0.08]",
                 )}
                 style={topic !== t.id ? { backgroundColor: GLASS_BG } : undefined}
               >
@@ -170,8 +170,8 @@ export default function DuelPage() {
                 className={cn(
                   "flex items-center gap-3 rounded-xl border px-4 py-3 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                   opponent.name === o.name
-                    ? "border-primary bg-primary/10 shadow-[0_0_0_1px_rgb(rgb(rgb(var(--primary))))]"
-                    : "border-glass/[0.06] hover:bg-glass/[0.06]",
+                    ? "border-primary bg-primary/10 shadow-[0_0_0_1px_var(--primary)]"
+                    : "border-white/[0.06] hover:bg-white/[0.06]",
                 )}
                 style={opponent.name !== o.name ? { backgroundColor: GLASS_BG } : undefined}
               >
@@ -219,12 +219,12 @@ export default function DuelPage() {
         </div>
 
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-2 gap-4">
-          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
             <p className="text-micro font-semibold tracking-widest text-muted-foreground/50">YOUR SCORE</p>
             <p className="mt-1 text-[20px] font-bold text-primary">{result.yourScore}</p>
             <p className="text-micro text-muted-foreground/40">{result.yourAccuracy}% accuracy</p>
           </div>
-          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
             <p className="text-micro font-semibold tracking-widest text-muted-foreground/50">{opponent.name}</p>
             <p className="mt-1 text-[20px] font-bold text-foreground/60">{result.opponentScore}</p>
             <p className="text-micro text-muted-foreground/40">{result.opponentAccuracy}% accuracy</p>
@@ -232,11 +232,11 @@ export default function DuelPage() {
         </div>
 
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3">
-          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
             <p className="text-micro text-muted-foreground/40">Your Time</p>
             <p className="text-[13px] font-bold font-mono text-foreground/80">{result.yourTime}s</p>
           </div>
-          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
             <p className="text-micro text-muted-foreground/40">XP Earned</p>
             <p className="text-[13px] font-bold text-chart-2">+{result.xpEarned}</p>
           </div>
@@ -253,7 +253,7 @@ export default function DuelPage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-glass/[0.06] active:bg-glass/[0.08] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring"
             style={{ backgroundColor: GLASS_BG }}
           >
             Dashboard
@@ -275,7 +275,7 @@ export default function DuelPage() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-      <div className="mb-4 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-3" style={{ backgroundColor: GLASS_BG }}>
+      <div className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3" style={{ backgroundColor: GLASS_BG }}>
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-2">
             <div className="grid size-6 place-items-center rounded-full bg-primary/10 text-micro font-bold text-primary">
@@ -287,7 +287,7 @@ export default function DuelPage() {
             {Math.min(opponentProgress, 10)}/10
           </span>
         </div>
-        <div className="h-1.5 rounded-full bg-glass/[0.06] overflow-hidden">
+        <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
           <div
             className="h-full rounded-full bg-chart-4 transition-all duration-500 ease-out"
             style={{ width: `${Math.min(100, (opponentProgress / 10) * 100)}%` }}
@@ -304,7 +304,7 @@ export default function DuelPage() {
         </span>
       </div>
 
-      <div className="h-1.5 w-full rounded-full bg-glass/[0.06] mb-6">
+      <div className="h-1.5 w-full rounded-full bg-white/[0.06] mb-6">
         <div className="h-full rounded-full bg-primary transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
       </div>
 
@@ -318,12 +318,12 @@ export default function DuelPage() {
               let variant = "" as string;
               let variantStyle: React.CSSProperties = {};
               if (!revealed) {
-                variant = "border-glass/[0.06] text-foreground hover:border-glass/[0.12] hover:bg-glass/[0.06] active:bg-glass/[0.08]";
+                variant = "border-white/[0.06] text-foreground hover:border-white/[0.12] hover:bg-white/[0.06] active:bg-white/[0.08]";
                 variantStyle = { backgroundColor: GLASS_BG };
               } else {
                 if (isCorrect) variant = "border-primary bg-primary/10 text-primary";
                 else if (isSelected) variant = "border-destructive bg-destructive/10 text-destructive";
-                else variant = "border-glass/[0.06] bg-glass/[0.02] text-muted-foreground/40";
+                else variant = "border-white/[0.06] bg-white/[0.02] text-muted-foreground/40";
               }
               return (
                 <button
@@ -337,7 +337,7 @@ export default function DuelPage() {
                   )}
                   style={!revealed || (!isCorrect && !isSelected) ? variantStyle : undefined}
                 >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-glass/[0.06] text-micro font-bold text-muted-foreground">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-white/[0.06] text-micro font-bold text-muted-foreground">
                     {String.fromCharCode(65 + i)}
                   </span>
                   <span className="flex-1 text-[13px] font-medium">{option}</span>

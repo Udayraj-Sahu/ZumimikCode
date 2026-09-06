@@ -37,20 +37,20 @@ export default function GridDerivationRenderer(props: RendererProps) {
           opacity={visibleSteps > 0 ? 1 : 0.2}
           className="transition-opacity duration-300"
         >
-          <rect x={30} y={30} width={160} height={50} rx={6} fill="rgb(rgb(rgb(var(--card))))" stroke="rgb(rgb(rgb(var(--border))))" strokeWidth={1.5} />
-          <text x={110} y={60} textAnchor="middle" fill="rgb(rgb(rgb(var(--foreground))))" fontSize="14" fontWeight="600">
+          <rect x={30} y={30} width={160} height={50} rx={6} fill="var(--card)" stroke="var(--border)" strokeWidth={1.5} />
+          <text x={110} y={60} textAnchor="middle" fill="var(--foreground)" fontSize="14" fontWeight="600">
             Number: {number}
           </text>
-          <rect x={230} y={30} width={160} height={50} rx={6} fill="rgb(rgb(rgb(var(--primary))))" fillOpacity={0.08} stroke="rgb(rgb(rgb(var(--primary))))" strokeWidth={1.5} />
-          <text x={310} y={60} textAnchor="middle" fill="rgb(rgb(rgb(var(--primary))))" fontSize="14" fontWeight="600">
+          <rect x={230} y={30} width={160} height={50} rx={6} fill="var(--primary)" fillOpacity={0.08} stroke="var(--primary)" strokeWidth={1.5} />
+          <text x={310} y={60} textAnchor="middle" fill="var(--primary)" fontSize="14" fontWeight="600">
             Base: {base}
           </text>
         </g>
 
-        {/* ARROW R1 â†’ R2 */}
+        {/* ARROW R1 → R2 */}
         <line
           x1={110} y1={82} x2={110} y2={96}
-          stroke="rgb(rgb(rgb(var(--chart-3))))"
+          stroke="var(--chart-3)"
           strokeWidth={2}
           markerEnd="url(#arrow-green)"
           opacity={visibleSteps > 1 ? 1 : 0}
@@ -62,20 +62,20 @@ export default function GridDerivationRenderer(props: RendererProps) {
           opacity={visibleSteps > 1 ? 1 : 0.2}
           className="transition-opacity duration-300"
         >
-          <rect x={30} y={100} width={160} height={50} rx={6} fill="rgb(rgb(rgb(var(--card))))" stroke="rgb(rgb(rgb(var(--border))))" strokeWidth={1.5} />
-          <text x={110} y={131} textAnchor="middle" fill="rgb(rgb(rgb(var(--foreground))))" fontSize="13" fontWeight="500">
+          <rect x={30} y={100} width={160} height={50} rx={6} fill="var(--card)" stroke="var(--border)" strokeWidth={1.5} />
+          <text x={110} y={131} textAnchor="middle" fill="var(--foreground)" fontSize="13" fontWeight="500">
             Def: {deficiency > 0 ? "+" : ""}{deficiency}
           </text>
-          <rect x={230} y={100} width={160} height={50} rx={6} fill="rgb(rgb(rgb(var(--card))))" stroke="rgb(rgb(rgb(var(--border))))" strokeWidth={1.5} />
-          <text x={310} y={131} textAnchor="middle" fill="rgb(rgb(rgb(var(--foreground))))" fontSize="13" fontWeight="500">
+          <rect x={230} y={100} width={160} height={50} rx={6} fill="var(--card)" stroke="var(--border)" strokeWidth={1.5} />
+          <text x={310} y={131} textAnchor="middle" fill="var(--foreground)" fontSize="13" fontWeight="500">
             {number} {deficiency > 0 ? "+" : ""}{deficiency} = {resultLeft}
           </text>
         </g>
 
-        {/* ARROW R2 â†’ R3 */}
+        {/* ARROW R2 → R3 */}
         <line
           x1={310} y1={152} x2={310} y2={166}
-          stroke="rgb(rgb(rgb(var(--chart-3))))"
+          stroke="var(--chart-3)"
           strokeWidth={2}
           markerEnd="url(#arrow-green)"
           opacity={visibleSteps > 2 ? 1 : 0}
@@ -87,12 +87,12 @@ export default function GridDerivationRenderer(props: RendererProps) {
           opacity={visibleSteps > 2 ? 1 : 0.2}
           className="transition-opacity duration-300"
         >
-          <rect x={30} y={170} width={160} height={50} rx={6} fill="rgb(rgb(rgb(var(--chart-3))))" fillOpacity={0.08} stroke="rgb(rgb(rgb(var(--chart-3))))" strokeWidth={1.5} />
-          <text x={110} y={201} textAnchor="middle" fill="rgb(rgb(rgb(var(--chart-3))))" fontSize="13" fontWeight="600">
-            {deficiency}Â² = {resultRight}
+          <rect x={30} y={170} width={160} height={50} rx={6} fill="var(--chart-3)" fillOpacity={0.08} stroke="var(--chart-3)" strokeWidth={1.5} />
+          <text x={110} y={201} textAnchor="middle" fill="var(--chart-3)" fontSize="13" fontWeight="600">
+            {deficiency}² = {resultRight}
           </text>
-          <rect x={230} y={170} width={160} height={50} rx={6} fill="rgb(rgb(rgb(var(--chart-3))))" fillOpacity={0.15} stroke="rgb(rgb(rgb(var(--chart-3))))" strokeWidth={2} />
-          <text x={310} y={201} textAnchor="middle" fill="rgb(rgb(rgb(var(--chart-3))))" fontSize="16" fontWeight="800">
+          <rect x={230} y={170} width={160} height={50} rx={6} fill="var(--chart-3)" fillOpacity={0.15} stroke="var(--chart-3)" strokeWidth={2} />
+          <text x={310} y={201} textAnchor="middle" fill="var(--chart-3)" fontSize="16" fontWeight="800">
             = {finalAnswer}
           </text>
         </g>
@@ -100,7 +100,7 @@ export default function GridDerivationRenderer(props: RendererProps) {
         {/* ARROWHEADS */}
         <defs>
           <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="rgb(rgb(rgb(var(--chart-3))))" />
+            <polygon points="0 0, 8 3, 0 6" fill="var(--chart-3)" />
           </marker>
         </defs>
       </svg>

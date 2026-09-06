@@ -13,11 +13,11 @@ import RendererRouter from "@/components/renderers/RendererRouter";
 import type { SolveAlongTemplate } from "@/lib/types/template";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
 
-const GLASS_BG = "rgb(var(--glass) / 0.04)";
-const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function AnalysisPage() {
-  usePageMeta("Analysis â€” Exam Arena");
+  usePageMeta("Analysis — Exam Arena");
   const router = useRouter();
 
   const lastResult = useSprintStore((s) => s.lastResult);
@@ -141,7 +141,7 @@ export default function AnalysisPage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-glass/[0.06] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
             style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             Dashboard
@@ -158,14 +158,14 @@ export default function AnalysisPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard/sprint/results")}
-          className="grid size-10 place-items-center rounded-xl border backdrop-blur-xl text-foreground outline-none transition-colors hover:bg-glass/[0.06] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          className="grid size-10 place-items-center rounded-xl border backdrop-blur-xl text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
           style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           aria-label="Back to results"
         >
           <ChevronLeft size={18} />
         </button>
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-1">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-1">
             <TrendingUp size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
           </div>
@@ -191,7 +191,7 @@ export default function AnalysisPage() {
               style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
             >
               {/* Question header */}
-              <div className="px-4 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgb(var(--glass) / 0.04)" }}>
+              <div className="px-4 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgba(255,255,255,0.04)" }}>
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-wider">
                     <span className="grid size-5 place-items-center rounded bg-destructive/10 text-destructive">
@@ -237,7 +237,7 @@ export default function AnalysisPage() {
                     "flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-ring",
                     walk.open
                       ? "border-chart-3/40 bg-chart-3/10 text-chart-3"
-                      : "border-dashed border-glass/[0.06] text-muted-foreground hover:border-chart-3/40 hover:text-chart-3",
+                      : "border-dashed border-white/[0.06] text-muted-foreground hover:border-chart-3/40 hover:text-chart-3",
                   )}
                   style={!walk.open ? { backgroundColor: GLASS_BG } : undefined}
                 >
@@ -248,7 +248,7 @@ export default function AnalysisPage() {
 
               {/* Template walkthrough */}
               {walk.open && (
-                <div className="border-t px-4 py-4 space-y-4" style={{ borderColor: "rgb(var(--glass) / 0.04)" }}>
+                <div className="border-t px-4 py-4 space-y-4" style={{ borderColor: "rgba(255,255,255,0.04)" }}>
                   {loadingTemplates ? (
                     <div className="animate-pulse space-y-3">
                       <div className="h-8 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
@@ -283,7 +283,7 @@ export default function AnalysisPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard/sprint/results")}
-          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-glass/[0.06] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
           style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           <ChevronLeft size={16} /> Back to Results
@@ -291,7 +291,7 @@ export default function AnalysisPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
-          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-glass/[0.06] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
           style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           Dashboard

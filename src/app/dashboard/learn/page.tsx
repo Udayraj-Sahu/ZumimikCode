@@ -28,8 +28,8 @@ import { useMockPapers } from "@/hooks/queries/use-mock-exam";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 
-const GLASS_BG = "rgb(var(--glass) / 0.04)";
-const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 function formatDuration(minutes: number): string {
   if (minutes >= 60) {
@@ -102,7 +102,7 @@ const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent:
 ];
 
 function LearnPageContent() {
-  usePageMeta("Learn â€” Exam Arena");
+  usePageMeta("Learn — Exam Arena");
   const router = useRouter();
   const searchParams = useSearchParams();
   const targetExam = useOnboardingStore((s) => s.targetExam);
@@ -189,9 +189,9 @@ function LearnPageContent() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-      {/* Page header â€” matches app pattern */}
+      {/* Page header — matches app pattern */}
       <header className="mb-5">
-        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
           <BookOpen size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
@@ -208,7 +208,7 @@ function LearnPageContent() {
           <div ref={glowTopRef} className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" />
           <div ref={glowBottomRef} className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" />
 
-          {/* Tab mode selector â€” 3D push keys: active pops up, others sit flat/sunken */}
+          {/* Tab mode selector — 3D push keys: active pops up, others sit flat/sunken */}
           <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5">
             <div className="grid grid-cols-3 gap-2.5">
               {MODES.map((m) => {
@@ -223,12 +223,12 @@ function LearnPageContent() {
                     transition={{ type: "spring", stiffness: 260, damping: 30 }}
                     className="relative"
                   >
-                    {/* Top light bevel â€” only on the raised active key */}
+                    {/* Top light bevel — only on the raised active key */}
                     <div
                       className="absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
                       style={{
                         opacity: isActive ? 1 : 0,
-                        background: "linear-gradient(90deg, transparent, rgb(var(--glass) / 0.7), transparent)",
+                        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)",
                       }}
                     />
                     <div
@@ -238,11 +238,11 @@ function LearnPageContent() {
                           ? {
                               background: "linear-gradient(180deg, rgba(199,242,82,0.18), rgba(199,242,82,0.05))",
                               boxShadow:
-                                "0 8px 18px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgb(var(--glass) / 0.35), inset 0 -2px 6px rgba(0,0,0,0.35)",
+                                "0 8px 18px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.35)",
                             }
                           : {
-                              background: "rgb(var(--glass) / 0.02)",
-                              boxShadow: "inset 0 2px 4px rgba(0,0,0,0.5), inset 0 -1px 1px rgb(var(--glass) / 0.04)",
+                              background: "rgba(255,255,255,0.02)",
+                              boxShadow: "inset 0 2px 4px rgba(0,0,0,0.5), inset 0 -1px 1px rgba(255,255,255,0.04)",
                             }
                       }
                     >
@@ -254,7 +254,7 @@ function LearnPageContent() {
                         <m.Icon
                           size={16}
                           strokeWidth={2.2}
-                          style={{ color: isActive ? "rgb(rgb(rgb(var(--accent))))" : "rgb(var(--glass) / 0.45)" }}
+                          style={{ color: isActive ? "var(--accent)" : "rgba(255,255,255,0.45)" }}
                         />
                       </motion.span>
                       <span
@@ -262,11 +262,11 @@ function LearnPageContent() {
                         style={
                           isActive
                             ? {
-                                color: "rgb(rgb(rgb(var(--accent))))",
+                                color: "var(--accent)",
                                 textShadow: "0 1px 1px rgba(0,0,0,0.6)",
                               }
                             : {
-                                color: "rgb(var(--glass) / 0.5)",
+                                color: "rgba(255,255,255,0.5)",
                                 textShadow: "0 1px 2px rgba(0,0,0,0.8)",
                               }
                         }
@@ -327,7 +327,7 @@ function LearnPageContent() {
                       "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
                       activeDomain === id
                         ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
-                        : "bg-glass/[0.04] text-muted-foreground/50 border border-glass/[0.06] hover:bg-glass/[0.07]"
+                        : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]"
                     )}
                   >
                     {DOMAIN_LABELS[id]}
@@ -348,7 +348,7 @@ function LearnPageContent() {
                   key={topic.name}
                   type="button"
                   onClick={() => router.push(`/dashboard/explorer?domain=${activeDomain}&topic=${encodeURIComponent(topic.name.toLowerCase())}`)}
-                  className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-glass/[0.06] active:scale-[0.98]"
+                  className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
                   style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                 >
                   <div className="flex items-center justify-between mb-4">
@@ -365,7 +365,7 @@ function LearnPageContent() {
                       <span className="text-micro font-medium uppercase tracking-wider text-muted-foreground/50">mastery</span>
                     </div>
                   </div>
-                  <div className="h-[6px] w-full rounded-full bg-glass/[0.05] overflow-hidden">
+                  <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-700"
                       style={{
@@ -380,7 +380,7 @@ function LearnPageContent() {
             })}
 
             {topics.length === 0 && (
-              <div className="rounded-3xl border border-dashed border-glass/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
                 <BookOpen size={24} className="mx-auto text-muted-foreground/25 mb-3" />
                 <p className="text-[13px] text-muted-foreground/45 font-normal">No topics yet. Add a prep to get started.</p>
               </div>
@@ -390,7 +390,7 @@ function LearnPageContent() {
 
           {/* Sensei Insight */}
           {prepExams.length > 0 && topics.length > 0 && (
-            <div className="relative rounded-3xl border backdrop-blur-xl p-5 mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgb(var(--glass) / 0.03) 100%)" }}>
+            <div className="relative rounded-3xl border backdrop-blur-xl p-5 mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
               <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#3B82F6] to-[#22D3EE]" />
               <div className="flex items-center gap-2.5 mb-3">
                 <div className="h-7 w-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
@@ -406,8 +406,8 @@ function LearnPageContent() {
 
           {/* Explore Techniques */}
           {prepExams.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-8 text-center rounded-3xl border border-dashed border-glass/[0.08] mt-5" style={{ background: GLASS_BG }}>
-              <span className="relative grid size-12 place-items-center rounded-2xl bg-glass/[0.05] border border-glass/[0.06]">
+            <div className="flex flex-col items-center gap-3 py-8 text-center rounded-3xl border border-dashed border-white/[0.08] mt-5" style={{ background: GLASS_BG }}>
+              <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
                 <Lock size={16} className="text-muted-foreground/45" />
               </span>
               <span className="text-[13px] text-muted-foreground/50">Select an exam to explore techniques</span>
@@ -416,7 +416,7 @@ function LearnPageContent() {
             <button
               type="button"
               onClick={() => router.push("/dashboard/explorer")}
-              className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-glass/[0.06] active:scale-[0.98]"
+              className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
               style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
             >
               EXPLORE TECHNIQUES
@@ -436,14 +436,14 @@ function LearnPageContent() {
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
           {prepExams.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-10 text-center rounded-3xl border border-dashed border-glass/[0.08]" style={{ background: GLASS_BG }}>
-              <span className="relative grid size-12 place-items-center rounded-2xl bg-glass/[0.05] border border-glass/[0.06]">
+            <div className="flex flex-col items-center gap-3 py-10 text-center rounded-3xl border border-dashed border-white/[0.08]" style={{ background: GLASS_BG }}>
+              <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
                 <Lock size={16} className="text-muted-foreground/45" />
               </span>
               <span className="text-[13px] text-muted-foreground/50">Select exam via add prep</span>
             </div>
           ) : (
-            <div className="relative rounded-3xl border border-dashed border-glass/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
+            <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
               <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
               <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
                 <activeMode.Icon size={24} style={{ color: activeMode.color }} />
@@ -482,12 +482,12 @@ function LearnPageContent() {
             </button>
           </div>
 
-          {/* Exam switcher â€” sliding segmented control */}
+          {/* Exam switcher — sliding segmented control */}
           {prepExams.length > 1 && (
             <div className="relative mt-2 mb-5">
               <div
                 className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                style={{ borderColor: "rgb(var(--glass) / 0.08)", background: "rgb(var(--glass) / 0.04)" }}
+                style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
               >
                 {prepExams.map((id) => {
                   const active = activeDomain === id;
@@ -497,7 +497,7 @@ function LearnPageContent() {
                       type="button"
                       onClick={() => setActiveDomain(id)}
                       className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      style={{ color: active ? "#0A0C0A" : "rgb(var(--glass) / 0.55)" }}
+                      style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
                     >
                       {active && (
                         <motion.div
@@ -507,7 +507,7 @@ function LearnPageContent() {
                           style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)" }}
                         />
                       )}
-                      <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgb(var(--glass) / 0.35)" : "none" }}>
+                      <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
                         <GraduationCap size={14} className="relative" />
                         <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
                       </span>
@@ -529,7 +529,7 @@ function LearnPageContent() {
               aria-expanded={!statsCollapsed}
             >
               <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">Your Stats</span>
-              <span className="grid size-6 place-items-center rounded-full border border-glass/[0.07] text-muted-foreground/50">
+              <span className="grid size-6 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
                 <ChevronUp size={12} className="transition-transform duration-300" style={{ transform: statsCollapsed ? "rotate(180deg)" : "none" }} />
               </span>
             </button>
@@ -544,7 +544,7 @@ function LearnPageContent() {
                 <div className="px-5 pb-5">
                   {prepExams.length === 0 ? (
                     <div className="flex flex-col items-center gap-3 py-6 text-center">
-                      <span className="relative grid size-12 place-items-center rounded-2xl bg-glass/[0.05] border border-glass/[0.06]">
+                      <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
                         <Lock size={16} className="text-muted-foreground/45" />
                       </span>
                       <span className="text-[12px] text-muted-foreground/50">Select a prep to view your progress</span>
@@ -578,7 +578,7 @@ function LearnPageContent() {
                       "shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-semibold transition-all",
                       mockSection === sec
                         ? "bg-gradient-to-r from-primary to-[#a8e62e] text-[#0A0C0A]"
-                        : "border border-glass/[0.07] text-muted-foreground/60 hover:bg-glass/[0.05]",
+                        : "border border-white/[0.07] text-muted-foreground/60 hover:bg-white/[0.05]",
                     )}
                   >
                     {sec === "all" ? "All" : sec}
@@ -594,8 +594,8 @@ function LearnPageContent() {
               <div className="flex flex-col gap-3">
                 {[0, 1].map((i) => (
                   <div key={i} className="rounded-3xl border backdrop-blur-xl p-5 animate-pulse" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-                    <div className="h-4 w-2/3 rounded bg-glass/[0.06] mb-3" />
-                    <div className="h-3 w-1/2 rounded bg-glass/[0.04]" />
+                    <div className="h-4 w-2/3 rounded bg-white/[0.06] mb-3" />
+                    <div className="h-3 w-1/2 rounded bg-white/[0.04]" />
                   </div>
                 ))}
               </div>
@@ -606,7 +606,7 @@ function LearnPageContent() {
               .map((paper) => (
                 <div
                   key={paper.id}
-                  className="group rounded-3xl border backdrop-blur-xl p-5 transition-all hover:bg-glass/[0.05]"
+                  className="group rounded-3xl border backdrop-blur-xl p-5 transition-all hover:bg-white/[0.05]"
                   style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -618,20 +618,20 @@ function LearnPageContent() {
                         <h3 className="text-[13.5px] font-semibold tracking-[-0.01em] text-foreground leading-snug">{paper.title}</h3>
                       </div>
                     </div>
-                    <div className="shrink-0 grid size-7 place-items-center rounded-full border border-glass/[0.07] text-muted-foreground/50">
+                    <div className="shrink-0 grid size-7 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
                       <ArrowRight size={12} />
                     </div>
                   </div>
 
                   <p className="text-micro text-muted-foreground/50 mt-3 font-normal">
-                    {paper.sections.map((s) => s.label).join(" | ")} â€¢ {paper.totalQuestions} Questions â€¢ {formatDuration(paper.durationMinutes)}
+                    {paper.sections.map((s) => s.label).join(" | ")} • {paper.totalQuestions} Questions • {formatDuration(paper.durationMinutes)}
                   </p>
 
                   <div className="flex items-center justify-between mt-4 gap-3">
                     <div className="flex flex-wrap gap-1.5">
                       {paper.sections.map((s) => (
-                        <span key={s.id} className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-glass/[0.07]" style={{ color: paper.accent, background: `${paper.accent}0d` }}>
-                          {s.label} Â· {s.questions}
+                        <span key={s.id} className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07]" style={{ color: paper.accent, background: `${paper.accent}0d` }}>
+                          {s.label} · {s.questions}
                         </span>
                       ))}
                     </div>
@@ -647,7 +647,7 @@ function LearnPageContent() {
               ))}
 
             {!mockLoading && (mockPapers ?? []).length === 0 && (
-              <div className="rounded-3xl border border-dashed border-glass/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
                 <FileText size={24} className="mx-auto text-muted-foreground/25 mb-3" />
                 <p className="text-[13px] text-muted-foreground/45 font-normal">No papers yet for {DOMAIN_LABELS[activeDomain] || "this exam"}.</p>
               </div>
@@ -675,7 +675,7 @@ export default function LearnPage() {
 
 function StatBox({ value, label }: { value: string; label: string }) {
   return (
-    <div className="rounded-2xl border border-glass/[0.06] bg-glass/[0.03] p-3.5">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3.5">
       <div className="flex items-center justify-between">
         <span className="size-1.5 rounded-full bg-primary/70" />
         <ArrowRight size={10} className="text-muted-foreground/40" />

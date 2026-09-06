@@ -41,7 +41,7 @@ export default function StrikePadRenderer(props: RendererProps) {
       >
         {/* DIVISOR */}
         {parsed.divisor > 0 && (
-          <text x={20} y={60} fill="rgb(rgb(rgb(var(--foreground))))" fontSize="16" fontWeight="700">
+          <text x={20} y={60} fill="var(--foreground)" fontSize="16" fontWeight="700">
             ) {parsed.divisor}
           </text>
         )}
@@ -56,7 +56,7 @@ export default function StrikePadRenderer(props: RendererProps) {
               height={40}
               rx={4}
               fill="transparent"
-              stroke={visibleSteps > i ? "rgb(rgb(rgb(var(--primary))))" : "rgb(rgb(rgb(var(--border))))"}
+              stroke={visibleSteps > i ? "var(--primary)" : "var(--border)"}
               strokeWidth={1.5}
               opacity={visibleSteps > i ? 1 : 0.3}
               className="transition-opacity duration-300"
@@ -65,7 +65,7 @@ export default function StrikePadRenderer(props: RendererProps) {
               x={80 + i * 60}
               y={56}
               textAnchor="middle"
-              fill="rgb(rgb(rgb(var(--foreground))))"
+              fill="var(--foreground)"
               fontSize="18"
               fontWeight="700"
               opacity={visibleSteps > i ? 1 : 0.3}
@@ -87,7 +87,7 @@ export default function StrikePadRenderer(props: RendererProps) {
               x={80 + i * 60}
               y={100}
               textAnchor="middle"
-              fill="rgb(rgb(rgb(var(--chart-3))))"
+              fill="var(--chart-3)"
               fontSize="18"
               fontWeight="700"
             >
@@ -98,7 +98,7 @@ export default function StrikePadRenderer(props: RendererProps) {
                 x={80 + i * 60}
                 y={118}
                 textAnchor="middle"
-                fill="rgb(rgb(rgb(var(--muted-foreground))))"
+                fill="var(--muted-foreground)"
                 fontSize="10"
               >
                 r{q.remainder}
@@ -115,7 +115,7 @@ export default function StrikePadRenderer(props: RendererProps) {
             y1={42}
             x2={88 + i * 60}
             y2={58}
-            stroke="rgb(rgb(rgb(var(--destructive))))"
+            stroke="var(--destructive)"
             strokeWidth={2}
             opacity={visibleSteps > i + 1 ? 1 : 0}
             className="transition-opacity duration-300"

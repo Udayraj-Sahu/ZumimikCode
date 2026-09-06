@@ -9,8 +9,8 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import type { LeaderboardEntry } from "@/lib/types/dashboard";
 
 const PERIODS = ["week", "month", "all"] as const;
-const GLASS_BG = "rgb(var(--glass) / 0.04)";
-const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 function RankMedal({ rank }: { rank: number }) {
   if (rank === 1) return <Trophy size={18} className="text-chart-3" />;
@@ -25,7 +25,7 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
       data-leaderboard-row
       className={cn(
         "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors",
-        entry.me ? "bg-primary/5 border border-primary/20" : "hover:bg-glass/[0.04] active:bg-glass/[0.06]",
+        entry.me ? "bg-primary/5 border border-primary/20" : "hover:bg-white/[0.04] active:bg-white/[0.06]",
       )}
     >
       <span className={cn(
@@ -64,7 +64,7 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
 }
 
 export default function LeaderboardPage() {
-  usePageMeta("Leaderboard â€” Exam Arena");
+  usePageMeta("Leaderboard — Exam Arena");
   const [period, setPeriod] = useState<"week" | "month" | "all">("all");
   const { data: entries, isLoading, error } = useLeaderboard();
 
@@ -100,7 +100,7 @@ export default function LeaderboardPage() {
     <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Trophy size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LEADERBOARD</span>
         </div>
@@ -118,10 +118,10 @@ export default function LeaderboardPage() {
               "rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
               period === p
                 ? "bg-primary text-primary-foreground"
-                : "border border-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+                : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
               period !== p && `backdrop-blur-xl`,
             )}
-            style={period !== p ? { background: GLASS_BG, borderColor: "rgb(var(--glass) / 0.06)" } : undefined}
+            style={period !== p ? { background: GLASS_BG, borderColor: "rgba(255,255,255,0.06)" } : undefined}
           >
             {p}
           </button>
@@ -153,7 +153,7 @@ export default function LeaderboardPage() {
 
         {entries && entries.length > 0 && (
           <>
-            <div role="list" className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl divide-y divide-glass/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
+            <div role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
               {entries.map((entry, i) => (
                 <LeaderboardRow key={entry.rank} entry={entry} index={i} />
               ))}
@@ -161,7 +161,7 @@ export default function LeaderboardPage() {
 
             {/* Your rank summary */}
             {me && (
-              <div ref={animateSection} data-section-index="2" className="mt-6 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
+              <div ref={animateSection} data-section-index="2" className="mt-6 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
                   <div className="flex items-center gap-3">
                     <div className="grid size-10 place-items-center rounded-full bg-primary/10">

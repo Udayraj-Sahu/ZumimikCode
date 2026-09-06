@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 import { useProfileData } from "@/hooks/queries/use-profile";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
-const GLASS_BG = "rgb(var(--glass) / 0.04)";
-const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function EditProfilePage() {
-  usePageMeta("Edit Profile â€” Exam Arena");
+  usePageMeta("Edit Profile — Exam Arena");
   const router = useRouter();
   const { data } = useProfileData();
   const profile = data?.profile;
@@ -36,7 +36,7 @@ export default function EditProfilePage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <User size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PROFILE</span>
         </div>
@@ -65,7 +65,7 @@ export default function EditProfilePage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-2xl border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               placeholder="Your name"
             />
           </div>
@@ -78,7 +78,7 @@ export default function EditProfilePage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-2xl border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               placeholder="email@example.com"
             />
           </div>
@@ -91,7 +91,7 @@ export default function EditProfilePage() {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full rounded-2xl border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               placeholder="+91 98765 43210"
             />
           </div>

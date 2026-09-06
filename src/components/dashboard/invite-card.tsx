@@ -19,7 +19,7 @@ export function InviteCard() {
     ensureCode(firstName);
   }, [firstName, ensureCode]);
 
-  const shareText = `Join me on Exam Arena â€” use my invite code ${code} to get started.`;
+  const shareText = `Join me on Exam Arena — use my invite code ${code} to get started.`;
 
   const handleCopy = async () => {
     if (!code) return;
@@ -54,7 +54,7 @@ export function InviteCard() {
   return (
     <div
       className="relative overflow-hidden rounded-3xl border p-5"
-      style={{ borderColor: "rgba(34,211,238,0.14)", background: "linear-gradient(135deg, rgba(34,211,238,0.05) 0%, rgb(var(--glass) / 0.02) 60%)" }}
+      style={{ borderColor: "rgba(34,211,238,0.14)", background: "linear-gradient(135deg, rgba(34,211,238,0.05) 0%, rgba(255,255,255,0.02) 60%)" }}
     >
       <div className="absolute -top-12 -right-12 size-32 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.45), transparent 70%)" }} />
 
@@ -69,14 +69,14 @@ export function InviteCard() {
           </div>
         </div>
         <div className="ml-auto flex items-center gap-1.5 text-micro text-muted-foreground/60 font-medium">
-          <span className="rounded-full border border-glass/[0.06] bg-glass/[0.03] px-2.5 py-1">{invitesSent} invites</span>
-          <span className="rounded-full border border-glass/[0.06] bg-glass/[0.03] px-2.5 py-1">{friendsJoined} joined</span>
+          <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1">{invitesSent} invites</span>
+          <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1">{friendsJoined} joined</span>
         </div>
       </div>
 
       <div className="relative mt-4 flex items-center gap-2">
         <div className="flex-1 rounded-xl border px-4 py-3 text-center" style={{ borderColor: "rgba(34,211,238,0.22)", background: "rgba(34,211,238,0.06)" }}>
-          <span className="text-[16px] font-extrabold tracking-[0.14em] text-foreground select-all">{code ?? "â€”"}</span>
+          <span className="text-[16px] font-extrabold tracking-[0.14em] text-foreground select-all">{code ?? "—"}</span>
         </div>
         <button
           type="button"
@@ -92,7 +92,7 @@ export function InviteCard() {
       <button
         type="button"
         onClick={handleShare}
-        className="relative mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-glass/[0.06] bg-glass/[0.04] py-3 text-[11px] font-bold text-foreground/80 transition-all hover:bg-glass/[0.07] active:scale-[0.98]"
+        className="relative mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.04] py-3 text-[11px] font-bold text-foreground/80 transition-all hover:bg-white/[0.07] active:scale-[0.98]"
       >
         <Share2 size={14} className="text-[#22D3EE]" />
         Share invite link

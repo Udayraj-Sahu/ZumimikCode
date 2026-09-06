@@ -33,11 +33,11 @@ const TYPE_STYLE: Record<
     bar: "bg-gradient-to-r from-chart-4 to-[#a78bfa]",
   },
   technique: {
-    chip: "bg-glass/[0.08] text-foreground/80",
+    chip: "bg-white/[0.08] text-foreground/80",
     icon: "text-chart-3",
-    border: "border-glass/[0.08]",
-    glow: "0 8px 30px -12px rgb(var(--glass) / 0.12)",
-    bar: "bg-glass/[0.2]",
+    border: "border-white/[0.08]",
+    glow: "0 8px 30px -12px rgba(255,255,255,0.12)",
+    bar: "bg-white/[0.2]",
   },
 };
 
@@ -67,7 +67,7 @@ function NodeCard({
     <>
       <div
         className={cn(
-          "grid size-9 shrink-0 place-items-center rounded-xl border border-glass/[0.05]",
+          "grid size-9 shrink-0 place-items-center rounded-xl border border-white/[0.05]",
           style.chip,
         )}
       >
@@ -91,7 +91,7 @@ function NodeCard({
 
       {mastery !== undefined && (
         <div className="flex items-center gap-2 shrink-0">
-          <div className="hidden sm:block h-1.5 w-16 overflow-hidden rounded-full bg-glass/[0.06]">
+          <div className="hidden sm:block h-1.5 w-16 overflow-hidden rounded-full bg-white/[0.06]">
             <div
               className={cn("h-full rounded-full transition-all duration-700", style.bar)}
               style={{ width: `${Math.min(100, mastery)}%` }}
@@ -111,7 +111,7 @@ function NodeCard({
         <button
           type="button"
           onClick={onToggle}
-          className="grid size-7 shrink-0 place-items-center rounded-full text-muted-foreground/50 outline-none transition-colors hover:bg-glass/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="grid size-7 shrink-0 place-items-center rounded-full text-muted-foreground/50 outline-none transition-colors hover:bg-white/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={expanded ? "Collapse" : "Expand"}
         >
           {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
@@ -126,7 +126,7 @@ function NodeCard({
     <div className="relative">
       {hasChildren && (
         <span
-          className="absolute left-[18px] top-full h-3 w-px bg-gradient-to-b from-glass/[0.12] to-transparent"
+          className="absolute left-[18px] top-full h-3 w-px bg-gradient-to-b from-white/[0.12] to-transparent"
           aria-hidden="true"
         />
       )}
@@ -139,7 +139,7 @@ function NodeCard({
         )}
         style={{
           marginLeft: depth * 22,
-          background: "linear-gradient(180deg, rgb(var(--glass) / 0.05), rgb(var(--glass) / 0.02))",
+          background: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
           boxShadow: style.glow,
         }}
         onClick={hasChildren ? onToggle : undefined}
@@ -218,8 +218,8 @@ export function TopicTree({
         {Array.from({ length: 4 }).map((_, i) => (
           <div
             key={i}
-            className="h-16 rounded-2xl border border-glass/[0.06]"
-            style={{ marginLeft: (i % 3) * 22, background: "rgb(var(--glass) / 0.04)" }}
+            className="h-16 rounded-2xl border border-white/[0.06]"
+            style={{ marginLeft: (i % 3) * 22, background: "rgba(255,255,255,0.04)" }}
           />
         ))}
       </div>
@@ -228,7 +228,7 @@ export function TopicTree({
 
   if (trees.length === 0) {
     return (
-      <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-glass/[0.08] backdrop-blur-xl p-10 text-center" style={{ background: "rgb(var(--glass) / 0.03)" }}>
+      <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-white/[0.08] backdrop-blur-xl p-10 text-center" style={{ background: "rgba(255,255,255,0.03)" }}>
         <GraduationCap size={32} className="text-muted-foreground/30" />
         <p className="text-[14px] font-semibold text-muted-foreground">No subjects available yet</p>
         <p className="text-[12px] text-muted-foreground/50">Complete onboarding to unlock your exam&apos;s topic tree.</p>

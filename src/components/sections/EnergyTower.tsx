@@ -40,7 +40,7 @@ export function EnergyTower() {
           </div>
           <div className="flex-1 flex flex-col-reverse gap-0 w-full">
             {RANKS.map((rank, i) => (
-              <motion.div key={rank.rank} className="relative py-4 md:py-6 px-4 md:px-6 border-b border-border/20"
+              <motion.div key={rank.rank} className="relative py-4 md:py-6 px-4 md:px-6 border-b border-border"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}

@@ -62,7 +62,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
     >
       <div
         ref={dialogRef}
-        className="mx-4 w-full max-w-sm rounded-2xl border border-border/20 bg-card p-6 shadow-2xl"
+        className="mx-4 w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-5">

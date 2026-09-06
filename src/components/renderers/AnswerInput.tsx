@@ -51,7 +51,7 @@ export default function AnswerInput({
         <div className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 px-5 py-4">
           <Check size={20} className="shrink-0 text-primary" />
           <span className="flex-1 text-fluid-base font-bold text-primary">
-            {value} â€” Correct!
+            {value} — Correct!
           </span>
         </div>
       ) : status === "wrong" ? (
@@ -59,7 +59,7 @@ export default function AnswerInput({
           <div className="flex items-center gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 px-5 py-4">
             <X size={20} className="shrink-0 text-destructive" />
             <span className="flex-1 text-fluid-base font-bold text-destructive">
-              {value} â€” Not quite
+              {value} — Not quite
             </span>
           </div>
           <button
@@ -82,7 +82,7 @@ export default function AnswerInput({
             placeholder="Type your answer..."
             aria-label="Your answer"
             className={cn(
-              "flex-1 rounded-2xl border border-border/60 bg-card px-5 py-4 text-fluid-base font-bold text-foreground outline-none transition-all placeholder:text-muted-foreground/30 focus:border-primary focus:shadow-[0_0_0_1px_rgb(rgb(rgb(var(--primary))))]",
+              "flex-1 rounded-2xl border border-border/60 bg-card px-5 py-4 text-fluid-base font-bold text-foreground outline-none transition-all placeholder:text-muted-foreground/30 focus:border-primary focus:shadow-[0_0_0_1px_var(--primary)]",
               disabled && "opacity-40 cursor-not-allowed",
             )}
           />

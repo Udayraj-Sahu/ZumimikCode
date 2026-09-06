@@ -9,8 +9,8 @@ import { useLinkedDevices, useRevokeDevice } from "@/hooks/queries/use-linked-de
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { LinkedDevice, LinkedDevicePlatform } from "@/lib/types/linked-devices";
 
-const GLASS_BG = "rgb(var(--glass) / 0.04)";
-const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 const PLATFORM_META: Record<LinkedDevicePlatform, { label: string; Icon: typeof Smartphone }> = {
   android: { label: "Android", Icon: Smartphone },
@@ -24,7 +24,7 @@ function timeAgo(lastActive: string): string {
 }
 
 export default function LinkedDevicesPage() {
-  usePageMeta("Linked Devices â€” Exam Arena");
+  usePageMeta("Linked Devices — Exam Arena");
   const router = useRouter();
   const { data: devices, isLoading, error } = useLinkedDevices();
   const revoke = useRevokeDevice();
@@ -59,7 +59,7 @@ export default function LinkedDevicesPage() {
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Monitor size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LINKED DEVICES</span>
         </div>
@@ -98,13 +98,13 @@ export default function LinkedDevicesPage() {
         )}
 
         {devices && devices.length > 0 && (
-          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl divide-y divide-glass/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
             {devices.map((device) => {
               const { Icon } = PLATFORM_META[device.platform];
               const isConfirming = confirmingId === device.id;
               return (
                 <div key={device.id} className="flex items-center gap-4 px-5 py-4">
-                  <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-glass/[0.06]">
+                  <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-white/[0.06]">
                     <Icon size={18} className={device.current ? "text-primary" : "text-foreground/60"} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -120,7 +120,7 @@ export default function LinkedDevicesPage() {
                     <p className={cn("text-micro font-normal mt-0.5", device.current ? "text-primary/70" : "text-muted-foreground/55")}>
                       {device.current
                         ? timeAgo(device.lastActive)
-                        : `${timeAgo(device.lastActive)} Â· ${device.addedAt}`}
+                        : `${timeAgo(device.lastActive)} · ${device.addedAt}`}
                     </p>
                   </div>
                   <button
@@ -131,7 +131,7 @@ export default function LinkedDevicesPage() {
                       "flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-[11px] font-bold transition-all active:scale-95",
                       isConfirming
                         ? "bg-[#ff5c5c] text-[#0A0C0A]"
-                        : "border border-glass/[0.07] bg-glass/[0.04] text-[#ff5c5c]",
+                        : "border border-white/[0.07] bg-white/[0.04] text-[#ff5c5c]",
                     )}
                   >
                     <LogOut size={13} />
@@ -150,7 +150,7 @@ export default function LinkedDevicesPage() {
 
       {confirmingId && (
         <p className="mt-3 px-1 text-center text-micro text-muted-foreground/40 font-normal">
-          Tap again to confirm â€” this sign-out takes effect immediately.
+          Tap again to confirm — this sign-out takes effect immediately.
         </p>
       )}
 

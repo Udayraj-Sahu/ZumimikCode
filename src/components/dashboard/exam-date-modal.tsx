@@ -82,7 +82,7 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (picked.getTime() <= today.getTime()) {
-      setError("Pick a future date â€” your exam date must be after today.");
+      setError("Pick a future date — your exam date must be after today.");
       return;
     }
     setError(null);
@@ -123,7 +123,7 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
             Select your target exam date to unlock the countdown
           </p>
 
-          <div className="rounded-2xl border border-glass/[0.06] bg-glass/[0.02] overflow-hidden">
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
             <div className="flex">
               <ScrollColumn
                 items={days.map((d) => ({ value: d, label: d }))}
@@ -131,14 +131,14 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
                 onSelect={(v) => { setSelected((s) => ({ ...s, day: v })); setError(null); }}
                 label="DD"
               />
-              <div className="w-px bg-glass/[0.06] my-3" />
+              <div className="w-px bg-white/[0.06] my-3" />
               <ScrollColumn
                 items={MONTHS.map((m) => ({ value: m, label: m.slice(0, 3) }))}
                 selected={selected.month}
                 onSelect={(v) => { setSelected((s) => ({ ...s, month: v })); setError(null); }}
                 label="MM"
               />
-              <div className="w-px bg-glass/[0.06] my-3" />
+              <div className="w-px bg-white/[0.06] my-3" />
               <ScrollColumn
                 items={years.map((y) => ({ value: y, label: y }))}
                 selected={selected.year}
@@ -226,7 +226,7 @@ function ScrollColumn({
         <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-card to-transparent z-10 pointer-events-none" />
         <div
           className="absolute left-1 right-1 h-10 rounded-xl border z-0 pointer-events-none"
-          style={{ top: PAD * ITEM_H, background: "rgb(var(--glass) / 0.03)", borderColor: "rgb(var(--glass) / 0.06)" }}
+          style={{ top: PAD * ITEM_H, background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.06)" }}
         />
         <div
           ref={containerRef}

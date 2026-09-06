@@ -45,9 +45,9 @@ export default function ShapeCanvasRenderer(props: RendererProps) {
         return (
           <polygon
             points={`100,160 260,160 180,${160 - Math.min(h * 20, 120)}`}
-            fill="rgb(rgb(rgb(var(--primary))))"
+            fill="var(--primary)"
             fillOpacity={0.08}
-            stroke="rgb(rgb(rgb(var(--primary))))"
+            stroke="var(--primary)"
             strokeWidth={2}
           />
         );
@@ -63,9 +63,9 @@ export default function ShapeCanvasRenderer(props: RendererProps) {
             width={w}
             height={h}
             rx={4}
-            fill="rgb(rgb(rgb(var(--primary))))"
+            fill="var(--primary)"
             fillOpacity={0.08}
-            stroke="rgb(rgb(rgb(var(--primary))))"
+            stroke="var(--primary)"
             strokeWidth={2}
           />
         );
@@ -77,9 +77,9 @@ export default function ShapeCanvasRenderer(props: RendererProps) {
             cx={180}
             cy={100}
             r={r}
-            fill="rgb(rgb(rgb(var(--primary))))"
+            fill="var(--primary)"
             fillOpacity={0.08}
-            stroke="rgb(rgb(rgb(var(--primary))))"
+            stroke="var(--primary)"
             strokeWidth={2}
           />
         );
@@ -108,7 +108,7 @@ export default function ShapeCanvasRenderer(props: RendererProps) {
             x={180}
             y={190 + i * 14}
             textAnchor="middle"
-            fill="rgb(rgb(rgb(var(--muted-foreground))))"
+            fill="var(--muted-foreground)"
             fontSize="11"
           >
             {shape === "circle" ? "Radius" : i === 0 ? "Base" : "Height"}: {d}

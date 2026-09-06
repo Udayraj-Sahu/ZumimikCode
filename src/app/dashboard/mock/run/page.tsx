@@ -13,8 +13,8 @@ import type { Question } from "@/lib/types/sprint-session";
 import TrustBadge from "@/components/ui/trust-badge";
 import ContentFeedback from "@/components/ui/content-feedback";
 
-const GLASS_BG = "rgb(var(--glass) / 0.04)";
-const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
+const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -23,7 +23,7 @@ function formatTime(s: number): string {
 }
 
 function MockRunContent() {
-  usePageMeta("Mock Test â€” Exam Arena");
+  usePageMeta("Mock Test — Exam Arena");
   const router = useRouter();
   const searchParams = useSearchParams();
   const paperId = searchParams.get("paper") ?? "";
@@ -161,7 +161,7 @@ function MockRunContent() {
           <button
             type="button"
             onClick={() => router.push("/dashboard/learn?mode=mock")}
-            className="rounded-xl border backdrop-blur-xl px-5 py-3 text-[12px] font-bold text-foreground outline-none transition-colors hover:bg-glass/[0.06]"
+            className="rounded-xl border backdrop-blur-xl px-5 py-3 text-[12px] font-bold text-foreground outline-none transition-colors hover:bg-white/[0.06]"
             style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             Back
@@ -196,7 +196,7 @@ function MockRunContent() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="pb-3 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <FileText size={10} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MOCK TEST</span>
         </div>
@@ -232,7 +232,7 @@ function MockRunContent() {
           {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
           <span className={cn(
             "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-micro font-bold font-mono backdrop-blur-xl",
-            isTimerLow ? "bg-destructive/10 text-destructive border border-destructive/20" : "text-muted-foreground border border-glass/[0.06]",
+            isTimerLow ? "bg-destructive/10 text-destructive border border-destructive/20" : "text-muted-foreground border border-white/[0.06]",
           )}
           style={!isTimerLow ? { backgroundColor: GLASS_BG } : undefined}>
             <Clock size={10} />
@@ -252,7 +252,7 @@ function MockRunContent() {
               const isSelected = selectedIndex === i;
               const isCorrect = i === question.correctIndex;
               let variantStyles: React.CSSProperties = { backgroundColor: GLASS_BG, borderColor: GLASS_BORDER };
-              let variantClass = "border backdrop-blur-xl text-foreground hover:bg-glass/[0.06] active:bg-glass/[0.06]" as string;
+              let variantClass = "border backdrop-blur-xl text-foreground hover:bg-white/[0.06] active:bg-white/[0.06]" as string;
               if (showFeedback) {
                 if (isSelected && isCorrect) {
                   variantClass = "border text-primary";
@@ -265,7 +265,7 @@ function MockRunContent() {
                   variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
                 } else {
                   variantClass = "border text-muted-foreground/40";
-                  variantStyles = { backgroundColor: "rgb(var(--glass) / 0.02)", borderColor: "rgb(var(--glass) / 0.04)" };
+                  variantStyles = { backgroundColor: "rgba(255,255,255,0.02)", borderColor: "rgba(255,255,255,0.04)" };
                 }
               }
 
@@ -331,9 +331,9 @@ export default function MockRunPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
-        <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgb(var(--glass) / 0.04)" }} />
-        <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgb(var(--glass) / 0.04)" }} />
-        <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: "rgb(var(--glass) / 0.04)" }} />
+        <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
+        <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
+        <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
       </div>
     }>
       <MockRunContent />
