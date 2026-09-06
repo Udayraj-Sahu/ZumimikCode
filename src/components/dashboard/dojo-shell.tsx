@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef, useEffect, useCallback, useState } from "react";
 import gsap from "gsap";
-import { LogOut, Zap, Flame, SunMoon, MoreHorizontal } from "lucide-react";
+import { LogOut, Zap, Flame, Sun, Moon, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useAuthStore } from "@/stores/auth-store";
@@ -200,17 +200,9 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
             <span className="grid size-[34px] shrink-0 place-items-center rounded-full bg-chrome-avatar text-sm font-bold text-white">
               {avatarInitial}
             </span>
-            <span className="flex-1 truncate text-[12.5px] font-bold uppercase tracking-[0.5px] text-[#b8bcb4]">
+            <span className="flex-1 truncate text-[12.5px] font-bold uppercase tracking-[0.5px] text-chrome-foreground/60">
               {displayName}
             </span>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="grid size-11 shrink-0 place-items-center rounded-lg text-chrome-muted outline-none transition-colors hover:bg-white/5 hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <SunMoon className="size-4" aria-hidden="true" />
-            </button>
             <button
               type="button"
               onClick={() => { logout(); router.push("/"); }}
@@ -228,6 +220,16 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </main>
+
+      {/* Floating theme toggle */}
+      <button
+        type="button"
+        onClick={toggleTheme}
+        aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+        className="fixed right-4 top-[calc(env(safe-area-inset-top)+1rem)] z-40 grid size-11 place-items-center rounded-full border border-chrome-border bg-chrome text-chrome-muted outline-none shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-colors hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        {theme === "dark" ? <Sun className="size-5" aria-hidden="true" /> : <Moon className="size-5" aria-hidden="true" />}
+      </button>
 
       {/* Floating mobile nav */}
       <nav
