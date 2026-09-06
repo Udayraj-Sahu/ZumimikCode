@@ -27,9 +27,12 @@ import {
   X,
   ChevronDown,
   Settings,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useThemeStore } from "@/stores/theme-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 
@@ -236,6 +239,8 @@ export default function SettingsPage() {
   usePageMeta("Settings — Exam Arena");
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
+  const theme = useThemeStore((s) => s.theme);
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
   const firstName = useOnboardingStore((s) => s.firstName);
 
   const [showAddPrep, setShowAddPrep] = useState(false);
@@ -317,8 +322,14 @@ export default function SettingsPage() {
           </div>
         </CollapsibleSection>
 
-        {/* Logout */}
-        <div className="px-4">
+        {/* Appearance & Logout */}
+        <div className="space-y-2.5 px-4">
+          <Row
+            icon={theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            title="Dark Mode"
+            subtitle={theme === "dark" ? "On — dark appearance" : "Off — light appearance"}
+            onClick={toggleTheme}
+          />
           <Row icon={<LogOut className="h-5 w-5" />} title="Logout" subtitle="Sign out of your account" danger onClick={handleLogout} />
         </div>
       </div>

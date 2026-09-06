@@ -205,6 +205,14 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
             </span>
             <button
               type="button"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+              className="grid size-11 shrink-0 place-items-center rounded-lg text-chrome-muted outline-none transition-colors hover:bg-white/5 hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {theme === "dark" ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}
+            </button>
+            <button
+              type="button"
               onClick={() => { logout(); router.push("/"); }}
               aria-label="Logout"
               className="grid size-11 shrink-0 place-items-center rounded-lg text-chrome-muted outline-none transition-colors hover:bg-white/5 hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
@@ -220,16 +228,6 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </main>
-
-      {/* Floating theme toggle */}
-      <button
-        type="button"
-        onClick={toggleTheme}
-        aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-        className="fixed right-4 top-[calc(env(safe-area-inset-top)+1rem)] z-40 grid size-11 place-items-center rounded-full border border-chrome-border bg-chrome text-chrome-muted outline-none shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-colors hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        {theme === "dark" ? <Sun className="size-5" aria-hidden="true" /> : <Moon className="size-5" aria-hidden="true" />}
-      </button>
 
       {/* Floating mobile nav */}
       <nav
