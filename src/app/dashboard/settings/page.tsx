@@ -27,14 +27,14 @@ import {
   X,
   ChevronDown,
   Settings,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useThemeStore } from "@/stores/theme-store";
-import type { Theme } from "@/stores/theme-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
-import { cn } from "@/lib/utils";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -127,12 +127,24 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 /*  Profile header                                                      */
 /* ------------------------------------------------------------------ */
 function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initials: string; badge: string; onEdit: () => void }) {
+  const theme = useThemeStore((s) => s.theme);
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
   return (
     <div className="relative flex flex-col items-center px-6 pt-6 pb-1 text-center">
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
-      <div className="relative inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
-        <Settings size={12} className="text-primary" />
-        <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
+      <div className="relative inline-flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm pl-4 pr-1.5 py-1.5 mb-3">
+        <div className="flex items-center gap-2 pr-1.5">
+          <Settings size={12} className="text-primary" />
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
+        </div>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+          className="grid size-8 place-items-center rounded-full bg-white/[0.06] text-muted-foreground/60 outline-none transition-colors hover:bg-white/[0.1] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          {theme === "dark" ? <Sun size={13} /> : <Moon size={13} />}
+        </button>
       </div>
       <div className="relative">
         <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 backdrop-blur-sm">
@@ -233,48 +245,6 @@ function SubscriptionCard() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Appearance                                                          */
-/* ------------------------------------------------------------------ */
-const THEME_OPTIONS: { value: Theme; label: string }[] = [
-  { value: "dark", label: "Dark" },
-  { value: "light", label: "Light" },
-  { value: "system", label: "System" },
-];
-
-function AppearanceSection() {
-  const theme = useThemeStore((s) => s.theme);
-  const setTheme = useThemeStore((s) => s.setTheme);
-  return (
-    <div className="px-4">
-      <SectionLabel>APPEARANCE</SectionLabel>
-      <div className="rounded-2xl border backdrop-blur-xl p-1.5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-        <div className="grid grid-cols-3 gap-1">
-          {THEME_OPTIONS.map((o) => (
-            <button
-              key={o.value}
-              type="button"
-              onClick={() => setTheme(o.value)}
-              aria-pressed={theme === o.value}
-              className={cn(
-                "min-h-[44px] rounded-xl py-2.5 text-[12px] font-semibold tracking-[-0.01em] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
-                theme === o.value
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground/60 hover:text-foreground",
-              )}
-            >
-              {o.label}
-            </button>
-          ))}
-        </div>
-        <p className="px-1.5 pt-2 pb-0.5 text-[11px] text-muted-foreground/40">
-          System follows your device appearance
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function SettingsPage() {
@@ -314,9 +284,6 @@ export default function SettingsPage() {
           xp="2,340"
         />
         <SubscriptionCard />
-
-        {/* Appearance */}
-        <AppearanceSection />
 
         {/* Prep / Membership */}
         <div className="px-4">

@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { safeLocalStorage } from "@/lib/browser";
 
-export type Theme = "dark" | "light" | "system";
+type Theme = "dark" | "light";
 
 type ThemeState = {
   theme: Theme;
@@ -10,18 +10,12 @@ type ThemeState = {
   toggleTheme: () => void;
 };
 
-function cycleTheme(theme: Theme): Theme {
-  if (theme === "dark") return "light";
-  if (theme === "light") return "dark";
-  return "light";
-}
-
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
       theme: "dark",
       setTheme: (theme) => set({ theme }),
-      toggleTheme: () => set((s) => ({ theme: cycleTheme(s.theme) })),
+      toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
     }),
     {
       name: "exam-arena-theme",
