@@ -277,7 +277,7 @@ export default function AchievementsPage() {
             type="button"
             onClick={() => setActiveCategory(cat.id)}
             className={cn(
-              "shrink-0 rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] backdrop-blur-xl",
+              "shrink-0 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[28px] backdrop-blur-xl",
               activeCategory === cat.id
                 ? "bg-primary text-primary-foreground"
                 : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
