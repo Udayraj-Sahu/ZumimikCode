@@ -24,7 +24,7 @@ export default function Home() {
           />
           <circle cx="12" cy="12" r="2" fill="#C8FF5A" opacity="0.4" />
         </svg>
-        <span className="font-display text-[10px] tracking-[0.3em] text-primary/60 font-semibold">
+        <span className="font-display text-micro tracking-[0.3em] text-primary/60 font-semibold">
           EXAM ARENA
         </span>
       </div>

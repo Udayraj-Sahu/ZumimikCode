@@ -41,7 +41,7 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
           entry.me ? "text-primary" : "text-foreground/80",
         )}>
           {entry.name}
-          {entry.me && <span className="ml-2 text-[10px] text-primary/60 font-normal">(You)</span>}
+          {entry.me && <span className="ml-2 text-micro text-primary/60 font-normal">(You)</span>}
         </p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
@@ -57,7 +57,7 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
         )}>
           {entry.xp.toLocaleString()}
         </span>
-        <span className="text-[10px] text-muted-foreground/40 hidden sm:inline">XP</span>
+        <span className="text-micro text-muted-foreground/40 hidden sm:inline">XP</span>
       </div>
     </div>
   );
@@ -102,7 +102,7 @@ export default function LeaderboardPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Trophy size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEADERBOARD</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LEADERBOARD</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Track your ranking across all arenas</p>
       </div>
@@ -115,7 +115,7 @@ export default function LeaderboardPage() {
             type="button"
             onClick={() => setPeriod(p)}
             className={cn(
-              "rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+              "rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
               period === p
                 ? "bg-primary text-primary-foreground"
                 : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -141,7 +141,7 @@ export default function LeaderboardPage() {
         {error && (
           <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center">
             <p className="text-[12px] font-semibold text-destructive">Failed to load leaderboard</p>
-            <p className="mt-1 text-[10px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+            <p className="mt-1 text-micro text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
         )}
 
@@ -169,7 +169,7 @@ export default function LeaderboardPage() {
                     </div>
                     <div>
                       <p className="text-[12px] font-bold text-foreground">Your Rank</p>
-                      <p className="text-[10px] text-muted-foreground/60">
+                      <p className="text-micro text-muted-foreground/60">
                         #{me.rank} of {entries.length}
                       </p>
                     </div>
@@ -183,7 +183,7 @@ export default function LeaderboardPage() {
                       <div className="flex items-center gap-1 text-chart-3">
                         <ArrowUp size={14} />
                         <span className="font-bold font-mono">{xpToNext.toLocaleString()} XP</span>
-                        <span className="text-muted-foreground/60 text-[10px]">to #{prevRank.rank}</span>
+                        <span className="text-muted-foreground/60 text-micro">to #{prevRank.rank}</span>
                       </div>
                     )}
                   </div>

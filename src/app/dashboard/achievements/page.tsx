@@ -155,7 +155,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
       </p>
 
       {/* Description */}
-      <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">
+      <p className="text-micro text-muted-foreground/50 mt-0.5 leading-tight">
         {item.description}
       </p>
 
@@ -172,7 +172,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
 
       {/* Progress text for locked */}
       {!item.unlocked && item.progress !== undefined && item.progress > 0 && (
-        <p className="mt-1.5 text-[10px] text-muted-foreground/40 font-mono">{item.progress}%</p>
+        <p className="mt-1.5 text-micro text-muted-foreground/40 font-mono">{item.progress}%</p>
       )}
     </div>
   );
@@ -224,7 +224,7 @@ export default function AchievementsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Trophy size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">ACHIEVEMENTS</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ACHIEVEMENTS</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           {total > 0 ? `${unlocked}/${total} unlocked` : "Unlock badges as you train"}
@@ -246,23 +246,23 @@ export default function AchievementsPage() {
             <div className="flex-1 grid grid-cols-2 gap-3">
               <div>
                 <p className="text-[18px] font-bold text-foreground">{unlocked}</p>
-                <p className="text-[10px] text-muted-foreground/40 font-semibold uppercase tracking-wider">Unlocked</p>
+                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider">Unlocked</p>
               </div>
               <div>
                 <p className="text-[18px] font-bold text-foreground">{total - unlocked}</p>
-                <p className="text-[10px] text-muted-foreground/40 font-semibold uppercase tracking-wider">Remaining</p>
+                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider">Remaining</p>
               </div>
               <div>
                 <p className="text-[18px] font-bold" style={{ color: TIER_STYLES.gold.ring }}>
                   {achievements?.filter((a) => a.tier === "gold" && a.unlocked).length ?? 0}
                 </p>
-                <p className="text-[10px] text-muted-foreground/40 font-semibold uppercase tracking-wider">Gold</p>
+                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider">Gold</p>
               </div>
               <div>
                 <p className="text-[18px] font-bold" style={{ color: TIER_STYLES.platinum.ring }}>
                   {achievements?.filter((a) => a.tier === "platinum" && a.unlocked).length ?? 0}
                 </p>
-                <p className="text-[10px] text-muted-foreground/40 font-semibold uppercase tracking-wider">Platinum</p>
+                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider">Platinum</p>
               </div>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function AchievementsPage() {
             type="button"
             onClick={() => setActiveCategory(cat.id)}
             className={cn(
-              "shrink-0 rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] backdrop-blur-xl",
+              "shrink-0 rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] backdrop-blur-xl",
               activeCategory === cat.id
                 ? "bg-primary text-primary-foreground"
                 : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -306,7 +306,7 @@ export default function AchievementsPage() {
         {error && (
           <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl">
             <p className="text-[12px] font-semibold text-destructive">Failed to load achievements</p>
-            <p className="mt-1 text-[10px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+            <p className="mt-1 text-micro text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
         )}
 

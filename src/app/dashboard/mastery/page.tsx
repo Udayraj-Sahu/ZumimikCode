@@ -48,7 +48,7 @@ export default function MasteryPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Target size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">MASTERY</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MASTERY</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           {topics.length > 0 ? `${average}% average across ${topics.length} topics` : "Track your progress across topics"}
@@ -59,21 +59,21 @@ export default function MasteryPage() {
       {topics.length > 0 && (
         <div ref={animateSection} data-section-index="0" className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">AVERAGE</p>
+            <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">AVERAGE</p>
             <p className="text-[20px] font-bold text-primary mt-1">{average}%</p>
           </div>
           <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">TOPICS</p>
+            <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">TOPICS</p>
             <p className="text-[20px] font-bold text-foreground mt-1">{topics.length}</p>
           </div>
           <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">BEST</p>
+            <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">BEST</p>
             <p className="text-[20px] font-bold text-chart-2 mt-1">
               {Math.max(...topics.map((t) => t.value))}%
             </p>
           </div>
           <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">NEEDS WORK</p>
+            <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">NEEDS WORK</p>
             <p className="text-[20px] font-bold text-chart-3 mt-1">
               {Math.min(...topics.map((t) => t.value))}%
             </p>
@@ -133,7 +133,7 @@ export default function MasteryPage() {
                     }}
                   />
                 </div>
-                <p className="mt-1.5 text-[10px] text-muted-foreground/40">
+                <p className="mt-1.5 text-micro text-muted-foreground/40">
                   {t.value >= 80 ? "Strong" : t.value >= 50 ? "Developing" : "Needs practice"}
                 </p>
               </div>

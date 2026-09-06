@@ -208,7 +208,7 @@ export default function PracticePage() {
         <div ref={headerRef} className="mb-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <Dumbbell size={12} className="text-primary" />
-            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">PRACTICE</span>
+            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PRACTICE</span>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
             Sharpen your skills with MCQ drills or technique walkthroughs
@@ -249,7 +249,7 @@ export default function PracticePage() {
         {practiceType === "mcq" && (
           <>
             <div ref={animateSection} data-section-index="1" className="mb-5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Choose Topic</p>
+              <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Choose Topic</p>
               <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                 {sprintTopics.map((t) => {
                   const Icon = t.icon;
@@ -278,7 +278,7 @@ export default function PracticePage() {
             </div>
 
             <div ref={animateSection} data-section-index="2" className="mb-5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Difficulty</p>
+              <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Difficulty</p>
               <div className="flex gap-2">
                 {["Beginner", "Intermediate", "Advanced"].map((d) => {
                   const active = difficulty === d;
@@ -307,7 +307,7 @@ export default function PracticePage() {
                 type="button"
                 disabled={!topic}
                 onClick={startPractice}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BookOpen size={16} /> Start Practice
               </button>
@@ -323,7 +323,7 @@ export default function PracticePage() {
                 <Target size={24} className="text-muted-foreground/20" />
               </div>
               <p className="text-[14px] font-semibold text-muted-foreground/60">No exam selected yet</p>
-              <p className="text-[12px] text-muted-foreground/30 max-w-xs font-normal leading-relaxed">
+              <p className="text-[12px] text-muted-foreground/55 max-w-xs font-normal leading-relaxed">
                 Choose your target exam during onboarding to unlock step-by-step technique practice.
               </p>
               <button
@@ -341,7 +341,7 @@ export default function PracticePage() {
         {practiceType === "templates" && targetExam && (
           <>
             <div ref={animateSection} data-section-index="1" className="mb-5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Category</p>
+              <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Category</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {[
                   { id: "all", label: "All Techniques" },
@@ -364,7 +364,7 @@ export default function PracticePage() {
                       aria-label={`Category ${cat.label}`}
                     >
                       <span className={cn(
-                        "rounded-xl px-2.5 py-1 text-[10px] font-bold",
+                        "rounded-xl px-2.5 py-1 text-micro font-bold",
                         cat.id === "all" ? "bg-primary/10 text-primary" : "bg-[#F59E0B]/10 text-[#F59E0B]",
                       )}>
                         {cat.label === "All Techniques" ? "ALL" : cat.label.slice(0, 4).toUpperCase()}
@@ -377,7 +377,7 @@ export default function PracticePage() {
             </div>
 
             <div ref={animateSection} data-section-index="2" className="mb-5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Mode</p>
+              <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Mode</p>
               <div className="flex gap-2">
                 {([
                   { value: "solve_along" as const, label: "Solve Along" },
@@ -403,7 +403,7 @@ export default function PracticePage() {
                   );
                 })}
               </div>
-              <p className="mt-2 text-[11px] text-muted-foreground/30 font-normal">
+              <p className="mt-2 text-[11px] text-muted-foreground/55 font-normal">
                 {renderMode === "solve_along" && "Step-by-step reveal — learn the technique"}
                 {renderMode === "quick" && "All steps visible — speed practice"}
                 {renderMode === "guided" && "Auto-advancing steps with hints"}
@@ -415,7 +415,7 @@ export default function PracticePage() {
                 type="button"
                 disabled={loadingTemplates}
                 onClick={() => startTemplatePractice()}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BrainCircuit size={16} />
                 {loadingTemplates ? "Loading..." : `Start ${domainLabel} ${renderMode === "quick" ? "Quick" : renderMode === "guided" ? "Guided" : "Solve-Along"}`}
@@ -448,11 +448,11 @@ export default function PracticePage() {
 
         <div className="grid grid-cols-2 gap-3 mb-5">
           <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Correct</p>
+            <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Correct</p>
             <p className="mt-1 text-[22px] font-bold text-foreground">{completed.correct}/{completed.total}</p>
           </div>
           <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Accuracy</p>
+            <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Accuracy</p>
             <p className="mt-1 text-[22px] font-bold text-primary">{accuracy}%</p>
           </div>
         </div>
@@ -461,7 +461,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
           >
             Practice Again <ChevronRight size={16} />
           </button>
@@ -523,7 +523,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
           >
             Practice Another <ChevronRight size={16} />
           </button>
@@ -557,10 +557,10 @@ export default function PracticePage() {
     return (
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
         <div ref={headerRef} className="flex items-center justify-between mb-3">
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+          <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
             {domainLabel} &middot; {currentTemplate.concept?.technique_name}
           </span>
-          <span className="text-[11px] font-mono text-muted-foreground/30">
+          <span className="text-[11px] font-mono text-muted-foreground/55">
             {storeCurrentIndex + 1}/{storeTemplates.length}
           </span>
         </div>
@@ -586,7 +586,7 @@ export default function PracticePage() {
             <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#F59E0B]">
               Now you try it!
             </p>
-            <p className="mt-0.5 text-[11px] text-muted-foreground/30 font-normal">
+            <p className="mt-0.5 text-[11px] text-muted-foreground/55 font-normal">
               Apply the technique and solve on your own
             </p>
           </div>
@@ -610,7 +610,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={handleTemplateNext}
-              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
             >
               {storeCurrentIndex >= storeTemplates.length - 1 ? "See Results" : "Next"}{" "}
               <ChevronRight size={16} />
@@ -650,10 +650,10 @@ export default function PracticePage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="flex items-center justify-between mb-3">
-        <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+        <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
           Practice &middot; {session.topicLabel}
         </span>
-        <span className="text-[11px] font-mono text-muted-foreground/30">
+        <span className="text-[11px] font-mono text-muted-foreground/55">
           {currentIndex + 1}/{session.questions.length}
         </span>
       </div>
@@ -714,7 +714,7 @@ export default function PracticePage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>

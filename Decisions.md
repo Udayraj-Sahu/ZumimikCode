@@ -45,3 +45,14 @@
 
 - **Decision:** All keys live in `.env.local` / CI env vars; `.env*` is gitignored. The API base URL is read from `NEXT_PUBLIC_API_URL` at build time.
 - **Why:** The bundle is a static export shipped inside an APK — anything baked in at build time is extractable. Secrets are never committed.
+
+## 9. Theme is three-state, default stays Dark (`skills-check`)
+
+- **Decision:** `theme-store` now supports `"dark" | "light" | "system"` (default `"dark"`). `theme-provider` resolves `system` live via `matchMedia("(prefers-color-scheme: light)")`. Settings has an **APPEARANCE** segmented control; the sidebar `SunMoon` toggle still flips dark↔light only (from `"system"` it flips to light).
+- **Why:** Android guidelines call for a manual System/Light/Dark override (R1.9) while preserving the existing dark-first look on first run. Dark stays default to avoid a silent visual change for current users.
+
+## 10. MD3 compliance applied as web-equivalent tokens (not native components)
+
+- **Decision:** This is a Capacitor WebView app — native Compose/XML MD3 (`MaterialTheme`, `sp`, `NavigationBar`, dynamic-color APIs, `ExploreByTouchHelper`) is N/A. Compliance is mapped to web equivalents: `color-scheme` per theme, `env(safe-area-inset-*)` for edge-to-edge (targetSdk 36 enforces it), 44px touch targets, `text-micro` (11px) minimum label size, always-labeled bottom nav (5 items), `chrome` + `bg-cta` design tokens replacing hardcoded sidebar/CTA hexes.
+- **Why:** Rules about semantics, contrast, touch targets, and mode support apply to rendered UI regardless of rendering tech; component-level rules apply only to native apps.
+- **Trade-off accepted:** hardcoded hex remains in lower-traffic decorative spots; 8–9px micro-annotations (badges/calendar/graph) kept until a full design-token pass.

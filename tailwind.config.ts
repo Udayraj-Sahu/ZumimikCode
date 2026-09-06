@@ -45,8 +45,19 @@ const config: Config = {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+        chrome: {
+          DEFAULT: "var(--chrome)",
+          raised: "var(--chrome-raised)",
+          border: "var(--chrome-border)",
+          muted: "var(--chrome-muted)",
+          hover: "var(--chrome-hover)",
+          foreground: "var(--chrome-foreground)",
+          active: "var(--chrome-active)",
+          avatar: "var(--chrome-avatar)",
+        },
       },
       fontSize: {
+        micro: ["11px", { lineHeight: "1.3" }],
         "fluid-xs": ["clamp(11px, 1vw, 12px)", { lineHeight: "1.3" }],
         "fluid-sm": ["clamp(12px, 1.4vw, 13px)", { lineHeight: "1.4" }],
         "fluid-base": ["clamp(13px, 2vw, 15px)", { lineHeight: "1.5" }],
@@ -63,6 +74,9 @@ const config: Config = {
       },
       animation: {
         "breath-glow": "breath-glow 2.5s ease-in-out infinite",
+      },
+      backgroundImage: {
+        cta: "linear-gradient(90deg, var(--cta-from), var(--cta-to))",
       },
       borderRadius: {
         sm: "calc(var(--radius) - 4px)",

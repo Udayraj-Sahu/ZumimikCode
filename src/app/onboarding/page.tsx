@@ -117,7 +117,7 @@ export default function OnboardingPage() {
             </h1>
             <div className="flex items-center justify-center gap-2 mt-1.5">
               <div className="h-px w-6 bg-primary/30" />
-              <span className="text-[10px] font-bold tracking-[0.3em] text-primary/60">
+              <span className="text-micro font-bold tracking-[0.3em] text-primary/60">
                 ARENA OF CHAMPIONS
               </span>
               <div className="h-px w-6 bg-primary/30" />

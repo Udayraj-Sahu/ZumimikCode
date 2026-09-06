@@ -143,7 +143,7 @@ function SectionHeading({ children, className }: { children: React.ReactNode; cl
 
 function SectionLabel({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <p className={cn("text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase", className)} style={style}>
+    <p className={cn("text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase", className)} style={style}>
       {children}
     </p>
   );
@@ -359,7 +359,7 @@ export default function DashboardPage() {
                       </div>
                       <div className="min-w-0">
                         <p className="text-[13.5px] font-bold tracking-[-0.02em] text-foreground leading-tight">Profile complete</p>
-                        <p className="text-[10px] text-primary/60 font-medium mt-0.5">Great to have you, {firstName}</p>
+                        <p className="text-micro text-primary/60 font-medium mt-0.5">Great to have you, {firstName}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border border-primary/20 text-[9px] font-bold text-primary" style={{ background: "rgba(199,242,82,0.08)" }}>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <p className="relative text-center text-[9.5px] text-muted-foreground/35 font-semibold tracking-[0.14em]">PROFILE READY • STREAKS UNLOCKED</p>
+                  <p className="relative text-center text-[9.5px] text-muted-foreground/60 font-semibold tracking-[0.14em]">PROFILE READY • STREAKS UNLOCKED</p>
                 </>
               ) : (
                 <>
@@ -428,7 +428,7 @@ export default function DashboardPage() {
                       ].map((s) => (
                         <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: s.done ? "rgba(199,242,82,0.08)" : "transparent" }}>
                           <div className="size-1.5 rounded-full" style={{ background: s.done ? "#C7F252" : "rgba(255,255,255,0.15)" }} />
-                          <span className={cn("text-[8px] font-semibold", s.done ? "text-foreground/70" : "text-muted-foreground/35")}>{s.label}</span>
+                          <span className={cn("text-[8px] font-semibold", s.done ? "text-foreground/70" : "text-muted-foreground/50")}>{s.label}</span>
                         </div>
                       ))}
                     </div>
@@ -454,13 +454,13 @@ export default function DashboardPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[11px] font-bold tracking-[-0.01em] text-foreground">YOUR STATS</span>
-                    <span className="text-[9px] text-muted-foreground/35 font-medium">This week</span>
+                    <span className="text-[9px] text-muted-foreground/60 font-medium">This week</span>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => router.push("/dashboard/analytics")}
-                  className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-[10px] font-bold text-foreground/50 transition-all hover:bg-white/[0.06] hover:text-foreground/80 active:scale-95"
+                  className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-micro font-bold text-foreground/50 transition-all hover:bg-white/[0.06] hover:text-foreground/80 active:scale-95"
                 >
                   Details
                   <ArrowUpRight size={10} />
@@ -488,7 +488,7 @@ export default function DashboardPage() {
                     </div>
                     <p className="text-[20px] font-bold tracking-[-0.03em] text-foreground relative leading-none">{s.value}</p>
                     <div className="flex items-center justify-between mt-2 relative">
-                      <p className="text-[8.5px] font-semibold tracking-[0.14em] text-muted-foreground/35 uppercase">{s.label}</p>
+                      <p className="text-[8.5px] font-semibold tracking-[0.14em] text-muted-foreground/60 uppercase">{s.label}</p>
                       <ArrowUpRight size={11} className="text-muted-foreground/20 group-hover:text-primary/60 transition-colors" />
                     </div>
                   </button>
@@ -527,7 +527,7 @@ export default function DashboardPage() {
               <div className="relative h-px w-full bg-white/[0.05]" />
               <SectionLabel className="text-[#34D399] mt-3.5">DAILY HABITS</SectionLabel>
               <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-              <p className="relative mt-0.5 text-[11px] text-muted-foreground/40 font-normal">Daily check-ins · Streaks · Stay accountable</p>
+              <p className="relative mt-0.5 text-[11px] text-muted-foreground/60 font-normal">Daily check-ins · Streaks · Stay accountable</p>
               <div className="relative mt-3 flex-1 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="68" height="68" viewBox="0 0 64 64">
@@ -536,7 +536,7 @@ export default function DashboardPage() {
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-[16px] font-bold text-foreground leading-none">{todayCompleted}</span>
-                    <span className="text-[7.5px] text-muted-foreground/35 font-semibold mt-0.5">/ {habitCount}</span>
+                    <span className="text-[7.5px] text-muted-foreground/55 font-semibold mt-0.5">/ {habitCount}</span>
                   </div>
                 </div>
                 <div className="flex-1 min-w-0 space-y-3">
@@ -546,7 +546,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="flex-1">
                       <p className="text-[11px] font-bold text-foreground/80 leading-none">{habitStats.currentStreak} day streak</p>
-                      <p className="text-[9px] text-muted-foreground/35 mt-1">Best {habitStats.bestStreak} days</p>
+                      <p className="text-[9px] text-muted-foreground/60 mt-1">Best {habitStats.bestStreak} days</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -556,7 +556,7 @@ export default function DashboardPage() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <p className="text-[11px] font-bold text-foreground/80 leading-none">Completion</p>
-                        <p className="text-[10px] font-bold text-[#34D399]">{habitStats.completionRate}%</p>
+                        <p className="text-micro font-bold text-[#34D399]">{habitStats.completionRate}%</p>
                       </div>
                       <div className="mt-1.5 h-1 w-full rounded-full bg-white/[0.05] overflow-hidden">
                         <div className="h-full rounded-full transition-all duration-700" style={{ width: `${habitStats.completionRate}%`, background: "linear-gradient(90deg, #10B981, #34D399)" }} />
@@ -571,17 +571,17 @@ export default function DashboardPage() {
                   return (
                     <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)", background: done ? `${h.color}10` : "transparent" }}>
                       <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
-                      <span className={cn("text-[8px] font-medium truncate max-w-[50px]", done ? "text-foreground/70" : "text-muted-foreground/30")}>{h.name.split(" ")[0]}</span>
+                      <span className={cn("text-[8px] font-medium truncate max-w-[50px]", done ? "text-foreground/70" : "text-muted-foreground/50")}>{h.name.split(" ")[0]}</span>
                     </div>
                   );
                 })}
-                {habits.length > 3 && <span className="text-[8px] text-muted-foreground/25 font-medium">+{habits.length - 3}</span>}
+                {habits.length > 3 && <span className="text-[8px] text-muted-foreground/50 font-medium">+{habits.length - 3}</span>}
               </div>
               <div className="relative mt-3 flex items-center justify-between">
                 <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95">
                   VIEW HABITS
                 </button>
-                <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/35 font-normal">
+                <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60 font-normal">
                   <Clock size={11} />
                   {habitCount - todayCompleted > 0 ? `${habitCount - todayCompleted} left today` : "All done!"}
                 </div>
@@ -698,7 +698,7 @@ export default function DashboardPage() {
                               <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
                                 <Calendar size={12} className="text-primary" />
                               </div>
-                              <span className="text-[10px] font-semibold text-foreground">Exam {new Date(examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                              <span className="text-micro font-semibold text-foreground">Exam {new Date(examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                             </div>
                             <Pencil size={11} className="text-muted-foreground/30" />
                           </button>
@@ -728,18 +728,18 @@ export default function DashboardPage() {
                       <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, rgba(199,242,82,0.18), transparent 60%)" }} />
                       {examDate ? (
                         <>
-                          <p className="relative text-[10px] font-bold tracking-[0.28em] text-primary/70">{daysLeft} DAYS</p>
+                          <p className="relative text-micro font-bold tracking-[0.28em] text-primary/70">{daysLeft} DAYS</p>
                           <p className="relative text-[44px] font-black italic tracking-tighter leading-none text-white mt-1">
                             {hoursLeft.toLocaleString()}
                             <span className="text-[20px] font-bold not-italic align-top ml-1 text-primary">HR</span>
                           </p>
-                          <p className="relative text-[10px] font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
+                          <p className="relative text-micro font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
                         </>
                       ) : (
                         <>
-                          <p className="relative text-[10px] font-bold tracking-[0.28em] text-primary/70">SET YOUR TARGET</p>
+                          <p className="relative text-micro font-bold tracking-[0.28em] text-primary/70">SET YOUR TARGET</p>
                           <p className="relative text-[20px] font-black italic tracking-tighter leading-none text-white mt-1">COUNTDOWN</p>
-                          <p className="relative text-[10px] font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
+                          <p className="relative text-micro font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
                         </>
                       )}
                     </div>
@@ -785,7 +785,7 @@ export default function DashboardPage() {
                     <q.icon size={18} color={q.color} />
                   </div>
                 </div>
-                <span className="text-[10px] font-medium text-foreground/55 text-center leading-tight tracking-[0.01em]">{label}</span>
+                <span className="text-micro font-medium text-foreground/55 text-center leading-tight tracking-[0.01em]">{label}</span>
               </button>
               );
             })}
@@ -793,7 +793,7 @@ export default function DashboardPage() {
               <div className="h-11 w-11 rounded-full flex items-center justify-center border border-dashed border-white/10">
                 <Plus size={15} className="text-muted-foreground" />
               </div>
-              <span className="text-[10px] font-medium text-muted-foreground text-center leading-tight tracking-[0.01em]">Coming Soon</span>
+              <span className="text-micro font-medium text-muted-foreground text-center leading-tight tracking-[0.01em]">Coming Soon</span>
             </div>
           </div>
         </div>
@@ -853,7 +853,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{a.score}</span>
-                    <span className="text-[11px] text-muted-foreground/25 w-16 text-right font-normal">{a.time}</span>
+                    <span className="text-[11px] text-muted-foreground/55 w-16 text-right font-normal">{a.time}</span>
                   </div>
                 </div>
               ))}
@@ -900,7 +900,7 @@ export default function DashboardPage() {
                 >
                   <div>
                     <p className="text-[13px] font-semibold text-foreground tracking-[-0.01em]">{u.title}</p>
-                    <p className="text-[11px] text-muted-foreground/35 mt-0.5 font-normal">{u.time}</p>
+                    <p className="text-[11px] text-muted-foreground/60 mt-0.5 font-normal">{u.time}</p>
                   </div>
                   {u.tag === "LIVE" ? (
                     <span className="flex items-center gap-1.5 rounded-full bg-[#FF6B35]/15 px-3 py-1 text-[11px] font-semibold text-[#FF6B35]">
@@ -936,7 +936,7 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-3">
                   <span className={cn(
                     "text-[13px] font-bold w-8 tracking-[-0.01em]",
-                    l.rank === 1 ? "text-[#FFD700]" : l.rank === 2 ? "text-[#C0C0C0]" : l.rank === 3 ? "text-[#CD7F32]" : "text-muted-foreground/35"
+                    l.rank === 1 ? "text-[#FFD700]" : l.rank === 2 ? "text-[#C0C0C0]" : l.rank === 3 ? "text-[#CD7F32]" : "text-muted-foreground/60"
                   )}>
                     {l.rank <= 3 ? ["🥇", "🥈", "🥉"][l.rank - 1] : `#${l.rank}`}
                   </span>

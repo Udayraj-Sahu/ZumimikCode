@@ -112,7 +112,7 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
           <button
             type="button"
             onClick={onClose}
-            className="grid size-8 place-items-center rounded-lg text-muted-foreground/50 hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-11 place-items-center rounded-lg text-muted-foreground/50 hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <X size={16} />
           </button>
@@ -218,7 +218,7 @@ function ScrollColumn({
 
   return (
     <div className="flex-1 flex flex-col">
-      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-muted-foreground/25 pt-2 pb-1">
+      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-muted-foreground/55 pt-2 pb-1">
         {label}
       </p>
       <div className="relative" style={{ height: ITEM_H * VISIBLE }}>

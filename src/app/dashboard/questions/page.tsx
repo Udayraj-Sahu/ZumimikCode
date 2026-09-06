@@ -56,7 +56,7 @@ export default function QuestionsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
           <FileQuestion size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">QUESTIONS</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">QUESTIONS</span>
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Question Bank</h1>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Browse questions by topic</p>
@@ -72,7 +72,7 @@ export default function QuestionsPage() {
                 type="button"
                 onClick={() => { setTopic(t.id); setRevealed({}); }}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl",
+                  "flex items-center gap-1.5 rounded-xl px-3 py-2 text-micro font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl",
                   topic === t.id
                     ? "bg-primary text-primary-foreground border border-white/[0.06]"
                     : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -129,7 +129,7 @@ export default function QuestionsPage() {
                   onClick={() => setRevealed((prev) => ({ ...prev, [q.id]: !prev[q.id] }))}
                   className="flex w-full items-start gap-3 p-4 text-left outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  <span className="grid size-7 shrink-0 place-items-center rounded-xl bg-muted text-[10px] font-bold font-mono text-muted-foreground">
+                  <span className="grid size-7 shrink-0 place-items-center rounded-xl bg-muted text-micro font-bold font-mono text-muted-foreground">
                     {i + 1}
                   </span>
                   <div className="flex-1 min-w-0">
@@ -140,13 +140,13 @@ export default function QuestionsPage() {
                           <div
                             key={oi}
                             className={cn(
-                              "flex items-center gap-2 rounded-xl border px-3 py-2 text-[10px]",
+                              "flex items-center gap-2 rounded-xl border px-3 py-2 text-micro",
                               oi === q.correctIndex
                                 ? "border-primary bg-primary/10 text-primary"
                                 : "border-transparent bg-muted/50 text-muted-foreground/50",
                             )}
                           >
-                            <span className="font-mono text-[10px] opacity-60 w-3">{String.fromCharCode(65 + oi)}</span>
+                            <span className="font-mono text-micro opacity-60 w-3">{String.fromCharCode(65 + oi)}</span>
                             <span className="flex-1">{opt}</span>
                             {oi === q.correctIndex && <Check size={12} className="text-primary shrink-0" />}
                           </div>

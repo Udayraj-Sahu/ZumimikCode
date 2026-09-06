@@ -44,14 +44,14 @@ export default function FeedPage() {
       <div ref={headerRef}>
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Compass size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">FEED</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FEED</span>
         </div>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Explore</h1>
             <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Discover tips and strategies</p>
           </div>
-          <div className="grid size-10 place-items-center rounded-full bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[12px] font-black text-[#0A0C0A]">
+          <div className="grid size-10 place-items-center rounded-full bg-cta text-[12px] font-black text-[#0A0C0A]">
             {(firstName?.[0] ?? "C").toUpperCase()}
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function FeedPage() {
             type="button"
             onClick={() => setActiveCategory(cat)}
             className={cn(
-              "text-[10px] font-bold whitespace-nowrap pb-3 outline-none relative transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+              "text-micro font-bold whitespace-nowrap pb-3 outline-none relative transition-colors focus-visible:ring-2 focus-visible:ring-ring",
               activeCategory === cat ? "text-foreground" : "text-muted-foreground/50",
             )}
           >
@@ -131,7 +131,7 @@ export default function FeedPage() {
                   </p>
                   <div className="flex items-center gap-1.5 mt-1.5">
                     <Clock size={9} className="text-muted-foreground/40" />
-                    <span className="text-[10px] text-muted-foreground/40 font-semibold">
+                    <span className="text-micro text-muted-foreground/40 font-semibold">
                       {story.readTime}
                     </span>
                   </div>
@@ -163,7 +163,7 @@ export default function FeedPage() {
                   </p>
                 </div>
                 <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                  <span className="bg-gradient-to-r from-[#C7F252] to-[#A8D43A] px-1.5 py-0.5 rounded text-[8px] font-bold text-[#0A0C0A]">
+                  <span className="bg-cta px-1.5 py-0.5 rounded text-[8px] font-bold text-[#0A0C0A]">
                     {video.source}
                   </span>
                 </div>

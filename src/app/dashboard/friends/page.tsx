@@ -44,14 +44,14 @@ export default function FriendsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Users size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">FRIENDS</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FRIENDS</span>
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Friends</h1>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Compete and stay motivated together</p>
         <div className="mt-3 flex justify-center">
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-3 py-2.5 text-[10px] font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+            className="flex items-center gap-1.5 rounded-xl bg-cta text-[#0A0C0A] px-3 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
           >
             <UserPlus size={14} /> Add
           </button>
@@ -63,7 +63,7 @@ export default function FriendsPage() {
           type="button"
           onClick={() => setTab("friends")}
           className={cn(
-            "rounded-full px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
             tab === "friends"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground",
@@ -77,7 +77,7 @@ export default function FriendsPage() {
           type="button"
           onClick={() => setTab("activity")}
           className={cn(
-            "rounded-full px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
             tab === "activity"
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground"
@@ -90,7 +90,7 @@ export default function FriendsPage() {
           type="button"
           onClick={() => setTab("requests")}
           className={cn(
-            "rounded-full px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
             tab === "requests"
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground"
@@ -130,11 +130,11 @@ export default function FriendsPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <p className="text-[12px] font-bold text-foreground/80 truncate">{f.name}</p>
-                  <span className="rounded-xl bg-white/[0.06] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  <span className="rounded-xl bg-white/[0.06] px-1.5 py-0.5 text-micro font-bold uppercase tracking-wider text-muted-foreground">
                     {f.level}
                   </span>
                 </div>
-                <div className="flex items-center gap-3 mt-0.5 text-[10px] text-muted-foreground/40">
+                <div className="flex items-center gap-3 mt-0.5 text-micro text-muted-foreground/40">
                   <span className="flex items-center gap-1"><Zap size={10} /> {f.xp.toLocaleString()} XP</span>
                   <span className="flex items-center gap-1">Streak: {f.streak}d</span>
                   <span>{f.lastActive}</span>
@@ -142,7 +142,7 @@ export default function FriendsPage() {
               </div>
               <button
                 type="button"
-                className="flex items-center gap-1 rounded-xl px-3 py-2 text-[10px] font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-1 rounded-xl px-3 py-2 text-micro font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ background: "rgba(255,255,255,0.04)" }}
               >
                 <Swords size={12} /> Duel
@@ -167,7 +167,7 @@ export default function FriendsPage() {
                   <p className="text-[12px] text-foreground/80">
                     <span className="font-bold">{friend?.name ?? "Someone"}</span> {a.label}
                   </p>
-                  <p className="text-[10px] text-muted-foreground/50 mt-0.5">{a.time}</p>
+                  <p className="text-micro text-muted-foreground/50 mt-0.5">{a.time}</p>
                 </div>
               </div>
             );
@@ -192,7 +192,7 @@ export default function FriendsPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[12px] font-bold text-foreground/80">{f.name}</p>
-                    <p className="text-[10px] text-muted-foreground/40">{f.level} &middot; {f.xp.toLocaleString()} XP</p>
+                    <p className="text-micro text-muted-foreground/40">{f.level} &middot; {f.xp.toLocaleString()} XP</p>
                   </div>
                   <div className="flex gap-2">
             <button

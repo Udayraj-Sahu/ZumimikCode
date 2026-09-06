@@ -49,7 +49,7 @@ function HistoryRow({
         entry.accuracy >= 80 ? "bg-primary/10" : entry.accuracy >= 50 ? "bg-chart-3/10" : "bg-destructive/10",
       )}>
         <span className={cn(
-          "text-[10px] font-bold font-mono",
+          "text-micro font-bold font-mono",
           entry.accuracy >= 80 ? "text-primary" : entry.accuracy >= 50 ? "text-chart-3" : "text-destructive",
         )}>
           {entry.accuracy}%
@@ -57,7 +57,7 @@ function HistoryRow({
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-[12px] font-semibold text-foreground/80 truncate">{entry.topicLabel}</p>
-        <div className="flex items-center gap-2 text-[10px] text-muted-foreground/40 mt-0.5">
+        <div className="flex items-center gap-2 text-micro text-muted-foreground/40 mt-0.5">
           <span>{entry.difficulty}</span>
           <span>&middot;</span>
           <span>{entry.score}/{entry.total}</span>
@@ -66,8 +66,8 @@ function HistoryRow({
         </div>
       </div>
       <div className="text-right shrink-0">
-        <p className="text-[10px] font-mono text-muted-foreground/40">{formatTime(entry.totalTimeSpent)}</p>
-        <p className="text-[10px] text-muted-foreground/50 mt-0.5">{formatDate(entry.completedAt)}</p>
+        <p className="text-micro font-mono text-muted-foreground/40">{formatTime(entry.totalTimeSpent)}</p>
+        <p className="text-micro text-muted-foreground/50 mt-0.5">{formatDate(entry.completedAt)}</p>
       </div>
       <ChevronRight size={14} className="text-muted-foreground/20 shrink-0" />
     </button>
@@ -137,7 +137,7 @@ export default function HistoryPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Clock size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">HISTORY</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">HISTORY</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Review your past sprint performances</p>
       </div>
@@ -148,7 +148,7 @@ export default function HistoryPage() {
           <select
             value={topicFilter}
             onChange={(e) => { setTopicFilter(e.target.value); setPage(0); }}
-            className="bg-transparent text-[10px] font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="bg-transparent text-micro font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded"
           >
             {TOPICS_FILTER_HISTORY.map((t) => (
               <option key={t.id} value={t.id}>{t.label}</option>
@@ -162,7 +162,7 @@ export default function HistoryPage() {
               type="button"
               onClick={() => { setDiffFilter(d.id); setPage(0); }}
               className={cn(
-                "rounded-xl px-2 sm:px-3 py-2 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                "rounded-xl px-2 sm:px-3 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 diffFilter === d.id
                   ? "bg-primary text-primary-foreground"
                   : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -175,7 +175,7 @@ export default function HistoryPage() {
         <button
           type="button"
           onClick={() => setSortAsc(!sortAsc)}
-          className="ml-auto flex items-center gap-1 rounded-xl px-3 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+          className="ml-auto flex items-center gap-1 rounded-xl px-3 py-2.5 text-micro font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
           style={{ backgroundColor: GLASS_BG }}
         >
           <ArrowUpDown size={12} />
@@ -191,18 +191,18 @@ export default function HistoryPage() {
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="min-h-[44px] px-3 py-2 text-[10px] text-muted-foreground/40 outline-none hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
+                className="min-h-[44px] px-3 py-2 text-micro text-muted-foreground/40 outline-none hover:text-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
               >
                 Close
               </button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center mb-3">
               <div className="rounded-xl p-2" style={{ backgroundColor: GLASS_BG }}>
-                <p className="text-[10px] text-muted-foreground/40">Score</p>
+                <p className="text-micro text-muted-foreground/40">Score</p>
                 <p className="text-[13px] font-bold text-foreground">{selected.score}/{selected.total}</p>
               </div>
               <div className="rounded-xl p-2" style={{ backgroundColor: GLASS_BG }}>
-                <p className="text-[10px] text-muted-foreground/40">Accuracy</p>
+                <p className="text-micro text-muted-foreground/40">Accuracy</p>
                 <p className={cn(
                   "text-[13px] font-bold",
                   selected.accuracy >= 80 ? "text-primary" : selected.accuracy >= 50 ? "text-chart-3" : "text-destructive",
@@ -211,11 +211,11 @@ export default function HistoryPage() {
                 </p>
               </div>
               <div className="rounded-xl p-2" style={{ backgroundColor: GLASS_BG }}>
-                <p className="text-[10px] text-muted-foreground/40">XP</p>
+                <p className="text-micro text-muted-foreground/40">XP</p>
                 <p className="text-[13px] font-bold text-chart-2">+{selected.xpEarned}</p>
               </div>
             </div>
-            <div className="flex items-center justify-between text-[10px] text-muted-foreground/40">
+            <div className="flex items-center justify-between text-micro text-muted-foreground/40">
               <span>{selected.difficulty}</span>
               <span>{formatTime(selected.totalTimeSpent)}</span>
               <span>{formatDate(selected.completedAt)}</span>
@@ -260,7 +260,7 @@ export default function HistoryPage() {
                 type="button"
                 onClick={() => setPage(i)}
                 className={cn(
-                  "min-w-[44px] min-h-[44px] rounded-xl text-[10px] font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:bg-white/[0.06]",
+                  "min-w-[44px] min-h-[44px] rounded-xl text-micro font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:bg-white/[0.06]",
                   page === i ? "bg-primary text-primary-foreground" : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
                 )}
               >

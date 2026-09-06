@@ -279,7 +279,7 @@ export default function AuthPage() {
                       </div>
                       <span className="flex-1 text-[12px] text-muted-foreground/70 font-medium">{s.text}</span>
                       {i === 0 && status === "scanned" && (
-                        <span className="flex items-center gap-1 text-[10px] font-bold text-[#34D399]">
+                        <span className="flex items-center gap-1 text-micro font-bold text-[#34D399]">
                           <Loader2 size={11} className="animate-spin" /> Device detected
                         </span>
                       )}
@@ -291,7 +291,7 @@ export default function AuthPage() {
           )}
 
           {showScannerHint && (
-            <div className="mt-5 flex items-center justify-center gap-2 text-[10px] text-muted-foreground/40">
+            <div className="mt-5 flex items-center justify-center gap-2 text-micro text-muted-foreground/40">
               <Timer size={11} />
               Code expires in {expiresAt ? countdownTo(expiresAt) : "--:--"}
             </div>
@@ -308,13 +308,13 @@ export default function AuthPage() {
             </button>
           )}
 
-          <div className="mt-4 flex items-center justify-center gap-1.5 text-[10px] text-muted-foreground/35">
+          <div className="mt-4 flex items-center justify-center gap-1.5 text-micro text-muted-foreground/60">
             <Lock size={11} />
             End-to-end secured pairing · session expires in ~2 min
           </div>
         </div>
 
-        <p className="mt-5 text-center text-[10.5px] text-muted-foreground/35 leading-relaxed">
+        <p className="mt-5 text-center text-[10.5px] text-muted-foreground/60 leading-relaxed">
           Scan the QR from your phone&apos;s Exam Arena app (<span className="text-muted-foreground/50">Scan to login on web</span>) to link this browser.<br />
           <span className="text-muted-foreground/40">In preview, the flow is simulated end-to-end.</span>
         </p>

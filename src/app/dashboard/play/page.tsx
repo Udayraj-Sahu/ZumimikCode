@@ -83,13 +83,13 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
 
       <div className="flex items-center justify-between mb-4 relative">
         <span
-          className="text-[10px] font-bold tracking-[0.14em] rounded-full px-3 py-1 uppercase"
+          className="text-micro font-bold tracking-[0.14em] rounded-full px-3 py-1 uppercase"
           style={{ color: mode.color, background: `${mode.color}15`, border: `1px solid ${mode.color}20` }}
         >
           {mode.category}
         </span>
         {mode.badge && (
-          <span className="text-[10px] font-bold rounded-full px-3 py-1 bg-primary/15 text-primary border border-primary/20">
+          <span className="text-micro font-bold rounded-full px-3 py-1 bg-primary/15 text-primary border border-primary/20">
             {mode.badge}
           </span>
         )}
@@ -124,7 +124,7 @@ export default function PlayPage() {
       <header className="mb-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Gamepad2 size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">PLAY</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PLAY</span>
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
           Duels &amp; Challenges
@@ -160,7 +160,7 @@ export default function PlayPage() {
                 <Icon size={16} strokeWidth={2.2} style={{ color: isActive ? tab.color : "#6B7280" }} />
               </div>
               <span
-                className="text-[10px] font-semibold tracking-[0.02em]"
+                className="text-micro font-semibold tracking-[0.02em]"
                 style={{ color: isActive ? tab.color : "rgba(107,114,128,0.5)" }}
               >
                 {tab.label}
@@ -182,7 +182,7 @@ export default function PlayPage() {
             <p className="text-[14px] font-semibold text-muted-foreground/45">
               {comingSoon}
             </p>
-            <p className="text-[12px] text-muted-foreground/25 mt-1.5 font-normal">
+            <p className="text-[12px] text-muted-foreground/55 mt-1.5 font-normal">
               Stay tuned for new game modes
             </p>
           </div>

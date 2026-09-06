@@ -49,6 +49,16 @@ Dynamic-by-exam behavior:
 - [ ] Clear the exam → each feature page shows empty state + ADD PREP; explore shows Explorer badge pill, learn shows EXAM PREP card "Select exam via add prep", mock tab keeps ADD PREP on Papers header.
 - [ ] Backend posture: with `NEXT_PUBLIC_API_MOCK=false` and no backend, services must error gracefully (no crash); no page may silently keep serving mock data.
 
+## MD3 / Android compliance checks (added on `skills-check`)
+
+- [ ] Theme: Settings > APPEARANCE — Dark / Light / System all apply; System follows device live; default is Dark; sidebar toggle still flips dark↔light.
+- [ ] No regressions from `text-[10px]` → `text-micro` (11px) across dashboard/onboarding; no overflowing buttons/chips.
+- [ ] Mobile bottom nav (5 items) shows labels on all items at 360px; active item keeps primary pill.
+- [ ] Edge-to-edge: on a targetSdk-36 (Android 15/16) device, content isn't clipped under the status bar; floating nav clears the gesture bar (`env(safe-area-inset-bottom)`).
+- [ ] Predictive back: `android:enableOnBackInvokedCallback="true"` present; hardware back still walks the SPA stack then double-tap-to-exit.
+- [ ] Modal a11y: onboarding-modal, add-prep-modal, habit-tracker-modal announce `dialog` + name (aria-modal/labelledby); close buttons ≥44px.
+- [ ] `git diff` contains no `text-[10px]` and no dojo-shell hardcoded sidebar hexes (`#0d0d0d`, `#1f1f1f`, `#8a8f87`, `#eaeae5`).
+
 ## Backend drop-in readiness gate
 
 Every new data consumer must satisfy the constraint: **page code contains zero `@/lib/mock/` imports.** Known remaining offenders in Handover.md ("What is broken"). When they are resolved, run:

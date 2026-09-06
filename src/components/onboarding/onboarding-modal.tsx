@@ -361,6 +361,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
       onClick={handleClose}
     >
       <div
@@ -398,7 +400,7 @@ function StepName({ value, onChange, onNext }: { value: string; onChange: (v: st
         autoFocus
       />
       {value.trim().length > 0 && (
-        <p className="mt-3 text-[12px] text-muted-foreground/35 font-medium">
+        <p className="mt-3 text-[12px] text-muted-foreground/60 font-medium">
           Hey <span className="text-foreground/70 font-bold">{value.trim()}</span>, nice to meet you!
         </p>
       )}
@@ -452,7 +454,7 @@ function StepSingleSelect({
                   {opt.label}
                 </p>
                 {opt.desc && (
-                  <p className="text-[10px] text-muted-foreground/30 mt-0.5 font-medium truncate">{opt.desc}</p>
+                  <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium truncate">{opt.desc}</p>
                 )}
               </div>
               {active && (
@@ -480,7 +482,7 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
           <div key={group.label}>
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1 h-3 rounded-full" style={{ backgroundColor: group.color }} />
-              <p className="text-[9px] font-bold tracking-[0.14em] text-muted-foreground/35 uppercase">
+              <p className="text-[9px] font-bold tracking-[0.14em] text-muted-foreground/55 uppercase">
                 {group.label}
               </p>
             </div>
@@ -495,7 +497,7 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                       onChange(active ? value.filter((t) => t !== tag) : [...value, tag])
                     }
                     className={cn(
-                      "flex items-center gap-1 rounded-full px-3 py-1.5 text-[10px] font-bold transition-all active:scale-95",
+                      "flex items-center gap-1 rounded-full px-3 py-1.5 text-micro font-bold transition-all active:scale-95",
                       active
                         ? "text-[#0A0C0A] bg-[#C8FF4D]"
                         : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
@@ -532,7 +534,7 @@ function StepDetails({
         <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Help us personalise your journey</p>
       </div>
 
-      <p className="text-[10px] font-bold tracking-[0.14em] text-muted-foreground/35 mb-2.5 uppercase">Gender</p>
+      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-2.5 uppercase">Gender</p>
       <div className="flex gap-2.5 mb-6">
         {["Male", "Female"].map((s) => (
           <button
@@ -551,7 +553,7 @@ function StepDetails({
         ))}
       </div>
 
-      <p className="text-[10px] font-bold tracking-[0.14em] text-muted-foreground/35 mb-3 uppercase">Date of Birth</p>
+      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-3 uppercase">Date of Birth</p>
       <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
         <div className="flex">
           <ScrollColumn
@@ -616,7 +618,7 @@ function ScrollColumn({
 
   return (
     <div className="flex-1 flex flex-col">
-      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-muted-foreground/25 pt-2 pb-1">
+      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-muted-foreground/50 pt-2 pb-1">
         {label}
       </p>
       <div className="relative" style={{ height: ITEM_H * VISIBLE }}>
@@ -685,7 +687,7 @@ function CompletionScreen() {
         </div>
         <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
           <Sparkles size={12} className="text-[#C8FF4D]" />
-          <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">Profile complete</span>
+          <span className="text-micro font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">Profile complete</span>
         </div>
         <h2 className="mt-4 text-[24px] font-black tracking-[-0.03em] text-foreground">
           You&apos;re all set, <span className="text-[#C8FF4D]">{name}</span>!
@@ -698,7 +700,7 @@ function CompletionScreen() {
         <div className="relative flex items-center justify-around gap-2">
           {[{ l: "PERSONA", v: store.persona || "Student" }, { l: "GOAL", v: store.goal || "Master math" }].map((item) => (
             <div key={item.l} className="flex flex-col items-center gap-1">
-              <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/30 uppercase">{item.l}</span>
+              <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">{item.l}</span>
               <span className="text-[13px] font-bold text-foreground/70">{item.v}</span>
             </div>
           ))}
@@ -746,7 +748,7 @@ function CelebrationAvatar() {
             <div className="size-2.5 rounded-full bg-[#A78BFA]" />
           </div>
           <div className="absolute bottom-5.5 left-1/2 -translate-x-1/2 w-5 h-2 rounded-b-full border-b-[1.5px] border-[#A78BFA]/70" />
-          <div className="absolute -top-1.5 -right-1.5 text-[10px] text-[#A78BFA]">
+          <div className="absolute -top-1.5 -right-1.5 text-micro text-[#A78BFA]">
             <Sparkles size={10} fill="currentColor" />
           </div>
         </div>

@@ -65,7 +65,7 @@ export default function ConfigureSprintPage() {
         <div ref={headerRef} className="text-center mb-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <BookOpen size={12} className="text-primary" />
-            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">SPRINT</span>
+            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT</span>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Choose your topic, duration, and difficulty level.</p>
         </div>
@@ -75,10 +75,10 @@ export default function ConfigureSprintPage() {
           aria-label="Choose your topic"
         >
           <div className="mb-4 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+            <span className="inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary">
               Step 1
             </span>
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+            <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
               Topic
             </h2>
           </div>
@@ -112,7 +112,7 @@ export default function ConfigureSprintPage() {
                     className={cn("size-6 sm:size-8", active ? "text-primary" : t.color)}
                     aria-hidden="true"
                   />
-                  <span className="text-center text-[10px] font-bold uppercase tracking-wide sm:text-[12px]">
+                  <span className="text-center text-micro font-bold uppercase tracking-wide sm:text-[12px]">
                     {t.label}
                   </span>
                 </button>
@@ -127,10 +127,10 @@ export default function ConfigureSprintPage() {
             className="flex-1"
           >
             <div className="mb-4 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary">
                 Step 2
               </span>
-              <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+              <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
                 Duration
               </h2>
             </div>
@@ -160,7 +160,7 @@ export default function ConfigureSprintPage() {
                     }}
                   >
                     <span className="text-[16px] font-black italic tracking-tight sm:text-[20px]">{m}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest">
+                    <span className="text-micro font-bold uppercase tracking-widest">
                       min
                     </span>
                   </button>
@@ -174,10 +174,10 @@ export default function ConfigureSprintPage() {
             className="flex-1"
           >
             <div className="mb-4 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary">
                 Step 3
               </span>
-              <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+              <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
                 Difficulty
               </h2>
             </div>
@@ -222,10 +222,10 @@ export default function ConfigureSprintPage() {
             className="mt-6"
           >
             <div className="mb-3 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-chart-3/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-chart-3">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-chart-3/10 px-3 py-1 text-micro font-bold uppercase tracking-wider text-chart-3">
                 Learn
               </span>
-              <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+              <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
                 Learn the Technique
               </h2>
             </div>
@@ -247,13 +247,13 @@ export default function ConfigureSprintPage() {
                     className="min-w-[65vw] sm:min-w-[240px] snap-start shrink-0 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 flex flex-col"
                     style={{ background: GLASS_BG }}
                   >
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-chart-3 mb-1">
+                    <p className="text-micro font-bold uppercase tracking-wider text-chart-3 mb-1">
                       {tpl.concept.category}
                     </p>
                     <p className="text-[12px] font-bold text-foreground leading-snug">
                       {tpl.concept.technique_name}
                     </p>
-                    <p className="text-[10px] text-muted-foreground/50 mt-1">
+                    <p className="text-micro text-muted-foreground/50 mt-1">
                       {tpl.examples.length} example{tpl.examples.length > 1 ? "s" : ""} &middot; ~{tpl.expected_time}s
                     </p>
                     <div className="flex items-center gap-1 mt-1.5">
@@ -272,7 +272,7 @@ export default function ConfigureSprintPage() {
                       onClick={() =>
                         router.push(`/dashboard/practice?templateId=${tpl.id}&returnTo=/dashboard/configure-sprint&topic=${topic}&difficulty=${difficulty.toLowerCase()}`)
                       }
-                      className="mt-3 flex items-center justify-center gap-1.5 rounded-xl py-3 text-[10px] font-bold uppercase tracking-wider text-chart-3 outline-none transition-colors hover:bg-chart-3/20 active:bg-chart-3/30 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+                      className="mt-3 flex items-center justify-center gap-1.5 rounded-xl py-3 text-micro font-bold uppercase tracking-wider text-chart-3 outline-none transition-colors hover:bg-chart-3/20 active:bg-chart-3/30 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
                       style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${GLASS_BORDER}` }}
                     >
                       <BookOpen size={12} />
@@ -291,7 +291,7 @@ export default function ConfigureSprintPage() {
             onClick={() =>
               router.push(`/dashboard/sprint?topic=${topic}&length=${length}&difficulty=${difficulty.toLowerCase()}`)
             }
-            className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring sm:text-[16px]"
+            className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring sm:text-[16px]"
           >
             <span className="absolute inset-0 translate-y-full bg-gradient-to-r from-primary/0 via-white/10 to-primary/0 transition-transform duration-500 group-hover:translate-y-0" />
             <span className="relative flex items-center gap-3">

@@ -38,7 +38,7 @@ export default function EditProfilePage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <User size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">PROFILE</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PROFILE</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Update your personal information</p>
       </div>
@@ -53,12 +53,12 @@ export default function EditProfilePage() {
               <Camera size={14} />
             </span>
           </div>
-          <p className="mt-3 text-[10px] text-muted-foreground/50">Tap the camera icon to change photo</p>
+          <p className="mt-3 text-micro text-muted-foreground/50">Tap the camera icon to change photo</p>
         </div>
 
         <div className="flex flex-col gap-5">
           <div>
-            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
               Full Name
             </label>
             <input
@@ -71,7 +71,7 @@ export default function EditProfilePage() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
               Email Address
             </label>
             <input
@@ -84,7 +84,7 @@ export default function EditProfilePage() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
               Phone Number
             </label>
             <input
@@ -105,7 +105,7 @@ export default function EditProfilePage() {
             "mt-8 flex w-full items-center justify-center gap-2 rounded-3xl py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             saved
               ? "bg-primary/30 text-primary/60 cursor-not-allowed"
-              : "bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] hover:opacity-90 active:scale-[0.98]",
+              : "bg-cta text-[#0A0C0A] hover:opacity-90 active:scale-[0.98]",
           )}
         >
           {saved ? (

@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: dark;
   --background: #0A0C0A;
   --foreground: #ffffff;
   --card: #14170F;
@@ -37,9 +38,20 @@
   --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #C8FF5A;
   --surface: #171717;
+  --chrome: #0d0d0d;
+  --chrome-raised: #161616;
+  --chrome-border: #1f1f1f;
+  --chrome-muted: #8a8f87;
+  --chrome-hover: #c9cec4;
+  --chrome-foreground: #eaeae5;
+  --chrome-active: rgba(166, 255, 47, 0.06);
+  --chrome-avatar: #8a6a5a;
+  --cta-from: #C7F252;
+  --cta-to: #A8D43A;
 }
 
 .light {
+  color-scheme: light;
   --background: #FAFAFA;
   --foreground: #0A0A0A;
   --card: #FFFFFF;

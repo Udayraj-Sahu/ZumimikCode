@@ -112,7 +112,7 @@ export default function AnalysisPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard/configure-sprint")}
-          className="mt-4 rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Start a Sprint
         </button>
@@ -134,7 +134,7 @@ export default function AnalysisPage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard/sprint/results")}
-            className="rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl bg-cta text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Back to Results
           </button>
@@ -167,10 +167,10 @@ export default function AnalysisPage() {
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-1">
             <TrendingUp size={12} className="text-primary" />
-            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
+            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
           </div>
           <h1 className="text-[16px] font-bold tracking-[-0.02em] text-foreground leading-tight">Analysis</h1>
-          <p className="text-[10px] text-muted-foreground/45 font-normal">
+          <p className="text-micro text-muted-foreground/45 font-normal">
             {session.topicLabel} &middot; {wrongAnswers.length} wrong answer
             {wrongAnswers.length > 1 ? "s" : ""}
           </p>
@@ -193,13 +193,13 @@ export default function AnalysisPage() {
               {/* Question header */}
               <div className="px-4 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgba(255,255,255,0.04)" }}>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-wider">
                     <span className="grid size-5 place-items-center rounded bg-destructive/10 text-destructive">
                       <X size={10} />
                     </span>
                     Question {wrongIndex + 1} &middot; Incorrect
                   </span>
-                  <span className="text-[10px] font-mono text-muted-foreground/40">
+                  <span className="text-micro font-mono text-muted-foreground/40">
                     {Math.round(answer.timeSpent)}s
                   </span>
                 </div>
@@ -211,7 +211,7 @@ export default function AnalysisPage() {
               {/* User vs correct answer */}
               <div className="grid grid-cols-2 gap-2 px-4 pt-4">
                 <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" }}>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
+                  <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
                     Your Answer
                   </p>
                   <p className="mt-1 text-[13px] font-black text-destructive">
@@ -219,7 +219,7 @@ export default function AnalysisPage() {
                   </p>
                 </div>
                 <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" }}>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
+                  <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
                     Correct
                   </p>
                   <p className="mt-1 text-[13px] font-black text-primary">
@@ -234,7 +234,7 @@ export default function AnalysisPage() {
                   type="button"
                   onClick={() => toggleWalkthrough(question.id)}
                   className={cn(
-                    "flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-ring",
+                    "flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-ring",
                     walk.open
                       ? "border-chart-3/40 bg-chart-3/10 text-chart-3"
                       : "border-dashed border-white/[0.06] text-muted-foreground hover:border-chart-3/40 hover:text-chart-3",
@@ -266,7 +266,7 @@ export default function AnalysisPage() {
                   ) : (
                     <div className="rounded-xl backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
                       <BookOpen size={20} className="mx-auto mb-2 text-muted-foreground/30" />
-                      <p className="text-[10px] font-semibold text-muted-foreground/60">
+                      <p className="text-micro font-semibold text-muted-foreground/60">
                         No template available for this topic yet.
                       </p>
                     </div>

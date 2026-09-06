@@ -144,7 +144,7 @@ function MockRunContent() {
         <button
           type="button"
           onClick={() => router.push("/dashboard/learn?mode=mock")}
-          className="mt-4 rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Browse Papers
         </button>
@@ -169,7 +169,7 @@ function MockRunContent() {
           <button
             type="button"
             onClick={() => router.refresh()}
-            className="rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Retry
           </button>
@@ -198,7 +198,7 @@ function MockRunContent() {
       <div ref={headerRef} className="pb-3 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <FileText size={10} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">MOCK TEST</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MOCK TEST</span>
         </div>
         <div className="flex items-center justify-between">
           <button
@@ -210,7 +210,7 @@ function MockRunContent() {
           >
             <ArrowLeft size={20} />
           </button>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">
+          <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50">
             {currentIndex + 1} / {data.questions.length}
           </span>
         </div>
@@ -224,14 +224,14 @@ function MockRunContent() {
       </div>
 
       <div className="flex items-center justify-between mb-5">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary max-w-[60%] truncate">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary max-w-[60%] truncate">
           <FileText size={10} />
           {data.topicLabel}
         </span>
         <div className="flex items-center gap-2">
           {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
           <span className={cn(
-            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold font-mono backdrop-blur-xl",
+            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-micro font-bold font-mono backdrop-blur-xl",
             isTimerLow ? "bg-destructive/10 text-destructive border border-destructive/20" : "text-muted-foreground border border-white/[0.06]",
           )}
           style={!isTimerLow ? { backgroundColor: GLASS_BG } : undefined}>
@@ -281,7 +281,7 @@ function MockRunContent() {
                   )}
                   style={variantStyles}
                 >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-muted text-[10px] font-bold text-muted-foreground">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-muted text-micro font-bold text-muted-foreground">
                     {String.fromCharCode(65 + i)}
                   </span>
                   <span className="flex-1 text-[13px] font-medium">{option}</span>
@@ -300,7 +300,7 @@ function MockRunContent() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {isLast ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>

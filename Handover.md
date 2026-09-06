@@ -6,7 +6,7 @@
 
 - App: **Exam Arena** — exam-prep frontend (Vedic Math / GMAT / CAT / GRE / Banking) that adapts every dashboard page to the user's `targetExam`.
 - Stack: Next.js 14 (static export), React 18, TypeScript, Tailwind, TanStack Query, Zustand, GSAP, Firebase Auth (optional), Dexie (offline), Serwist (SW), Capacitor 8 (Android APK).
-- Working branch: **`dynamic-apk`** (pushed to origin). Phase plan lives in `AGENTS.md` (its header branch note `feature/renderer-runtime` is stale — ignore it).
+- Working branch: **`skills-check`** (from `clean-up`, pushed). Android MD3 compliance pass for a Capacitor WebView app. `dynamic-apk` holds the dynamic-by-domain work; `clean-up` holds responsive + onboarding-black-screen fixes. Phase plan lives in `AGENTS.md` (its header branch note `feature/renderer-runtime` is stale — ignore it).
 
 ## What is done
 
@@ -16,11 +16,12 @@
 - `dojo-shell.tsx` shows dynamic exam label + first name.
 - `CompleteSetupGate` removed from all pages; learn/explorer show clean "no exam selected" empty states with a shared `AddPrepModal`.
 - Dead code removed: `complete-setup-gate.tsx`, `SPRINT_TOPICS`, `getTemplateById`, `submitDuelResult`, `getStoredFeedback`, unused imports.
+- **MD3/Android compliance pass (`skills-check`):** edge-to-edge safe-area insets (`env(safe-area-inset-*)`), `color-scheme` set per theme, predictive-back manifest flag, modal `role="dialog"`/`aria-modal`, touch targets ≥44px on icon buttons, `system` theme (Dark/Light/System–default stays Dark) with Settings control, `text-micro` (11px) type token + all `text-[10px]` migrated, `chrome` color tokens + `bg-cta` gradient token replacing hardcoded sidebar/CTA colors, contrast bumps on informational captions, and always-visible labels on the mobile bottom nav.
 - Typecheck passes; `npm run build` passes clean; APK built successfully.
 
 ## What is in progress
 
-- Font-size standardization: codebase is heavy with arbitrary `text-[Npx]` (dashboard home ~80 occurrences). **Not started — approach not yet decided (token mapping vs bounded pass). High visual-regression risk.**
+- Font-size standardization: migrated `text-[10px]` → `text-micro` (11px) everywhere (~100 spots across 40 files). Remaining: `text-[8px]`/`text-[9px]` micro-annotations (badges, calendar day letters, graph node labels) — **not yet bumped**, mostly decorative, decided to keep until a full design-token pass.
 
 ## What is broken / not done
 
@@ -44,15 +45,15 @@
 
 ## Where the session stopped
 
-- APK build finished (`BUILD SUCCESSFUL in 48s`). Web assets copied via `npx cap copy android`.
-- Next decision pending with the user: (a) close the ~8 backend drop-in gaps, (b) font-size standardization approach, (c) `v0` API contract doc for the missing services.
+- `skills-check` MD3 pass complete: typecheck + `npm run build` green. Branch not yet pushed.
+- Next: push `skills-check`; optionally rebuild APK. Then the deferred items: (a) close the ~8 backend drop-in gaps, (b) finish the font/8–9px micro-annotation pass, (c) `v0` API contract doc.
 
 ---
 
 ## Session handoff (5-line note)
 
-1. Done: dynamic-by-domain app merged to `dynamic-apk` (`62b586d9`), pushed, APK built.
-2. Remains: close ~8 direct-mock imports; decide font-size approach; build `v0` API contract.
-3. Watch: duel/page still uses local `generateDuelResult`; `duel/page.tsx` currently compiles but must not stay mock-bound on the backend.
-4. Verify: `npx tsc --noEmit` → `npm run build` (remove `.next` if `PageNotFoundError` for `/robots.txt` appears) → gradle.
+1. Done: MD3 compliance pass on `skills-check` — safe-area insets, predictive-back flag, modal a11y, touch targets, System theme, `text-micro` token, `chrome`/`bg-cta` colors, contrast bumps, always-labeled bottom nav.
+2. Remains: push `skills-check` (+ APK); then ~8 direct-mock imports, remaining 8–9px micro text, `v0` API contract.
+3. Watch: theme is now Dark/Light/System via settings (`theme-store`/`theme-provider` handle `system` resolution); sidebar toggle still flips dark↔light only.
+4. Verify: `npx tsc --noEmit` → `npm run build` (remove `.next` if `PageNotFoundError` appears) → gradle.
 5. Mental model: every data path must exit through `src/services/*`; flip `NEXT_PUBLIC_API_MOCK=false` to go live.

@@ -88,7 +88,7 @@ export default function FlashcardsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <BookOpen size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">FLASHCARDS</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FLASHCARDS</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Quick mental math review</p>
       </div>
@@ -102,7 +102,7 @@ export default function FlashcardsPage() {
               type="button"
               onClick={() => resetTopic(t.id)}
               className={cn(
-                "flex items-center gap-1.5 rounded-xl px-3 py-2 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                "flex items-center gap-1.5 rounded-xl px-3 py-2 text-micro font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 topic === t.id
                   ? "bg-primary text-primary-foreground"
                   : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -126,8 +126,8 @@ export default function FlashcardsPage() {
         {current && (
           <>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] text-muted-foreground/40 font-mono">{index + 1}/{cards.length}</span>
-              <span className="text-[10px] text-muted-foreground/40">{known.length} known</span>
+              <span className="text-micro text-muted-foreground/40 font-mono">{index + 1}/{cards.length}</span>
+              <span className="text-micro text-muted-foreground/40">{known.length} known</span>
             </div>
             <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden mb-6">
               <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${progress}%` }} />
@@ -146,26 +146,26 @@ export default function FlashcardsPage() {
               <div className="text-center">
                 {!flipped ? (
                   <>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 mb-4">Question</p>
+                    <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50 mb-4">Question</p>
                     <p className="text-[20px] sm:text-[28px] font-bold tracking-tight text-foreground">{current.front}</p>
                   </>
                 ) : (
                   <>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 mb-4">Answer</p>
+                    <p className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50 mb-4">Answer</p>
                     <p className="text-[28px] sm:text-[32px] font-bold text-primary">{current.back}</p>
                   </>
                 )}
               </div>
             </div>
 
-            <p className="text-center text-[10px] text-muted-foreground/50 mt-3">Tap card to flip</p>
+            <p className="text-center text-micro text-muted-foreground/50 mt-3">Tap card to flip</p>
 
             <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
               <button
                 type="button"
                 onClick={goPrev}
                 disabled={index === 0}
-                className="flex items-center gap-1 rounded-xl px-4 py-3 text-[10px] font-bold text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-1 rounded-xl px-4 py-3 text-micro font-bold text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ backgroundColor: GLASS_BG, borderWidth: 1, borderColor: GLASS_BORDER }}
               >
                 <ChevronLeft size={16} /> Prev
@@ -173,7 +173,7 @@ export default function FlashcardsPage() {
               <button
                 type="button"
                 onClick={markKnown}
-                className="rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-5 py-3 text-[10px] font-bold outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring"
+                className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-3 text-micro font-bold outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <RotateCw size={14} className="inline mr-1" /> Mark Known
               </button>
@@ -181,7 +181,7 @@ export default function FlashcardsPage() {
                 type="button"
                 onClick={goNext}
                 disabled={index >= cards.length - 1}
-                className="flex items-center gap-1 rounded-xl px-4 py-3 text-[10px] font-bold text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-1 rounded-xl px-4 py-3 text-micro font-bold text-muted-foreground outline-none transition-colors hover:text-foreground active:text-foreground disabled:opacity-30 focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ backgroundColor: GLASS_BG, borderWidth: 1, borderColor: GLASS_BORDER }}
               >
                 Next <ChevronRight size={16} />
@@ -193,7 +193,7 @@ export default function FlashcardsPage() {
         {known.length === cards.length && cards.length > 0 && (
           <div className="mt-4 rounded-3xl border border-primary/30 bg-primary/5 p-4 text-center">
             <p className="text-[12px] font-bold text-primary">All cards marked known!</p>
-            <p className="text-[10px] text-muted-foreground/60 mt-1">Great work on {topic}!</p>
+            <p className="text-micro text-muted-foreground/60 mt-1">Great work on {topic}!</p>
           </div>
         )}
       </div>

@@ -30,6 +30,8 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useThemeStore } from "@/stores/theme-store";
+import type { Theme } from "@/stores/theme-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 import { cn } from "@/lib/utils";
@@ -81,7 +83,7 @@ function CollapsibleSection({ label, defaultOpen = false, children }: { label: s
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="flex w-full items-center justify-between pt-6 pb-3 text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase"
+            className="flex w-full items-center justify-between pt-6 pb-3 text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase"
           >
             {label}
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground/40 rotate-180" />
@@ -95,7 +97,7 @@ function CollapsibleSection({ label, defaultOpen = false, children }: { label: s
           className="mt-6 flex w-full items-center justify-between rounded-2xl border backdrop-blur-xl px-5 py-4 transition-all hover:bg-white/[0.06] active:scale-[0.99]"
           style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
         >
-          <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
+          <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
             {label}
           </span>
           <ChevronDown className="h-3.5 w-3.5 text-muted-foreground/40" />
@@ -107,7 +109,7 @@ function CollapsibleSection({ label, defaultOpen = false, children }: { label: s
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="px-1 pt-6 pb-3 text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
+    <p className="px-1 pt-6 pb-3 text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
       {children}
     </p>
   );
@@ -130,7 +132,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
       <div className="relative inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
         <Settings size={12} className="text-primary" />
-        <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
+        <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
       </div>
       <div className="relative">
         <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 backdrop-blur-sm">
@@ -167,7 +169,7 @@ function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string
         {icon}
         <span className="text-[17px] font-bold tracking-[-0.02em] text-foreground">{value}</span>
       </div>
-      <p className="mt-2.5 text-[10px] font-semibold tracking-[0.14em] text-muted-foreground/35 uppercase">{label}</p>
+      <p className="mt-2.5 text-micro font-semibold tracking-[0.14em] text-muted-foreground/60 uppercase">{label}</p>
       <div className="mt-2 h-[2px] w-full rounded-full bg-white/[0.04]" />
     </div>
   );
@@ -206,7 +208,7 @@ function SubscriptionCard() {
               <p className="text-[12px] text-muted-foreground/40 mt-0.5">$0 / month</p>
             </div>
           </div>
-          <span className="rounded-full bg-white/[0.06] border border-white/[0.06] px-3 py-1 text-[10px] font-semibold tracking-[0.05em] text-muted-foreground/60">CURRENT</span>
+          <span className="rounded-full bg-white/[0.06] border border-white/[0.06] px-3 py-1 text-micro font-semibold tracking-[0.05em] text-muted-foreground/60">CURRENT</span>
         </div>
         <ul className="relative mt-4 space-y-2.5 text-[12px]">
           <li className="flex items-center gap-2.5 text-foreground/80 font-normal">
@@ -225,6 +227,48 @@ function SubscriptionCard() {
         <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-primary to-[#a8e62e] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-primary-foreground shadow-[0_0_20px_rgba(199,242,82,0.25)] transition-all hover:shadow-[0_0_30px_rgba(199,242,82,0.35)] active:scale-[0.98]">
           Upgrade to Pro — $9.99/mo
         </button>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Appearance                                                          */
+/* ------------------------------------------------------------------ */
+const THEME_OPTIONS: { value: Theme; label: string }[] = [
+  { value: "dark", label: "Dark" },
+  { value: "light", label: "Light" },
+  { value: "system", label: "System" },
+];
+
+function AppearanceSection() {
+  const theme = useThemeStore((s) => s.theme);
+  const setTheme = useThemeStore((s) => s.setTheme);
+  return (
+    <div className="px-4">
+      <SectionLabel>APPEARANCE</SectionLabel>
+      <div className="rounded-2xl border backdrop-blur-xl p-1.5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+        <div className="grid grid-cols-3 gap-1">
+          {THEME_OPTIONS.map((o) => (
+            <button
+              key={o.value}
+              type="button"
+              onClick={() => setTheme(o.value)}
+              aria-pressed={theme === o.value}
+              className={cn(
+                "min-h-[44px] rounded-xl py-2.5 text-[12px] font-semibold tracking-[-0.01em] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+                theme === o.value
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground/60 hover:text-foreground",
+              )}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+        <p className="px-1.5 pt-2 pb-0.5 text-[11px] text-muted-foreground/40">
+          System follows your device appearance
+        </p>
       </div>
     </div>
   );
@@ -271,11 +315,14 @@ export default function SettingsPage() {
         />
         <SubscriptionCard />
 
+        {/* Appearance */}
+        <AppearanceSection />
+
         {/* Prep / Membership */}
         <div className="px-4">
           <SectionLabel>PREP / MEMBERSHIP</SectionLabel>
           <div className="rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
-            <p className="text-[12px] text-muted-foreground/35 font-normal">No active preps yet</p>
+            <p className="text-[12px] text-muted-foreground/60 font-normal">No active preps yet</p>
           </div>
           <button
             type="button"

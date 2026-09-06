@@ -58,7 +58,7 @@ export default function ClubsPage() {
       <div ref={headerRef}>
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Users size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">CLUBS</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">CLUBS</span>
         </div>
         <div className="flex items-center justify-between">
           <div>
@@ -96,7 +96,7 @@ export default function ClubsPage() {
             type="button"
             onClick={() => setActiveFilter(f)}
             className={cn(
-              "rounded-full px-3.5 py-2 text-[10px] font-semibold whitespace-nowrap outline-none transition-all border focus-visible:ring-2 focus-visible:ring-ring",
+              "rounded-full px-3.5 py-2 text-micro font-semibold whitespace-nowrap outline-none transition-all border focus-visible:ring-2 focus-visible:ring-ring",
               activeFilter === f
                 ? "bg-primary text-primary-foreground border-primary"
                 : "text-foreground/80 border-white/[0.06] bg-white/[0.04] backdrop-blur-xl hover:bg-white/[0.08]",
@@ -113,7 +113,7 @@ export default function ClubsPage() {
             <div className="py-14 text-center">
               <Users size={28} className="mx-auto text-muted-foreground/20 mb-2" />
               <p className="text-[12px] text-muted-foreground/60">No clubs found</p>
-              <p className="text-[10px] text-muted-foreground/40 mt-1">Try a different filter</p>
+              <p className="text-micro text-muted-foreground/40 mt-1">Try a different filter</p>
             </div>
           )}
 
@@ -125,7 +125,7 @@ export default function ClubsPage() {
 
       <button
         type="button"
-        className="fixed right-5 bottom-20 z-40 grid size-14 place-items-center rounded-full bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] shadow-lg shadow-primary/30 outline-none transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
+        className="fixed right-5 bottom-20 z-40 grid size-14 place-items-center rounded-full bg-cta text-[#0A0C0A] shadow-lg shadow-primary/30 outline-none transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring"
       >
         <Plus size={22} strokeWidth={2.5} />
       </button>
@@ -163,7 +163,7 @@ function ClubCard({ club }: { club: Club }) {
             {club.lastActivity}
           </span>
           {club.isPremium && (
-            <span className="flex items-center gap-0.5 text-[10px] text-chart-4 font-bold">
+            <span className="flex items-center gap-0.5 text-micro text-chart-4 font-bold">
               <Crown size={9} /> Pro
             </span>
           )}

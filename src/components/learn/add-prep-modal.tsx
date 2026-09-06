@@ -63,6 +63,9 @@ export function AddPrepModal({ onClose }: Props) {
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-prep-title"
       onClick={handleClose}
     >
       <div
@@ -71,7 +74,7 @@ export function AddPrepModal({ onClose }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-card/95 backdrop-blur-sm px-5 pt-5 pb-3 border-b border-border/40 flex items-center justify-between">
-          <h2 className="text-fluid-base font-bold text-foreground">
+          <h2 id="add-prep-title" className="text-fluid-base font-bold text-foreground">
             {selectedExam ? "Topic Mastery" : "Add Prep"}
           </h2>
           <button
@@ -123,15 +126,15 @@ export function AddPrepModal({ onClose }: Props) {
                         {exam.label}
                       </span>
                       {isOnboarding && (
-                        <span className="text-[10px] font-medium text-primary/70">Your primary exam</span>
+                        <span className="text-micro font-medium text-primary/70">Your primary exam</span>
                       )}
                     </span>
                     {isOnboarding ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary tracking-wide">
+                      <span className="inline-flex items-center gap-1 text-micro font-bold text-primary tracking-wide">
                         <Check size={11} /> PRIMARY
                       </span>
                     ) : alreadyAdded ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary tracking-wide">
+                      <span className="inline-flex items-center gap-1 text-micro font-bold text-primary tracking-wide">
                         <X size={11} /> REMOVE
                       </span>
                     ) : null}
@@ -162,7 +165,7 @@ export function AddPrepModal({ onClose }: Props) {
                           <span className="text-fluid-sm font-bold text-foreground">
                             {topic.name}
                           </span>
-                          <span className={cn("text-[10px] font-bold tracking-wide", status.color)}>
+                          <span className={cn("text-micro font-bold tracking-wide", status.color)}>
                             {status.label}
                           </span>
                         </div>

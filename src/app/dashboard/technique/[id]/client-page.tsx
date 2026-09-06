@@ -43,7 +43,7 @@ export function ClientTechniquePage() {
           <button
             type="button"
             onClick={() => { if (window.history.length > 1) router.back(); else router.push("/dashboard/explorer"); }}
-            className="rounded-xl bg-primary px-5 py-2.5 text-[10px] font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-xl bg-primary px-5 py-2.5 text-micro font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Go Back
           </button>
@@ -57,7 +57,7 @@ export function ClientTechniquePage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
           <Lightbulb size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">TECHNIQUE</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">TECHNIQUE</span>
         </div>
 
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
@@ -77,7 +77,7 @@ export function ClientTechniquePage() {
           className="inline-flex items-center rounded-full px-3 py-1 mb-3"
           style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
         >
-          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
+          <p className="text-micro font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
             Quick Reference
           </p>
         </div>
@@ -90,7 +90,7 @@ export function ClientTechniquePage() {
           className="inline-flex items-center rounded-full px-3 py-1 mb-3"
           style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
         >
-          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
+          <p className="text-micro font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
             Difficulty Levels
           </p>
         </div>

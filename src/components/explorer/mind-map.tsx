@@ -67,7 +67,7 @@ export function MindMap({
   return (
     <div className="relative w-full select-none">
       <div className="mb-3 flex items-center justify-center gap-2">
-        <p className="text-[10px] font-medium text-muted-foreground/35">
+        <p className="text-micro font-medium text-muted-foreground/35">
           Tap a branch to expand or collapse its topics
         </p>
       </div>

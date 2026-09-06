@@ -51,7 +51,7 @@ export default function SprintResultsPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard/configure-sprint")}
-          className="mt-4 rounded-xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Start a Sprint
         </button>
@@ -65,7 +65,7 @@ export default function SprintResultsPage() {
       <div ref={resultRef}>
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
           <BarChart3 size={10} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</span>
         </div>
         <h1 className="text-center text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
           Sprint Results
@@ -78,33 +78,33 @@ export default function SprintResultsPage() {
       {/* Score row — 4 stat cards */}
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-primary">Accuracy</p>
+          <p className="text-micro font-bold uppercase tracking-wider text-primary">Accuracy</p>
           <p className={cn(
             "mt-1 text-[20px] font-black",
             result.accuracy >= 80 ? "text-primary" : result.accuracy >= 50 ? "text-chart-3" : "text-destructive",
           )}>
             {result.accuracy}%
           </p>
-          <p className="text-[10px] text-muted-foreground/40 mt-0.5">
+          <p className="text-micro text-muted-foreground/40 mt-0.5">
             {result.accuracy >= 80 ? "Excellent" : result.accuracy >= 50 ? "Good" : "Needs work"}
           </p>
         </div>
         <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-chart-2">XP Earned</p>
+          <p className="text-micro font-bold uppercase tracking-wider text-chart-2">XP Earned</p>
           <p className="mt-1 text-[20px] font-black text-chart-2">+{result.xpEarned}</p>
-          <p className="text-[10px] text-muted-foreground/40 mt-0.5">points</p>
+          <p className="text-micro text-muted-foreground/40 mt-0.5">points</p>
         </div>
         <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/60">Time</p>
+          <p className="text-micro font-bold uppercase tracking-wider text-foreground/60">Time</p>
           <p className="mt-1 text-[20px] font-black text-foreground/80">
             {formatTime(Math.round(result.totalTimeSpent))}
           </p>
-          <p className="text-[10px] text-muted-foreground/40 mt-0.5">total</p>
+          <p className="text-micro text-muted-foreground/40 mt-0.5">total</p>
         </div>
         <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-chart-3">Correct</p>
+          <p className="text-micro font-bold uppercase tracking-wider text-chart-3">Correct</p>
           <p className="mt-1 text-[20px] font-black text-chart-3">{result.score}/{result.total}</p>
-          <p className="text-[10px] text-muted-foreground/40 mt-0.5">
+          <p className="text-micro text-muted-foreground/40 mt-0.5">
             {result.score === result.total ? "Perfect!" : `${Math.round(result.score / result.total * 100)}%`}
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function SprintResultsPage() {
 
       {/* Final answer banner */}
       <div className="mt-6 rounded-3xl border border-primary/20 bg-primary/5 p-5 text-center backdrop-blur-xl">
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary/60">Final Verdict</p>
+        <p className="text-micro font-bold uppercase tracking-[0.18em] text-primary/60">Final Verdict</p>
         <p className="mt-1 text-[16px] font-black text-primary">
           {result.accuracy >= 80 ? "Great Work!" : result.accuracy >= 50 ? "Keep Going!" : "Keep Practicing!"}
         </p>
@@ -137,7 +137,7 @@ export default function SprintResultsPage() {
         <button
           type="button"
           onClick={handleAnalysis}
-          className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-[#C7F252] to-[#A8D43A] text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
         >
           <BarChart3 size={16} /> Analysis
         </button>

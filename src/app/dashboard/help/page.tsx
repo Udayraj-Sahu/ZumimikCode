@@ -105,7 +105,7 @@ export default function HelpPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <HelpCircle size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">HELP</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">HELP</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Frequently asked questions and app information</p>
       </div>
@@ -122,7 +122,7 @@ export default function HelpPage() {
         {error && (
           <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl">
             <p className="text-[12px] font-semibold text-destructive">Failed to load help content</p>
-            <p className="mt-1 text-[10px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+            <p className="mt-1 text-micro text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
         )}
 
@@ -131,13 +131,13 @@ export default function HelpPage() {
             <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl overflow-hidden" style={{ background: GLASS_BG }}>
               <div className="px-4 pt-4 pb-2 flex items-center gap-2">
                 <HelpCircle size={16} className="text-primary" />
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">FAQ</h2>
+                <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">FAQ</h2>
               </div>
               <FaqAccordion items={data.faq} />
             </div>
 
             <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
-              <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">App Info</h2>
+              <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">App Info</h2>
               <div className="space-y-2 text-[12px]">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground/60">Version</span>
@@ -155,7 +155,7 @@ export default function HelpPage() {
             </div>
 
             <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
-              <h2 className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Contact & Support</h2>
+              <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Contact & Support</h2>
               <a
                 href="mailto:report@examarena.io"
                 className="flex items-center gap-3 rounded-xl border border-white/[0.06] px-4 py-3 text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl"
@@ -167,7 +167,7 @@ export default function HelpPage() {
             </div>
 
             <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl overflow-hidden divide-y divide-white/[0.06]" style={{ background: GLASS_BG }}>
-              <h2 className="px-4 pt-4 pb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Legal</h2>
+              <h2 className="px-4 pt-4 pb-2 text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Legal</h2>
               <button
                 type="button"
                 className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"

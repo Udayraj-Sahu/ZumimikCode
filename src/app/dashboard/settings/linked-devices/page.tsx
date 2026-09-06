@@ -61,13 +61,13 @@ export default function LinkedDevicesPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Monitor size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LINKED DEVICES</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LINKED DEVICES</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           Devices you&apos;re currently logged in on
         </p>
         {devices && devices.length > 0 && (
-          <p className="text-[10px] text-muted-foreground/35 font-normal mt-0.5">
+          <p className="text-micro text-muted-foreground/60 font-normal mt-0.5">
             {devices.length} device{devices.length === 1 ? "" : "s"} linked
           </p>
         )}
@@ -86,7 +86,7 @@ export default function LinkedDevicesPage() {
         {error && (
           <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center">
             <p className="text-[12px] font-semibold text-destructive">Failed to load devices</p>
-            <p className="mt-1 text-[10px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+            <p className="mt-1 text-micro text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
         )}
 
@@ -117,7 +117,7 @@ export default function LinkedDevicesPage() {
                       )}
                     </div>
                     <p className="text-[11px] text-muted-foreground/40 font-normal mt-0.5">{device.model}</p>
-                    <p className={cn("text-[10px] font-normal mt-0.5", device.current ? "text-primary/70" : "text-muted-foreground/30")}>
+                    <p className={cn("text-micro font-normal mt-0.5", device.current ? "text-primary/70" : "text-muted-foreground/55")}>
                       {device.current
                         ? timeAgo(device.lastActive)
                         : `${timeAgo(device.lastActive)} · ${device.addedAt}`}
@@ -149,7 +149,7 @@ export default function LinkedDevicesPage() {
       </div>
 
       {confirmingId && (
-        <p className="mt-3 px-1 text-center text-[10px] text-muted-foreground/40 font-normal">
+        <p className="mt-3 px-1 text-center text-micro text-muted-foreground/40 font-normal">
           Tap again to confirm — this sign-out takes effect immediately.
         </p>
       )}

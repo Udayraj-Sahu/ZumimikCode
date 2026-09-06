@@ -101,7 +101,7 @@ export default function ScanToLoginPage() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <QrCode size={12} className="text-primary" />
-            <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">SCAN TO LOGIN</span>
+            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SCAN TO LOGIN</span>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal">
             Open a browser at <span className="text-foreground/60">examarena.app</span>
@@ -122,7 +122,7 @@ export default function ScanToLoginPage() {
               </div>
 
               <div className="mt-5">
-                <label className="text-[10px] font-semibold tracking-[0.14em] text-muted-foreground/40 uppercase">8-digit code</label>
+                <label className="text-micro font-semibold tracking-[0.14em] text-muted-foreground/40 uppercase">8-digit code</label>
                 <input
                   value={displayCode}
                   onChange={(e) => setEntered(e.target.value)}
@@ -173,7 +173,7 @@ export default function ScanToLoginPage() {
                 </div>
                 <div className="flex-1">
                   <p className="text-[12px] font-semibold text-foreground">Chrome on Windows</p>
-                  <p className="text-[10px] text-muted-foreground/40">
+                  <p className="text-micro text-muted-foreground/40">
                     <span className="inline-flex items-center gap-1 text-[#34D399]"><ShieldCheck size={9} /> Secured device</span> · Mumbai, IN
                   </p>
                 </div>

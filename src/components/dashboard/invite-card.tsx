@@ -68,7 +68,7 @@ export function InviteCard() {
             <p className="text-[10.5px] text-muted-foreground/45 font-normal leading-tight">Share your code, earn bonus XP</p>
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 text-[10px] text-muted-foreground/35 font-medium">
+        <div className="ml-auto flex items-center gap-1.5 text-micro text-muted-foreground/60 font-medium">
           <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1">{invitesSent} invites</span>
           <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1">{friendsJoined} joined</span>
         </div>
@@ -98,7 +98,7 @@ export function InviteCard() {
         Share invite link
       </button>
 
-      <p className="relative mt-3 text-[10px] text-muted-foreground/35 font-normal">
+      <p className="relative mt-3 text-micro text-muted-foreground/60 font-normal">
         Your friend gets a head start with 50 bonus XP when they sign up.
       </p>
     </div>

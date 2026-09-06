@@ -54,7 +54,7 @@ export default function NotificationsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Bell size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">NOTIFICATIONS</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">NOTIFICATIONS</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
@@ -63,7 +63,7 @@ export default function NotificationsPage() {
           <div className="mt-3 flex justify-center">
             <button
               type="button"
-              className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-colors min-h-[44px]"
+              className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-colors min-h-[44px]"
               style={{ background: "linear-gradient(to right, #C7F252, #A8D43A)", color: "#0A0C0A" }}
             >
               <CheckCheck size={14} />
@@ -79,7 +79,7 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("all")}
           className={cn(
-            "rounded-xl px-4 py-2 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-xl px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "all"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -92,7 +92,7 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("unread")}
           className={cn(
-            "rounded-xl px-4 py-2 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-xl px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "unread"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -116,7 +116,7 @@ export default function NotificationsPage() {
         {error && (
           <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center">
             <p className="text-[12px] font-semibold text-destructive">Failed to load notifications</p>
-            <p className="mt-1 text-[10px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+            <p className="mt-1 text-micro text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
         )}
 
@@ -156,12 +156,12 @@ export default function NotificationsPage() {
                       </p>
                     </div>
                     <p className={cn(
-                      "text-[10px] mt-0.5 leading-relaxed",
+                      "text-micro mt-0.5 leading-relaxed",
                       n.read ? "text-muted-foreground/40" : "text-muted-foreground/60",
                     )}>
                       {n.message}
                     </p>
-                    <p className="text-[10px] text-muted-foreground/50 mt-1">{n.time}</p>
+                    <p className="text-micro text-muted-foreground/50 mt-1">{n.time}</p>
                   </div>
                 </div>
               );

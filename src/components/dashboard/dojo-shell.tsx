@@ -100,7 +100,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-background text-foreground">
       <aside
         ref={sidebarRef}
-        className="fixed inset-y-0 left-0 z-50 hidden w-[250px] flex-col border-r border-[#1f1f1f] bg-[#0d0d0d] px-4 py-7 lg:flex"
+        className="fixed inset-y-0 left-0 z-50 hidden w-[250px] flex-col border-r border-chrome-border bg-chrome px-4 py-7 lg:flex"
       >
         {/* Logo */}
         <div className="mb-12 flex items-center gap-3 pl-1.5">
@@ -125,8 +125,8 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-3.5 rounded-[10px] border border-transparent px-4 py-[13px] text-[13.5px] font-bold uppercase tracking-[0.6px] outline-none transition-[background,color,border-color] duration-150 focus-visible:ring-2 focus-visible:ring-ring",
                   active
-                    ? "border-primary bg-[rgba(166,255,47,0.06)] text-primary"
-                    : "text-[#8a8f87] hover:text-[#c9cec4]",
+                    ? "border-primary bg-chrome-active text-primary"
+                    : "text-chrome-muted hover:text-chrome-hover",
                 )}
               >
                 <Icon className="size-[18px] shrink-0" aria-hidden="true" />
@@ -144,8 +144,8 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
               className={cn(
                 "flex w-full items-center gap-3.5 rounded-[10px] border border-transparent px-4 py-[13px] text-[13.5px] font-bold uppercase tracking-[0.6px] outline-none transition-[background,color,border-color] duration-150 focus-visible:ring-2 focus-visible:ring-ring",
                 moreOpen || anyFlyoutActive
-                  ? "border-primary bg-[rgba(166,255,47,0.06)] text-primary"
-                  : "text-[#8a8f87] hover:text-[#c9cec4]",
+                  ? "border-primary bg-chrome-active text-primary"
+                  : "text-chrome-muted hover:text-chrome-hover",
               )}
             >
               <MoreHorizontal className="size-[18px] shrink-0" aria-hidden="true" />
@@ -154,11 +154,11 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
 
             <div
               className={cn(
-                "absolute left-[calc(100%+14px)] top-0 z-50 w-[190px] rounded-[10px] border border-[#1f1f1f] bg-[#161616] p-2 shadow-[0_12px_30px_rgba(0,0,0,0.5)] transition-[opacity,transform,visibility] duration-150",
+                "absolute left-[calc(100%+14px)] top-0 z-50 w-[190px] rounded-[10px] border border-chrome-border bg-chrome-raised p-2 shadow-[0_12px_30px_rgba(0,0,0,0.5)] transition-[opacity,transform,visibility] duration-150",
                 moreOpen ? "visible translate-x-0 opacity-100" : "invisible -translate-x-1.5 opacity-0",
               )}
             >
-              <span className="absolute -left-1.5 top-[22px] size-3 rotate-45 border-b border-l border-[#1f1f1f] bg-[#161616]" />
+              <span className="absolute -left-1.5 top-[22px] size-3 rotate-45 border-b border-l border-chrome-border bg-chrome-raised" />
               <ul className="flex max-h-[70vh] flex-col overflow-y-auto">
                 {flyoutItems.map((item) => {
                   const active = pathname === item.href;
@@ -169,10 +169,10 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         className={cn(
-                          "flex items-center gap-3 rounded-[7px] px-3 py-2.5 text-[13.5px] font-semibold tracking-[0.2px] text-[#eaeae5] outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-ring",
+                          "flex items-center gap-3 rounded-[7px] px-3 py-2.5 text-[13.5px] font-semibold tracking-[0.2px] text-chrome-foreground outline-none transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-ring",
                           active
-                            ? "bg-[rgba(166,255,47,0.08)] text-primary"
-                            : "hover:bg-[rgba(166,255,47,0.08)] hover:text-primary",
+                            ? "bg-chrome-active text-primary"
+                            : "hover:bg-chrome-active hover:text-primary",
                         )}
                       >
                         <Icon className="size-4 shrink-0" aria-hidden="true" />
@@ -197,7 +197,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
           </Link>
 
           <div className="flex items-center gap-3 px-1.5">
-            <span className="grid size-[34px] shrink-0 place-items-center rounded-full bg-[#8a6a5a] text-sm font-bold text-white">
+            <span className="grid size-[34px] shrink-0 place-items-center rounded-full bg-chrome-avatar text-sm font-bold text-white">
               {avatarInitial}
             </span>
             <span className="flex-1 truncate text-[12.5px] font-bold uppercase tracking-[0.5px] text-[#b8bcb4]">
@@ -207,7 +207,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              className="grid size-9 shrink-0 place-items-center rounded-lg text-[#8a8f87] outline-none transition-colors hover:bg-white/5 hover:text-[#eaeae5] focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid size-11 shrink-0 place-items-center rounded-lg text-chrome-muted outline-none transition-colors hover:bg-white/5 hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
             >
               <SunMoon className="size-4" aria-hidden="true" />
             </button>
@@ -215,7 +215,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => { logout(); router.push("/"); }}
               aria-label="Logout"
-              className="grid size-9 shrink-0 place-items-center rounded-lg text-[#8a8f87] outline-none transition-colors hover:bg-white/5 hover:text-[#eaeae5] focus-visible:ring-2 focus-visible:ring-ring"
+              className="grid size-11 shrink-0 place-items-center rounded-lg text-chrome-muted outline-none transition-colors hover:bg-white/5 hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
             >
               <LogOut className="size-4" aria-hidden="true" />
             </button>
@@ -223,7 +223,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <main className="lg:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pb-24 lg:pb-0">
+      <main className="lg:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pb-24 lg:pb-0 pt-[max(0px,env(safe-area-inset-top))]">
         <div key={pathname} ref={pageRef}>
           {children}
         </div>
@@ -233,9 +233,9 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
       <nav
         ref={mobileNavRef}
         aria-label="Primary mobile"
-        className="fixed inset-x-0 bottom-4 z-40 flex justify-center px-5 lg:hidden pointer-events-none"
+        className="fixed inset-x-0 bottom-[calc(1rem+max(0px,env(safe-area-inset-bottom)))] z-40 flex justify-center px-5 lg:hidden pointer-events-none"
       >
-        <div className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[#14170F]/90 backdrop-blur-2xl px-2 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] pointer-events-auto">
+        <div className="pointer-events-auto flex w-full max-w-[420px] items-center gap-0.5 rounded-full border border-white/[0.08] bg-[#14170F]/90 px-1.5 py-1.5 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
           {MOBILE_NAV.map((item) => {
             const active = pathname === item.href;
             const Icon = item.icon;
@@ -245,16 +245,14 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative flex items-center justify-center rounded-full outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring",
+                  "relative flex min-w-0 flex-1 items-center justify-center rounded-full outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
                   active
-                    ? "bg-primary/15 text-primary px-4 py-2.5 gap-2"
-                    : "text-muted-foreground/50 hover:text-muted-foreground px-3 py-2.5",
+                    ? "bg-primary/15 text-primary px-1 py-2.5 gap-1"
+                    : "text-muted-foreground/50 hover:text-muted-foreground px-1 py-2.5 gap-1",
                 )}
               >
                 <Icon className="size-[18px] shrink-0" strokeWidth={active ? 2.4 : 1.8} />
-                {active && (
-                  <span className="text-[11px] font-bold tracking-wide">{item.label}</span>
-                )}
+                <span className="truncate text-[11px] font-bold tracking-wide">{item.label}</span>
               </Link>
             );
           })}

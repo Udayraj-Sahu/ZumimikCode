@@ -193,7 +193,7 @@ function LearnPageContent() {
       <header className="mb-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
           <BookOpen size={12} className="text-primary" />
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
         <h1 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Choose Your Path</h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Master topics, adaptive sprints &amp; timed mocks.</p>
@@ -311,7 +311,7 @@ function LearnPageContent() {
 
           {/* Exam Tabs */}
           <div className="rounded-3xl border backdrop-blur-xl p-4 mt-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-            <p className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
+            <p className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
             {prepExams.length === 0 ? (
               <div className="flex items-center justify-center py-4">
                 <span className="text-[12px] text-muted-foreground/50">Select exam via add prep</span>
@@ -362,7 +362,7 @@ function LearnPageContent() {
                       <span className="text-[13px] font-bold tracking-[-0.02em]" style={{ color }}>
                         {topic.value}%
                       </span>
-                      <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50">mastery</span>
+                      <span className="text-micro font-medium uppercase tracking-wider text-muted-foreground/50">mastery</span>
                     </div>
                   </div>
                   <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
@@ -396,7 +396,7 @@ function LearnPageContent() {
                 <div className="h-7 w-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
                   <Sparkles size={14} className="text-[#3B82F6]" />
                 </div>
-                <p className="text-[10px] font-semibold tracking-[0.18em] text-[#3B82F6]/70 uppercase">SENSEI INSIGHT</p>
+                <p className="text-micro font-semibold tracking-[0.18em] text-[#3B82F6]/70 uppercase">SENSEI INSIGHT</p>
               </div>
               <p className="text-[13px] text-foreground/70 font-normal leading-relaxed pl-1 italic">
                 &ldquo;{getInsight(topics)}&rdquo;
@@ -528,7 +528,7 @@ function LearnPageContent() {
               className="w-full flex items-center justify-between gap-2 px-5 py-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-expanded={!statsCollapsed}
             >
-              <span className="text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">Your Stats</span>
+              <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">Your Stats</span>
               <span className="grid size-6 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
                 <ChevronUp size={12} className="transition-transform duration-300" style={{ transform: statsCollapsed ? "rotate(180deg)" : "none" }} />
               </span>
@@ -623,7 +623,7 @@ function LearnPageContent() {
                     </div>
                   </div>
 
-                  <p className="text-[10px] text-muted-foreground/50 mt-3 font-normal">
+                  <p className="text-micro text-muted-foreground/50 mt-3 font-normal">
                     {paper.sections.map((s) => s.label).join(" | ")} • {paper.totalQuestions} Questions • {formatDuration(paper.durationMinutes)}
                   </p>
 

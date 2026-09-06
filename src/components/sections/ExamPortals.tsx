@@ -138,7 +138,7 @@ function Badge({ label }: { label: string }) {
       viewport={{ once: true }}
     >
       <div className="w-8 sm:w-12 h-px" style={{ background: "rgba(200,255,90,0.3)" }} />
-      <span className="text-[10px] tracking-[0.25em] uppercase font-mono text-primary px-2">
+      <span className="text-micro tracking-[0.25em] uppercase font-mono text-primary px-2">
         {label}
       </span>
       <div className="w-8 sm:w-12 h-px" style={{ background: "rgba(200,255,90,0.3)" }} />

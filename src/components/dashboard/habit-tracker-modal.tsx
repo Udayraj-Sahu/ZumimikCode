@@ -287,6 +287,9 @@ export function HabitTrackerModal({ onClose }: Props) {
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[200] flex items-end justify-center bg-black/70 backdrop-blur-md sm:items-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="habit-tracker-title"
       onClick={(e) => { if (e.target === overlayRef.current) handleClose(); }}
     >
       <div
@@ -306,18 +309,18 @@ export function HabitTrackerModal({ onClose }: Props) {
           <button
             type="button"
             onClick={handleClose}
-            className="grid size-9 place-items-center rounded-xl text-muted-foreground/50 transition-colors hover:bg-white/5 hover:text-foreground"
+            className="grid size-11 place-items-center rounded-xl text-muted-foreground/50 transition-colors hover:bg-white/5 hover:text-foreground"
           >
             <ArrowLeft size={18} />
           </button>
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5" style={{ background: VIOLET_DIM, border: `1px solid ${VIOLET_GLOW}` }}>
             <Sparkles size={10} style={{ color: VIOLET }} />
-            <span className="text-[10px] font-semibold tracking-[0.22em]" style={{ color: VIOLET }}>DAILY HABITS</span>
+            <span id="habit-tracker-title" className="text-micro font-semibold tracking-[0.22em]" style={{ color: VIOLET }}>DAILY HABITS</span>
           </div>
           <button
             type="button"
             onClick={async () => { const g = await requestNotificationPermission(); setNotifsEnabled(g); }}
-            className="grid size-9 place-items-center rounded-xl transition-colors hover:bg-white/5"
+            className="grid size-11 place-items-center rounded-xl transition-colors hover:bg-white/5"
             title="Enable notifications"
           >
             {notifsEnabled ? <Bell size={16} style={{ color: VIOLET }} /> : <BellOff size={16} className="text-muted-foreground/40" />}
@@ -395,7 +398,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                   <div
                     key={day}
                     className={cn(
-                      "aspect-square rounded-[4px] flex items-center justify-center text-[10px] font-medium transition-all duration-300",
+                      "aspect-square rounded-[4px] flex items-center justify-center text-micro font-medium transition-all duration-300",
                       isToday && "ring-1 shadow-[0_0_8px_rgba(52,211,153,0.4)]",
                     )}
                     style={{ background: bg, color: tc, ...(isToday ? { ringColor: VIOLET } : {}) }}
@@ -410,14 +413,14 @@ export function HabitTrackerModal({ onClose }: Props) {
           {/* Today's Habits */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+              <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
                 TODAY — {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}
               </p>
               <div className="flex items-center gap-2">
                 <div className="h-1.5 w-16 rounded-full bg-white/[0.05] overflow-hidden">
                   <div className="h-full rounded-full transition-all duration-500" style={{ width: `${todayPct}%`, background: `linear-gradient(90deg, ${VIOLET}, #10B981)` }} />
                 </div>
-                <span className="text-[10px] font-bold" style={{ color: VIOLET }}>{todayPct}%</span>
+                <span className="text-micro font-bold" style={{ color: VIOLET }}>{todayPct}%</span>
               </div>
             </div>
             <div className="space-y-2">
@@ -452,13 +455,13 @@ export function HabitTrackerModal({ onClose }: Props) {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className={cn("text-[13px] font-semibold truncate transition-colors", h.todayCompleted ? "text-foreground" : "text-foreground/55")}>{h.name}</p>
-                        <p className="text-[10px] text-muted-foreground/25 mt-0.5">{h.category === "auto" ? "Auto-tracked" : "Manual"}</p>
+                        <p className="text-micro text-muted-foreground/60 mt-0.5">{h.category === "auto" ? "Auto-tracked" : "Manual"}</p>
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0">
                         {h.streak > 0 && (
                           <div className="flex items-center gap-1 rounded-full px-2 py-1" style={{ background: `${h.color}10` }}>
                             <Flame size={10} style={{ color: h.color }} />
-                            <span className="text-[10px] font-bold" style={{ color: h.color }}>{h.streak}</span>
+                            <span className="text-micro font-bold" style={{ color: h.color }}>{h.streak}</span>
                           </div>
                         )}
                         <button
@@ -513,7 +516,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                         <button
                           type="button"
                           onClick={() => handleSetTime(h.id, draftTime, h.name)}
-                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-[10px] font-bold uppercase tracking-widest text-[#0A0C0A] transition-all active:scale-[0.98]"
+                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-micro font-bold uppercase tracking-widest text-[#0A0C0A] transition-all active:scale-[0.98]"
                           style={{ background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }}
                         >
                           <Bell size={11} /> Set reminder
@@ -524,7 +527,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                     {!isEditing && h.reminderTime && (
                       <div className="flex items-center gap-1.5 mx-6">
                         <div className="size-1 rounded-full animate-pulse" style={{ background: VIOLET }} />
-                        <span className="text-[10px] font-medium" style={{ color: `${VIOLET}99` }}>Reminds at {h.reminderTime}</span>
+                        <span className="text-micro font-medium" style={{ color: `${VIOLET}99` }}>Reminds at {h.reminderTime}</span>
                       </div>
                     )}
                   </div>
@@ -546,7 +549,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                 className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground/30 outline-none focus:border-[rgba(52,211,153,0.3)] transition-colors"
               />
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-muted-foreground/40 font-semibold shrink-0">ICON</span>
+                <span className="text-micro text-muted-foreground/40 font-semibold shrink-0">ICON</span>
                 <div className="flex flex-wrap gap-1.5">
                   {ICON_OPTIONS.map((iconName) => {
                     const IC = ICON_MAP[iconName] || Zap;
@@ -562,7 +565,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] text-muted-foreground/40 font-semibold shrink-0">COLOR</span>
+                <span className="text-micro text-muted-foreground/40 font-semibold shrink-0">COLOR</span>
                 <div className="flex gap-1.5">
                   {COLOR_OPTIONS.map((c) => (
                     <button key={c.color} type="button" onClick={() => setNewColor(c.color)}
