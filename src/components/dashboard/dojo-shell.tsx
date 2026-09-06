@@ -235,7 +235,7 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
         aria-label="Primary mobile"
         className="fixed inset-x-0 bottom-[calc(1rem+max(0px,env(safe-area-inset-bottom)))] z-40 flex justify-center px-5 lg:hidden pointer-events-none"
       >
-        <div className="pointer-events-auto flex w-full max-w-[420px] items-center gap-0.5 rounded-full border border-white/[0.08] bg-[#14170F]/90 px-1.5 py-1.5 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+        <div className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[#14170F]/90 backdrop-blur-2xl px-2 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] pointer-events-auto">
           {MOBILE_NAV.map((item) => {
             const active = pathname === item.href;
             const Icon = item.icon;
@@ -245,14 +245,16 @@ export function DojoShell({ children }: { children: React.ReactNode }) {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative flex min-w-0 flex-1 items-center justify-center rounded-full outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+                  "relative flex items-center justify-center rounded-full outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring",
                   active
-                    ? "bg-primary/15 text-primary px-1 py-2.5 gap-1"
-                    : "text-muted-foreground/50 hover:text-muted-foreground px-1 py-2.5 gap-1",
+                    ? "bg-primary/15 text-primary px-4 py-2.5 gap-2"
+                    : "text-muted-foreground/50 hover:text-muted-foreground px-3 py-2.5",
                 )}
               >
                 <Icon className="size-[18px] shrink-0" strokeWidth={active ? 2.4 : 1.8} />
-                <span className="truncate text-[11px] font-bold tracking-wide">{item.label}</span>
+                {active && (
+                  <span className="text-[11px] font-bold tracking-wide">{item.label}</span>
+                )}
               </Link>
             );
           })}
