@@ -5,7 +5,7 @@ import type { RendererProps } from "@/lib/types/template";
 import {
   parseMultiplication,
   extractProducts,
-} from "@/lib/utils/parse-multiplication";
+} from "@/components/renderers/utils/parse-multiplication";
 import TextScaffold from "./TextScaffold";
 
 const CELL_W = 80;

@@ -5,7 +5,7 @@ import type { RendererProps } from "@/lib/types/template";
 import {
   parseDivision,
   extractQuotients,
-} from "@/lib/utils/parse-division";
+} from "@/components/renderers/utils/parse-division";
 import TextScaffold from "./TextScaffold";
 
 export default function StrikePadRenderer(props: RendererProps) {

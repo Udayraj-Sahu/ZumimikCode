@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { SectionHeading } from "@/components/SectionHeading";
+import { SectionHeading } from "@/components/sections/SectionHeading";
 
 const RANKS = [
   { rank: "Aspirant", range: "Starting out", icon: "○", color: "#8B8B8B", count: "840K" },

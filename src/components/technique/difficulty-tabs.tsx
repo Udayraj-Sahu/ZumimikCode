@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Check, AlertTriangle, Zap, ChevronDown, ChevronUp } from "lucide-react";
 import type { DifficultyLevel, TechniquePracticeQuestion } from "@/lib/types/technique";
 import TextScaffold from "@/components/renderers/TextScaffold";
-import { exampleToTemplate } from "@/lib/utils/level-to-template";
+import { exampleToTemplate } from "@/components/renderers/utils/level-to-template";
 
 const LEVEL_COLORS: Record<number, string> = {
   1: "text-chart-3 border-chart-3/30 bg-chart-3/5",

@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { SectionHeading } from "@/components/SectionHeading";
+import { SectionHeading } from "@/components/sections/SectionHeading";
 
 const LIVE_EXAMS = [
   { id: "gmat", name: "GMAT", full: "Graduate Management Admission Test", difficulty: 91, students: "2.1M", topRank: "Priya Sharma — AIR 7", color: "#C8FF5A", glow: "rgba(200,255,90,0.3)", symbol: "⊕" },

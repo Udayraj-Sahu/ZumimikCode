@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { RendererProps } from "@/lib/types/template";
-import { resolveRenderer } from "@/lib/utils/renderer-registry";
+import { resolveRenderer } from "@/components/renderers/utils/renderer-registry";
 import TextScaffold from "./TextScaffold";
 
 export default function RendererRouter({

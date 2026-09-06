@@ -6,9 +6,9 @@ import { AchievementWall } from "@/components/sections/AchievementWall";
 import { ConstellationCoach } from "@/components/sections/ConstellationCoach";
 import { EnergyTower } from "@/components/sections/EnergyTower";
 import { HorizonScene } from "@/components/sections/HorizonScene";
-import { SectionReveal } from "@/components/SectionReveal";
+import { SectionReveal } from "@/components/sections/SectionReveal";
 import { VerticalNav } from "@/components/nav/VerticalNav";
-import { FloatingActions } from "@/components/FloatingActions";
+import { FloatingActions } from "@/components/sections/FloatingActions";
 
 export default function Home() {
   return (

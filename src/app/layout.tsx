@@ -4,7 +4,7 @@ import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
 import { OnlineProvider } from "@/providers/online-provider";
 import { CapacitorInit } from "./capacitor-init";
-import { AppEntry } from "@/components/ui/app-entry";
+import { AppEntry } from "@/components/shell/app-entry";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],

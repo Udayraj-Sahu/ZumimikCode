@@ -2,7 +2,7 @@
 
 import { useState, useLayoutEffect, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { SplashScreen } from "@/components/ui/splash-screen";
+import { SplashScreen } from "@/components/shell/splash-screen";
 import { useAuthStore } from "@/stores/auth-store";
 import OnboardingPage from "@/app/onboarding/page";
 
