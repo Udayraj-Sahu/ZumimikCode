@@ -13,7 +13,6 @@ import {
   Clock,
   FileText,
   Award,
-  Star,
   Trophy,
   User,
   Bell,
@@ -304,7 +303,6 @@ export default function SettingsPage() {
             <Row icon={<Clock className="h-5 w-5" />} title="Past Sessions" subtitle="View your sprint history" onClick={() => router.push("/dashboard/history")} />
             <Row icon={<FileText className="h-5 w-5" />} title="Reports" subtitle="Performance analytics" onClick={() => router.push("/dashboard/reports")} />
             <Row icon={<Award className="h-5 w-5" />} title="Achievements" subtitle="3/6 unlocked" onClick={() => router.push("/dashboard/achievements")} />
-            <Row icon={<Star className="h-5 w-5" />} title="Badges" subtitle="Collect them all" onClick={() => router.push("/dashboard/achievements")} />
             <Row icon={<Trophy className="h-5 w-5" />} title="Leaderboard" subtitle="See your ranking" onClick={() => router.push("/dashboard/leaderboard")} />
           </div>
         </CollapsibleSection>

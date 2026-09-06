@@ -44,7 +44,7 @@ export const MOBILE_NAV: NavItem[] = [
   { label: "Home", href: "/dashboard", icon: Home },
   { label: "Learn", href: "/dashboard/learn", icon: BookOpen },
   { label: "Play", href: "/dashboard/play", icon: Zap },
-  { label: "Setting", href: "/dashboard/settings", icon: Settings },
+  { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 const RADAR_AXES: RadarAxis[] = [
