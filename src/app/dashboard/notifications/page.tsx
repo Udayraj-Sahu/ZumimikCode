@@ -149,19 +149,19 @@ export default function NotificationsPage() {
                     <div className="flex items-center gap-2">
                       {!n.read && <span className="size-2 shrink-0 rounded-full bg-primary" />}
                       <p className={cn(
-                        "text-[12px] font-semibold truncate",
+                        "text-[11px] font-semibold truncate",
                         n.read ? "text-foreground/60" : "text-foreground",
                       )}>
                         {n.title}
                       </p>
                     </div>
                     <p className={cn(
-                      "text-micro mt-0.5 leading-relaxed",
+                      "text-[11px] mt-0.5 leading-relaxed",
                       n.read ? "text-muted-foreground/40" : "text-muted-foreground/60",
                     )}>
                       {n.message}
                     </p>
-                    <p className="text-micro text-muted-foreground/50 mt-1">{n.time}</p>
+                    <p className="text-[10px] text-muted-foreground/50 mt-1">{n.time}</p>
                   </div>
                 </div>
               );
