@@ -322,3 +322,13 @@ export function getAllLeafTechniques(tree: TopicNode[]): TopicNode[] {
   walk(tree);
   return leaves;
 }
+
+export function getAllTechniqueIds(): string[] {
+  const ids = new Set<string>();
+  for (const tree of Object.values(SUBJECT_TREES)) {
+    for (const node of getAllLeafTechniques(tree)) {
+      if (node.techniqueId) ids.add(node.techniqueId);
+    }
+  }
+  return [...ids];
+}
