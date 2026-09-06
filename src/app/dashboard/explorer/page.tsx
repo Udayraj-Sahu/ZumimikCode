@@ -31,7 +31,7 @@ function findNodeInTrees(trees: TopicNode[], domain: string, topic: string): { s
 }
 
 function ExplorerContent() {
-  usePageMeta("Topic Explorer — Exam Arena");
+  usePageMeta("Topic Explorer â€” Exam Arena");
   const searchParams = useSearchParams();
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
@@ -107,17 +107,17 @@ function ExplorerContent() {
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
         {/* Branded header at top */}
         <div className="relative text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5">
+          <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] px-4 py-1.5">
             <Compass size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
           </div>
         </div>
 
         <div className="flex items-center justify-center pt-14 pb-10">
-          <div className="relative w-full max-w-sm rounded-3xl border border-white/[0.08] backdrop-blur-xl px-6 py-8" style={{ background: "rgba(255,255,255,0.04)" }}>
-            <div className="absolute -top-12 -right-12 size-40 rounded-full opacity-[0.07] pointer-events-none" style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }} />
+          <div className="relative w-full max-w-sm rounded-3xl border border-glass/[0.08] backdrop-blur-xl px-6 py-8" style={{ background: "rgb(var(--glass) / 0.04)" }}>
+            <div className="absolute -top-12 -right-12 size-40 rounded-full opacity-[0.07] pointer-events-none" style={{ background: "radial-gradient(circle, rgb(rgb(rgb(var(--primary)))), transparent 70%)" }} />
             <div className="flex flex-col items-center gap-4 text-center">
-              <span className="relative grid size-14 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+              <span className="relative grid size-14 place-items-center rounded-2xl bg-glass/[0.05] border border-glass/[0.06]">
                 <Lock size={20} className="text-muted-foreground/45" />
               </span>
               <div>
@@ -147,7 +147,7 @@ function ExplorerContent() {
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 overflow-x-hidden">
       {/* Header */}
       <div ref={headerRef} className="relative text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 mb-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] px-4 py-1.5 mb-4">
           <Compass size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
         </div>
@@ -157,12 +157,12 @@ function ExplorerContent() {
         <p className="mt-1.5 text-[12px] text-muted-foreground/45 font-normal">Tap nodes to branch out and explore your study map.</p>
       </div>
 
-      {/* Exam switcher — sliding segmented control */}
+      {/* Exam switcher â€” sliding segmented control */}
       {prepExams.length > 1 && (
         <div ref={animateSection} data-section-index={0} className="relative mt-7">
           <div
             className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
+            style={{ borderColor: "rgb(var(--glass) / 0.08)", background: "rgb(var(--glass) / 0.04)" }}
           >
             {prepExams.map((id) => {
               const active = activeDomain === id;
@@ -172,7 +172,7 @@ function ExplorerContent() {
                   type="button"
                   onClick={() => handleExamSwitch(id)}
                   className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                  style={{ color: active ? "#0A0C0A" : "rgb(var(--glass) / 0.55)" }}
                 >
                   {active && (
                     <motion.div
@@ -182,7 +182,7 @@ function ExplorerContent() {
                       style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)" }}
                     />
                   )}
-                  <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
+                  <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgb(var(--glass) / 0.35)" : "none" }}>
                     <GraduationCap size={14} className="relative" />
                     <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
                   </span>
@@ -222,14 +222,14 @@ function ExplorerContent() {
                       ? {
                           borderColor: "rgba(199,242,82,0.35)",
                           background: "linear-gradient(180deg, rgba(199,242,82,0.18), rgba(199,242,82,0.05))",
-                          color: "var(--primary)",
+                          color: "rgb(rgb(rgb(var(--primary))))",
                           boxShadow:
-                            "0 8px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.35)",
+                            "0 8px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgb(var(--glass) / 0.3), inset 0 -2px 6px rgba(0,0,0,0.35)",
                         }
                       : {
-                          borderColor: "rgba(255,255,255,0.07)",
-                          background: "rgba(255,255,255,0.02)",
-                          color: "rgba(255,255,255,0.5)",
+                          borderColor: "rgb(var(--glass) / 0.07)",
+                          background: "rgb(var(--glass) / 0.02)",
+                          color: "rgb(var(--glass) / 0.5)",
                           boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4)",
                         }
                   }

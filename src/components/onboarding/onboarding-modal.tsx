@@ -238,7 +238,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                       ? "size-8 bg-[#C8FF4D]/15 ring-2 ring-[#C8FF4D]/40"
                       : isDone
                         ? "size-6 bg-[#C8FF4D]/10"
-                        : "size-6 bg-white/[0.05]",
+                        : "size-6 bg-glass/[0.05]",
                   )}
                 >
                   {isDone ? (
@@ -258,7 +258,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
           </div>
         </div>
         {/* Progress bar */}
-        <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
+        <div className="h-1 w-full rounded-full bg-glass/[0.06] overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-500 ease-out"
             style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%`, background: "#C8FF4D" }}
@@ -339,7 +339,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                 "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
                 canNext
                   ? "text-[#0A0C0A]"
-                  : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
+                  : "bg-glass/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
               style={canNext ? { background: "#C8FF4D" } : undefined}
             >
@@ -367,7 +367,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     >
       <div
         ref={panelRef}
-        className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
+        className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-glass/[0.06] shadow-2xl"
         style={{ background: "rgba(14,17,13,0.98)" }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -378,7 +378,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
   );
 }
 
-/* ── Step sub-components ── */
+/* â”€â”€ Step sub-components â”€â”€ */
 
 function StepName({ value, onChange, onNext }: { value: string; onChange: (v: string) => void; onNext: () => void }) {
   return (
@@ -396,7 +396,7 @@ function StepName({ value, onChange, onNext }: { value: string; onChange: (v: st
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => { if (e.key === "Enter" && value.trim().length > 0) onNext(); }}
         placeholder="Type your name..."
-        className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/25 outline-none focus:border-[#C8FF5A]/30 focus:ring-1 focus:ring-[#C8FF5A]/20 transition-all"
+        className="w-full rounded-2xl border border-glass/[0.06] bg-glass/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/25 outline-none focus:border-[#C8FF5A]/30 focus:ring-1 focus:ring-[#C8FF5A]/20 transition-all"
         autoFocus
       />
       {value.trim().length > 0 && (
@@ -440,14 +440,14 @@ function StepSingleSelect({
                 "relative flex items-center gap-3 rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.97]",
                 active
                   ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
-                  : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+                  : "border-glass/[0.05] bg-glass/[0.02] hover:bg-glass/[0.04]",
               )}
             >
               <div
                 className="size-9 shrink-0 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: active ? "#C8FF4D20" : "rgba(255,255,255,0.04)" }}
+                style={{ backgroundColor: active ? "#C8FF4D20" : "rgb(var(--glass) / 0.04)" }}
               >
-                <Icon size={16} style={{ color: active ? "#C8FF4D" : "rgba(255,255,255,0.3)" }} />
+                <Icon size={16} style={{ color: active ? "#C8FF4D" : "rgb(var(--glass) / 0.3)" }} />
               </div>
               <div className="min-w-0 flex-1">
                 <p className={cn("text-[12px] font-bold leading-tight truncate", active ? "text-foreground" : "text-foreground/60")}>
@@ -500,7 +500,7 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                       "flex items-center gap-1 rounded-full px-3 py-1.5 text-micro font-bold transition-all active:scale-95",
                       active
                         ? "text-[#0A0C0A] bg-[#C8FF4D]"
-                        : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
+                        : "bg-glass/[0.04] text-muted-foreground/50 border border-glass/[0.06] hover:bg-glass/[0.07]",
                     )}
                   >
                     {active && <Check size={8} strokeWidth={3} />}
@@ -545,7 +545,7 @@ function StepDetails({
               "flex-1 flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-[13px] font-bold transition-all active:scale-[0.98]",
               sex === s
                 ? "border-[#FF5C5C]/30 bg-[#FF5C5C]/10 text-[#FF5C5C]"
-                : "border-white/[0.06] bg-white/[0.03] text-foreground/60 hover:bg-white/[0.05]",
+                : "border-glass/[0.06] bg-glass/[0.03] text-foreground/60 hover:bg-glass/[0.05]",
             )}
           >
             {s}
@@ -554,7 +554,7 @@ function StepDetails({
       </div>
 
       <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-3 uppercase">Date of Birth</p>
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+      <div className="rounded-2xl border border-glass/[0.06] bg-glass/[0.02] overflow-hidden">
         <div className="flex">
           <ScrollColumn
             items={DAYS.map((d) => ({ value: String(d), label: String(d) }))}
@@ -562,14 +562,14 @@ function StepDetails({
             onSelect={(v) => onDobChange((prev) => ({ ...prev, day: Number(v) }))}
             label="DD"
           />
-          <div className="w-px bg-white/[0.06] my-3" />
+          <div className="w-px bg-glass/[0.06] my-3" />
           <ScrollColumn
             items={MONTHS.map((m) => ({ value: m, label: m.slice(0, 3) }))}
             selected={dob.month}
             onSelect={(v) => onDobChange((prev) => ({ ...prev, month: v }))}
             label="MM"
           />
-          <div className="w-px bg-white/[0.06] my-3" />
+          <div className="w-px bg-glass/[0.06] my-3" />
           <ScrollColumn
             items={YEARS.map((y) => ({ value: String(y), label: String(y) }))}
             selected={String(dob.year)}
@@ -626,7 +626,7 @@ function ScrollColumn({
         <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[rgba(14,17,13,0.98)] to-transparent z-10 pointer-events-none" />
         <div
           className="absolute left-1 right-1 h-10 rounded-xl border z-0 pointer-events-none"
-          style={{ top: PAD * ITEM_H, background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.06)" }}
+          style={{ top: PAD * ITEM_H, background: "rgb(var(--glass) / 0.03)", borderColor: "rgb(var(--glass) / 0.06)" }}
         />
         <div
           ref={containerRef}
@@ -695,7 +695,7 @@ function CompletionScreen() {
         <p className="mt-1.5 text-[12px] text-muted-foreground/40 font-medium">Let&apos;s start your fight</p>
       </div>
 
-      <div ref={boxRef} className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-5 mt-8">
+      <div ref={boxRef} className="relative overflow-hidden rounded-2xl border border-glass/[0.05] px-4 py-5 mt-8">
         <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(167,139,250,0.35), transparent)" }} />
         <div className="relative flex items-center justify-around gap-2">
           {[{ l: "PERSONA", v: store.persona || "Student" }, { l: "GOAL", v: store.goal || "Master math" }].map((item) => (

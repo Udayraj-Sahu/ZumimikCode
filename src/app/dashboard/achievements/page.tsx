@@ -11,8 +11,8 @@ import { useAchievements } from "@/hooks/queries/use-achievements";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { AchievementItem, AchievementTier, AchievementCategory } from "@/lib/types/achievements";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Flame, Target, Zap, Swords, Medal, Trophy, LayoutGrid, Timer, Users,
@@ -77,7 +77,7 @@ function ShimmerOverlay() {
       <div
         className="absolute inset-0 -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] opacity-[0.07]"
         style={{
-          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
+          background: "linear-gradient(90deg, transparent 0%, rgb(var(--glass) / 0.4) 50%, transparent 100%)",
         }}
       />
     </div>
@@ -102,11 +102,11 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
       className={cn(
         "relative rounded-3xl border p-4 flex flex-col items-center text-center transition-all backdrop-blur-xl overflow-hidden",
         item.unlocked
-          ? "border-white/[0.06]"
-          : "border-dashed border-white/[0.08] opacity-60",
+          ? "border-glass/[0.06]"
+          : "border-dashed border-glass/[0.08] opacity-60",
       )}
       style={{
-        backgroundColor: item.unlocked ? GLASS_BG : "rgba(255,255,255,0.02)",
+        backgroundColor: item.unlocked ? GLASS_BG : "rgb(var(--glass) / 0.02)",
       }}
     >
       {isRecent && (
@@ -135,7 +135,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
           <div
             className="grid size-8 place-items-center rounded-lg"
             style={{
-              backgroundColor: item.unlocked ? `${tier.ring}18` : "rgba(255,255,255,0.04)",
+              backgroundColor: item.unlocked ? `${tier.ring}18` : "rgb(var(--glass) / 0.04)",
             }}
           >
             <Icon
@@ -149,7 +149,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
       {/* Label */}
       <p
         className="text-[12px] font-bold tracking-wide"
-        style={{ color: item.unlocked ? "var(--foreground)" : "rgba(107,114,128,0.6)" }}
+        style={{ color: item.unlocked ? "rgb(rgb(rgb(var(--foreground))))" : "rgba(107,114,128,0.6)" }}
       >
         {item.label}
       </p>
@@ -164,7 +164,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
         className="mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
         style={{
           color: item.unlocked ? tier.ring : "rgba(107,114,128,0.4)",
-          backgroundColor: item.unlocked ? `${tier.ring}12` : "rgba(255,255,255,0.03)",
+          backgroundColor: item.unlocked ? `${tier.ring}12` : "rgb(var(--glass) / 0.03)",
         }}
       >
         {tier.label}
@@ -182,7 +182,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
 /*  Main Page                                                           */
 /* ------------------------------------------------------------------ */
 export default function AchievementsPage() {
-  usePageMeta("Achievements — Exam Arena");
+  usePageMeta("Achievements â€” Exam Arena");
   const { data: achievements, isLoading, error } = useAchievements();
   const [activeCategory, setActiveCategory] = useState<AchievementCategory | "all">("all");
   const gridRef = useRef<HTMLDivElement>(null);
@@ -222,7 +222,7 @@ export default function AchievementsPage() {
     <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Trophy size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ACHIEVEMENTS</span>
         </div>
@@ -234,7 +234,7 @@ export default function AchievementsPage() {
       {/* Hero ring + stats */}
       {total > 0 && (
         <div ref={animateSection} data-section-index="0" className="mt-5">
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 flex items-center gap-5" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-5 flex items-center gap-5" style={{ background: GLASS_BG }}>
             {/* Large ring */}
             <div className="relative shrink-0">
               <ProgressRing progress={percent} tier="platinum" size={80} stroke={4} />
@@ -280,7 +280,7 @@ export default function AchievementsPage() {
               "shrink-0 rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] backdrop-blur-xl",
               activeCategory === cat.id
                 ? "bg-primary text-primary-foreground"
-                : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+                : "border border-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
             )}
             style={activeCategory !== cat.id ? { background: GLASS_BG } : undefined}
           >

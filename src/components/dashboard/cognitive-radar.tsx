@@ -59,7 +59,7 @@ export const CognitiveRadar = memo(function CognitiveRadar({
             key={r}
             points={polygon(r)}
             fill="none"
-            stroke="var(--border)"
+            stroke="rgb(rgb(rgb(var(--border))))"
             strokeWidth={1}
           />
         ))}
@@ -72,22 +72,22 @@ export const CognitiveRadar = memo(function CognitiveRadar({
               y1={center}
               x2={p.x}
               y2={p.y}
-              stroke="var(--border)"
+              stroke="rgb(rgb(rgb(var(--border))))"
               strokeWidth={1}
             />
           );
         })}
         <polygon
           points={dataPolygon}
-          fill="var(--primary)"
+          fill="rgb(rgb(rgb(var(--primary))))"
           fillOpacity={0.22}
-          stroke="var(--primary)"
+          stroke="rgb(rgb(rgb(var(--primary))))"
           strokeWidth={2}
           strokeLinejoin="round"
         />
         {axes.map((a, i) => {
           const p = point(a.value, i);
-          return <circle key={i} cx={p.x} cy={p.y} r={3.5} fill="var(--primary)" />;
+          return <circle key={i} cx={p.x} cy={p.y} r={3.5} fill="rgb(rgb(rgb(var(--primary))))" />;
         })}
         {axes.map((a, i) => {
           const p = point(1.18, i);
@@ -98,7 +98,7 @@ export const CognitiveRadar = memo(function CognitiveRadar({
               y={p.y}
               textAnchor="middle"
               dominantBaseline="middle"
-              fill="var(--muted-foreground)"
+              fill="rgb(rgb(rgb(var(--muted-foreground))))"
               className="text-fluid-xs font-semibold uppercase tracking-widest"
             >
               {a.label}

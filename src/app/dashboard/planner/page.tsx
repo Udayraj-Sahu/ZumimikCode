@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 import { usePlanner } from "@/hooks/queries/use-planner";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function PlannerPage() {
-  usePageMeta("Study Planner — Exam Arena");
+  usePageMeta("Study Planner â€” Exam Arena");
   const { data, isLoading, error } = usePlanner();
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +39,7 @@ export default function PlannerPage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Calendar size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PLANNER</span>
         </div>
@@ -63,28 +63,28 @@ export default function PlannerPage() {
         {data && (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Flame size={14} className="text-primary" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">STREAK</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.weekStreak}d</p>
               </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Target size={14} className="text-chart-2" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">PLANNED</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.totalPlanned}</p>
               </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={14} className="text-chart-3" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">DONE</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.totalCompleted}</p>
               </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <TrendingUp size={14} className="text-chart-4" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">RATE</p>
@@ -105,7 +105,7 @@ export default function PlannerPage() {
                       "rounded-xl border p-2 sm:p-3 flex flex-col items-center text-center transition-all backdrop-blur-xl",
                       day.isToday
                         ? "border-primary bg-primary/5"
-                        : "border-white/[0.06]",
+                        : "border-glass/[0.06]",
                     )}
                     style={!day.isToday ? { background: GLASS_BG } : undefined}
                   >
@@ -149,7 +149,7 @@ export default function PlannerPage() {
               })}
             </div>
 
-            <div className="mt-6 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 text-center" style={{ background: GLASS_BG }}>
+            <div className="mt-6 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-5 text-center" style={{ background: GLASS_BG }}>
               <Calendar size={24} className="mx-auto text-muted-foreground/20 mb-2" />
               <p className="text-[12px] font-semibold text-foreground/80">Stay Consistent</p>
               <p className="text-micro text-muted-foreground/60 mt-1">Complete your daily planned sprints to build momentum</p>

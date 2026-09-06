@@ -8,11 +8,11 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { FEED_HERO, FEED_CATEGORIES, FEED_STORIES, FEED_VIDEOS } from "@/lib/mock/feed";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function FeedPage() {
-  usePageMeta("Feed — Exam Arena");
+  usePageMeta("Feed â€” Exam Arena");
   const firstName = useOnboardingStore((s) => s.firstName);
   const [activeCategory, setActiveCategory] = useState<string>("Explore");
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ export default function FeedPage() {
     <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
       {/* Header */}
       <div ref={headerRef}>
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Compass size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FEED</span>
         </div>
@@ -59,14 +59,14 @@ export default function FeedPage() {
 
       {/* Search bar */}
       <div ref={animateSection} data-section-index="0" className="mt-4">
-        <div className="flex items-center gap-2.5 rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3">
+        <div className="flex items-center gap-2.5 rounded-2xl border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-xl px-4 py-3">
           <Search size={16} className="text-muted-foreground/50 shrink-0" />
           <span className="text-[12px] text-muted-foreground/50">Search topics, tips...</span>
         </div>
       </div>
 
       {/* Category chips */}
-      <div ref={animateSection} data-section-index="1" className="mt-4 flex gap-5 overflow-x-auto pb-1 border-b border-white/[0.06] scrollbar-thin">
+      <div ref={animateSection} data-section-index="1" className="mt-4 flex gap-5 overflow-x-auto pb-1 border-b border-glass/[0.06] scrollbar-thin">
         {FEED_CATEGORIES.map((cat) => (
           <button
             key={cat}
@@ -114,13 +114,13 @@ export default function FeedPage() {
               <div
                 key={story.id}
                 data-feed-story
-                className="flex items-center gap-3.5 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3.5 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-3.5 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-3.5 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
               >
                 <img
                   src={story.thumbnailUrl}
                   alt=""
-                  className="w-14 h-14 shrink-0 rounded-xl object-cover border border-white/[0.06]"
+                  className="w-14 h-14 shrink-0 rounded-xl object-cover border border-glass/[0.06]"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-[12px] font-bold text-foreground truncate">
@@ -148,7 +148,7 @@ export default function FeedPage() {
             {FEED_VIDEOS.map((video) => (
               <div
                 key={video.id}
-                className="w-[120px] shrink-0 rounded-3xl overflow-hidden border border-white/[0.06] backdrop-blur-xl h-[150px] relative outline-none transition-all active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
+                className="w-[120px] shrink-0 rounded-3xl overflow-hidden border border-glass/[0.06] backdrop-blur-xl h-[150px] relative outline-none transition-all active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ backgroundColor: GLASS_BG }}
               >
                 <img

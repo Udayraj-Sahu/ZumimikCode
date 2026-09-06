@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 import { useReports } from "@/hooks/queries/use-reports";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 function formatTime(s: number): string {
   const h = Math.floor(s / 3600);
@@ -18,7 +18,7 @@ function formatTime(s: number): string {
 }
 
 export default function ReportsPage() {
-  usePageMeta("Reports — Exam Arena");
+  usePageMeta("Reports â€” Exam Arena");
   const { data, isLoading, error } = useReports();
   const [period, setPeriod] = useState<"7d" | "30d" | "90d">("30d");
   const gridRef = useRef<HTMLDivElement>(null);
@@ -57,7 +57,7 @@ export default function ReportsPage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <FileText size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">REPORTS</span>
         </div>
@@ -82,7 +82,7 @@ export default function ReportsPage() {
               "rounded-full px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring border backdrop-blur-xl",
               period === p
                 ? "bg-primary text-primary-foreground border-primary"
-                : "border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+                : "border-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
             )}
             style={period !== p ? { background: GLASS_BG } : undefined}
           >
@@ -108,28 +108,28 @@ export default function ReportsPage() {
         {data && (
           <>
             <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div data-stat-card className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={14} className="text-primary" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">SPRINTS</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.summary.totalSprints}</p>
               </div>
-              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div data-stat-card className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Award size={14} className="text-chart-2" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">TOTAL XP</p>
                 </div>
                 <p className="text-[20px] font-bold text-primary">{data.summary.totalXP.toLocaleString()}</p>
               </div>
-              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div data-stat-card className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Target size={14} className="text-chart-3" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">AVG ACC.</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.summary.avgAccuracy}%</p>
               </div>
-              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div data-stat-card className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Clock size={14} className="text-chart-4" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">TOTAL TIME</p>
@@ -139,7 +139,7 @@ export default function ReportsPage() {
             </div>
 
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Topic Breakdown</p>
-            <div ref={topicRef} className="rounded-3xl border border-white/[0.06] backdrop-blur-xl overflow-hidden divide-y divide-white/[0.06]" style={{ background: GLASS_BG }}>
+            <div ref={topicRef} className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl overflow-hidden divide-y divide-glass/[0.06]" style={{ background: GLASS_BG }}>
               {data.topics.map((t) => (
                 <div
                   key={t.topic}

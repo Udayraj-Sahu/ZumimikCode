@@ -31,7 +31,7 @@ import { useHabitStore } from "@/stores/habit-store";
 import { Capacitor } from "@capacitor/core";
 import { LocalNotifications } from "@capacitor/local-notifications";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
 const VIOLET = "#34D399";
 const VIOLET_DIM = "rgba(52,211,153,0.1)";
 const VIOLET_GLOW = "rgba(52,211,153,0.3)";
@@ -297,8 +297,8 @@ export function HabitTrackerModal({ onClose }: Props) {
         className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl"
         style={{
           background: "linear-gradient(180deg, #111116 0%, #0d0d0d 30%)",
-          boxShadow: "0 -8px 60px rgba(52,211,153,0.12), 0 0 1px rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.06)",
+          boxShadow: "0 -8px 60px rgba(52,211,153,0.12), 0 0 1px rgb(var(--glass) / 0.06)",
+          border: "1px solid rgb(var(--glass) / 0.06)",
         }}
       >
         {/* Gradient glow behind header */}
@@ -309,7 +309,7 @@ export function HabitTrackerModal({ onClose }: Props) {
           <button
             type="button"
             onClick={handleClose}
-            className="grid size-11 place-items-center rounded-xl text-muted-foreground/50 transition-colors hover:bg-white/5 hover:text-foreground"
+            className="grid size-11 place-items-center rounded-xl text-muted-foreground/50 transition-colors hover:bg-glass/[0.05] hover:text-foreground"
           >
             <ArrowLeft size={18} />
           </button>
@@ -320,7 +320,7 @@ export function HabitTrackerModal({ onClose }: Props) {
           <button
             type="button"
             onClick={async () => { const g = await requestNotificationPermission(); setNotifsEnabled(g); }}
-            className="grid size-11 place-items-center rounded-xl transition-colors hover:bg-white/5"
+            className="grid size-11 place-items-center rounded-xl transition-colors hover:bg-glass/[0.05]"
             title="Enable notifications"
           >
             {notifsEnabled ? <Bell size={16} style={{ color: VIOLET }} /> : <BellOff size={16} className="text-muted-foreground/40" />}
@@ -362,14 +362,14 @@ export function HabitTrackerModal({ onClose }: Props) {
           </div>
 
           {/* Calendar Heatmap */}
-          <div className="rounded-3xl p-4" style={{ background: GLASS_BG, border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="rounded-3xl p-4" style={{ background: GLASS_BG, border: "1px solid rgb(var(--glass) / 0.06)" }}>
             <div className="flex items-center justify-between mb-3">
-              <button type="button" onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); } else setCalMonth((m) => m - 1); }} className="text-muted-foreground/40 hover:text-foreground transition-colors text-[16px] font-bold px-2 py-1 rounded-lg hover:bg-white/5">
-                ‹
+              <button type="button" onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); } else setCalMonth((m) => m - 1); }} className="text-muted-foreground/40 hover:text-foreground transition-colors text-[16px] font-bold px-2 py-1 rounded-lg hover:bg-glass/[0.05]">
+                â€¹
               </button>
               <span className="text-[12px] font-bold text-foreground/80 tracking-wide">{monthName}</span>
-              <button type="button" onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); } else setCalMonth((m) => m + 1); }} className="text-muted-foreground/40 hover:text-foreground transition-colors text-[16px] font-bold px-2 py-1 rounded-lg hover:bg-white/5">
-                ›
+              <button type="button" onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear((y) => y + 1); } else setCalMonth((m) => m + 1); }} className="text-muted-foreground/40 hover:text-foreground transition-colors text-[16px] font-bold px-2 py-1 rounded-lg hover:bg-glass/[0.05]">
+                â€º
               </button>
             </div>
             <div className="grid grid-cols-7 gap-1 text-center mb-1.5">
@@ -386,14 +386,14 @@ export function HabitTrackerModal({ onClose }: Props) {
                 const pct = totalHabits > 0 ? count / totalHabits : 0;
                 const isToday = isCurrentMonth && day === todayDate.getDate();
                 const isFuture = isCurrentMonth && day > todayDate.getDate();
-                let bg = "rgba(255,255,255,0.025)";
-                let tc = "rgba(255,255,255,0.18)";
+                let bg = "rgb(var(--glass) / 0.025)";
+                let tc = "rgb(var(--glass) / 0.18)";
                 if (!isFuture && count > 0) {
                   if (pct >= 1) { bg = "rgba(52,211,153,0.5)"; tc = "#fff"; }
-                  else if (pct >= 0.5) { bg = "rgba(52,211,153,0.25)"; tc = "rgba(255,255,255,0.75)"; }
-                  else { bg = "rgba(52,211,153,0.1)"; tc = "rgba(255,255,255,0.4)"; }
+                  else if (pct >= 0.5) { bg = "rgba(52,211,153,0.25)"; tc = "rgb(var(--glass) / 0.75)"; }
+                  else { bg = "rgba(52,211,153,0.1)"; tc = "rgb(var(--glass) / 0.4)"; }
                 }
-                if (isFuture) bg = "rgba(255,255,255,0.012)";
+                if (isFuture) bg = "rgb(var(--glass) / 0.012)";
                 return (
                   <div
                     key={day}
@@ -414,10 +414,10 @@ export function HabitTrackerModal({ onClose }: Props) {
           <div>
             <div className="flex items-center justify-between mb-3">
               <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
-                TODAY — {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                TODAY â€” {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}
               </p>
               <div className="flex items-center gap-2">
-                <div className="h-1.5 w-16 rounded-full bg-white/[0.05] overflow-hidden">
+                <div className="h-1.5 w-16 rounded-full bg-glass/[0.05] overflow-hidden">
                   <div className="h-full rounded-full transition-all duration-500" style={{ width: `${todayPct}%`, background: `linear-gradient(90deg, ${VIOLET}, #10B981)` }} />
                 </div>
                 <span className="text-micro font-bold" style={{ color: VIOLET }}>{todayPct}%</span>
@@ -436,7 +436,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                         "group w-full flex items-center gap-3 rounded-2xl border px-4 py-3.5 transition-all duration-200 text-left active:scale-[0.98]",
                         h.todayCompleted
                           ? "border-transparent"
-                          : "border-white/[0.06] hover:border-white/[0.12]",
+                          : "border-glass/[0.06] hover:border-glass/[0.12]",
                       )}
                       style={h.todayCompleted
                         ? { background: `linear-gradient(135deg, ${VIOLET_DIM}, rgba(52,211,153,0.06))`, border: `1px solid ${VIOLET_GLOW}` }
@@ -445,7 +445,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                       <div
                         className={cn(
                           "shrink-0 size-9 rounded-xl flex items-center justify-center transition-all duration-200",
-                          h.todayCompleted ? "text-[#0A0C0A]" : "border bg-white/[0.03]",
+                          h.todayCompleted ? "text-[#0A0C0A]" : "border bg-glass/[0.03]",
                         )}
                         style={h.todayCompleted
                           ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }
@@ -469,7 +469,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           onClick={(e) => { e.stopPropagation(); handleToggleReminder(h.id, h.reminderTime, h.name); }}
                           className={cn(
                             "size-7 rounded-lg flex items-center justify-center transition-all shrink-0",
-                            h.reminderTime ? "bg-[rgba(52,211,153,0.12)]" : "text-muted-foreground/20 hover:text-muted-foreground/50 hover:bg-white/5",
+                            h.reminderTime ? "bg-[rgba(52,211,153,0.12)]" : "text-muted-foreground/20 hover:text-muted-foreground/50 hover:bg-glass/[0.05]",
                           )}
                           style={h.reminderTime ? { color: VIOLET } : undefined}
                           title={h.reminderTime ? `Reminder at ${h.reminderTime}` : "Set reminder"}
@@ -503,7 +503,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           </button>
                         </div>
 
-                        <div className="flex items-center justify-center gap-2 rounded-lg py-2 border border-white/[0.06] bg-black/20">
+                        <div className="flex items-center justify-center gap-2 rounded-lg py-2 border border-glass/[0.06] bg-black/20">
                           <Clock size={13} style={{ color: VIOLET }} />
                           <input
                             type="time"
@@ -546,7 +546,7 @@ export function HabitTrackerModal({ onClose }: Props) {
               <input
                 type="text" placeholder="Habit name..." value={newName} onChange={(e) => setNewName(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") handleAddHabit(); }} autoFocus
-                className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground/30 outline-none focus:border-[rgba(52,211,153,0.3)] transition-colors"
+                className="w-full rounded-xl border border-glass/[0.08] bg-glass/[0.04] px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground/30 outline-none focus:border-[rgba(52,211,153,0.3)] transition-colors"
               />
               <div className="flex items-center gap-2">
                 <span className="text-micro text-muted-foreground/40 font-semibold shrink-0">ICON</span>
@@ -555,7 +555,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                     const IC = ICON_MAP[iconName] || Zap;
                     return (
                       <button key={iconName} type="button" onClick={() => setNewIcon(iconName)}
-                        className={cn("size-8 rounded-lg flex items-center justify-center transition-all", newIcon === iconName ? "bg-[rgba(52,211,153,0.15)]" : "bg-white/[0.04] text-muted-foreground/40 hover:bg-white/[0.08]")}
+                        className={cn("size-8 rounded-lg flex items-center justify-center transition-all", newIcon === iconName ? "bg-[rgba(52,211,153,0.15)]" : "bg-glass/[0.04] text-muted-foreground/40 hover:bg-glass/[0.08]")}
                         style={newIcon === iconName ? { color: VIOLET } : undefined}
                       >
                         <IC size={14} />
@@ -576,7 +576,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                 </div>
               </div>
               <button type="button" onClick={handleAddHabit} disabled={!newName.trim()}
-                className={cn("w-full rounded-xl py-2.5 text-[13px] font-semibold transition-all", newName.trim() ? "text-[#0A0C0A]" : "bg-white/[0.06] text-muted-foreground/30 cursor-not-allowed")}
+                className={cn("w-full rounded-xl py-2.5 text-[13px] font-semibold transition-all", newName.trim() ? "text-[#0A0C0A]" : "bg-glass/[0.06] text-muted-foreground/30 cursor-not-allowed")}
                 style={newName.trim() ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 16px ${VIOLET_GLOW}` } : undefined}
               >
                 Add Habit

@@ -40,15 +40,15 @@ export default function EquationChainRenderer(props: RendererProps) {
                 width={90}
                 height={36}
                 rx={8}
-                fill="var(--card)"
-                stroke={visible ? "var(--primary)" : "var(--border)"}
+                fill="rgb(rgb(rgb(var(--card))))"
+                stroke={visible ? "rgb(rgb(rgb(var(--primary))))" : "rgb(rgb(rgb(var(--border))))"}
                 strokeWidth={1.5}
               />
               <text
                 x={x}
                 y={y + 5}
                 textAnchor="middle"
-                fill="var(--foreground)"
+                fill="rgb(rgb(rgb(var(--foreground))))"
                 fontSize="13"
                 fontWeight="600"
               >
@@ -61,7 +61,7 @@ export default function EquationChainRenderer(props: RendererProps) {
                   y1={y}
                   x2={x + 75}
                   y2={y}
-                  stroke="var(--primary)"
+                  stroke="rgb(rgb(rgb(var(--primary))))"
                   strokeWidth={2}
                   markerEnd="url(#eq-arrow)"
                   opacity={visibleSteps > i + 1 ? 1 : 0}
@@ -79,7 +79,7 @@ export default function EquationChainRenderer(props: RendererProps) {
             x={60 + i * 120}
             y={60}
             textAnchor="middle"
-            fill="var(--muted-foreground)"
+            fill="rgb(rgb(rgb(var(--muted-foreground))))"
             fontSize="10"
             opacity={visibleSteps > i ? 1 : 0.2}
             className="transition-opacity duration-300"
@@ -97,7 +97,7 @@ export default function EquationChainRenderer(props: RendererProps) {
             refY="3"
             orient="auto"
           >
-            <polygon points="0 0, 8 3, 0 6" fill="var(--primary)" />
+            <polygon points="0 0, 8 3, 0 6" fill="rgb(rgb(rgb(var(--primary))))" />
           </marker>
         </defs>
       </svg>

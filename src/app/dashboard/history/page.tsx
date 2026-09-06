@@ -11,8 +11,8 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { HistoryEntry } from "@/lib/types/history";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -42,7 +42,7 @@ function HistoryRow({
       type="button"
       data-history-row
       onClick={() => onSelect(entry)}
-      className="flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
+      className="flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-glass/[0.06] active:bg-glass/[0.08] focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
     >
       <div className={cn(
         "grid size-9 shrink-0 place-items-center rounded-xl",
@@ -75,7 +75,7 @@ function HistoryRow({
 }
 
 export default function HistoryPage() {
-  usePageMeta("Sprint History — Exam Arena");
+  usePageMeta("Sprint History â€” Exam Arena");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const domain = targetExam;
@@ -135,7 +135,7 @@ export default function HistoryPage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Clock size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">HISTORY</span>
         </div>
@@ -165,7 +165,7 @@ export default function HistoryPage() {
                 "rounded-xl px-2 sm:px-3 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 diffFilter === d.id
                   ? "bg-primary text-primary-foreground"
-                  : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+                  : "bg-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
               )}
             >
               {d.label}
@@ -175,7 +175,7 @@ export default function HistoryPage() {
         <button
           type="button"
           onClick={() => setSortAsc(!sortAsc)}
-          className="ml-auto flex items-center gap-1 rounded-xl px-3 py-2.5 text-micro font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+          className="ml-auto flex items-center gap-1 rounded-xl px-3 py-2.5 text-micro font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
           style={{ backgroundColor: GLASS_BG }}
         >
           <ArrowUpDown size={12} />
@@ -185,7 +185,7 @@ export default function HistoryPage() {
 
       <div ref={animateSection} data-section-index="1" className="mt-4">
         {selected && (
-          <div ref={detailRef} className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ backgroundColor: GLASS_BG }}>
+          <div ref={detailRef} className="mb-4 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4" style={{ backgroundColor: GLASS_BG }}>
             <div className="flex items-center justify-between mb-3">
               <p className="text-[12px] font-bold text-foreground/80">{selected.topicLabel}</p>
               <button
@@ -245,7 +245,7 @@ export default function HistoryPage() {
         )}
 
         {sorted.length > 0 && (
-          <div ref={listRef} role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ backgroundColor: GLASS_BG }}>
+          <div ref={listRef} role="list" className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl divide-y divide-glass/[0.06] overflow-hidden" style={{ backgroundColor: GLASS_BG }}>
             {paged.map((entry, i) => (
               <HistoryRow key={entry.id} entry={entry} index={i} onSelect={setSelected} />
             ))}
@@ -260,8 +260,8 @@ export default function HistoryPage() {
                 type="button"
                 onClick={() => setPage(i)}
                 className={cn(
-                  "min-w-[44px] min-h-[44px] rounded-xl text-micro font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:bg-white/[0.06]",
-                  page === i ? "bg-primary text-primary-foreground" : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+                  "min-w-[44px] min-h-[44px] rounded-xl text-micro font-bold font-mono outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:bg-glass/[0.06]",
+                  page === i ? "bg-primary text-primary-foreground" : "bg-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
                 )}
               >
                 {i + 1}

@@ -11,11 +11,11 @@ import { getFlashcards } from "@/lib/mock/flashcards";
 import type { Flashcard } from "@/lib/mock/flashcards";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function FlashcardsPage() {
-  usePageMeta("Flashcards — Exam Arena");
+  usePageMeta("Flashcards â€” Exam Arena");
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const domain = targetExam;
   const topics = getTopicsByDomain(domain);
@@ -86,7 +86,7 @@ export default function FlashcardsPage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <BookOpen size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FLASHCARDS</span>
         </div>
@@ -105,7 +105,7 @@ export default function FlashcardsPage() {
                 "flex items-center gap-1.5 rounded-xl px-3 py-2 text-micro font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 topic === t.id
                   ? "bg-primary text-primary-foreground"
-                  : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+                  : "bg-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
               )}
             >
               <Icon size={14} />
@@ -129,14 +129,14 @@ export default function FlashcardsPage() {
               <span className="text-micro text-muted-foreground/40 font-mono">{index + 1}/{cards.length}</span>
               <span className="text-micro text-muted-foreground/40">{known.length} known</span>
             </div>
-            <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden mb-6">
+            <div className="h-1 w-full rounded-full bg-glass/[0.06] overflow-hidden mb-6">
               <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${progress}%` }} />
             </div>
 
             <div
               ref={cardRef}
               onClick={flip}
-              className="relative cursor-pointer rounded-3xl border border-white/[0.06] backdrop-blur-xl p-8 sm:p-12 min-h-[200px] sm:min-h-[260px] flex items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="relative cursor-pointer rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-8 sm:p-12 min-h-[200px] sm:min-h-[260px] flex items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-ring"
               style={{ backgroundColor: GLASS_BG }}
               role="button"
               tabIndex={0}

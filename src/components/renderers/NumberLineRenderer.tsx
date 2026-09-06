@@ -45,7 +45,7 @@ export default function NumberLineRenderer(props: RendererProps) {
           width={lineWidth}
           height={40}
           rx={6}
-          fill="var(--primary)"
+          fill="rgb(rgb(rgb(var(--primary))))"
           opacity={0.08}
         />
 
@@ -55,7 +55,7 @@ export default function NumberLineRenderer(props: RendererProps) {
           y1={60}
           x2={marginLeft + lineWidth}
           y2={60}
-          stroke="var(--foreground)"
+          stroke="rgb(rgb(rgb(var(--foreground))))"
           strokeWidth={2}
         />
 
@@ -70,14 +70,14 @@ export default function NumberLineRenderer(props: RendererProps) {
                 y1={50}
                 x2={x}
                 y2={70}
-                stroke="var(--muted-foreground)"
+                stroke="rgb(rgb(rgb(var(--muted-foreground))))"
                 strokeWidth={1.5}
               />
               <text
                 x={x}
                 y={86}
                 textAnchor="middle"
-                fill="var(--muted-foreground)"
+                fill="rgb(rgb(rgb(var(--muted-foreground))))"
                 fontSize="10"
               >
                 {val.toFixed(val % 1 === 0 ? 0 : 1)}
@@ -91,13 +91,13 @@ export default function NumberLineRenderer(props: RendererProps) {
           opacity={allRevealed ? 1 : 0}
           className="transition-opacity duration-300"
         >
-          <circle cx={resultX} cy={60} r={8} fill="var(--destructive)" />
-          <circle cx={resultX} cy={60} r={4} fill="var(--background)" />
+          <circle cx={resultX} cy={60} r={8} fill="rgb(rgb(rgb(var(--destructive))))" />
+          <circle cx={resultX} cy={60} r={4} fill="rgb(rgb(rgb(var(--background))))" />
           <text
             x={resultX}
             y={42}
             textAnchor="middle"
-            fill="var(--destructive)"
+            fill="rgb(rgb(rgb(var(--destructive))))"
             fontSize="12"
             fontWeight="700"
           >

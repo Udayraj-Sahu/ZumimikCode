@@ -9,7 +9,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 export default function ProfilePage() {
-  usePageMeta("Profile — Exam Arena");
+  usePageMeta("Profile â€” Exam Arena");
   const { data, isLoading } = useProfileData();
 
   if (isLoading || !data) {
@@ -24,8 +24,8 @@ export default function ProfilePage() {
 
   return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="pt-5 pb-4 border-b border-border mb-5 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
+        <div className="pt-5 pb-4 border-b border-border/20 mb-5 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
             <User size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PROFILE</span>
           </div>

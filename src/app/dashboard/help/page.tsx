@@ -8,8 +8,8 @@ import { useHelpData } from "@/hooks/queries/use-help";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { FaqItem } from "@/lib/types/help";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 function FaqAccordion({ items }: { items: FaqItem[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -39,13 +39,13 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
   };
 
   return (
-    <div className="divide-y divide-white/[0.06]">
+    <div className="divide-y divide-glass/[0.06]">
       {items.map((item) => (
         <div key={item.id}>
           <button
             type="button"
             onClick={() => toggle(item.id)}
-            className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
+            className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left outline-none transition-colors hover:bg-glass/[0.04] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
           >
             <span className="text-[12px] font-semibold text-foreground/80">{item.question}</span>
             <ChevronDown
@@ -75,7 +75,7 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
 }
 
 export default function HelpPage() {
-  usePageMeta("Help & About — Exam Arena");
+  usePageMeta("Help & About â€” Exam Arena");
   const { data, isLoading, error } = useHelpData();
   const sectionsRef = useRef<HTMLDivElement>(null);
 
@@ -103,7 +103,7 @@ export default function HelpPage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <HelpCircle size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">HELP</span>
         </div>
@@ -128,7 +128,7 @@ export default function HelpPage() {
 
         {data && (
           <>
-            <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl overflow-hidden" style={{ background: GLASS_BG }}>
+            <div data-help-section className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl overflow-hidden" style={{ background: GLASS_BG }}>
               <div className="px-4 pt-4 pb-2 flex items-center gap-2">
                 <HelpCircle size={16} className="text-primary" />
                 <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">FAQ</h2>
@@ -136,7 +136,7 @@ export default function HelpPage() {
               <FaqAccordion items={data.faq} />
             </div>
 
-            <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
+            <div data-help-section className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
               <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">App Info</h2>
               <div className="space-y-2 text-[12px]">
                 <div className="flex justify-between">
@@ -154,11 +154,11 @@ export default function HelpPage() {
               </div>
             </div>
 
-            <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
+            <div data-help-section className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
               <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Contact & Support</h2>
               <a
                 href="mailto:report@examarena.io"
-                className="flex items-center gap-3 rounded-xl border border-white/[0.06] px-4 py-3 text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl"
+                className="flex items-center gap-3 rounded-xl border border-glass/[0.06] px-4 py-3 text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-glass/[0.04] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl"
                 style={{ background: GLASS_BG }}
               >
                 <Mail size={16} className="text-muted-foreground/40" />
@@ -166,18 +166,18 @@ export default function HelpPage() {
               </a>
             </div>
 
-            <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl overflow-hidden divide-y divide-white/[0.06]" style={{ background: GLASS_BG }}>
+            <div data-help-section className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl overflow-hidden divide-y divide-glass/[0.06]" style={{ background: GLASS_BG }}>
               <h2 className="px-4 pt-4 pb-2 text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Legal</h2>
               <button
                 type="button"
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-glass/[0.04] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <FileText size={16} className="text-muted-foreground/40" />
                 Terms of Service
               </button>
               <button
                 type="button"
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-glass/[0.04] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <ShieldCheck size={16} className="text-muted-foreground/40" />
                 Privacy Policy

@@ -215,7 +215,7 @@ export function RankSignal() {
               Enter the Arena
             </motion.button>
             <motion.button
-              className="px-7 py-3 text-sm tracking-wide rounded bg-transparent text-secondary-foreground border border-border cursor-pointer font-display font-medium hover:border-primary/40 hover:text-foreground transition-all duration-200"
+              className="px-7 py-3 text-sm tracking-wide rounded bg-transparent text-secondary-foreground border border-border/20 cursor-pointer font-display font-medium hover:border-primary/40 hover:text-foreground transition-all duration-200"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}

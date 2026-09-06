@@ -151,7 +151,7 @@ export default function AuthPage() {
           if (pollingRef.current) clearInterval(pollingRef.current);
         }
       } catch {
-        // transient poll error — keep polling
+        // transient poll error â€” keep polling
       }
     };
     tick();
@@ -201,7 +201,7 @@ export default function AuthPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))" }}>
+        <div className="rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: "rgb(var(--glass) / 0.08)", background: "linear-gradient(180deg, rgb(var(--glass) / 0.04), rgb(var(--glass) / 0.01))" }}>
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-xl grid place-items-center" style={{ background: `${ACCENT}1A` }}>
               <MonitorSmartphone size={18} style={{ color: ACCENT }} />
@@ -231,7 +231,7 @@ export default function AuthPage() {
                 <Check size={24} className="text-[#34D399]" />
               </div>
               <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Linked successfully</p>
-              <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">Redirecting to your dashboard…</p>
+              <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">Redirecting to your dashboardâ€¦</p>
             </div>
           ) : expired ? (
             <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
@@ -259,22 +259,22 @@ export default function AuthPage() {
               </div>
 
               <div className="mt-4 flex items-center justify-center gap-2">
-                <button type="button" onClick={handleCopy} disabled={!code} className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[11px] font-bold text-foreground/70 transition-all hover:bg-white/[0.07] active:scale-95 disabled:opacity-50">
+                <button type="button" onClick={handleCopy} disabled={!code} className="flex items-center gap-1.5 rounded-full border border-glass/[0.08] bg-glass/[0.04] px-4 py-2 text-[11px] font-bold text-foreground/70 transition-all hover:bg-glass/[0.07] active:scale-95 disabled:opacity-50">
                   {copied ? <Check size={13} className="text-[#34D399]" /> : <Copy size={13} />}
-                  {copied ? "Code copied" : code ? `Code: ${code}` : "Generating code…"}
+                  {copied ? "Code copied" : code ? `Code: ${code}` : "Generating codeâ€¦"}
                 </button>
               </div>
 
               <ol className="mt-5 space-y-3">
                 {[
                   { icon: Smartphone, text: "Open Exam Arena on your phone" },
-                  { icon: QrCode, text: "Tap “Scan to login on web” on your device" },
+                  { icon: QrCode, text: "Tap â€œScan to login on webâ€ on your device" },
                   { icon: Check, text: "Confirm the pairing to continue" },
                 ].map((s, i) => {
                   const Icon = s.icon;
                   return (
                     <li key={i} className="flex items-center gap-3">
-                      <div className="grid size-7 place-items-center rounded-lg" style={{ background: "rgba(255,255,255,0.05)" }}>
+                      <div className="grid size-7 place-items-center rounded-lg" style={{ background: "rgb(var(--glass) / 0.05)" }}>
                         <Icon size={13} className="text-foreground/60" />
                       </div>
                       <span className="flex-1 text-[12px] text-muted-foreground/70 font-medium">{s.text}</span>
@@ -310,7 +310,7 @@ export default function AuthPage() {
 
           <div className="mt-4 flex items-center justify-center gap-1.5 text-micro text-muted-foreground/60">
             <Lock size={11} />
-            End-to-end secured pairing · session expires in ~2 min
+            End-to-end secured pairing Â· session expires in ~2 min
           </div>
         </div>
 

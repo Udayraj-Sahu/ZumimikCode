@@ -66,15 +66,15 @@ export default function ArrowMatrixRenderer(props: RendererProps) {
                 width={CELL_W}
                 height={CELL_H}
                 rx={6}
-                fill="var(--card)"
-                stroke="var(--border)"
+                fill="rgb(rgb(rgb(var(--card))))"
+                stroke="rgb(rgb(rgb(var(--border))))"
                 strokeWidth={1.5}
               />
               <text
                 x={x + CELL_W / 2}
                 y={y + CELL_H / 2 - 6}
                 textAnchor="middle"
-                fill="var(--foreground)"
+                fill="rgb(rgb(rgb(var(--foreground))))"
                 fontSize="14"
                 fontWeight="600"
               >
@@ -84,10 +84,10 @@ export default function ArrowMatrixRenderer(props: RendererProps) {
                 x={x + CELL_W / 2}
                 y={y + CELL_H / 2 + 14}
                 textAnchor="middle"
-                fill="var(--muted-foreground)"
+                fill="rgb(rgb(rgb(var(--muted-foreground))))"
                 fontSize="12"
               >
-                × {parsed.bottom[row]}
+                Ã— {parsed.bottom[row]}
               </text>
             </g>
           );
@@ -109,7 +109,7 @@ export default function ArrowMatrixRenderer(props: RendererProps) {
               y1={y1}
               x2={x2}
               y2={y2}
-              stroke="var(--primary)"
+              stroke="rgb(rgb(rgb(var(--primary))))"
               strokeWidth={2}
               strokeDasharray="4 3"
               opacity={arrowVisible ? 0.6 : 0}
@@ -126,7 +126,7 @@ export default function ArrowMatrixRenderer(props: RendererProps) {
             x={svgWidth / 2}
             y={OFFSET_Y + rows * GAP_Y + 30 + i * 28}
             textAnchor="middle"
-            fill="var(--foreground)"
+            fill="rgb(rgb(rgb(var(--foreground))))"
             fontSize="15"
             fontWeight="700"
             opacity={visibleSteps > rows + i ? 1 : 0}
@@ -146,7 +146,7 @@ export default function ArrowMatrixRenderer(props: RendererProps) {
             refY="3"
             orient="auto"
           >
-            <polygon points="0 0, 8 3, 0 6" fill="var(--primary)" />
+            <polygon points="0 0, 8 3, 0 6" fill="rgb(rgb(rgb(var(--primary))))" />
           </marker>
         </defs>
       </svg>

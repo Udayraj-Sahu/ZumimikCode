@@ -162,7 +162,7 @@ export default function OnboardingPage() {
             onClick={() => handleLogin("google")}
             className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <span className="grid size-8 place-items-center rounded-lg bg-white/10 group-hover:bg-white/15 transition-colors">
+            <span className="grid size-8 place-items-center rounded-lg bg-glass/[0.1] group-hover:bg-glass/[0.15] transition-colors">
               <Globe size={16} className="text-foreground/80" />
             </span>
             Continue with Google
@@ -172,7 +172,7 @@ export default function OnboardingPage() {
             onClick={() => handleLogin("phone")}
             className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <span className="grid size-8 place-items-center rounded-lg bg-white/10 group-hover:bg-white/15 transition-colors">
+            <span className="grid size-8 place-items-center rounded-lg bg-glass/[0.1] group-hover:bg-glass/[0.15] transition-colors">
               <Smartphone size={16} className="text-foreground/80" />
             </span>
             Continue with Phone

@@ -36,8 +36,8 @@ import { useThemeStore } from "@/stores/theme-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 /* ------------------------------------------------------------------ */
 /*  Reusable row item                                                   */
@@ -55,7 +55,7 @@ function Row({ icon, title, subtitle, danger, onClick }: RowProps) {
     <button
       type="button"
       onClick={onClick}
-      className="w-full flex items-center gap-4 rounded-2xl border backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-white/[0.06] active:scale-[0.99]"
+      className="w-full flex items-center gap-4 rounded-2xl border backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-glass/[0.06] active:scale-[0.99]"
       style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
     >
       <span className={danger ? "text-[#ff5c5c]" : "text-primary"}>
@@ -94,7 +94,7 @@ function CollapsibleSection({ label, defaultOpen = false, children }: { label: s
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="mt-6 flex w-full items-center justify-between rounded-2xl border backdrop-blur-xl px-5 py-4 transition-all hover:bg-white/[0.06] active:scale-[0.99]"
+          className="mt-6 flex w-full items-center justify-between rounded-2xl border backdrop-blur-xl px-5 py-4 transition-all hover:bg-glass/[0.06] active:scale-[0.99]"
           style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
         >
           <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
@@ -132,7 +132,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
   return (
     <div className="relative flex flex-col items-center px-6 pt-6 pb-1 text-center">
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
-      <div className="relative mb-3 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
+      <div className="relative mb-3 inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5">
           <Settings size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
         </div>
@@ -140,7 +140,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
           type="button"
           onClick={toggleTheme}
           aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-          className="absolute top-7 right-4 grid size-9 place-items-center rounded-full border border-white/[0.06] bg-white/[0.04] text-muted-foreground/60 outline-none backdrop-blur-sm transition-colors hover:bg-white/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="absolute top-7 right-4 grid size-9 place-items-center rounded-full border border-glass/[0.06] bg-glass/[0.04] text-muted-foreground/60 outline-none backdrop-blur-sm transition-colors hover:bg-glass/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         >
           {theme === "dark" ? <Sun className="size-4" aria-hidden="true" /> : <Moon className="size-4" aria-hidden="true" />}
         </button>
@@ -157,9 +157,9 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         <span className="flex items-center gap-1 font-semibold text-primary">
           <Shield className="h-3 w-3" /> {badge}
         </span>
-        <span className="text-muted-foreground/30">·</span>
+        <span className="text-muted-foreground/30">Â·</span>
         <span className="text-muted-foreground/40 font-normal">Lv. 04</span>
-        <span className="text-muted-foreground/30">·</span>
+        <span className="text-muted-foreground/30">Â·</span>
         <span className="text-muted-foreground/40 font-normal">Mumbai, India</span>
       </div>
       <button type="button" onClick={onEdit} className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.05em] text-primary">
@@ -180,7 +180,7 @@ function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string
         <span className="text-[17px] font-bold tracking-[-0.02em] text-foreground">{value}</span>
       </div>
       <p className="mt-2.5 text-micro font-semibold tracking-[0.14em] text-muted-foreground/60 uppercase">{label}</p>
-      <div className="mt-2 h-[2px] w-full rounded-full bg-white/[0.04]" />
+      <div className="mt-2 h-[2px] w-full rounded-full bg-glass/[0.04]" />
     </div>
   );
 }
@@ -190,8 +190,8 @@ function PerformanceOverview({ sessions, streak, rank, xp }: { sessions: string;
     <div className="px-4">
       <SectionLabel>PERFORMANCE OVERVIEW</SectionLabel>
       <div className="grid grid-cols-2 gap-3">
-        <StatCard icon={<span className="text-lg">🎯</span>} value={sessions} label="Sessions" />
-        <StatCard icon={<span className="text-lg">🔥</span>} value={streak} label="Streak" />
+        <StatCard icon={<span className="text-lg">ðŸŽ¯</span>} value={sessions} label="Sessions" />
+        <StatCard icon={<span className="text-lg">ðŸ”¥</span>} value={streak} label="Streak" />
         <StatCard icon={<Trophy className="h-5 w-5" />} value={`#${rank}`} label="Rank" />
         <StatCard icon={<Zap className="h-5 w-5" />} value={xp} label="XP" />
       </div>
@@ -206,7 +206,7 @@ function SubscriptionCard() {
   return (
     <div className="px-4">
       <SectionLabel>SUBSCRIPTION</SectionLabel>
-      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.03) 100%)" }}>
+      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgb(var(--glass) / 0.03) 100%)" }}>
         <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
         <div className="relative flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -218,7 +218,7 @@ function SubscriptionCard() {
               <p className="text-[12px] text-muted-foreground/40 mt-0.5">$0 / month</p>
             </div>
           </div>
-          <span className="rounded-full bg-white/[0.06] border border-white/[0.06] px-3 py-1 text-micro font-semibold tracking-[0.05em] text-muted-foreground/60">CURRENT</span>
+          <span className="rounded-full bg-glass/[0.06] border border-glass/[0.06] px-3 py-1 text-micro font-semibold tracking-[0.05em] text-muted-foreground/60">CURRENT</span>
         </div>
         <ul className="relative mt-4 space-y-2.5 text-[12px]">
           <li className="flex items-center gap-2.5 text-foreground/80 font-normal">
@@ -235,7 +235,7 @@ function SubscriptionCard() {
           </li>
         </ul>
         <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-primary to-[#a8e62e] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-primary-foreground shadow-[0_0_20px_rgba(199,242,82,0.25)] transition-all hover:shadow-[0_0_30px_rgba(199,242,82,0.35)] active:scale-[0.98]">
-          Upgrade to Pro — $9.99/mo
+          Upgrade to Pro â€” $9.99/mo
         </button>
       </div>
     </div>
@@ -246,7 +246,7 @@ function SubscriptionCard() {
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function SettingsPage() {
-  usePageMeta("Settings — Exam Arena");
+  usePageMeta("Settings â€” Exam Arena");
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
   const firstName = useOnboardingStore((s) => s.firstName);
@@ -286,7 +286,7 @@ export default function SettingsPage() {
         {/* Prep / Membership */}
         <div className="px-4">
           <SectionLabel>PREP / MEMBERSHIP</SectionLabel>
-          <div className="rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
+          <div className="rounded-2xl border border-dashed border-glass/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
             <p className="text-[12px] text-muted-foreground/60 font-normal">No active preps yet</p>
           </div>
           <button

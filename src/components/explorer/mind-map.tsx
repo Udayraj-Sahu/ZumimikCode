@@ -75,8 +75,8 @@ export function MindMap({
       <div
         className="relative w-full overflow-x-auto rounded-[28px] border"
         style={{
-          borderColor: "rgba(255,255,255,0.08)",
-          background: "rgba(255,255,255,0.025)",
+          borderColor: "rgb(var(--glass) / 0.08)",
+          background: "rgb(var(--glass) / 0.025)",
         }}
       >
         {isLoading ? (
@@ -94,7 +94,7 @@ export function MindMap({
               {path.length === 0 && root && root.children && root.children.length > 0 ? (
                 <div className="flex flex-col">
                   <div className="relative ml-3">
-                    <span className="absolute left-0 top-0 bottom-0 w-px bg-white/[0.08]" />
+                    <span className="absolute left-0 top-0 bottom-0 w-px bg-glass/[0.08]" />
                     {root.children.map((c) => (
                       <TreeChild key={c.id}>
                         {nodes(c, expanded, handleNodeClick, 1, focusNodeId)}
@@ -158,7 +158,7 @@ function nodes(
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="relative ml-3">
-            <span className="absolute left-0 top-0 bottom-0 w-px bg-white/[0.08]" />
+            <span className="absolute left-0 top-0 bottom-0 w-px bg-glass/[0.08]" />
             {root.children!.map((c) => (
               <TreeChild key={c.id}>{nodes(c, expanded, onSelect, depth + 1, focusNodeId)}</TreeChild>
             ))}
@@ -180,7 +180,7 @@ function TreeChild({ children }: { children: React.ReactNode }) {
     <div className="relative pl-4">
       <span
         className="absolute left-0 top-0 h-[30px] w-4 border-b-2 rounded-bl-xl"
-        style={{ borderColor: "rgba(255,255,255,0.14)" }}
+        style={{ borderColor: "rgb(var(--glass) / 0.14)" }}
       />
       {children}
     </div>
@@ -212,8 +212,8 @@ function BranchNode({
         className={cn(
           "relative z-10 my-1.5 flex items-center gap-2.5 rounded-2xl border px-4 py-3 transition-all duration-200 hover:scale-[1.02] active:scale-95",
           depth === 0
-            ? "border-transparent bg-gradient-to-r from-[#C7F252] to-[#a8e62e] text-[#0A0C0A] shadow-[0_12px_40px_-14px_var(--primary)]"
-            : "bg-white/[0.05]",
+            ? "border-transparent bg-gradient-to-r from-[#C7F252] to-[#a8e62e] text-[#0A0C0A] shadow-[0_12px_40px_-14px_rgb(rgb(rgb(var(--primary))))]"
+            : "bg-glass/[0.05]",
           isFocus ? "ring-2 ring-primary ring-offset-1 ring-offset-transparent" : "",
         )}
         style={
@@ -252,7 +252,7 @@ function BranchNode({
             style={depth === 0 ? undefined : { color: meta.color }}
           >
             {meta.label}
-            {hasChildren ? ` · ${node.children!.length}` : ""}
+            {hasChildren ? ` Â· ${node.children!.length}` : ""}
           </span>
         </span>
         {hasChildren && (
@@ -260,7 +260,7 @@ function BranchNode({
             className={cn(
               "flex size-5 items-center justify-center rounded-full transition-transform duration-200",
               isOpen ? "rotate-180" : "",
-              depth === 0 ? "bg-[#0A0C0A]/10 text-[#0A0C0A]" : "bg-white/[0.06] text-muted-foreground",
+              depth === 0 ? "bg-[#0A0C0A]/10 text-[#0A0C0A]" : "bg-glass/[0.06] text-muted-foreground",
             )}
           >
             <ChevronDown size={12} />

@@ -175,7 +175,7 @@ export function AddPrepModal({ onClose }: Props) {
                               className="h-full rounded-full transition-all duration-500"
                               style={{
                                 width: `${topic.value}%`,
-                                backgroundColor: topic.value >= 80 ? "var(--primary)" : topic.value >= 50 ? "var(--chart-3)" : "var(--destructive)",
+                                backgroundColor: topic.value >= 80 ? "rgb(rgb(rgb(var(--primary))))" : topic.value >= 50 ? "rgb(rgb(rgb(var(--chart-3))))" : "rgb(rgb(rgb(var(--destructive))))",
                               }}
                             />
                           </div>

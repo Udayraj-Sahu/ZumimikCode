@@ -54,7 +54,7 @@ export function FloatingActions() {
         Enter the Arena
       </Link>
       <button
-        className="px-4 sm:px-5 py-3.5 sm:py-3 text-[clamp(11px,1.5vw,12px)] tracking-wide rounded bg-transparent text-secondary-foreground border border-border cursor-pointer font-display font-medium hover:border-primary/40 hover:text-foreground active:border-primary/60 transition-all duration-200 whitespace-nowrap"
+        className="px-4 sm:px-5 py-3.5 sm:py-3 text-[clamp(11px,1.5vw,12px)] tracking-wide rounded bg-transparent text-secondary-foreground border border-border/20 cursor-pointer font-display font-medium hover:border-primary/40 hover:text-foreground active:border-primary/60 transition-all duration-200 whitespace-nowrap"
       >
         Build the Muscle
       </button>

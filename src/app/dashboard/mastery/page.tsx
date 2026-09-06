@@ -8,11 +8,11 @@ import { Target } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { cn } from "@/lib/utils";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function MasteryPage() {
-  usePageMeta("Topic Mastery — Exam Arena");
+  usePageMeta("Topic Mastery â€” Exam Arena");
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data, isLoading, error } = useDashboardData(targetExam);
   const topics = useMemo(() => data?.topics ?? [], [data?.topics]);
@@ -46,7 +46,7 @@ export default function MasteryPage() {
   return (
     <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Target size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MASTERY</span>
         </div>
@@ -58,21 +58,21 @@ export default function MasteryPage() {
       {/* Summary stat */}
       {topics.length > 0 && (
         <div ref={animateSection} data-section-index="0" className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">AVERAGE</p>
             <p className="text-[20px] font-bold text-primary mt-1">{average}%</p>
           </div>
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">TOPICS</p>
             <p className="text-[20px] font-bold text-foreground mt-1">{topics.length}</p>
           </div>
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">BEST</p>
             <p className="text-[20px] font-bold text-chart-2 mt-1">
               {Math.max(...topics.map((t) => t.value))}%
             </p>
           </div>
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">NEEDS WORK</p>
             <p className="text-[20px] font-bold text-chart-3 mt-1">
               {Math.min(...topics.map((t) => t.value))}%
@@ -104,7 +104,7 @@ export default function MasteryPage() {
         )}
 
         {topics.length > 0 && (
-          <div ref={gridRef} className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
+          <div ref={gridRef} className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl divide-y divide-glass/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
             {topics.map((t, i) => (
               <div
                 key={t.name}
@@ -126,10 +126,10 @@ export default function MasteryPage() {
                     style={{
                       width: `${t.value}%`,
                       background: t.value >= 80
-                        ? "var(--primary)"
+                        ? "rgb(rgb(rgb(var(--primary))))"
                         : t.value >= 50
-                          ? "var(--chart-3)"
-                          : "var(--destructive)",
+                          ? "rgb(rgb(rgb(var(--chart-3))))"
+                          : "rgb(rgb(rgb(var(--destructive))))",
                     }}
                   />
                 </div>

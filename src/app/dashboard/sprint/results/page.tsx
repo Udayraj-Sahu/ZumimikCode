@@ -10,8 +10,8 @@ import { useRateStore } from "@/stores/rate-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -20,7 +20,7 @@ function formatTime(s: number): string {
 }
 
 export default function SprintResultsPage() {
-  usePageMeta("Sprint Results — Exam Arena");
+  usePageMeta("Sprint Results â€” Exam Arena");
   const router = useRouter();
   const lastResult = useSprintStore((s) => s.lastResult);
   const lastSession = useSprintStore((s) => s.lastSession);
@@ -63,7 +63,7 @@ export default function SprintResultsPage() {
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       {/* Header */}
       <div ref={resultRef}>
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
           <BarChart3 size={10} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</span>
         </div>
@@ -75,7 +75,7 @@ export default function SprintResultsPage() {
         </p>
       </div>
 
-      {/* Score row — 4 stat cards */}
+      {/* Score row â€” 4 stat cards */}
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
           <p className="text-micro font-bold uppercase tracking-wider text-primary">Accuracy</p>
@@ -144,7 +144,7 @@ export default function SprintResultsPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
-          className="flex flex-1 items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex flex-1 items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-glass/[0.06] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
           style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           Dashboard

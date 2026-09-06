@@ -38,8 +38,8 @@ import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 import { InviteCard } from "@/components/dashboard/invite-card";
 
 const ACCENT = "#C7F252";
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 const FALLBACK_TOPICS = [
   { name: "Quantitative Aptitude", value: 92, color: "primary" as const },
@@ -114,11 +114,11 @@ function RadarChart({ axes, values, size = 280 }: { axes: string[]; values: numb
       </defs>
       {rings.map((r, idx) => {
         const pts = axes.map((_, i) => { const p = pointFor(i, radius * r); return `${p.x},${p.y}`; }).join(" ");
-        return <polygon key={idx} points={pts} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={0.8} />;
+        return <polygon key={idx} points={pts} fill="none" stroke="rgb(var(--glass) / 0.06)" strokeWidth={0.8} />;
       })}
       {axes.map((_, i) => {
         const p = pointFor(i, radius);
-        return <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.06)" strokeWidth={0.8} />;
+        return <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgb(var(--glass) / 0.06)" strokeWidth={0.8} />;
       })}
       <polygon points={dataPath} fill="url(#radarFill)" stroke={ACCENT} strokeWidth={2} strokeLinejoin="round" />
       {dataPoints.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={4} fill={ACCENT} stroke="rgba(0,0,0,0.3)" strokeWidth={1.5} />)}
@@ -168,7 +168,7 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
   return (
     <div
       className="relative flex-1 rounded-2xl border overflow-hidden flex flex-col px-4 pt-3 pb-3.5"
-      style={{ borderColor: `${accent}26`, background: `linear-gradient(180deg, ${accent}1A 0%, rgba(255,255,255,0.02) 100%)` }}
+      style={{ borderColor: `${accent}26`, background: `linear-gradient(180deg, ${accent}1A 0%, rgb(var(--glass) / 0.02) 100%)` }}
     >
       <div className="flex items-center gap-2.5">
         <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: `${accent}26` }}>
@@ -199,7 +199,7 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function DashboardPage() {
-  usePageMeta("Dashboard — Exam Arena");
+  usePageMeta("Dashboard â€” Exam Arena");
   const router = useRouter();
   const firstName = useOnboardingStore((s) => s.firstName);
   const persona = useOnboardingStore((s) => s.persona);
@@ -315,7 +315,7 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative px-6 pt-8 pb-2 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-4">
           <Sparkles size={12} className="text-primary" />
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
         </div>
@@ -325,11 +325,11 @@ export default function DashboardPage() {
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
         <div className="mt-5 flex items-center justify-center gap-3">
-          <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-md px-4 py-2.5">
+          <div className="flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-md px-4 py-2.5">
             <Flame size={15} className="text-[#FF6B35]" strokeWidth={2.5} />
             <span className="text-[13px] font-semibold tracking-[-0.01em] text-[#FF6B35]">{streak.current} Day</span>
           </div>
-          <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-md px-4 py-2.5">
+          <div className="flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-md px-4 py-2.5">
             <Zap size={15} className="text-primary" strokeWidth={2.5} />
             <span className="text-[13px] font-semibold tracking-[-0.01em] text-primary">{streak.xp.toLocaleString()} XP</span>
           </div>
@@ -344,9 +344,9 @@ export default function DashboardPage() {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch", width: "100%" }}
           onScroll={handleCarouselScroll}
         >
-          {/* Slide 1: Profile status — teaser or complete card */}
+          {/* Slide 1: Profile status â€” teaser or complete card */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.06) 0%, rgba(255,255,255,0.02) 55%, rgba(199,242,82,0.03) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.06) 0%, rgb(var(--glass) / 0.02) 55%, rgba(199,242,82,0.03) 100%)" }}>
               <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.35), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.4), transparent)" }} />
 
@@ -371,7 +371,7 @@ export default function DashboardPage() {
                   <div className="relative flex-1 flex flex-col items-center justify-center py-2 text-center">
                     <div className="relative size-[88px]">
                       <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
-                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgb(var(--glass) / 0.05)" strokeWidth="5" />
                         <circle cx="32" cy="32" r="26" fill="none" stroke="#C7F252" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset="0" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -380,7 +380,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">You&apos;re all set, {firstName}</h2>
-                    <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let&apos;s make it count.</p>
+                    <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal â€” let&apos;s make it count.</p>
                     <div className="mt-3 flex items-center gap-1.5">
                       {["Name", "Persona", "Goal"].map((l) => (
                         <div key={l} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.08)" }}>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <p className="relative text-center text-[9.5px] text-muted-foreground/60 font-semibold tracking-[0.14em]">PROFILE READY • STREAKS UNLOCKED</p>
+                  <p className="relative text-center text-[9.5px] text-muted-foreground/60 font-semibold tracking-[0.14em]">PROFILE READY â€¢ STREAKS UNLOCKED</p>
                 </>
               ) : (
                 <>
@@ -402,7 +402,7 @@ export default function DashboardPage() {
                       </div>
                       <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
                     </div>
-                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: profileDone > 0 ? "rgba(199,242,82,0.08)" : "transparent", color: profileDone > 0 ? "#C7F252" : "rgba(255,255,255,0.3)" }}>
+                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? "rgba(199,242,82,0.3)" : "rgb(var(--glass) / 0.06)", background: profileDone > 0 ? "rgba(199,242,82,0.08)" : "transparent", color: profileDone > 0 ? "#C7F252" : "rgb(var(--glass) / 0.3)" }}>
                       {profileDone}/5
                     </div>
                   </div>
@@ -410,7 +410,7 @@ export default function DashboardPage() {
                   <div className="relative flex-1 flex flex-col items-center justify-center py-2 text-center">
                     <div className="relative size-[88px]">
                       <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
-                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgb(var(--glass) / 0.05)" strokeWidth="5" />
                         <circle cx="32" cy="32" r="26" fill="none" stroke="#C7F252" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset={`${2 * Math.PI * 26 * (1 - profileDone / 5)}`} className="transition-all duration-700" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -419,15 +419,15 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <h2 className="mt-3 text-[23px] font-black tracking-[-0.03em] text-foreground leading-tight">Finish your profile</h2>
-                    <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for — we&apos;ll tailor everything to you.</p>
+                    <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for â€” we&apos;ll tailor everything to you.</p>
                     <div className="mt-3 flex items-center gap-1.5">
                       {[
                         { label: "Name", done: !!firstName.trim() },
                         { label: "Persona", done: !!persona },
                         { label: "Goal", done: !!goal },
                       ].map((s) => (
-                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: s.done ? "rgba(199,242,82,0.08)" : "transparent" }}>
-                          <div className="size-1.5 rounded-full" style={{ background: s.done ? "#C7F252" : "rgba(255,255,255,0.15)" }} />
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? "rgba(199,242,82,0.3)" : "rgb(var(--glass) / 0.06)", background: s.done ? "rgba(199,242,82,0.08)" : "transparent" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: s.done ? "#C7F252" : "rgb(var(--glass) / 0.15)" }} />
                           <span className={cn("text-[8px] font-semibold", s.done ? "text-foreground/70" : "text-muted-foreground/50")}>{s.label}</span>
                         </div>
                       ))}
@@ -445,7 +445,7 @@ export default function DashboardPage() {
 
           {/* Slide 2: Your Stats */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 1 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, rgba(199,242,82,0.05) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.02) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-glass/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, rgba(199,242,82,0.05) 0%, rgb(var(--glass) / 0.02) 45%, rgb(var(--glass) / 0.02) 100%)" }}>
               <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
               <div className="relative flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
@@ -460,7 +460,7 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => router.push("/dashboard/analytics")}
-                  className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-micro font-bold text-foreground/50 transition-all hover:bg-white/[0.06] hover:text-foreground/80 active:scale-95"
+                  className="flex items-center gap-1 rounded-full border border-glass/[0.06] bg-glass/[0.03] px-3 py-1.5 text-micro font-bold text-foreground/50 transition-all hover:bg-glass/[0.06] hover:text-foreground/80 active:scale-95"
                 >
                   Details
                   <ArrowUpRight size={10} />
@@ -477,14 +477,14 @@ export default function DashboardPage() {
                     key={s.label}
                     type="button"
                     onClick={() => router.push("/dashboard/analytics")}
-                    className="group relative overflow-hidden rounded-2xl border border-white/[0.05] p-3.5 text-left transition-all hover:bg-white/[0.05] active:scale-[0.97] flex flex-col justify-center"
+                    className="group relative overflow-hidden rounded-2xl border border-glass/[0.05] p-3.5 text-left transition-all hover:bg-glass/[0.05] active:scale-[0.97] flex flex-col justify-center"
                   >
                     <div className="absolute inset-0 opacity-[0.06] group-hover:opacity-[0.1] transition-opacity" style={{ background: `radial-gradient(circle at top right, ${s.color}, transparent 75%)` }} />
                     <div className="flex items-center justify-between mb-2.5 relative">
                       <div className="size-8 rounded-lg flex items-center justify-center" style={{ background: s.color + "18" }}>
                         <s.icon size={14} style={{ color: s.color }} />
                       </div>
-                      <span className="text-[8.5px] font-bold text-foreground/60 bg-white/[0.04] border border-white/[0.05] rounded-full px-2 py-0.5">{s.trend}</span>
+                      <span className="text-[8.5px] font-bold text-foreground/60 bg-glass/[0.04] border border-glass/[0.05] rounded-full px-2 py-0.5">{s.trend}</span>
                     </div>
                     <p className="text-[20px] font-bold tracking-[-0.03em] text-foreground relative leading-none">{s.value}</p>
                     <div className="flex items-center justify-between mt-2 relative">
@@ -499,7 +499,7 @@ export default function DashboardPage() {
 
           {/* Slide 3: This Week + Daily Habits */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.02) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(52,211,153,0.06) 0%, rgb(var(--glass) / 0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
               <div className="relative flex items-center justify-between mb-3">
@@ -518,20 +518,20 @@ export default function DashboardPage() {
                 {streak.labels.map((day, i) => {
                   const done = streak.days[i];
                   return (
-                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_rgba(52,211,153,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, #34D399, #10B981)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
+                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_rgba(52,211,153,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, #34D399, #10B981)` : "rgb(var(--glass) / 0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgb(var(--glass) / 0.06)" }}>
                       {day}
                     </div>
                   );
                 })}
               </div>
-              <div className="relative h-px w-full bg-white/[0.05]" />
+              <div className="relative h-px w-full bg-glass/[0.05]" />
               <SectionLabel className="text-[#34D399] mt-3.5">DAILY HABITS</SectionLabel>
               <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-              <p className="relative mt-0.5 text-[11px] text-muted-foreground/60 font-normal">Daily check-ins · Streaks · Stay accountable</p>
+              <p className="relative mt-0.5 text-[11px] text-muted-foreground/60 font-normal">Daily check-ins Â· Streaks Â· Stay accountable</p>
               <div className="relative mt-3 flex-1 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="68" height="68" viewBox="0 0 64 64">
-                    <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
+                    <circle cx="32" cy="32" r="27" fill="none" stroke="rgb(var(--glass) / 0.05)" strokeWidth="5" />
                     <circle cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 27}`} strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`} transform="rotate(-90 32 32)" className="transition-all duration-700" />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -558,7 +558,7 @@ export default function DashboardPage() {
                         <p className="text-[11px] font-bold text-foreground/80 leading-none">Completion</p>
                         <p className="text-micro font-bold text-[#34D399]">{habitStats.completionRate}%</p>
                       </div>
-                      <div className="mt-1.5 h-1 w-full rounded-full bg-white/[0.05] overflow-hidden">
+                      <div className="mt-1.5 h-1 w-full rounded-full bg-glass/[0.05] overflow-hidden">
                         <div className="h-full rounded-full transition-all duration-700" style={{ width: `${habitStats.completionRate}%`, background: "linear-gradient(90deg, #10B981, #34D399)" }} />
                       </div>
                     </div>
@@ -569,8 +569,8 @@ export default function DashboardPage() {
                 {habits.slice(0, 3).map((h) => {
                   const done = todayLogs.includes(h.id);
                   return (
-                    <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)", background: done ? `${h.color}10` : "transparent" }}>
-                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
+                    <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: done ? `${h.color}30` : "rgb(var(--glass) / 0.06)", background: done ? `${h.color}10` : "transparent" }}>
+                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgb(var(--glass) / 0.15)" }} />
                       <span className={cn("text-[8px] font-medium truncate max-w-[50px]", done ? "text-foreground/70" : "text-muted-foreground/50")}>{h.name.split(" ")[0]}</span>
                     </div>
                   );
@@ -591,7 +591,7 @@ export default function DashboardPage() {
 
           {/* Slide 4: Practice + Technique */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 3 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgba(255,255,255,0.02) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-glass/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgb(var(--glass) / 0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.25), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.3), transparent)" }} />
 
@@ -601,7 +601,7 @@ export default function DashboardPage() {
                 icon={Play}
                 iconFill
                 title="Master with templates"
-                desc="Guided exercises · Build speed & accuracy"
+                desc="Guided exercises Â· Build speed & accuracy"
                 cta="PRACTICE NOW"
                 ctaFrom="#22D3EE"
                 ctaTo="#06B6D4"
@@ -614,7 +614,7 @@ export default function DashboardPage() {
                 label="TECHNIQUE LIBRARY"
                 icon={BookOpen}
                 title="Learn a technique"
-                desc="Browse core methods · Master each approach"
+                desc="Browse core methods Â· Master each approach"
                 cta="EXPLORE TECHNIQUES"
                 ctaFrom="#F59E0B"
                 ctaTo="#D97706"
@@ -626,7 +626,7 @@ export default function DashboardPage() {
 
           {/* Slide 5: Exam Prep Readiness */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(199,242,82,0.08) 0%, rgba(34,211,238,0.05) 50%, rgba(255,255,255,0.02) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-glass/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(199,242,82,0.08) 0%, rgba(34,211,238,0.05) 50%, rgb(var(--glass) / 0.02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.4), transparent)" }} />
 
@@ -657,7 +657,7 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-5 mt-2">
                         <div className="relative shrink-0">
                           <svg width="92" height="92" viewBox="0 0 92 92">
-                            <circle cx="46" cy="46" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="7" />
+                            <circle cx="46" cy="46" r="40" fill="none" stroke="rgb(var(--glass) / 0.06)" strokeWidth="7" />
                             <circle
                               cx="46" cy="46" r="40" fill="none"
                               stroke={overallMastery >= 80 ? "#34D399" : overallMastery >= 60 ? "#22D3EE" : "#FBBF24"}
@@ -692,7 +692,7 @@ export default function DashboardPage() {
                           <button
                             type="button"
                             onClick={() => setExamDateOpen(true)}
-                            className="w-full flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                            className="w-full flex items-center justify-between rounded-2xl border border-glass/[0.06] bg-glass/[0.03] px-4 py-2.5 text-left transition-all hover:bg-glass/[0.06] active:scale-[0.98]"
                           >
                             <div className="flex items-center gap-2.5">
                               <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
@@ -724,7 +724,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Countdown section */}
-                    <div className="relative flex-1 flex flex-col items-center justify-center px-5 py-5 text-center border-t border-white/[0.06]">
+                    <div className="relative flex-1 flex flex-col items-center justify-center px-5 py-5 text-center border-t border-glass/[0.06]">
                       <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, rgba(199,242,82,0.18), transparent 60%)" }} />
                       {examDate ? (
                         <>
@@ -758,7 +758,7 @@ export default function DashboardPage() {
               onClick={() => scrollToSlide(i)}
               className={cn(
                 "rounded-full transition-all duration-300",
-                carouselIndex === i ? "h-2 w-5 bg-primary" : "h-2 w-2 bg-white/15"
+                carouselIndex === i ? "h-2 w-5 bg-primary" : "h-2 w-2 bg-glass/[0.15]"
               )}
             />
           ))}
@@ -777,7 +777,7 @@ export default function DashboardPage() {
                 key={q.label}
                 type="button"
                 onClick={() => router.push(q.href)}
-                className="group flex flex-col items-center gap-3 rounded-2xl border border-white/[0.04] bg-[#0d0d0d] py-4 transition-all hover:bg-[#141414] active:scale-95"
+                className="group flex flex-col items-center gap-3 rounded-2xl border border-glass/[0.04] bg-[#0d0d0d] py-4 transition-all hover:bg-[#141414] active:scale-95"
               >
                 <div className="relative">
                   <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md" style={{ background: q.color }} />
@@ -789,8 +789,8 @@ export default function DashboardPage() {
               </button>
               );
             })}
-            <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/[0.06] bg-transparent py-4 opacity-35">
-              <div className="h-11 w-11 rounded-full flex items-center justify-center border border-dashed border-white/10">
+            <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-glass/[0.06] bg-transparent py-4 opacity-35">
+              <div className="h-11 w-11 rounded-full flex items-center justify-center border border-dashed border-glass/[0.1]">
                 <Plus size={15} className="text-muted-foreground" />
               </div>
               <span className="text-micro font-medium text-muted-foreground text-center leading-tight tracking-[0.01em]">Coming Soon</span>
@@ -821,7 +821,7 @@ export default function DashboardPage() {
                     <span className="text-[13px] text-muted-foreground/55 font-normal tracking-[0.01em]">{t.name}</span>
                     <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">{t.value}%</span>
                   </div>
-                  <div className="h-[7px] w-full rounded-full bg-white/[0.05] overflow-hidden">
+                  <div className="h-[7px] w-full rounded-full bg-glass/[0.05] overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-700"
                       style={{
@@ -845,7 +845,7 @@ export default function DashboardPage() {
               {recent.map((a, i) => (
                 <div
                   key={a.label}
-                  className={cn("flex items-center justify-between py-3.5", i !== recent.length - 1 && "border-b border-white/[0.05]")}
+                  className={cn("flex items-center justify-between py-3.5", i !== recent.length - 1 && "border-b border-glass/[0.05]")}
                 >
                   <div className="flex items-center gap-3">
                     <div className="h-[5px] w-[5px] rounded-full bg-primary/50" />
@@ -870,14 +870,14 @@ export default function DashboardPage() {
             <SectionHeading className="mb-2">Cognitive radar</SectionHeading>
             <RadarChart axes={radarLabels} values={radarValues} />
             <div className="flex flex-col gap-2.5 mt-3">
-              <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
+              <div className="flex items-center justify-between rounded-xl border border-glass/[0.05] bg-glass/[0.03] px-4 py-3">
                 <span className="flex items-center gap-2 text-[13px] text-muted-foreground/55 font-normal">
                   <Zap size={13} className="text-primary" />
                   Action Delay
                 </span>
                 <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">142ms</span>
               </div>
-              <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
+              <div className="flex items-center justify-between rounded-xl border border-glass/[0.05] bg-glass/[0.03] px-4 py-3">
                 <span className="flex items-center gap-2 text-[13px] text-muted-foreground/55 font-normal">
                   <ArrowUpRight size={13} className="text-primary" />
                   Focus Density
@@ -896,7 +896,7 @@ export default function DashboardPage() {
               {upcoming.map((u) => (
                 <div
                   key={u.title}
-                  className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3.5"
+                  className="flex items-center justify-between rounded-xl border border-glass/[0.05] bg-glass/[0.03] px-4 py-3.5"
                 >
                   <div>
                     <p className="text-[13px] font-semibold text-foreground tracking-[-0.01em]">{u.title}</p>
@@ -908,7 +908,7 @@ export default function DashboardPage() {
                       {u.tag}
                     </span>
                   ) : (
-                    <span className="rounded-full bg-white/[0.05] px-3 py-1 text-[11px] font-semibold text-muted-foreground/50">
+                    <span className="rounded-full bg-glass/[0.05] px-3 py-1 text-[11px] font-semibold text-muted-foreground/50">
                       {u.tag}
                     </span>
                   )}
@@ -929,7 +929,7 @@ export default function DashboardPage() {
                 key={l.rank}
                 className={cn(
                   "flex items-center justify-between py-3.5",
-                  i !== leaderboard.length - 1 && "border-b border-white/[0.05]",
+                  i !== leaderboard.length - 1 && "border-b border-glass/[0.05]",
                   l.me && "rounded-xl px-3 -mx-3 bg-primary/[0.06] border border-primary/10",
                 )}
               >
@@ -938,7 +938,7 @@ export default function DashboardPage() {
                     "text-[13px] font-bold w-8 tracking-[-0.01em]",
                     l.rank === 1 ? "text-[#FFD700]" : l.rank === 2 ? "text-[#C0C0C0]" : l.rank === 3 ? "text-[#CD7F32]" : "text-muted-foreground/60"
                   )}>
-                    {l.rank <= 3 ? ["🥇", "🥈", "🥉"][l.rank - 1] : `#${l.rank}`}
+                    {l.rank <= 3 ? ["ðŸ¥‡", "ðŸ¥ˆ", "ðŸ¥‰"][l.rank - 1] : `#${l.rank}`}
                   </span>
                   <span className={cn("text-[13px]", l.me ? "font-bold text-primary" : "font-medium text-foreground/65")}>
                     {l.name}

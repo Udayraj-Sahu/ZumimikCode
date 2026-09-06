@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 const STEP_ICON = { phone: Smartphone, web: Globe, check: Check };
 
 export default function ScanToLoginPage() {
-  usePageMeta("Scan to Login — Exam Arena");
+  usePageMeta("Scan to Login â€” Exam Arena");
   const router = useRouter();
   const scan = useScanPairingCode();
   const approve = useApprovePairing();
@@ -99,7 +99,7 @@ export default function ScanToLoginPage() {
       <div ref={animateSection} className="mx-auto max-w-md">
         {/* Header */}
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <QrCode size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SCAN TO LOGIN</span>
           </div>
@@ -108,7 +108,7 @@ export default function ScanToLoginPage() {
           </p>
         </div>
 
-        <div className="mt-6 rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))" }}>
+        <div className="mt-6 rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: "rgb(var(--glass) / 0.08)", background: "linear-gradient(180deg, rgb(var(--glass) / 0.04), rgb(var(--glass) / 0.01))" }}>
           {step === "code" && (
             <>
               <div className="flex items-center gap-3">
@@ -131,7 +131,7 @@ export default function ScanToLoginPage() {
                   autoCapitalize="characters"
                   autoCorrect="off"
                   spellCheck={false}
-                  className="mt-2 w-full rounded-2xl border border-white/[0.08] bg-white/[0.04] px-4 py-4 text-center text-[22px] font-extrabold tracking-[0.3em] text-foreground placeholder:text-foreground/20 outline-none transition-colors focus:border-primary/40"
+                  className="mt-2 w-full rounded-2xl border border-glass/[0.08] bg-glass/[0.04] px-4 py-4 text-center text-[22px] font-extrabold tracking-[0.3em] text-foreground placeholder:text-foreground/20 outline-none transition-colors focus:border-primary/40"
                 />
               </div>
 
@@ -150,7 +150,7 @@ export default function ScanToLoginPage() {
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 {scan.isPending ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
-                {scan.isPending ? "Checking code…" : "Continue"}
+                {scan.isPending ? "Checking codeâ€¦" : "Continue"}
               </button>
             </>
           )}
@@ -163,18 +163,18 @@ export default function ScanToLoginPage() {
                 </div>
                 <p className="mt-3 text-[16px] font-bold text-foreground leading-tight">Code found</p>
                 <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">
-                  Confirm that you&apos;re signing in on <span className="text-foreground/70">Google Chrome · Windows</span>
+                  Confirm that you&apos;re signing in on <span className="text-foreground/70">Google Chrome Â· Windows</span>
                 </p>
               </div>
 
-              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3">
-                <div className="grid size-9 place-items-center rounded-xl bg-white/[0.06]">
+              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-glass/[0.06] bg-glass/[0.03] p-3">
+                <div className="grid size-9 place-items-center rounded-xl bg-glass/[0.06]">
                   <Globe size={16} className="text-foreground/60" />
                 </div>
                 <div className="flex-1">
                   <p className="text-[12px] font-semibold text-foreground">Chrome on Windows</p>
                   <p className="text-micro text-muted-foreground/40">
-                    <span className="inline-flex items-center gap-1 text-[#34D399]"><ShieldCheck size={9} /> Secured device</span> · Mumbai, IN
+                    <span className="inline-flex items-center gap-1 text-[#34D399]"><ShieldCheck size={9} /> Secured device</span> Â· Mumbai, IN
                   </p>
                 </div>
               </div>
@@ -194,13 +194,13 @@ export default function ScanToLoginPage() {
                 style={{ background: "linear-gradient(90deg, #34D399, #10B981)" }}
               >
                 {approve.isPending ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
-                {approve.isPending ? "Linking…" : "Confirm login"}
+                {approve.isPending ? "Linkingâ€¦" : "Confirm login"}
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
                 disabled={isBusy}
-                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.04] py-3 text-[12px] font-bold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-95 disabled:opacity-40"
+                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-glass/[0.07] bg-glass/[0.04] py-3 text-[12px] font-bold text-foreground/70 transition-all hover:bg-glass/[0.06] active:scale-95 disabled:opacity-40"
               >
                 <X size={14} /> Cancel
               </button>
@@ -253,11 +253,11 @@ export default function ScanToLoginPage() {
             const active = step === "approved" ? i <= 2 : i === 0;
             return (
               <div key={k} className="flex items-center gap-2">
-                {i > 0 && <div className="h-px w-6 bg-white/[0.08]" />}
+                {i > 0 && <div className="h-px w-6 bg-glass/[0.08]" />}
                 <div
                   className={cn(
                     "grid size-7 place-items-center rounded-full border",
-                    active ? "border-primary/40 bg-primary/10 text-primary" : "border-white/[0.06] bg-white/[0.03] text-muted-foreground/30",
+                    active ? "border-primary/40 bg-primary/10 text-primary" : "border-glass/[0.06] bg-glass/[0.03] text-muted-foreground/30",
                   )}
                 >
                   <Icon size={12} />

@@ -6,11 +6,11 @@ import { TrendingUp } from "lucide-react";
 import { useAnalyticsData } from "@/hooks/queries/use-analytics";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function AnalyticsPage() {
-  usePageMeta("Analytics — Exam Arena");
+  usePageMeta("Analytics â€” Exam Arena");
   const { data, isLoading, error } = useAnalyticsData();
 
   const headerRef = useCallback((el: HTMLDivElement | null) => {
@@ -52,7 +52,7 @@ export default function AnalyticsPage() {
   return (
       <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
         <div ref={headerRef} className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <TrendingUp size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYTICS</span>
           </div>
@@ -72,7 +72,7 @@ export default function AnalyticsPage() {
             ].map((s, i) => (
               <div
                 key={i}
-                className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4"
+                className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4"
                 style={{ background: GLASS_BG }}
               >
                 <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-1.5">
@@ -87,7 +87,7 @@ export default function AnalyticsPage() {
 
           <div
             ref={animateSection} data-section-index={1}
-            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5"
+            className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-5"
             style={{ background: GLASS_BG }}
           >
             <div className="flex items-center justify-between mb-4">
@@ -132,7 +132,7 @@ export default function AnalyticsPage() {
 
           <div
             ref={animateSection} data-section-index={2}
-            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5"
+            className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-5"
             style={{ background: GLASS_BG }}
           >
             <h2 className="text-[13px] font-bold tracking-[0.08em] text-foreground mb-3">
@@ -142,7 +142,7 @@ export default function AnalyticsPage() {
               {recent.map((a, i) => (
                 <div
                   key={i}
-                  className="flex items-start justify-between py-3 border-b border-white/[0.06]"
+                  className="flex items-start justify-between py-3 border-b border-glass/[0.06]"
                 >
                   <div>
                     <p className="text-[13px] font-semibold text-foreground/80">{a.title}</p>

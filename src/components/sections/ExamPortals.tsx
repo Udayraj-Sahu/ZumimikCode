@@ -84,7 +84,7 @@ function LivePortal({ exam }: { exam: (typeof LIVE_EXAMS)[0] }) {
                     <span className="text-xs text-muted-foreground font-mono">Aspirants</span>
                     <span className="text-xs text-foreground font-mono">{exam.students}</span>
                   </div>
-                  <div className="pt-2 mt-2 text-xs text-primary font-mono border-t border-border">▲ {exam.topRank}</div>
+                  <div className="pt-2 mt-2 text-xs text-primary font-mono border-t border-border/20">▲ {exam.topRank}</div>
                 </div>
               </div>
               <div className="w-2 h-2 mx-auto rotate-45"

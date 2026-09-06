@@ -7,11 +7,11 @@ import { cn } from "@/lib/utils";
 import { useFriends } from "@/hooks/queries/use-friends";
 import { usePageMeta } from "@/hooks/use-page-meta";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function FriendsPage() {
-  usePageMeta("Friends — Exam Arena");
+  usePageMeta("Friends â€” Exam Arena");
   const { data, isLoading, error } = useFriends();
   const [tab, setTab] = useState<"friends" | "activity" | "requests">("friends");
   const listRef = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ export default function FriendsPage() {
   return (
     <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Users size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FRIENDS</span>
         </div>
@@ -66,10 +66,10 @@ export default function FriendsPage() {
             "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
             tab === "friends"
               ? "bg-primary text-primary-foreground"
-              : "border border-white/[0.06] text-muted-foreground hover:text-foreground",
+              : "border border-glass/[0.06] text-muted-foreground hover:text-foreground",
             tab !== "friends" && GLASS_BG && { background: GLASS_BG }
           )}
-          style={tab !== "friends" ? { background: GLASS_BG, borderColor: "rgba(255,255,255,0.06)" } : undefined}
+          style={tab !== "friends" ? { background: GLASS_BG, borderColor: "rgb(var(--glass) / 0.06)" } : undefined}
         >
           Friends
         </button>
@@ -82,7 +82,7 @@ export default function FriendsPage() {
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground"
           )}
-          style={tab !== "activity" ? { background: GLASS_BG, border: "1px solid rgba(255,255,255,0.06)" } : undefined}
+          style={tab !== "activity" ? { background: GLASS_BG, border: "1px solid rgb(var(--glass) / 0.06)" } : undefined}
         >
           Activity
         </button>
@@ -95,7 +95,7 @@ export default function FriendsPage() {
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground"
           )}
-          style={tab !== "requests" ? { background: GLASS_BG, border: "1px solid rgba(255,255,255,0.06)" } : undefined}
+          style={tab !== "requests" ? { background: GLASS_BG, border: "1px solid rgb(var(--glass) / 0.06)" } : undefined}
         >
           Requests {requestCount > 0 && <span className="ml-1 text-primary">({requestCount})</span>}
         </button>
@@ -121,7 +121,7 @@ export default function FriendsPage() {
             <div
               key={f.id}
               data-friend-item
-              className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4"
+              className="flex items-center gap-3 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-3 sm:p-4"
               style={{ background: GLASS_BG }}
             >
               <div className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-[12px] font-black text-primary">
@@ -130,7 +130,7 @@ export default function FriendsPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <p className="text-[12px] font-bold text-foreground/80 truncate">{f.name}</p>
-                  <span className="rounded-xl bg-white/[0.06] px-1.5 py-0.5 text-micro font-bold uppercase tracking-wider text-muted-foreground">
+                  <span className="rounded-xl bg-glass/[0.06] px-1.5 py-0.5 text-micro font-bold uppercase tracking-wider text-muted-foreground">
                     {f.level}
                   </span>
                 </div>
@@ -143,7 +143,7 @@ export default function FriendsPage() {
               <button
                 type="button"
                 className="flex items-center gap-1 rounded-xl px-3 py-2 text-micro font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring"
-                style={{ background: "rgba(255,255,255,0.04)" }}
+                style={{ background: "rgb(var(--glass) / 0.04)" }}
               >
                 <Swords size={12} /> Duel
               </button>
@@ -157,10 +157,10 @@ export default function FriendsPage() {
               <div
                 key={a.id}
                 data-friend-item
-                className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4"
+                className="flex items-center gap-3 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-3 sm:p-4"
                 style={{ background: GLASS_BG }}
               >
-                <div className="grid size-9 shrink-0 place-items-center rounded-full bg-white/[0.06]">
+                <div className="grid size-9 shrink-0 place-items-center rounded-full bg-glass/[0.06]">
                   <Icon size={14} className="text-muted-foreground/60" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -184,7 +184,7 @@ export default function FriendsPage() {
                 <div
                   key={f.id}
                   data-friend-item
-                  className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4"
+                  className="flex items-center gap-3 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-3 sm:p-4"
                   style={{ background: GLASS_BG }}
                 >
                   <div className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-[12px] font-black text-primary">

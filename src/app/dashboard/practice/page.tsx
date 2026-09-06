@@ -31,11 +31,11 @@ import { DOMAIN_LABELS } from "@/lib/types/template";
 type PracticeType = "mcq" | "templates";
 type Phase = "config" | "active" | "done";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function PracticePage() {
-  usePageMeta("Practice — Exam Arena");
+  usePageMeta("Practice â€” Exam Arena");
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);
@@ -206,7 +206,7 @@ export default function PracticePage() {
     return (
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
         <div ref={headerRef} className="mb-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <Dumbbell size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PRACTICE</span>
           </div>
@@ -245,7 +245,7 @@ export default function PracticePage() {
           </div>
         </div>
 
-        {/* ── MCQ CONFIG ──────────────────────────────────────────── */}
+        {/* â”€â”€ MCQ CONFIG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {practiceType === "mcq" && (
           <>
             <div ref={animateSection} data-section-index="1" className="mb-5">
@@ -262,8 +262,8 @@ export default function PracticePage() {
                       className={cn(
                         "flex flex-col items-center gap-2 rounded-3xl border backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98]",
                         active
-                          ? "border-primary/40 bg-primary/[0.08] shadow-[0_0_24px_-4px_var(--primary)]"
-                          : "border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06]",
+                          ? "border-primary/40 bg-primary/[0.08] shadow-[0_0_24px_-4px_rgb(rgb(rgb(var(--primary))))]"
+                          : "border-glass/[0.06] bg-glass/[0.03] hover:bg-glass/[0.06]",
                       )}
                       aria-label={`Select ${t.label}`}
                     >
@@ -291,7 +291,7 @@ export default function PracticePage() {
                         "flex-1 rounded-2xl border backdrop-blur-xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                         active
                           ? "border-primary/40 bg-primary/[0.08] text-foreground"
-                          : "border-white/[0.06] bg-white/[0.03] text-muted-foreground/50 hover:bg-white/[0.06]",
+                          : "border-glass/[0.06] bg-glass/[0.03] text-muted-foreground/50 hover:bg-glass/[0.06]",
                       )}
                       aria-label={`Difficulty ${d}`}
                     >
@@ -315,11 +315,11 @@ export default function PracticePage() {
           </>
         )}
 
-        {/* ── TEMPLATES: NO EXAM ──────────────────────────────────── */}
+        {/* â”€â”€ TEMPLATES: NO EXAM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {practiceType === "templates" && !targetExam && (
           <div ref={animateSection} data-section-index="1" className="mt-2">
-            <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-8 text-center" style={{ background: GLASS_BG }}>
-              <div className="h-14 w-14 rounded-2xl bg-white/[0.04] flex items-center justify-center">
+            <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-glass/[0.06] backdrop-blur-xl p-8 text-center" style={{ background: GLASS_BG }}>
+              <div className="h-14 w-14 rounded-2xl bg-glass/[0.04] flex items-center justify-center">
                 <Target size={24} className="text-muted-foreground/20" />
               </div>
               <p className="text-[14px] font-semibold text-muted-foreground/60">No exam selected yet</p>
@@ -337,7 +337,7 @@ export default function PracticePage() {
           </div>
         )}
 
-        {/* ── TEMPLATES: WITH EXAM ────────────────────────────────── */}
+        {/* â”€â”€ TEMPLATES: WITH EXAM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {practiceType === "templates" && targetExam && (
           <>
             <div ref={animateSection} data-section-index="1" className="mb-5">
@@ -359,7 +359,7 @@ export default function PracticePage() {
                         "flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98]",
                         active
                           ? "border-primary/40 bg-primary/[0.08]"
-                          : "border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06]",
+                          : "border-glass/[0.06] bg-glass/[0.03] hover:bg-glass/[0.06]",
                       )}
                       aria-label={`Category ${cat.label}`}
                     >
@@ -394,7 +394,7 @@ export default function PracticePage() {
                         "flex-1 rounded-2xl border backdrop-blur-xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                         active
                           ? "border-primary/40 bg-primary/[0.08] text-foreground"
-                          : "border-white/[0.06] bg-white/[0.03] text-muted-foreground/50 hover:bg-white/[0.06]",
+                          : "border-glass/[0.06] bg-glass/[0.03] text-muted-foreground/50 hover:bg-glass/[0.06]",
                       )}
                       aria-label={`Mode ${m.label}`}
                     >
@@ -404,8 +404,8 @@ export default function PracticePage() {
                 })}
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground/55 font-normal">
-                {renderMode === "solve_along" && "Step-by-step reveal — learn the technique"}
-                {renderMode === "quick" && "All steps visible — speed practice"}
+                {renderMode === "solve_along" && "Step-by-step reveal â€” learn the technique"}
+                {renderMode === "quick" && "All steps visible â€” speed practice"}
                 {renderMode === "guided" && "Auto-advancing steps with hints"}
               </p>
             </div>
@@ -428,7 +428,7 @@ export default function PracticePage() {
   }
 
   /* ================================================================ */
-  /*  DONE PHASE — MCQ RESULTS                                        */
+  /*  DONE PHASE â€” MCQ RESULTS                                        */
   /* ================================================================ */
   if (phase === "done" && completed) {
     const accuracy = Math.round((completed.correct / completed.total) * 100);
@@ -469,7 +469,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={() => router.push(returnTo)}
-              className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04]"
+              className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-glass/[0.04]"
               style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
             >
               Back to Sprint Setup
@@ -478,7 +478,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04]"
+            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-glass/[0.04]"
             style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
           >
             Dashboard
@@ -489,7 +489,7 @@ export default function PracticePage() {
   }
 
   /* ================================================================ */
-  /*  TEMPLATE DONE — TECHNIQUE LEARNED                               */
+  /*  TEMPLATE DONE â€” TECHNIQUE LEARNED                               */
   /* ================================================================ */
   if (practiceType === "templates" && rendererPhase === "done" && completed) {
     const sprintTopic = searchParams.get("topic") || "";
@@ -531,7 +531,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={() => router.push(returnTo)}
-              className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04]"
+              className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-glass/[0.04]"
               style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
             >
               Back to Sprint Setup
@@ -540,7 +540,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04]"
+            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-glass/[0.04]"
             style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
           >
             Dashboard
@@ -601,7 +601,7 @@ export default function PracticePage() {
                   useTemplateStore.getState().prevTemplate();
                   stepProgress.reset();
                 }}
-                className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl px-5 py-4 text-[11px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.06]"
+                className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl px-5 py-4 text-[11px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-glass/[0.06]"
                 style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
               >
                 <ChevronLeft size={14} /> Previous
@@ -673,7 +673,7 @@ export default function PracticePage() {
               const isSelected = answers[question.id] === i;
               const isCorrect = i === question.correctIndex;
               let style: React.CSSProperties = { borderColor: GLASS_BORDER, background: GLASS_BG };
-              let labelClass = "bg-white/[0.04] text-muted-foreground/50";
+              let labelClass = "bg-glass/[0.04] text-muted-foreground/50";
               if (revealed) {
                 if (isCorrect) {
                   style = { borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.06)" };
@@ -682,8 +682,8 @@ export default function PracticePage() {
                   style = { borderColor: "rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.06)" };
                   labelClass = "bg-destructive/10 text-destructive";
                 } else {
-                  style = { borderColor: "rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.015)" };
-                  labelClass = "bg-white/[0.02] text-muted-foreground/20";
+                  style = { borderColor: "rgb(var(--glass) / 0.04)", background: "rgb(var(--glass) / 0.015)" };
+                  labelClass = "bg-glass/[0.02] text-muted-foreground/20";
                 }
               }
               return (
@@ -730,7 +730,7 @@ export default function PracticePage() {
               key={i}
               className={cn(
                 "size-2 rounded-full transition-all duration-300",
-                i === currentIndex ? "bg-primary scale-125" : i < currentIndex || answers[session.questions[i]?.id] !== undefined ? "bg-primary/40" : "bg-white/10",
+                i === currentIndex ? "bg-primary scale-125" : i < currentIndex || answers[session.questions[i]?.id] !== undefined ? "bg-primary/40" : "bg-glass/[0.1]",
               )}
             />
           ))}

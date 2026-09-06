@@ -8,8 +8,8 @@ import { useNotifications } from "@/hooks/queries/use-notifications";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { NotificationItem } from "@/lib/types/notifications";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 const TYPE_ICON: Record<NotificationItem["type"], typeof Bell> = {
   sprint_reminder: Zap,
@@ -19,7 +19,7 @@ const TYPE_ICON: Record<NotificationItem["type"], typeof Bell> = {
 };
 
 export default function NotificationsPage() {
-  usePageMeta("Notifications — Exam Arena");
+  usePageMeta("Notifications â€” Exam Arena");
   const [filter, setFilter] = useState<"all" | "unread">("all");
   const { data: notifications, isLoading, error } = useNotifications();
   const listRef = useRef<HTMLDivElement>(null);
@@ -52,7 +52,7 @@ export default function NotificationsPage() {
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Bell size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">NOTIFICATIONS</span>
         </div>
@@ -82,7 +82,7 @@ export default function NotificationsPage() {
             "rounded-xl px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "all"
               ? "bg-primary text-primary-foreground"
-              : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+              : "border border-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
           )}
           style={filter !== "all" ? { background: GLASS_BG } : undefined}
         >
@@ -95,7 +95,7 @@ export default function NotificationsPage() {
             "rounded-xl px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
             filter === "unread"
               ? "bg-primary text-primary-foreground"
-              : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+              : "border border-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
           )}
           style={filter !== "unread" ? { background: GLASS_BG } : undefined}
         >
@@ -130,18 +130,18 @@ export default function NotificationsPage() {
         )}
 
         {filtered.length > 0 && (
-          <div ref={listRef} role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
+          <div ref={listRef} role="list" className="rounded-3xl border border-glass/[0.06] backdrop-blur-xl divide-y divide-glass/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
             {filtered.map((n) => {
               const Icon = TYPE_ICON[n.type];
               return (
                 <div
                   key={n.id}
                   data-notification-item
-                  className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-white/[0.04] active:bg-white/[0.06]"
+                  className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-glass/[0.04] active:bg-glass/[0.06]"
                 >
                   <div className={cn(
                     "grid size-9 shrink-0 place-items-center rounded-xl mt-0.5",
-                    n.read ? "bg-white/[0.06]" : "bg-primary/10",
+                    n.read ? "bg-glass/[0.06]" : "bg-primary/10",
                   )}>
                     <Icon size={16} className={n.read ? "text-muted-foreground/40" : "text-primary"} />
                   </div>

@@ -11,11 +11,11 @@ import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { Question } from "@/lib/types/sprint-session";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function QuestionsPage() {
-  usePageMeta("Question Bank — Exam Arena");
+  usePageMeta("Question Bank â€” Exam Arena");
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const domain = targetExam;
   const topics = getTopicsByDomain(domain);
@@ -54,7 +54,7 @@ export default function QuestionsPage() {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
+        <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
           <FileQuestion size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">QUESTIONS</span>
         </div>
@@ -74,8 +74,8 @@ export default function QuestionsPage() {
                 className={cn(
                   "flex items-center gap-1.5 rounded-xl px-3 py-2 text-micro font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl",
                   topic === t.id
-                    ? "bg-primary text-primary-foreground border border-white/[0.06]"
-                    : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+                    ? "bg-primary text-primary-foreground border border-glass/[0.06]"
+                    : "border border-glass/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
                 )}
                 style={{ backgroundColor: topic === t.id ? undefined : GLASS_BG }}
               >
@@ -94,7 +94,7 @@ export default function QuestionsPage() {
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search questions..."
             aria-label="Search questions"
-            className="w-full rounded-xl border border-white/[0.06] backdrop-blur-xl py-2.5 pl-9 pr-4 text-[12px] text-foreground outline-none placeholder:text-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
+            className="w-full rounded-xl border border-glass/[0.06] backdrop-blur-xl py-2.5 pl-9 pr-4 text-[12px] text-foreground outline-none placeholder:text-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
             style={{ backgroundColor: GLASS_BG }}
           />
         </div>
@@ -127,7 +127,7 @@ export default function QuestionsPage() {
                 <button
                   type="button"
                   onClick={() => setRevealed((prev) => ({ ...prev, [q.id]: !prev[q.id] }))}
-                  className="flex w-full items-start gap-3 p-4 text-left outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex w-full items-start gap-3 p-4 text-left outline-none transition-colors hover:bg-glass/[0.06] active:bg-glass/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <span className="grid size-7 shrink-0 place-items-center rounded-xl bg-muted text-micro font-bold font-mono text-muted-foreground">
                     {i + 1}

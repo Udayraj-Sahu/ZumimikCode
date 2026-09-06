@@ -14,7 +14,7 @@ export function CompleteSetupGate({
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 flex items-center justify-center">
-      <div className="w-full max-w-sm rounded-3xl border backdrop-blur-xl p-6 text-center" style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}>
+      <div className="w-full max-w-sm rounded-3xl border backdrop-blur-xl p-6 text-center" style={{ borderColor: "rgb(var(--glass) / 0.08)", background: "rgb(var(--glass) / 0.04)" }}>
         <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-primary/10 border border-primary/20">
           <GraduationCap size={22} className="text-primary" />
         </span>

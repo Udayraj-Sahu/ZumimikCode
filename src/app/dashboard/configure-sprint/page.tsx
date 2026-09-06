@@ -12,11 +12,11 @@ import { getTemplatesByCategory } from "@/services/templates";
 import { getTemplateCategoriesForTopic } from "@/lib/topic-template-map";
 import type { SolveAlongTemplate } from "@/lib/types/template";
 
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+const GLASS_BG = "rgb(var(--glass) / 0.04)";
+const GLASS_BORDER = "rgb(var(--glass) / 0.08)";
 
 export default function ConfigureSprintPage() {
-  usePageMeta("Configure Sprint — Exam Arena");
+  usePageMeta("Configure Sprint â€” Exam Arena");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data, isLoading } = useSprintTopics(targetExam);
@@ -63,7 +63,7 @@ export default function ConfigureSprintPage() {
   return (
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
         <div ref={headerRef} className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-glass/[0.06] bg-glass/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <BookOpen size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT</span>
           </div>
@@ -100,11 +100,11 @@ export default function ConfigureSprintPage() {
                   className={cn(
                     "relative flex flex-col items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl p-4 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] sm:gap-3 sm:p-6",
                     active
-                      ? "border-primary shadow-[0_0_0_1px_var(--primary),0_0_24px_-4px_var(--primary)]"
-                      : "hover:border-white/[0.12] active:border-white/[0.12]",
+                      ? "border-primary shadow-[0_0_0_1px_rgb(rgb(rgb(var(--primary)))),0_0_24px_-4px_rgb(rgb(rgb(var(--primary))))]"
+                      : "hover:border-glass/[0.12] active:border-glass/[0.12]",
                   )}
                   style={{
-                    background: active ? "rgba(255,255,255,0.06)" : GLASS_BG,
+                    background: active ? "rgb(var(--glass) / 0.06)" : GLASS_BG,
                     borderColor: active ? undefined : GLASS_BORDER,
                   }}
                 >
@@ -151,11 +151,11 @@ export default function ConfigureSprintPage() {
                     className={cn(
                       "relative flex flex-1 flex-col items-center gap-1 rounded-3xl border backdrop-blur-xl py-4 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring sm:py-5",
                       active
-                        ? "border-primary shadow-[0_0_0_1px_var(--primary),0_0_24px_-4px_var(--primary)]"
-                        : "text-muted-foreground hover:border-white/[0.12]",
+                        ? "border-primary shadow-[0_0_0_1px_rgb(rgb(rgb(var(--primary)))),0_0_24px_-4px_rgb(rgb(rgb(var(--primary))))]"
+                        : "text-muted-foreground hover:border-glass/[0.12]",
                     )}
                     style={{
-                      background: active ? "rgba(255,255,255,0.06)" : GLASS_BG,
+                      background: active ? "rgb(var(--glass) / 0.06)" : GLASS_BG,
                       borderColor: active ? undefined : GLASS_BORDER,
                     }}
                   >
@@ -198,11 +198,11 @@ export default function ConfigureSprintPage() {
                     className={cn(
                       "relative flex flex-1 flex-col items-center gap-1 rounded-3xl border backdrop-blur-xl py-4 outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] sm:py-5",
                       active
-                        ? "border-primary shadow-[0_0_0_1px_var(--primary),0_0_24px_-4px_var(--primary)]"
-                        : "text-muted-foreground hover:border-white/[0.12]",
+                        ? "border-primary shadow-[0_0_0_1px_rgb(rgb(rgb(var(--primary)))),0_0_24px_-4px_rgb(rgb(rgb(var(--primary))))]"
+                        : "text-muted-foreground hover:border-glass/[0.12]",
                     )}
                     style={{
-                      background: active ? "rgba(255,255,255,0.06)" : GLASS_BG,
+                      background: active ? "rgb(var(--glass) / 0.06)" : GLASS_BG,
                       borderColor: active ? undefined : GLASS_BORDER,
                     }}
                   >
@@ -232,10 +232,10 @@ export default function ConfigureSprintPage() {
             {loadingTemplates ? (
               <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin snap-x snap-mandatory">
                 {Array.from({ length: 2 }).map((_, i) => (
-                  <div key={i} className="min-w-[65vw] sm:min-w-[260px] snap-start rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 animate-pulse" style={{ background: GLASS_BG }}>
-                    <div className="h-4 w-24 rounded-xl bg-white/[0.06] mb-3" />
-                    <div className="h-3 w-32 rounded-xl bg-white/[0.06] mb-2" />
-                    <div className="h-8 w-20 rounded-xl bg-white/[0.06] mt-3" />
+                  <div key={i} className="min-w-[65vw] sm:min-w-[260px] snap-start rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 animate-pulse" style={{ background: GLASS_BG }}>
+                    <div className="h-4 w-24 rounded-xl bg-glass/[0.06] mb-3" />
+                    <div className="h-3 w-32 rounded-xl bg-glass/[0.06] mb-2" />
+                    <div className="h-8 w-20 rounded-xl bg-glass/[0.06] mt-3" />
                   </div>
                 ))}
               </div>
@@ -244,7 +244,7 @@ export default function ConfigureSprintPage() {
                 {templates.map((tpl) => (
                   <div
                     key={tpl.id}
-                    className="min-w-[65vw] sm:min-w-[240px] snap-start shrink-0 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 flex flex-col"
+                    className="min-w-[65vw] sm:min-w-[240px] snap-start shrink-0 rounded-3xl border border-glass/[0.06] backdrop-blur-xl p-4 flex flex-col"
                     style={{ background: GLASS_BG }}
                   >
                     <p className="text-micro font-bold uppercase tracking-wider text-chart-3 mb-1">
@@ -262,7 +262,7 @@ export default function ConfigureSprintPage() {
                           key={d}
                           className={cn(
                             "size-1.5 rounded-full",
-                            d <= tpl.difficulty ? "bg-chart-3" : "bg-white/[0.06]",
+                            d <= tpl.difficulty ? "bg-chart-3" : "bg-glass/[0.06]",
                           )}
                         />
                       ))}
@@ -273,7 +273,7 @@ export default function ConfigureSprintPage() {
                         router.push(`/dashboard/practice?templateId=${tpl.id}&returnTo=/dashboard/configure-sprint&topic=${topic}&difficulty=${difficulty.toLowerCase()}`)
                       }
                       className="mt-3 flex items-center justify-center gap-1.5 rounded-xl py-3 text-micro font-bold uppercase tracking-wider text-chart-3 outline-none transition-colors hover:bg-chart-3/20 active:bg-chart-3/30 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
-                      style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${GLASS_BORDER}` }}
+                      style={{ background: "rgb(var(--glass) / 0.04)", border: `1px solid ${GLASS_BORDER}` }}
                     >
                       <BookOpen size={12} />
                       Learn
