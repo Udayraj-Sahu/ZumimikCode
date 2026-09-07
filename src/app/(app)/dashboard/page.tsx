@@ -143,9 +143,64 @@ function SectionHeading({ children, className }: { children: React.ReactNode; cl
 
 function SectionLabel({ children, className, style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <p className={cn("text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase", className)} style={style}>
+    <p className={cn("text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase", className)} style={style}>
       {children}
     </p>
+  );
+}
+
+function SlottedDigit({ value, delay = 0 }: { value: number; delay?: number }) {
+  const items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, value];
+  const target = items.length - 1;
+  const [rolled, setRolled] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setRolled(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  return (
+    <span
+      className="relative inline-block overflow-hidden rounded-[0.12em] min-w-[0.68em] bg-black/30"
+      style={{ height: "1em" }}
+    >
+      <span
+        className="absolute left-0 right-0 flex flex-col items-center will-change-transform"
+        style={{
+          transform: rolled ? `translate3d(0, -${target}em, 0)` : "translate3d(0, 0, 0)",
+          transition: rolled ? `transform 0.9s cubic-bezier(0.65, 0, 0.35, 1) ${delay}s` : "none",
+        }}
+      >
+        {items.map((d, j) => (
+          <span
+            key={j}
+            className="flex w-full items-center justify-center"
+            style={{
+              height: "1em",
+              textShadow: "0 1px 0 rgba(255,255,255,0.22), 0 -1px 1px rgba(0,0,0,0.5)",
+            }}
+          >
+            {d}
+          </span>
+        ))}
+      </span>
+      <span
+        className="pointer-events-none absolute inset-0 rounded-[0.12em]"
+        style={{ boxShadow: "inset 0 0.09em 0.16em rgba(0,0,0,0.55), inset 0 -0.05em 0.1em rgba(255,255,255,0.18)" }}
+      />
+    </span>
+  );
+}
+
+function RollingNumber({ value, className }: { value: string; className?: string }) {
+  return (
+    <span className={cn("inline-flex", className)} aria-hidden>
+      {value.split("").map((ch, i) =>
+        /\d/.test(ch) ? (
+          <SlottedDigit key={`${value}-${i}`} value={Number(ch)} delay={i * 0.06} />
+        ) : (
+          <span key={`${value}-${i}`}>{ch}</span>
+        )
+      )}
+    </span>
   );
 }
 
@@ -728,10 +783,13 @@ export default function DashboardPage() {
                       <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, rgba(199,242,82,0.18), transparent 60%)" }} />
                       {examDate ? (
                         <>
-                          <p className="relative text-micro font-bold tracking-[0.28em] text-primary/70">{daysLeft} DAYS</p>
-                          <p className="relative text-[44px] font-black italic tracking-tighter leading-none text-white mt-1">
-                            {hoursLeft.toLocaleString()}
-                            <span className="text-[20px] font-bold not-italic align-top ml-1 text-primary">HR</span>
+                          <p className="relative flex items-baseline justify-center text-[26px] font-black not-italic tracking-tighter leading-none text-white">
+                            <RollingNumber value={daysLeft.toLocaleString()} />
+                            <span className="text-[11px] font-bold not-italic tracking-[0.18em] ml-1.5 text-primary/70">DAYS</span>
+                          </p>
+                          <p className="relative text-[58px] font-black not-italic tracking-tighter leading-none text-white mt-1.5">
+                            <RollingNumber value={hoursLeft.toLocaleString()} />
+                            <span className="text-[22px] font-bold not-italic align-top ml-1.5 text-primary">HR</span>
                           </p>
                           <p className="relative text-micro font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
                         </>

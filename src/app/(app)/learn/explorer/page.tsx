@@ -9,7 +9,7 @@ import { useAllTechniques } from "@/hooks/queries/use-technique";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { MindMap } from "@/components/explorer/mind-map";
-import { Compass, GraduationCap, Lock, Plus, ArrowRight, Target, ClipboardList, Layers } from "lucide-react";
+import { Compass, GraduationCap, Lock, Plus, ArrowRight, Layers, ClipboardList } from "lucide-react";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { getTechniqueIdsForTopic } from "@/lib/mock/topic-node-map";
 import type { TopicNode } from "@/lib/types/technique";
@@ -124,7 +124,6 @@ function ExplorerContent() {
 
   const label = DOMAIN_LABELS[activeDomain] ?? activeDomain;
 
-  const subjectTitle = subjects[activeSubject]?.title ?? label;
   const conquest = useMemo(
     () => (subjects[activeSubject] ? countConquestStats(subjects[activeSubject]) : { topics: 0, practiceSets: 0 }),
     [subjects, activeSubject],
@@ -281,48 +280,40 @@ function ExplorerContent() {
 
       {/* Conquest stats */}
       {subjects.length > 0 && (
-        <div ref={animateSection} data-section-index={2} className="mt-6">
+        <div ref={animateSection} data-section-index={2} className="mt-6 grid grid-cols-2 gap-3">
           <div
-            className="relative overflow-hidden rounded-[24px] border"
-            style={{ borderColor: "rgba(199,242,82,0.18)", background: "linear-gradient(135deg, rgba(199,242,82,0.07), rgba(255,255,255,0.02))" }}
+            className="relative overflow-hidden rounded-2xl border backdrop-blur-xl px-4 py-4"
+            style={{ borderColor: "rgba(34,211,238,0.18)", background: "rgba(255,255,255,0.03)" }}
           >
-            <div className="pointer-events-none absolute -top-10 -right-10 size-36 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }} />
-            <div className="relative flex items-center justify-between gap-4 px-5 py-4">
-              <div className="flex min-w-0 items-center gap-3">
-                <span className="grid size-11 shrink-0 place-items-center rounded-2xl border border-primary/20 bg-primary/10">
-                  <Target size={18} className="text-primary" />
-                </span>
-                <div className="min-w-0">
-                  <p className="truncate text-[13px] font-bold tracking-[-0.01em] text-foreground">
-                    Conquer the {subjectTitle} map
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-muted-foreground/45 font-normal">
-                    Everything to master in {label}
-                  </p>
-                </div>
-              </div>
-              <div className="flex shrink-0 items-center gap-4">
-                <div className="text-right">
-                  <div className="flex items-center justify-end gap-1.5">
-                    <Layers size={12} className="text-primary" />
-                    <p className="text-[20px] font-black leading-none tracking-[-0.02em] text-primary">
-                      {conquest.topics}
-                    </p>
-                  </div>
-                  <p className="mt-1 text-micro font-bold tracking-[0.12em] text-muted-foreground/50 uppercase">Topics</p>
-                </div>
-                <div className="h-8 w-px bg-white/[0.08]" />
-                <div className="text-right">
-                  <div className="flex items-center justify-end gap-1.5">
-                    <ClipboardList size={12} className="text-primary" />
-                    <p className="text-[20px] font-black leading-none tracking-[-0.02em] text-primary">
-                      {conquest.practiceSets}
-                    </p>
-                  </div>
-                  <p className="mt-1 text-micro font-bold tracking-[0.12em] text-muted-foreground/50 uppercase">Practice sets</p>
-                </div>
-              </div>
+            <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, #22D3EE, transparent 70%)" }} />
+            <div className="relative flex items-center justify-between">
+              <span className="grid size-9 place-items-center rounded-xl" style={{ background: "rgba(34,211,238,0.14)" }}>
+                <Layers size={15} className="text-[#22D3EE]" />
+              </span>
+              <span className="text-[26px] font-black leading-none tracking-[-0.02em] text-[#22D3EE]">
+                {conquest.topics}
+              </span>
             </div>
+            <p className="relative mt-3 text-micro font-semibold tracking-[0.14em] uppercase" style={{ color: "rgba(34,211,238,0.85)" }}>
+              Topics to conquer
+            </p>
+          </div>
+          <div
+            className="relative overflow-hidden rounded-2xl border backdrop-blur-xl px-4 py-4"
+            style={{ borderColor: "rgba(139,92,246,0.18)", background: "rgba(255,255,255,0.03)" }}
+          >
+            <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, #8B5CF6, transparent 70%)" }} />
+            <div className="relative flex items-center justify-between">
+              <span className="grid size-9 place-items-center rounded-xl" style={{ background: "rgba(139,92,246,0.14)" }}>
+                <ClipboardList size={15} className="text-[#8B5CF6]" />
+              </span>
+              <span className="text-[26px] font-black leading-none tracking-[-0.02em] text-[#8B5CF6]">
+                {conquest.practiceSets}
+              </span>
+            </div>
+            <p className="relative mt-3 text-micro font-semibold tracking-[0.14em] uppercase" style={{ color: "rgba(139,92,246,0.85)" }}>
+              Practice sets to conquer
+            </p>
           </div>
         </div>
       )}
