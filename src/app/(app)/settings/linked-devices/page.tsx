@@ -117,7 +117,7 @@ export default function LinkedDevicesPage() {
                       )}
                     </div>
                     <p className="text-[11px] text-muted-foreground/40 font-normal mt-0.5">{device.model}</p>
-                    <p className={cn("text-micro font-normal mt-0.5", device.current ? "text-primary/70" : "text-muted-foreground/55")}>
+                    <p className={cn("text-[10px] font-normal mt-0.5", device.current ? "text-primary/70" : "text-muted-foreground/55")}>
                       {device.current
                         ? timeAgo(device.lastActive)
                         : `${timeAgo(device.lastActive)} · ${device.addedAt}`}

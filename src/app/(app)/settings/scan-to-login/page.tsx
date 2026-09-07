@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import {
-  ArrowLeft,
   ArrowRight,
   Check,
   X,
@@ -88,14 +87,6 @@ export default function ScanToLoginPage() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-      <button
-        type="button"
-        onClick={() => router.back()}
-        className="mb-4 flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground/50 transition-colors hover:text-foreground/70"
-      >
-        <ArrowLeft size={14} /> Back
-      </button>
-
       <div ref={animateSection} className="mx-auto max-w-md">
         {/* Header */}
         <div className="text-center">

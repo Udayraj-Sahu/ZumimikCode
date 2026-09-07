@@ -1,5 +1,16 @@
 import type { TechniqueExample } from "@/lib/types/technique";
-import type { SolveAlongTemplate } from "@/lib/types/template";
+import type { SolveAlongTemplate, ScaffoldType } from "@/lib/types/template";
+
+function inferScaffold(example: TechniqueExample): ScaffoldType {
+  const steps = example.steps ?? [];
+  if (steps.length > 0) {
+    const eqCount = steps.filter((s) => s.includes("=")).length;
+    if (eqCount >= Math.max(1, Math.ceil(steps.length / 2))) {
+      return "equation_chain";
+    }
+  }
+  return "textual_scaffold";
+}
 
 export function exampleToTemplate(
   example: TechniqueExample,
@@ -19,7 +30,7 @@ export function exampleToTemplate(
     version: 1,
     generationMethod: "converted",
     visual_scaffold: {
-      type: "textual_scaffold",
+      type: inferScaffold(example),
       config: {},
     },
     examples: [

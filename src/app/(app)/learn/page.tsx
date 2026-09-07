@@ -32,11 +32,11 @@ const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 function formatDuration(minutes: number): string {
-  if (minutes >= 60) {
-    const h = minutes / 60;
-    return h === 1 ? "1 hour" : `${h} hours`;
-  }
-  return `${minutes} min`;
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (h === 0) return `${m} min`;
+  if (m === 0) return h === 1 ? "1 hour" : `${h} hours`;
+  return `${h} hr ${m} min`;
 }
 
 const TOPIC_ICONS: Record<string, LucideIcon> = {

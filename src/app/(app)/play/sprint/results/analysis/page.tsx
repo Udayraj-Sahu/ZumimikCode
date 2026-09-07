@@ -1,17 +1,11 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, BrainCircuit, Check, X, BookOpen, TrendingUp } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronLeft, Check, X, TrendingUp, Lightbulb, BookOpen } from "lucide-react";
 import { useSprintStore } from "@/stores/sprint-store";
-import { useOnboardingStore } from "@/stores/onboarding-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { getTemplatesByCategory } from "@/services/templates";
-import { TOPIC_TO_CATEGORY } from "@/lib/topic-template-map";
-import RendererRouter from "@/components/renderers/RendererRouter";
-import type { SolveAlongTemplate } from "@/lib/types/template";
-import type { SprintResult, Question } from "@/lib/types/sprint-session";
+import type { SprintResult } from "@/lib/types/sprint-session";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -22,8 +16,6 @@ export default function AnalysisPage() {
 
   const lastResult = useSprintStore((s) => s.lastResult);
   const lastSession = useSprintStore((s) => s.lastSession);
-  const targetExam = useOnboardingStore((s) => s.targetExam);
-  const domain = targetExam;
 
   const result: SprintResult | null = lastResult;
   const session = lastSession;
@@ -39,71 +31,6 @@ export default function AnalysisPage() {
       .filter((item) => item.question)
       .map((item, i) => ({ ...item, wrongIndex: i }));
   }, [result, session]);
-
-  const categories = useMemo(() => {
-    if (!session) return ["core"];
-    return TOPIC_TO_CATEGORY[domain]?.[session.topic] ?? ["core"];
-  }, [domain, session]);
-
-  const [templates, setTemplates] = useState<SolveAlongTemplate[]>([]);
-  const [loadingTemplates, setLoadingTemplates] = useState(true);
-
-  useEffect(() => {
-    const load = async () => {
-      setLoadingTemplates(true);
-      try {
-        const results = await Promise.all(
-          categories.map((cat) => getTemplatesByCategory(cat, domain)),
-        );
-        setTemplates(results.flat());
-      } finally {
-        setLoadingTemplates(false);
-      }
-    };
-    load();
-  }, [domain, categories]);
-
-  const getTemplate = useCallback(
-    (questionId: string): SolveAlongTemplate | undefined => {
-      if (templates.length === 0) return undefined;
-      let hash = 0;
-      for (let i = 0; i < questionId.length; i++) {
-        hash = ((hash << 5) - hash) + questionId.charCodeAt(i);
-        hash |= 0;
-      }
-      return templates[Math.abs(hash) % templates.length];
-    },
-    [templates],
-  );
-
-  const [walkthroughs, setWalkthroughs] = useState<
-    Record<string, { open: boolean; visibleSteps: number }>
-  >({});
-
-  const toggleWalkthrough = (questionId: string) => {
-    setWalkthroughs((prev) => ({
-      ...prev,
-      [questionId]: {
-        open: !prev[questionId]?.open,
-        visibleSteps: prev[questionId]?.visibleSteps ?? 1,
-      },
-    }));
-  };
-
-  const revealNextStep = (questionId: string, totalSteps: number) => {
-    setWalkthroughs((prev) => {
-      const current = prev[questionId];
-      const steps = current?.visibleSteps ?? 1;
-      if (steps >= totalSteps) return prev;
-      return {
-        ...prev,
-        [questionId]: {
-          open: current?.open ?? true,
-          visibleSteps: steps + 1,
-        },
-      };
-    });
-  };
 
   if (!result || !session) {
     return (
@@ -179,103 +106,70 @@ export default function AnalysisPage() {
 
       {/* Wrong answers list */}
       <div className="flex flex-col gap-5">
-        {wrongAnswers.map(({ answer, question, wrongIndex }) => {
-          const template = getTemplate(question.id);
-          const walk = walkthroughs[question.id] ?? { open: false, visibleSteps: 1 };
-          const totalSteps = template?.examples?.[0]?.solution?.length ?? 0;
+        {wrongAnswers.map(({ answer, question, wrongIndex }) => (
+          <div
+            key={question.id}
+            className="rounded-3xl border backdrop-blur-xl overflow-hidden"
+            style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+          >
+            {/* Question header */}
+            <div className="px-4 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgba(255,255,255,0.04)" }}>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-wider">
+                  <span className="grid size-5 place-items-center rounded bg-destructive/10 text-destructive">
+                    <X size={10} />
+                  </span>
+                  Question {wrongIndex + 1} &middot; Incorrect
+                </span>
+                <span className="text-micro font-mono text-muted-foreground/40">
+                  {Math.round(answer.timeSpent)}s
+                </span>
+              </div>
+              <p className="mt-1.5 text-[12px] font-semibold text-foreground/80 leading-relaxed">
+                {question.text}
+              </p>
+            </div>
 
-          return (
-            <div
-              key={question.id}
-              className="rounded-3xl border backdrop-blur-xl overflow-hidden"
-              style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
-            >
-              {/* Question header */}
-              <div className="px-4 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgba(255,255,255,0.04)" }}>
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-wider">
-                    <span className="grid size-5 place-items-center rounded bg-destructive/10 text-destructive">
-                      <X size={10} />
-                    </span>
-                    Question {wrongIndex + 1} &middot; Incorrect
-                  </span>
-                  <span className="text-micro font-mono text-muted-foreground/40">
-                    {Math.round(answer.timeSpent)}s
-                  </span>
-                </div>
-                <p className="mt-1.5 text-[12px] font-semibold text-foreground/80 leading-relaxed">
-                  {question.text}
+            {/* User vs correct answer */}
+            <div className="grid grid-cols-2 gap-2 px-4 pt-4">
+              <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" }}>
+                <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
+                  Your Answer
+                </p>
+                <p className="mt-1 text-[13px] font-black text-destructive">
+                  {question.options[answer.selectedIndex] ?? "(unanswered)"}
                 </p>
               </div>
-
-              {/* User vs correct answer */}
-              <div className="grid grid-cols-2 gap-2 px-4 pt-4">
-                <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" }}>
-                  <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
-                    Your Answer
-                  </p>
-                  <p className="mt-1 text-[13px] font-black text-destructive">
-                    {question.options[answer.selectedIndex] ?? "(unanswered)"}
-                  </p>
-                </div>
-                <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" }}>
-                  <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
-                    Correct
-                  </p>
-                  <p className="mt-1 text-[13px] font-black text-primary">
-                    {question.options[question.correctIndex]}
-                  </p>
-                </div>
+              <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" }}>
+                <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
+                  Correct
+                </p>
+                <p className="mt-1 text-[13px] font-black text-primary">
+                  {question.options[question.correctIndex]}
+                </p>
               </div>
+            </div>
 
-              {/* Walk Through button */}
-              <div className="px-4 py-3">
-                <button
-                  type="button"
-                  onClick={() => toggleWalkthrough(question.id)}
-                  className={cn(
-                    "flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-ring",
-                    walk.open
-                      ? "border-chart-3/40 bg-chart-3/10 text-chart-3"
-                      : "border-dashed border-white/[0.06] text-muted-foreground hover:border-chart-3/40 hover:text-chart-3",
-                  )}
-                  style={!walk.open ? { backgroundColor: GLASS_BG } : undefined}
-                >
-                  <BrainCircuit size={14} />
-                  {walk.open ? "Close Walkthrough" : "Walk Through"}
-                </button>
-              </div>
-
-              {/* Template walkthrough */}
-              {walk.open && (
-                <div className="border-t px-4 py-4 space-y-4" style={{ borderColor: "rgba(255,255,255,0.04)" }}>
-                  {loadingTemplates ? (
-                    <div className="animate-pulse space-y-3">
-                      <div className="h-8 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
-                      <div className="h-32 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
-                    </div>
-                  ) : template ? (
-                    <RendererRouter
-                      template={template}
-                      visibleSteps={walk.visibleSteps}
-                      mode="solve_along"
-                      onStepReveal={() => revealNextStep(question.id, totalSteps)}
-                      showAnswerInput={false}
-                      showVisualScaffold={false}
-                    />
-                  ) : (
-                    <div className="rounded-xl backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
-                      <BookOpen size={20} className="mx-auto mb-2 text-muted-foreground/30" />
-                      <p className="text-micro font-semibold text-muted-foreground/60">
-                        No template available for this topic yet.
-                      </p>
-                    </div>
-                  )}
+            {/* Explanation */}
+            <div className="px-4 py-4">
+              {question.explanation ? (
+                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                  <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-2">
+                    <Lightbulb size={12} /> Why the answer is correct
+                  </p>
+                  <p className="text-[13px] leading-relaxed text-foreground/80">{question.explanation}</p>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+                  <BookOpen size={16} className="text-muted-foreground/30 shrink-0" />
+                  <p className="text-micro font-medium text-muted-foreground/60">
+                    No explanation available for this question yet.
+                  </p>
                 </div>
               )}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
 
       {/* Bottom navigation */}

@@ -148,7 +148,7 @@ export default function HistoryPage() {
           <select
             value={topicFilter}
             onChange={(e) => { setTopicFilter(e.target.value); setPage(0); }}
-            className="bg-transparent text-[10px] font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="bg-transparent text-[12px] font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded"
           >
             {TOPICS_FILTER_HISTORY.map((t) => (
               <option key={t.id} value={t.id}>{t.label}</option>
@@ -162,7 +162,7 @@ export default function HistoryPage() {
               type="button"
               onClick={() => { setDiffFilter(d.id); setPage(0); }}
               className={cn(
-                "rounded-lg px-2 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                "rounded-lg px-2 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
                 diffFilter === d.id
                   ? "bg-primary text-primary-foreground"
                   : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -175,7 +175,7 @@ export default function HistoryPage() {
         <button
           type="button"
           onClick={() => setSortAsc(!sortAsc)}
-          className="ml-auto flex items-center gap-1 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[28px]"
+          className="ml-auto flex items-center gap-1 rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[28px]"
           style={{ backgroundColor: GLASS_BG }}
         >
           <ArrowUpDown size={12} />

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import gsap from "gsap";
-import { Search, Users, Plus, Crown, Shield } from "lucide-react";
+import { Users, Plus, Crown, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { MOCK_CLUBS, CLUB_FILTERS, type ClubFilter } from "@/lib/mock/clubs";
@@ -55,32 +55,22 @@ export default function ClubsPage() {
 
   return (
     <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
-      <div ref={headerRef}>
+      <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Users size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">CLUBS</span>
         </div>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-[12px] text-muted-foreground/45 font-normal">Find and join study communities</p>
-          </div>
-          <button
-            type="button"
-            className="grid size-10 place-items-center rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl text-muted-foreground outline-none transition-colors hover:bg-white/[0.08] hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <Search size={18} />
-          </button>
-        </div>
+        <p className="text-[12px] text-muted-foreground/45 font-normal">Find and join study communities</p>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 p-1 rounded-3xl border border-white/[0.06] bg-white/[0.02]">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-1 p-1 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
         {(["find", "yours"] as Tab[]).map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => setTab(t)}
             className={cn(
-              "flex-1 py-2.5 rounded-2xl text-[12px] font-bold transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "flex-1 py-2 rounded-xl text-[12px] font-bold transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring",
               tab === t ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground/50 hover:text-foreground",
             )}
           >
@@ -96,10 +86,10 @@ export default function ClubsPage() {
             type="button"
             onClick={() => setActiveFilter(f)}
             className={cn(
-              "rounded-full px-3.5 py-2 text-micro font-semibold whitespace-nowrap outline-none transition-all border focus-visible:ring-2 focus-visible:ring-ring",
+              "shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all border backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-ring min-h-[32px]",
               activeFilter === f
                 ? "bg-primary text-primary-foreground border-primary"
-                : "text-foreground/80 border-white/[0.06] bg-white/[0.04] backdrop-blur-xl hover:bg-white/[0.08]",
+                : "text-foreground/80 border-white/[0.06] bg-white/[0.04] hover:bg-white/[0.08]",
             )}
           >
             {f}

@@ -35,6 +35,7 @@ const sourceCounter = { count: 0 };
 
 function enrichQuestion(q: Question, domain: string, topic: string): Question {
   const techniqueIds = TOPIC_TECHNIQUE_MAP[domain]?.[topic] ?? [];
+  const meta = QUESTION_META[q.id];
   sourceCounter.count++;
   return {
     ...q,
@@ -45,6 +46,8 @@ function enrichQuestion(q: Question, domain: string, topic: string): Question {
     trustStatus: "trusted" as TrustStatus,
     sourceId: `src-manual-${domain}-${sourceCounter.count}`,
     variantGroupId: undefined,
+    hint: meta?.hint,
+    explanation: meta?.explanation,
   };
 }
 
@@ -195,6 +198,117 @@ const QUESTIONS_BY_DOMAIN: Record<string, Record<string, Question[]>> = {
   cat: CAT_QUESTIONS,
   gre: GRE_QUESTIONS,
   banking: BANKING_QUESTIONS,
+};
+
+const QUESTION_META: Record<string, { explanation: string; hint?: string }> = {
+  // ── GMAT PS ──────────────────────────────────────
+  "gmat-ps1": { explanation: "3x + 7 = 22, so 3x = 15 and x = 5.", hint: "Subtract 7 from both sides first." },
+  "gmat-ps2": { explanation: "Time = Distance ÷ Speed = 240 ÷ 60 = 4 hours.", hint: "Use Time = Distance ÷ Speed." },
+  "gmat-ps3": { explanation: "15% of 200 = 0.15 × 200 = 30." },
+  "gmat-ps4": { explanation: "$45 is 90% of the original, so original = 45 ÷ 0.9 = $50." },
+  "gmat-ps5": { explanation: "Sum = 84, count = 4, so average = 84 ÷ 4 = 21." },
+  "gmat-ps6": { explanation: "Substitute x = 2: 4 + 3y = 13, so 3y = 9 and y = 3." },
+  "gmat-ps7": { explanation: "Area = length × width = 12 × 5 = 60." },
+  "gmat-ps8": { explanation: "2 × 2 × 2 × 2 × 2 = 32." },
+  "gmat-ps9": { explanation: "a/b = 2/3 and b = 9, so a = 9 × (2/3) = 6." },
+  "gmat-ps10": { explanation: "Primes between 10 and 20 are 11, 13, 17, 19 — four of them.", hint: "Exclude 15, 16, 18 (composite)." },
+  // ── GMAT DS ──────────────────────────────────────
+  "gmat-ds1": { explanation: "Together they give 3 < x < 8, but x could be 4 or 6 — not sufficient. Answer: Neither." },
+  "gmat-ds2": { explanation: "Using both statements: x = 10 − 4 = 6. Together they are sufficient." },
+  "gmat-ds3": { explanation: "(1) numbers divisible by 4 are even; (2) n + 1 odd means n is even. Either alone suffices." },
+  "gmat-ds4": { explanation: "Area needs both base and height, so only together are they sufficient." },
+  "gmat-ds5": { explanation: "(1) leaves x = ±3; only (2) proves x is positive. Answer: (2) alone." },
+  // ── GMAT SC ──────────────────────────────────────
+  "gmat-sc1": { explanation: "\"Team\" is a singular collective noun, so the verb must be \"trains\"." },
+  "gmat-sc2": { explanation: "With \"neither...nor\", the verb agrees with the nearer noun — \"employees\" is plural, so \"were\"." },
+  "gmat-sc3": { explanation: "\"Than I (am)\" completes the comparison — the subject form is correct." },
+  "gmat-sc4": { explanation: "\"Each\" makes the subject singular, so the verb is \"is\"." },
+  "gmat-sc5": { explanation: "The list must stay parallel: \"inflation, unemployment, and economic growth\" are all nouns." },
+  // ── GMAT CR ──────────────────────────────────────
+  "gmat-cr1": { explanation: "Some flowers fade quickly, but roses must also be flowers — so \"some roses may fade quickly\" is the only safe conclusion." },
+  "gmat-cr2": { explanation: "Wet ground has many causes; rain is sufficient but not necessary, so it may not have rained." },
+  "gmat-cr3": { explanation: "Profits and the new CEO may correlate without the CEO causing the rise — correlation vs causation." },
+  "gmat-cr4": { explanation: "\"Breakfast provides glucose for the brain\" gives a causal mechanism that strengthens the claim." },
+  // ── GMAT RC ──────────────────────────────────────
+  "gmat-rc1": { explanation: "The passage emphasizes transformation across manufacturing, transportation, and daily life — widespread impact." },
+  "gmat-rc2": { explanation: "The passage mentions sunlight, CO2, and O2; it never says plants need water." },
+  "gmat-rc3": { explanation: "A correlation-only relationship weakens the causal claim about green spaces improving mental health." },
+  // ── CAT QA ───────────────────────────────────────
+  "cat-qa1": { explanation: "Speed = 150 ÷ 15 = 10 m/s = 10 × 18/5 = 36 km/h.", hint: "Convert m/s to km/h by multiplying by 18/5." },
+  "cat-qa2": { explanation: "Consumption must fall by 20/120 × 100 = 16.67% to keep expenditure constant.", hint: "Percent change is over the new price, not the old." },
+  "cat-qa3": { explanation: "LCM(12, 18, 24) = 2³ × 3² = 72." },
+  "cat-qa4": { explanation: "Combined rate = 1/10 + 1/15 = 1/6, so together they take 6 days.", hint: "Add the rates, then invert." },
+  "cat-qa5": { explanation: "log₂x = 5 means x = 2⁵ = 32." },
+  "cat-qa6": { explanation: "Sum of first n naturals = n(n+1)/2 = 10 × 11 ÷ 2 = 55." },
+  "cat-qa7": { explanation: "SP = CP × 1.2 = 500 × 1.2 = ₹600." },
+  // ── CAT LRDI ─────────────────────────────────────
+  "cat-lrdi1": { explanation: "The clues don't fix who sits at the other end, so it cannot be determined." },
+  "cat-lrdi2": { explanation: "Letters map to positions: C=3, A=1, T=20. So DOG = 4, 15, 7 → \"4157\"." },
+  "cat-lrdi3": { explanation: "30% of 500 = 0.30 × 500 = 150 students in Arts." },
+  "cat-lrdi4": { explanation: "8 pens = (45 ÷ 3) × 8 = 15 × 8 = ₹120." },
+  // ── CAT VA ───────────────────────────────────────
+  "cat-va1": { explanation: "\"Accommodate\" is the only correct spelling (double c, double m)." },
+  "cat-va2": { explanation: "Benevolent means kind or well-meaning, so the synonym is \"Kind\"." },
+  "cat-va3": { explanation: "A book is for reading; food is for eating." },
+  "cat-va4": { explanation: "Abundant means plentiful, so the antonym is \"Scarce\"." },
+  "cat-va5": { explanation: "\"Since she was five\" calls for the present perfect: \"has played\"." },
+  // ── GRE QC ───────────────────────────────────────
+  "gre-qc1": { explanation: "2/3 of 90 = 60, which equals Quantity B, so the quantities are equal." },
+  "gre-qc2": { explanation: "(−3)² = 9, equal to 9, so the quantities are equal." },
+  "gre-qc3": { explanation: "0.25 = 1/4 exactly, so the quantities are equal." },
+  "gre-qc4": { explanation: "√144 = 12, equal to 12, so the quantities are equal." },
+  "gre-qc5": { explanation: "Perimeter = 4 × 5 = 20, equal to 20, so the quantities are equal." },
+  // ── GRE PS ───────────────────────────────────────
+  "gre-ps1": { explanation: "2x − 5 = 7, so 2x = 12 and x = 6." },
+  "gre-ps2": { explanation: "0.2 × 0.3 = 0.06 — count the decimal places (1 + 1 = 2)." },
+  "gre-ps3": { explanation: "Area = (22/7) × 7² = 22 × 7 = 154." },
+  "gre-ps4": { explanation: "A right angle is exactly 90 degrees." },
+  "gre-ps5": { explanation: "4! = 4 × 3 × 2 × 1 = 24, so n = 4." },
+  "gre-ps6": { explanation: "Sorted: 2, 3, 5, 7, 9 — the middle value is 5." },
+  // ── GRE TC ───────────────────────────────────────
+  "gre-tc1": { explanation: "\"Despite\" signals contrast, so a stingy nature vs. surprising generosity." },
+  "gre-tc2": { explanation: "A lecture that made students sleep must have been \"tedious\"." },
+  "gre-tc3": { explanation: "\"Circumstantial\" evidence is indirect and failed to convince the jury." },
+  "gre-tc4": { explanation: "A \"warm\" smile puts people at ease." },
+  // ── GRE SE ───────────────────────────────────────
+  "gre-se1": { explanation: "Unexpected dramatic change → \"startling\" results." },
+  "gre-se2": { explanation: "\"Verbose\" and \"rambling\" both describe long-winded speeches." },
+  "gre-se3": { explanation: "\"So abstruse that few could understand it\" fits the low-comprehension clue." },
+  // ── GRE RC ───────────────────────────────────────
+  "gre-rc1": { explanation: "The passage is about how Earth's crust moves — crust movement." },
+  "gre-rc2": { explanation: "The author argues renewables are essential — the purpose is to advocate for renewables." },
+  // ── BANKING NUMERICAL ────────────────────────────
+  "bank-num1": { explanation: "25% of 640 = 0.25 × 640 = 160." },
+  "bank-num2": { explanation: "Interest = 1000 over 2 years, so 1000 = (5000 × r × 2)/100 → r = 10%.", hint: "Simple interest = P × r × t / 100." },
+  "bank-num3": { explanation: "22 × 22 = 484, so √484 = 22." },
+  "bank-num4": { explanation: "5 men × 10 days = 50 man-days; 50 ÷ 2 = 25 men." },
+  "bank-num5": { explanation: "15% of 80 = 0.15 × 80 = 12." },
+  "bank-num6": { explanation: "3:5 = 30:50 — both sides are multiplied by 10." },
+  "bank-num7": { explanation: "Speed = 240 ÷ 4 = 60 km/h." },
+  // ── BANKING REASONING ────────────────────────────
+  "bank-reas1": { explanation: "The pattern is doubling (2, 4, 8, 16, 32); 24 breaks the chain." },
+  "bank-reas2": { explanation: "Each letter shifts +1: APPLE → BQQMF, so ORANGE → PSBOHF." },
+  "bank-reas3": { explanation: "Rank from right = 40 − 15 + 1 = 26th." },
+  "bank-reas4": { explanation: "Differences increase by 2 each time (+, 3, +5, +7), so the next is +9 → 27." },
+  "bank-reas5": { explanation: "Yesterday Thursday → today Friday → day after tomorrow is Sunday." },
+  // ── BANKING ENGLISH ──────────────────────────────
+  "bank-eng1": { explanation: "The correct idiom is \"good at mathematics\"." },
+  "bank-eng2": { explanation: "\"Receive\" follows the i-before-e rule." },
+  "bank-eng3": { explanation: "Abandon means to leave behind, so the synonym is \"Leave\"." },
+  "bank-eng4": { explanation: "Expand means to grow, so the antonym is \"Contract\"." },
+  "bank-eng5": { explanation: "Past tense reporting requires backshifting: \"He said he was busy\"." },
+  // ── BANKING GA ───────────────────────────────────
+  "bank-ga1": { explanation: "Sanjay Malhotra is the current RBI Governor." },
+  "bank-ga2": { explanation: "The RBI is known as the \"Bank of Banks\" in India." },
+  "bank-ga3": { explanation: "The Finance Minister chairs the GST Council." },
+  "bank-ga4": { explanation: "The Indian Constitution was adopted on 26 November 1949 and came into force in 1950." },
+  "bank-ga5": { explanation: "Canberra is the capital of Australia." },
+  // ── BANKING COMPUTER ─────────────────────────────
+  "bank-comp1": { explanation: "CPU stands for Central Processing Unit." },
+  "bank-comp2": { explanation: "A keyboard is an input device; the others are outputs." },
+  "bank-comp3": { explanation: "RAM stands for Random Access Memory." },
+  "bank-comp4": { explanation: "SMTP is the protocol used for sending email." },
+  "bank-comp5": { explanation: "WWW stands for World Wide Web." },
 };
 
 const TOPIC_LABELS: Record<string, Record<string, string>> = {

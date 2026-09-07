@@ -8,10 +8,17 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function getPracticeSession(topic: string, length: number, difficulty: string): Promise<SprintSession> {
+export async function getPracticeSession(
+  topic: string,
+  length: number,
+  difficulty: string,
+  domain?: string,
+): Promise<SprintSession> {
   if (IS_MOCK) {
     await delay(150);
-    return generateSprintSession(topic, length, difficulty);
+    return generateSprintSession(topic, length, difficulty, domain);
   }
-  return apiGet<SprintSession>(`/practice?topic=${topic}&length=${length}&difficulty=${difficulty}`);
+  const params = new URLSearchParams({ topic, length: String(length), difficulty });
+  if (domain) params.set("domain", domain);
+  return apiGet<SprintSession>(`/practice?${params.toString()}`);
 }

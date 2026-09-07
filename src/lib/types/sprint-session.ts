@@ -7,6 +7,8 @@ export type Question = {
   correctIndex: number;
   timeLimit: number;
   difficulty?: number;
+  hint?: string;
+  explanation?: string;
   techniqueId?: string;
   trustStatus?: TrustStatus;
   sourceId?: string;

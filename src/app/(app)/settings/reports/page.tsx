@@ -79,7 +79,7 @@ export default function ReportsPage() {
             type="button"
             onClick={() => setPeriod(p)}
             className={cn(
-              "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring border backdrop-blur-xl",
+              "rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring border backdrop-blur-xl",
               period === p
                 ? "bg-primary text-primary-foreground border-primary"
                 : "border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",

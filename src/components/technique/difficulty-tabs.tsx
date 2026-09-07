@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import { Check, AlertTriangle, Zap, ChevronDown, ChevronUp } from "lucide-react";
 import type { DifficultyLevel, TechniquePracticeQuestion } from "@/lib/types/technique";
-import TextScaffold from "@/components/renderers/TextScaffold";
+import RendererRouter from "@/components/renderers/RendererRouter";
 import { exampleToTemplate } from "@/components/renderers/utils/level-to-template";
 
 const LEVEL_COLORS: Record<number, string> = {
@@ -125,7 +125,7 @@ function LevelContent({ level, techniqueName }: { level: DifficultyLevel; techni
             {level.examples.map((ex, i) => {
               const template = exampleToTemplate(ex, techniqueName, level.level, i);
               return (
-                <TextScaffold
+                <RendererRouter
                   key={i}
                   template={template}
                   visibleSteps={exampleSteps[i] ?? 0}

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { BookOpen, ChevronDown, Layers } from "lucide-react";
+import { BookOpen, ChevronDown, Layers, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TopicNode } from "@/lib/types/technique";
 
@@ -21,10 +21,12 @@ export function MindMap({
   tree,
   isLoading,
   focusNodeId,
+  availableTechniqueIds,
 }: {
   tree: TopicNode | null;
   isLoading: boolean;
   focusNodeId?: string;
+  availableTechniqueIds?: Set<string>;
 }) {
   const router = useRouter();
   const [path, setPath] = useState<TopicNode[]>([]);
@@ -56,7 +58,14 @@ export function MindMap({
     }
   }, [tree, focusNodeId]);
 
+  const isTechniqueAvailable = (node: TopicNode): boolean => {
+    if (node.type !== "technique" || !node.techniqueId) return true;
+    if (!availableTechniqueIds) return true;
+    return availableTechniqueIds.has(node.techniqueId);
+  };
+
   const handleNodeClick = (node: TopicNode) => {
+    if (node.type === "technique" && !isTechniqueAvailable(node)) return;
     if (node.children && node.children.length > 0) {
       toggleExpanded(node.id);
     } else if (node.type === "technique" && node.techniqueId) {
@@ -97,13 +106,13 @@ export function MindMap({
                     <span className="absolute left-0 top-0 bottom-0 w-px bg-white/[0.08]" />
                     {root.children.map((c) => (
                       <TreeChild key={c.id}>
-                        {nodes(c, expanded, handleNodeClick, 1, focusNodeId)}
+                        {nodes(c, expanded, handleNodeClick, 1, focusNodeId, availableTechniqueIds)}
                       </TreeChild>
                     ))}
                   </div>
                 </div>
               ) : (
-                nodes(centerNode, expanded, handleNodeClick, 0, focusNodeId)
+                nodes(centerNode, expanded, handleNodeClick, 0, focusNodeId, availableTechniqueIds)
               )}
             </div>
           </div>
@@ -128,10 +137,15 @@ function nodes(
   onSelect: (node: TopicNode) => void,
   depth: number,
   focusNodeId?: string,
+  availableTechniqueIds?: Set<string>,
 ): React.ReactNode {
   const meta = TYPE_META[root.type] ?? TYPE_META.topic;
   const isOpen = expanded.has(root.id);
   const hasChildren = !!root.children && root.children.length > 0;
+  const unavailable =
+    root.type === "technique" && !!root.techniqueId && availableTechniqueIds
+      ? !availableTechniqueIds.has(root.techniqueId)
+      : false;
 
   const row = (
     <div key={`row-${root.id}`} className={cn("flex", depth === 0 && "justify-center")}>
@@ -142,6 +156,7 @@ function nodes(
         isOpen={isOpen}
         hasChildren={hasChildren}
         isFocus={root.id === focusNodeId}
+        unavailable={unavailable}
         onSelect={() => onSelect(root)}
       />
     </div>
@@ -160,7 +175,7 @@ function nodes(
           <div className="relative ml-3">
             <span className="absolute left-0 top-0 bottom-0 w-px bg-white/[0.08]" />
             {root.children!.map((c) => (
-              <TreeChild key={c.id}>{nodes(c, expanded, onSelect, depth + 1, focusNodeId)}</TreeChild>
+              <TreeChild key={c.id}>{nodes(c, expanded, onSelect, depth + 1, focusNodeId, availableTechniqueIds)}</TreeChild>
             ))}
           </div>
         </motion.div>
@@ -194,6 +209,7 @@ function BranchNode({
   isOpen,
   hasChildren,
   isFocus,
+  unavailable,
   onSelect,
 }: {
   node: TopicNode;
@@ -202,6 +218,7 @@ function BranchNode({
   isOpen: boolean;
   hasChildren: boolean;
   isFocus: boolean;
+  unavailable: boolean;
   onSelect: () => void;
 }) {
   return (
@@ -209,8 +226,12 @@ function BranchNode({
       <button
         type="button"
         onClick={onSelect}
+        tabIndex={unavailable ? -1 : 0}
+        aria-disabled={unavailable}
         className={cn(
-          "relative z-10 my-1.5 flex items-center gap-2.5 rounded-2xl border px-4 py-3 transition-all duration-200 hover:scale-[1.02] active:scale-95",
+          "relative z-10 my-1.5 flex items-center gap-2.5 rounded-2xl border px-4 py-3 transition-all duration-200",
+          !unavailable && "hover:scale-[1.02] active:scale-95",
+          unavailable && "opacity-45 cursor-not-allowed",
           depth === 0
             ? "border-transparent bg-gradient-to-r from-[#C7F252] to-[#a8e62e] text-[#0A0C0A] shadow-[0_12px_40px_-14px_var(--primary)]"
             : "bg-white/[0.05]",
@@ -228,8 +249,11 @@ function BranchNode({
             depth === 0 ? "bg-[#0A0C0A]/10" : "",
           )}
           style={depth === 0 ? undefined : { background: meta.softBg, color: meta.color }}
+          aria-hidden
         >
-          {node.type === "technique" ? (
+          {unavailable ? (
+            <Lock size={15} />
+          ) : node.type === "technique" ? (
             <BookOpen size={15} />
           ) : (
             <Layers size={15} />
@@ -238,7 +262,7 @@ function BranchNode({
         <span className="min-w-0 text-left">
           <span
             className={cn(
-              "block max-w-[150px] truncate text-[13px] font-semibold leading-tight",
+              "block max-w-[200px] text-[13px] font-semibold leading-snug",
               depth === 0 ? "text-[#0A0C0A]" : "text-foreground",
             )}
           >
@@ -255,7 +279,7 @@ function BranchNode({
             {hasChildren ? ` · ${node.children!.length}` : ""}
           </span>
         </span>
-        {hasChildren && (
+        {!unavailable && hasChildren && (
           <span
             className={cn(
               "flex size-5 items-center justify-center rounded-full transition-transform duration-200",

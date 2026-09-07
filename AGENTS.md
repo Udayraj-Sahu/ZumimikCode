@@ -22,12 +22,12 @@ Full frontend dynamic by user's target exam (domain). Every dashboard page, comp
 | 1.1 | `src/services/dashboard.ts` | [ ] | Add optional `domain` → filter mock data |
 | 1.2 | `src/services/sprint.ts` | [ ] | Add optional `domain` → `getTopicsByDomain(domain)` |
 | 1.3 | `src/services/sprint-session.ts` | [ ] | Add optional `domain` → domain question pool |
-| 1.4 | `src/services/practice.ts` | [ ] | Add optional `domain` → domain MCQ questions |
+| 1.4 | `src/services/practice.ts` | [✓] | Add optional `domain` → domain MCQ questions |
 | 1.5 | `src/services/duel.ts` | [ ] | Add optional `domain` → domain topics |
 | 1.6 | `src/services/history.ts` | [ ] | Add optional `domain` → domain topic labels |
 | 1.7 | `src/hooks/queries/use-dashboard.ts` | [ ] | Accept `domain`, pass to service |
 | 1.8 | `src/hooks/queries/use-sprint.ts` | [ ] | Accept `domain` |
-| 1.9 | `src/hooks/queries/use-practice.ts` | [ ] | Accept `domain` |
+| 1.9 | `src/hooks/queries/use-practice.ts` | [✓] | Accept `domain`, pass to service (fixes CAT-always bug) |
 | 1.10 | `src/hooks/queries/use-duel-setup.ts` | [ ] | Accept `domain` |
 
 ### Phase 2 — Mock Data (domain-keyed structures)

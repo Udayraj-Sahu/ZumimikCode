@@ -497,7 +497,7 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                       onChange(active ? value.filter((t) => t !== tag) : [...value, tag])
                     }
                     className={cn(
-                      "flex items-center gap-1 rounded-full px-3 py-1.5 text-micro font-bold transition-all active:scale-95",
+                      "flex items-center gap-1 rounded-full px-3 py-1.5 text-[10px] font-bold transition-all active:scale-95",
                       active
                         ? "text-[#0A0C0A] bg-[#C8FF4D]"
                         : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",

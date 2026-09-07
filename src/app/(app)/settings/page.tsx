@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   Calendar,
@@ -31,6 +31,8 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
+import { DOMAIN_LABELS } from "@/lib/types/template";
+import { cn } from "@/lib/utils";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -236,8 +238,17 @@ export default function SettingsPage() {
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
   const firstName = useOnboardingStore((s) => s.firstName);
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const activePreps = useOnboardingStore((s) => s.activePreps);
 
   const [showAddPrep, setShowAddPrep] = useState(false);
+
+  const prepExams = useMemo(() => {
+    const others = activePreps.filter((id) => id !== targetExam && id in DOMAIN_LABELS);
+    const list = [...others];
+    if (targetExam && targetExam in DOMAIN_LABELS) list.unshift(targetExam);
+    return list;
+  }, [activePreps, targetExam]);
 
   const name = firstName || "Google User";
   const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
@@ -272,9 +283,30 @@ export default function SettingsPage() {
         {/* Prep / Membership */}
         <div className="px-4">
           <SectionLabel>PREP / MEMBERSHIP</SectionLabel>
-          <div className="rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
-            <p className="text-[12px] text-muted-foreground/60 font-normal">No active preps yet</p>
-          </div>
+          {prepExams.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
+              <p className="text-[12px] text-muted-foreground/60 font-normal">No active preps yet</p>
+            </div>
+          ) : (
+            <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+              <div className="flex flex-wrap gap-2">
+                {prepExams.map((id) => (
+                  <span
+                    key={id}
+                    className={cn(
+                      "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
+                      id === targetExam
+                        ? "bg-primary/10 text-primary border border-primary/20"
+                        : "bg-white/[0.04] text-foreground/80 border border-white/[0.06]",
+                    )}
+                  >
+                    {DOMAIN_LABELS[id]}
+                    {id === targetExam && <Check size={11} strokeWidth={3} className="ml-1 inline text-primary" />}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
           <button
             type="button"
             onClick={() => setShowAddPrep(true)}

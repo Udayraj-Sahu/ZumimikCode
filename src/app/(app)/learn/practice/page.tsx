@@ -13,6 +13,7 @@ import {
   BrainCircuit,
   Target,
   Dumbbell,
+  Lightbulb,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
@@ -62,6 +63,7 @@ export default function PracticePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [revealed, setRevealed] = useState(false);
+  const [hintOpen, setHintOpen] = useState(false);
   const [completed, setCompleted] = useState<{ correct: number; total: number } | null>(null);
 
   const [loadingTemplates, setLoadingTemplates] = useState(false);
@@ -97,6 +99,7 @@ export default function PracticePage() {
     setCurrentIndex(0);
     setAnswers({});
     setRevealed(false);
+    setHintOpen(false);
     setCompleted(null);
   };
 
@@ -123,6 +126,7 @@ export default function PracticePage() {
     } else {
       setCurrentIndex((i) => i + 1);
       setRevealed(false);
+      setHintOpen(false);
     }
   };
 
@@ -205,7 +209,7 @@ export default function PracticePage() {
   if (phase === "config") {
     return (
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-        <div ref={headerRef} className="mb-6">
+        <div ref={headerRef} className="mb-6 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <Dumbbell size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PRACTICE</span>
@@ -668,6 +672,26 @@ export default function PracticePage() {
       {question && (
         <div key={question.id} ref={questionRef}>
           <p className="text-[16px] font-bold leading-snug text-foreground mb-5 tracking-[-0.01em]">{question.text}</p>
+          {!revealed && question.hint && (
+            <div className="mb-5">
+              {!hintOpen ? (
+                <button
+                  type="button"
+                  onClick={() => setHintOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.06] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-primary outline-none transition-all hover:bg-primary/[0.12]"
+                >
+                  <Lightbulb size={12} /> Need a hint?
+                </button>
+              ) : (
+                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                  <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
+                    <Lightbulb size={12} /> Hint
+                  </p>
+                  <p className="text-[13px] leading-relaxed text-foreground/80">{question.hint}</p>
+                </div>
+              )}
+            </div>
+          )}
           <div className="flex flex-col gap-2.5">
             {question.options.map((option, i) => {
               const isSelected = answers[question.id] === i;
@@ -710,7 +734,21 @@ export default function PracticePage() {
           </div>
 
           {revealed && (
-            <div className="mt-5">
+            <div className="mt-5 space-y-3">
+              {question.explanation ? (
+                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                  <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
+                    <Lightbulb size={12} /> Why it&apos;s this
+                  </p>
+                  <p className="text-[13px] leading-relaxed text-foreground/80">{question.explanation}</p>
+                </div>
+              ) : (
+                question.hint && (
+                  <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+                    <p className="text-[12px] text-muted-foreground/60 leading-relaxed">{question.hint}</p>
+                  </div>
+                )
+              )}
               <button
                 type="button"
                 onClick={handleNext}

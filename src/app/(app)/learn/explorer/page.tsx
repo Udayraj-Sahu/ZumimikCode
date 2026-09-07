@@ -5,10 +5,11 @@ import gsap from "gsap";
 import { AnimatePresence, motion } from "motion/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSubjectTree } from "@/hooks/queries/use-explorer";
+import { useAllTechniques } from "@/hooks/queries/use-technique";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { MindMap } from "@/components/explorer/mind-map";
-import { Compass, GraduationCap, Lock, Plus, ArrowRight } from "lucide-react";
+import { Compass, GraduationCap, Lock, Plus, ArrowRight, Target, ClipboardList, Layers } from "lucide-react";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { getTechniqueIdsForTopic } from "@/lib/mock/topic-node-map";
 import type { TopicNode } from "@/lib/types/technique";
@@ -28,6 +29,21 @@ function findNodeInTrees(trees: TopicNode[], domain: string, topic: string): { s
     if (techs.some((id) => nodeInTree(trees[i], id))) return { subjectIndex: i, nodeId: null };
   }
   return { subjectIndex: -1, nodeId: null };
+}
+
+function countConquestStats(subject: TopicNode): { topics: number; practiceSets: number } {
+  let topics = 0;
+  let practiceSets = 0;
+  function walk(node: TopicNode) {
+    if (node.type === "technique") {
+      practiceSets += 1;
+    } else if (node.type === "topic" || node.type === "subtopic") {
+      topics += 1;
+    }
+    (node.children ?? []).forEach(walk);
+  }
+  walk(subject);
+  return { topics, practiceSets };
 }
 
 function ExplorerContent() {
@@ -57,6 +73,12 @@ function ExplorerContent() {
 
   const { data: trees, isLoading } = useSubjectTree(activeDomain);
   const subjects = trees ?? [];
+
+  const { data: allTechniques } = useAllTechniques();
+  const availableTechniqueIds = useMemo(
+    () => new Set((allTechniques ?? []).map((t) => t.id)),
+    [allTechniques],
+  );
 
   useEffect(() => {
     if (paramsProcessed) return;
@@ -101,6 +123,12 @@ function ExplorerContent() {
   }, []);
 
   const label = DOMAIN_LABELS[activeDomain] ?? activeDomain;
+
+  const subjectTitle = subjects[activeSubject]?.title ?? label;
+  const conquest = useMemo(
+    () => (subjects[activeSubject] ? countConquestStats(subjects[activeSubject]) : { topics: 0, practiceSets: 0 }),
+    [subjects, activeSubject],
+  );
 
   if (prepExams.length === 0) {
     return (
@@ -251,8 +279,56 @@ function ExplorerContent() {
         </div>
       )}
 
+      {/* Conquest stats */}
+      {subjects.length > 0 && (
+        <div ref={animateSection} data-section-index={2} className="mt-6">
+          <div
+            className="relative overflow-hidden rounded-[24px] border"
+            style={{ borderColor: "rgba(199,242,82,0.18)", background: "linear-gradient(135deg, rgba(199,242,82,0.07), rgba(255,255,255,0.02))" }}
+          >
+            <div className="pointer-events-none absolute -top-10 -right-10 size-36 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }} />
+            <div className="relative flex items-center justify-between gap-4 px-5 py-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="grid size-11 shrink-0 place-items-center rounded-2xl border border-primary/20 bg-primary/10">
+                  <Target size={18} className="text-primary" />
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] font-bold tracking-[-0.01em] text-foreground">
+                    Conquer the {subjectTitle} map
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground/45 font-normal">
+                    Everything to master in {label}
+                  </p>
+                </div>
+              </div>
+              <div className="flex shrink-0 items-center gap-4">
+                <div className="text-right">
+                  <div className="flex items-center justify-end gap-1.5">
+                    <Layers size={12} className="text-primary" />
+                    <p className="text-[20px] font-black leading-none tracking-[-0.02em] text-primary">
+                      {conquest.topics}
+                    </p>
+                  </div>
+                  <p className="mt-1 text-micro font-bold tracking-[0.12em] text-muted-foreground/50 uppercase">Topics</p>
+                </div>
+                <div className="h-8 w-px bg-white/[0.08]" />
+                <div className="text-right">
+                  <div className="flex items-center justify-end gap-1.5">
+                    <ClipboardList size={12} className="text-primary" />
+                    <p className="text-[20px] font-black leading-none tracking-[-0.02em] text-primary">
+                      {conquest.practiceSets}
+                    </p>
+                  </div>
+                  <p className="mt-1 text-micro font-bold tracking-[0.12em] text-muted-foreground/50 uppercase">Practice sets</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Mind map */}
-      <div ref={animateSection} data-section-index={2} className="relative mt-6">
+      <div ref={animateSection} data-section-index={3} className="relative mt-6">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={`${activeDomain}-${activeSubject}`}
@@ -265,6 +341,7 @@ function ExplorerContent() {
               tree={(activeSubject < subjects.length ? subjects[activeSubject] : subjects[0]) ?? null}
               isLoading={isLoading}
               focusNodeId={focusNodeId ?? undefined}
+              availableTechniqueIds={availableTechniqueIds}
             />
           </motion.div>
         </AnimatePresence>
