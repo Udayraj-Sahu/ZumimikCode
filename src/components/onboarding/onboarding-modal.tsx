@@ -156,17 +156,14 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
   const isExam = localGoal ? TEMPORAL_GOALS.includes(localGoal) : false;
   const isVedic = localGoal === "Master speed math";
-  const isExploring = localGoal === "Just exploring";
-  const examNotSure = isExam && localTemporal === "not_sure";
-  const showDrills = !isExploring && !examNotSure;
+  const showDrills = isVedic;
 
   const resolvedSteps: StepId[] = useMemo(() => {
     const steps: StepId[] = ["name", "persona", "goal"];
     if (isExam) steps.push("temporal");
     else if (isVedic) steps.push("vedic-use-case");
-    steps.push("triggers", "details");
     if (showDrills) steps.push("drills");
-    steps.push("story", "daily-time", "plan");
+    steps.push("story", "daily-time", "triggers", "details", "plan");
     return steps;
   }, [isExam, isVedic, showDrills]);
 
