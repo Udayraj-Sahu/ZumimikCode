@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import { useSprintTopics } from "@/hooks/queries/use-sprint";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useSprintStore } from "@/stores/sprint-store";
+import { useResumeStore } from "@/stores/resume-store";
 import { getTemplatesByCategory } from "@/services/templates";
 import { getTemplateCategoriesForTopic } from "@/lib/topic-template-map";
 import type { SolveAlongTemplate } from "@/lib/types/template";
@@ -20,13 +22,17 @@ export default function ConfigureSprintPage() {
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data, isLoading } = useSprintTopics(targetExam);
-  const [topic, setTopic] = useState("addition");
+  const [topic, setTopic] = useState<string | null>(null);
   const [length, setLength] = useState(10);
   const [difficulty, setDifficulty] = useState("Beginner");
   const [templates, setTemplates] = useState<SolveAlongTemplate[]>([]);
   const [loadingTemplates, setLoadingTemplates] = useState(false);
 
   useEffect(() => {
+    if (!topic) {
+      setTemplates([]);
+      return;
+    }
     const cats = getTemplateCategoriesForTopic(targetExam, topic);
     if (cats.length === 0) {
       setTemplates([]);
@@ -270,7 +276,7 @@ export default function ConfigureSprintPage() {
                     <button
                       type="button"
                       onClick={() =>
-                        router.push(`/learn/practice?templateId=${tpl.id}&returnTo=/play/configure-sprint&topic=${topic}&difficulty=${difficulty.toLowerCase()}`)
+                        router.push(`/learn/practice?templateId=${tpl.id}&returnTo=/play/configure-sprint&topic=${topic ?? ""}&difficulty=${difficulty.toLowerCase()}`)
                       }
                       className="mt-3 flex items-center justify-center gap-1.5 rounded-xl py-3 text-micro font-bold uppercase tracking-wider text-chart-3 outline-none transition-colors hover:bg-chart-3/20 active:bg-chart-3/30 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
                       style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${GLASS_BORDER}` }}
@@ -288,14 +294,21 @@ export default function ConfigureSprintPage() {
         <div ref={animateSection} data-section-index={4} className="mt-6 sm:mt-8">
           <button
             type="button"
-            onClick={() =>
-              router.push(`/play/sprint?topic=${topic}&length=${length}&difficulty=${difficulty.toLowerCase()}`)
-            }
-            className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring sm:text-[16px]"
+            onClick={() => {
+              if (!topic) return;
+              useSprintStore.getState().reset();
+              useResumeStore.getState().clearSnapshot();
+              router.push(`/play/sprint?topic=${topic}&length=${length}&difficulty=${difficulty.toLowerCase()}`);
+            }}
+            disabled={!topic}
+            className={cn(
+              "group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring sm:text-[16px]",
+              !topic && "opacity-40 cursor-not-allowed hover:scale-100",
+            )}
           >
             <span className="absolute inset-0 translate-y-full bg-gradient-to-r from-primary/0 via-white/10 to-primary/0 transition-transform duration-500 group-hover:translate-y-0" />
             <span className="relative flex items-center gap-3">
-              Start Sprint
+              {topic ? "Start Sprint" : "Select a Topic"}
               <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
           </button>

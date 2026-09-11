@@ -1,13 +1,17 @@
 "use client";
 
-import { useCallback, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useRef, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import gsap from "gsap";
 import { BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSprintStore } from "@/stores/sprint-store";
 import { useRateStore } from "@/stores/rate-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { useOnboardingStore } from "@/stores/onboarding-store";
+import { recordAdaptiveSession } from "@/services/adaptive";
+import type { SessionOutcome } from "@/lib/types/adaptive";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
@@ -20,15 +24,62 @@ function formatTime(s: number): string {
 }
 
 export default function SprintResultsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
+          <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
+          <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
+          <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
+        </div>
+      }
+    >
+      <SprintResultsContent />
+    </Suspense>
+  );
+}
+
+function SprintResultsContent() {
   usePageMeta("Sprint Results — Exam Arena");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const lastResult = useSprintStore((s) => s.lastResult);
   const lastSession = useSprintStore((s) => s.lastSession);
   const incrementSprint = useRateStore((s) => s.increment);
+  const targetExam = useOnboardingStore((s) => s.targetExam);
+  const queryClient = useQueryClient();
+
+  const isAdaptive = searchParams.get("adaptive") === "1";
+  const adaptiveDomain = searchParams.get("domain") ?? targetExam;
 
   useEffect(() => {
     incrementSprint();
   }, [incrementSprint]);
+
+  const recordedRef = useRef(false);
+
+  useEffect(() => {
+    if (!isAdaptive || recordedRef.current) return;
+    if (!lastResult || !lastSession || !adaptiveDomain || !lastSession.topic) return;
+    recordedRef.current = true;
+    const outcome: SessionOutcome = {
+      domain: adaptiveDomain,
+      topicId: lastSession.topic,
+      topicLabel: lastSession.topicLabel,
+      difficulty: lastSession.difficulty,
+      score: lastResult.score,
+      total: lastResult.total,
+      accuracy: lastResult.accuracy,
+      xpEarned: lastResult.xpEarned,
+      totalTimeSpent: lastResult.totalTimeSpent,
+      ts: Date.now(),
+    };
+    recordAdaptiveSession(outcome).then(() => {
+      queryClient.invalidateQueries({ queryKey: ["adaptive-state", outcome.domain] });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdaptive, lastResult, lastSession, adaptiveDomain]);
+
   const resultRef = useRef<HTMLDivElement>(null);
 
   const result: SprintResult | null = lastResult;
@@ -63,14 +114,13 @@ export default function SprintResultsPage() {
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
       {/* Header */}
       <div ref={resultRef}>
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 mx-auto">
-          <BarChart3 size={10} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</span>
+        <div className="flex justify-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-5 py-2">
+            <BarChart3 size={10} className="text-primary" />
+            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</span>
+          </div>
         </div>
-        <h1 className="text-center text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
-          Sprint Results
-        </h1>
-        <p className="mt-1 text-center text-[12px] text-muted-foreground/45 font-normal">
+        <p className="mt-2 text-center text-[12px] text-muted-foreground/45 font-normal">
           {session.topicLabel} &middot; {session.difficulty}
         </p>
       </div>

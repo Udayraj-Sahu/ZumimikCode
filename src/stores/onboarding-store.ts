@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { safeLocalStorage } from "@/lib/browser";
+import type { FocusMode, PlanId, VedicUseCaseId, DrillId } from "@/lib/types/onboarding";
 
 export function examIdForGoal(goal: string | null): string {
   if (goal?.includes("CAT")) return "cat";
   if (goal?.includes("GMAT")) return "gmat";
   if (goal?.includes("GRE")) return "gre";
+  if (goal?.toLowerCase().includes("speed math")) return "vedic-math";
   return "";
 }
 
@@ -28,6 +30,17 @@ type OnboardingState = {
   activePreps: string[];
   activeLearnDomain: string;
   examDates: Record<string, string>;
+  temporalWindow: "this_year" | "whenever" | "not_sure" | null;
+  adaptiveConfigured: boolean;
+  hookSeen: boolean;
+  justExploring: boolean;
+  selectedDrill: DrillId | null;
+  wantsDrills: boolean;
+  reminderTime: string;
+  focusMode: FocusMode;
+  dailyMinutes: number | null;
+  planId: PlanId | null;
+  vedicUseCase: VedicUseCaseId | null;
 
   setAuthData: (data: { name?: string; email?: string; phone?: string; authMethod: "google" | "phone" }) => void;
   setTargetExam: (exam: string) => void;
@@ -48,6 +61,17 @@ type OnboardingState = {
   removeActivePrep: (prep: string) => void;
   setActiveLearnDomain: (domain: string) => void;
   setExamDate: (domain: string, date: string) => void;
+  setTemporalWindow: (window: "this_year" | "whenever" | "not_sure" | null) => void;
+  setAdaptiveConfigured: (configured: boolean) => void;
+  setHookSeen: (seen: boolean) => void;
+  setJustExploring: (exploring: boolean) => void;
+  setSelectedDrill: (drill: DrillId | null) => void;
+  setWantsDrills: (wants: boolean) => void;
+  setReminderTime: (time: string) => void;
+  setFocusMode: (mode: FocusMode) => void;
+  setDailyMinutes: (minutes: number | null) => void;
+  setPlanId: (plan: PlanId | null) => void;
+  setVedicUseCase: (useCase: VedicUseCaseId | null) => void;
 };
 
 const initial = {
@@ -69,6 +93,17 @@ const initial = {
   activePreps: [] as string[],
   activeLearnDomain: "",
   examDates: {} as Record<string, string>,
+  temporalWindow: null as "this_year" | "whenever" | "not_sure" | null,
+  adaptiveConfigured: false,
+  hookSeen: false,
+  justExploring: false,
+  selectedDrill: null as DrillId | null,
+  wantsDrills: false,
+  reminderTime: "19:00",
+  focusMode: "sprint" as FocusMode,
+  dailyMinutes: null as number | null,
+  planId: null as PlanId | null,
+  vedicUseCase: null as VedicUseCaseId | null,
 };
 
 export const useOnboardingStore = create<OnboardingState>()(
@@ -123,6 +158,17 @@ export const useOnboardingStore = create<OnboardingState>()(
         set((s) => ({
           examDates: { ...s.examDates, [domain]: date },
         })),
+      setTemporalWindow: (temporalWindow) => set({ temporalWindow }),
+      setAdaptiveConfigured: (adaptiveConfigured) => set({ adaptiveConfigured }),
+      setHookSeen: (hookSeen) => set({ hookSeen }),
+      setJustExploring: (justExploring) => set({ justExploring }),
+      setSelectedDrill: (selectedDrill) => set({ selectedDrill }),
+      setWantsDrills: (wantsDrills) => set({ wantsDrills }),
+      setReminderTime: (reminderTime) => set({ reminderTime }),
+      setFocusMode: (focusMode) => set({ focusMode }),
+      setDailyMinutes: (dailyMinutes) => set({ dailyMinutes }),
+      setPlanId: (planId) => set({ planId }),
+      setVedicUseCase: (vedicUseCase) => set({ vedicUseCase }),
       finishOnboarding: () => set({ isOnboarded: true }),
     }),
     {

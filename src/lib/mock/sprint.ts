@@ -28,6 +28,12 @@ const SPRINT_TOPICS_BY_DOMAIN: Record<string, SprintTopic[]> = {
     { id: "ga", label: "General Awareness", icon: Globe, color: "text-chart-2" },
     { id: "computer", label: "Computer Knowledge", icon: Monitor, color: "text-chart-3" },
   ],
+  "vedic-math": [
+    { id: "addition", label: "Vedic Addition", icon: Calculator, color: "text-chart-3" },
+    { id: "subtraction", label: "Vedic Subtraction", icon: Minus, color: "text-chart-4" },
+    { id: "multiplication", label: "Vedic Multiplication", icon: Sigma, color: "text-primary" },
+    { id: "squares", label: "Squares & Bases", icon: ListChecks, color: "text-chart-2" },
+  ],
 };
 
 export const SPRINT_CONFIG: SprintConfig = {

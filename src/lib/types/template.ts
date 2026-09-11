@@ -122,6 +122,7 @@ export const DOMAINS = [
   { id: "cat", label: "CAT" },
   { id: "gre", label: "GRE" },
   { id: "banking", label: "Banking" },
+  { id: "vedic-math", label: "Speed Math" },
 ] as const;
 
 export const DOMAIN_LABELS: Record<string, string> = {
@@ -129,6 +130,7 @@ export const DOMAIN_LABELS: Record<string, string> = {
   cat: "CAT",
   gre: "GRE",
   banking: "Banking",
+  "vedic-math": "Speed Math",
 };
 
 export type DomainId = (typeof DOMAINS)[number]["id"];

@@ -1,9 +1,19 @@
 import { create } from "zustand";
 import type { Question, SprintAnswer, SprintResult } from "@/lib/types/sprint-session";
 
-type AnswerEntry = {
+export type AnswerEntry = {
   selectedIndex: number;
   timeSpent: number;
+};
+
+export type SprintSessionMeta = { questions: Question[]; topic: string; topicLabel: string; difficulty: string };
+
+export type ResumePoint = {
+  currentIndex: number;
+  answers: Record<string, AnswerEntry>;
+  questionStartTime: number | null;
+  sessionStartTime: number;
+  timeLeft: number;
 };
 
 type SprintState = {
@@ -14,13 +24,14 @@ type SprintState = {
   sessionStartTime: number | null;
   timeLeft: number;
   lastResult: SprintResult | null;
-  lastSession: { questions: Question[]; topic: string; topicLabel: string; difficulty: string } | null;
+  lastSession: SprintSessionMeta | null;
 
   initSprint: (totalTime: number) => void;
+  resumeSprint: (point: ResumePoint) => void;
   answerCurrent: (questionId: string, optionIndex: number) => void;
   nextQuestion: () => void;
   tick: () => void;
-  completeSprint: (session?: { questions: Question[]; topic: string; topicLabel: string; difficulty: string }) => void;
+  completeSprint: (session?: SprintSessionMeta) => void;
   getResult: (questions: Question[]) => SprintResult;
   reset: () => void;
 };
@@ -43,6 +54,18 @@ export const useSprintStore = create<SprintState>((set, get) => ({
       questionStartTime: Date.now(),
       sessionStartTime: Date.now(),
       timeLeft: totalTime,
+      lastResult: null,
+      lastSession: null,
+    }),
+
+  resumeSprint: (point) =>
+    set({
+      status: "active",
+      currentIndex: point.currentIndex,
+      answers: point.answers,
+      questionStartTime: point.questionStartTime ?? Date.now(),
+      sessionStartTime: point.sessionStartTime,
+      timeLeft: point.timeLeft,
       lastResult: null,
       lastSession: null,
     }),

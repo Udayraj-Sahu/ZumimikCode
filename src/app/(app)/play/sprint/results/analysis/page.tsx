@@ -80,28 +80,16 @@ export default function AnalysisPage() {
 
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-      {/* Back button + header */}
-      <div className="flex items-center gap-3 mb-6">
-        <button
-          type="button"
-          onClick={() => router.push("/play/sprint/results")}
-          className="grid size-10 place-items-center rounded-xl border backdrop-blur-xl text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
-          style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
-          aria-label="Back to results"
-        >
-          <ChevronLeft size={18} />
-        </button>
-        <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-1">
-            <TrendingUp size={12} className="text-primary" />
-            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
-          </div>
-          <h1 className="text-[16px] font-bold tracking-[-0.02em] text-foreground leading-tight">Analysis</h1>
-          <p className="text-micro text-muted-foreground/45 font-normal">
-            {session.topicLabel} &middot; {wrongAnswers.length} wrong answer
-            {wrongAnswers.length > 1 ? "s" : ""}
-          </p>
+      {/* Centered pill badge */}
+      <div className="flex flex-col items-center gap-2 mb-6">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-5 py-2">
+          <TrendingUp size={12} className="text-primary" />
+          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
         </div>
+        <p className="text-micro text-muted-foreground/45 font-normal">
+          {session.topicLabel} &middot; {wrongAnswers.length} wrong answer
+          {wrongAnswers.length > 1 ? "s" : ""}
+        </p>
       </div>
 
       {/* Wrong answers list */}

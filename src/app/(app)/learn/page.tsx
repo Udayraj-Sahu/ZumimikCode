@@ -27,6 +27,11 @@ import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { useMockPapers } from "@/hooks/queries/use-mock-exam";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
+import { AdaptiveReprompt } from "@/components/adaptive/adaptive-reprompt";
+import { AdaptiveDashboard } from "@/components/adaptive/adaptive-dashboard";
+import { PaywallModal } from "@/components/pricing/paywall-modal";
+import { usePlanStore } from "@/stores/plan-store";
+import { usePaywallStore } from "@/stores/paywall-store";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -109,6 +114,10 @@ function LearnPageContent() {
   const activePreps = useOnboardingStore((s) => s.activePreps);
   const activeLearnDomain = useOnboardingStore((s) => s.activeLearnDomain);
   const setActiveLearnDomain = useOnboardingStore((s) => s.setActiveLearnDomain);
+  const adaptiveConfigured = useOnboardingStore((s) => s.adaptiveConfigured);
+  const canTakeMock = usePlanStore((s) => s.canTakeMock);
+  const recordMock = usePlanStore((s) => s.recordMock);
+  const openPaywall = usePaywallStore((s) => s.openPaywall);
   const [mode, setMode] = useState<Mode>(() => {
     const m = searchParams.get("mode");
     return m === "mock" || m === "adaptive" ? m : "explore";
@@ -434,7 +443,9 @@ function LearnPageContent() {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         >
-          {prepExams.length === 0 ? (
+          {!adaptiveConfigured ? (
+            <AdaptiveReprompt onDone={() => setMode("adaptive")} />
+          ) : prepExams.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-10 text-center rounded-3xl border border-dashed border-white/[0.08]" style={{ background: GLASS_BG }}>
               <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
                 <Lock size={16} className="text-muted-foreground/45" />
@@ -442,16 +453,7 @@ function LearnPageContent() {
               <span className="text-[13px] text-muted-foreground/50">Select exam via add prep</span>
             </div>
           ) : (
-            <div className="relative rounded-3xl border border-dashed border-white/[0.08] py-16 text-center px-6" style={{ background: GLASS_BG }}>
-              <div className="absolute inset-0 opacity-[0.06]" style={{ background: `radial-gradient(circle at top right, ${activeMode.color}, transparent 75%)` }} />
-              <div className="size-14 rounded-2xl mx-auto flex items-center justify-center mb-4" style={{ background: `${activeMode.color}15` }}>
-                <activeMode.Icon size={24} style={{ color: activeMode.color }} />
-              </div>
-              <p className="text-[15px] font-bold tracking-[-0.01em] text-foreground">Coming soon</p>
-              <p className="text-[12px] text-muted-foreground/45 mt-1.5 max-w-[260px] mx-auto leading-relaxed font-normal">
-                {activeMode.label} is being built. It&apos;ll land right here in the Learn tab.
-              </p>
-            </div>
+            <AdaptiveDashboard domain={activeDomain || prepExams[0]} />
           )}
         </motion.div>
         )}
@@ -636,7 +638,14 @@ function LearnPageContent() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => router.push(`/learn/mock/run?paper=${paper.id}&domain=${activeDomain}`)}
+                      onClick={() => {
+                        if (!canTakeMock()) {
+                          openPaywall("mock");
+                          return;
+                        }
+                        recordMock();
+                        router.push(`/learn/mock/run?paper=${paper.id}&domain=${activeDomain}`);
+                      }}
                       className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                     >
                       <Play size={12} strokeWidth={2.5} /> Take Test
@@ -659,6 +668,7 @@ function LearnPageContent() {
       {showAddPrep && (
         <AddPrepModal onClose={() => setShowAddPrep(false)} />
       )}
+      <PaywallModal />
       </div>
     </div>
   );

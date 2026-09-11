@@ -147,6 +147,25 @@ const DASHBOARD_DATA_BY_DOMAIN: Record<string, {
       { label: "English RC Passages", score: "17/20", time: "2d ago" },
     ],
   },
+  "vedic-math": {
+    topics: [
+      { name: "Vedic Addition", value: 72, color: "primary" },
+      { name: "Vedic Subtraction", value: 65, color: "primary" },
+      { name: "Vedic Multiplication", value: 58, color: "primary" },
+      { name: "Squares & Bases", value: 44, color: "primary" },
+    ],
+    stats: { accuracy: 88, questions: 540, percentile: 76, speed: 35 },
+    upcoming: [
+      { title: "Speed Math Crash", time: "Today, 6PM", tag: "LIVE" },
+      { title: "Multiplication Blitz", time: "Fri, 7PM", tag: "MOCK" },
+      { title: "Daily Digits", time: "Sun, 9AM", tag: "GROUP" },
+    ],
+    recent: [
+      { label: "Vedic Multiply Set", score: "18/20", time: "1h ago" },
+      { label: "Squares Drill", score: "15/18", time: "Yesterday" },
+      { label: "Addition Speed Run", score: "22/25", time: "2d ago" },
+    ],
+  },
 };
 
 export function getDashboardData(domain: string) {

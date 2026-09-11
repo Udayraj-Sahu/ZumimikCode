@@ -30,12 +30,14 @@ import { cn } from "@/lib/utils";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { ExamDateModal } from "@/components/dashboard/exam-date-modal";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useOnboardingStore, examIdForGoal } from "@/stores/onboarding-store";
 import { useHabitStore } from "@/stores/habit-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
+import { PersonaHooks } from "@/components/onboarding/persona-hooks";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 import { InviteCard } from "@/components/dashboard/invite-card";
+import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 
 const ACCENT = "#C7F252";
 const GLASS_BG = "rgba(255,255,255,0.04)";
@@ -264,13 +266,24 @@ export default function DashboardPage() {
   const examDates = useOnboardingStore((s) => s.examDates);
   const setExamDate = useOnboardingStore((s) => s.setExamDate);
   const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
+  const hookSeen = useOnboardingStore((s) => s.hookSeen);
+  const setHookSeen = useOnboardingStore((s) => s.setHookSeen);
   const { data } = useDashboardData(targetExam);
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const [examDateOpen, setExamDateOpen] = useState(false);
+  const [showHooks, setShowHooks] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
+
+  const hookDomain = examIdForGoal(goal);
+
+  useEffect(() => {
+    if (isOnboarded && !hookSeen && hookDomain && !onboardingOpen) {
+      setShowHooks(true);
+    }
+  }, [isOnboarded, hookSeen, hookDomain, onboardingOpen]);
 
   const profileDone = [firstName.trim(), persona, goal].filter(Boolean).length;
   const profileComplete = isOnboarded;
@@ -857,6 +870,9 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* Resume Protocol */}
+      <ResumeProtocolCard />
+
       {/* Topic Mastery + Recent Activity */}
       <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 px-5 mt-6">
         {/* Topic Mastery */}
@@ -1026,6 +1042,15 @@ export default function DashboardPage() {
         onConfirm={(d) => setExamDate(targetExam, d)}
         onClose={() => setExamDateOpen(false)}
       />
+      {showHooks && hookDomain && (
+        <PersonaHooks
+          domain={hookDomain}
+          onDismiss={() => {
+            setHookSeen(true);
+            setShowHooks(false);
+          }}
+        />
+      )}
     </div>
   );
 }

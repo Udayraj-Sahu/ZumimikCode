@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
 import {
@@ -27,9 +27,14 @@ import {
   ArrowRight,
   Clock,
   TrendingUp,
+  Bell,
+  Timer,
+  Crown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore, examIdForGoal } from "@/stores/onboarding-store";
+import { DRILLS, VEDIC_USE_CASES, DAILY_TIME_OPTIONS, REMINDER_TIMES, PLANS } from "@/lib/types/onboarding";
+import type { FocusMode, PlanId } from "@/lib/types/onboarding";
 
 const PERSONA_OPTIONS = [
   { label: "Student", icon: GraduationCap, color: "#34D399", desc: "Currently studying" },
@@ -48,6 +53,20 @@ const GOAL_OPTIONS = [
   { label: "Help with school stuff", icon: School, color: "#FB7185", desc: "Academic support" },
   { label: "Just exploring", icon: Compass, color: "#8B9086", desc: "Seeing what's here" },
 ];
+
+const TEMPORAL_OPTIONS = [
+  { label: "Taking exam this year", icon: Clock, color: "#34D399", desc: "We'll plan with a deadline" },
+  { label: "Whenever I'm prepared", icon: TrendingUp, color: "#A78BFA", desc: "Focus on mastery, no rush" },
+  { label: "Not sure yet", icon: Compass, color: "#22D3EE", desc: "Flexible, balanced approach" },
+];
+
+const TEMPORAL_GOALS = ["Prepare for CAT", "Prepare for GMAT", "Prepare for GRE"];
+type TemporalWindowId = "this_year" | "whenever" | "not_sure";
+const EXAM_GOALS = new Map<string, TemporalWindowId>([
+  ["Taking exam this year", "this_year"],
+  ["Whenever I'm prepared", "whenever"],
+  ["Not sure yet", "not_sure"],
+]);
 
 const TRIGGER_GROUPED = [
   {
@@ -74,10 +93,35 @@ const MONTHS = [
 const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
 const YEARS = Array.from({ length: 30 }, (_, i) => 2010 - i);
 
-const TOTAL_STEPS = 5;
-const STEP_LABELS = ["Name", "Who", "Goal", "Vibe", "Details"];
-const STEP_COLORS = ["#C8FF4D", "#22D3EE", "#34D399", "#A855F7", "#FF5C5C"];
-const STEP_ICONS = [User, Users, Target, Brain, ClipboardList];
+type StepId = "name" | "persona" | "goal" | "temporal" | "vedic-use-case" | "triggers" | "details" | "drills" | "story" | "daily-time" | "plan";
+
+const STEP_LABEL_BY_ID: Record<StepId, string> = {
+  name: "Name",
+  persona: "Who",
+  goal: "Goal",
+  temporal: "When",
+  "vedic-use-case": "Use",
+  triggers: "Vibe",
+  details: "Details",
+  drills: "Drill",
+  story: "Story",
+  "daily-time": "Time",
+  plan: "Plan",
+};
+
+const STEP_ICON_BY_ID: Record<StepId, any> = {
+  name: User,
+  persona: Users,
+  goal: Target,
+  temporal: Clock,
+  "vedic-use-case": Zap,
+  triggers: Brain,
+  details: ClipboardList,
+  drills: Zap,
+  story: Bell,
+  "daily-time": Timer,
+  plan: Crown,
+};
 
 type Props = { onClose: () => void; inline?: boolean };
 
@@ -95,9 +139,40 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const [localFirstName, setLocalFirstName] = useState(store.firstName);
   const [localPersona, setLocalPersona] = useState<string | null>(store.persona);
   const [localGoal, setLocalGoal] = useState<string | null>(store.goal);
+  const [localTemporal, setLocalTemporal] = useState<string | null>(() =>
+    store.temporalWindow
+      ? ([...EXAM_GOALS.entries()].find(([, v]) => v === store.temporalWindow)?.[0] ?? null)
+      : null,
+  );
   const [localTriggers, setLocalTriggers] = useState<string[]>(store.triggers);
   const [localSex, setLocalSex] = useState<string | null>(store.sex);
   const [localDob, setLocalDob] = useState(store.dob);
+  const [localDrill, setLocalDrill] = useState<string | null>(store.selectedDrill);
+  const [localReminder, setLocalReminder] = useState(store.reminderTime || "19:00");
+  const [localFocusMode, setLocalFocusMode] = useState<FocusMode>(store.focusMode || "sprint");
+  const [localDailyTime, setLocalDailyTime] = useState<number | null>(store.dailyMinutes);
+  const [localPlan, setLocalPlan] = useState<PlanId>(store.planId ?? "initiate");
+  const [localVedicUseCase, setLocalVedicUseCase] = useState<string | null>(store.vedicUseCase);
+
+  const isExam = localGoal ? TEMPORAL_GOALS.includes(localGoal) : false;
+  const isVedic = localGoal === "Master speed math";
+  const isExploring = localGoal === "Just exploring";
+  const examNotSure = isExam && localTemporal === "not_sure";
+  const showDrills = !isExploring && !examNotSure;
+
+  const resolvedSteps: StepId[] = useMemo(() => {
+    const steps: StepId[] = ["name", "persona", "goal"];
+    if (isExam) steps.push("temporal");
+    else if (isVedic) steps.push("vedic-use-case");
+    steps.push("triggers", "details");
+    if (showDrills) steps.push("drills");
+    steps.push("story", "daily-time", "plan");
+    return steps;
+  }, [isExam, isVedic, showDrills]);
+
+  const totalSteps = resolvedSteps.length;
+  const stepLabels = resolvedSteps.map((id) => STEP_LABEL_BY_ID[id]);
+  const stepIcons = resolvedSteps.map((id) => STEP_ICON_BY_ID[id]);
 
   useEffect(() => {
     if (store.isOnboarded) {
@@ -127,6 +202,15 @@ export function OnboardingModal({ onClose, inline }: Props) {
     store.setPersona(localPersona);
     store.setGoal(localGoal);
     store.setTargetExam(examIdForGoal(localGoal));
+    const temporalId = localTemporal ? EXAM_GOALS.get(localTemporal) : null;
+    if (temporalId) store.setTemporalWindow(temporalId);
+    store.setVedicUseCase(localVedicUseCase as any);
+    store.setSelectedDrill(localDrill as any);
+    store.setWantsDrills(localDrill !== null);
+    store.setReminderTime(localReminder);
+    store.setFocusMode(localFocusMode);
+    store.setDailyMinutes(localDailyTime);
+    store.setPlanId(localPlan);
     store.setSex(localSex);
     store.setDob(localDob);
     store.setCurrentStep(step);
@@ -156,6 +240,18 @@ export function OnboardingModal({ onClose, inline }: Props) {
     store.setSex(localSex);
     store.setDob(localDob);
     store.setTargetExam(examIdForGoal(localGoal));
+    const temporalId = localTemporal ? EXAM_GOALS.get(localTemporal) : null;
+    if (temporalId) store.setTemporalWindow(temporalId);
+    store.setVedicUseCase(localVedicUseCase as any);
+    store.setSelectedDrill(localDrill as any);
+    store.setWantsDrills(localDrill !== null);
+    store.setReminderTime(localReminder);
+    store.setFocusMode(localFocusMode);
+    store.setDailyMinutes(localDailyTime);
+    store.setPlanId(localPlan);
+    const domainId = examIdForGoal(localGoal);
+    store.setAdaptiveConfigured(domainId !== "");
+    store.setJustExploring(localGoal === "Just exploring");
     store.finishOnboarding();
     setCompleted(true);
     if (contentRef.current) {
@@ -177,7 +273,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
   };
 
   const goNext = () => {
-    if (step < TOTAL_STEPS - 1) {
+    if (step < totalSteps - 1) {
       setDirection(1);
       prevStepRef.current = step;
       setStep((s) => s + 1);
@@ -193,6 +289,10 @@ export function OnboardingModal({ onClose, inline }: Props) {
   };
 
   useEffect(() => {
+    setStep((s) => Math.min(s, resolvedSteps.length - 1));
+  }, [resolvedSteps.length]);
+
+  useEffect(() => {
     if (prevStepRef.current !== step) {
       animateStepTransition(direction);
     }
@@ -205,12 +305,16 @@ export function OnboardingModal({ onClose, inline }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
-  const canNext =
-    (step === 0 && localFirstName.trim().length > 0) ||
-    (step === 1 && localPersona !== null) ||
-    (step === 2 && localGoal !== null) ||
-    step === 3 ||
-    step === 4;
+  const canNext = (() => {
+    const id = resolvedSteps[step];
+    if (id === "name") return localFirstName.trim().length > 0;
+    if (id === "persona") return localPersona !== null;
+    if (id === "goal") return localGoal !== null;
+    if (id === "temporal") return localTemporal !== null;
+    if (id === "vedic-use-case") return localVedicUseCase !== null;
+    if (id === "daily-time") return localDailyTime !== null;
+    return true;
+  })();
 
   const panel = (
     <div className="flex flex-col h-full">
@@ -225,8 +329,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
             <X size={16} />
           </button>
           <div className="flex items-center gap-2">
-            {STEP_LABELS.map((label, i) => {
-              const StepIcon = STEP_ICONS[i];
+            {stepLabels.map((label, i) => {
+              const StepIcon = stepIcons[i];
               const isActive = i === step;
               const isDone = i < step;
               return (
@@ -261,7 +365,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
         <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%`, background: "#C8FF4D" }}
+            style={{ width: `${((step + 1) / totalSteps) * 100}%`, background: "#C8FF4D" }}
           />
         </div>
       </div>
@@ -274,45 +378,112 @@ export function OnboardingModal({ onClose, inline }: Props) {
           </div>
         ) : (
           <div ref={contentRef} className="flex flex-col">
-            {step === 0 && (
-              <StepName
-                value={localFirstName}
-                onChange={setLocalFirstName}
-                onNext={goNext}
-              />
-            )}
-            {step === 1 && (
-              <StepSingleSelect
-                title="What describes you?"
-                subtitle="Pick the one that fits best"
-                options={PERSONA_OPTIONS}
-                value={localPersona}
-                onSelect={setLocalPersona}
-              />
-            )}
-            {step === 2 && (
-              <StepSingleSelect
-                title="What brings you here?"
-                subtitle="We'll tailor content to your goal"
-                options={GOAL_OPTIONS}
-                value={localGoal}
-                onSelect={setLocalGoal}
-              />
-            )}
-            {step === 3 && (
-              <StepTriggers
-                value={localTriggers}
-                onChange={setLocalTriggers}
-              />
-            )}
-            {step === 4 && (
-              <StepDetails
-                sex={localSex}
-                onSexChange={setLocalSex}
-                dob={localDob}
-                onDobChange={setLocalDob}
-              />
-            )}
+            {(() => {
+              const id = resolvedSteps[step];
+              switch (id) {
+                case "name":
+                  return (
+                    <StepName
+                      value={localFirstName}
+                      onChange={setLocalFirstName}
+                      onNext={goNext}
+                    />
+                  );
+                case "persona":
+                  return (
+                    <StepSingleSelect
+                      title="What describes you?"
+                      subtitle="Pick the one that fits best"
+                      options={PERSONA_OPTIONS}
+                      value={localPersona}
+                      onSelect={setLocalPersona}
+                    />
+                  );
+                case "goal":
+                  return (
+                    <StepSingleSelect
+                      title="What brings you here?"
+                      subtitle="We'll tailor content to your goal"
+                      options={GOAL_OPTIONS}
+                      value={localGoal}
+                      onSelect={setLocalGoal}
+                    />
+                  );
+                case "temporal":
+                  return (
+                    <StepSingleSelect
+                      title="When is your exam?"
+                      subtitle="This helps us plan your prep timeline"
+                      options={TEMPORAL_OPTIONS}
+                      value={localTemporal}
+                      onSelect={setLocalTemporal}
+                    />
+                  );
+                case "vedic-use-case":
+                  return (
+                    <StepSingleSelect
+                      title="What's your goal with speed math?"
+                      subtitle="Each path adapts the learning journey"
+                      options={VEDIC_USE_CASES.map((u) => ({
+                        label: u.label,
+                        icon: Zap,
+                        color: "#FBBF24",
+                        desc: u.desc,
+                      }))}
+                      value={localVedicUseCase}
+                      onSelect={setLocalVedicUseCase}
+                    />
+                  );
+                case "triggers":
+                  return (
+                    <StepTriggers
+                      value={localTriggers}
+                      onChange={setLocalTriggers}
+                    />
+                  );
+                case "details":
+                  return (
+                    <StepDetails
+                      sex={localSex}
+                      onSexChange={setLocalSex}
+                      dob={localDob}
+                      onDobChange={setLocalDob}
+                    />
+                  );
+                case "drills":
+                  return (
+                    <StepDrill
+                      value={localDrill}
+                      onChange={setLocalDrill}
+                    />
+                  );
+                case "story":
+                  return (
+                    <StepStory
+                      reminder={localReminder}
+                      onReminderChange={setLocalReminder}
+                      focusMode={localFocusMode}
+                      onFocusModeChange={setLocalFocusMode}
+                    />
+                  );
+                case "daily-time":
+                  return (
+                    <StepDailyTime
+                      value={localDailyTime}
+                      onChange={setLocalDailyTime}
+                    />
+                  );
+                case "plan":
+                  return (
+                    <StepPlan
+                      value={localPlan}
+                      onChange={setLocalPlan}
+                    />
+                  );
+                default:
+                  return null;
+              }
+            })()}
           </div>
         )}
       </div>
@@ -333,7 +504,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
             ) : <div />}
             <button
               type="button"
-              onClick={step === TOTAL_STEPS - 1 ? handleFinish : goNext}
+              onClick={step === totalSteps - 1 ? handleFinish : goNext}
               disabled={!canNext}
               className={cn(
                 "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
@@ -343,7 +514,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
               )}
               style={canNext ? { background: "#C8FF4D" } : undefined}
             >
-              {step === TOTAL_STEPS - 1 ? (
+              {step === totalSteps - 1 ? (
                 <Sparkles size={16} />
               ) : (
                 <ArrowRight size={16} />
@@ -663,6 +834,230 @@ function ScrollColumn({
   );
 }
 
+function StepDrill({ value, onChange }: { value: string | null; onChange: (v: string | null) => void }) {
+  return (
+    <div className="flex flex-col">
+      <div className="mb-5">
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Pick a warm-up drill</h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Speed math and shortcuts pay off across every section</p>
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        {DRILLS.map((d) => {
+          const active = value === d.id;
+          return (
+            <button
+              key={d.id}
+              type="button"
+              onClick={() => onChange(active ? null : d.id)}
+              className={cn(
+                "relative rounded-2xl border p-3.5 text-left transition-all active:scale-[0.97]",
+                active
+                  ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                  : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+              )}
+            >
+              <div className="size-8 rounded-lg flex items-center justify-center mb-2.5" style={{ background: active ? "#C8FF4D20" : "rgba(255,255,255,0.04)" }}>
+                <Zap size={14} style={{ color: active ? "#C8FF4D" : "rgba(255,255,255,0.3)" }} />
+              </div>
+              <p className={cn("text-[12px] font-bold leading-tight", active ? "text-foreground" : "text-foreground/60")}>{d.label}</p>
+              <p className="text-micro text-muted-foreground/55 mt-1 font-medium leading-snug">{d.desc}</p>
+              {active && (
+                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[#C8FF4D]">
+                  <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <button
+        type="button"
+        onClick={() => onChange(null)}
+        className="mt-4 text-[11px] font-bold text-muted-foreground/40 transition-colors hover:text-foreground/70 self-center"
+      >
+        Skip for now
+      </button>
+    </div>
+  );
+}
+
+function StepStory({
+  reminder,
+  onReminderChange,
+  focusMode,
+  onFocusModeChange,
+}: {
+  reminder: string;
+  onReminderChange: (v: string) => void;
+  focusMode: FocusMode;
+  onFocusModeChange: (v: FocusMode) => void;
+}) {
+  const pacingOptions: { id: FocusMode; label: string; desc: string }[] = [
+    { id: "sleep", label: "Sleep Focus", desc: "Short daily reps, low pressure" },
+    { id: "sprint", label: "Sprint", desc: "Longer sessions, faster progress" },
+  ];
+  return (
+    <div className="flex flex-col">
+      <div className="mb-5">
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Lock in a daily check-in</h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">One nudge a day, at a time you&apos;ll actually keep</p>
+      </div>
+
+      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-2.5 uppercase">Remind me at</p>
+      <div className="grid grid-cols-4 gap-2">
+        {REMINDER_TIMES.map((t) => {
+          const active = reminder === t;
+          return (
+            <button
+              key={t}
+              type="button"
+              onClick={() => onReminderChange(t)}
+              className={cn(
+                "rounded-xl border py-2.5 text-[12px] font-bold tracking-wide transition-all active:scale-95",
+                active
+                  ? "border-[#22D3EE]/40 bg-[#22D3EE]/10 text-[#22D3EE]"
+                  : "border-white/[0.06] bg-white/[0.02] text-foreground/60 hover:bg-white/[0.05]",
+              )}
+            >
+              {t}
+            </button>
+          );
+        })}
+      </div>
+
+      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-2.5 mt-6 uppercase">Pacing mode</p>
+      <div className="grid grid-cols-2 gap-2.5">
+        {pacingOptions.map((p) => {
+          const active = focusMode === p.id;
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => onFocusModeChange(p.id)}
+              className={cn(
+                "relative rounded-2xl border p-4 text-left transition-all active:scale-[0.97]",
+                active
+                  ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                  : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+              )}
+            >
+              <p className={cn("text-[13px] font-bold", active ? "text-foreground" : "text-foreground/60")}>{p.label}</p>
+              <p className="text-micro text-muted-foreground/55 mt-1 font-medium leading-snug">{p.desc}</p>
+              {active && (
+                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[#C8FF4D]">
+                  <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+const DAILY_TIME_DESC: Record<number, string> = {
+  15: "Short & sharp",
+  30: "Balanced",
+  45: "Solid block",
+  60: "Deep dive",
+  90: "Full immersion",
+};
+
+function StepDailyTime({ value, onChange }: { value: number | null; onChange: (v: number) => void }) {
+  return (
+    <div className="flex flex-col">
+      <div className="mb-5">
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">How much time daily?</h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">We&apos;ll fit your plan to this budget</p>
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        {DAILY_TIME_OPTIONS.map((mins) => {
+          const active = value === mins;
+          return (
+            <button
+              key={mins}
+              type="button"
+              onClick={() => onChange(mins)}
+              className={cn(
+                "relative rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
+                active
+                  ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                  : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+              )}
+            >
+              <div className="flex items-baseline gap-1">
+                <span className={cn("text-[20px] font-black tracking-tight", active ? "text-[#C8FF4D]" : "text-foreground/70")}>
+                  {mins}
+                </span>
+                <span className="text-[11px] font-bold text-muted-foreground/50">
+                  {mins === 90 ? "min+" : "min"}
+                </span>
+              </div>
+              <p className="text-micro text-muted-foreground/55 mt-1 font-medium">{DAILY_TIME_DESC[mins]}</p>
+              {active && (
+                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[#C8FF4D]">
+                  <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function StepPlan({ value, onChange }: { value: PlanId; onChange: (v: PlanId) => void }) {
+  return (
+    <div className="flex flex-col">
+      <div className="mb-5">
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Choose your plan</h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">The plan unlocks your adaptive engine</p>
+      </div>
+      <div className="flex flex-col gap-2.5">
+        {PLANS.map((p) => {
+          const active = value === p.id;
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => onChange(p.id)}
+              className={cn(
+                "relative w-full rounded-2xl border p-4 text-left transition-all active:scale-[0.98]",
+                active
+                  ? "border-[#C8FF4D]/40 bg-[#C8FF4D]/[0.06]"
+                  : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+              )}
+            >
+              {p.highlight && (
+                <span className="absolute -top-2 right-4 rounded-full bg-[#C8FF4D] px-2.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-[#0A0C0A]">
+                  Most popular
+                </span>
+              )}
+              <div className="flex items-baseline justify-between gap-2">
+                <p className={cn("text-[13px] font-bold", active ? "text-foreground" : "text-foreground/70")}>{p.name}</p>
+                <p className="text-[14px] font-black text-foreground">
+                  {p.price}
+                  <span className="text-[10px] font-medium text-muted-foreground/50">{p.cadence}</span>
+                </p>
+              </div>
+              <ul className="mt-2 flex flex-col gap-1">
+                {p.features.map((f) => (
+                  <li key={f} className="flex items-center gap-1.5 text-micro text-muted-foreground/55 font-medium">
+                    <Check size={9} className="shrink-0 text-[#C8FF4D]" strokeWidth={3} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function CompletionScreen() {
   const store = useOnboardingStore();
   const boxRef = useRef<HTMLDivElement>(null);
@@ -702,6 +1097,18 @@ function CompletionScreen() {
             <div key={item.l} className="flex flex-col items-center gap-1">
               <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">{item.l}</span>
               <span className="text-[13px] font-bold text-foreground/70">{item.v}</span>
+            </div>
+          ))}
+        </div>
+        <div className="relative mt-4 flex items-center justify-around gap-2 border-t border-white/[0.05] pt-4">
+          {[
+            { l: "PLAN", v: PLANS.find((p) => p.id === store.planId)?.name ?? "Initiate" },
+            { l: "DAILY", v: store.dailyMinutes ? `${store.dailyMinutes} min` : "30 min" },
+            { l: "DRILL", v: DRILLS.find((d) => d.id === store.selectedDrill)?.label ?? "None" },
+          ].map((item) => (
+            <div key={item.l} className="flex flex-col items-center gap-1">
+              <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">{item.l}</span>
+              <span className="text-[12px] font-bold text-foreground/70">{item.v}</span>
             </div>
           ))}
         </div>

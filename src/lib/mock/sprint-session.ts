@@ -29,6 +29,12 @@ const TOPIC_TECHNIQUE_MAP: Record<string, Record<string, string[]>> = {
     ga: [],
     computer: [],
   },
+  "vedic-math": {
+    addition: [],
+    subtraction: [],
+    multiplication: [],
+    squares: [],
+  },
 };
 
 const sourceCounter = { count: 0 };
@@ -193,11 +199,44 @@ const BANKING_QUESTIONS: Record<string, Question[]> = {
   ],
 };
 
+// ── VEDIC MATH ────────────────────────────────────
+const VEDIC_MATH_QUESTIONS: Record<string, Question[]> = {
+  addition: [
+    { id: "vm-add1", text: "Use the left-to-right method: what is 347 + 529?", options: ["866", "876", "846", "886"], correctIndex: 1, timeLimit: 15 },
+    { id: "vm-add2", text: "What is 68 + 47 using whole-number splitting?", options: ["105", "115", "125", "95"], correctIndex: 1, timeLimit: 15 },
+    { id: "vm-add3", text: "What is 999 + 478 + 21 (balancing to 1000)?", options: ["1497", "1498", "1478", "1508"], correctIndex: 1, timeLimit: 20 },
+    { id: "vm-add4", text: "What is 1234 + 8765?", options: ["9899", "9999", "10000", "9989"], correctIndex: 1, timeLimit: 20 },
+    { id: "vm-add5", text: "What is 56 + 78 + 44 (re-grouping)?", options: ["168", "178", "178", "188"], correctIndex: 1, timeLimit: 15 },
+  ],
+  subtraction: [
+    { id: "vm-sub1", text: "What is 1000 - 364 (from base 10)?", options: ["636", "646", "664", "634"], correctIndex: 0, timeLimit: 20 },
+    { id: "vm-sub2", text: "What is 83 - 47 using complement? (47 as 50 - 3)", options: ["34", "36", "46", "44"], correctIndex: 1, timeLimit: 20 },
+    { id: "vm-sub3", text: "What is 500 - 87?", options: ["413", "423", "403", "453"], correctIndex: 0, timeLimit: 15 },
+    { id: "vm-sub4", text: "What is 100 - 36?", options: ["64", "74", "66", "54"], correctIndex: 0, timeLimit: 10 },
+    { id: "vm-sub5", text: "What is 2500 - 496?", options: ["2004", "2014", "1994", "2006"], correctIndex: 0, timeLimit: 20 },
+  ],
+  multiplication: [
+    { id: "vm-mul1", text: "What is 12 × 15 (vertically and crosswise)?", options: ["170", "180", "160", "190"], correctIndex: 1, timeLimit: 20 },
+    { id: "vm-mul2", text: "What is 25 × 12?", options: ["300", "250", "325", "275"], correctIndex: 0, timeLimit: 15 },
+    { id: "vm-mul3", text: "What is 11 × 63 (Vedic 11 rule)?", options: ["673", "693", "683", "703"], correctIndex: 1, timeLimit: 20 },
+    { id: "vm-mul4", text: "What is 99 × 87 (base 100)?", options: ["8613", "8513", "8713", "8413"], correctIndex: 0, timeLimit: 25 },
+    { id: "vm-mul5", text: "What is 32 × 11?", options: ["342", "352", "362", "352"], correctIndex: 1, timeLimit: 10 },
+  ],
+  squares: [
+    { id: "vm-sq1", text: "What is 25² (base 50)?", options: ["525", "625", "575", "675"], correctIndex: 1, timeLimit: 20 },
+    { id: "vm-sq2", text: "What is 15²?", options: ["225", "215", "235", "205"], correctIndex: 0, timeLimit: 10 },
+    { id: "vm-sq3", text: "What is 45² (ending in 5 rule)?", options: ["1825", "1925", "2025", "2125"], correctIndex: 2, timeLimit: 20 },
+    { id: "vm-sq4", text: "What is 11²?", options: ["111", "121", "131", "101"], correctIndex: 1, timeLimit: 10 },
+    { id: "vm-sq5", text: "What is 65²?", options: ["4025", "4125", "4225", "4325"], correctIndex: 2, timeLimit: 20 },
+  ],
+};
+
 const QUESTIONS_BY_DOMAIN: Record<string, Record<string, Question[]>> = {
   gmat: GMAT_QUESTIONS,
   cat: CAT_QUESTIONS,
   gre: GRE_QUESTIONS,
   banking: BANKING_QUESTIONS,
+  "vedic-math": VEDIC_MATH_QUESTIONS,
 };
 
 const QUESTION_META: Record<string, { explanation: string; hint?: string }> = {
@@ -337,6 +376,12 @@ const TOPIC_LABELS: Record<string, Record<string, string>> = {
     english: "English",
     ga: "General Awareness",
     computer: "Computer Knowledge",
+  },
+  "vedic-math": {
+    addition: "Vedic Addition",
+    subtraction: "Vedic Subtraction",
+    multiplication: "Vedic Multiplication",
+    squares: "Squares & Bases",
   },
 };
 

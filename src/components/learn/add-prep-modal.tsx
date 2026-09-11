@@ -7,6 +7,9 @@ import { X, GraduationCap, Calculator, BookOpen, Landmark, Check } from "lucide-
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
+import { usePlanStore } from "@/stores/plan-store";
+import { usePaywallStore } from "@/stores/paywall-store";
+import { PaywallModal } from "@/components/pricing/paywall-modal";
 
 const EXAMS = [
   { id: "cat", label: "CAT", icon: GraduationCap },
@@ -29,6 +32,8 @@ export function AddPrepModal({ onClose }: Props) {
   const removeActivePrep = useOnboardingStore((s) => s.removeActivePrep);
   const activePreps = useOnboardingStore((s) => s.activePreps);
   const targetExam = useOnboardingStore((s) => s.targetExam);
+  const canAddPrep = usePlanStore((s) => s.canAddPrep);
+  const openPaywall = usePaywallStore((s) => s.openPaywall);
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const { data } = useDashboardData(selectedExam ?? undefined);
@@ -54,12 +59,19 @@ export function AddPrepModal({ onClose }: Props) {
 
   const handleConfirm = () => {
     if (selectedExam && !activePreps.includes(selectedExam)) {
+      const alreadyActive = activePreps.includes(selectedExam);
+      if (!alreadyActive && !canAddPrep(activePreps.length + 1)) {
+        openPaywall("prep");
+        return;
+      }
       addActivePrep(selectedExam);
     }
     handleClose();
   };
 
-  return createPortal(
+  return (
+    <>
+    {createPortal(
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm"
@@ -223,5 +235,8 @@ export function AddPrepModal({ onClose }: Props) {
       </div>
     </div>,
     document.body,
+    )}
+    <PaywallModal />
+  </>
   );
 }
