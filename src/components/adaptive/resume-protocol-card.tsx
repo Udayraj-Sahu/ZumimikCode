@@ -78,14 +78,27 @@ export function ResumeProtocolCard({
     ? `/play/sprint?topic=${encodeURIComponent(startRec.topicId)}&length=${startRec.length}&difficulty=${encodeURIComponent(startRec.difficulty)}&adaptive=1&domain=${encodeURIComponent(domain ?? "")}`
     : "/play/configure-sprint";
 
-  if (!visibleSnapshot && !showStartEntry) return null;
+  if (!visibleSnapshot) {
+    if (!showStartEntry) return null;
+    return (
+      <div className={cn("mt-4 px-5", className)}>
+        <button
+          type="button"
+          onClick={() => router.push(startHref)}
+          className="group flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-[11px] font-bold uppercase tracking-widest text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.98]"
+          style={{ background: `linear-gradient(90deg, ${accent}, #C8FF4D)` }}
+        >
+          Start Practice <ChevronRight size={14} />
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("mt-4 px-5", className)}>
       <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
         <div className="absolute left-0 right-0 top-0 h-[3px]" style={{ background: `linear-gradient(90deg, ${accent}, ${accentSecondary})` }} />
 
-        {visibleSnapshot ? (
           <div className="px-5 py-5">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-[0.16em]" style={{ background: `${accent}1a`, color: accent }}>
@@ -139,26 +152,6 @@ export function ResumeProtocolCard({
               </button>
             </div>
           </div>
-        ) : (
-          <div className="px-5 py-5">
-            <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-[0.16em]" style={{ background: `${accent}1a`, color: accent }}>
-              <Sparkles size={9} />
-              Today&apos;s Practice
-            </span>
-            <p className="mt-3 text-[18px] font-bold tracking-[-0.02em] text-foreground leading-tight">Start Today&apos;s Practice</p>
-            <p className="mt-0.5 text-[11px] text-muted-foreground/55">
-              {startRec ? `A ${startRec.length}-question adaptive set on ${startRec.topicLabel ?? startRec.topicId}` : "Personalized sprint based on your current mastery"}
-            </p>
-            <button
-              type="button"
-              onClick={() => router.push(startHref)}
-              className="group mt-4 flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-[11px] font-bold uppercase tracking-widest text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.98]"
-              style={{ background: `linear-gradient(90deg, ${accent}, #C8FF4D)` }}
-            >
-              Start Practice <ChevronRight size={14} />
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Play, Grid3x3, Sigma, Pentagon, Sparkles, Target, Flame, Clock, ChevronRight, Calculator, ListChecks, BookOpen, Zap, Brain, TrendingUp, ShieldCheck, Trophy, CalendarDays } from "lucide-react";
+import { Grid3x3, Sigma, Pentagon, Sparkles, Target, Flame, Clock, ChevronRight, Calculator, ListChecks, BookOpen, Zap, Brain, TrendingUp, ShieldCheck, Trophy, CalendarDays } from "lucide-react";
 import { useAdaptiveState, useTodayPlan } from "@/hooks/queries/use-adaptive";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { resolveJourneyProfile } from "@/lib/adaptive/modes";
@@ -684,28 +684,6 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
         <StatsBlock ctx={ctx} />
         <TimeBudgetBlock ctx={ctx} />
         <TopicMasteryList ctx={ctx} />
-      </div>
-
-      {/* CTA — full width */}
-      <div className="md:col-span-5">
-        <button
-          type="button"
-          onClick={() => router.push(ctx.startHref)}
-          className="group relative w-full overflow-hidden rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A] transition-transform active:scale-[0.98]"
-          style={{
-            background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
-            boxShadow: "0 10px 34px rgba(200,255,77,0.28), 0 1px 0 rgba(255,255,255,0.25) inset",
-          }}
-        >
-          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
-          <span className="relative flex items-center justify-center gap-2">
-            <Play size={13} strokeWidth={2.5} />
-            Start {profile.mode === "brain_gym" ? "Today's Workout" : "Today's Practice"}
-          </span>
-        </button>
-        <p className="mt-2.5 text-center text-[10px] font-medium text-muted-foreground/40">
-          Based on your goal and daily budget
-        </p>
       </div>
     </div>
   );

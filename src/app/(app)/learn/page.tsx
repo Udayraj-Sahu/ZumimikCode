@@ -554,9 +554,6 @@ function LearnPageContent() {
             </div>
           )}
 
-          {/* Today's Practice / Resume — top of Adaptive tab */}
-          <ResumeProtocolCard domain={primaryExam} accent={adaptiveAccent} showStartEntry className="mt-5 px-0" />
-
           {/* Your Stats — mirrors Mock tab, colored per variant */}
           <YourStatsCard
             collapsed={statsCollapsed}
@@ -565,6 +562,9 @@ function LearnPageContent() {
             stats={mockStats}
             color={adaptiveAccent}
           />
+
+          {/* Today's Practice / Resume */}
+          <ResumeProtocolCard domain={primaryExam} accent={adaptiveAccent} showStartEntry className="mt-5 px-0" />
 
           {justExploring && prepExams.length === 0 ? (
             <AdaptiveDashboard domain={primaryExam} />
@@ -658,10 +658,7 @@ function LearnPageContent() {
             </div>
           )}
 
-{/* Mock resume — mirrors practice resume card */}
-          <ResumeProtocolCard domain={activeDomain} accent="#C8FF4D" className="mt-5 px-0" />
-
-          {/* Stats card */}
+{/* Stats card */}
           <YourStatsCard
             collapsed={statsCollapsed}
             onToggle={() => setStatsCollapsed((v) => !v)}
@@ -669,6 +666,9 @@ function LearnPageContent() {
             stats={mockStats}
             color="#C8FF4D"
           />
+
+          {/* Mock resume — shows only when a mock is in progress */}
+          <ResumeProtocolCard domain={activeDomain} accent="#C8FF4D" className="mt-4 px-0" />
 
           {/* Section filter chips */}
           {(prepExams.length > 0 || justExploring) && (() => {
