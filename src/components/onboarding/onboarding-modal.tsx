@@ -29,6 +29,10 @@ import { cn } from "@/lib/utils";
 import { useOnboardingStore, examIdForGoal, goalForExam } from "@/stores/onboarding-store";
 import { VEDIC_USE_CASES, DRILLS, PLANS } from "@/lib/types/onboarding";
 import { FeatureHook } from "@/components/onboarding/feature-hook";
+import { FamilyHook } from "@/components/onboarding/family-hook";
+import { FamilyHubHook } from "@/components/onboarding/family-hub-hook";
+import { SeatBuilderHook } from "@/components/onboarding/seat-builder-hook";
+import { StoryHook } from "@/components/onboarding/story-hook";
 
 const PERSONA_OPTIONS = [
   { label: "Student", icon: GraduationCap, color: "#34D399", desc: "Currently studying" },
@@ -122,11 +126,24 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const [localSex, setLocalSex] = useState<string | null>(store.sex);
   const [localDob, setLocalDob] = useState(store.dob);
   const [localVedicUseCase, setLocalVedicUseCase] = useState<string | null>(store.vedicUseCase);
-  const [featureHookVariant, setFeatureHookVariant] = useState<TemporalWindowId | null>(null);
+  const [featureHookVariant, setFeatureHookVariant] = useState<TemporalWindowId | "vedic" | null>(null);
+  const [showFamily, setShowFamily] = useState(false);
+  const [showFamilyHub, setShowFamilyHub] = useState(false);
+  const [showSeatBuilder, setShowSeatBuilder] = useState(false);
+  const [showStory, setShowStory] = useState(false);
 
   const handleTemporal = (v: TemporalWindowId | null) => {
     setLocalTemporal(v);
     if (v) setFeatureHookVariant(v);
+  };
+
+  const handleVedicUseCase = (v: string | null) => {
+    setLocalVedicUseCase(v);
+    if (v === "Lightning Mental Calc" || v === "Brain Gym") {
+      setFeatureHookVariant("vedic");
+    } else if (v === "Teaching My Kid" || v === "Competitive Exam") {
+      setShowFamily(true);
+    }
   };
 
   const isExam = localGoal ? TEMPORAL_GOALS.includes(localGoal) : false;
@@ -367,7 +384,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                       vedicUseCase={localVedicUseCase}
                       onSelect={setLocalGoal}
                       onTemporal={handleTemporal}
-                      onVedicUseCase={setLocalVedicUseCase}
+                      onVedicUseCase={handleVedicUseCase}
                     />
                   );
                 case "triggers":
@@ -434,14 +451,64 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
   const featureHookDone = () => {
     setFeatureHookVariant(null);
+    if (featureHookVariant === "vedic") {
+      setShowFamilyHub(true);
+      return;
+    }
     goNext();
   };
+
+  const familyHubHook = showFamilyHub ? (
+    <FamilyHubHook
+      onDone={() => {
+        setShowFamilyHub(false);
+        setShowSeatBuilder(true);
+      }}
+      onClose={() => {
+        setShowFamilyHub(false);
+        setShowSeatBuilder(true);
+      }}
+    />
+  ) : null;
+
+  const seatBuilderHook = showSeatBuilder ? (
+    <SeatBuilderHook
+      onClose={() => {
+        setShowSeatBuilder(false);
+        store.setPlanHookSeen(true);
+        setShowStory(true);
+      }}
+    />
+  ) : null;
+
+  const storyHook = showStory ? (
+    <StoryHook
+      onClose={() => {
+        setShowStory(false);
+        store.setStoryHookSeen(true);
+        goNext();
+      }}
+    />
+  ) : null;
+
+  const familyHook = showFamily ? (
+    <FamilyHook
+      onDone={() => {
+        setShowFamily(false);
+        setShowFamilyHub(true);
+      }}
+      onClose={() => {
+        setShowFamily(false);
+        setShowFamilyHub(true);
+      }}
+    />
+  ) : null;
 
   const hookOverlay = featureHookVariant ? (
     <FeatureHook variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
   ) : null;
 
-  if (inline) return <>{panel}{hookOverlay}</>;
+  if (inline) return <>{panel}{hookOverlay}{familyHook}{familyHubHook}{seatBuilderHook}{storyHook}</>;
 
   return (
     <>
@@ -465,6 +532,10 @@ export function OnboardingModal({ onClose, inline }: Props) {
     document.body,
   )}
       {hookOverlay}
+      {familyHook}
+      {familyHubHook}
+      {seatBuilderHook}
+      {storyHook}
     </>
   );
 }

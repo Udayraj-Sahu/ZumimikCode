@@ -37,23 +37,35 @@ export const DAILY_TIME_OPTIONS = [15, 30, 45, 60, 90];
 export const PLANS: {
   id: PlanId;
   name: string;
+  desc: string;
+  lanes: number;
   price: string;
   cadence: string;
+  billing: Record<"annual" | "monthly", number>;
+  badge?: string;
+  tracks?: string[];
+  extra?: string;
   features: string[];
   highlight?: boolean;
 }[] = [
   {
     id: "initiate",
     name: "Initiate",
+    desc: "Ad-free drills for 1 active segment",
+    lanes: 1,
     price: "Free",
     cadence: "forever",
+    billing: { annual: 0, monthly: 0 },
     features: ["1 drill per day", "Daily streak tracking", "Basic leaderboard"],
   },
   {
     id: "single-lane",
     name: "Single Lane Pro",
+    desc: "Full adaptive engine for one exam track",
+    lanes: 1,
     price: "₹399",
     cadence: "/month",
+    billing: { annual: 3990, monthly: 399 },
     features: [
       "Unlimited drills, one exam track",
       "Full adaptive engine",
@@ -63,8 +75,14 @@ export const PLANS: {
   {
     id: "dual-lane",
     name: "Dual Lane Access",
+    desc: "Execute concurrent prep across multiple syllabi.",
+    lanes: 2,
     price: "₹649",
     cadence: "/month",
+    billing: { annual: 6490, monthly: 649 },
+    badge: "MOST POPULAR",
+    tracks: ["CAT (Verbal & Quant)", "GMAT Fast-Track"],
+    extra: "+ Vedic Math HUD",
     features: [
       "Two exam tracks in parallel",
       "Priority drill matching",

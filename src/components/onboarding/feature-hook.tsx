@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const ACCENT = "#C8FF4D";
 
-type Variant = "this_year" | "whenever" | "not_sure";
+type Variant = "this_year" | "whenever" | "not_sure" | "vedic";
 
 type Tone = "lime" | "cyan" | "fuchsia";
 
@@ -83,6 +83,12 @@ const VARIANT_COPY: Record<
     pill: "ADAPTIVE PROTOCOL",
     headline: { text: "Unfair prep. Zero friction.", accent: "Engineered around your pace." },
     sub: "No exam clock forcing the schedule. The engine builds effortless calculation instincts on your own timeline—compound when you can, pause when you must.",
+    caption: "Includes automated daily drills, unlimited mocks & offline mode.",
+  },
+  vedic: {
+    pill: "SPEED PROTOCOL",
+    headline: { text: "Unfair prep. Zero friction.", accent: "Engineered for lightning recall." },
+    sub: "Rapid mental arithmetic rewires your baseline. The engine tracks micro speed, isolates slowness, and compounds recall until answers arrive before you finish reading them.",
     caption: "Includes automated daily drills, unlimited mocks & offline mode.",
   },
 };

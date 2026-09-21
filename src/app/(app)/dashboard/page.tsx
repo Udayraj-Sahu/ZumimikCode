@@ -34,8 +34,10 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useHabitStore } from "@/stores/habit-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
-import { StoryHook } from "@/components/onboarding/story-hook";
 import { PlanHook } from "@/components/onboarding/plan-hook";
+import { SeatBuilderHook } from "@/components/onboarding/seat-builder-hook";
+import { ArenaHook } from "@/components/onboarding/arena-hook";
+import { PitchHook } from "@/components/onboarding/pitch-hook";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 import { InviteCard } from "@/components/dashboard/invite-card";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
@@ -269,25 +271,32 @@ export default function DashboardPage() {
   const examDates = useOnboardingStore((s) => s.examDates);
   const setExamDate = useOnboardingStore((s) => s.setExamDate);
   const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
-  const storyHookSeen = useOnboardingStore((s) => s.storyHookSeen);
-  const setStoryHookSeen = useOnboardingStore((s) => s.setStoryHookSeen);
   const planHookSeen = useOnboardingStore((s) => s.planHookSeen);
   const setPlanHookSeen = useOnboardingStore((s) => s.setPlanHookSeen);
+  const arenaHookSeen = useOnboardingStore((s) => s.arenaHookSeen);
+  const setArenaHookSeen = useOnboardingStore((s) => s.setArenaHookSeen);
+  const pitchHookSeen = useOnboardingStore((s) => s.pitchHookSeen);
+  const setPitchHookSeen = useOnboardingStore((s) => s.setPitchHookSeen);
+  const temporalWindow = useOnboardingStore((s) => s.temporalWindow);
   const { data } = useDashboardData(targetExam);
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const [examDateOpen, setExamDateOpen] = useState(false);
-  const [showStory, setShowStory] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
+  const [showArena, setShowArena] = useState(false);
+  const [showPitch, setShowPitch] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
 
   useEffect(() => {
     if (!isOnboarded || onboardingOpen) return;
-    if (!storyHookSeen) setShowStory(true);
-    else if (!planHookSeen) setShowPlan(true);
-  }, [isOnboarded, onboardingOpen, storyHookSeen, planHookSeen]);
+    const isVedic = targetExam === "vedic-math";
+    const eligibleExam = targetExam && !isVedic;
+    if (!planHookSeen) setShowPlan(true);
+    else if (eligibleExam && !arenaHookSeen && temporalWindow === "this_year") setShowArena(true);
+    else if (eligibleExam && !pitchHookSeen && (temporalWindow === "whenever" || temporalWindow === "not_sure")) setShowPitch(true);
+  }, [isOnboarded, onboardingOpen, planHookSeen, arenaHookSeen, pitchHookSeen, temporalWindow, targetExam]);
 
   const profileSteps = [
     { label: "Name", done: !!firstName.trim() },
@@ -1050,19 +1059,35 @@ export default function DashboardPage() {
         onConfirm={(d) => setExamDate(targetExam, d)}
         onClose={() => setExamDateOpen(false)}
       />
-      {showStory && (
-        <StoryHook
+      {showPlan && targetExam === "vedic-math" && (
+        <SeatBuilderHook
           onClose={() => {
-            setStoryHookSeen(true);
-            setShowStory(false);
+            setPlanHookSeen(true);
+            setShowPlan(false);
           }}
         />
       )}
-      {showPlan && (
+      {showPlan && targetExam !== "vedic-math" && (
         <PlanHook
           onClose={() => {
             setPlanHookSeen(true);
             setShowPlan(false);
+          }}
+        />
+      )}
+      {showArena && (
+        <ArenaHook
+          onClose={() => {
+            setArenaHookSeen(true);
+            setShowArena(false);
+          }}
+        />
+      )}
+      {showPitch && (
+        <PitchHook
+          onClose={() => {
+            setPitchHookSeen(true);
+            setShowPitch(false);
           }}
         />
       )}

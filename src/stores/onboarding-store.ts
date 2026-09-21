@@ -51,6 +51,8 @@ type OnboardingState = {
   vedicUseCase: VedicUseCaseId | null;
   storyHookSeen: boolean;
   planHookSeen: boolean;
+  arenaHookSeen: boolean;
+  pitchHookSeen: boolean;
   reclaimSlot: string;
   reclaimWindow: string;
   triggerType: string;
@@ -90,6 +92,8 @@ type OnboardingState = {
   setVedicUseCase: (useCase: VedicUseCaseId | null) => void;
   setStoryHookSeen: (seen: boolean) => void;
   setPlanHookSeen: (seen: boolean) => void;
+  setArenaHookSeen: (seen: boolean) => void;
+  setPitchHookSeen: (seen: boolean) => void;
   setReclaimSlot: (slot: string) => void;
   setReclaimWindow: (window: string) => void;
   setTriggerType: (type: string) => void;
@@ -130,6 +134,8 @@ const initial = {
   vedicUseCase: null as VedicUseCaseId | null,
   storyHookSeen: false,
   planHookSeen: false,
+  arenaHookSeen: false,
+  pitchHookSeen: false,
   reclaimSlot: "Lunch Break",
   reclaimWindow: "00:00 - 00:00",
   triggerType: "Deep Focus Sprint",
@@ -203,6 +209,8 @@ export const useOnboardingStore = create<OnboardingState>()(
       setVedicUseCase: (vedicUseCase) => set({ vedicUseCase }),
       setStoryHookSeen: (storyHookSeen) => set({ storyHookSeen }),
       setPlanHookSeen: (planHookSeen) => set({ planHookSeen }),
+      setArenaHookSeen: (arenaHookSeen) => set({ arenaHookSeen }),
+      setPitchHookSeen: (pitchHookSeen) => set({ pitchHookSeen }),
       setReclaimSlot: (reclaimSlot) => set({ reclaimSlot }),
       setReclaimWindow: (reclaimWindow) => set({ reclaimWindow }),
       setTriggerType: (triggerType) => set({ triggerType }),

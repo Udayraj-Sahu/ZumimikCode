@@ -22,6 +22,11 @@ import { useOnboardingStore, goalForExam } from "@/stores/onboarding-store";
 import { StoryCommitmentMatrix } from "@/components/onboarding/story-hook";
 import { applyStoryNotifications } from "@/lib/notifications/story-reminders";
 import { PlanSelector } from "@/components/onboarding/plan-hook";
+import { SeatBuilderSelector } from "@/components/onboarding/seat-builder-hook";
+import { ArenaHook } from "@/components/onboarding/arena-hook";
+import { PitchHook } from "@/components/onboarding/pitch-hook";
+import { FamilyHook } from "@/components/onboarding/family-hook";
+import { FamilyHubHook } from "@/components/onboarding/family-hub-hook";
 import { FeatureHook } from "@/components/onboarding/feature-hook";
 import { VEDIC_USE_CASES } from "@/lib/types/onboarding";
 import type { PlanId, StoryCommitment, VedicUseCaseId } from "@/lib/types/onboarding";
@@ -70,7 +75,11 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   }));
   const [plan, setPlan] = useState<PlanId>(store.planId ?? "initiate");
   const [lane, setLane] = useState<string>(store.planLane || store.targetExam || "cat");
-  const [featureHookVariant, setFeatureHookVariant] = useState<"this_year" | "whenever" | "not_sure" | null>(null);
+  const [featureHookVariant, setFeatureHookVariant] = useState<"this_year" | "whenever" | "not_sure" | "vedic" | null>(null);
+  const [showArena, setShowArena] = useState(false);
+  const [showPitch, setShowPitch] = useState(false);
+  const [showFamily, setShowFamily] = useState(false);
+  const [showFamilyHub, setShowFamilyHub] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -104,6 +113,12 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
     setDirection(1);
     prevStepRef.current = step;
     setStep((s) => Math.min(TOTAL_STEPS, s + 1));
+  }, [step]);
+
+  const goToPlan = useCallback(() => {
+    setDirection(1);
+    prevStepRef.current = step;
+    setStep(TOTAL_STEPS - 1);
   }, [step]);
 
   const goPrev = useCallback(() => {
@@ -288,7 +303,14 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                           label: u.label,
                           desc: u.desc,
                           active: vedicUseCase === u.id,
-                          onClick: () => setVedicUseCase(u.id),
+                          onClick: () => {
+                            setVedicUseCase(u.id);
+                            if (u.id === "speed" || u.id === "brain-gym") {
+                              setFeatureHookVariant("vedic");
+                            } else if (u.id === "kid" || u.id === "exam") {
+                              setShowFamily(true);
+                            }
+                          },
                         }))
                       : TEMPORAL_OPTIONS.map((opt) => ({
                           key: opt.value,
@@ -344,12 +366,16 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                     <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Select your plan</h2>
                     <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Choose your training parameters.</p>
                   </div>
-                  <PlanSelector
-                    value={plan}
-                    onChange={setPlan}
-                    lane={lane}
-                    onLaneChange={setLane}
-                  />
+                  {isVedic ? (
+                    <SeatBuilderSelector />
+                  ) : (
+                    <PlanSelector
+                      value={plan}
+                      onChange={setPlan}
+                      lane={lane}
+                      onLaneChange={setLane}
+                    />
+                  )}
                 </div>
               )}
             </div>
@@ -388,9 +414,98 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   );
 
   const featureHookDone = () => {
+    const variant = featureHookVariant;
     setFeatureHookVariant(null);
+    if (!isVedic && variant === "this_year" && !store.arenaHookSeen) {
+      store.setArenaHookSeen(true);
+      setShowArena(true);
+      return;
+    }
+    if (!isVedic && (variant === "whenever" || variant === "not_sure") && !store.pitchHookSeen) {
+      store.setPitchHookSeen(true);
+      setShowPitch(true);
+      return;
+    }
+    if (isVedic && variant === "vedic") {
+      setShowFamilyHub(true);
+      return;
+    }
     goNext();
   };
+
+  if (showFamilyHub) {
+    return (
+      <FamilyHubHook
+        onDone={() => {
+          setShowFamilyHub(false);
+          goToPlan();
+        }}
+        onClose={() => {
+          setShowFamilyHub(false);
+          goToPlan();
+        }}
+      />
+    );
+  }
+
+  if (showFamily) {
+    return (
+      <FamilyHook
+        onDone={() => {
+          setShowFamily(false);
+          setShowFamilyHub(true);
+        }}
+        onClose={() => {
+          setShowFamily(false);
+          setShowFamilyHub(true);
+        }}
+      />
+    );
+  }
+
+  if (showPitch) {
+    return (
+      <PitchHook
+        onClose={() => {
+          setShowPitch(false);
+          goNext();
+        }}
+      />
+    );
+  }
+
+  if (showArena) {
+    return (
+      <ArenaHook
+        onClose={() => {
+          setShowArena(false);
+          goNext();
+        }}
+      />
+    );
+  }
+
+  if (!open) {
+    return (
+      <div className="mt-4 relative rounded-3xl border border-dashed border-white/[0.08] px-5 py-6 flex flex-col items-center gap-3 text-center" style={{ background: "rgba(255,255,255,0.03)" }}>
+        <span className="grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+          <Sparkles size={18} className="text-[#C8FF4D]" />
+        </span>
+        <p className="text-[13px] font-semibold text-foreground/80">Finish your adaptive setup</p>
+        <p className="text-[11px] text-muted-foreground/45 max-w-[240px]">
+          Answer a few quick questions to unlock your adaptive plan.
+        </p>
+        <button
+          type="button"
+          onClick={() => { setStep(0); setOpen(true); }}
+          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[#C8FF4D] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+        >
+          Set up adaptive
+          <ArrowRight size={12} strokeWidth={2.5} />
+        </button>
+      </div>
+    );
+  }
 
   return featureHookVariant ? (
     <FeatureHook variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
