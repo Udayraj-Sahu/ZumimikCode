@@ -1,5 +1,15 @@
 export type FocusMode = "sleep" | "sprint";
 
+export type StoryCommitment = {
+  dailyMinutes: number | null;
+  reminderTime: string;
+  reclaimSlot: string;
+  reclaimWindow: string;
+  triggerType: string;
+  triggerTime: string;
+  weekDays: boolean[];
+};
+
 export type PlanId = "initiate" | "single-lane" | "dual-lane";
 
 export type VedicUseCaseId = "kid" | "speed" | "exam" | "brain-gym";

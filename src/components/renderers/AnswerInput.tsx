@@ -11,6 +11,10 @@ interface AnswerInputProps {
   disabled?: boolean;
 }
 
+function keyboardFor(expected: string): "decimal" | "text" {
+  return /[a-zA-Z\s/]/.test(expected) ? "text" : "decimal";
+}
+
 export default function AnswerInput({
   expectedAnswer,
   onCorrect,
@@ -74,7 +78,7 @@ export default function AnswerInput({
         <div className="flex gap-2">
           <input
             type="text"
-            inputMode="numeric"
+            inputMode={keyboardFor(expectedAnswer)}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={handleKeyDown}

@@ -39,8 +39,9 @@ export const SCAFFOLD_TO_RENDERER: Record<
   place_value_chart: StrikePadRenderer,
   number_line: NumberLineRenderer,
   grid_construction: GridDerivationRenderer,
-  equation_chain: EquationChainRenderer,
   shape_canvas: ShapeCanvasRenderer,
+  textual_scaffold: EquationChainRenderer,
+  equation_chain: EquationChainRenderer,
 };
 
 export function resolveRenderer(

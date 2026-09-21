@@ -8,6 +8,7 @@ export type Habit = {
   category: HabitCategory;
   createdAt: string;
   reminderTime?: string;
+  reminderDays?: number[];
 };
 
 export type HabitLog = {

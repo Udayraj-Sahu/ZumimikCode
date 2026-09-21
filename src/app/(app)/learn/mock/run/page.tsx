@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, Suspense } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import gsap from "gsap";
 import { ArrowLeft, Check, X, Clock, FileText, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMockPaperSession } from "@/hooks/queries/use-mock-exam";
 import { useSprintStore } from "@/stores/sprint-store";
+import { useResumeStore, type ResumeSnapshot } from "@/stores/resume-store";
 import { useFeedback } from "@/lib/use-feedback";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { Question } from "@/lib/types/sprint-session";
@@ -28,41 +29,103 @@ function MockRunContent() {
   const searchParams = useSearchParams();
   const paperId = searchParams.get("paper") ?? "";
   const domain = searchParams.get("domain") ?? undefined;
+  const resumeParam = searchParams.get("resume") === "1";
 
   const feedback = useFeedback();
   const { data, isLoading, error } = useMockPaperSession(paperId, domain);
+  const snapshot = useResumeStore((s) => s.snapshot);
+  const saveSnapshot = useResumeStore((s) => s.saveSnapshot);
+  const clearSnapshot = useResumeStore((s) => s.clearSnapshot);
   const {
-    status, currentIndex, timeLeft,
-    initSprint, answerCurrent, nextQuestion, tick, completeSprint, reset,
+    status, currentIndex, timeLeft, answers,
+    initSprint, resumeSprint, answerCurrent, nextQuestion, tick, completeSprint, reset,
   } = useSprintStore();
+
+  const isResume = resumeParam && !!snapshot && snapshot.kind === "mock" && snapshot.paperId === paperId;
+  const activeQuestions = useMemo(
+    () => (isResume ? (snapshot?.questions ?? []) : (data?.questions ?? [])),
+    [isResume, snapshot, data],
+  );
+  const activeTopic = isResume ? snapshot.topic : data?.topic;
+  const activeTopicLabel = isResume ? snapshot.topicLabel : data?.topicLabel;
+  const activeDifficulty = isResume ? snapshot.difficulty : data?.difficulty;
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout>>();
   const feedbackRef = useRef<HTMLDivElement>(null);
+  const totalTimeRef = useRef(0);
+  const initializedRef = useRef(false);
+
+  const buildSnapshot = useCallback((): ResumeSnapshot | null => {
+    if (activeQuestions.length === 0) return null;
+    const s = useSprintStore.getState();
+    return {
+      kind: "mock",
+      paperId,
+      topic: activeTopic ?? paperId,
+      topicLabel: activeTopicLabel ?? "Mock Test",
+      difficulty: activeDifficulty ?? "Full Test",
+      totalTime: totalTimeRef.current,
+      questions: activeQuestions,
+      currentIndex: s.currentIndex,
+      answers: s.answers,
+      questionStartTime: s.questionStartTime,
+      sessionStartTime: s.sessionStartTime ?? Date.now(),
+      timeLeft: s.timeLeft,
+      isAdaptive: false,
+      domain,
+      savedAt: Date.now(),
+    };
+  }, [activeQuestions, activeTopic, activeTopicLabel, activeDifficulty, paperId, domain]);
+
+  const commitSnapshot = useCallback(() => {
+    const snap = buildSnapshot();
+    if (snap) saveSnapshot(snap);
+  }, [buildSnapshot, saveSnapshot]);
 
   const goToResults = useCallback(() => {
-    router.push("/play/sprint/results");
-  }, [router]);
+    const params = new URLSearchParams();
+    if (domain) params.set("domain", domain);
+    const qs = params.toString();
+    router.push(`/play/sprint/results${qs ? `?${qs}` : ""}`);
+  }, [router, domain]);
 
   const finishMock = useCallback(() => {
-    if (data) {
+    if (activeQuestions.length > 0) {
       feedback.complete();
       completeSprint({
-        questions: data.questions,
-        topic: data.topic,
-        topicLabel: data.topicLabel,
-        difficulty: data.difficulty,
+        questions: activeQuestions,
+        topic: activeTopic ?? paperId,
+        topicLabel: activeTopicLabel ?? "Mock Test",
+        difficulty: activeDifficulty ?? "Full Test",
       });
+      clearSnapshot();
       goToResults();
     }
-  }, [data, completeSprint, goToResults, feedback]);
+  }, [activeQuestions, activeTopic, activeTopicLabel, activeDifficulty, paperId, completeSprint, goToResults, feedback, clearSnapshot]);
 
   useEffect(() => {
-    if (data && status === "idle") {
+    if (isResume && snapshot && status === "idle") {
+      totalTimeRef.current = snapshot.totalTime;
+      resumeSprint({
+        currentIndex: snapshot.currentIndex,
+        answers: snapshot.answers,
+        questionStartTime: snapshot.questionStartTime,
+        sessionStartTime: snapshot.sessionStartTime,
+        timeLeft: snapshot.timeLeft,
+      });
+    }
+  }, [isResume, snapshot, status, resumeSprint]);
+
+  useEffect(() => {
+    if (isResume) return;
+    if (data && !initializedRef.current) {
+      initializedRef.current = true;
+      totalTimeRef.current = data.totalTime;
       initSprint(data.totalTime);
     }
-  }, [data, status, initSprint]);
+  }, [data, initSprint, isResume]);
 
   useEffect(() => {
     if (status !== "active" || timeLeft <= 0) return;
@@ -88,9 +151,32 @@ function MockRunContent() {
     }
   }, [showFeedback]);
 
+  const answerCount = Object.keys(answers).length;
+
+  useEffect(() => {
+    if (status === "active" && answerCount > 0) {
+      commitSnapshot();
+    }
+  }, [currentIndex, answerCount, status, commitSnapshot]);
+
+  useEffect(() => {
+    if (status !== "active") return;
+    const flush = () => {
+      const snap = buildSnapshot();
+      if (snap) saveSnapshot(snap);
+    };
+    window.addEventListener("pagehide", flush);
+    document.addEventListener("visibilitychange", flush);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      document.removeEventListener("visibilitychange", flush);
+      flush();
+    };
+  }, [status, buildSnapshot, saveSnapshot]);
+
   const handleSelect = (optionIndex: number) => {
     if (showFeedback || status !== "active") return;
-    const q = data?.questions[currentIndex];
+    const q = activeQuestions[currentIndex];
     if (!q) return;
 
     setSelectedIndex(optionIndex);
@@ -104,7 +190,7 @@ function MockRunContent() {
 
     autoAdvanceRef.current = setTimeout(() => {
       if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current);
-      const isLast = currentIndex >= (data?.questions.length ?? 1) - 1;
+      const isLast = currentIndex >= (activeQuestions.length ?? 1) - 1;
       if (isLast) {
         finishMock();
       } else {
@@ -117,7 +203,7 @@ function MockRunContent() {
 
   const handleNext = () => {
     if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current);
-    const isLast = currentIndex >= (data?.questions.length ?? 1) - 1;
+    const isLast = currentIndex >= (activeQuestions.length ?? 1) - 1;
     if (isLast) {
       finishMock();
     } else {
@@ -178,7 +264,7 @@ function MockRunContent() {
     );
   }
 
-  if (isLoading || !data) {
+  if (!isResume && (isLoading || !data)) {
     return (
       <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
         <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
@@ -188,9 +274,9 @@ function MockRunContent() {
     );
   }
 
-  const question: Question | undefined = data.questions[currentIndex];
-  const progress = data.questions.length > 0 ? ((currentIndex + (showFeedback ? 1 : 0)) / data.questions.length) * 100 : 0;
-  const isLast = currentIndex >= data.questions.length - 1;
+  const question: Question | undefined = activeQuestions[currentIndex];
+  const progress = activeQuestions.length > 0 ? ((currentIndex + (showFeedback ? 1 : 0)) / activeQuestions.length) * 100 : 0;
+  const isLast = currentIndex >= activeQuestions.length - 1;
   const isTimerLow = timeLeft <= 120;
 
   return (
@@ -211,7 +297,7 @@ function MockRunContent() {
             <ArrowLeft size={20} />
           </button>
           <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50">
-            {currentIndex + 1} / {data.questions.length}
+            {currentIndex + 1} / {activeQuestions.length}
           </span>
         </div>
       </div>
@@ -226,7 +312,7 @@ function MockRunContent() {
       <div className="flex items-center justify-between mb-5">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary max-w-[60%] truncate">
           <FileText size={10} />
-          {data.topicLabel}
+          {activeTopicLabel}
         </span>
         <div className="flex items-center gap-2">
           {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
@@ -312,7 +398,7 @@ function MockRunContent() {
 
       {!showFeedback && (
         <div className="mt-6 flex justify-center gap-1.5">
-          {data.questions.map((_, i) => (
+          {activeQuestions.map((_, i) => (
             <span
               key={i}
               className={cn(

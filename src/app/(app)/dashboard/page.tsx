@@ -30,11 +30,12 @@ import { cn } from "@/lib/utils";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { ExamDateModal } from "@/components/dashboard/exam-date-modal";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { useOnboardingStore, examIdForGoal } from "@/stores/onboarding-store";
+import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useHabitStore } from "@/stores/habit-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
-import { PersonaHooks } from "@/components/onboarding/persona-hooks";
+import { StoryHook } from "@/components/onboarding/story-hook";
+import { PlanHook } from "@/components/onboarding/plan-hook";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 import { InviteCard } from "@/components/dashboard/invite-card";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
@@ -261,32 +262,43 @@ export default function DashboardPage() {
   const firstName = useOnboardingStore((s) => s.firstName);
   const persona = useOnboardingStore((s) => s.persona);
   const goal = useOnboardingStore((s) => s.goal);
+  const triggers = useOnboardingStore((s) => s.triggers);
+  const sex = useOnboardingStore((s) => s.sex);
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const activePreps = useOnboardingStore((s) => s.activePreps);
   const examDates = useOnboardingStore((s) => s.examDates);
   const setExamDate = useOnboardingStore((s) => s.setExamDate);
   const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
-  const hookSeen = useOnboardingStore((s) => s.hookSeen);
-  const setHookSeen = useOnboardingStore((s) => s.setHookSeen);
+  const storyHookSeen = useOnboardingStore((s) => s.storyHookSeen);
+  const setStoryHookSeen = useOnboardingStore((s) => s.setStoryHookSeen);
+  const planHookSeen = useOnboardingStore((s) => s.planHookSeen);
+  const setPlanHookSeen = useOnboardingStore((s) => s.setPlanHookSeen);
   const { data } = useDashboardData(targetExam);
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const [examDateOpen, setExamDateOpen] = useState(false);
-  const [showHooks, setShowHooks] = useState(false);
+  const [showStory, setShowStory] = useState(false);
+  const [showPlan, setShowPlan] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
 
-  const hookDomain = examIdForGoal(goal);
-
   useEffect(() => {
-    if (isOnboarded && !hookSeen && hookDomain && !onboardingOpen) {
-      setShowHooks(true);
-    }
-  }, [isOnboarded, hookSeen, hookDomain, onboardingOpen]);
+    if (!isOnboarded || onboardingOpen) return;
+    if (!storyHookSeen) setShowStory(true);
+    else if (!planHookSeen) setShowPlan(true);
+  }, [isOnboarded, onboardingOpen, storyHookSeen, planHookSeen]);
 
-  const profileDone = [firstName.trim(), persona, goal].filter(Boolean).length;
-  const profileComplete = isOnboarded;
+  const profileSteps = [
+    { label: "Name", done: !!firstName.trim() },
+    { label: "Persona", done: !!persona },
+    { label: "Goal", done: !!goal },
+    { label: "Vibe", done: triggers.length > 0 },
+    { label: "Details", done: !!sex },
+  ];
+  const profileDone = profileSteps.filter((s) => s.done).length;
+  const profileTotal = profileSteps.length;
+  const profileComplete = profileDone === profileTotal;
 
   const prepExams = useMemo(() => {
     const others = activePreps.filter((id) => id !== targetExam && id in DOMAIN_LABELS);
@@ -449,11 +461,11 @@ export default function DashboardPage() {
                     </div>
                     <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">You&apos;re all set, {firstName}</h2>
                     <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let&apos;s make it count.</p>
-                    <div className="mt-3 flex items-center gap-1.5">
-                      {["Name", "Persona", "Goal"].map((l) => (
-                        <div key={l} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.08)" }}>
+                    <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
+                      {profileSteps.map((s) => (
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.08)" }}>
                           <div className="size-1.5 rounded-full" style={{ background: "#C7F252" }} />
-                          <span className="text-[8px] font-semibold text-foreground/70">{l}</span>
+                          <span className="text-[8px] font-semibold text-foreground/70">{s.label}</span>
                         </div>
                       ))}
                     </div>
@@ -471,7 +483,7 @@ export default function DashboardPage() {
                       <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
                     </div>
                     <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: profileDone > 0 ? "rgba(199,242,82,0.08)" : "transparent", color: profileDone > 0 ? "#C7F252" : "rgba(255,255,255,0.3)" }}>
-                      {profileDone}/5
+                      {profileDone}/{profileTotal}
                     </div>
                   </div>
 
@@ -479,21 +491,17 @@ export default function DashboardPage() {
                     <div className="relative size-[88px]">
                       <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
                         <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
-                        <circle cx="32" cy="32" r="26" fill="none" stroke="#C7F252" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset={`${2 * Math.PI * 26 * (1 - profileDone / 5)}`} className="transition-all duration-700" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="#C7F252" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset={`${2 * Math.PI * 26 * (1 - profileDone / profileTotal)}`} className="transition-all duration-700" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <Sparkles size={17} className="text-primary" />
-                        <span className="mt-0.5 text-[9px] font-black text-foreground/80">{profileDone}/5</span>
+                        <span className="mt-0.5 text-[9px] font-black text-foreground/80">{profileDone}/{profileTotal}</span>
                       </div>
                     </div>
                     <h2 className="mt-3 text-[23px] font-black tracking-[-0.03em] text-foreground leading-tight">Finish your profile</h2>
                     <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for — we&apos;ll tailor everything to you.</p>
-                    <div className="mt-3 flex items-center gap-1.5">
-                      {[
-                        { label: "Name", done: !!firstName.trim() },
-                        { label: "Persona", done: !!persona },
-                        { label: "Goal", done: !!goal },
-                      ].map((s) => (
+                    <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
+                      {profileSteps.map((s) => (
                         <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: s.done ? "rgba(199,242,82,0.08)" : "transparent" }}>
                           <div className="size-1.5 rounded-full" style={{ background: s.done ? "#C7F252" : "rgba(255,255,255,0.15)" }} />
                           <span className={cn("text-[8px] font-semibold", s.done ? "text-foreground/70" : "text-muted-foreground/50")}>{s.label}</span>
@@ -871,7 +879,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Resume Protocol */}
-      <ResumeProtocolCard />
+      <ResumeProtocolCard accent="#C8FF4D" />
 
       {/* Topic Mastery + Recent Activity */}
       <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 px-5 mt-6">
@@ -1042,12 +1050,19 @@ export default function DashboardPage() {
         onConfirm={(d) => setExamDate(targetExam, d)}
         onClose={() => setExamDateOpen(false)}
       />
-      {showHooks && hookDomain && (
-        <PersonaHooks
-          domain={hookDomain}
-          onDismiss={() => {
-            setHookSeen(true);
-            setShowHooks(false);
+      {showStory && (
+        <StoryHook
+          onClose={() => {
+            setStoryHookSeen(true);
+            setShowStory(false);
+          }}
+        />
+      )}
+      {showPlan && (
+        <PlanHook
+          onClose={() => {
+            setPlanHookSeen(true);
+            setShowPlan(false);
           }}
         />
       )}

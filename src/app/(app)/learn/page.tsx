@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useLayoutEffect, useMemo, useEffect, Suspense } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, type Variants } from "motion/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Grid3x3,
@@ -18,6 +18,7 @@ import {
   Lock,
   GraduationCap,
   ChevronUp,
+  CalendarDays,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -29,12 +30,21 @@ import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 import { AdaptiveReprompt } from "@/components/adaptive/adaptive-reprompt";
 import { AdaptiveDashboard } from "@/components/adaptive/adaptive-dashboard";
+import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
+import { resolveJourneyProfile } from "@/lib/adaptive/modes";
 import { PaywallModal } from "@/components/pricing/paywall-modal";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
+
+const tabVariants: Variants = {
+  initial: { opacity: 0, y: 8, scale: 0.995 },
+  animate: { opacity: 1, y: 0, scale: 1 },
+  exit: { opacity: 0, y: -6, scale: 0.995 },
+};
+const tabTransition = { type: "tween" as const, duration: 0.2, ease: [0.4, 0, 0.2, 1] as const };
 
 function formatDuration(minutes: number): string {
   const h = Math.floor(minutes / 60);
@@ -112,9 +122,14 @@ function LearnPageContent() {
   const searchParams = useSearchParams();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const activePreps = useOnboardingStore((s) => s.activePreps);
+  const justExploring = useOnboardingStore((s) => s.justExploring);
+  const goal = useOnboardingStore((s) => s.goal);
   const activeLearnDomain = useOnboardingStore((s) => s.activeLearnDomain);
   const setActiveLearnDomain = useOnboardingStore((s) => s.setActiveLearnDomain);
-  const adaptiveConfigured = useOnboardingStore((s) => s.adaptiveConfigured);
+  const temporalWindow = useOnboardingStore((s) => s.temporalWindow);
+  const vedicUseCase = useOnboardingStore((s) => s.vedicUseCase);
+  const focusMode = useOnboardingStore((s) => s.focusMode);
+  const dailyMinutes = useOnboardingStore((s) => s.dailyMinutes);
   const canTakeMock = usePlanStore((s) => s.canTakeMock);
   const recordMock = usePlanStore((s) => s.recordMock);
   const openPaywall = usePaywallStore((s) => s.openPaywall);
@@ -124,11 +139,9 @@ function LearnPageContent() {
   });
   const [activeDomain, setActiveDomain] = useState(activeLearnDomain || targetExam || "");
   const [showAddPrep, setShowAddPrep] = useState(false);
+  const [addPrepGated, setAddPrepGated] = useState(true);
   const [statsCollapsed, setStatsCollapsed] = useState(true);
   const [mockSection, setMockSection] = useState<string>("all");
-  const { data } = useDashboardData(activeDomain);
-  const { data: mockPapers, isLoading: mockLoading } = useMockPapers(activeDomain);
-  const topics = data?.topics ?? [];
 
   const prepExams = useMemo(() => {
     const others = activePreps.filter((id) => id !== targetExam && id in DOMAIN_LABELS);
@@ -137,7 +150,17 @@ function LearnPageContent() {
     return list;
   }, [activePreps, targetExam]);
 
-  const mockStats = useMemo(() => {
+  const primaryExam = useMemo(() => {
+    const target = targetExam && targetExam in DOMAIN_LABELS ? targetExam : "";
+    return target || prepExams[0] || (justExploring ? "vedic-math" : "");
+  }, [targetExam, prepExams, justExploring]);
+
+  const { data } = useDashboardData(activeDomain);
+  const mockExamDomain = prepExams.length === 0 && justExploring ? "random" : primaryExam;
+  const { data: mockPapers, isLoading: mockLoading } = useMockPapers(mockExamDomain);
+  const topics = data?.topics ?? [];
+
+  const mockStats = useMemo<StatsSummary>(() => {
     if (prepExams.length === 0) {
       return { accuracy: "--", questions: "--", percentile: "--", speed: "--" };
     }
@@ -147,11 +170,23 @@ function LearnPageContent() {
     return { accuracy: "91%", questions: "2,845", percentile: "78%ile", speed: "42s" };
   }, [prepExams.length]);
 
-  useEffect(() => {
-    if (prepExams.length > 0 && !prepExams.includes(activeDomain)) {
-      setActiveDomain(prepExams[0]);
-    }
-  }, [prepExams, activeDomain]);
+  const adaptiveAccent = useMemo(() => {
+    const domain = primaryExam;
+    if (!domain) return "#C8FF4D";
+    return resolveJourneyProfile({
+      domain,
+      temporalWindow,
+      vedicUseCase,
+      focusMode,
+      dailyMinutes: dailyMinutes ?? 30,
+    }).accent;
+  }, [primaryExam]);
+
+  const todayLabel = useMemo(
+    () =>
+      new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric" }).format(new Date()),
+    []
+  );
 
   useEffect(() => {
     const m = searchParams.get("mode");
@@ -301,16 +336,17 @@ function LearnPageContent() {
         {mode === "explore" && (
         <motion.div
           key="explore"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          variants={tabVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={tabTransition}
         >
         <>
-          {/* Add Prep CTA */}
+          {/* Add Prep CTA — ungated in Topic Explorer */}
           <button
             type="button"
-            onClick={() => setShowAddPrep(true)}
+            onClick={() => { setAddPrepGated(false); setShowAddPrep(true); }}
             className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 min-h-[44px] flex items-center justify-center gap-2 text-[13px] font-semibold tracking-widest uppercase text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Plus size={15} strokeWidth={2.5} />
@@ -347,7 +383,13 @@ function LearnPageContent() {
 
           {/* Topic Cards */}
           {prepExams.length > 0 && (
-          <div className="flex flex-col gap-3 mt-5">
+          <motion.div
+            key={`${activeDomain}-topics`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="flex flex-col gap-3 mt-5"
+          >
             {topics.map((topic, i) => {
               const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
               const color = TOPIC_COLORS[i % TOPIC_COLORS.length];
@@ -393,8 +435,11 @@ function LearnPageContent() {
                 <p className="text-[13px] text-muted-foreground/45 font-normal">No topics yet. Add a prep to get started.</p>
               </div>
             )}
-          </div>
+          </motion.div>
           )}
+
+          {/* Resume Protocol — above Sensei Insight */}
+          <ResumeProtocolCard domain={activeDomain} accent="#34D399" className="mt-5 px-0" />
 
           {/* Sensei Insight */}
           {prepExams.length > 0 && topics.length > 0 && (
@@ -438,22 +483,102 @@ function LearnPageContent() {
         {mode === "adaptive" && (
         <motion.div
           key="adaptive"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          variants={tabVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={tabTransition}
         >
-          {!adaptiveConfigured ? (
+          {/* Toolbar — pill + gated ADD PREP */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
+              <CalendarDays size={12} style={{ color: adaptiveAccent }} />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/70">
+                {todayLabel}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => { setAddPrepGated(true); setShowAddPrep(true); }}
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+            >
+              <Plus size={12} strokeWidth={3} /> ADD PREP
+            </button>
+          </div>
+
+          {/* Exam switcher — mirrors Mock tab, secondary exams locked */}
+          {prepExams.length > 1 && (
+            <div className="relative mt-4 mb-1">
+              <div
+                className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
+              >
+                {prepExams.map((id) => {
+                  const isPrimary = id === primaryExam;
+                  const active = activeDomain === id && isPrimary;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => {
+                        if (isPrimary) {
+                          setActiveDomain(id);
+                        } else {
+                          openPaywall("prep");
+                        }
+                      }}
+                      className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                    >
+                      {active && (
+                        <motion.div
+                          layoutId="adaptive-exam-slider"
+                          transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                          className="absolute inset-0 rounded-2xl"
+                          style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)" }}
+                        />
+                      )}
+                      <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
+                        {isPrimary ? <GraduationCap size={14} className="relative" /> : <Lock size={12} className="relative text-muted-foreground/50" />}
+                        <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
+                        {!isPrimary && (
+                          <span className="relative text-[7px] font-black tracking-[0.14em] px-1.5 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.45)" }}>
+                            PRO
+                          </span>
+                        )}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Today's Practice / Resume — top of Adaptive tab */}
+          <ResumeProtocolCard domain={primaryExam} accent={adaptiveAccent} showStartEntry className="mt-5 px-0" />
+
+          {/* Your Stats — mirrors Mock tab, colored per variant */}
+          <YourStatsCard
+            collapsed={statsCollapsed}
+            onToggle={() => setStatsCollapsed((v) => !v)}
+            hasPrep={prepExams.length > 0}
+            stats={mockStats}
+            color={adaptiveAccent}
+          />
+
+          {justExploring && prepExams.length === 0 ? (
+            <AdaptiveDashboard domain={primaryExam} />
+          ) : !goal ? (
             <AdaptiveReprompt onDone={() => setMode("adaptive")} />
           ) : prepExams.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-10 text-center rounded-3xl border border-dashed border-white/[0.08]" style={{ background: GLASS_BG }}>
+            <div className="mt-4 flex flex-col items-center gap-3 py-10 text-center rounded-3xl border border-dashed border-white/[0.08]" style={{ background: GLASS_BG }}>
               <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
                 <Lock size={16} className="text-muted-foreground/45" />
               </span>
               <span className="text-[13px] text-muted-foreground/50">Select exam via add prep</span>
             </div>
           ) : (
-            <AdaptiveDashboard domain={activeDomain || prepExams[0]} />
+            <AdaptiveDashboard domain={primaryExam} />
           )}
         </motion.div>
         )}
@@ -461,22 +586,24 @@ function LearnPageContent() {
         {mode === "mock" && (
         <motion.div
           key="mock"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          variants={tabVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={tabTransition}
         >
           {/* Header */}
           <div className="relative mb-5 flex items-start justify-between gap-3">
             <div>
               <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
-                {DOMAIN_LABELS[activeDomain] || "Mock"} <span className="bg-gradient-to-r from-primary to-[#d4ff6e] bg-clip-text text-transparent">Papers</span>
+                {prepExams.length === 0 && justExploring ? "Random Test" : (DOMAIN_LABELS[primaryExam] || "Mock")}{" "}
+                <span className="bg-gradient-to-r from-primary to-[#d4ff6e] bg-clip-text text-transparent">{prepExams.length === 0 && justExploring ? "Prep" : "Papers"}</span>
               </h2>
-              <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Full-length and sectional timed tests.</p>
+              <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">{prepExams.length === 0 && justExploring ? "Mixed questions from every exam style." : "Full-length and sectional timed tests."}</p>
             </div>
             <button
               type="button"
-              onClick={() => setShowAddPrep(true)}
+              onClick={() => { setAddPrepGated(true); setShowAddPrep(true); }}
               className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
             >
               <Plus size={12} strokeWidth={3} /> ADD PREP
@@ -491,12 +618,19 @@ function LearnPageContent() {
                 style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
               >
                 {prepExams.map((id) => {
-                  const active = activeDomain === id;
+                  const isPrimary = id === primaryExam;
+                  const active = activeDomain === id && isPrimary;
                   return (
                     <button
                       key={id}
                       type="button"
-                      onClick={() => setActiveDomain(id)}
+                      onClick={() => {
+                        if (isPrimary) {
+                          setActiveDomain(id);
+                        } else {
+                          openPaywall("prep");
+                        }
+                      }}
                       className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
                     >
@@ -509,8 +643,13 @@ function LearnPageContent() {
                         />
                       )}
                       <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
-                        <GraduationCap size={14} className="relative" />
+                        {isPrimary ? <GraduationCap size={14} className="relative" /> : <Lock size={12} className="relative text-muted-foreground/50" />}
                         <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
+                        {!isPrimary && (
+                          <span className="relative text-[7px] font-black tracking-[0.14em] px-1.5 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.45)" }}>
+                            PRO
+                          </span>
+                        )}
                       </span>
                     </button>
                   );
@@ -519,52 +658,20 @@ function LearnPageContent() {
             </div>
           )}
 
+{/* Mock resume — mirrors practice resume card */}
+          <ResumeProtocolCard domain={activeDomain} accent="#C8FF4D" className="mt-5 px-0" />
+
           {/* Stats card */}
-          <div className="relative rounded-3xl border backdrop-blur-xl mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-            <div className="absolute -top-10 -right-10 size-32 rounded-full opacity-[0.07] pointer-events-none" style={{ background: `radial-gradient(circle, ${activeMode.color}, transparent 70%)` }} />
-
-            <button
-              type="button"
-              onClick={() => setStatsCollapsed((v) => !v)}
-              className="w-full flex items-center justify-between gap-2 px-5 py-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              aria-expanded={!statsCollapsed}
-            >
-              <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">Your Stats</span>
-              <span className="grid size-6 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
-                <ChevronUp size={12} className="transition-transform duration-300" style={{ transform: statsCollapsed ? "rotate(180deg)" : "none" }} />
-              </span>
-            </button>
-
-            <div
-              className={cn(
-                "grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                statsCollapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]",
-              )}
-            >
-              <div className="overflow-hidden min-h-0">
-                <div className="px-5 pb-5">
-                  {prepExams.length === 0 ? (
-                    <div className="flex flex-col items-center gap-3 py-6 text-center">
-                      <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
-                        <Lock size={16} className="text-muted-foreground/45" />
-                      </span>
-                      <span className="text-[12px] text-muted-foreground/50">Select a prep to view your progress</span>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-2 gap-2.5">
-                      <StatBox value={mockStats.accuracy} label="Accuracy" />
-                      <StatBox value={mockStats.questions} label="Questions" />
-                      <StatBox value={mockStats.percentile} label="Percentile" />
-                      <StatBox value={mockStats.speed} label="Speed" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+          <YourStatsCard
+            collapsed={statsCollapsed}
+            onToggle={() => setStatsCollapsed((v) => !v)}
+            hasPrep={prepExams.length > 0}
+            stats={mockStats}
+            color="#C8FF4D"
+          />
 
           {/* Section filter chips */}
-          {prepExams.length > 0 && (() => {
+          {(prepExams.length > 0 || justExploring) && (() => {
             const sectionSet = new Set<string>();
             (mockPapers ?? []).forEach((p) => p.sections.forEach((s) => sectionSet.add(s.label)));
             const sections = ["all", ...Array.from(sectionSet)];
@@ -590,7 +697,13 @@ function LearnPageContent() {
           })()}
 
           {/* Paper list */}
-          <div className="flex flex-col gap-3 mt-5">
+          <motion.div
+            key={`${mockSection}-${mockExamDomain}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="flex flex-col gap-3 mt-5"
+          >
             {mockLoading && (
               <div className="flex flex-col gap-3">
                 {[0, 1].map((i) => (
@@ -644,7 +757,7 @@ function LearnPageContent() {
                           return;
                         }
                         recordMock();
-                        router.push(`/learn/mock/run?paper=${paper.id}&domain=${activeDomain}`);
+                        router.push(`/learn/mock/run?paper=${paper.id}&domain=${mockExamDomain}`);
                       }}
                       className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                     >
@@ -657,16 +770,16 @@ function LearnPageContent() {
             {!mockLoading && (mockPapers ?? []).length === 0 && (
               <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
                 <FileText size={24} className="mx-auto text-muted-foreground/25 mb-3" />
-                <p className="text-[13px] text-muted-foreground/45 font-normal">No papers yet for {DOMAIN_LABELS[activeDomain] || "this exam"}.</p>
+                <p className="text-[13px] text-muted-foreground/45 font-normal">No papers yet for {mockExamDomain === "random" ? "Random Test Prep" : (DOMAIN_LABELS[mockExamDomain] || "this exam")}.</p>
               </div>
             )}
-          </div>
+          </motion.div>
         </motion.div>
         )}
       </AnimatePresence>
 
       {showAddPrep && (
-        <AddPrepModal onClose={() => setShowAddPrep(false)} />
+        <AddPrepModal gated={addPrepGated} onClose={() => setShowAddPrep(false)} />
       )}
       <PaywallModal />
       </div>
@@ -682,15 +795,76 @@ export default function LearnPage() {
   );
 }
 
-function StatBox({ value, label }: { value: string; label: string }) {
+function StatBox({ value, label, color }: { value: string; label: string; color?: string }) {
   return (
     <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3.5">
       <div className="flex items-center justify-between">
-        <span className="size-1.5 rounded-full bg-primary/70" />
+        <span className="size-1.5 rounded-full" style={{ backgroundColor: color ?? "var(--primary)" }} />
         <ArrowRight size={10} className="text-muted-foreground/40" />
       </div>
       <div className="mt-2.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-none">{value}</div>
       <div className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/45">{label}</div>
+    </div>
+  );
+}
+
+type StatsSummary = { accuracy: string; questions: string; percentile: string; speed: string };
+
+function YourStatsCard({
+  collapsed,
+  onToggle,
+  hasPrep,
+  stats,
+  color,
+}: {
+  collapsed: boolean;
+  onToggle: () => void;
+  hasPrep: boolean;
+  stats: StatsSummary;
+  color: string;
+}) {
+  return (
+    <div className="relative rounded-3xl border backdrop-blur-xl mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+      <div className="absolute -top-10 -right-10 size-32 rounded-full opacity-[0.07] pointer-events-none" style={{ background: `radial-gradient(circle, ${color}, transparent 70%)` }} />
+
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full flex items-center justify-between gap-2 px-5 py-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        aria-expanded={!collapsed}
+      >
+        <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">Your Stats</span>
+        <span className="grid size-6 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
+          <ChevronUp size={12} className="transition-transform duration-300" style={{ transform: collapsed ? "rotate(180deg)" : "none" }} />
+        </span>
+      </button>
+
+      <div
+        className={cn(
+          "grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]",
+        )}
+      >
+        <div className="overflow-hidden min-h-0">
+          <div className="px-5 pb-5">
+            {!hasPrep ? (
+              <div className="flex flex-col items-center gap-3 py-6 text-center">
+                <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+                  <Lock size={16} className="text-muted-foreground/45" />
+                </span>
+                <span className="text-[12px] text-muted-foreground/50">Select a prep to view your progress</span>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2.5">
+                <StatBox value={stats.accuracy} label="Accuracy" color={color} />
+                <StatBox value={stats.questions} label="Questions" color={color} />
+                <StatBox value={stats.percentile} label="Percentile" color={color} />
+                <StatBox value={stats.speed} label="Speed" color={color} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

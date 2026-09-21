@@ -14,6 +14,7 @@ import { DOMAIN_LABELS } from "@/lib/types/template";
 import { getTechniqueIdsForTopic } from "@/lib/mock/topic-node-map";
 import type { TopicNode } from "@/lib/types/technique";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
+import { PaywallModal } from "@/components/pricing/paywall-modal";
 
 function nodeInTree(node: TopicNode, id: string): boolean {
   if (node.id === id || node.slug === id) return true;
@@ -165,7 +166,8 @@ function ExplorerContent() {
           </div>
         </div>
 
-        {showAddPrep && <AddPrepModal onClose={() => setShowAddPrep(false)} />}
+        {showAddPrep && <AddPrepModal gated={false} onClose={() => setShowAddPrep(false)} />}
+        <PaywallModal />
       </div>
     );
   }

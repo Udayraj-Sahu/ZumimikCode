@@ -85,12 +85,12 @@ export function ClientTechniquePage() {
       </div>
 
       {/* Difficulty Levels */}
-      <div className="mt-8">
+      <div className="mt-5">
         <div
           className="inline-flex items-center rounded-full px-3 py-1 mb-3"
           style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
         >
-          <p className="text-micro font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
+          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50">
             Difficulty Levels
           </p>
         </div>

@@ -1,0 +1,108 @@
+import { Capacitor } from "@capacitor/core";
+import { LocalNotifications } from "@capacitor/local-notifications";
+import type { StoryCommitment } from "@/lib/types/onboarding";
+
+const isNative = Capacitor.isNativePlatform();
+
+const isTime = (v: string) => /^(\d{1,2}):(\d{2})$/.test(v ?? "");
+
+const capWeekday = (idx: number) => ((idx + 1) % 7) + 1; // 1=Sunday … 7=Saturday
+
+async function ensurePermission(): Promise<boolean> {
+  if (isNative) {
+    try {
+      const perms = await LocalNotifications.checkPermissions();
+      if (perms.display === "granted") return true;
+      const req = await LocalNotifications.requestPermissions();
+      return req.display === "granted";
+    } catch {
+      return false;
+    }
+  }
+  if (!("Notification" in window)) return false;
+  if (Notification.permission === "granted") return true;
+  if (Notification.permission === "denied") return false;
+  const result = await Notification.requestPermission();
+  return result === "granted";
+}
+
+async function cancelStoryNotifications() {
+  if (!isNative) return;
+  try {
+    const pending = await LocalNotifications.getPending();
+    const ids = pending.notifications
+      .filter((n) => n.extra?.source === "story-reminder")
+      .map((n) => n.id);
+    if (ids.length > 0) {
+      await LocalNotifications.cancel({ notifications: ids.map((id) => ({ id })) });
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+function webOneShot(title: string, body: string, time: string) {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(time);
+  if (!m || !("Notification" in window) || Notification.permission !== "granted") return;
+  const now = new Date();
+  const target = new Date();
+  target.setHours(Number(m[1]), Number(m[2]), 0, 0);
+  if (target <= now) target.setDate(target.getDate() + 1);
+  const delay = target.getTime() - now.getTime();
+  setTimeout(() => {
+    new Notification(title, { body, icon: "/favicon.svg", badge: "/favicon.svg", tag: "story-reminder" });
+  }, delay);
+}
+
+export async function applyStoryNotifications(commitment: StoryCommitment) {
+  const reminder = isTime(commitment.reminderTime) ? commitment.reminderTime : null;
+  const trigger = isTime(commitment.triggerTime) ? commitment.triggerTime : null;
+  if (!reminder && !trigger) return;
+
+  const granted = await ensurePermission();
+  if (!granted) return;
+
+  const selectedDays = commitment.weekDays
+    .map((on, i) => (on ? capWeekday(i) : null))
+    .filter((d): d is number => d !== null);
+  const allDays = selectedDays.length >= 7;
+
+  if (isNative) {
+    try {
+      await cancelStoryNotifications();
+      const notifications = [];
+      const base = (id: number, time: string) => {
+        const [h, m] = time.split(":").map(Number);
+        const entries = [];
+        for (const day of allDays ? [null] : selectedDays) {
+          entries.push({
+            id,
+            title: "Exam Arena",
+            body:
+              id === 2001
+                ? `Prep time — ${commitment.dailyMinutes ?? 30} min today. Let's go.`
+                : `Trigger: ${commitment.triggerType || "Focus"} — start now.`,
+            schedule: {
+              on: { hour: h, minute: m, ...(day ? { weekday: day } : {}) },
+              allowWhileIdle: true,
+            },
+            extra: { source: "story-reminder" },
+          });
+          id += 1;
+        }
+        return entries;
+      };
+      if (reminder) notifications.push(...base(2001, reminder));
+      if (trigger) notifications.push(...base(3001, trigger));
+      if (notifications.length > 0) {
+        await LocalNotifications.schedule({ notifications });
+      }
+    } catch {
+      /* scheduling failed silently */
+    }
+    return;
+  }
+
+  if (reminder) webOneShot("Exam Arena", `Prep time — ${commitment.dailyMinutes ?? 30} min today.`, reminder);
+  if (trigger) webOneShot("Exam Arena", `Trigger: ${commitment.triggerType || "Focus"} — start now.`, trigger);
+}

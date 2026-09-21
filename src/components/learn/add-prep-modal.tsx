@@ -9,7 +9,6 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
-import { PaywallModal } from "@/components/pricing/paywall-modal";
 
 const EXAMS = [
   { id: "cat", label: "CAT", icon: GraduationCap },
@@ -24,9 +23,9 @@ function getStatus(value: number): { label: string; color: string; bgClass: stri
   return { label: "Needs Work", color: "text-destructive", bgClass: "bg-destructive/10" };
 }
 
-type Props = { onClose: () => void };
+type Props = { onClose: () => void; gated?: boolean };
 
-export function AddPrepModal({ onClose }: Props) {
+export function AddPrepModal({ onClose, gated = true }: Props) {
   const [selectedExam, setSelectedExam] = useState<string | null>(null);
   const addActivePrep = useOnboardingStore((s) => s.addActivePrep);
   const removeActivePrep = useOnboardingStore((s) => s.removeActivePrep);
@@ -60,7 +59,7 @@ export function AddPrepModal({ onClose }: Props) {
   const handleConfirm = () => {
     if (selectedExam && !activePreps.includes(selectedExam)) {
       const alreadyActive = activePreps.includes(selectedExam);
-      if (!alreadyActive && !canAddPrep(activePreps.length + 1)) {
+      if (gated && !alreadyActive && !canAddPrep(activePreps.length + 1)) {
         openPaywall("prep");
         return;
       }
@@ -236,7 +235,6 @@ export function AddPrepModal({ onClose }: Props) {
     </div>,
     document.body,
     )}
-    <PaywallModal />
   </>
   );
 }

@@ -46,7 +46,7 @@ function SprintContent() {
     initSprint, resumeSprint, answerCurrent, nextQuestion, tick, completeSprint,
   } = useSprintStore();
 
-  const isResume = resumeParam && !!snapshot && snapshot.topic === topic;
+  const isResume = resumeParam && !!snapshot && snapshot.kind === "sprint" && snapshot.topic === topic;
   const activeQuestions = useMemo(
     () => (isResume ? (snapshot?.questions ?? []) : (data?.questions ?? [])),
     [isResume, snapshot, data],
@@ -58,17 +58,14 @@ function SprintContent() {
   const [showFeedback, setShowFeedback] = useState(false);
   const autoAdvanceRef = useRef<ReturnType<typeof setTimeout>>();
   const feedbackRef = useRef<HTMLDivElement>(null);
-  const questionsRef = useRef(data?.questions ?? null);
-  questionsRef.current = data?.questions ?? null;
   const totalTimeRef = useRef(0);
-  const lastWriteRef = useRef(0);
-  const dirtyRef = useRef(false);
   const initializedRef = useRef(false);
 
   const buildSnapshot = useCallback((): ResumeSnapshot | null => {
     if (activeQuestions.length === 0) return null;
     const s = useSprintStore.getState();
     return {
+      kind: "sprint",
       topic,
       topicLabel: activeTopicLabel ?? topic,
       difficulty: activeDifficulty ?? difficulty,
@@ -86,13 +83,6 @@ function SprintContent() {
   }, [activeQuestions, activeTopicLabel, activeDifficulty, topic, difficulty, isAdaptive, adaptiveDomain]);
 
   const commitSnapshot = useCallback(() => {
-    const now = Date.now();
-    if (now - lastWriteRef.current < 4000) {
-      dirtyRef.current = true;
-      return;
-    }
-    lastWriteRef.current = now;
-    dirtyRef.current = false;
     const snap = buildSnapshot();
     if (snap) saveSnapshot(snap);
   }, [buildSnapshot, saveSnapshot]);
@@ -152,18 +142,10 @@ function SprintContent() {
   const answerCount = Object.keys(answers).length;
 
   useEffect(() => {
-    if (status === "active" && (answerCount > 0 || dirtyRef.current)) {
+    if (status === "active" && answerCount > 0) {
       commitSnapshot();
     }
   }, [currentIndex, answerCount, status, commitSnapshot]);
-
-  useEffect(() => {
-    if (status !== "active") return;
-    const id = setInterval(() => {
-      if (dirtyRef.current) commitSnapshot();
-    }, 4000);
-    return () => clearInterval(id);
-  }, [status, commitSnapshot]);
 
   useEffect(() => {
     if (status !== "active") return;
@@ -176,6 +158,7 @@ function SprintContent() {
     return () => {
       window.removeEventListener("pagehide", flush);
       document.removeEventListener("visibilitychange", flush);
+      flush();
     };
   }, [status, buildSnapshot, saveSnapshot]);
 

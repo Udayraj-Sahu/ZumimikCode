@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Play, Grid3x3, Sigma, Pentagon, Sparkles, Target, Flame, Clock, ChevronRight, Calculator, ListChecks, BookOpen, Timer, Zap, Brain, TrendingUp, ShieldCheck, Trophy, CalendarDays } from "lucide-react";
+import { Play, Grid3x3, Sigma, Pentagon, Sparkles, Target, Flame, Clock, ChevronRight, Calculator, ListChecks, BookOpen, Zap, Brain, TrendingUp, ShieldCheck, Trophy, CalendarDays } from "lucide-react";
 import { useAdaptiveState, useTodayPlan } from "@/hooks/queries/use-adaptive";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { resolveJourneyProfile } from "@/lib/adaptive/modes";
@@ -39,21 +39,58 @@ function sprintHref(rec: PracticeRecommendation, domain: string): string {
   return `/play/sprint?topic=${encodeURIComponent(rec.topicId)}&length=${rec.length}&difficulty=${encodeURIComponent(rec.difficulty)}&adaptive=1&domain=${encodeURIComponent(domain)}`;
 }
 
-function CircularGauge({ percent, accent }: { percent: number; accent: string }) {
+function CircularGauge({ percent, accent, segments }: { percent: number; accent: string; segments?: { id: string; color: string; mastery: number }[] }) {
   const r = 54;
   const c = 2 * Math.PI * r;
+
+  const arcPoint = (deg: number) => {
+    const a = ((deg - 90) * Math.PI) / 180;
+    return { x: 60 + r * Math.cos(a), y: 60 + r * Math.sin(a) };
+  };
+  const arcD = (from: number, to: number) => {
+    const p0 = arcPoint(from);
+    const p1 = arcPoint(to);
+    const large = to - from > 180 ? 1 : 0;
+    return `M ${p0.x.toFixed(2)} ${p0.y.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${p1.x.toFixed(2)} ${p1.y.toFixed(2)}`;
+  };
+
   return (
     <div className="relative size-[120px] shrink-0">
-      <svg width="120" height="120" viewBox="0 0 120 120" className="-rotate-90">
+      <svg width="120" height="120" viewBox="0 0 120 120">
         <circle cx="60" cy="60" r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="8" />
-        <circle
-          cx="60" cy="60" r={r} fill="none"
-          stroke={accent} strokeWidth="8" strokeLinecap="round"
-          strokeDasharray={c}
-          strokeDashoffset={c * (1 - Math.max(0, Math.min(100, percent)) / 100)}
-          className="transition-all duration-700"
-          style={{ filter: `drop-shadow(0 0 8px ${accent}55)` }}
-        />
+        {segments && segments.length > 0 ? (
+          (() => {
+            const n = segments.length;
+            const slot = 360 / n;
+            const gap = 2.5;
+            return segments.map((s, i) => {
+              const from = i * slot + gap / 2;
+              const end = from + (slot - gap) * Math.max(0, Math.min(1, s.mastery / 100));
+              if (end - from < 0.4) return null;
+              return (
+                <path
+                  key={s.id}
+                  d={arcD(from, end)}
+                  fill="none"
+                  stroke={s.color}
+                  strokeWidth="8"
+                  strokeLinecap="round"
+                  className="transition-all duration-700"
+                  style={{ filter: `drop-shadow(0 0 6px ${s.color}40)` }}
+                />
+              );
+            });
+          })()
+        ) : (
+          <circle
+            cx="60" cy="60" r={r} fill="none"
+            stroke={accent} strokeWidth="8" strokeLinecap="round"
+            strokeDasharray={c}
+            strokeDashoffset={c * (1 - Math.max(0, Math.min(100, percent)) / 100)}
+            className="transition-all duration-700"
+            style={{ filter: `drop-shadow(0 0 8px ${accent}55)`, transformOrigin: "60px 60px", transform: "rotate(-90deg)" }}
+          />
+        )}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-[28px] font-black tracking-tight text-foreground leading-none">{percent}%</span>
@@ -83,26 +120,73 @@ type VariantCtx = {
 
 /* ── Mode-specific blocks ── */
 
-function ModeHeader({ profile, temporalLabel }: { profile: JourneyProfile; temporalLabel: string }) {
+function ModeHeader({
+  profile,
+  temporalLabel,
+  daysRemaining,
+}: {
+  profile: JourneyProfile;
+  temporalLabel: string;
+  daysRemaining: number | null;
+}) {
+  const isPath = profile.headlinePrefix === "Path";
   return (
-    <div>
-      <div className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5" style={{ borderColor: `${profile.accent}30`, background: `${profile.accent}0a` }}>
-        <Target size={11} style={{ color: profile.accent }} />
-        <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: profile.accent }}>
-          {profile.title}{temporalLabel ? ` · ${temporalLabel}` : ""}
-        </span>
+    <div
+      className="relative overflow-hidden rounded-3xl border p-5"
+      style={{
+        borderColor: "rgba(255,255,255,0.08)",
+        background: `linear-gradient(160deg, ${profile.accent}12 0%, rgba(255,255,255,0.02) 60%)`,
+      }}
+    >
+      <div
+        className="pointer-events-none absolute -top-14 -right-14 size-44 rounded-full opacity-25 blur-3xl"
+        style={{ background: `radial-gradient(circle, ${profile.accent}, transparent 70%)` }}
+      />
+      <div
+        className="pointer-events-none absolute inset-x-8 top-0 h-px"
+        style={{ background: `linear-gradient(90deg, transparent, ${profile.accent}66, transparent)` }}
+      />
+
+      <div className="relative flex items-center justify-between gap-3">
+        <div
+          className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5"
+          style={{ borderColor: `${profile.accent}30`, background: `${profile.accent}0d` }}
+        >
+          <Target size={11} style={{ color: profile.accent }} />
+          <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: profile.accent }}>
+            {profile.title}
+            {temporalLabel ? ` · ${temporalLabel}` : ""}
+          </span>
+        </div>
+        {daysRemaining !== null && (
+          <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/[0.07] px-3 py-1.5">
+            <CalendarDays size={11} style={{ color: profile.accent }} />
+            <span className="text-[10px] font-bold" style={{ color: profile.accent }}>
+              {daysRemaining} days left
+            </span>
+          </div>
+        )}
       </div>
-      <h2 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground">{profile.headlinePrefix === "Path" ? "Your Learning Path" : profile.title}</h2>
-      <p className="mt-0.5 text-[11px] text-muted-foreground/45 font-medium">{profile.subtitle}</p>
+
+      <h2
+        className="relative mt-3 bg-clip-text text-transparent text-[22px] font-black tracking-[-0.03em] leading-tight"
+        style={{ backgroundImage: `linear-gradient(90deg, ${profile.accent}, rgba(255,255,255,0.92))` }}
+      >
+        {isPath ? "Your Learning Path" : profile.title}
+      </h2>
+      <p className="relative mt-1.5 text-[12px] font-medium text-muted-foreground/55">{profile.subtitle}</p>
     </div>
   );
 }
 
-function SectionLabel({ children, accent }: { children: React.ReactNode; accent: string }) {
+function CardHeader({ children, accent, action }: { children: React.ReactNode; accent: string; action?: React.ReactNode }) {
   return (
-    <p className="text-[9px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3" style={{ color: `${accent}d9` }}>
-      {children}
-    </p>
+    <div className="flex items-center justify-between gap-3">
+      <p className="text-[9px] font-semibold tracking-[0.18em] uppercase" style={{ color: `${accent}d9` }}>
+        {children}
+      </p>
+      {action}
+    </div>
   );
 }
 
@@ -114,16 +198,8 @@ function ExamReadyBlock({ ctx }: { ctx: VariantCtx }) {
   ];
   return (
     <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <div className="flex items-start justify-between gap-3">
-        <SectionLabel accent={ctx.profile.accent}>Today&apos;s Mission</SectionLabel>
-        {ctx.daysRemaining !== null && (
-          <div className="flex items-center gap-1.5 rounded-full border border-white/[0.07] px-3 py-1">
-            <CalendarDays size={11} style={{ color: ctx.profile.accent }} />
-            <span className="text-[10px] font-bold" style={{ color: ctx.profile.accent }}>{ctx.daysRemaining} days left</span>
-          </div>
-        )}
-      </div>
-      <div className="flex flex-col gap-3">
+      <CardHeader accent={ctx.profile.accent}>Today&apos;s Mission</CardHeader>
+      <div className="mt-3.5 flex flex-col gap-3">
         {mission.length === 0 && (
           <div className="rounded-2xl border border-dashed border-white/[0.06] px-4 py-6 text-center">
             <p className="text-[11px] text-muted-foreground/50">Complete a sprint to unlock your mission.</p>
@@ -167,13 +243,23 @@ function GapCloserBlock({ ctx }: { ctx: VariantCtx }) {
   const gaps = [...ctx.topics].sort((a, b) => a.mastery - b.mastery).slice(0, 3);
   return (
     <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <SectionLabel accent={ctx.profile.accent}>Your Preparation Gap</SectionLabel>
-      <div className="flex items-center gap-5">
-        <CircularGauge percent={ctx.overall} accent={ctx.profile.accent} />
+      <CardHeader accent={ctx.profile.accent} action={(
+        <span className="rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
+          {gap}% gap
+        </span>
+      )}>
+        Your Preparation Gap
+      </CardHeader>
+      <div className="mt-3.5 flex items-center gap-5">
+        <CircularGauge
+          percent={ctx.overall}
+          accent={ctx.profile.accent}
+          segments={ctx.topics.map((t) => ({ id: t.id, color: t.color, mastery: t.mastery }))}
+        />
         <div>
           <p className="text-[13px] font-semibold text-foreground/80">You don&apos;t need to rush.<br />You need to become ready.</p>
           <p className="mt-2 text-[11px] text-muted-foreground/55">
-            Current readiness <span className="font-bold" style={{ color: ctx.profile.accent }}>{ctx.overall}%</span> · Gap <span className="font-bold text-destructive">{gap}%</span>
+            Current readiness <span className="font-bold" style={{ color: ctx.profile.accent }}>{ctx.overall}%</span>
           </p>
         </div>
       </div>
@@ -203,8 +289,8 @@ const DISCOVERY_PHASES = [
 function DiscoveryBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <SectionLabel accent={ctx.profile.accent}>Current Focus</SectionLabel>
-      <p className="text-[12px] text-muted-foreground/55 -mt-2 mb-4">
+      <CardHeader accent={ctx.profile.accent}>Current Focus</CardHeader>
+      <p className="mt-3.5 mb-4 text-[12px] text-muted-foreground/55">
         Your exam date isn&apos;t fixed yet — that&apos;s okay. We&apos;ll build your skills while you figure it out.
       </p>
       <div className="flex flex-col gap-2.5">
@@ -227,8 +313,8 @@ function GuidedLearningBlock({ ctx }: { ctx: VariantCtx }) {
   const next = ctx.topics[1] ?? weak;
   return (
     <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <SectionLabel accent={ctx.profile.accent}>Today&apos;s Lesson</SectionLabel>
-      <div className="flex flex-col gap-2">
+      <CardHeader accent={ctx.profile.accent}>Today&apos;s Lesson</CardHeader>
+      <div className="mt-3.5 flex flex-col gap-2">
         {ctx.topics.slice(0, 3).map((t, i) => (
           <div key={t.id} className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-3">
             <span className="grid size-7 place-items-center rounded-lg" style={{ background: `${t.color}15` }}>
@@ -265,8 +351,8 @@ function SpeedTrainingBlock({ ctx }: { ctx: VariantCtx }) {
   const weak = ctx.topics[0];
   return (
     <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <SectionLabel accent={ctx.profile.accent}>Speed Training</SectionLabel>
-      <div className="grid grid-cols-2 gap-2.5">
+      <CardHeader accent={ctx.profile.accent}>Speed Training</CardHeader>
+      <div className="mt-3.5 grid grid-cols-2 gap-2.5">
         <div className="rounded-2xl border border-white/[0.06] p-3.5">
           <p className="text-micro font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">Current Speed</p>
           <p className="mt-1.5 text-[22px] font-black tracking-tight text-foreground leading-none">
@@ -301,8 +387,8 @@ function PerformanceBlock({ ctx }: { ctx: VariantCtx }) {
   const weak = ctx.topics[0];
   return (
     <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <SectionLabel accent={ctx.profile.accent}>Competitive Exam Mode</SectionLabel>
-      <div className="flex items-center gap-5">
+      <CardHeader accent={ctx.profile.accent}>Competitive Exam Mode</CardHeader>
+      <div className="mt-3.5 flex items-center gap-5">
         <CircularGauge percent={ctx.overall} accent={ctx.profile.accent} />
         <div>
           <p className="text-[13px] font-semibold text-foreground/80">Speed + accuracy under exam conditions.</p>
@@ -336,8 +422,8 @@ function BrainGymBlock({ ctx }: { ctx: VariantCtx }) {
   ];
   return (
     <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <SectionLabel accent={ctx.profile.accent}>Today&apos;s Mental Workout</SectionLabel>
-      <div className="grid grid-cols-2 gap-2.5">
+      <CardHeader accent={ctx.profile.accent}>Today&apos;s Mental Workout</CardHeader>
+      <div className="mt-3.5 grid grid-cols-2 gap-2.5">
         <div className="rounded-2xl border border-white/[0.06] p-3.5">
           <div className="flex items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">
             <Trophy size={11} style={{ color: ctx.profile.accent }} /> Today&apos;s Score
@@ -354,7 +440,7 @@ function BrainGymBlock({ ctx }: { ctx: VariantCtx }) {
       <div className="mt-4 flex flex-col gap-2">
         {workouts.map((w, i) => (
           <div key={w.t} className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold" style={{ color: ctx.profile.accent }}>⚡</span>
+            <span className="font-mono text-[10px] font-bold" style={{ color: ctx.profile.accent }}>{String(i + 1).padStart(2, "0")}</span>
             <p className="text-[12px] font-bold text-foreground/80">{w.t}</p>
             <span className="ml-auto text-micro text-muted-foreground/50">{w.d}</span>
           </div>
@@ -368,11 +454,24 @@ function BrainGymBlock({ ctx }: { ctx: VariantCtx }) {
 
 function StatsBlock({ ctx }: { ctx: VariantCtx }) {
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5 flex items-center gap-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <CircularGauge percent={ctx.overall} accent={ctx.profile.accent} />
-      <div className="flex-1 min-w-0">
-        <p className="text-[17px] font-bold tracking-[-0.02em] text-foreground leading-tight">Curriculum Preparedness</p>
-        <div className="mt-4 flex flex-col gap-2.5">
+    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+      <CardHeader
+        accent={ctx.profile.accent}
+        action={(
+          <span className="rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
+            {ctx.overall}% ready
+          </span>
+        )}
+      >
+        Curriculum Preparedness
+      </CardHeader>
+      <div className="mt-3.5 flex items-center gap-5">
+        <CircularGauge
+          percent={ctx.overall}
+          accent={ctx.profile.accent}
+          segments={ctx.topics.map((t) => ({ id: t.id, color: t.color, mastery: t.mastery }))}
+        />
+        <div className="flex-1 min-w-0 flex flex-col gap-2.5">
           <div className="flex items-center gap-2.5">
             <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: `${ctx.profile.accent}12` }}>
               <Grid3x3 size={12} style={{ color: ctx.profile.accent }} />
@@ -396,94 +495,80 @@ function StatsBlock({ ctx }: { ctx: VariantCtx }) {
           </div>
         </div>
       </div>
+      {ctx.topics.length > 0 && (
+        <div className="mt-4 rounded-2xl border border-white/[0.06] p-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground/50">Pending Across Topics</p>
+            <span className="text-[10px] font-bold" style={{ color: ctx.profile.accent }}>{ctx.topics.length - ctx.mastered} topics</span>
+          </div>
+          <div className="mt-2.5 flex flex-col gap-1.5">
+            {[...ctx.topics].sort((a, b) => a.mastery - b.mastery).map((t) => (
+              <div key={t.id} className="flex items-center gap-2">
+                <span className="size-1.5 shrink-0 rounded-full" style={{ background: t.color, boxShadow: `0 0 6px ${t.color}66` }} />
+                <span className="min-w-0 flex-1 truncate text-[11px] font-semibold text-foreground/70">{t.name}</span>
+                <span className="shrink-0 text-[10px] font-mono font-bold" style={{ color: t.color }}>
+                  {100 - t.mastery}% pending
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 function TimeBudgetBlock({ ctx }: { ctx: VariantCtx }) {
   if (ctx.timeBudget.length === 0) return null;
+  const total = ctx.timeBudget.reduce((s, b) => s + b.minutes, 0);
   return (
-    <div className="flex flex-col gap-2">
-      <SectionLabel accent={ctx.profile.accent}>Daily Budget</SectionLabel>
-      <div className="flex items-center gap-1.5 rounded-2xl border border-white/[0.06] px-4 py-3">
-        <Timer size={12} className="shrink-0" style={{ color: ctx.profile.accent }} />
-        {ctx.timeBudget.map((b) => (
-          <span key={b.label} className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
-            {b.minutes} min {b.label}
-          </span>
-        ))}
-        <span className="ml-auto text-[10px] font-bold text-muted-foreground/50">
-          {ctx.timeBudget.reduce((s, b) => s + b.minutes, 0)} min
+    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+      <div className="flex items-center justify-between">
+        <p className="text-[9px] font-semibold tracking-[0.18em] uppercase" style={{ color: `${ctx.profile.accent}d9` }}>
+          Daily Budget
+        </p>
+        <span className="rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
+          {total} min
         </span>
       </div>
-    </div>
-  );
-}
-
-function TodayPlanCards({ ctx }: { ctx: VariantCtx }) {
-  return (
-    <div>
-      <SectionLabel accent={ctx.profile.accent}>Today&apos;s Plan</SectionLabel>
-      <div className="flex gap-3 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {ctx.weak && (
-          <div className="min-w-[160px] rounded-2xl border border-destructive/20 bg-destructive/5 p-4 flex flex-col">
-            <p className="text-[8px] font-bold uppercase tracking-wider text-destructive/80">Weak Topic</p>
-            <p className="mt-1.5 text-[14px] font-bold tracking-[-0.01em] text-foreground leading-tight">{ctx.weak.topicLabel}</p>
-            <p className="mt-1 text-[12px] text-muted-foreground/50">{ctx.weak.mastery}% mastered</p>
-            <button
-              type="button"
-              onClick={() => ctx.router.push(sprintHref(ctx.weak!, ctx.domain))}
-              className="mt-auto pt-3 inline-flex self-start items-center gap-1 rounded-full bg-destructive/15 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-destructive/90 transition-all hover:bg-destructive/25 active:scale-95"
-            >
-              Practice <ChevronRight size={10} />
-            </button>
+      <div className="mt-3.5 flex flex-col gap-2">
+        {ctx.timeBudget.map((b, i) => (
+          <div key={b.label} className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-2.5">
+            <span className="font-mono text-[10px] font-bold" style={{ color: `${ctx.profile.accent}99` }}>
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span className="min-w-0 truncate text-[12px] font-semibold text-foreground/80">{b.label}</span>
+            <div className="flex-1 h-1.5 rounded-full bg-white/[0.05] overflow-hidden">
+              <div
+                className="h-full rounded-full"
+                style={{ width: `${Math.round((b.minutes / total) * 100)}%`, background: `${ctx.profile.accent}99` }}
+              />
+            </div>
+            <span className="shrink-0 text-[12px] font-bold" style={{ color: ctx.profile.accent }}>
+              {b.minutes}m
+            </span>
           </div>
-        )}
-        {ctx.practice && (
-          <div className="min-w-[160px] rounded-2xl border border-primary/20 bg-primary/5 p-4 flex flex-col">
-            <p className="text-[8px] font-bold uppercase tracking-wider text-primary/80">Practice Set</p>
-            <p className="mt-1.5 text-[14px] font-bold tracking-[-0.01em] text-foreground leading-tight">{ctx.practice.length} questions</p>
-            <p className="mt-1 text-[12px] text-muted-foreground/50">Spaced review</p>
-            <button
-              type="button"
-              onClick={() => ctx.router.push(sprintHref(ctx.practice!, ctx.domain))}
-              className="mt-auto pt-3 inline-flex self-start items-center gap-1 rounded-full bg-primary/15 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-primary transition-all hover:bg-primary/25 active:scale-95"
-            >
-              Start <ChevronRight size={10} />
-            </button>
-          </div>
-        )}
-        {ctx.mock && (
-          <div className="min-w-[160px] rounded-2xl border border-chart-4/20 bg-chart-4/5 p-4 flex flex-col">
-            <p className="text-[8px] font-bold uppercase tracking-wider text-chart-4/80">Mock Test</p>
-            <p className="mt-1.5 text-[14px] font-bold tracking-[-0.01em] text-foreground leading-tight">Full-length</p>
-            <p className="mt-1 text-[12px] text-muted-foreground/50">Every 5 sessions</p>
-            <button
-              type="button"
-              onClick={() => ctx.router.push("/learn?mode=mock")}
-              className="mt-auto pt-3 inline-flex self-start items-center gap-1 rounded-full bg-chart-4/15 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-chart-4 transition-all hover:bg-chart-4/25 active:scale-95"
-            >
-              Take <ChevronRight size={10} />
-            </button>
-          </div>
-        )}
-        {!ctx.weak && !ctx.practice && !ctx.mock && (
-          <div className="min-w-[160px] rounded-2xl border border-white/[0.06] p-4 flex flex-col items-center justify-center text-center">
-            <Sparkles size={16} className="text-muted-foreground/30 mb-2" />
-            <p className="text-[11px] font-semibold text-muted-foreground/50">No recommendations yet</p>
-            <p className="text-[9px] text-muted-foreground/40 mt-1">Complete a sprint to get a plan.</p>
-          </div>
-        )}
+        ))}
       </div>
     </div>
   );
 }
 
 function TopicMasteryList({ ctx }: { ctx: VariantCtx }) {
+  const mastered = ctx.topics.filter((t) => t.mastery >= 80).length;
   return (
-    <div>
-      <SectionLabel accent={ctx.profile.accent}>Your Topics</SectionLabel>
-      <div className="flex flex-col gap-2">
+    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+      <CardHeader
+        accent={ctx.profile.accent}
+        action={(
+          <span className="rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
+            {mastered}/{ctx.topics.length} mastered
+          </span>
+        )}
+      >
+        Your Topics
+      </CardHeader>
+      <div className="mt-3.5 flex flex-col gap-2">
         {ctx.topics.map((t) => {
           const iconMeta = TOPIC_ICONS[t.name];
           const Icon = iconMeta?.icon ?? Grid3x3;
@@ -580,31 +665,48 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
   };
 
   return (
-    <div className="flex flex-col gap-5">
-      <ModeHeader profile={profile} temporalLabel={temporalLabel} />
+    <div className="mt-4 grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
+      {/* Left column — mission + daily work */}
+      <div className="md:col-span-3 flex flex-col gap-4 min-w-0">
+        <ModeHeader profile={profile} temporalLabel={temporalLabel} daysRemaining={daysRemaining} />
 
-      {profile.mode === "exam_ready" && <ExamReadyBlock ctx={ctx} />}
-      {profile.mode === "gap_closer" && <GapCloserBlock ctx={ctx} />}
-      {profile.mode === "discovery" && <DiscoveryBlock ctx={ctx} />}
-      {profile.mode === "guided_learning" && <GuidedLearningBlock ctx={ctx} />}
-      {profile.mode === "speed" && <SpeedTrainingBlock ctx={ctx} />}
-      {profile.mode === "performance" && <PerformanceBlock ctx={ctx} />}
-      {profile.mode === "brain_gym" && <BrainGymBlock ctx={ctx} />}
+        {profile.mode === "exam_ready" && <ExamReadyBlock ctx={ctx} />}
+        {profile.mode === "gap_closer" && <GapCloserBlock ctx={ctx} />}
+        {profile.mode === "discovery" && <DiscoveryBlock ctx={ctx} />}
+        {profile.mode === "guided_learning" && <GuidedLearningBlock ctx={ctx} />}
+        {profile.mode === "speed" && <SpeedTrainingBlock ctx={ctx} />}
+        {profile.mode === "performance" && <PerformanceBlock ctx={ctx} />}
+        {profile.mode === "brain_gym" && <BrainGymBlock ctx={ctx} />}
+      </div>
 
-      <StatsBlock ctx={ctx} />
-      <TimeBudgetBlock ctx={ctx} />
-      <TodayPlanCards ctx={ctx} />
-      <TopicMasteryList ctx={ctx} />
+      {/* Right column — live instruments */}
+      <div className="md:col-span-2 flex flex-col gap-4 min-w-0">
+        <StatsBlock ctx={ctx} />
+        <TimeBudgetBlock ctx={ctx} />
+        <TopicMasteryList ctx={ctx} />
+      </div>
 
-      <button
-        type="button"
-        onClick={() => router.push(ctx.startHref)}
-        className="w-full flex items-center justify-center gap-2 rounded-2xl py-4 text-[12px] font-bold uppercase tracking-widest text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.98]"
-        style={{ background: "#C8FF4D", boxShadow: "0 0 24px rgba(200,255,77,0.25)" }}
-      >
-        <Play size={13} strokeWidth={2.5} /> Start {profile.mode === "brain_gym" ? "Today's Workout" : "Today's Practice"}
-      </button>
-      <p className="text-center text-[10px] text-muted-foreground/40 -mt-2">Based on your goal and daily budget</p>
+      {/* CTA — full width */}
+      <div className="md:col-span-5">
+        <button
+          type="button"
+          onClick={() => router.push(ctx.startHref)}
+          className="group relative w-full overflow-hidden rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A] transition-transform active:scale-[0.98]"
+          style={{
+            background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+            boxShadow: "0 10px 34px rgba(200,255,77,0.28), 0 1px 0 rgba(255,255,255,0.25) inset",
+          }}
+        >
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+          <span className="relative flex items-center justify-center gap-2">
+            <Play size={13} strokeWidth={2.5} />
+            Start {profile.mode === "brain_gym" ? "Today's Workout" : "Today's Practice"}
+          </span>
+        </button>
+        <p className="mt-2.5 text-center text-[10px] font-medium text-muted-foreground/40">
+          Based on your goal and daily budget
+        </p>
+      </div>
     </div>
   );
 }

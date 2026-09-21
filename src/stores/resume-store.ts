@@ -5,6 +5,8 @@ import type { Question } from "@/lib/types/sprint-session";
 import type { AnswerEntry } from "@/stores/sprint-store";
 
 export type ResumeSnapshot = {
+  kind: "sprint" | "mock";
+  paperId?: string;
   topic: string;
   topicLabel: string;
   difficulty: string;

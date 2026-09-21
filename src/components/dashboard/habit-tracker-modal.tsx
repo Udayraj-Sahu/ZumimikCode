@@ -70,6 +70,24 @@ function todayStr(): string {
 
 const isNative = Capacitor.isNativePlatform();
 
+const DAY_PILLS = ["M", "T", "W", "T", "F", "S", "S"];
+const DAY_JS: number[] = [1, 2, 3, 4, 5, 6, 0];
+const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
+const DAY_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+function allDays(): number[] {
+  return [...ALL_DAYS];
+}
+
+function reminderLabel(days: number[] | undefined, time: string): string {
+  const list = days && days.length > 0 ? days.sort() : allDays();
+  if (list.length === 7) return `Every day at ${time}`;
+  if (list.length === 5 && [1, 2, 3, 4, 5].every((d) => list.includes(d))) {
+    return `Weekdays at ${time}`;
+  }
+  return `${list.map((d) => DAY_SHORT[d]).join(" · ")} at ${time}`;
+}
+
 async function requestNotificationPermission(): Promise<boolean> {
   if (isNative) {
     try {
@@ -88,35 +106,38 @@ async function requestNotificationPermission(): Promise<boolean> {
   return result === "granted";
 }
 
-async function scheduleReminder(habitName: string, time: string) {
+async function scheduleReminder(habitName: string, time: string, days: number[]) {
+  const [hours, minutes] = time.split(":").map(Number);
   if (isNative) {
     try {
       await LocalNotifications.schedule({
-        notifications: [
-          {
-            title: "Habit Reminder",
-            body: `Time to: ${habitName}`,
-            id: Math.floor(Math.random() * 1000000),
-            schedule: {
-              on: { hour: Number(time.split(":")[0]), minute: Number(time.split(":")[1]) },
-              allowWhileIdle: true,
-            },
-            extra: { habitId: habitName },
+        notifications: days.map((d) => ({
+          title: "Habit Reminder",
+          body: `Time to: ${habitName}`,
+          id: Math.floor(Math.random() * 1000000),
+          schedule: {
+            on: { weekday: d + 1, hour: hours, minute: minutes },
+            allowWhileIdle: true,
           },
-        ],
+          extra: { habitId: habitName },
+        })),
       });
     } catch {
       /* notification scheduling failed silently */
     }
     return;
   }
-  const [hours, minutes] = time.split(":").map(Number);
+  days.forEach((d) => scheduleWebReminder(habitName, hours, minutes, d));
+}
+
+function scheduleWebReminder(habitName: string, hours: number, minutes: number, day: number) {
   const now = new Date();
-  const target = new Date();
-  target.setHours(hours, minutes, 0, 0);
-  if (target <= now) target.setDate(target.getDate() + 1);
-  const delay = target.getTime() - now.getTime();
-  return setTimeout(() => {
+  const next = new Date();
+  next.setHours(hours, minutes, 0, 0);
+  next.setDate(next.getDate() + ((day - next.getDay() + 7) % 7));
+  if (next.getTime() <= now.getTime()) next.setDate(next.getDate() + 7);
+  const delay = next.getTime() - now.getTime();
+  return window.setTimeout(() => {
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification("Habit Reminder", {
         body: `Time to: ${habitName}`,
@@ -125,6 +146,7 @@ async function scheduleReminder(habitName: string, time: string) {
         tag: `habit-${habitName}`,
       });
     }
+    scheduleWebReminder(habitName, hours, minutes, day);
   }, delay);
 }
 
@@ -152,6 +174,7 @@ export function HabitTrackerModal({ onClose }: Props) {
   const [newColor, setNewColor] = useState("#C7F252");
   const [editingReminder, setEditingReminder] = useState<string | null>(null);
   const [draftTime, setDraftTime] = useState("08:00");
+  const [draftDays, setDraftDays] = useState<number[]>(allDays());
   const [notifsEnabled, setNotifsEnabled] = useState(false);
 
   const habits = useHabitStore((s) => s.habits);
@@ -250,7 +273,7 @@ export function HabitTrackerModal({ onClose }: Props) {
     setNewName(""); setNewIcon("Zap"); setNewColor("#C7F252"); setShowAdd(false);
   }, [newName, newIcon, newColor, addHabit]);
 
-  const handleToggleReminder = useCallback(async (habitId: string, current: string | undefined, habitName: string) => {
+  const handleToggleReminder = useCallback(async (habitId: string, current: string | undefined, habitName: string, days?: number[]) => {
     if (current) { setReminder(habitId, undefined); await cancelReminder(habitName); setEditingReminder(null); return; }
     if (!notifsEnabled) {
       const granted = await requestNotificationPermission();
@@ -258,12 +281,13 @@ export function HabitTrackerModal({ onClose }: Props) {
       if (!granted) return;
     }
     setDraftTime(current ?? "08:00");
+    setDraftDays(days && days.length > 0 ? [...days] : allDays());
     setEditingReminder(habitId);
   }, [notifsEnabled, setReminder]);
 
-  const handleSetTime = useCallback(async (habitId: string, time: string, habitName: string) => {
-    setReminder(habitId, time);
-    await scheduleReminder(habitName, time);
+  const handleSetTime = useCallback(async (habitId: string, time: string, habitName: string, days: number[]) => {
+    setReminder(habitId, time, days);
+    await scheduleReminder(habitName, time, days);
     setEditingReminder(null);
   }, [setReminder]);
 
@@ -466,13 +490,13 @@ export function HabitTrackerModal({ onClose }: Props) {
                         )}
                         <button
                           type="button"
-                          onClick={(e) => { e.stopPropagation(); handleToggleReminder(h.id, h.reminderTime, h.name); }}
+                          onClick={(e) => { e.stopPropagation(); handleToggleReminder(h.id, h.reminderTime, h.name, h.reminderDays); }}
                           className={cn(
                             "size-7 rounded-lg flex items-center justify-center transition-all shrink-0",
                             h.reminderTime ? "bg-[rgba(52,211,153,0.12)]" : "text-muted-foreground/20 hover:text-muted-foreground/50 hover:bg-white/5",
                           )}
                           style={h.reminderTime ? { color: VIOLET } : undefined}
-                          title={h.reminderTime ? `Reminder at ${h.reminderTime}` : "Set reminder"}
+                          title={h.reminderTime ? `Reminds ${reminderLabel(h.reminderDays, h.reminderTime)}` : "Set reminder"}
                         >
                           {h.reminderTime ? <Bell size={12} /> : <BellOff size={12} />}
                         </button>
@@ -513,10 +537,51 @@ export function HabitTrackerModal({ onClose }: Props) {
                           />
                         </div>
 
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1.5">
+                            <Calendar size={11} style={{ color: VIOLET }} />
+                            <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground/50">
+                              Repeat on
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); setDraftDays(draftDays.length === 7 ? [] : allDays()); }}
+                            className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide transition-colors", draftDays.length === 7 ? "text-[#0A0C0A]" : "text-muted-foreground/40 hover:text-foreground")}
+                            style={draftDays.length === 7 ? { background: `${VIOLET}22`, border: `1px solid ${VIOLET}40` } : undefined}
+                          >
+                            {"Every day"}
+                          </button>
+                        </div>
+                        <div className="flex items-center justify-between gap-1">
+                          {DAY_PILLS.map((label, i) => {
+                            const jsDay = DAY_JS[i];
+                            const active = draftDays.includes(jsDay);
+                            return (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); setDraftDays((prev) => (active ? prev.filter((d) => d !== jsDay) : [...prev, jsDay])); }}
+                                className={cn(
+                                  "flex h-8 flex-1 items-center justify-center rounded-lg text-[11px] font-bold transition-all",
+                                  active ? "text-[#0A0C0A]" : "bg-white/[0.05] text-muted-foreground/40 hover:bg-white/[0.08]",
+                                )}
+                                style={active ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 10px ${VIOLET_GLOW}` } : undefined}
+                              >
+                                {label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        {draftDays.length === 0 && (
+                          <p className="text-center text-[9px] font-semibold text-destructive/70">Pick at least one day</p>
+                        )}
+
                         <button
                           type="button"
-                          onClick={() => handleSetTime(h.id, draftTime, h.name)}
-                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-micro font-bold uppercase tracking-widest text-[#0A0C0A] transition-all active:scale-[0.98]"
+                          onClick={() => handleSetTime(h.id, draftTime, h.name, draftDays)}
+                          disabled={draftDays.length === 0}
+                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-micro font-bold uppercase tracking-widest text-[#0A0C0A] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
                           style={{ background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }}
                         >
                           <Bell size={11} /> Set reminder
@@ -527,7 +592,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                     {!isEditing && h.reminderTime && (
                       <div className="flex items-center gap-1.5 mx-6">
                         <div className="size-1 rounded-full animate-pulse" style={{ background: VIOLET }} />
-                        <span className="text-micro font-medium" style={{ color: `${VIOLET}99` }}>Reminds at {h.reminderTime}</span>
+                        <span className="text-micro font-medium" style={{ color: `${VIOLET}99` }}>{reminderLabel(h.reminderDays, h.reminderTime)}</span>
                       </div>
                     )}
                   </div>

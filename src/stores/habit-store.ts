@@ -48,7 +48,7 @@ type HabitState = {
   addHabit: (name: string, icon: string, color: string) => void;
   removeHabit: (id: string) => void;
   toggleLog: (habitId: string, date?: string) => void;
-  setReminder: (habitId: string, time: string | undefined) => void;
+  setReminder: (habitId: string, time: string | undefined, days?: number[]) => void;
   getTodayLogs: () => string[];
   getHabitsWithToday: () => HabitWithLog[];
   getStreak: (habitId: string) => number;
@@ -88,10 +88,12 @@ export const useHabitStore = create<HabitState>()(
         });
       },
 
-      setReminder: (habitId, time) => {
+      setReminder: (habitId, time, days) => {
         set((s) => ({
           habits: s.habits.map((h) =>
-            h.id === habitId ? { ...h, reminderTime: time } : h,
+            h.id === habitId
+              ? { ...h, reminderTime: time, ...(days ? { reminderDays: days } : {}) }
+              : h,
           ),
         }));
       },

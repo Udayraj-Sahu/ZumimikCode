@@ -440,7 +440,9 @@ export function buildPaperSession(
   const d = domain ?? "cat";
   const questions: Question[] = [];
   for (const sec of sections) {
-    const pool = QUESTIONS_BY_DOMAIN[d]?.[sec.topic] ?? [];
+    const pool = d === "random"
+      ? Object.values(QUESTIONS_BY_DOMAIN).flatMap((m) => m[sec.topic] ?? [])
+      : QUESTIONS_BY_DOMAIN[d]?.[sec.topic] ?? [];
     if (pool.length === 0) continue;
     const target = Math.max(1, sec.questions);
     let count = 0;
@@ -448,6 +450,9 @@ export function buildPaperSession(
       questions.push(enrichQuestion(pool[count % pool.length], d, sec.topic));
       count++;
     }
+  }
+  if (d === "random") {
+    questions.splice(0, questions.length, ...shuffle(questions));
   }
   return {
     id: `mock_${d}_${Date.now()}`,

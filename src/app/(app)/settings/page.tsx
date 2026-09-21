@@ -31,6 +31,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
+import { PaywallModal } from "@/components/pricing/paywall-modal";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { cn } from "@/lib/utils";
 
@@ -354,6 +355,7 @@ export default function SettingsPage() {
       </div>
 
       {showAddPrep && <AddPrepModal onClose={() => setShowAddPrep(false)} />}
+      <PaywallModal />
     </div>
   );
 }

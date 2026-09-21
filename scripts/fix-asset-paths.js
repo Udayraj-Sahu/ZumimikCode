@@ -5,6 +5,22 @@ const outDir = path.join(__dirname, "..", "out");
 
 function fixFile(filePath) {
   const ext = path.extname(filePath);
+  if (ext === ".css") {
+    let content = fs.readFileSync(filePath, "utf-8");
+    const original = content;
+
+    // CSS files live at out/_next/static/css/. Rewrite root-absolute
+    // url() refs so they resolve relative to the css dir (file:// scheme).
+    content = content.replace(/url\(\/_next\/static\/media\//g, "url(../media/");
+    content = content.replace(/url\(\/_next\/static\//g, "url(../../static/");
+    content = content.replace(/url\(\/(manifest\.json|favicon\.svg|favicon\.ico)\)/g, "url(../../$1)");
+
+    if (content !== original) {
+      fs.writeFileSync(filePath, content, "utf-8");
+      console.log(`  Fixed: ${path.relative(outDir, filePath)}`);
+    }
+    return;
+  }
   if (ext !== ".html" && ext !== ".txt") return;
 
   let content = fs.readFileSync(filePath, "utf-8");

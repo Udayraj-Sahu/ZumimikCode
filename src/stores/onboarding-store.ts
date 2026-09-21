@@ -11,6 +11,14 @@ export function examIdForGoal(goal: string | null): string {
   return "";
 }
 
+export function goalForExam(examId: string | null): string | null {
+  if (examId === "cat") return "Prepare for CAT";
+  if (examId === "gmat") return "Prepare for GMAT";
+  if (examId === "gre") return "Prepare for GRE";
+  if (examId === "vedic-math") return "Master speed math";
+  return null;
+}
+
 type OnboardingState = {
   currentStep: number;
   name: string;
@@ -41,6 +49,14 @@ type OnboardingState = {
   dailyMinutes: number | null;
   planId: PlanId | null;
   vedicUseCase: VedicUseCaseId | null;
+  storyHookSeen: boolean;
+  planHookSeen: boolean;
+  reclaimSlot: string;
+  reclaimWindow: string;
+  triggerType: string;
+  triggerTime: string;
+  weekDays: boolean[];
+  planLane: string;
 
   setAuthData: (data: { name?: string; email?: string; phone?: string; authMethod: "google" | "phone" }) => void;
   setTargetExam: (exam: string) => void;
@@ -72,6 +88,14 @@ type OnboardingState = {
   setDailyMinutes: (minutes: number | null) => void;
   setPlanId: (plan: PlanId | null) => void;
   setVedicUseCase: (useCase: VedicUseCaseId | null) => void;
+  setStoryHookSeen: (seen: boolean) => void;
+  setPlanHookSeen: (seen: boolean) => void;
+  setReclaimSlot: (slot: string) => void;
+  setReclaimWindow: (window: string) => void;
+  setTriggerType: (type: string) => void;
+  setTriggerTime: (time: string) => void;
+  setWeekDays: (days: boolean[]) => void;
+  setPlanLane: (lane: string) => void;
 };
 
 const initial = {
@@ -99,11 +123,19 @@ const initial = {
   justExploring: false,
   selectedDrill: null as DrillId | null,
   wantsDrills: false,
-  reminderTime: "19:00",
+  reminderTime: "00:00",
   focusMode: "sprint" as FocusMode,
   dailyMinutes: null as number | null,
   planId: null as PlanId | null,
   vedicUseCase: null as VedicUseCaseId | null,
+  storyHookSeen: false,
+  planHookSeen: false,
+  reclaimSlot: "Lunch Break",
+  reclaimWindow: "00:00 - 00:00",
+  triggerType: "Deep Focus Sprint",
+  triggerTime: "00:00",
+  weekDays: [true, true, true, true, true, true, true],
+  planLane: "",
 };
 
 export const useOnboardingStore = create<OnboardingState>()(
@@ -169,12 +201,26 @@ export const useOnboardingStore = create<OnboardingState>()(
       setDailyMinutes: (dailyMinutes) => set({ dailyMinutes }),
       setPlanId: (planId) => set({ planId }),
       setVedicUseCase: (vedicUseCase) => set({ vedicUseCase }),
+      setStoryHookSeen: (storyHookSeen) => set({ storyHookSeen }),
+      setPlanHookSeen: (planHookSeen) => set({ planHookSeen }),
+      setReclaimSlot: (reclaimSlot) => set({ reclaimSlot }),
+      setReclaimWindow: (reclaimWindow) => set({ reclaimWindow }),
+      setTriggerType: (triggerType) => set({ triggerType }),
+      setTriggerTime: (triggerTime) => set({ triggerTime }),
+      setWeekDays: (weekDays) => set({ weekDays }),
+      setPlanLane: (planLane) => set({ planLane }),
       finishOnboarding: () => set({ isOnboarded: true }),
     }),
     {
       name: "exam-arena-onboarding",
       storage: createJSONStorage(() => safeLocalStorage),
-      merge: (persisted, current) => ({ ...current, ...(persisted as Partial<OnboardingState>) }),
+      merge: (persisted, current) => {
+        const p = persisted as Partial<OnboardingState>;
+        if (p.weekDays) {
+          p.weekDays = Array.from({ length: 7 }, (_, i) => p.weekDays?.[i] ?? true);
+        }
+        return { ...current, ...p };
+      },
     },
   ),
 );

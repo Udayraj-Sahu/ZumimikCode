@@ -116,11 +116,45 @@ const BANKING_PAPERS: MockPaper[] = [
   }),
 ];
 
+const RANDOM_PAPERS: MockPaper[] = [
+  buildPaper({
+    id: "random-mixed-1",
+    domain: "random",
+    title: "Random Test Prep",
+    shortLabel: "Random Mix",
+    description: "A mixed bag of speed math, quant, reasoning and English.",
+    sections: [
+      { id: "vm", label: "Speed Math", topic: "addition", questions: 5, minutes: 5 },
+      { id: "qa", label: "Quantitative", topic: "qa", questions: 5, minutes: 8 },
+      { id: "ps", label: "Problem Solving", topic: "ps", questions: 5, minutes: 8 },
+      { id: "eng", label: "English", topic: "english", questions: 5, minutes: 5 },
+    ],
+    difficulty: "Mixed",
+    accent: "#C8FF4D",
+  }),
+  buildPaper({
+    id: "random-quick-1",
+    domain: "random",
+    title: "Random Quick Round",
+    shortLabel: "Quick Round",
+    description: "A short random sprint across all exam styles.",
+    sections: [
+      { id: "vm", label: "Speed Math", topic: "multiplication", questions: 4, minutes: 4 },
+      { id: "ga", label: "General Awareness", topic: "ga", questions: 4, minutes: 5 },
+      { id: "verbal", label: "Verbal", topic: "rc", questions: 4, minutes: 8 },
+      { id: "num", label: "Numerical", topic: "numerical", questions: 4, minutes: 6 },
+    ],
+    difficulty: "Mixed",
+    accent: "#22D3EE",
+  }),
+];
+
 export const MOCK_PAPERS_BY_DOMAIN: Record<string, MockPaper[]> = {
   gmat: GMAT_PAPERS,
   cat: CAT_PAPERS,
   gre: GRE_PAPERS,
   banking: BANKING_PAPERS,
+  random: RANDOM_PAPERS,
 };
 
 export function getMockPapersByDomain(domain?: string): MockPaper[] {

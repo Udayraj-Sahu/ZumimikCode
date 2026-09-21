@@ -23,7 +23,7 @@ export const usePlanStore = create<PlanStoreState>()(
       plan: "free",
       mocksTaken: 0,
 
-      canAddPrep: (activeCount) => get().plan === "pro" || activeCount < FREE_EXTRA_PREPS,
+      canAddPrep: (activeCount) => get().plan === "pro" || activeCount <= FREE_EXTRA_PREPS,
       canTakeMock: () => get().plan === "pro" || get().mocksTaken < FREE_MOCK_LIMIT,
 
       setPro: () => set({ plan: "pro" }),
