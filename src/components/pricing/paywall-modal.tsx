@@ -17,10 +17,6 @@ const COPY = {
     desc: "Free users get one extra prep. Pick a plan to unlock every exam track.",
     success: "Gates unlocked — every exam is now open.",
   },
-  mock: {
-    desc: "Free users get one mock per window. Pick a plan for unlimited mocks + preps.",
-    success: "Gates unlocked — unlimited mocks are live.",
-  },
 } as const;
 
 export function PaywallModal() {
@@ -73,7 +69,7 @@ export function PaywallModal() {
   };
 
   if (!open || !action) return null;
-  const copy = COPY[action];
+  const copy = action === "mock" ? COPY.prep : COPY[action];
 
   return createPortal(
     <div
@@ -142,34 +138,34 @@ export function PaywallModal() {
         transition={{ delay: 0.24, type: "spring", stiffness: 280, damping: 28 }}
         className="relative w-full max-w-[340px] mt-6"
       >
-        {state === "success" ? (
-          <div
-            className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A]"
-            style={{
-              background: `linear-gradient(90deg, ${ACCENT}, #B9F45C)`,
-              boxShadow: "0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset",
-            }}
-          >
-            <ShieldCheck size={15} strokeWidth={2.8} /> Pro activated
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={confirm}
-            className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A] transition-transform active:scale-[0.98]"
-            style={{
-              background: `linear-gradient(90deg, ${ACCENT}, #B9F45C)`,
-              boxShadow: "0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset",
-            }}
-          >
-            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
-            <span className="relative flex items-center gap-2.5">
-              <ShieldCheck size={15} strokeWidth={2.8} className="opacity-70" />
-              Confirm Selection
-            </span>
-          </button>
-        )}
-        <p className="mt-2.5 text-center text-[10px] font-medium text-muted-foreground/35">
+          {state === "success" ? (
+            <div
+              className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A]"
+              style={{
+                background: `linear-gradient(90deg, ${ACCENT}, #B9F45C)`,
+                boxShadow: "0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset",
+              }}
+            >
+              <ShieldCheck size={15} strokeWidth={2.8} /> Pro activated
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={confirm}
+              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A] transition-transform active:scale-[0.98]"
+              style={{
+                background: `linear-gradient(90deg, ${ACCENT}, #B9F45C)`,
+                boxShadow: "0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset",
+              }}
+            >
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+              <span className="relative flex items-center gap-2.5">
+                <ShieldCheck size={15} strokeWidth={2.8} className="opacity-70" />
+                Confirm Selection
+              </span>
+            </button>
+          )}
+<p className="mt-2.5 text-center text-[10px] font-medium text-muted-foreground/35">
           You can change this anytime in Settings.
         </p>
       </motion.div>

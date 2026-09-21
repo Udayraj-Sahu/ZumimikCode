@@ -5,7 +5,7 @@ import { safeLocalStorage } from "@/lib/browser";
 export type PlanTier = "free" | "pro";
 
 export const FREE_EXTRA_PREPS = 1;
-export const FREE_MOCK_LIMIT = 1;
+export const FREE_MOCK_LIMIT = 2;
 
 type PlanStoreState = {
   plan: PlanTier;

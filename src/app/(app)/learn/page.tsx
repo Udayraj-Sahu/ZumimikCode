@@ -33,6 +33,7 @@ import { AdaptiveDashboard } from "@/components/adaptive/adaptive-dashboard";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { resolveJourneyProfile } from "@/lib/adaptive/modes";
 import { PaywallModal } from "@/components/pricing/paywall-modal";
+import { MockArenaHook } from "@/components/pricing/mock-arena-hook";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
 
@@ -140,6 +141,7 @@ function LearnPageContent() {
   const [activeDomain, setActiveDomain] = useState(activeLearnDomain || targetExam || "");
   const [showAddPrep, setShowAddPrep] = useState(false);
   const [addPrepGated, setAddPrepGated] = useState(true);
+  const [showMockArena, setShowMockArena] = useState(false);
   const [statsCollapsed, setStatsCollapsed] = useState(true);
   const [mockSection, setMockSection] = useState<string>("all");
 
@@ -753,7 +755,7 @@ function LearnPageContent() {
                       type="button"
                       onClick={() => {
                         if (!canTakeMock()) {
-                          openPaywall("mock");
+                          setShowMockArena(true);
                           return;
                         }
                         recordMock();
@@ -781,6 +783,7 @@ function LearnPageContent() {
       {showAddPrep && (
         <AddPrepModal gated={addPrepGated} onClose={() => setShowAddPrep(false)} />
       )}
+      {showMockArena && <MockArenaHook onClose={() => setShowMockArena(false)} />}
       <PaywallModal />
       </div>
     </div>
