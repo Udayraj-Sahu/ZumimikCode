@@ -37,11 +37,13 @@ export function ResumeProtocolCard({
   className,
   accent = "#A78BFA",
   showStartEntry = false,
+  kind,
 }: {
   domain?: string;
   className?: string;
   accent?: string;
   showStartEntry?: boolean;
+  kind?: "sprint" | "mock";
 }) {
   const router = useRouter();
   const snapshot = useResumeStore((s) => s.snapshot);
@@ -50,7 +52,11 @@ export function ResumeProtocolCard({
   const { data: plan } = useTodayPlan(domain);
 
   const visibleSnapshot =
-    snapshot && (!domain || !snapshot.domain || snapshot.domain === domain) ? snapshot : null;
+    snapshot &&
+    (!domain || !snapshot.domain || snapshot.domain === domain) &&
+    (!kind || snapshot.kind === kind)
+      ? snapshot
+      : null;
 
   const continueHref = () => {
     if (!snapshot) return;

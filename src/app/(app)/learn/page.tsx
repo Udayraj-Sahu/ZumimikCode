@@ -563,8 +563,8 @@ function LearnPageContent() {
             color={adaptiveAccent}
           />
 
-          {/* Today's Practice / Resume */}
-          <ResumeProtocolCard domain={primaryExam} accent={adaptiveAccent} showStartEntry className="mt-5 px-0" />
+          {/* Today's Practice / Resume — start entry only when goal is set */}
+          <ResumeProtocolCard domain={primaryExam} accent={adaptiveAccent} showStartEntry={!!goal} className="mt-5 px-0" />
 
           {justExploring && prepExams.length === 0 ? (
             <AdaptiveDashboard domain={primaryExam} />
@@ -668,7 +668,7 @@ function LearnPageContent() {
           />
 
           {/* Mock resume — shows only when a mock is in progress */}
-          <ResumeProtocolCard domain={activeDomain} accent="#C8FF4D" className="mt-4 px-0" />
+          <ResumeProtocolCard domain={activeDomain} accent="#C8FF4D" kind="mock" className="mt-4 px-0" />
 
           {/* Section filter chips */}
           {(prepExams.length > 0 || justExploring) && (() => {

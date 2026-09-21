@@ -75,15 +75,15 @@ const VARIANT_COPY: Record<
   },
   whenever: {
     pill: "ADAPTIVE PROTOCOL",
-    headline: { text: "Unfair prep. Zero friction.", accent: "Engineered for 99+ %ile." },
-    sub: "Stop managing study schedules. The engine automates your daily drill volume, diagnoses weak spots, and builds effortless calculation instincts.",
+    headline: { text: "Unfair prep. Zero friction.", accent: "Engineered around your pace." },
+    sub: "No exam clock forcing the schedule. The engine builds effortless calculation instincts on your own timeline—compound when you can, pause when you must.",
     caption: "Includes automated daily drills, unlimited mocks & offline mode.",
   },
   not_sure: {
-    pill: "EXPLORER PROTOCOL",
-    headline: { text: "Unfair prep. Zero friction.", accent: "Built for the curious." },
-    sub: "No fixed timeline—just compounding speed. Turn dead scrolling into micro-training and let the engine shape the path as you decide.",
-    caption: "Flexible by design. Pick up or pause anytime.",
+    pill: "ADAPTIVE PROTOCOL",
+    headline: { text: "Unfair prep. Zero friction.", accent: "Engineered around your pace." },
+    sub: "No exam clock forcing the schedule. The engine builds effortless calculation instincts on your own timeline—compound when you can, pause when you must.",
+    caption: "Includes automated daily drills, unlimited mocks & offline mode.",
   },
 };
 
