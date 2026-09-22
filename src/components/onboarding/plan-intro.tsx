@@ -2,15 +2,75 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion, type Variants } from "motion/react";
-import { ArrowRight, Check, CreditCard, Lock, QrCode, ShieldCheck, Smartphone, X } from "lucide-react";
+import { MotionConfig, motion } from "motion/react";
+import { Check, CreditCard, Lock, QrCode, ShieldCheck, Smartphone, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PLANS } from "@/lib/types/onboarding";
 import type { PlanId } from "@/lib/types/onboarding";
+import { DOMAIN_LABELS } from "@/lib/types/template";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
 const ACCENT = "#C8FF4D";
 const inr = (n: number) => `₹${new Intl.NumberFormat("en-IN").format(n)}`;
+
+const EXAM_QUALIFIER: Record<string, string> = {
+  cat: "Verbal & Quant",
+  gmat: "Quant · Verbal · DI",
+  gre: "Verbal · Quant · AWA",
+  banking: "Quant · Reasoning · English",
+  "vedic-math": "Speed Math trees",
+};
+
+function laneLabel(lane: string | null | undefined): string {
+  if (!lane) return "Your Exam";
+  return DOMAIN_LABELS[lane] ?? lane;
+}
+
+function laneQualifier(lane: string | null | undefined): string {
+  if (!lane) return "adaptive syllabus";
+  return EXAM_QUALIFIER[lane] ?? "adaptive syllabus";
+}
+
+function realDiscount(annual: number, monthly: number): number {
+  if (monthly <= 0 || annual <= 0) return 0;
+  return Math.max(0, Math.round((1 - annual / (monthly * 12)) * 100));
+}
+
+const DECK_STYLE: Record<PlanId, { ring: string; glow: string; price: string; tag: string; grad: string; chip: string; holo: string }> = {
+  initiate: {
+    ring: "border-white/[0.18] bg-white/[0.04]",
+    glow: "",
+    price: "text-white/85",
+    tag: "border-white/20 bg-white/10 text-white/70",
+    grad: "from-white/[0.06] via-white/[0.02] to-transparent",
+    chip: "from-slate-400/70 to-slate-500/40 border-white/30",
+    holo: "from-slate-500/50 via-white/20 to-slate-500/50",
+  },
+  "single-lane": {
+    ring: "border-cyan-400/40 bg-cyan-400/[0.06]",
+    glow: "shadow-[0_0_30px_rgba(34,211,238,0.22)]",
+    price: "text-cyan-300",
+    tag: "border-cyan-400/50 bg-cyan-400/15 text-cyan-300",
+    grad: "from-cyan-400/[0.14] via-cyan-400/[0.04] to-transparent",
+    chip: "from-cyan-300/80 to-cyan-500/40 border-cyan-200/60",
+    holo: "from-cyan-500/60 via-white/25 to-cyan-500/60",
+  },
+  "dual-lane": {
+    ring: "border-[#C8FF4D]/50 bg-[#C8FF4D]/[0.07]",
+    glow: "shadow-[0_0_34px_rgba(200,255,77,0.32)]",
+    price: "text-[#C8FF4D]",
+    tag: "border-[#C8FF4D]/50 bg-[#C8FF4D]/15 text-[#C8FF4D]",
+    grad: "from-[#C8FF4D]/[0.16] via-[#C8FF4D]/[0.04] to-transparent",
+    chip: "from-[#C8FF4D] to-lime-500/60 border-[#E9FFA8]/70",
+    holo: "from-[#C8FF4D]/70 via-white/30 to-[#C8FF4D]/70",
+  },
+};
+
+const CARD_CODE: Record<PlanId, string> = {
+  initiate: "0000 0000 0101",
+  "single-lane": "0000 077 0132",
+  "dual-lane": "0000 7070 1340",
+};
 
 /* ── Presentational: plan selector (reused by AdaptiveReprompt) ── */
 
@@ -18,6 +78,7 @@ export function PlanSelector({
   value,
   onChange,
   billing,
+  lane,
 }: {
   value: PlanId;
   onChange: (plan: PlanId) => void;
@@ -25,12 +86,22 @@ export function PlanSelector({
   lane: string;
   billing?: "annual" | "monthly";
 }) {
+  const store = useOnboardingStore();
+  const second = (store.activePreps.find((p) => p !== lane) ??
+    (lane && lane !== "gmat" ? "gmat" : "cat")) as string;
+
+  const dualTracks =
+    lane in DOMAIN_LABELS
+      ? [`${DOMAIN_LABELS[lane]} (${laneQualifier(lane)})`, `${DOMAIN_LABELS[second] ?? "Second"} Fast-Track`, "+ Vedic Math HUD"]
+      : undefined;
+
   return (
     <div className="flex flex-col gap-3">
       {PLANS.map((p, idx) => {
         const selected = p.id === value;
         const unit = billing === "monthly" ? "mo" : "yr";
         const shown = p.billing[billing ?? "annual"];
+        const tracks = p.id === "dual-lane" && dualTracks ? dualTracks : p.tracks;
         return (
           <motion.button
             key={p.id}
@@ -38,7 +109,7 @@ export function PlanSelector({
             onClick={() => onChange(p.id)}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 + idx * 0.05, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.15 + idx * 0.05, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
               "relative w-full rounded-2xl border p-3 text-left transition",
               selected
@@ -47,7 +118,7 @@ export function PlanSelector({
             )}
           >
             {p.badge && selected && (
-              <span className="absolute -top-2 right-3 rounded-full bg-[#C8FF4D] px-2 py-0.5 font-mono text-[8px] font-bold tracking-[0.14em] text-[#0A0C0A]">
+              <span className="absolute -top-2 right-3 rounded-full bg-[#C8FF4D] px-2 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-[0.14em] text-[#0A0C0A]">
                 {p.badge}
               </span>
             )}
@@ -74,7 +145,7 @@ export function PlanSelector({
                       </span>
                       {p.id === "single-lane" && (
                         <span className="rounded bg-[#C8FF4D]/15 px-1.5 py-0.5 text-[8px] font-bold tracking-[0.1em] text-[#C8FF4D]">
-                          TARGET×3
+                          {laneLabel(lane).toUpperCase()}
                         </span>
                       )}
                     </div>
@@ -86,33 +157,37 @@ export function PlanSelector({
                   </div>
                 </div>
 
-                {p.tracks && selected && (
+                {tracks && selected && (
                   <div className="mt-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[9px] tracking-[0.14em] text-muted-foreground/50">
+                      <span className="font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.14em] text-muted-foreground/50">
                         UNLOCKED TRACKS:
                       </span>
-                      <span className="font-mono text-[9px] font-bold text-cyan-400">{p.lanes} Lanes Active</span>
+                      <span className="font-[family-name:var(--font-space-grotesk)] text-[9px] font-bold text-cyan-400">{p.lanes} Lanes Active</span>
                     </div>
                     <div className="mt-1.5 flex flex-wrap gap-1.5">
-                      {p.tracks.map((t) => (
-                        <span
-                          key={t}
-                          className="inline-flex items-center gap-1 rounded border border-cyan-400/40 bg-cyan-400/10 px-2 py-1 text-[10px] text-cyan-300"
-                        >
-                          <Check size={10} /> {t}
-                        </span>
-                      ))}
-                      {p.extra && (
-                        <span className="rounded border border-dashed border-white/15 px-2 py-1 text-[10px] text-muted-foreground/50">
-                          {p.extra}
-                        </span>
+                      {tracks.map((t) =>
+                        t.startsWith("+") ? (
+                          <span
+                            key={t}
+                            className="rounded border border-dashed border-white/15 px-2 py-1 text-[10px] text-muted-foreground/50"
+                          >
+                            {t}
+                          </span>
+                        ) : (
+                          <span
+                            key={t}
+                            className="inline-flex items-center gap-1 rounded border border-cyan-400/40 bg-cyan-400/10 px-2 py-1 text-[10px] text-cyan-300"
+                          >
+                            <Check size={10} /> {t}
+                          </span>
+                        ),
                       )}
                     </div>
                   </div>
                 )}
 
-                {!p.tracks && (
+                {!p.tracks && !(p.id === "dual-lane" && dualTracks) && (
                   <ul className="mt-2.5 flex flex-col gap-1.5">
                     {p.features.map((f) => (
                       <li key={f} className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/50">
@@ -135,20 +210,10 @@ export function PlanSelector({
 
 /* ── Plan hook overlay ── */
 
-const containerVariants: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.05, delayChildren: 0.04 } },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: [0.22, 1, 0.36, 1] } },
-};
-
 const PAY_MODES: { id: "upi" | "wallet" | "card"; label: string; Icon: typeof QrCode }[] = [
-  { id: "upi", label: "UPI / QR", Icon: QrCode },
-  { id: "wallet", label: "GPay / Apple", Icon: Smartphone },
-  { id: "card", label: "Card / Net", Icon: CreditCard },
+  { id: "upi", label: "U", Icon: QrCode },
+  { id: "wallet", label: "GPay", Icon: Smartphone },
+  { id: "card", label: "Card", Icon: CreditCard },
 ];
 
 const COUPON = { code: "VIP_EARLYBIRD", amount: 100, note: "Early Adopter Neural Grant" };
@@ -162,12 +227,17 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
   const [pay, setPay] = useState<"upi" | "wallet" | "card">("upi");
   const [couponOn, setCouponOn] = useState(true);
 
+  const lane = store.targetExam || store.planLane || "cat";
   const plan = PLANS.find((p) => p.id === planId)!;
   const unit = billing === "annual" ? "yr" : "mo";
+  const pct = realDiscount(plan.billing.annual, plan.billing.monthly);
+  const price = plan.billing[billing];
 
-  const subtotal = plan.billing[billing];
+  const subtotal = price;
   const discount = couponOn ? Math.min(COUPON.amount, subtotal) : 0;
   const total = subtotal - discount;
+
+  const deckIndex = PLANS.findIndex((p) => p.id === planId);
 
   useEffect(() => {
     if (overlayRef.current) {
@@ -187,12 +257,12 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
     if (closingRef.current) return;
     closingRef.current = true;
     store.setPlanId(planId);
-    store.setPlanLane(store.targetExam || "cat");
+    store.setPlanLane(lane);
     const done = () => onCloseRef.current();
     const el = overlayRef.current;
     if (!el) return done();
     el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: "ease-in", fill: "forwards" }).addEventListener("finish", done, { once: true });
-  }, [store, planId]);
+  }, [store, planId, lane]);
 
   const skip = useCallback(() => {
     if (closingRef.current) return;
@@ -204,195 +274,331 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
   }, []);
 
   return createPortal(
-    <div
-      ref={overlayRef}
-      className="fixed inset-0 z-[70] flex overflow-y-auto justify-center"
-      style={{ background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)" }}
-      role="dialog"
-      aria-modal="true"
-    >
-      <div className="relative w-full max-w-[400px] min-h-full px-4 pb-8 pt-4">
-        {/* ambient glows */}
-        <div aria-hidden className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[90px]" />
-        <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.07] blur-[90px]" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)" }} />
+    <MotionConfig reducedMotion="user">
+      <div
+        ref={overlayRef}
+        className="fixed inset-0 z-[70] flex overflow-y-auto justify-center"
+        style={{ background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)" }}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="relative w-full max-w-[400px] min-h-full px-4 pb-8 pt-8">
+          {/* ambient glows */}
+          <div aria-hidden className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[90px]" />
+          <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.07] blur-[90px]" />
+          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)" }} />
 
-        {/* top bar */}
-        <header className="relative flex items-center justify-center">
-          <button aria-label="Close" onClick={skip} className="absolute left-0 text-[#C8FF4D] transition-colors hover:text-[#D9FF85] active:scale-95">
-            <X size={18} />
-          </button>
-          <span className="font-mono text-[11px] font-bold tracking-[0.28em] text-[#C8FF4D]/90">EXAM ARENA</span>
-        </header>
+          {/* heading */}
+          <section className="relative text-center">
+            <p className="font-[family-name:var(--font-space-grotesk)] text-[10px] font-semibold uppercase tracking-[0.28em] text-fuchsia-400">
+              {"Elite Unlock Terminal"}
+            </p>
+            <h1 className="mt-2 text-[clamp(1.55rem,7vw,1.9rem)] font-black uppercase leading-[1.05] tracking-[-0.02em] text-foreground">
+              Insert your
+              <span className="block bg-gradient-to-r from-[#C8FF4D] to-[#A9E93E] bg-clip-text text-transparent">
+                protocol card
+              </span>
+            </h1>
+            <p className="mx-auto mt-2.5 flex max-w-[300px] items-center justify-center gap-1.5 text-[13px] text-muted-foreground/70">
+              Target locked: <span className="font-[family-name:var(--font-space-grotesk)] font-bold text-foreground">{laneLabel(lane)}</span>
+            </p>
+          </section>
 
-        {/* heading */}
-        <section className="relative mt-6 text-center">
-          <motion.p variants={itemVariants} initial="hidden" animate="show" className="font-mono text-[9px] tracking-[0.2em] text-fuchsia-400">
-            INITIALIZE ELITE PROTOCOL // PLAN
-          </motion.p>
-          <motion.h1
-            variants={itemVariants}
-            initial="hidden"
-            animate="show"
-            className="mt-2 text-[clamp(1.4rem,6.5vw,1.75rem)] font-bold leading-tight text-foreground uppercase tracking-[-0.02em]"
-          >
-            Unlock{" "}
-            <span className="bg-gradient-to-r from-[#C8FF4D] to-[#A9E93E] bg-clip-text text-transparent">
-              Multi-Lane Prep
-            </span>
-          </motion.h1>
-          <motion.p variants={itemVariants} initial="hidden" animate="show" className="mx-auto mt-2 max-w-[300px] text-[12px] leading-relaxed text-muted-foreground/60">
-            Bypass all limiters. Engage concurrent training modes for ultimate algorithmic mastery.
-          </motion.p>
-        </section>
-
-        {/* billing toggle */}
-        <div className="relative mt-5 grid grid-cols-2 gap-1 rounded-2xl border border-white/[0.08] bg-black/40 p-1">
-          {(["annual", "monthly"] as const).map((b) => {
-            const active = billing === b;
-            return (
-              <button
-                key={b}
-                type="button"
-                onClick={() => setBilling(b)}
-                className={cn(
-                  "rounded-xl px-3 py-2 text-center transition",
-                  active
-                    ? "border border-[#C8FF4D]/50 bg-[#C8FF4D]/10 shadow-[0_0_18px_rgba(200,255,77,0.12)]"
-                    : "border border-transparent hover:bg-white/5",
-                )}
-              >
-                <div className="flex items-center justify-center gap-1.5">
-                  <span className={cn("font-mono text-[10px] font-bold tracking-widest", active ? "text-foreground" : "text-muted-foreground/70")}>
-                    {b.toUpperCase()}
-                  </span>
-                  {b === "annual" && (
-                    <span className="rounded bg-[#C8FF4D] px-1 py-px text-[8px] font-bold text-[#0A0C0A]">-40%</span>
-                  )}
-                </div>
-                <div className="mt-0.5 text-[11px] text-muted-foreground/60">
-                  {inr(PLANS[0].billing[b])}/{b === "annual" ? "yr" : "mo"}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* plans */}
-        <div className="relative mt-4">
-          <PlanSelector
-            value={planId}
-            onChange={setPlanId}
-            lane={store.targetExam || "cat"}
-            onLaneChange={() => {}}
-            billing={billing}
-          />
-        </div>
-
-        {/* coupon */}
-        {couponOn && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="relative mt-4 flex items-center justify-between rounded-2xl border border-dashed border-[#C8FF4D]/40 bg-[#C8FF4D]/[0.05] px-3 py-2.5"
-          >
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-[11px] font-bold text-[#C8FF4D]">{COUPON.code}</span>
-                <span className="rounded bg-[#C8FF4D] px-1.5 py-px text-[8px] font-bold text-[#0A0C0A]">
-                  -{inr(COUPON.amount)} APPLIED
-                </span>
-              </div>
-              <div className="mt-0.5 text-[10px] text-muted-foreground/60">{COUPON.note}</div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setCouponOn(false)}
-              className="font-mono text-[10px] font-bold tracking-wider text-red-400 transition-colors hover:text-red-300"
-            >
-              REMOVE
-            </button>
-          </motion.div>
-        )}
-
-        {/* payment mode */}
-        <div className="relative mt-5">
-          <p className="mb-2 font-mono text-[9px] tracking-[0.2em] text-muted-foreground/60">PAYMENT MODE</p>
-          <div className="grid grid-cols-3 gap-2">
-            {PAY_MODES.map(({ id, label, Icon }) => {
-              const active = pay === id;
+          {/* billing switch */}
+          <div className="relative mt-6 grid grid-cols-2 gap-1 rounded-2xl border border-white/[0.08] bg-black/40 p-1">
+            {(["annual", "monthly"] as const).map((b) => {
+              const active = billing === b;
+              const off = b === "annual" ? realDiscount(PLANS[0].billing.annual, PLANS[0].billing.monthly) : 0;
               return (
                 <button
-                  key={id}
+                  key={b}
                   type="button"
-                  onClick={() => setPay(id)}
+                  onClick={() => setBilling(b)}
                   className={cn(
-                    "flex flex-col items-center gap-1.5 rounded-2xl border py-3 text-[10px] font-medium transition",
+                    "rounded-xl px-3 py-2 text-center transition",
                     active
-                      ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/10 text-[#C8FF4D] shadow-[0_0_16px_rgba(200,255,77,0.12)]"
-                      : "border-white/[0.08] bg-white/[0.02] text-muted-foreground/60 hover:border-white/[0.16]",
+                      ? "border border-[#C8FF4D]/50 bg-[#C8FF4D]/10 shadow-[0_0_18px_rgba(200,255,77,0.12)]"
+                      : "border border-transparent hover:bg-white/5",
                   )}
                 >
-                  <Icon size={16} />
-                  {label}
+                  <div className="flex items-center justify-center gap-1.5">
+                    <span className={cn("font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-widest", active ? "text-foreground" : "text-muted-foreground/70")}>
+                      {b.toUpperCase()}
+                    </span>
+                    {off > 0 && (
+                      <span className="rounded bg-[#C8FF4D] px-1 py-px text-[8px] font-bold text-[#0A0C0A]">-{off}%</span>
+                    )}
+                  </div>
+                  <div className="mt-0.5 text-[11px] text-muted-foreground/60">
+                    {inr(PLANS[0].billing[b])}/{b === "annual" ? "yr" : "mo"}
+                  </div>
                 </button>
               );
             })}
           </div>
-        </div>
 
-        {/* summary */}
-        <div className="relative mt-5 space-y-1.5 rounded-2xl border border-white/[0.08] bg-black/40 p-3 text-[12px]">
-          <div className="flex justify-between text-muted-foreground/70">
-            <span>
-              Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} · {billing === "annual" ? "Annual" : "Monthly"})
-            </span>
-            <span>{inr(subtotal)}</span>
-          </div>
-          {couponOn && (
-            <div className="flex justify-between text-[#C8FF4D]">
-              <span>
-                Code <span className="font-mono">{COUPON.code}</span>
-              </span>
-              <span>-{inr(discount)}</span>
+          {/* fanned plan deck */}
+          <div className="relative mt-5" style={{ perspective: 1000 }}>
+            <div className="relative h-[216px]">
+              {PLANS.map((p, idx) => {
+                const diff = idx - deckIndex;
+                const sel = diff === 0;
+                const s = DECK_STYLE[p.id];
+                const tag =
+                  p.id === "initiate"
+                    ? "FREE · FOREVER"
+                    : p.id === "single-lane"
+                      ? laneLabel(lane).toUpperCase()
+                      : "×2 LANES";
+                return (
+                  <motion.button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setPlanId(p.id)}
+                    aria-pressed={sel}
+                    initial={false}
+                    animate={{
+                      rotateY: diff * -17,
+                      x: diff * 34,
+                      scale: 1 - Math.min(0.14, Math.abs(diff) * 0.07),
+                      opacity: 1 - Math.min(0.45, Math.abs(diff) * 0.22),
+                      zIndex: 10 - Math.abs(diff),
+                    }}
+                    transition={{ type: "spring", stiffness: 240, damping: 26 }}
+                    className={cn(
+                      "absolute inset-x-0 top-0 mx-auto w-[300px] overflow-hidden rounded-[22px] border p-4 text-left backdrop-blur-xl transition-shadow",
+                      s.ring,
+                      sel && s.glow,
+                    )}
+                  >
+                    {/* card face gradient */}
+                    <div className={cn("pointer-events-none absolute inset-0 bg-gradient-to-br", s.grad)} />
+
+                    {/* holo shimmer */}
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -top-16 left-1/2 h-32 w-[260px] -translate-x-1/2 rotate-[-14deg] opacity-60"
+                      style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)", filter: "blur(6px)" }}
+                    />
+
+                    <div className="relative">
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="font-[family-name:var(--font-space-grotesk)] text-[15px] font-black uppercase tracking-tight text-white">{p.name}</span>
+                        <span className={cn("rounded-md border px-1.5 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-[0.14em]", s.tag, sel ? "opacity-100" : "opacity-60")}>
+                          {tag}
+                        </span>
+                      </div>
+
+                      {/* emv chip + code */}
+                      <div className="mt-3 flex items-center justify-between">
+                        <span className={cn("grid h-8 w-11 place-items-center rounded-md border bg-gradient-to-br", s.chip)}>
+                          <span className="h-4 w-7 rounded-[3px] border border-black/30 bg-black/20" />
+                        </span>
+                        <span className="font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-[0.22em] text-white/70">{CARD_CODE[p.id]}</span>
+                      </div>
+
+                      <div className="mt-3 flex items-baseline gap-1.5">
+                        <motion.span
+                          key={`${planId}-${billing}`}
+                          initial={{ y: -8, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                          className={cn("text-[34px] font-black leading-none tracking-tight", s.price)}
+                        >
+                          {inr(price)}
+                        </motion.span>
+                        <span className="text-[11px] font-medium text-muted-foreground/60">/{unit}</span>
+                        {pct > 0 && billing === "annual" && (
+                          <span className="ml-auto rounded bg-[#FB7185]/15 px-1.5 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold text-rose-300">
+                            SAVE {pct}%
+                          </span>
+                        )}
+                      </div>
+
+                      <p className={cn("mt-1 text-[11px] leading-snug", sel ? "text-muted-foreground/70" : "text-muted-foreground/40")}>
+                        {p.id === "dual-lane"
+                          ? `${laneLabel(lane)} (${laneQualifier(lane)}) + 1 more lane in parallel`
+                          : p.desc}
+                      </p>
+
+                      {/* magstripe */}
+                      <div
+                        className="mt-3 h-1.5 rounded-full opacity-70"
+                        style={{
+                          background:
+                            "repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 5px, rgba(255,255,255,0.05) 5px 9px)",
+                        }}
+                      />
+                      <div className="mt-1.5 flex items-center justify-between font-[family-name:var(--font-space-grotesk)] text-[7px] tracking-[0.2em] text-white/30">
+                        <span>ARENA · {p.id.toUpperCase()}</span>
+                        <span>{sel ? "ACTIVE" : "SLOT"}</span>
+                      </div>
+                    </div>
+                  </motion.button>
+                );
+              })}
             </div>
-          )}
-          <div className="flex items-center justify-between border-t border-white/[0.08] pt-2 text-[13px] font-bold">
-            <span>Total Due Today</span>
-            <span className="text-base text-foreground">
-              {inr(total)}/{unit}
-            </span>
           </div>
+
+          {/* deck selector tabs */}
+          <div className="relative mt-2 flex gap-1.5">
+            {PLANS.map((p) => {
+              const active = p.id === planId;
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => setPlanId(p.id)}
+                  className={cn(
+                    "flex-1 rounded-lg border px-1 py-1.5 text-center transition",
+                    active
+                      ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/10"
+                      : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.16]",
+                  )}
+                >
+                  <div className={cn("font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-widest", active ? "text-[#C8FF4D]" : "text-muted-foreground/60")}>
+                    {p.name.toUpperCase()}
+                  </div>
+                  <div className="text-[10px] font-bold text-muted-foreground/70">
+                    {p.billing[billing] ? inr(p.billing[billing]) : "FREE"}
+                    <span className="text-[8px] font-normal">/{billing === "annual" ? "Yr" : "Mo"}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* voucher */}
+          {couponOn && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="relative mt-4 overflow-hidden rounded-2xl border border-dashed border-[#C8FF4D]/40 bg-gradient-to-r from-[#C8FF4D]/[0.08] to-transparent"
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -left-6 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full"
+                style={{ background: "#0A0C0A", border: "1px solid rgba(200,255,77,0.4)" }}
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-6 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full"
+                style={{ background: "#0A0C0A", border: "1px solid rgba(200,255,77,0.4)" }}
+              />
+              <div className="relative flex items-center justify-between gap-2 px-4 py-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="rounded bg-[#C8FF4D] px-1 py-px font-[family-name:var(--font-space-grotesk)] text-[7px] font-black tracking-[0.18em] text-[#0A0C0A]">
+                      VIP WINTER
+                    </span>
+                    <span className="font-[family-name:var(--font-space-grotesk)] text-[11px] font-bold tracking-[0.14em] text-[#C8FF4D]">{COUPON.code}</span>
+                  </div>
+                  <div className="mt-1 text-[10px] text-muted-foreground/60">{COUPON.note}</div>
+                </div>
+                <div className="shrink-0 text-right">
+                  <div className="font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.14em] text-[#C8FF4D]/80">CASHBACK</div>
+                  <div className="text-[18px] font-black leading-none text-white">-{inr(COUPON.amount)}</div>
+                  <button
+                    type="button"
+                    onClick={() => setCouponOn(false)}
+                    className="mt-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-wider text-red-400/80 transition-colors hover:text-red-300"
+                  >
+                    REMOVE
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* payment slots */}
+          <div className="relative mt-5">
+            <p className="mb-2 font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.2em] text-muted-foreground/60">PAYMENT SLOT</p>
+            <div className="grid grid-cols-3 gap-2">
+              {PAY_MODES.map(({ id, label, Icon }, i) => {
+                const active = pay === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => setPay(id)}
+                    className={cn(
+                      "relative flex h-14 flex-col items-center justify-center gap-1 overflow-hidden rounded-[14px] border text-[10px] font-medium transition",
+                      active
+                        ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/10 text-[#C8FF4D] shadow-[0_0_16px_rgba(200,255,77,0.12)]"
+                        : "border-white/[0.08] bg-white/[0.02] text-muted-foreground/60 hover:border-white/[0.16]",
+                    )}
+                    style={{ borderTopRightRadius: i % 2 === 0 ? 4 : 14, borderTopLeftRadius: i % 2 === 1 ? 4 : 14, transform: `rotate(${i === 0 ? -1.2 : i === 2 ? 1.2 : 0}deg)` }}
+                  >
+                    {active && (
+                      <span className="pointer-events-none absolute inset-x-2 top-0 h-px bg-gradient-to-r from-transparent via-[#C8FF4D]/70 to-transparent" />
+                    )}
+                    <Icon size={15} />
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* receipt */}
+          <div className="relative mt-5 space-y-1.5 rounded-2xl border border-dashed border-white/15 bg-black/40 p-3 text-[12px]">
+            <div className="flex justify-between text-muted-foreground/70">
+              <span>
+                Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} · {billing === "annual" ? "Annual" : "Monthly"})
+              </span>
+              <span>{inr(subtotal)}</span>
+            </div>
+            {couponOn && (
+              <div className="flex justify-between text-[#C8FF4D]">
+                <span>
+                  Code <span className="font-[family-name:var(--font-space-grotesk)]">{COUPON.code}</span>
+                </span>
+                <span>-{inr(discount)}</span>
+              </div>
+            )}
+            <div className="flex items-end justify-between border-t border-dashed border-white/10 pt-2">
+              <span className="text-[13px] font-bold text-muted-foreground/80">Total Due Today</span>
+              <span>
+                <motion.span
+                  key={`${total}-${unit}`}
+                  initial={{ y: -6, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-[22px] font-black leading-none text-foreground"
+                >
+                  {inr(total)}
+                </motion.span>
+                <span className="ml-1 font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold text-muted-foreground/60">/{unit}</span>
+              </span>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <button
+            type="button"
+            onClick={confirm}
+            className="group relative mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] transition active:scale-[0.98]"
+            style={{
+              background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+              boxShadow: "0 10px 30px rgba(200,255,77,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
+            }}
+          >
+            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+            <Lock size={14} strokeWidth={2.5} className="relative" />
+            <span className="relative">Activate Protocol</span>
+            <span className="relative font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-normal opacity-80">
+              {inr(total)}/{billing === "annual" ? "YEAR" : "MONTH"}
+            </span>
+          </button>
+
+          <p className="relative mt-3 flex items-center justify-center gap-1.5 text-center text-[10px] text-muted-foreground/45">
+            <ShieldCheck size={12} />
+            Adaptive engine calibrated • Change anytime in Settings
+          </p>
         </div>
-
-        {/* CTA */}
-        <button
-          type="button"
-          onClick={confirm}
-          className="group relative mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] transition active:scale-[0.98]"
-          style={{
-            background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
-            boxShadow: "0 10px 30px rgba(200,255,77,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
-          }}
-        >
-          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
-          <Lock size={14} strokeWidth={2.5} className="relative" />
-          <span className="relative">Start Protocol</span>
-          <span className="relative font-mono text-[10px] font-bold tracking-normal opacity-80">
-            {inr(total)}/{billing === "annual" ? "YEAR" : "MONTH"}
-          </span>
-        </button>
-
-        <p className="relative mt-3 flex items-center justify-center gap-1.5 text-center text-[10px] text-muted-foreground/45">
-          <ShieldCheck size={12} />
-          Adaptive engine calibrated • Change anytime in Settings
-        </p>
-        <button onClick={skip} className="relative mx-auto mt-2 block text-center text-[10px] text-muted-foreground/40 underline-offset-2 transition-colors hover:text-foreground/70 hover:underline">
-          Cancel and return to training
-        </button>
       </div>
-    </div>,
+    </MotionConfig>,
     document.body,
   );
 }
