@@ -59,7 +59,7 @@ const FINE_PRINT =
 
 const RATING = 4.8;
 
-export function PitchHook({ onClose }: { onClose: () => void }) {
+export function PitchIntro({ onClose }: { onClose: () => void }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
 

@@ -38,7 +38,7 @@ Page renders domain-specific content (topics, label, subtitle, questions)
 
 ### Auth & shell
 `auth` pages → `services/api.ts` + Firebase (optional) → `auth-store.user`.
-`dojo-shell.tsx`: nav from `lib/mock/dashboard.ts` (`NAV_ITEMS`, `MOBILE_NAV`), dynamic exam label + first name from `onboarding-store`.
+`shell/app-shell.tsx`: nav from `lib/mock/dashboard.ts` (`NAV_ITEMS`, `MOBILE_NAV`), dynamic exam label + first name from `onboarding-store`.
 
 ## Extension point (backend swap)
 

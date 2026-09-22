@@ -104,7 +104,7 @@ const SECTIONS: {
   },
 ];
 
-export function FamilyHook({ onDone, onClose }: { onDone: () => void; onClose: () => void }) {
+export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: () => void }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const exitingRef = useRef(false);
 

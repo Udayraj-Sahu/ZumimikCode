@@ -24,7 +24,7 @@ import { useFeedback } from "@/lib/use-feedback";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { getTopicsByDomain } from "@/lib/mock/sprint";
 import { getTemplatesByDomain } from "@/services/templates";
-import RendererRouter from "@/components/renderers/RendererRouter";
+import RendererRouter from "@/components/renderers/renderer-router";
 import type { Question } from "@/lib/types/sprint-session";
 import type { SolveAlongTemplate, RenderMode } from "@/lib/types/template";
 import { DOMAIN_LABELS } from "@/lib/types/template";

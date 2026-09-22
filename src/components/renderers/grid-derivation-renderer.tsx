@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import type { RendererProps } from "@/lib/types/template";
 import { parseSquareProblem } from "@/components/renderers/utils/parse-square";
-import TextScaffold from "./TextScaffold";
+import TextScaffold from "./text-scaffold";
 
 export default function GridDerivationRenderer(props: RendererProps) {
   const { template, visibleSteps, mode, onStepReveal, ...rest } = props;

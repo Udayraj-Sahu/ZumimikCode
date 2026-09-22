@@ -109,7 +109,7 @@ type Props = {
   onClose: () => void;
 };
 
-export function FeatureHook({ variant, onDone, onClose }: Props) {
+export function FeatureIntro({ variant, onDone, onClose }: Props) {
   const copy = VARIANT_COPY[variant];
   const overlayRef = useRef<HTMLDivElement>(null);
 

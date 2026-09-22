@@ -1,14 +1,14 @@
 "use client";
 
-import { RankSignal } from "@/components/sections/RankSignal";
-import { ExamPortals } from "@/components/sections/ExamPortals";
-import { AchievementWall } from "@/components/sections/AchievementWall";
-import { ConstellationCoach } from "@/components/sections/ConstellationCoach";
-import { EnergyTower } from "@/components/sections/EnergyTower";
-import { HorizonScene } from "@/components/sections/HorizonScene";
-import { SectionReveal } from "@/components/sections/SectionReveal";
-import { VerticalNav } from "@/components/nav/VerticalNav";
-import { FloatingActions } from "@/components/sections/FloatingActions";
+import { RankSignal } from "@/components/landing/rank-signal";
+import { ExamPortals } from "@/components/landing/exam-portals";
+import { AchievementWall } from "@/components/landing/achievement-wall";
+import { ConstellationCoach } from "@/components/landing/constellation-coach";
+import { EnergyTower } from "@/components/landing/energy-tower";
+import { HorizonScene } from "@/components/landing/horizon-scene";
+import { SectionReveal } from "@/components/landing/section-reveal";
+import { SectionNav } from "@/components/landing/section-nav";
+import { FloatingActions } from "@/components/landing/floating-actions";
 
 export default function Home() {
   return (
@@ -28,7 +28,7 @@ export default function Home() {
           EXAM ARENA
         </span>
       </div>
-      <VerticalNav />
+      <SectionNav />
       <section id="arena">
         <RankSignal />
       </section>

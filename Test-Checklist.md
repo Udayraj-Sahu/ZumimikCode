@@ -57,7 +57,7 @@ Dynamic-by-exam behavior:
 - [ ] Edge-to-edge: on a targetSdk-36 (Android 15/16) device, content isn't clipped under the status bar; floating nav clears the gesture bar (`env(safe-area-inset-bottom)`).
 - [ ] Predictive back: `android:enableOnBackInvokedCallback="true"` present; hardware back still walks the SPA stack then double-tap-to-exit.
 - [ ] Modal a11y: onboarding-modal, add-prep-modal, habit-tracker-modal announce `dialog` + name (aria-modal/labelledby); close buttons ≥44px.
-- [ ] `git diff` contains no `text-[10px]` and no dojo-shell hardcoded sidebar hexes (`#0d0d0d`, `#1f1f1f`, `#8a8f87`, `#eaeae5`).
+- [ ] `git diff` contains no `text-[10px]` and no app-shell hardcoded sidebar hexes (`#0d0d0d`, `#1f1f1f`, `#8a8f87`, `#eaeae5`).
 
 ## Backend drop-in readiness gate
 
@@ -67,4 +67,4 @@ Every new data consumer must satisfy the constraint: **page code contains zero `
 Select-String -Path "src\app\dashboard\*\*.tsx","src\components\*\*.tsx" -Pattern 'from "@/lib/mock/'
 ```
 
-Expected: no matches (except `dojo-shell` nav — accepted static config).
+Expected: no matches (except `app-shell` nav — accepted static config).

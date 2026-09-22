@@ -1,6 +1,6 @@
-import { WallRegion } from "@/components/wall/WallRegion";
-import { Achievement } from "@/components/wall/Achievement";
-import { AIScanLine } from "@/components/wall/AIScanLine";
+import { WallRegion } from "@/components/landing/wall-region";
+import { Achievement } from "@/components/landing/achievement";
+import { AIScanLine } from "@/components/landing/ai-scan-line";
 
 const ACHIEVEMENTS = [
   { label: "100 Questions Solved", sublabel: "First century. The wall remembers.", unlocked: true },

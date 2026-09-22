@@ -7,7 +7,7 @@ import { X, ShieldCheck } from "lucide-react";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
-import { PlanSelector } from "@/components/onboarding/plan-hook";
+import { PlanSelector } from "@/components/onboarding/plan-intro";
 import type { PlanId } from "@/lib/types/onboarding";
 
 const ACCENT = "#C8FF4D";

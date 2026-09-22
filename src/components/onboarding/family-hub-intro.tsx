@@ -258,7 +258,7 @@ function EngineSteps() {
   );
 }
 
-export function FamilyHubHook({ onDone, onClose }: { onDone: () => void; onClose: () => void }) {
+export function FamilyHubIntro({ onDone, onClose }: { onDone: () => void; onClose: () => void }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const exitingRef = useRef(false);
 

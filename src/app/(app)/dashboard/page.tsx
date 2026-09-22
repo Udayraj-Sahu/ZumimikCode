@@ -34,10 +34,10 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useHabitStore } from "@/stores/habit-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { OnboardingModal } from "@/components/onboarding/onboarding-modal";
-import { PlanHook } from "@/components/onboarding/plan-hook";
-import { SeatBuilderHook } from "@/components/onboarding/seat-builder-hook";
-import { ArenaHook } from "@/components/onboarding/arena-hook";
-import { PitchHook } from "@/components/onboarding/pitch-hook";
+import { PlanIntro } from "@/components/onboarding/plan-intro";
+import { SeatBuilderIntro } from "@/components/onboarding/seat-builder-intro";
+import { ArenaIntro } from "@/components/onboarding/arena-intro";
+import { PitchIntro } from "@/components/onboarding/pitch-intro";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 import { InviteCard } from "@/components/dashboard/invite-card";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
@@ -1060,7 +1060,7 @@ export default function DashboardPage() {
         onClose={() => setExamDateOpen(false)}
       />
       {showPlan && targetExam === "vedic-math" && (
-        <SeatBuilderHook
+        <SeatBuilderIntro
           onClose={() => {
             setPlanHookSeen(true);
             setShowPlan(false);
@@ -1068,7 +1068,7 @@ export default function DashboardPage() {
         />
       )}
       {showPlan && targetExam !== "vedic-math" && (
-        <PlanHook
+        <PlanIntro
           onClose={() => {
             setPlanHookSeen(true);
             setShowPlan(false);
@@ -1076,7 +1076,7 @@ export default function DashboardPage() {
         />
       )}
       {showArena && (
-        <ArenaHook
+        <ArenaIntro
           onClose={() => {
             setArenaHookSeen(true);
             setShowArena(false);
@@ -1084,7 +1084,7 @@ export default function DashboardPage() {
         />
       )}
       {showPitch && (
-        <PitchHook
+        <PitchIntro
           onClose={() => {
             setPitchHookSeen(true);
             setShowPitch(false);

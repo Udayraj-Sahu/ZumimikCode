@@ -14,7 +14,7 @@ import { DOMAIN_LABELS } from "@/lib/types/template";
 import { getTechniqueIdsForTopic } from "@/lib/mock/topic-node-map";
 import type { TopicNode } from "@/lib/types/technique";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
-import { PaywallModal } from "@/components/pricing/paywall-modal";
+import { PaywallModal } from "@/components/paywall/paywall-modal";
 
 function nodeInTree(node: TopicNode, id: string): boolean {
   if (node.id === id || node.slug === id) return true;

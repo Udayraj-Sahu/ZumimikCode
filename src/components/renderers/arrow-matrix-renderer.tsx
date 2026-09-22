@@ -6,7 +6,7 @@ import {
   parseMultiplication,
   extractProducts,
 } from "@/components/renderers/utils/parse-multiplication";
-import TextScaffold from "./TextScaffold";
+import TextScaffold from "./text-scaffold";
 
 const CELL_W = 80;
 const CELL_H = 60;

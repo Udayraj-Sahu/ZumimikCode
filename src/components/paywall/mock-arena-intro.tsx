@@ -4,12 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import { ShieldCheck, X, Zap } from "lucide-react";
-import { MockArenaSelector } from "@/components/pricing/mock-arena-selector";
+import { MockArenaSelector } from "@/components/paywall/mock-arena-selector";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
 const ACCENT = "#C8FF4D";
 
-export function MockArenaHook({ onClose }: { onClose: () => void }) {
+export function MockArenaIntro({ onClose }: { onClose: () => void }) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<"idle" | "success">("idle");

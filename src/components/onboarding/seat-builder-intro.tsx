@@ -283,7 +283,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
 
 /* ── plan hook overlay for vedic (dashboard) ── */
 
-export function SeatBuilderHook({ onClose }: { onClose: () => void }) {
+export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
   const [total, setTotal] = useState(0);

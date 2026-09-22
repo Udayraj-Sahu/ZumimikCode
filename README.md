@@ -147,11 +147,9 @@ Stores live in `src/stores/`. All use `persist` (localStorage) except where ephe
 | `template-store` | Technique render mode / active template. |
 | `settings-store` | User settings. |
 | `theme-store` | Theme/appearance. |
-| `ui-store` | Shared UI state (modals, toasts). |
 | `walkthrough-store` | First-run walkthrough state. |
 | `network-store` | Offline/network status. |
 | `rate-store` | Store rating prompts. |
-| `activity-store` | Recent activity log. |
 
 **Key rules**
 - `targetExam` set during onboarding unlocks the explorer topic tree (`useSubjectTree` is `enabled: !!targetExam`).
@@ -172,7 +170,7 @@ export const IS_MOCK = process.env.NEXT_PUBLIC_API_MOCK !== "false";
 - When `IS_MOCK` is truthy (default), hooks/fetchers return mock data immediately (with a small delay).
 - When falsy, they call `apiUrl("/v1/...")` with `Authorization: Bearer <token>`.
 
-Representative query hooks: `use-dashboard`, `use-analytics`, `use-sprint`, `use-practice`, `use-explorer`, `use-friends`, `use-duel`, `use-leaderboard`, `use-planner`, `use-history`, `use-notifications`, `use-profile`, `use-reports`, `use-settings`, `use-technique`, `use-help`, `use-achievements`, `use-adaptive-session`, `use-sprint-session`.
+Representative query hooks: `use-dashboard`, `use-analytics`, `use-sprint`, `use-practice`, `use-explorer`, `use-friends`, `use-duel`, `use-leaderboard`, `use-planner`, `use-history`, `use-notifications`, `use-profile`, `use-reports`, `use-technique`, `use-help`, `use-achievements`, `use-sprint-session`.
 
 ---
 

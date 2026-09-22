@@ -3,7 +3,7 @@
 ## Architecture
 - **Landing** (`/`): SSR + metadata + SEO (only page with server rendering)
 - **Dashboard** (`/dashboard/*`): CSR only, `"use client"`, no server data
-- **Layout chain**: `RootLayout` → `<QueryProvider>` → `<OnlineProvider>` → `<CapacitorInit />` → `<DashboardShell>` → `<DojoShell>` → `{page}`
+- **Layout chain**: `RootLayout` → `<QueryProvider>` → `<OnlineProvider>` → `<CapacitorInit />` → `<DashboardShell>` → `<AppShell>` → `{page}`
 - **Data flow**: Component → TanStack Query hook → Service (mock/API) → Axios → Express backend *(future)*
 
 ## Stack
@@ -30,7 +30,7 @@ src/
 │   ├── capacitor-init.tsx       # Native platform detection
 │   └── dashboard/
 │       ├── layout.tsx            # Server component w/ metadata
-│       ├── dashboard-shell.tsx   # Client wrapper → <DojoShell>
+│       ├── dashboard-shell.tsx   # Client wrapper → <AppShell>
 │       ├── page.tsx              # Home — useDashboardData()
 │       ├── analytics/page.tsx    # useAnalyticsData()
 │       ├── profile/page.tsx      # useProfileData()
@@ -38,7 +38,7 @@ src/
 │       └── configure-sprint/page.tsx  # useSprintTopics()
 ├── components/
 │   ├── dashboard/
-│   │   ├── dojo-shell.tsx        # Sidebar + mobile nav + logout
+│   │   ├── app-shell.tsx         # Sidebar + mobile nav + logout
 │   │   └── cognitive-radar.tsx   # React.memo SVG radar
 │   └── ui/
 │       ├── alert-modal.tsx       # Replaces alert()/confirm()
@@ -47,7 +47,6 @@ src/
 │   ├── use-dashboard.ts          # ["dashboard"] + Dexie cache
 │   ├── use-analytics.ts          # ["analytics"]
 │   ├── use-profile.ts            # ["profile"]
-│   ├── use-settings.ts           # ["settings"] + useUpdateSettings mutation
 │   └── use-sprint.ts             # ["sprint"]
 ├── lib/
 │   ├── types/                    # dashboard, analytics, profile, settings, sprint
@@ -72,7 +71,6 @@ src/
 │       └── sync.ts               # cacheQueryData, queueMutation, flushQueue, syncAll
 └── stores/
     ├── auth-store.ts             # user, token, login/logout, setToken
-    ├── ui-store.ts               # sidebarOpen, modal, openModal/closeModal
     └── network-store.ts          # isOnline, syncQueue, addToQueue/removeFromQueue
 ```
 
@@ -96,7 +94,7 @@ src/
 - **Modals**: `useUiStore.openModal()` → `<AlertModal />` renders at page root
 
 ## Key Decisions
-- `layout.tsx` stays server component (metadata export); `<DashboardShell>` client wrapper provides DojoShell
+- `layout.tsx` stays server component (metadata export); `<DashboardShell>` client wrapper provides AppShell
 - TanStack Query + Zustand + Axios on top of mock services — real API swap requires zero component changes
 - `useEffect` → Dexie `cacheQueryData` on every successful query (not TanStack v5 `onSuccess`)
 - `overflow-x-clip` not `overflow-x-hidden` (prevents double scrollbar)
@@ -142,13 +140,12 @@ src/
 layout.tsx           → src/app/layout.tsx
 sw.ts                → src/app/sw.ts
 dashboard/page.tsx   → src/app/dashboard/page.tsx
-dojo-shell.tsx       → src/components/dashboard/dojo-shell.tsx
+app-shell.tsx         → src/components/shell/app-shell.tsx
 alert-modal.tsx      → src/components/ui/alert-modal.tsx
 splash-screen.tsx    → src/components/ui/splash-screen.tsx
 http.ts              → src/services/http.ts
 sync.ts              → src/services/offline/sync.ts
 auth-store.ts        → src/stores/auth-store.ts
-ui-store.ts          → src/stores/ui-store.ts
 network-store.ts     → src/stores/network-store.ts
 query-provider.tsx   → src/providers/query-provider.tsx
 online-provider.tsx  → src/providers/online-provider.tsx

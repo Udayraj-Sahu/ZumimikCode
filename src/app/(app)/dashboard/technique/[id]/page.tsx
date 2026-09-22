@@ -1,4 +1,4 @@
-import { RouteRedirect } from "@/components/dashboard/route-redirect";
+import { RouteRedirect } from "@/components/shell/route-redirect";
 
 export function generateStaticParams() {
   return [{ id: "placeholder" }];

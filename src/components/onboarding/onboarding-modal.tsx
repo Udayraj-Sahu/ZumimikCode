@@ -28,14 +28,14 @@ import {
 import { cn } from "@/lib/utils";
 import { useOnboardingStore, examIdForGoal, goalForExam } from "@/stores/onboarding-store";
 import { VEDIC_USE_CASES, DRILLS, PLANS } from "@/lib/types/onboarding";
-import { FeatureHook } from "@/components/onboarding/feature-hook";
-import { FamilyHook } from "@/components/onboarding/family-hook";
-import { FamilyHubHook } from "@/components/onboarding/family-hub-hook";
-import { SeatBuilderHook } from "@/components/onboarding/seat-builder-hook";
-import { StoryHook } from "@/components/onboarding/story-hook";
-import { ArenaHook } from "@/components/onboarding/arena-hook";
-import { PitchHook } from "@/components/onboarding/pitch-hook";
-import { PlanHook } from "@/components/onboarding/plan-hook";
+import { FeatureIntro } from "@/components/onboarding/feature-intro";
+import { FamilyIntro } from "@/components/onboarding/family-intro";
+import { FamilyHubIntro } from "@/components/onboarding/family-hub-intro";
+import { SeatBuilderIntro } from "@/components/onboarding/seat-builder-intro";
+import { StoryIntro } from "@/components/onboarding/story-intro";
+import { ArenaIntro } from "@/components/onboarding/arena-intro";
+import { PitchIntro } from "@/components/onboarding/pitch-intro";
+import { PlanIntro } from "@/components/onboarding/plan-intro";
 
 const PERSONA_OPTIONS = [
   { label: "Student", icon: GraduationCap, color: "#34D399", desc: "Currently studying" },
@@ -473,8 +473,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     goNext();
   };
 
-  const familyHubHook = showFamilyHub ? (
-    <FamilyHubHook
+  const familyHubIntro = showFamilyHub ? (
+    <FamilyHubIntro
       onDone={() => {
         setShowFamilyHub(false);
         setShowSeatBuilder(true);
@@ -486,8 +486,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
-  const seatBuilderHook = showSeatBuilder ? (
-    <SeatBuilderHook
+  const seatBuilderIntro = showSeatBuilder ? (
+    <SeatBuilderIntro
       onClose={() => {
         setShowSeatBuilder(false);
         store.setPlanHookSeen(true);
@@ -496,8 +496,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
-  const storyHook = showStory ? (
-    <StoryHook
+  const storyIntro = showStory ? (
+    <StoryIntro
       onClose={() => {
         setShowStory(false);
         store.setStoryHookSeen(true);
@@ -506,8 +506,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
-  const familyHook = showFamily ? (
-    <FamilyHook
+  const familyIntro = showFamily ? (
+    <FamilyIntro
       onDone={() => {
         setShowFamily(false);
         setShowFamilyHub(true);
@@ -519,8 +519,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
-  const arenaHook = showArena ? (
-    <ArenaHook
+  const arenaIntro = showArena ? (
+    <ArenaIntro
       onClose={() => {
         setShowArena(false);
         store.setArenaHookSeen(true);
@@ -529,8 +529,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
-  const pitchHook = showPitch ? (
-    <PitchHook
+  const pitchIntro = showPitch ? (
+    <PitchIntro
       onClose={() => {
         setShowPitch(false);
         store.setPitchHookSeen(true);
@@ -539,8 +539,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
-  const planHook = showPlan ? (
-    <PlanHook
+  const planIntro = showPlan ? (
+    <PlanIntro
       onClose={() => {
         setShowPlan(false);
         store.setPlanHookSeen(true);
@@ -549,11 +549,11 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
-  const hookOverlay = featureHookVariant ? (
-    <FeatureHook variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
+  const introOverlay = featureHookVariant ? (
+    <FeatureIntro variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
   ) : null;
 
-  if (inline) return <>{panel}{hookOverlay}{familyHook}{familyHubHook}{seatBuilderHook}{storyHook}{arenaHook}{pitchHook}{planHook}</>;
+  if (inline) return <>{panel}{introOverlay}{familyIntro}{familyHubIntro}{seatBuilderIntro}{storyIntro}{arenaIntro}{pitchIntro}{planIntro}</>;
 
   return (
     <>
@@ -576,14 +576,14 @@ export function OnboardingModal({ onClose, inline }: Props) {
     </div>,
     document.body,
   )}
-      {hookOverlay}
-      {familyHook}
-      {familyHubHook}
-      {seatBuilderHook}
-      {storyHook}
-      {arenaHook}
-      {pitchHook}
-      {planHook}
+      {introOverlay}
+      {familyIntro}
+      {familyHubIntro}
+      {seatBuilderIntro}
+      {storyIntro}
+      {arenaIntro}
+      {pitchIntro}
+      {planIntro}
     </>
   );
 }

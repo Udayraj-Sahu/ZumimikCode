@@ -57,8 +57,8 @@ Full frontend dynamic by user's target exam (domain). Every dashboard page, comp
 
 | # | Component | Status | Notes |
 |---|-----------|--------|-------|
-| 4.1 | `dojo-shell.tsx` | [ ] | Dynamic logo/subtitle |
-| 4.2 | `walkthrough.tsx` | [ ] | Dynamic welcome messages |
+| 4.1 | `shell/app-shell.tsx` | [ ] | Dynamic logo/subtitle |
+| 4.2 | `shell/walkthrough.tsx` | [ ] | Dynamic welcome messages |
 
 ### Build
 

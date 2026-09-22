@@ -12,7 +12,7 @@ const NODES = [
   { id: "horizon", label: "Horizon", icon: "∞" },
 ];
 
-export function VerticalNav() {
+export function SectionNav() {
   const [active, setActive] = useState(0);
 
   useEffect(() => {

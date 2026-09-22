@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { RendererProps } from "@/lib/types/template";
-import TextScaffold from "./TextScaffold";
+import TextScaffold from "./text-scaffold";
 
 type ShapeType = "triangle" | "rectangle" | "square" | "circle";
 

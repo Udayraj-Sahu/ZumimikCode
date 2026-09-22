@@ -6,7 +6,7 @@ import {
   parseDivision,
   extractQuotients,
 } from "@/components/renderers/utils/parse-division";
-import TextScaffold from "./TextScaffold";
+import TextScaffold from "./text-scaffold";
 
 export default function StrikePadRenderer(props: RendererProps) {
   const { template, visibleSteps, mode, onStepReveal, ...rest } = props;

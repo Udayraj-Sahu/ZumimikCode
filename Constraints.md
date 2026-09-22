@@ -4,7 +4,7 @@
 
 ## Hard rules
 
-1. **Pages/components must NOT import `src/lib/mock/*` directly.** All data goes through `src/services/*` (via `hooks/queries/*`). When the backend drops in, mock imports keep serving mock data. Known offenders to fix — see Handover.md → "What is broken": `duel`, `clubs`, `feed`, `flashcards`, `history`, `explorer`, `technique/[id]`, `questions`, `practice`, `dojo-shell` (nav).
+1. **Pages/components must NOT import `src/lib/mock/*` directly.** All data goes through `src/services/*` (via `hooks/queries/*`). When the backend drops in, mock imports keep serving mock data. Known offenders to fix — see Handover.md → "What is broken": `duel`, `clubs`, `feed`, `flashcards`, `history`, `explorer`, `technique/[id]`, `questions`, `practice`, `app-shell` (nav).
 2. **Never hardcode a fallback topic back to `"addition"` / vedic-math.** Use `""` as the default state and sync from `setup.topics[0]` via `useEffect`.
 3. **No new dependencies** without explicit approval.
 4. **No secrets in the repo.** API/Firebase keys are `.env.local`-only (gitignored). Never log or commit them.

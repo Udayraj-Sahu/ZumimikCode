@@ -31,12 +31,12 @@ New Vedic Math Templates ──► Solve-Along Experience
 
 ## 2. Components & Responsibilities
 
-### RendererRouter (`src/components/renderers/RendererRouter.tsx`)
+### RendererRouter (`src/components/renderers/renderer-router.tsx`)
 - Single decision point: `visual_scaffold.type` → component
 - Fallback to `TextScaffold` for unknown types
 - Dynamic imports via Next.js `dynamic()` for code splitting
 
-### TextScaffold (`src/components/renderers/TextScaffold.tsx`)
+### TextScaffold (`src/components/renderers/text-scaffold.tsx`)
 - Base engine — 5 visual slots (L1-L5)
 - L1: Problem statement + technique tag + difficulty
 - L2: Step cards (visibility controlled by `visibleSteps`)
@@ -113,18 +113,18 @@ Template JSON
 src/
 ├── components/
 │   ├── renderers/                    ← NEW
-│   │   ├── RendererRouter.tsx
-│   │   ├── TextScaffold.tsx
-│   │   ├── ArrowMatrixRenderer.tsx
-│   │   ├── StrikePadRenderer.tsx
-│   │   ├── NumberLineRenderer.tsx
-│   │   ├── GridDerivationRenderer.tsx
-│   │   ├── EquationChainRenderer.tsx
-│   │   ├── ShapeCanvasRenderer.tsx
-│   │   ├── StepCard.tsx
-│   │   ├── HintDrawer.tsx
-│   │   ├── TrapBadge.tsx
-│   │   └── AnswerInput.tsx
+│   │   ├── renderer-router.tsx
+│   │   ├── text-scaffold.tsx
+│   │   ├── arrow-matrix-renderer.tsx
+│   │   ├── strike-pad-renderer.tsx
+│   │   ├── number-line-renderer.tsx
+│   │   ├── grid-derivation-renderer.tsx
+│   │   ├── equation-chain-renderer.tsx
+│   │   ├── shape-canvas-renderer.tsx
+│   │   ├── step-card.tsx
+│   │   ├── hint-drawer.tsx
+│   │   ├── trap-badge.tsx
+│   │   └── answer-input.tsx
 ├── hooks/
 │   ├── use-step-progress.ts          ← NEW
 ├── lib/

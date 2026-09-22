@@ -153,7 +153,7 @@ const PAY_MODES: { id: "upi" | "wallet" | "card"; label: string; Icon: typeof Qr
 
 const COUPON = { code: "VIP_EARLYBIRD", amount: 100, note: "Early Adopter Neural Grant" };
 
-export function PlanHook({ onClose }: { onClose: () => void }) {
+export function PlanIntro({ onClose }: { onClose: () => void }) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
 

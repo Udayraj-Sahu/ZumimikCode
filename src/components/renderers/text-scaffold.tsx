@@ -5,10 +5,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import type { SolveAlongTemplate, RenderMode } from "@/lib/types/template";
 import { cn } from "@/lib/utils";
-import StepCard from "./StepCard";
-import HintDrawer from "./HintDrawer";
-import TrapBadge from "./TrapBadge";
-import AnswerInput from "./AnswerInput";
+import StepCard from "./step-card";
+import HintDrawer from "./hint-drawer";
+import TrapBadge from "./trap-badge";
+import AnswerInput from "./answer-input";
 
 interface TextScaffoldProps {
   template: SolveAlongTemplate;

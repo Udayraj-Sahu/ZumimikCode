@@ -277,7 +277,7 @@ GET /api/v1/profile/achievements       → { icon, label, desc, unlocked }[]
 GET /api/v1/settings                   → { pushNotifications, sessionReminders, restDuration, email }
 GET /api/v1/settings/subscription      → { plan: "free"|"pro", price }
 ```
-Frontend: `src/services/profile.ts`, `use-profile.ts`; `src/services/settings.ts`, `use-settings.ts`. Profile edit currently flows locally (`/dashboard/profile/edit`).
+Frontend: `src/services/profile.ts`, `use-profile.ts`; `src/services/settings.ts`. Profile edit currently flows locally (`/dashboard/profile/edit`).
 
 ---
 

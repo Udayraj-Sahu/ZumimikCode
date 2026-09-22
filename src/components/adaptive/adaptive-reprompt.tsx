@@ -19,15 +19,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore, goalForExam } from "@/stores/onboarding-store";
-import { StoryCommitmentMatrix } from "@/components/onboarding/story-hook";
+import { StoryCommitmentMatrix } from "@/components/onboarding/story-intro";
 import { applyStoryNotifications } from "@/lib/notifications/story-reminders";
-import { PlanSelector } from "@/components/onboarding/plan-hook";
-import { SeatBuilderSelector } from "@/components/onboarding/seat-builder-hook";
-import { ArenaHook } from "@/components/onboarding/arena-hook";
-import { PitchHook } from "@/components/onboarding/pitch-hook";
-import { FamilyHook } from "@/components/onboarding/family-hook";
-import { FamilyHubHook } from "@/components/onboarding/family-hub-hook";
-import { FeatureHook } from "@/components/onboarding/feature-hook";
+import { PlanSelector } from "@/components/onboarding/plan-intro";
+import { SeatBuilderSelector } from "@/components/onboarding/seat-builder-intro";
+import { ArenaIntro } from "@/components/onboarding/arena-intro";
+import { PitchIntro } from "@/components/onboarding/pitch-intro";
+import { FamilyIntro } from "@/components/onboarding/family-intro";
+import { FamilyHubIntro } from "@/components/onboarding/family-hub-intro";
+import { FeatureIntro } from "@/components/onboarding/feature-intro";
 import { VEDIC_USE_CASES } from "@/lib/types/onboarding";
 import type { PlanId, StoryCommitment, VedicUseCaseId } from "@/lib/types/onboarding";
 
@@ -433,7 +433,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   if (showFamilyHub) {
     return (
-      <FamilyHubHook
+      <FamilyHubIntro
         onDone={() => {
           setShowFamilyHub(false);
           goToPlan();
@@ -448,7 +448,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   if (showFamily) {
     return (
-      <FamilyHook
+      <FamilyIntro
         onDone={() => {
           setShowFamily(false);
           setShowFamilyHub(true);
@@ -463,7 +463,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   if (showPitch) {
     return (
-      <PitchHook
+      <PitchIntro
         onClose={() => {
           setShowPitch(false);
           store.setPitchHookSeen(true);
@@ -475,7 +475,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   if (showArena) {
     return (
-      <ArenaHook
+      <ArenaIntro
         onClose={() => {
           setShowArena(false);
           store.setArenaHookSeen(true);
@@ -508,7 +508,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   }
 
   return featureHookVariant ? (
-    <FeatureHook variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
+    <FeatureIntro variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
   ) : (
     mainOverlay
   );

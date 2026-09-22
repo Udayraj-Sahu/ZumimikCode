@@ -35,7 +35,7 @@ Page/Component  →  hooks/queries/*  →  services/*  →  (IS_MOCK ? lib/mock/
 ## Key boundaries
 
 - `services/*` mocks the backend 1:1. When the backend ships, **only** `lib/mock` + the mock branches change — page logic stays.
-- `lib/mock/dashboard.ts` sources `NAV_ITEMS`/`MOBILE_NAV` (used by `dojo-shell.tsx`) and the topic mastery/radar data.
+- `lib/mock/dashboard.ts` sources `NAV_ITEMS`/`MOBILE_NAV` (used by `shell/app-shell.tsx`) and the topic mastery/radar data.
 - Custom **RendererRouter** (`components/renderers/`) renders technique templates by `visual_scaffold.type` (solve-along/quick/guided modes).
 
 ## Apps / run targets

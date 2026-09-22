@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import type { RendererProps } from "@/lib/types/template";
 import { parseNumberLine } from "@/components/renderers/utils/parse-number-line";
-import TextScaffold from "./TextScaffold";
+import TextScaffold from "./text-scaffold";
 
 export default function NumberLineRenderer(props: RendererProps) {
   const { template, visibleSteps, mode, onStepReveal, ...rest } = props;

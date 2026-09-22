@@ -45,7 +45,7 @@ function useLanes() {
   };
 }
 
-export function ArenaHook({ onClose }: { onClose: () => void }) {
+export function ArenaIntro({ onClose }: { onClose: () => void }) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);

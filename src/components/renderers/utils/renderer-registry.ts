@@ -3,31 +3,31 @@ import type { ComponentType } from "react";
 import type { RendererProps } from "@/lib/types/template";
 
 const ArrowMatrixRenderer = dynamic(
-  () => import("@/components/renderers/ArrowMatrixRenderer"),
+  () => import("@/components/renderers/arrow-matrix-renderer"),
   { ssr: false },
 );
 const StrikePadRenderer = dynamic(
-  () => import("@/components/renderers/StrikePadRenderer"),
+  () => import("@/components/renderers/strike-pad-renderer"),
   { ssr: false },
 );
 const NumberLineRenderer = dynamic(
-  () => import("@/components/renderers/NumberLineRenderer"),
+  () => import("@/components/renderers/number-line-renderer"),
   { ssr: false },
 );
 const GridDerivationRenderer = dynamic(
-  () => import("@/components/renderers/GridDerivationRenderer"),
+  () => import("@/components/renderers/grid-derivation-renderer"),
   { ssr: false },
 );
 const EquationChainRenderer = dynamic(
-  () => import("@/components/renderers/EquationChainRenderer"),
+  () => import("@/components/renderers/equation-chain-renderer"),
   { ssr: false },
 );
 const ShapeCanvasRenderer = dynamic(
-  () => import("@/components/renderers/ShapeCanvasRenderer"),
+  () => import("@/components/renderers/shape-canvas-renderer"),
   { ssr: false },
 );
 const TextScaffold = dynamic(
-  () => import("@/components/renderers/TextScaffold"),
+  () => import("@/components/renderers/text-scaffold"),
   { ssr: false },
 );
 

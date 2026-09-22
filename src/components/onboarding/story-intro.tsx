@@ -343,7 +343,7 @@ function ReclaimModule({
   );
 }
 
-/* ── Presentational: single-page commitment form (used by StoryHook & AdaptiveReprompt) ── */
+/* ── Presentational: single-page commitment form (used by StoryIntro & AdaptiveReprompt) ── */
 
 export function StoryCommitmentMatrix({
   value,
@@ -555,7 +555,7 @@ const itemVariants: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: [0.22, 1, 0.36, 1] } },
 };
 
-export function StoryHook({ onClose }: { onClose: () => void }) {
+export function StoryIntro({ onClose }: { onClose: () => void }) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
 

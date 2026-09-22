@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import { Check, AlertTriangle, Zap, ChevronDown, ChevronUp } from "lucide-react";
 import type { DifficultyLevel, TechniquePracticeQuestion } from "@/lib/types/technique";
-import RendererRouter from "@/components/renderers/RendererRouter";
+import RendererRouter from "@/components/renderers/renderer-router";
 import { exampleToTemplate } from "@/components/renderers/utils/level-to-template";
 
 const LEVEL_COLORS: Record<number, string> = {

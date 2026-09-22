@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { DojoShell } from "@/components/dashboard/dojo-shell";
+import { AppShell } from "@/components/shell/app-shell";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useAuthStore } from "@/stores/auth-store";
 
@@ -20,6 +20,6 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   if (!isAuthenticated) return null;
 
   return (
-    <DojoShell>{children}</DojoShell>
+    <AppShell>{children}</AppShell>
   );
 }

@@ -32,8 +32,8 @@ import { AdaptiveReprompt } from "@/components/adaptive/adaptive-reprompt";
 import { AdaptiveDashboard } from "@/components/adaptive/adaptive-dashboard";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { resolveJourneyProfile } from "@/lib/adaptive/modes";
-import { PaywallModal } from "@/components/pricing/paywall-modal";
-import { MockArenaHook } from "@/components/pricing/mock-arena-hook";
+import { PaywallModal } from "@/components/paywall/paywall-modal";
+import { MockArenaIntro } from "@/components/paywall/mock-arena-intro";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
 
@@ -783,7 +783,7 @@ function LearnPageContent() {
       {showAddPrep && (
         <AddPrepModal gated={addPrepGated} onClose={() => setShowAddPrep(false)} />
       )}
-      {showMockArena && <MockArenaHook onClose={() => setShowMockArena(false)} />}
+      {showMockArena && <MockArenaIntro onClose={() => setShowMockArena(false)} />}
       <PaywallModal />
       </div>
     </div>

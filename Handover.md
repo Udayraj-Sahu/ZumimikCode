@@ -13,7 +13,7 @@
 - Services + hooks accept a `domain` param (`src/services/*`, `src/hooks/queries/*`).
 - Mock data is domain-keyed (`src/lib/mock/*`, e.g. `HISTORY_TOPIC_IDS_BY_DOMAIN`).
 - Pages are dynamic by `targetExam`: configure-sprint, sprint, flashcards, duel, questions, practice, history, dashboard, explorer, learn.
-- `dojo-shell.tsx` shows dynamic exam label + first name.
+- `shell/app-shell.tsx` shows dynamic exam label + first name.
 - `CompleteSetupGate` removed from all pages; learn/explorer show clean "no exam selected" empty states with a shared `AddPrepModal`.
 - Dead code removed: `complete-setup-gate.tsx`, `SPRINT_TOPICS`, `getTemplateById`, `submitDuelResult`, `getStoredFeedback`, unused imports.
 - **MD3/Android compliance pass (`skills-check`):** edge-to-edge safe-area insets (`env(safe-area-inset-*)`), `color-scheme` set per theme, predictive-back manifest flag, modal `role="dialog"`/`aria-modal`, touch targets ≥44px on icon buttons, `system` theme (Dark/Light/System–default stays Dark) with Settings control, `text-micro` (11px) type token + all `text-[10px]` migrated, `chrome` color tokens + `bg-cta` gradient token replacing hardcoded sidebar/CTA colors, contrast bumps on informational captions, and always-visible labels on the mobile bottom nav.

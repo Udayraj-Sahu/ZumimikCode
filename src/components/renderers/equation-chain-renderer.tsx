@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import type { RendererProps } from "@/lib/types/template";
-import TextScaffold from "./TextScaffold";
+import TextScaffold from "./text-scaffold";
 
 export default function EquationChainRenderer(props: RendererProps) {
   const { template, visibleSteps, mode, onStepReveal, ...rest } = props;

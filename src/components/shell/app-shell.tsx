@@ -8,8 +8,8 @@ import { LogOut, Zap, Flame, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useAuthStore } from "@/stores/auth-store";
-import { Walkthrough } from "@/components/dashboard/walkthrough";
-import { RatePrompt } from "@/components/dashboard/rate-prompt";
+import { Walkthrough } from "@/components/shell/walkthrough";
+import { RatePrompt } from "@/components/shell/rate-prompt";
 
 const PRIMARY_NAV: { label: string; href: string }[] = [
   { label: "Arena", href: "/dashboard" },
@@ -34,7 +34,7 @@ const FLYOUT_HREFS = [
 
 const NAV_BY_HREF = new Map(NAV_ITEMS.map((item) => [item.href, item]));
 
-export function DojoShell({ children }: { children: React.ReactNode }) {
+export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
