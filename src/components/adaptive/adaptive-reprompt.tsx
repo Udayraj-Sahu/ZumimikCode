@@ -417,12 +417,10 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
     const variant = featureHookVariant;
     setFeatureHookVariant(null);
     if (!isVedic && variant === "this_year" && !store.arenaHookSeen) {
-      store.setArenaHookSeen(true);
       setShowArena(true);
       return;
     }
     if (!isVedic && (variant === "whenever" || variant === "not_sure") && !store.pitchHookSeen) {
-      store.setPitchHookSeen(true);
       setShowPitch(true);
       return;
     }
@@ -468,6 +466,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
       <PitchHook
         onClose={() => {
           setShowPitch(false);
+          store.setPitchHookSeen(true);
           goNext();
         }}
       />
@@ -479,6 +478,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
       <ArenaHook
         onClose={() => {
           setShowArena(false);
+          store.setArenaHookSeen(true);
           goNext();
         }}
       />

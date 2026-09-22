@@ -222,6 +222,11 @@ export const useOnboardingStore = create<OnboardingState>()(
     {
       name: "exam-arena-onboarding",
       storage: createJSONStorage(() => safeLocalStorage),
+      version: 1,
+      migrate: (persisted) => {
+        const p = persisted as Partial<OnboardingState>;
+        return { ...p, arenaHookSeen: false, pitchHookSeen: false };
+      },
       merge: (persisted, current) => {
         const p = persisted as Partial<OnboardingState>;
         if (p.weekDays) {

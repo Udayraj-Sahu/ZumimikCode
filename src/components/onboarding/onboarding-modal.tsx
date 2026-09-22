@@ -33,6 +33,9 @@ import { FamilyHook } from "@/components/onboarding/family-hook";
 import { FamilyHubHook } from "@/components/onboarding/family-hub-hook";
 import { SeatBuilderHook } from "@/components/onboarding/seat-builder-hook";
 import { StoryHook } from "@/components/onboarding/story-hook";
+import { ArenaHook } from "@/components/onboarding/arena-hook";
+import { PitchHook } from "@/components/onboarding/pitch-hook";
+import { PlanHook } from "@/components/onboarding/plan-hook";
 
 const PERSONA_OPTIONS = [
   { label: "Student", icon: GraduationCap, color: "#34D399", desc: "Currently studying" },
@@ -131,6 +134,9 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const [showFamilyHub, setShowFamilyHub] = useState(false);
   const [showSeatBuilder, setShowSeatBuilder] = useState(false);
   const [showStory, setShowStory] = useState(false);
+  const [showArena, setShowArena] = useState(false);
+  const [showPitch, setShowPitch] = useState(false);
+  const [showPlan, setShowPlan] = useState(false);
 
   const handleTemporal = (v: TemporalWindowId | null) => {
     setLocalTemporal(v);
@@ -450,9 +456,18 @@ export function OnboardingModal({ onClose, inline }: Props) {
   );
 
   const featureHookDone = () => {
+    const variant = featureHookVariant;
     setFeatureHookVariant(null);
-    if (featureHookVariant === "vedic") {
+    if (variant === "vedic") {
       setShowFamilyHub(true);
+      return;
+    }
+    if (variant === "this_year") {
+      setShowArena(true);
+      return;
+    }
+    if (variant === "whenever" || variant === "not_sure") {
+      setShowPitch(true);
       return;
     }
     goNext();
@@ -504,11 +519,41 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
+  const arenaHook = showArena ? (
+    <ArenaHook
+      onClose={() => {
+        setShowArena(false);
+        store.setArenaHookSeen(true);
+        setShowPlan(true);
+      }}
+    />
+  ) : null;
+
+  const pitchHook = showPitch ? (
+    <PitchHook
+      onClose={() => {
+        setShowPitch(false);
+        store.setPitchHookSeen(true);
+        setShowPlan(true);
+      }}
+    />
+  ) : null;
+
+  const planHook = showPlan ? (
+    <PlanHook
+      onClose={() => {
+        setShowPlan(false);
+        store.setPlanHookSeen(true);
+        setShowStory(true);
+      }}
+    />
+  ) : null;
+
   const hookOverlay = featureHookVariant ? (
     <FeatureHook variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
   ) : null;
 
-  if (inline) return <>{panel}{hookOverlay}{familyHook}{familyHubHook}{seatBuilderHook}{storyHook}</>;
+  if (inline) return <>{panel}{hookOverlay}{familyHook}{familyHubHook}{seatBuilderHook}{storyHook}{arenaHook}{pitchHook}{planHook}</>;
 
   return (
     <>
@@ -536,6 +581,9 @@ export function OnboardingModal({ onClose, inline }: Props) {
       {familyHubHook}
       {seatBuilderHook}
       {storyHook}
+      {arenaHook}
+      {pitchHook}
+      {planHook}
     </>
   );
 }
