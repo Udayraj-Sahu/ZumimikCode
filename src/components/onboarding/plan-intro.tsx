@@ -36,7 +36,18 @@ function realDiscount(annual: number, monthly: number): number {
   return Math.max(0, Math.round((1 - annual / (monthly * 12)) * 100));
 }
 
-const DECK_STYLE: Record<PlanId, { ring: string; glow: string; price: string; tag: string; grad: string; chip: string; holo: string }> = {
+const DECK_STYLE: Record<
+  PlanId,
+  {
+    ring: string;
+    glow: string;
+    price: string;
+    tag: string;
+    grad: string;
+    chip: string;
+    holo: string;
+  }
+> = {
   initiate: {
     ring: "border-white/[0.18] bg-white/[0.04]",
     glow: "",
@@ -92,7 +103,11 @@ export function PlanSelector({
 
   const dualTracks =
     lane in DOMAIN_LABELS
-      ? [`${DOMAIN_LABELS[lane]} (${laneQualifier(lane)})`, `${DOMAIN_LABELS[second] ?? "Second"} Fast-Track`, "+ Vedic Math HUD"]
+      ? [
+          `${DOMAIN_LABELS[lane]} (${laneQualifier(lane)})`,
+          `${DOMAIN_LABELS[second] ?? "Second"} Fast-Track`,
+          "+ Vedic Math HUD",
+        ]
       : undefined;
 
   return (
@@ -140,7 +155,12 @@ export function PlanSelector({
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className={cn("text-[13px] font-bold", selected ? "text-foreground" : "text-foreground/80")}>
+                      <span
+                        className={cn(
+                          "text-[13px] font-bold",
+                          selected ? "text-foreground" : "text-foreground/80",
+                        )}
+                      >
                         {p.name}
                       </span>
                       {p.id === "single-lane" && (
@@ -149,11 +169,15 @@ export function PlanSelector({
                         </span>
                       )}
                     </div>
-                    <div className="mt-0.5 text-[11px] leading-snug text-muted-foreground/55">{p.desc}</div>
+                    <div className="mt-0.5 text-[11px] leading-snug text-muted-foreground/55">
+                      {p.desc}
+                    </div>
                   </div>
                   <div className="shrink-0 text-right text-[13px] font-bold text-[#C8FF4D]">
                     {inr(shown)}
-                    <span className="text-[10px] font-normal text-muted-foreground/45">/{unit}</span>
+                    <span className="text-[10px] font-normal text-muted-foreground/45">
+                      /{unit}
+                    </span>
                   </div>
                 </div>
 
@@ -163,7 +187,9 @@ export function PlanSelector({
                       <span className="font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.14em] text-muted-foreground/50">
                         UNLOCKED TRACKS:
                       </span>
-                      <span className="font-[family-name:var(--font-space-grotesk)] text-[9px] font-bold text-cyan-400">{p.lanes} Lanes Active</span>
+                      <span className="font-[family-name:var(--font-space-grotesk)] text-[9px] font-bold text-cyan-400">
+                        {p.lanes} Lanes Active
+                      </span>
                     </div>
                     <div className="mt-1.5 flex flex-wrap gap-1.5">
                       {tracks.map((t) =>
@@ -190,7 +216,10 @@ export function PlanSelector({
                 {!p.tracks && !(p.id === "dual-lane" && dualTracks) && (
                   <ul className="mt-2.5 flex flex-col gap-1.5">
                     {p.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/50">
+                      <li
+                        key={f}
+                        className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/50"
+                      >
                         <span className="grid size-4 shrink-0 place-items-center rounded-full bg-[#C8FF4D]/12 text-[#C8FF4D]">
                           <Check size={9} strokeWidth={3.5} />
                         </span>
@@ -261,7 +290,11 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
     const done = () => onCloseRef.current();
     const el = overlayRef.current;
     if (!el) return done();
-    el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: "ease-in", fill: "forwards" }).addEventListener("finish", done, { once: true });
+    el.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 180,
+      easing: "ease-in",
+      fill: "forwards",
+    }).addEventListener("finish", done, { once: true });
   }, [store, planId, lane]);
 
   const skip = useCallback(() => {
@@ -270,7 +303,11 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
     const done = () => onCloseRef.current();
     const el = overlayRef.current;
     if (!el) return done();
-    el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: "ease-in", fill: "forwards" }).addEventListener("finish", done, { once: true });
+    el.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 180,
+      easing: "ease-in",
+      fill: "forwards",
+    }).addEventListener("finish", done, { once: true });
   }, []);
 
   return createPortal(
@@ -278,15 +315,29 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
       <div
         ref={overlayRef}
         className="fixed inset-0 z-[70] flex overflow-y-auto justify-center"
-        style={{ background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)" }}
+        style={{
+          background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+        }}
         role="dialog"
         aria-modal="true"
       >
         <div className="relative w-full max-w-[400px] min-h-full px-4 pb-8 pt-8">
           {/* ambient glows */}
-          <div aria-hidden className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[90px]" />
-          <div aria-hidden className="pointer-events-none absolute bottom-0 right-0 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.07] blur-[90px]" />
-          <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)" }} />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[90px]"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute bottom-0 right-0 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.07] blur-[90px]"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-px"
+            style={{
+              background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)",
+            }}
+          />
 
           {/* heading */}
           <section className="relative text-center">
@@ -300,7 +351,10 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
               </span>
             </h1>
             <p className="mx-auto mt-2.5 flex max-w-[300px] items-center justify-center gap-1.5 text-[13px] text-muted-foreground/70">
-              Target locked: <span className="font-[family-name:var(--font-space-grotesk)] font-bold text-foreground">{laneLabel(lane)}</span>
+              Target locked:{" "}
+              <span className="font-[family-name:var(--font-space-grotesk)] font-bold text-foreground">
+                {laneLabel(lane)}
+              </span>
             </p>
           </section>
 
@@ -308,7 +362,10 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
           <div className="relative mt-6 grid grid-cols-2 gap-1 rounded-2xl border border-white/[0.08] bg-black/40 p-1">
             {(["annual", "monthly"] as const).map((b) => {
               const active = billing === b;
-              const off = b === "annual" ? realDiscount(PLANS[0].billing.annual, PLANS[0].billing.monthly) : 0;
+              const off =
+                b === "annual"
+                  ? realDiscount(PLANS[0].billing.annual, PLANS[0].billing.monthly)
+                  : 0;
               return (
                 <button
                   key={b}
@@ -322,11 +379,18 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                   )}
                 >
                   <div className="flex items-center justify-center gap-1.5">
-                    <span className={cn("font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-widest", active ? "text-foreground" : "text-muted-foreground/70")}>
+                    <span
+                      className={cn(
+                        "font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-widest",
+                        active ? "text-foreground" : "text-muted-foreground/70",
+                      )}
+                    >
                       {b.toUpperCase()}
                     </span>
                     {off > 0 && (
-                      <span className="rounded bg-[#C8FF4D] px-1 py-px text-[8px] font-bold text-[#0A0C0A]">-{off}%</span>
+                      <span className="rounded bg-[#C8FF4D] px-1 py-px text-[8px] font-bold text-[#0A0C0A]">
+                        -{off}%
+                      </span>
                     )}
                   </div>
                   <div className="mt-0.5 text-[11px] text-muted-foreground/60">
@@ -372,29 +436,53 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                     )}
                   >
                     {/* card face gradient */}
-                    <div className={cn("pointer-events-none absolute inset-0 bg-gradient-to-br", s.grad)} />
+                    <div
+                      className={cn(
+                        "pointer-events-none absolute inset-0 bg-gradient-to-br",
+                        s.grad,
+                      )}
+                    />
 
                     {/* holo shimmer */}
                     <div
                       aria-hidden
                       className="pointer-events-none absolute -top-16 left-1/2 h-32 w-[260px] -translate-x-1/2 rotate-[-14deg] opacity-60"
-                      style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)", filter: "blur(6px)" }}
+                      style={{
+                        background:
+                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)",
+                        filter: "blur(6px)",
+                      }}
                     />
 
                     <div className="relative">
                       <div className="flex items-start justify-between gap-2">
-                        <span className="font-[family-name:var(--font-space-grotesk)] text-[15px] font-black uppercase tracking-tight text-white">{p.name}</span>
-                        <span className={cn("rounded-md border px-1.5 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-[0.14em]", s.tag, sel ? "opacity-100" : "opacity-60")}>
+                        <span className="font-[family-name:var(--font-space-grotesk)] text-[15px] font-black uppercase tracking-tight text-white">
+                          {p.name}
+                        </span>
+                        <span
+                          className={cn(
+                            "rounded-md border px-1.5 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-[0.14em]",
+                            s.tag,
+                            sel ? "opacity-100" : "opacity-60",
+                          )}
+                        >
                           {tag}
                         </span>
                       </div>
 
                       {/* emv chip + code */}
                       <div className="mt-3 flex items-center justify-between">
-                        <span className={cn("grid h-8 w-11 place-items-center rounded-md border bg-gradient-to-br", s.chip)}>
+                        <span
+                          className={cn(
+                            "grid h-8 w-11 place-items-center rounded-md border bg-gradient-to-br",
+                            s.chip,
+                          )}
+                        >
                           <span className="h-4 w-7 rounded-[3px] border border-black/30 bg-black/20" />
                         </span>
-                        <span className="font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-[0.22em] text-white/70">{CARD_CODE[p.id]}</span>
+                        <span className="font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-[0.22em] text-white/70">
+                          {CARD_CODE[p.id]}
+                        </span>
                       </div>
 
                       <div className="mt-3 flex items-baseline gap-1.5">
@@ -403,11 +491,16 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                           initial={{ y: -8, opacity: 0 }}
                           animate={{ y: 0, opacity: 1 }}
                           transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                          className={cn("text-[34px] font-black leading-none tracking-tight", s.price)}
+                          className={cn(
+                            "text-[34px] font-black leading-none tracking-tight",
+                            s.price,
+                          )}
                         >
                           {inr(price)}
                         </motion.span>
-                        <span className="text-[11px] font-medium text-muted-foreground/60">/{unit}</span>
+                        <span className="text-[11px] font-medium text-muted-foreground/60">
+                          /{unit}
+                        </span>
                         {pct > 0 && billing === "annual" && (
                           <span className="ml-auto rounded bg-[#FB7185]/15 px-1.5 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold text-rose-300">
                             SAVE {pct}%
@@ -415,7 +508,12 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                         )}
                       </div>
 
-                      <p className={cn("mt-1 text-[11px] leading-snug", sel ? "text-muted-foreground/70" : "text-muted-foreground/40")}>
+                      <p
+                        className={cn(
+                          "mt-1 text-[11px] leading-snug",
+                          sel ? "text-muted-foreground/70" : "text-muted-foreground/40",
+                        )}
+                      >
                         {p.id === "dual-lane"
                           ? `${laneLabel(lane)} (${laneQualifier(lane)}) + 1 more lane in parallel`
                           : p.desc}
@@ -456,12 +554,19 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                       : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.16]",
                   )}
                 >
-                  <div className={cn("font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-widest", active ? "text-[#C8FF4D]" : "text-muted-foreground/60")}>
+                  <div
+                    className={cn(
+                      "font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-widest",
+                      active ? "text-[#C8FF4D]" : "text-muted-foreground/60",
+                    )}
+                  >
                     {p.name.toUpperCase()}
                   </div>
                   <div className="text-[10px] font-bold text-muted-foreground/70">
                     {p.billing[billing] ? inr(p.billing[billing]) : "FREE"}
-                    <span className="text-[8px] font-normal">/{billing === "annual" ? "Yr" : "Mo"}</span>
+                    <span className="text-[8px] font-normal">
+                      /{billing === "annual" ? "Yr" : "Mo"}
+                    </span>
                   </div>
                 </button>
               );
@@ -492,13 +597,19 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                     <span className="rounded bg-[#C8FF4D] px-1 py-px font-[family-name:var(--font-space-grotesk)] text-[7px] font-black tracking-[0.18em] text-[#0A0C0A]">
                       VIP WINTER
                     </span>
-                    <span className="font-[family-name:var(--font-space-grotesk)] text-[11px] font-bold tracking-[0.14em] text-[#C8FF4D]">{COUPON.code}</span>
+                    <span className="font-[family-name:var(--font-space-grotesk)] text-[11px] font-bold tracking-[0.14em] text-[#C8FF4D]">
+                      {COUPON.code}
+                    </span>
                   </div>
                   <div className="mt-1 text-[10px] text-muted-foreground/60">{COUPON.note}</div>
                 </div>
                 <div className="shrink-0 text-right">
-                  <div className="font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.14em] text-[#C8FF4D]/80">CASHBACK</div>
-                  <div className="text-[18px] font-black leading-none text-white">-{inr(COUPON.amount)}</div>
+                  <div className="font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.14em] text-[#C8FF4D]/80">
+                    CASHBACK
+                  </div>
+                  <div className="text-[18px] font-black leading-none text-white">
+                    -{inr(COUPON.amount)}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setCouponOn(false)}
@@ -513,7 +624,9 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
 
           {/* payment slots */}
           <div className="relative mt-5">
-            <p className="mb-2 font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.2em] text-muted-foreground/60">PAYMENT SLOT</p>
+            <p className="mb-2 font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.2em] text-muted-foreground/60">
+              PAYMENT SLOT
+            </p>
             <div className="grid grid-cols-3 gap-2">
               {PAY_MODES.map(({ id, label, Icon }, i) => {
                 const active = pay === id;
@@ -528,7 +641,11 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                         ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/10 text-[#C8FF4D] shadow-[0_0_16px_rgba(200,255,77,0.12)]"
                         : "border-white/[0.08] bg-white/[0.02] text-muted-foreground/60 hover:border-white/[0.16]",
                     )}
-                    style={{ borderTopRightRadius: i % 2 === 0 ? 4 : 14, borderTopLeftRadius: i % 2 === 1 ? 4 : 14, transform: `rotate(${i === 0 ? -1.2 : i === 2 ? 1.2 : 0}deg)` }}
+                    style={{
+                      borderTopRightRadius: i % 2 === 0 ? 4 : 14,
+                      borderTopLeftRadius: i % 2 === 1 ? 4 : 14,
+                      transform: `rotate(${i === 0 ? -1.2 : i === 2 ? 1.2 : 0}deg)`,
+                    }}
                   >
                     {active && (
                       <span className="pointer-events-none absolute inset-x-2 top-0 h-px bg-gradient-to-r from-transparent via-[#C8FF4D]/70 to-transparent" />
@@ -545,20 +662,26 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
           <div className="relative mt-5 space-y-1.5 rounded-2xl border border-dashed border-white/15 bg-black/40 p-3 text-[12px]">
             <div className="flex justify-between text-muted-foreground/70">
               <span>
-                Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} · {billing === "annual" ? "Annual" : "Monthly"})
+                Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} ·{" "}
+                {billing === "annual" ? "Annual" : "Monthly"})
               </span>
               <span>{inr(subtotal)}</span>
             </div>
             {couponOn && (
               <div className="flex justify-between text-[#C8FF4D]">
                 <span>
-                  Code <span className="font-[family-name:var(--font-space-grotesk)]">{COUPON.code}</span>
+                  Code{" "}
+                  <span className="font-[family-name:var(--font-space-grotesk)]">
+                    {COUPON.code}
+                  </span>
                 </span>
                 <span>-{inr(discount)}</span>
               </div>
             )}
             <div className="flex items-end justify-between border-t border-dashed border-white/10 pt-2">
-              <span className="text-[13px] font-bold text-muted-foreground/80">Total Due Today</span>
+              <span className="text-[13px] font-bold text-muted-foreground/80">
+                Total Due Today
+              </span>
               <span>
                 <motion.span
                   key={`${total}-${unit}`}
@@ -569,7 +692,9 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                 >
                   {inr(total)}
                 </motion.span>
-                <span className="ml-1 font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold text-muted-foreground/60">/{unit}</span>
+                <span className="ml-1 font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold text-muted-foreground/60">
+                  /{unit}
+                </span>
               </span>
             </div>
           </div>

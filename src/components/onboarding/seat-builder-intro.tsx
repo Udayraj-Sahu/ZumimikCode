@@ -36,7 +36,15 @@ const PRIMARY = [
   },
 ] as const;
 
-const STACK: { id: string; title: string; summary: string; desc: string; tag: string; list: number; badge?: string }[] = [
+const STACK: {
+  id: string;
+  title: string;
+  summary: string;
+  desc: string;
+  tag: string;
+  list: number;
+  badge?: string;
+}[] = [
   {
     id: "kid1",
     title: "Kid 01: Olympiad & Speed Math",
@@ -82,10 +90,24 @@ function SectionHeader({
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
-        <span className={cn("grid h-5 w-5 place-items-center rounded-full border font-mono text-[10px] font-bold", numClass)}>{n}</span>
-        <h2 className={cn("font-mono text-[10px] font-bold tracking-widest", titleClass)}>{title}</h2>
+        <span
+          className={cn(
+            "grid h-5 w-5 place-items-center rounded-full border  text-[10px] font-bold",
+            numClass,
+          )}
+        >
+          {n}
+        </span>
+        <h2 className={cn(" text-[10px] font-bold tracking-widest", titleClass)}>{title}</h2>
       </div>
-      <span className={cn("shrink-0 rounded border px-1.5 py-0.5 font-mono text-[7px] font-bold tracking-wider", tagClass)}>{tag}</span>
+      <span
+        className={cn(
+          "shrink-0 rounded border px-1.5 py-0.5  text-[7px] font-bold tracking-wider",
+          tagClass,
+        )}
+      >
+        {tag}
+      </span>
     </div>
   );
 }
@@ -104,7 +126,10 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
     const seats = STACK.filter((s) => stacked.includes(s.id));
     const _lines = [
       { label: `Base: ${primary.summary}`, amount: primary.price },
-      ...seats.map((s, i) => ({ label: `Seat ${i + 2}: ${s.summary}`, amount: stackPrice(s.list) })),
+      ...seats.map((s, i) => ({
+        label: `Seat ${i + 2}: ${s.summary}`,
+        amount: stackPrice(s.list),
+      })),
     ];
     const _total = _lines.reduce((sum, l) => sum + l.amount, 0);
     return {
@@ -148,32 +173,46 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 )}
               >
                 <div className="flex items-start gap-3">
-                  <span className={cn("mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border-2", selected ? "border-[#C8FF4D]" : "border-white/25")}>
+                  <span
+                    className={cn(
+                      "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border-2",
+                      selected ? "border-[#C8FF4D]" : "border-white/25",
+                    )}
+                  >
                     {selected && <span className="size-2 rounded-full bg-[#C8FF4D]" />}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <h3 className="text-[12px] font-bold uppercase tracking-wide text-foreground">{p.title}</h3>
+                          <h3 className="text-[12px] font-bold uppercase tracking-wide text-foreground">
+                            {p.title}
+                          </h3>
                           {selected && (
-                            <span className="rounded bg-[#C8FF4D] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[#0A0C0A]">
+                            <span className="rounded bg-[#C8FF4D] px-1.5 py-px  text-[7px] font-bold tracking-wider text-[#0A0C0A]">
                               ACTIVE SEAT
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">{p.desc}</p>
+                        <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">
+                          {p.desc}
+                        </p>
                       </div>
                       <div className="shrink-0 text-right text-[14px] font-bold text-[#C8FF4D]">
                         {inr(p.price)}
-                        <span className="text-[9px] font-normal text-muted-foreground/50"> /yr</span>
+                        <span className="text-[9px] font-normal text-muted-foreground/50">
+                          {" "}
+                          /yr
+                        </span>
                       </div>
                     </div>
                     <div className="mt-2.5 flex items-center justify-between">
                       <span className="flex items-center gap-1 text-[9px] text-muted-foreground/50">
                         <Clock size={10} /> {p.time}
                       </span>
-                      <span className="font-mono text-[8px] font-bold tracking-wider text-[#C8FF4D]">{p.tag}</span>
+                      <span className=" text-[8px] font-bold tracking-wider text-[#C8FF4D]">
+                        {p.tag}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -211,19 +250,25 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <h3 className="text-[12px] font-bold uppercase leading-snug tracking-wide text-foreground">{s.title}</h3>
+                      <h3 className="text-[12px] font-bold uppercase leading-snug tracking-wide text-foreground">
+                        {s.title}
+                      </h3>
                       {s.badge && (
-                        <span className="rounded border border-fuchsia-400/40 bg-fuchsia-400/15 px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-fuchsia-300">
+                        <span className="rounded border border-fuchsia-400/40 bg-fuchsia-400/15 px-1.5 py-px  text-[7px] font-bold tracking-wider text-fuchsia-300">
                           {s.badge}
                         </span>
                       )}
                     </div>
-                    <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">{s.desc}</p>
+                    <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">
+                      {s.desc}
+                    </p>
                   </div>
                   <span
                     className={cn(
-                      "flex shrink-0 items-center gap-1 rounded-md border px-2 py-1 font-mono text-[8px] font-bold tracking-wider",
-                      added ? "border-cyan-400 bg-cyan-400 text-[#0A0C0A]" : "border-white/20 text-muted-foreground/70",
+                      "flex shrink-0 items-center gap-1 rounded-md border px-2 py-1  text-[8px] font-bold tracking-wider",
+                      added
+                        ? "border-cyan-400 bg-cyan-400 text-[#0A0C0A]"
+                        : "border-white/20 text-muted-foreground/70",
                     )}
                   >
                     {added ? <Check size={10} /> : <Plus size={10} />}
@@ -231,12 +276,21 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                   </span>
                 </div>
                 <div className="mt-2.5 flex items-end justify-between">
-                  <span className={cn("font-mono text-[8px] font-bold tracking-wider", added ? "text-cyan-300" : "text-muted-foreground/50")}>
+                  <span
+                    className={cn(
+                      " text-[8px] font-bold tracking-wider",
+                      added ? "text-cyan-300" : "text-muted-foreground/50",
+                    )}
+                  >
                     {s.tag}
                   </span>
                   <div className="text-right">
-                    <span className="mr-1.5 text-[10px] text-muted-foreground/50 line-through">{inr(s.list)}</span>
-                    <span className="text-[14px] font-bold text-[#C8FF4D]">{inr(stackPrice(s.list))}</span>
+                    <span className="mr-1.5 text-[10px] text-muted-foreground/50 line-through">
+                      {inr(s.list)}
+                    </span>
+                    <span className="text-[14px] font-bold text-[#C8FF4D]">
+                      {inr(stackPrice(s.list))}
+                    </span>
                     <span className="text-[9px] text-muted-foreground/50"> /yr</span>
                   </div>
                 </div>
@@ -250,30 +304,43 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
       <section className="rounded-2xl border border-[#C8FF4D]/25 bg-black/50 p-3.5">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <p className="font-mono text-[7px] font-bold tracking-[0.2em] text-[#C8FF4D]">ACTIVE CONFIGURATION SUMMARY</p>
-            <h2 className="mt-1 text-[14px] font-black uppercase tracking-tight text-foreground">Vertical seat breakdown</h2>
+            <p className=" text-[7px] font-bold tracking-[0.2em] text-[#C8FF4D]">
+              ACTIVE CONFIGURATION SUMMARY
+            </p>
+            <h2 className="mt-1 text-[14px] font-black uppercase tracking-tight text-foreground">
+              Vertical seat breakdown
+            </h2>
           </div>
           <div className="shrink-0 rounded-lg border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-2.5 py-1 text-center">
-            <div className="text-[14px] font-black leading-none text-[#C8FF4D]">{inr(monthly)}/mo</div>
-            <div className="mt-0.5 font-mono text-[6px] tracking-widest text-muted-foreground/50">EFFECTIVE</div>
+            <div className="text-[14px] font-black leading-none text-[#C8FF4D]">
+              {inr(monthly)}/mo
+            </div>
+            <div className="mt-0.5  text-[6px] tracking-widest text-muted-foreground/50">
+              EFFECTIVE
+            </div>
           </div>
         </div>
 
         <ul className="mt-3 space-y-1.5">
           {lines.map((l) => (
-            <li key={l.label} className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-2.5 py-2 text-[10px]">
+            <li
+              key={l.label}
+              className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-2.5 py-2 text-[10px]"
+            >
               <span className="text-muted-foreground/80">{l.label}</span>
-              <span className="shrink-0 font-mono font-bold text-foreground">{inr(l.amount)}</span>
+              <span className="shrink-0  font-bold text-foreground">{inr(l.amount)}</span>
             </li>
           ))}
           <li className="flex items-center justify-between gap-2 rounded-lg border border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06] px-2.5 py-2 text-[10px]">
-            <span className="text-muted-foreground/80">Vs 1-on-1 Private Tutors ({inr(PRIVATE_TUTOR_ANNUAL)}/yr)</span>
-            <span className="shrink-0 font-mono text-[9px] font-bold text-[#C8FF4D]">SAVE {savePct}%</span>
+            <span className="text-muted-foreground/80">
+              Vs 1-on-1 Private Tutors ({inr(PRIVATE_TUTOR_ANNUAL)}/yr)
+            </span>
+            <span className="shrink-0  text-[9px] font-bold text-[#C8FF4D]">SAVE {savePct}%</span>
           </li>
         </ul>
       </section>
 
-      <p className="flex items-center justify-center gap-1.5 text-center font-mono text-[7px] tracking-wider text-muted-foreground/50">
+      <p className="flex items-center justify-center gap-1.5 text-center  text-[7px] tracking-wider text-muted-foreground/50">
         <ShieldCheck size={10} />
         100% COPPA & DPDP COMPLIANT • ZERO ADS • CANCEL ANYTIME
       </p>
@@ -291,10 +358,13 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
-      overlayRef.current.animate([{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }], {
-        duration: 320,
-        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-      });
+      overlayRef.current.animate(
+        [{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }],
+        {
+          duration: 320,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        },
+      );
     }
     return () => {
       document.body.style.overflow = "";
@@ -311,7 +381,11 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
     const el = overlayRef.current;
     const done = () => onCloseRef.current();
     if (!el) return done();
-    el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: "ease-in", fill: "forwards" }).addEventListener("finish", done, { once: true });
+    el.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 180,
+      easing: "ease-in",
+      fill: "forwards",
+    }).addEventListener("finish", done, { once: true });
   }, []);
 
   const confirm = useCallback(() => {
@@ -324,14 +398,21 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[220] overflow-y-auto"
-      style={{ background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)" }}
+      style={{
+        background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+      }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="seat-builder-hook-title"
     >
       <div className="pointer-events-none absolute -top-16 right-0 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.08] blur-[90px]" />
       <div className="pointer-events-none absolute left-0 top-[50%] h-64 w-64 rounded-full bg-cyan-500/[0.08] blur-[100px]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)" }} />
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        style={{
+          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)",
+        }}
+      />
 
       <div className="relative mx-auto w-full max-w-[400px] min-h-full">
         {/* top bar */}
@@ -341,16 +422,24 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
               <Zap size={14} />
             </span>
             <div>
-              <div className="font-mono text-[11px] font-bold tracking-[0.25em] text-[#C8FF4D]">EXAM ARENA</div>
-              <div className="text-[10px] font-medium tracking-wide text-muted-foreground/70">SEAT BUILDER HUB</div>
+              <div className=" text-[11px] font-bold tracking-[0.25em] text-[#C8FF4D]">
+                EXAM ARENA
+              </div>
+              <div className="text-[10px] font-medium tracking-wide text-muted-foreground/70">
+                SEAT BUILDER HUB
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 rounded-full border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-2.5 py-1 font-mono text-[8px] font-bold tracking-wider text-[#C8FF4D]">
+            <span className="flex items-center gap-1.5 rounded-full border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-2.5 py-1  text-[8px] font-bold tracking-wider text-[#C8FF4D]">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#C8FF4D]" />
               MULTI-PLAN {STACK_DISCOUNT_PCT}% OFF
             </span>
-            <button aria-label="Close" onClick={exit} className="text-[#C8FF4D] transition-colors hover:text-[#D9FF85] active:scale-95">
+            <button
+              aria-label="Close"
+              onClick={exit}
+              className="text-[#C8FF4D] transition-colors hover:text-[#D9FF85] active:scale-95"
+            >
               <X size={18} />
             </button>
           </div>
@@ -360,16 +449,22 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
           {/* hero */}
           <section>
             <div className="rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5">
-              <span className="font-mono text-[8px] font-bold tracking-wider text-cyan-300">MODULAR PROTOCOL ARCHITECTURE</span>
+              <span className=" text-[8px] font-bold tracking-wider text-cyan-300">
+                MODULAR PROTOCOL ARCHITECTURE
+              </span>
             </div>
-            <h2 id="seat-builder-hook-title" className="mt-3 text-[26px] font-black uppercase leading-[1.1] tracking-tight text-foreground">
-              Build your{' '}
+            <h2
+              id="seat-builder-hook-title"
+              className="mt-3 text-[26px] font-black uppercase leading-[1.1] tracking-tight text-foreground"
+            >
+              Build your{" "}
               <span className="bg-gradient-to-r from-[#C8FF4D] to-cyan-300 bg-clip-text text-transparent">
                 cognitive suite
               </span>
             </h2>
             <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground/70">
-              Select primary track, then stack additional family seats with instant {STACK_DISCOUNT_PCT}% multi-seat discount.
+              Select primary track, then stack additional family seats with instant{" "}
+              {STACK_DISCOUNT_PCT}% multi-seat discount.
             </p>
           </section>
 
@@ -378,7 +473,7 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
           {/* CTA */}
           <button
             onClick={confirm}
-            className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-mono text-[11px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+            className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5  text-[11px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
             style={{
               background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
               boxShadow: "0 0 28px rgba(200,255,77,0.35), 0 1px 0 rgba(255,255,255,0.25) inset",

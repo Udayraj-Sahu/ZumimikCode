@@ -2,11 +2,32 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Activity, ArrowRight, Camera, Gamepad2, Printer, Sparkles, Swords, X, Zap } from "lucide-react";
+import {
+  Activity,
+  ArrowRight,
+  Camera,
+  Gamepad2,
+  Printer,
+  Sparkles,
+  Swords,
+  X,
+  Zap,
+} from "lucide-react";
 
 type Tone = "cyan" | "fuchsia" | "lime";
 
-const TONES: Record<Tone, { wrap: string; num: string; text: string; tag: string; tile: string; accent: string; chip: string }> = {
+const TONES: Record<
+  Tone,
+  {
+    wrap: string;
+    num: string;
+    text: string;
+    tag: string;
+    tile: string;
+    accent: string;
+    chip: string;
+  }
+> = {
   cyan: {
     wrap: "border-cyan-400/25 bg-cyan-400/[0.03]",
     num: "border-cyan-400/40 bg-cyan-400/10 text-cyan-300",
@@ -111,61 +132,74 @@ export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: 
   useEffect(() => {
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
-      overlayRef.current.animate([{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }], {
-        duration: 320,
-        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-      });
+      overlayRef.current.animate(
+        [{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }],
+        {
+          duration: 320,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        },
+      );
     }
     return () => {
       document.body.style.overflow = "";
     };
   }, []);
 
-  const exit = useCallback(
-    (cb: () => void) => {
-      if (exitingRef.current) return;
-      exitingRef.current = true;
-      const el = overlayRef.current;
-      if (!el) return cb();
-      el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: "ease-in", fill: "forwards" }).addEventListener(
-        "finish",
-        cb,
-        { once: true },
-      );
-    },
-    [],
-  );
+  const exit = useCallback((cb: () => void) => {
+    if (exitingRef.current) return;
+    exitingRef.current = true;
+    const el = overlayRef.current;
+    if (!el) return cb();
+    el.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 180,
+      easing: "ease-in",
+      fill: "forwards",
+    }).addEventListener("finish", cb, { once: true });
+  }, []);
 
   return createPortal(
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[210] overflow-y-auto"
-      style={{ background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)" }}
+      style={{
+        background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+      }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="family-hook-title"
     >
       <div className="pointer-events-none absolute -top-20 left-0 h-56 w-56 rounded-full bg-cyan-500/10 blur-[90px]" />
       <div className="pointer-events-none absolute right-0 top-[55%] h-64 w-64 rounded-full bg-fuchsia-600/[0.08] blur-[100px]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)" }} />
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        style={{
+          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)",
+        }}
+      />
 
       <div className="relative min-h-full w-full max-w-[400px] mx-auto pb-10">
         {/* top bar */}
         <header className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-[#0a0a0d]/85 px-4 py-3 backdrop-blur">
           <div className="flex items-center gap-3">
-            <button aria-label="Close" onClick={() => exit(onClose)} className="text-cyan-300 hover:text-cyan-200 transition-colors">
+            <button
+              aria-label="Close"
+              onClick={() => exit(onClose)}
+              className="text-cyan-300 hover:text-cyan-200 transition-colors"
+            >
               <X size={18} />
             </button>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-mono text-[11px] font-bold tracking-[0.25em] text-[#C8FF4D]">
+                <span className=" text-[11px] font-bold tracking-[0.25em] text-[#C8FF4D]">
                   EXAM ARENA
                 </span>
-                <span className="rounded border border-cyan-400/40 bg-cyan-400/10 px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-cyan-300">
+                <span className="rounded border border-cyan-400/40 bg-cyan-400/10 px-1.5 py-px  text-[7px] font-bold tracking-wider text-cyan-300">
                   ECOSYSTEM PREVIEW
                 </span>
               </div>
-              <div className="mt-0.5 text-[10px] font-medium tracking-wide text-muted-foreground/70">FAMILY HUB</div>
+              <div className="mt-0.5 text-[10px] font-medium tracking-wide text-muted-foreground/70">
+                FAMILY HUB
+              </div>
             </div>
           </div>
           <span className="grid h-7 w-7 place-items-center rounded-lg border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]">
@@ -176,29 +210,37 @@ export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: 
         {/* hero */}
         <section className="relative px-4 pt-5">
           <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5">
-            <span className="font-mono text-[8px] font-bold tracking-wider text-cyan-300">
+            <span className=" text-[8px] font-bold tracking-wider text-cyan-300">
               PRE-PRICING COGNITIVE ROADMAP // MULTI-GEN PROTOCOL
             </span>
-            <span className="shrink-0 rounded border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-1.5 py-px font-mono text-[8px] font-bold text-[#C8FF4D]">
+            <span className="shrink-0 rounded border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-1.5 py-px  text-[8px] font-bold text-[#C8FF4D]">
               HUD v4.2
             </span>
           </div>
 
-          <h1 id="family-hook-title" className="mt-4 text-[26px] font-black uppercase leading-[1.1] tracking-tight text-foreground">
-            From zero-screen foundation to{' '}
+          <h1
+            id="family-hook-title"
+            className="mt-4 text-[26px] font-black uppercase leading-[1.1] tracking-tight text-foreground"
+          >
+            From zero-screen foundation to{" "}
             <span className="bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">
               99+ %ile mastery.
             </span>
           </h1>
           <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground/75">
-            How the Exam Arena ecosystem adapts seamlessly from 6-minute daily tactile kids games to high-stakes 16+
-            executive exam protocols.
+            How the Exam Arena ecosystem adapts seamlessly from 6-minute daily tactile kids games to
+            high-stakes 16+ executive exam protocols.
           </p>
 
           <div className="mt-4 grid grid-cols-3 gap-2">
             {STAGES.map(({ age, label, tone }) => (
-              <div key={age} className={`rounded-lg border px-2 py-2 text-center ${TONES[tone].chip}`}>
-                <div className={`font-mono text-[8px] font-bold tracking-wider ${TONES[tone].text}`}>{age}</div>
+              <div
+                key={age}
+                className={`rounded-lg border px-2 py-2 text-center ${TONES[tone].chip}`}
+              >
+                <div className={` text-[8px] font-bold tracking-wider ${TONES[tone].text}`}>
+                  {age}
+                </div>
                 <div className="mt-0.5 text-[10px] font-bold text-foreground/80">{label}</div>
               </div>
             ))}
@@ -213,20 +255,28 @@ export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: 
               <section key={s.id} className={`rounded-2xl border p-3.5 ${t.wrap}`}>
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className={`font-mono grid h-6 w-6 place-items-center rounded border text-[10px] font-bold ${t.num}`}>
+                    <span
+                      className={` grid h-6 w-6 place-items-center rounded border text-[10px] font-bold ${t.num}`}
+                    >
                       {s.num}
                     </span>
-                    <span className={`font-mono text-[9px] font-bold tracking-widest ${t.text}`}>
+                    <span className={` text-[9px] font-bold tracking-widest ${t.text}`}>
                       {s.eyebrow}
                     </span>
                   </div>
-                  <span className={`shrink-0 rounded border px-1.5 py-0.5 font-mono text-[7px] font-bold tracking-wider ${t.tag}`}>
+                  <span
+                    className={`shrink-0 rounded border px-1.5 py-0.5  text-[7px] font-bold tracking-wider ${t.tag}`}
+                  >
                     {s.tag}
                   </span>
                 </div>
 
-                <h2 className="mt-3 text-[17px] font-black uppercase leading-tight tracking-tight text-foreground">{s.title}</h2>
-                <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground/70">{s.desc}</p>
+                <h2 className="mt-3 text-[17px] font-black uppercase leading-tight tracking-tight text-foreground">
+                  {s.title}
+                </h2>
+                <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground/70">
+                  {s.desc}
+                </p>
 
                 <ul className="mt-3 space-y-2.5">
                   {s.items.map(({ title, badge, desc, Icon }) => (
@@ -234,19 +284,27 @@ export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: 
                       key={title}
                       className={`flex gap-3 rounded-xl border border-l-2 border-white/10 bg-black/40 p-3 ${t.accent}`}
                     >
-                      <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border ${t.tile}`}>
+                      <span
+                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border ${t.tile}`}
+                      >
                         <Icon size={15} />
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between gap-2">
-                          <h3 className="text-[11px] font-bold uppercase leading-snug tracking-wide text-foreground">{title}</h3>
+                          <h3 className="text-[11px] font-bold uppercase leading-snug tracking-wide text-foreground">
+                            {title}
+                          </h3>
                           {badge && (
-                            <span className={`shrink-0 rounded border px-1.5 py-px font-mono text-[7px] font-bold tracking-wider ${t.tag}`}>
+                            <span
+                              className={`shrink-0 rounded border px-1.5 py-px  text-[7px] font-bold tracking-wider ${t.tag}`}
+                            >
                               {badge}
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground/70">{desc}</p>
+                        <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground/70">
+                          {desc}
+                        </p>
                       </div>
                     </li>
                   ))}
@@ -259,7 +317,7 @@ export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: 
         {/* CTA */}
         <button
           onClick={() => exit(onDone)}
-          className="mt-6 w-full rounded-xl py-3.5 font-mono text-[12px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+          className="mt-6 w-full rounded-xl py-3.5  text-[12px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
           style={{
             background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
             boxShadow: "0 0 28px rgba(163,230,53,0.35), 0 1px 0 rgba(255,255,255,0.25) inset",

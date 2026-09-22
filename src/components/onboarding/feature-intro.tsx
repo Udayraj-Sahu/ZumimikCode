@@ -2,8 +2,24 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion, MotionConfig, useReducedMotion, useMotionValue, useTransform, animate, type Variants } from "motion/react";
-import { BrainCircuit, ChevronUp, Clock, Crosshair, Timer, Sparkles, ArrowRight } from "lucide-react";
+import {
+  motion,
+  MotionConfig,
+  useReducedMotion,
+  useMotionValue,
+  useTransform,
+  animate,
+  type Variants,
+} from "motion/react";
+import {
+  BrainCircuit,
+  ChevronUp,
+  Clock,
+  Crosshair,
+  Timer,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ACCENT = "#C8FF4D";
@@ -61,7 +77,7 @@ const CARD_SPACING = 96;
 
 function centeredDist(index: number, active: number, count: number) {
   const n = count;
-  let dist = ((index - active) % n + n) % n;
+  let dist = (((index - active) % n) + n) % n;
   if (dist > n / 2) dist -= n;
   return dist;
 }
@@ -82,11 +98,16 @@ function SystemCarousel() {
         {SYSTEMS.map(({ icon: Icon, tone, title, tag, body }) => (
           <li key={title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
             <div className="flex items-center gap-3">
-              <span className={cn("grid size-10 shrink-0 place-items-center rounded-full border", iconTones[tone])}>
+              <span
+                className={cn(
+                  "grid size-10 shrink-0 place-items-center rounded-full border",
+                  iconTones[tone],
+                )}
+              >
                 <Icon className="size-5" aria-hidden />
               </span>
               <h3 className="flex-1 text-[14px] font-semibold leading-tight">{title}</h3>
-              <span className="font-mono max-w-[7.5rem] rounded bg-white/5 px-2 py-1 text-right text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">
+              <span className=" max-w-[7.5rem] rounded bg-white/5 px-2 py-1 text-right text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">
                 {tag}
               </span>
             </div>
@@ -98,12 +119,19 @@ function SystemCarousel() {
   }
 
   return (
-    <div className="relative mt-3 h-[300px]" role="group" aria-roledescription="carousel" aria-label="Core systems">
+    <div
+      className="relative mt-3 h-[300px]"
+      role="group"
+      aria-roledescription="carousel"
+      aria-label="Core systems"
+    >
       {SYSTEMS.map(({ icon: Icon, tone, title, tag, body }, i) => {
         const dist = centeredDist(i, active, SYSTEMS.length);
         const isCenter = dist === 0;
         const abs = Math.abs(dist);
-        const y = isCenter ? 0 : (dist > 0 ? 1 : -1) * (abs === 1 ? CARD_SPACING + 18 : CARD_SPACING * 2);
+        const y = isCenter
+          ? 0
+          : (dist > 0 ? 1 : -1) * (abs === 1 ? CARD_SPACING + 18 : CARD_SPACING * 2);
         const scale = isCenter ? 1 : 0.85;
         const opacity = isCenter ? 1 : 0;
         const z = 40 - abs * 6;
@@ -125,11 +153,16 @@ function SystemCarousel() {
             )}
           >
             <div className="flex items-center gap-3">
-              <span className={cn("grid size-10 shrink-0 place-items-center rounded-full border", iconTones[tone])}>
+              <span
+                className={cn(
+                  "grid size-10 shrink-0 place-items-center rounded-full border",
+                  iconTones[tone],
+                )}
+              >
                 <Icon className="size-5" aria-hidden />
               </span>
               <h3 className="flex-1 text-[14px] font-semibold leading-tight">{title}</h3>
-              <span className="font-mono max-w-[7.5rem] rounded bg-white/5 px-2 py-1 text-right text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">
+              <span className=" max-w-[7.5rem] rounded bg-white/5 px-2 py-1 text-right text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">
                 {tag}
               </span>
             </div>
@@ -147,9 +180,13 @@ function SystemCarousel() {
             className="flex items-center gap-1.5 text-muted-foreground"
           >
             <ChevronUp size={11} className="text-[#C8FF4D]/70" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/70">Swipe up for more details</span>
+            <span className=" text-[9px] uppercase tracking-[0.18em] text-muted-foreground/70">
+              Swipe up for more details
+            </span>
           </motion.div>
-          <span className="font-mono text-[9px] text-muted-foreground/50">{active + 1} / {SYSTEMS.length}</span>
+          <span className=" text-[9px] text-muted-foreground/50">
+            {active + 1} / {SYSTEMS.length}
+          </span>
         </div>
       </div>
     </div>
@@ -227,7 +264,8 @@ function CountValue({ value, className }: { value: string; className?: string })
     return controls.stop;
   }, [count, isNumber, value, reduceMotion]);
 
-  if (!isNumber) return <dd className={cn("text-lg font-bold leading-none", className)}>{value}</dd>;
+  if (!isNumber)
+    return <dd className={cn("text-lg font-bold leading-none", className)}>{value}</dd>;
   return <motion.dd className={cn("text-lg font-bold leading-none", className)}>{text}</motion.dd>;
 }
 
@@ -264,132 +302,162 @@ export function FeatureIntro({ variant, onDone, onClose }: Props) {
   });
 
   const exitingRef = useRef(false);
-  const exit = useCallback(
-    (cb: () => void) => {
-      if (exitingRef.current) return;
-      exitingRef.current = true;
-      const el = overlayRef.current;
-      if (!el) return cb();
-      el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: "ease-in", fill: "forwards" }).addEventListener(
-        "finish",
-        cb,
-        { once: true },
-      );
-    },
-    [],
-  );
+  const exit = useCallback((cb: () => void) => {
+    if (exitingRef.current) return;
+    exitingRef.current = true;
+    const el = overlayRef.current;
+    if (!el) return cb();
+    el.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 180,
+      easing: "ease-in",
+      fill: "forwards",
+    }).addEventListener("finish", cb, { once: true });
+  }, []);
 
   return createPortal(
     <MotionConfig reducedMotion="user">
-    <div
-      ref={overlayRef}
-      className="fixed inset-0 z-[210] overflow-hidden flex flex-col items-center"
-      style={{ background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)" }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="feature-hook-title"
-    >
-      <motion.div
-        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[440px] h-[320px] rounded-full"
-        style={{ background: "radial-gradient(circle, #22D3EE40, transparent 70%)" }}
-        animate={{ opacity: [0.12, 0.22, 0.12] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)" }} />
+      <div
+        ref={overlayRef}
+        className="fixed inset-0 z-[210] overflow-hidden flex flex-col items-center"
+        style={{
+          background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+        }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="feature-hook-title"
+      >
+        <motion.div
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[440px] h-[320px] rounded-full"
+          style={{ background: "radial-gradient(circle, #22D3EE40, transparent 70%)" }}
+          animate={{ opacity: [0.12, 0.22, 0.12] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          }}
+        />
 
-      <div className="relative flex h-full w-full max-w-[360px] flex-col">
-        <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {/* Protocol pill */}
-          <div className="flex justify-center pt-4 pb-3">
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm"
-            >
-              <Sparkles size={12} className="text-[#C8FF4D]" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8FF4D]/85">{copy.pill}</span>
+        <div className="relative flex h-full w-full max-w-[360px] flex-col">
+          <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {/* Protocol pill */}
+            <div className="flex justify-center pt-4 pb-3">
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm"
+              >
+                <Sparkles size={12} className="text-[#C8FF4D]" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8FF4D]/85">
+                  {copy.pill}
+                </span>
+              </motion.div>
+            </div>
+
+            <motion.div variants={containerVariants} initial="hidden" animate="show">
+              {/* Hero */}
+              <motion.section variants={itemVariants} className="mt-6">
+                <h1
+                  id="feature-hook-title"
+                  className="text-[clamp(1.15rem,5.3vw,1.4rem)] font-bold uppercase leading-[1.08] tracking-[-0.035em]"
+                >
+                  {copy.headline.text}
+                  <motion.span
+                    className="block"
+                    style={{ color: ACCENT }}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.18, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    {copy.headline.accent}
+                  </motion.span>
+                </h1>
+                <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{copy.sub}</p>
+              </motion.section>
+
+              {/* Core systems */}
+              <motion.section
+                variants={itemVariants}
+                aria-labelledby="core-heading"
+                className="mt-7"
+              >
+                <h2
+                  id="core-heading"
+                  className=" text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+                >
+                  Core systems
+                </h2>
+                <SystemCarousel />
+              </motion.section>
+
+              {/* What's included */}
+              <motion.section
+                variants={itemVariants}
+                aria-labelledby="facts-heading"
+                className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+              >
+                <h2
+                  id="facts-heading"
+                  className=" text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+                >
+                  What is included
+                </h2>
+                <motion.dl
+                  className="mt-3 grid grid-cols-3 gap-2"
+                  variants={{
+                    hidden: {},
+                    show: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
+                  }}
+                >
+                  {FACTS.map(({ value, label, valueClass }) => (
+                    <motion.div
+                      key={label}
+                      variants={cardVariants}
+                      className="flex flex-col-reverse justify-end gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-3"
+                    >
+                      <dt className=" text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">
+                        {label}
+                      </dt>
+                      <CountValue value={value} className={valueClass} />
+                    </motion.div>
+                  ))}
+                </motion.dl>
+                <p className=" mt-3 text-[9px] uppercase tracking-wider text-muted-foreground/60">
+                  CAT · GMAT · GRE · Banking · Vedic Math
+                </p>
+              </motion.section>
             </motion.div>
           </div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-          >
-            {/* Hero */}
-            <motion.section variants={itemVariants} className="mt-6">
-              <h1
-                id="feature-hook-title"
-                className="text-[clamp(1.15rem,5.3vw,1.4rem)] font-bold uppercase leading-[1.08] tracking-[-0.035em]"
-              >
-                {copy.headline.text}
-                <motion.span
-                  className="block"
-                  style={{ color: ACCENT }}
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.18, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {copy.headline.accent}
-                </motion.span>
-              </h1>
-              <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{copy.sub}</p>
-            </motion.section>
-
-            {/* Core systems */}
-            <motion.section variants={itemVariants} aria-labelledby="core-heading" className="mt-7">
-              <h2 id="core-heading" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                Core systems
-              </h2>
-              <SystemCarousel />
-            </motion.section>
-
-            {/* What's included */}
-            <motion.section variants={itemVariants} aria-labelledby="facts-heading" className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <h2 id="facts-heading" className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                What is included
-              </h2>
-              <motion.dl className="mt-3 grid grid-cols-3 gap-2" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } } }}>
-                {FACTS.map(({ value, label, valueClass }) => (
-                  <motion.div
-                    key={label}
-                    variants={cardVariants}
-                    className="flex flex-col-reverse justify-end gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-3"
-                  >
-                    <dt className="font-mono text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">{label}</dt>
-                    <CountValue value={value} className={valueClass} />
-                  </motion.div>
-                ))}
-              </motion.dl>
-              <p className="font-mono mt-3 text-[9px] uppercase tracking-wider text-muted-foreground/60">CAT · GMAT · GRE · Banking · Vedic Math</p>
-            </motion.section>
-          </motion.div>
-        </div>
-
-        <footer className="shrink-0 border-t border-white/10 bg-[#0a0a0d]/85 px-5 py-4 backdrop-blur">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              exit(onDone);
-            }}
-            className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] py-3 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
-          >
-            Enter Exam Arena{" "}
-            <motion.span
-              className="inline-flex"
-              variants={{ hidden: { x: -4, opacity: 0 }, show: { x: 0, opacity: 1 } }}
-              initial="hidden"
-              animate="show"
-              transition={{ delay: 0.5, duration: 0.3 }}
+          <footer className="shrink-0 border-t border-white/10 bg-[#0a0a0d]/85 px-5 py-4 backdrop-blur">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                exit(onDone);
+              }}
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] py-3 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
             >
-              <ArrowRight size={14} strokeWidth={2.5} className="transition-transform duration-200 group-hover:translate-x-0.5" />
-            </motion.span>
-          </button>
-        </footer>
+              Enter Exam Arena{" "}
+              <motion.span
+                className="inline-flex"
+                variants={{ hidden: { x: -4, opacity: 0 }, show: { x: 0, opacity: 1 } }}
+                initial="hidden"
+                animate="show"
+                transition={{ delay: 0.5, duration: 0.3 }}
+              >
+                <ArrowRight
+                  size={14}
+                  strokeWidth={2.5}
+                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                />
+              </motion.span>
+            </button>
+          </footer>
+        </div>
       </div>
-    </div>
     </MotionConfig>,
     document.body,
   );

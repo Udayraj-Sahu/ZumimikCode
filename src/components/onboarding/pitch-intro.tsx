@@ -60,7 +60,10 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
-      overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: "ease-out" });
+      overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 260,
+        easing: "ease-out",
+      });
     }
     return () => {
       document.body.style.overflow = "";
@@ -119,26 +122,25 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
     };
   }, [reduceMotion]);
 
-  const exit = useCallback(
-    (cb: () => void) => {
-      if (closingRef.current) return;
-      closingRef.current = true;
-      const el = overlayRef.current;
-      if (!el) return cb();
-      el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: "ease-in", fill: "forwards" }).addEventListener(
-        "finish",
-        cb,
-        { once: true },
-      );
-    },
-    [],
-  );
+  const exit = useCallback((cb: () => void) => {
+    if (closingRef.current) return;
+    closingRef.current = true;
+    const el = overlayRef.current;
+    if (!el) return cb();
+    el.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 180,
+      easing: "ease-in",
+      fill: "forwards",
+    }).addEventListener("finish", cb, { once: true });
+  }, []);
 
   return createPortal(
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[210] flex items-center justify-center overflow-y-auto"
-      style={{ background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)" }}
+      style={{
+        background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+      }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="pitch-hook-title"
@@ -147,7 +149,9 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
       <div className="pointer-events-none absolute bottom-10 right-4 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.08] blur-[90px]" />
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)" }}
+        style={{
+          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+        }}
       />
 
       <div className="relative w-full max-w-[400px] px-5 py-8">
@@ -156,14 +160,18 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
           <div
             data-stage
             style={reduceMotion ? undefined : { opacity: 0 }}
-            className="mx-auto flex w-fit items-center gap-1.5 rounded-full border border-[#C8FF4D]/30 bg-[#C8FF4D]/10 px-3 py-1 font-mono text-[9px] font-bold tracking-[0.3em] text-[#C8FF4D]"
+            className="mx-auto flex w-fit items-center gap-1.5 rounded-full border border-[#C8FF4D]/30 bg-[#C8FF4D]/10 px-3 py-1  text-[9px] font-bold tracking-[0.3em] text-[#C8FF4D]"
           >
             <span className="inline-block size-1.5 animate-pulse rounded-full bg-[#FB7185]" />
             ADAPTIVE TRAINING
           </div>
 
           {/* headline */}
-          <div data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mt-4 text-center">
+          <div
+            data-stage
+            style={reduceMotion ? undefined : { opacity: 0 }}
+            className="mt-4 text-center"
+          >
             <h1
               id="pitch-hook-title"
               className="text-[34px] font-black uppercase leading-[1.04] tracking-tight text-foreground"
@@ -178,14 +186,19 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
           {/* progress hero */}
           <div data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mt-5">
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <div
-                className="pointer-events-none absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[#C8FF4D]/10 blur-3xl"
-              />
+              <div className="pointer-events-none absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[#C8FF4D]/10 blur-3xl" />
               <div className="relative flex items-center gap-5">
                 {/* ring */}
                 <div className="relative grid size-[104px] shrink-0 place-items-center">
                   <svg viewBox="0 0 104 104" className="size-full -rotate-90">
-                    <circle cx="52" cy="52" r={RING_RADIUS} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="9" />
+                    <circle
+                      cx="52"
+                      cy="52"
+                      r={RING_RADIUS}
+                      fill="none"
+                      stroke="rgba(255,255,255,0.08)"
+                      strokeWidth="9"
+                    />
                     <circle
                       ref={ringRef}
                       cx="52"
@@ -202,8 +215,10 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
                   </svg>
                   <div className="absolute inset-0 grid place-items-center text-center">
                     <div>
-                      <div className="text-[22px] font-black leading-none text-white">{Math.round(RING_PCT * 100)}%</div>
-                      <div className="mt-0.5 font-mono text-[8px] tracking-[0.2em] text-white/50">FOCUS</div>
+                      <div className="text-[22px] font-black leading-none text-white">
+                        {Math.round(RING_PCT * 100)}%
+                      </div>
+                      <div className="mt-0.5  text-[8px] tracking-[0.2em] text-white/50">FOCUS</div>
                     </div>
                   </div>
                 </div>
@@ -212,14 +227,15 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
                     <Flame size={14} className="text-orange-400" />
-                    <span className="font-mono text-[10px] font-bold text-white">
+                    <span className=" text-[10px] font-bold text-white">
                       <span ref={streakRef}>0</span>-day streak
                     </span>
                   </div>
                   <p className="mt-2 text-[13px] font-semibold leading-snug text-muted-foreground/80">
-                    You&apos;re <span className="text-white">89% better</span> at avoiding wasteful scrolling than last week.
+                    You&apos;re <span className="text-white">89% better</span> at avoiding wasteful
+                    scrolling than last week.
                   </p>
-                  <div className="mt-2.5 flex items-center gap-2 font-mono text-[8px] tracking-[0.18em] text-white/45">
+                  <div className="mt-2.5 flex items-center gap-2  text-[8px] tracking-[0.18em] text-white/45">
                     <span className="inline-block size-1 rounded-full bg-[#C8FF4D]" />
                     NEXT SPRINT · 5 MIN READY
                   </div>
@@ -229,23 +245,40 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* stats */}
-          <div data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mt-3 grid grid-cols-2 gap-3">
+          <div
+            data-stage
+            style={reduceMotion ? undefined : { opacity: 0 }}
+            className="mt-3 grid grid-cols-2 gap-3"
+          >
             <div className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5">
-              <div className="font-mono text-[8px] tracking-[0.2em] text-white/45">SAVED THIS WEEK</div>
+              <div className=" text-[8px] tracking-[0.2em] text-white/45">SAVED THIS WEEK</div>
               <div className="mt-1 flex items-baseline gap-1">
-                <span ref={(el) => { statRefs.current[0] = el; }} data-count="6" className="font-mono text-[24px] font-black leading-none text-white">
+                <span
+                  ref={(el) => {
+                    statRefs.current[0] = el;
+                  }}
+                  data-count="6"
+                  className=" text-[24px] font-black leading-none text-white"
+                >
                   0
                 </span>
-                <span className="font-mono text-[12px] font-bold text-[#C8FF4D]">HRS</span>
+                <span className=" text-[12px] font-bold text-[#C8FF4D]">HRS</span>
               </div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5">
-              <div className="font-mono text-[8px] tracking-[0.2em] text-white/45">AVG SPEED / Q</div>
+              <div className=" text-[8px] tracking-[0.2em] text-white/45">AVG SPEED / Q</div>
               <div className="mt-1 flex items-baseline gap-1">
-                <span ref={(el) => { statRefs.current[1] = el; }} data-count="1.2" data-decimals="1" className="font-mono text-[24px] font-black leading-none text-[#C8FF4D]">
+                <span
+                  ref={(el) => {
+                    statRefs.current[1] = el;
+                  }}
+                  data-count="1.2"
+                  data-decimals="1"
+                  className=" text-[24px] font-black leading-none text-[#C8FF4D]"
+                >
                   0.0
                 </span>
-                <span className="font-mono text-[12px] font-bold text-white/70">SEC</span>
+                <span className=" text-[12px] font-bold text-white/70">SEC</span>
               </div>
             </div>
           </div>
@@ -253,37 +286,61 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
           {/* tracks */}
           <ul className="mt-5 space-y-2.5">
             {TRACKS.map(({ id, lead, punch, sub, Icon, accent, bar }) => (
-              <li key={id} data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] p-3">
-                <div className={`pointer-events-none absolute inset-y-0 left-0 w-px bg-gradient-to-b ${bar}`} />
+              <li
+                key={id}
+                data-stage
+                style={reduceMotion ? undefined : { opacity: 0 }}
+                className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] p-3"
+              >
+                <div
+                  className={`pointer-events-none absolute inset-y-0 left-0 w-px bg-gradient-to-b ${bar}`}
+                />
                 <div className="flex items-start gap-3">
-                  <span className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/10 bg-black/30 ${accent}`}>
+                  <span
+                    className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/10 bg-black/30 ${accent}`}
+                  >
                     <Icon size={15} />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-[13px] font-semibold leading-snug text-muted-foreground/80">
                       {lead} <span className="text-white">{punch}</span>
                     </p>
-                    <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground/55">{sub}</p>
+                    <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground/55">
+                      {sub}
+                    </p>
                   </div>
-                  <ChevronRight size={14} className="mt-1 shrink-0 text-white/25 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-[#C8FF4D]" />
+                  <ChevronRight
+                    size={14}
+                    className="mt-1 shrink-0 text-white/25 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-[#C8FF4D]"
+                  />
                 </div>
               </li>
             ))}
           </ul>
 
           {/* fine print */}
-          <p data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mx-auto mt-5 max-w-[330px] text-center text-[10px] italic leading-relaxed text-muted-foreground/55">
+          <p
+            data-stage
+            style={reduceMotion ? undefined : { opacity: 0 }}
+            className="mx-auto mt-5 max-w-[330px] text-center text-[10px] italic leading-relaxed text-muted-foreground/55"
+          >
             {FINE_PRINT}
           </p>
 
           {/* rating */}
-          <div data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mt-3 flex flex-col items-center gap-1">
+          <div
+            data-stage
+            style={reduceMotion ? undefined : { opacity: 0 }}
+            className="mt-3 flex flex-col items-center gap-1"
+          >
             <div className="flex gap-1" aria-label={`Rated ${RATING} out of 5`}>
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} size={13} className="fill-[#C8FF4D] text-[#C8FF4D]" />
               ))}
             </div>
-            <span className="font-mono text-[9px] tracking-[0.2em] text-muted-foreground/60">USER RATING {RATING}/5</span>
+            <span className=" text-[9px] tracking-[0.2em] text-muted-foreground/60">
+              USER RATING {RATING}/5
+            </span>
           </div>
 
           {/* CTA */}
@@ -291,7 +348,7 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
             <Backlight color="rgba(200,255,77,0.22)">
               <button
                 onClick={() => exit(onClose)}
-                className="w-full rounded-xl py-3.5 font-mono text-[12px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+                className="w-full rounded-xl py-3.5  text-[12px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
                 style={{
                   background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
                   boxShadow: "0 0 28px rgba(163,230,53,0.35), 0 1px 0 rgba(255,255,255,0.25) inset",
