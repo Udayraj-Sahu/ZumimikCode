@@ -108,8 +108,8 @@ export function ResumeProtocolCard({
           <div className="px-5 py-5">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-[0.16em]" style={{ background: `${accent}1a`, color: accent }}>
-                <Sparkles size={9} />
-                Today&apos;s Practice
+                {visibleSnapshot.kind === "mock" ? <Play size={9} /> : <Sparkles size={9} />}
+                {visibleSnapshot.kind === "mock" ? "Resume Mock" : "Today's Practice"}
               </span>
               <span className="ml-auto text-[10px] font-medium text-muted-foreground/50">{timeAgo(visibleSnapshot.savedAt)}</span>
             </div>

@@ -441,7 +441,7 @@ function LearnPageContent() {
           )}
 
           {/* Resume Protocol — above Sensei Insight */}
-          <ResumeProtocolCard domain={activeDomain} accent="#34D399" className="mt-5 px-0" />
+          <ResumeProtocolCard domain={activeDomain} accent="#34D399" kind="sprint" className="mt-5 px-0" />
 
           {/* Sensei Insight */}
           {prepExams.length > 0 && topics.length > 0 && (
@@ -517,7 +517,7 @@ function LearnPageContent() {
               >
                 {prepExams.map((id) => {
                   const isPrimary = id === primaryExam;
-                  const active = activeDomain === id && isPrimary;
+                  const active = isPrimary;
                   return (
                     <button
                       key={id}
@@ -566,7 +566,7 @@ function LearnPageContent() {
           />
 
           {/* Today's Practice / Resume — start entry only when goal is set */}
-          <ResumeProtocolCard domain={primaryExam} accent={adaptiveAccent} showStartEntry={!!goal} className="mt-5 px-0" />
+          <ResumeProtocolCard domain={primaryExam} accent={adaptiveAccent} showStartEntry={!!goal} kind="sprint" className="mt-5 px-0" />
 
           {justExploring && prepExams.length === 0 ? (
             <AdaptiveDashboard domain={primaryExam} />
@@ -621,7 +621,7 @@ function LearnPageContent() {
               >
                 {prepExams.map((id) => {
                   const isPrimary = id === primaryExam;
-                  const active = activeDomain === id && isPrimary;
+                  const active = isPrimary;
                   return (
                     <button
                       key={id}
@@ -670,7 +670,7 @@ function LearnPageContent() {
           />
 
           {/* Mock resume — shows only when a mock is in progress */}
-          <ResumeProtocolCard domain={activeDomain} accent="#C8FF4D" kind="mock" className="mt-4 px-0" />
+          <ResumeProtocolCard domain={mockExamDomain} accent="#C8FF4D" kind="mock" className="mt-4 px-0" />
 
           {/* Section filter chips */}
           {(prepExams.length > 0 || justExploring) && (() => {
