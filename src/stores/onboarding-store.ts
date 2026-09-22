@@ -1,7 +1,13 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { safeLocalStorage } from "@/lib/browser";
-import type { FocusMode, PlanId, VedicUseCaseId, DrillId } from "@/lib/types/onboarding";
+import type { FocusMode, PlanId, VedicUseCaseId, DrillId, ReclaimConfig } from "@/lib/types/onboarding";
+
+export const DEFAULT_RECLAIM_CONFIGS: Record<string, ReclaimConfig> = {
+  "Subway Commute": { window: "08:30 - 09:00", days: [true, true, true, true, true, true, true] },
+  "Lunch Break": { window: "13:00 - 13:30", days: [true, true, true, true, true, true, true] },
+  "Evening Walk": { window: "18:00 - 18:30", days: [true, true, true, true, true, true, true] },
+};
 
 export function examIdForGoal(goal: string | null): string {
   if (goal?.includes("CAT")) return "cat";
@@ -58,6 +64,7 @@ type OnboardingState = {
   triggerType: string;
   triggerTime: string;
   weekDays: boolean[];
+  reclaimConfigs: Record<string, ReclaimConfig>;
   planLane: string;
 
   setAuthData: (data: { name?: string; email?: string; phone?: string; authMethod: "google" | "phone" }) => void;
@@ -99,6 +106,7 @@ type OnboardingState = {
   setTriggerType: (type: string) => void;
   setTriggerTime: (time: string) => void;
   setWeekDays: (days: boolean[]) => void;
+  setReclaimConfigs: (configs: Record<string, ReclaimConfig>) => void;
   setPlanLane: (lane: string) => void;
 };
 
@@ -141,6 +149,7 @@ const initial = {
   triggerType: "Deep Focus Sprint",
   triggerTime: "00:00",
   weekDays: [true, true, true, true, true, true, true],
+  reclaimConfigs: DEFAULT_RECLAIM_CONFIGS,
   planLane: "",
 };
 
@@ -216,6 +225,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       setTriggerType: (triggerType) => set({ triggerType }),
       setTriggerTime: (triggerTime) => set({ triggerTime }),
       setWeekDays: (weekDays) => set({ weekDays }),
+      setReclaimConfigs: (reclaimConfigs) => set({ reclaimConfigs }),
       setPlanLane: (planLane) => set({ planLane }),
       finishOnboarding: () => set({ isOnboarded: true }),
     }),
@@ -231,6 +241,9 @@ export const useOnboardingStore = create<OnboardingState>()(
         const p = persisted as Partial<OnboardingState>;
         if (p.weekDays) {
           p.weekDays = Array.from({ length: 7 }, (_, i) => p.weekDays?.[i] ?? true);
+        }
+        if (!p.reclaimConfigs) {
+          p.reclaimConfigs = DEFAULT_RECLAIM_CONFIGS;
         }
         return { ...current, ...p };
       },

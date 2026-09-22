@@ -69,6 +69,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
     reminderTime: store.reminderTime || "00:00",
     reclaimSlot: store.reclaimSlot,
     reclaimWindow: store.reclaimWindow || "00:00 - 00:00",
+    reclaimConfigs: store.reclaimConfigs,
     triggerType: store.triggerType,
     triggerTime: store.triggerTime || "00:00",
     weekDays: store.weekDays,
@@ -156,6 +157,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
     store.setTriggerType(story.triggerType);
     store.setTriggerTime(story.triggerTime);
     store.setWeekDays(story.weekDays);
+    store.setReclaimConfigs(story.reclaimConfigs ?? store.reclaimConfigs);
     store.setPlanId(plan);
     store.setPlanLane(lane);
     store.setAdaptiveConfigured(true);

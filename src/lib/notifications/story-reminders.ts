@@ -62,7 +62,7 @@ export async function applyStoryNotifications(commitment: StoryCommitment) {
   const granted = await ensurePermission();
   if (!granted) return;
 
-  const selectedDays = commitment.weekDays
+  const selectedDays = (commitment.reclaimConfigs?.[commitment.reclaimSlot]?.days ?? commitment.weekDays)
     .map((on, i) => (on ? capWeekday(i) : null))
     .filter((d): d is number => d !== null);
   const allDays = selectedDays.length >= 7;

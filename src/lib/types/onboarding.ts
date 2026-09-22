@@ -1,5 +1,10 @@
 export type FocusMode = "sleep" | "sprint";
 
+export type ReclaimConfig = {
+  window: string;
+  days: boolean[];
+};
+
 export type StoryCommitment = {
   dailyMinutes: number | null;
   reminderTime: string;
@@ -8,6 +13,7 @@ export type StoryCommitment = {
   triggerType: string;
   triggerTime: string;
   weekDays: boolean[];
+  reclaimConfigs?: Record<string, ReclaimConfig>;
 };
 
 export type PlanId = "initiate" | "single-lane" | "dual-lane";
