@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/clean-export.js",
     "build": "next build && node scripts/fix-asset-paths.js",
     "start": "next start",
     "lint": "next lint"
