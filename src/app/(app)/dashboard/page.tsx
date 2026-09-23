@@ -413,7 +413,7 @@ export default function DashboardPage() {
         </h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
-        <div className="mt-5 flex items-center justify-center gap-3">
+        <div data-tour-streak className="mt-5 flex items-center justify-center gap-3">
           <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-md px-4 py-2.5">
             <Flame size={15} className="text-[#FF6B35]" strokeWidth={2.5} />
             <span className="text-[13px] font-semibold tracking-[-0.01em] text-[#FF6B35]">{streak.current} Day</span>

@@ -376,11 +376,13 @@ export function SeatBuilderIntro({
     if (preloaded) return;
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
-      overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: 300,
-        easing: "ease-out",
-        fill: "forwards",
-      });
+      overlayRef.current.animate(
+        [{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }],
+        {
+          duration: 320,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        },
+      );
     }
     return () => {
       document.body.style.overflow = "";
@@ -397,9 +399,9 @@ export function SeatBuilderIntro({
     const el = overlayRef.current;
     const done = () => onCloseRef.current();
     if (!el) return done();
-    el.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 200,
-      easing: "ease-in",
+    el.animate([{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }], {
+      duration: 280,
+      easing: "cubic-bezier(0.55, 0, 0.55, 0.2)",
       fill: "forwards",
     }).addEventListener("finish", done, { once: true });
   }, []);

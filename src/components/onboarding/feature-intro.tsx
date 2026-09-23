@@ -298,9 +298,9 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
     exitingRef.current = true;
     const el = overlayRef.current;
     if (!el) return cb();
-    el.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 180,
-      easing: "ease-in",
+    el.animate([{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }], {
+      duration: 280,
+      easing: "cubic-bezier(0.55, 0, 0.55, 0.2)",
       fill: "forwards",
     }).addEventListener("finish", cb, { once: true });
   }, []);

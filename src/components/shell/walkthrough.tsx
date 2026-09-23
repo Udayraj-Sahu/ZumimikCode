@@ -1,161 +1,141 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { Flame, Zap, Award, BarChart3, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useWalkthroughStore } from "@/stores/walkthrough-store";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
+import type { DriveStep } from "driver.js";
 import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useWalkthroughStore } from "@/stores/walkthrough-store";
+import { useAuthStore } from "@/stores/auth-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
+import { useDriver } from "@/hooks/use-driver";
 
-function getSteps(domainLabel: string) {
+const WELCOME_DELAY = 900;
+
+function buildSteps(domainLabel: string): DriveStep[] {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
+
   return [
     {
-      icon: Flame,
-      title: `Welcome to ${domainLabel}`,
-      description: `Use the sidebar to navigate between Dashboard, Sprints, Analytics, and more. Everything you need for ${domainLabel} prep is one click away.`,
+      popover: {
+        title: `Welcome to ${domainLabel}`,
+        description: `Quick tour of the dashboard — hit Next to see how to navigate, sprint, and track streaks for ${domainLabel} prep.`,
+        side: "bottom",
+        align: "center",
+        showProgress: true,
+      },
     },
     {
-      icon: Zap,
-      title: "Start a Sprint",
-      description: "Tap 'Start Sprint' to begin a timed challenge. Each sprint sharpens your speed and accuracy across different topics.",
+      element: isMobile ? "[data-tour-mobile-nav]" : "[data-tour-nav]",
+      popover: {
+        title: "Your navigation bar",
+        description: "Tap here to move between Dashboard, Sprints, Analytics, and more.",
+        side: isMobile ? "top" : "right",
+        align: "start",
+      },
     },
     {
-      icon: Award,
-      title: "Track Your Streak",
-      description: "Your streak and XP appear at the top of the dashboard. Stay consistent to climb the leaderboard.",
+      element: "[data-tour-start-sprint]",
+      popover: {
+        title: "Start a Sprint",
+        description:
+          "Tap 'START SPRINT' to begin a timed challenge that sharpens your speed and accuracy.",
+        side: "left",
+        align: "center",
+      },
     },
     {
-      icon: BarChart3,
-      title: "Monitor Progress",
-      description: "Topic Mastery and Cognitive Radar show where you excel and where to focus more practice.",
+      element: "[data-tour-streak]",
+      popover: {
+        title: "Track Your Streak",
+        description: "Your streak and XP live up here. Stay consistent to climb the leaderboard.",
+        side: "bottom",
+        align: "center",
+      },
     },
     {
-      icon: Check,
-      title: "You're Ready!",
-      description: "Start your first sprint or explore the dashboard. You can replay this tour anytime from Settings.",
+      popover: {
+        title: "You're Ready!",
+        description: "Start your first sprint or explore the dashboard. See you in the arena!",
+      },
     },
   ];
 }
 
 export function Walkthrough() {
+  const pathname = usePathname();
   const completed = useWalkthroughStore((s) => s.completed);
+  const complete = useWalkthroughStore((s) => s.complete);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const targetExam = useOnboardingStore((s) => s.targetExam);
+  const isOnboarded = useOnboardingStore((s) => s.isOnboarded);
+  const planHookSeen = useOnboardingStore((s) => s.planHookSeen);
+  const arenaHookSeen = useOnboardingStore((s) => s.arenaHookSeen);
+  const pitchHookSeen = useOnboardingStore((s) => s.pitchHookSeen);
+  const temporalWindow = useOnboardingStore((s) => s.temporalWindow);
+  const { start, refresh } = useDriver();
+
   const domainLabel = DOMAIN_LABELS[targetExam] || "Exam Arena";
-  const STEPS = getSteps(domainLabel);
-  const [step, setStep] = useState(0);
-  const [open, setOpen] = useState(false);
-  const [closing, setClosing] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const startedRef = useRef(false);
 
   useEffect(() => {
-    if (!completed) {
-      const timer = setTimeout(() => setOpen(true), 600);
-      return () => clearTimeout(timer);
-    }
-  }, [completed]);
+    if (completed || startedRef.current || pathname !== "/dashboard") return;
+    if (!isAuthenticated) return;
 
-  useEffect(() => {
-    if (open && !closing && cardRef.current) {
-      gsap.fromTo(cardRef.current, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
-    }
-    if (open && !closing && overlayRef.current) {
-      gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" });
-    }
-  }, [open, closing]);
+    const isVedic = targetExam === "vedic-math";
+    const eligibleExam = !!targetExam && !isVedic;
+    const hooksPending =
+      isOnboarded &&
+      (!planHookSeen ||
+        (eligibleExam && !arenaHookSeen && temporalWindow === "this_year") ||
+        (eligibleExam &&
+          !pitchHookSeen &&
+          (temporalWindow === "whenever" || temporalWindow === "not_sure")));
+    if (hooksPending) return;
 
-  const animateOut = () => {
-    if (closing) return;
-    setClosing(true);
-    gsap.to(cardRef.current, { opacity: 0, y: 16, scale: 0.96, duration: 0.25, ease: "power2.out" });
-    gsap.to(overlayRef.current, {
-      opacity: 0,
-      duration: 0.2,
-      ease: "power2.out",
-      onComplete: () => {
-        useWalkthroughStore.getState().complete();
-        setOpen(false);
-        setClosing(false);
-      },
-    });
-  };
+    startedRef.current = true;
+    const timer = setTimeout(() => {
+      start({
+        steps: buildSteps(domainLabel),
+        config: {
+          animate: true,
+          duration: 350,
+          overlayColor: "#040604",
+          overlayOpacity: 0.72,
+          smoothScroll: true,
+          allowScroll: false,
+          overlayClickBehavior: "close",
+          popoverClass: "ea-tour-popover",
+          showProgress: true,
+          progressText: "{{current}} / {{total}}",
+          nextBtnText: "Next",
+          prevBtnText: "Back",
+          doneBtnText: "Start Training",
+          skipMissingElement: true,
+          onDestroyed: () => {
+            complete();
+            startedRef.current = false;
+          },
+        },
+      });
+      setTimeout(refresh, 250);
+    }, WELCOME_DELAY);
 
-  const handleNext = () => {
-    if (step < STEPS.length - 1) {
-      setStep((s) => s + 1);
-    } else {
-      animateOut();
-    }
-  };
+    return () => clearTimeout(timer);
+  }, [
+    completed,
+    pathname,
+    isAuthenticated,
+    isOnboarded,
+    planHookSeen,
+    arenaHookSeen,
+    pitchHookSeen,
+    temporalWindow,
+    targetExam,
+    domainLabel,
+    start,
+    refresh,
+    complete,
+  ]);
 
-  const handleSkip = () => {
-    animateOut();
-  };
-
-  if (!open) return null;
-
-  const s = STEPS[step];
-  const isLast = step === STEPS.length - 1;
-
-  return (
-    <div
-      ref={overlayRef}
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-      onClick={handleSkip}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Walkthrough"
-    >
-      <div
-        ref={cardRef}
-        className="w-full max-w-sm rounded-2xl border border-border/60 bg-card p-6 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Step indicator */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex gap-1">
-            {STEPS.map((_, i) => (
-              <span
-                key={i}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-300",
-                  i === step ? "w-6 bg-primary" : "w-1.5 bg-muted",
-                )}
-              />
-            ))}
-          </div>
-          <button
-            type="button"
-      onClick={animateOut}
-            className="text-fluid-xs text-muted-foreground/40 outline-none hover:text-muted-foreground active:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded px-3 py-2 min-h-[44px]"
-          >
-            Skip
-          </button>
-        </div>
-
-        {/* Icon */}
-        <div className="mx-auto mb-4 grid size-14 place-items-center rounded-2xl bg-primary/10">
-          <s.icon size={28} className="text-primary" />
-        </div>
-
-        {/* Content */}
-        <h2 className="text-fluid-xl font-black tracking-tight text-foreground text-center">
-          {s.title}
-        </h2>
-        <p className="mt-2 text-fluid-sm text-muted-foreground/70 text-center leading-relaxed">
-          {s.description}
-        </p>
-
-        {/* Action */}
-        <button
-          type="button"
-          onClick={handleNext}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-fluid-sm font-bold uppercase tracking-widest text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          {isLast ? "Start Training" : "Got It"}
-        </button>
-      </div>
-    </div>
-  );
+  return null;
 }

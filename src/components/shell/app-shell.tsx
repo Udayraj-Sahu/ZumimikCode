@@ -111,7 +111,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Nav */}
-        <nav data-sidebar-section className="relative flex flex-col gap-2.5" aria-label="Primary">
+        <nav data-sidebar-section data-tour-nav className="relative flex flex-col gap-2.5" aria-label="Primary">
           {visibleItems.map((item) => {
             const active = pathname === item.href;
             const Icon = item.icon;
@@ -188,6 +188,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div data-sidebar-section className="mt-auto flex flex-col gap-4 pt-4">
           <Link
             href="/play/configure-sprint"
+            data-tour-start-sprint
             className="flex items-center justify-center gap-2 rounded-[10px] bg-primary px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Zap className="size-4" aria-hidden="true" />
@@ -222,6 +223,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Floating mobile nav */}
       <nav
         ref={mobileNavRef}
+        data-tour-mobile-nav
         aria-label="Primary mobile"
         className="fixed inset-x-0 bottom-[calc(1rem+max(0px,env(safe-area-inset-bottom)))] z-40 flex justify-center px-5 lg:hidden pointer-events-none"
       >
