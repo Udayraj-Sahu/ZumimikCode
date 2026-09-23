@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Activity, BarChart3, Gauge, Infinity as InfinityIcon, Video, Zap, type LucideIcon } from "lucide-react";
+import {
+  Activity,
+  BarChart3,
+  Gauge,
+  Infinity as InfinityIcon,
+  Video,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ACCENT = "#C8FF4D";
@@ -100,8 +108,8 @@ export function MockArenaSelector({
             </span>
           </h2>
           <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
-            You have completed your complimentary diagnostic. Now, enter simulated battle conditions with AI
-            sub-second error forensics.
+            You have completed your complimentary diagnostic. Now, enter simulated battle conditions
+            with AI sub-second error forensics.
           </p>
         </section>
 
@@ -115,7 +123,9 @@ export function MockArenaSelector({
               FREE DIAGNOSTIC STATUS
             </div>
             <div className="mt-0.5 text-[13px] font-bold">
-              <span className="font-mono text-[10px] font-medium text-muted-foreground/60">CALCULATED: </span>
+              <span className="font-mono text-[10px] font-medium text-muted-foreground/60">
+                CALCULATED:{" "}
+              </span>
               <span className="text-[#C8FF4D]">{SPEED_RATIO}%</span> SPEED RATIO
             </div>
           </div>
@@ -149,19 +159,25 @@ export function MockArenaSelector({
           <ul className="mt-3 space-y-2.5">
             {FEATURES.map(({ id, title, desc, Icon, tile, badge }) => (
               <li key={id} className="flex gap-3 rounded-xl border border-white/10 bg-black/40 p-3">
-                <span className={cn("grid size-8 shrink-0 place-items-center rounded-lg border", tile)}>
+                <span
+                  className={cn("grid size-8 shrink-0 place-items-center rounded-lg border", tile)}
+                >
                   <Icon size={15} />
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-2">
-                    <h4 className="text-[11px] font-bold uppercase leading-snug tracking-wide">{title}</h4>
+                    <h4 className="text-[11px] font-bold uppercase leading-snug tracking-wide">
+                      {title}
+                    </h4>
                     {badge && (
                       <span className="shrink-0 rounded border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[#C8FF4D]">
                         {badge}
                       </span>
                     )}
                   </div>
-                  <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground/70">{desc}</p>
+                  <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground/70">
+                    {desc}
+                  </p>
                 </div>
               </li>
             ))}
@@ -174,7 +190,9 @@ export function MockArenaSelector({
             <h3 className="font-mono text-[9px] font-bold tracking-[0.2em] text-muted-foreground/80">
               SELECT ACCESS CLEARANCE
             </h3>
-            <span className="font-mono text-[8px] font-bold tracking-wider text-cyan-300">FLEXIBLE BILLING</span>
+            <span className="font-mono text-[8px] font-bold tracking-wider text-cyan-300">
+              FLEXIBLE BILLING
+            </span>
           </div>
 
           <div role="radiogroup" aria-label="Access clearance" className="mt-3 space-y-2.5">
@@ -207,18 +225,24 @@ export function MockArenaSelector({
                       <div className="flex items-start justify-between gap-2">
                         <div>
                           <div className="flex flex-wrap items-center gap-1.5">
-                            <h4 className="text-[12px] font-bold uppercase tracking-wide">{o.title}</h4>
+                            <h4 className="text-[12px] font-bold uppercase tracking-wide">
+                              {o.title}
+                            </h4>
                             {"badge" in o && (
                               <span className="rounded bg-[#C8FF4D] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[#0A0C0A]">
                                 {o.badge}
                               </span>
                             )}
                           </div>
-                          <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">{o.desc}</p>
+                          <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">
+                            {o.desc}
+                          </p>
                         </div>
                         <div className="shrink-0 text-right text-[15px] font-bold text-[#C8FF4D]">
                           {inr(o.price)}
-                          <span className="text-[9px] font-normal text-muted-foreground/50">/yr</span>
+                          <span className="text-[9px] font-normal text-muted-foreground/50">
+                            /yr
+                          </span>
                         </div>
                       </div>
                       <div

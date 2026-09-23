@@ -3,21 +3,123 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
-import { X, ShieldCheck } from "lucide-react";
+import {
+  Activity,
+  AlertTriangle,
+  BarChart3,
+  Cpu,
+  Layers,
+  ShieldCheck,
+  Signal,
+  Timer,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
-import { PlanSelector } from "@/components/onboarding/plan-intro";
+import { MockArenaSelector } from "@/components/paywall/mock-arena-selector";
 import type { PlanId } from "@/lib/types/onboarding";
+import { cn } from "@/lib/utils";
 
 const ACCENT = "#C8FF4D";
+const ACCENT_DIM = "#B9F45C";
+const inr = (n: number) => `₹${new Intl.NumberFormat("en-IN").format(n)}`;
 
-const COPY = {
-  prep: {
-    desc: "Free users get one extra prep. Pick a plan to unlock every exam track.",
-    success: "Gates unlocked — every exam is now open.",
+type PaywallOption = {
+  id: string;
+  title: string;
+  desc: string;
+  price: string;
+  priceSuffix: string;
+  note: string;
+  cta: string;
+  badge?: string;
+};
+
+const PREP_OPTIONS: PaywallOption[] = [
+  {
+    id: "initiate",
+    title: "Initiate",
+    desc: "Ad-free drills for 1 active segment",
+    price: "FREE",
+    priceSuffix: "forever",
+    note: "SINGLE-LANE THROTTLE",
+    cta: "ACTIVATE FREE TIER",
   },
-} as const;
+  {
+    id: "single-lane",
+    title: "Single Lane Pro",
+    desc: "Full adaptive engine for one exam track",
+    price: inr(3990),
+    priceSuffix: "/yr",
+    note: "UNLOCKS ADAPTIVE DRIFT",
+    cta: "ACTIVATE SINGLE LANE",
+  },
+  {
+    id: "dual-lane",
+    title: "Dual Lane Access",
+    desc: "Execute concurrent prep across multiple syllabi",
+    price: inr(6490),
+    priceSuffix: "/yr",
+    note: "UNLOCKS 2 PARALLEL LANES",
+    cta: "ACTIVATE DUAL LANE",
+    badge: "FULL THROTTLE",
+  },
+] as const;
+
+const PREP_METRICS: {
+  id: string;
+  label: string;
+  value: string;
+  meta: string;
+  Icon: LucideIcon;
+  warn?: boolean;
+}[] = [
+  { id: "lanes", label: "ACTIVE LANES", value: "1", meta: "/ 2 MAX", Icon: Layers, warn: true },
+  { id: "drills", label: "DRILL CREDIT", value: "1", meta: "/ DAY", Icon: Timer, warn: true },
+  { id: "drift", label: "ADAPTIVE DRIFT", value: "LOCKED", meta: "PRO ONLY", Icon: Cpu },
+  { id: "report", label: "WEEKLY REPORT", value: "QUEUED", meta: "AUTO", Icon: BarChart3 },
+];
+
+const PREP_TELEMETRY: {
+  id: string;
+  title: string;
+  desc: string;
+  Icon: LucideIcon;
+  tile: string;
+  badge?: string;
+}[] = [
+  {
+    id: "sims",
+    title: "Infinite Simulated Batteries",
+    desc: "Full-length drills with authentic percentile scaling and test-day time pressure.",
+    Icon: Signal,
+    tile: "border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]",
+  },
+  {
+    id: "adaptive",
+    title: "Adaptive Difficulty Engine",
+    desc: "Difficulty shifts in real time to expand and reinforce your detected weak areas.",
+    Icon: Activity,
+    tile: "border-cyan-400/40 bg-cyan-400/10 text-cyan-300",
+  },
+  {
+    id: "report",
+    title: "Weekly Performance Report",
+    desc: "Post-session breakdown showing exactly where you lost seconds and which shortcuts save the most.",
+    Icon: BarChart3,
+    tile: "border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]",
+  },
+  {
+    id: "mentor",
+    title: "1:1 Mentor Check-ins",
+    desc: "Priority check-ins that keep your concurrent lane prep on schedule.",
+    Icon: Cpu,
+    tile: "border-fuchsia-400/40 bg-fuchsia-400/10 text-fuchsia-300",
+    badge: "PRO",
+  },
+];
 
 export function PaywallModal() {
   const open = usePaywallStore((s) => s.open);
@@ -30,145 +132,384 @@ export function PaywallModal() {
   const setPlanId = useOnboardingStore((s) => s.setPlanId);
   const setPlanLane = useOnboardingStore((s) => s.setPlanLane);
 
-  const [selected, setSelected] = useState<PlanId>(planId ?? "dual-lane");
+  const [planOptionId, setPlanOptionId] = useState<string>("dual-lane");
   const [lane, setLane] = useState<string>(planLane || targetExam || "cat");
   const [state, setState] = useState<"idle" | "success">("idle");
   const overlayRef = useRef<HTMLDivElement>(null);
+  const wasOpenRef = useRef(false);
 
   useEffect(() => {
-    if (open) {
-      setSelected(planId ?? "dual-lane");
+    if (open && !wasOpenRef.current) {
+      setPlanOptionId(planId ?? "dual-lane");
       setLane(planLane || targetExam || "cat");
       setState("idle");
       if (overlayRef.current) {
-        overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
-          duration: 300,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-          fill: "forwards",
-        });
+        overlayRef.current.animate(
+          [{ transform: "translateY(100%)" }, { transform: "translateY(0%)" }],
+          {
+            duration: 300,
+            easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          },
+        );
       }
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
     }
+    wasOpenRef.current = open;
+    document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [open, planId, planLane, targetExam]);
 
-  const confirm = () => {
-    setPlanId(selected);
+  const confirmPlan = () => {
+    const isFree = planOptionId === "initiate";
+    setPlanId(planOptionId as PlanId);
     setPlanLane(lane);
-    if (selected !== "initiate") {
-      setPro();
-      setState("success");
-      setTimeout(closePaywall, 450);
-    } else {
+    if (isFree) {
       closePaywall();
+      return;
     }
+    setPro();
+    setState("success");
+    setTimeout(closePaywall, 450);
+  };
+
+  const activateMock = (optionId: string) => {
+    setPlanId(optionId === "bundle" ? "dual-lane" : "single-lane");
+    setPlanLane(lane);
+    setPro();
+    setState("success");
+    setTimeout(closePaywall, 450);
   };
 
   if (!open || !action) return null;
-  const copy = action === "mock" ? COPY.prep : COPY[action];
+  const isMock = action === "mock";
+
+  const selectedPlan = PREP_OPTIONS.find((o) => o.id === planOptionId)!;
+  const throttle = planOptionId === "dual-lane" ? 100 : planOptionId === "single-lane" ? 72 : 19;
 
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[70] overflow-hidden flex flex-col items-center px-6 py-10"
-      style={{ background: "linear-gradient(180deg, rgba(10,12,10,0.98) 0%, rgba(14,17,13,0.98) 100%)" }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="paywall-title"
+      className="fixed inset-0 z-[70] overflow-hidden flex flex-col items-center justify-end px-5"
     >
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[440px] h-[320px] rounded-full opacity-20" style={{ background: "radial-gradient(circle, #22D3EE3f, transparent 70%)" }} />
-      <div className="pointer-events-none absolute bottom-[-140px] left-1/2 -translate-x-1/2 w-[360px] h-[280px] rounded-full opacity-[0.13]" style={{ background: `radial-gradient(circle, ${ACCENT}55, transparent 70%)` }} />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)" }} />
-
-      <div className="relative w-full max-w-[340px] flex-1 flex flex-col min-h-0">
-        {/* Dashboard-style pill badge — matches Select Your Plan */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 280, damping: 30 }}
-          className="flex justify-center mb-3"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
-            <span className="relative flex size-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C8FF4D] opacity-50" />
-              <span className="relative inline-flex size-1.5 rounded-full bg-[#C8FF4D]" style={{ boxShadow: "0 0 8px rgba(200,255,77,0.8)" }} />
-            </span>
-            <span id="paywall-title" className="text-[11px] font-semibold tracking-[0.22em] text-[#C8FF4D]/85">
-              SELECT YOUR PLAN
-            </span>
-          </div>
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.08, type: "spring", stiffness: 280, damping: 30 }}
-          className="mb-4 text-center text-[12px] font-medium text-muted-foreground/55"
-        >
-          {state === "success" ? copy.success : copy.desc}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.16, type: "spring", stiffness: 280, damping: 28 }}
-          className="flex-1 min-h-0 overflow-y-auto pr-0.5 rounded-[20px]"
-          style={{ scrollbarWidth: "none" }}
-        >
-          <PlanSelector value={selected} onChange={setSelected} lane={lane} onLaneChange={setLane} />
-        </motion.div>
-      </div>
-
-      <button
-        type="button"
+      <div
+        className="fixed inset-0 -z-10"
         onClick={closePaywall}
-        aria-label="Close"
-        className="absolute top-5 right-5 grid size-9 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-muted-foreground/50 transition-colors hover:text-foreground active:scale-95"
-      >
-        <X size={15} />
-      </button>
+        style={{ background: "rgba(3,4,6,0.6)" }}
+      />
 
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.24, type: "spring", stiffness: 280, damping: 28 }}
-        className="relative w-full max-w-[340px] mt-6"
-      >
-          {state === "success" ? (
-            <div
-              className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A]"
-              style={{
-                background: `linear-gradient(90deg, ${ACCENT}, #B9F45C)`,
-                boxShadow: "0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset",
-              }}
-            >
-              <ShieldCheck size={15} strokeWidth={2.8} /> Pro activated
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={confirm}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A] transition-transform active:scale-[0.98]"
-              style={{
-                background: `linear-gradient(90deg, ${ACCENT}, #B9F45C)`,
-                boxShadow: "0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset",
-              }}
-            >
-              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
-              <span className="relative flex items-center gap-2.5">
-                <ShieldCheck size={15} strokeWidth={2.8} className="opacity-70" />
-                Confirm Selection
-              </span>
-            </button>
-          )}
-<p className="mt-2.5 text-center text-[10px] font-medium text-muted-foreground/35">
-          You can change this anytime in Settings.
-        </p>
-      </motion.div>
+      <div className="relative w-full max-w-[400px] overflow-hidden bg-[#07090F] rounded-t-[24px] border border-white/[0.06] border-b-0 shadow-[0_-12px_60px_rgba(0,0,0,0.6)]">
+        {/* grab handle */}
+        <div className="absolute left-1/2 top-2.5 z-20 h-1 w-9 -translate-x-1/2 rounded-full bg-white/[0.12]" />
+
+        {/* ambient glow */}
+        <div className="pointer-events-none absolute -top-16 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-lime-400/[0.07] blur-[90px]" />
+        <div className="pointer-events-none absolute right-0 top-[60%] h-64 w-64 rounded-full bg-violet-600/[0.07] blur-[100px]" />
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{ background: `linear-gradient(90deg, transparent, ${ACCENT}55, transparent)` }}
+        />
+
+        {isMock ? (
+          <div className="relative mx-auto flex max-h-[min(78vh,760px)] min-h-[540px] flex-col px-4 pt-7 pb-4">
+            {state === "success" ? (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center"
+              >
+                <div
+                  className="flex items-center gap-2 rounded-2xl border border-white/10 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A]"
+                  style={{
+                    background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT_DIM})`,
+                    boxShadow: `0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset`,
+                  }}
+                >
+                  <ShieldCheck size={15} strokeWidth={2.8} /> Unlimited mocks activated
+                </div>
+                <p className="font-mono text-[9px] font-bold tracking-wider text-[#C8FF4D]">
+                  Gates unlocked — unlimited mocks are live.
+                </p>
+              </motion.div>
+            ) : (
+              <MockArenaSelector onActivate={activateMock} />
+            )}
+          </div>
+        ) : (
+          <>
+            {state === "success" ? (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative flex min-h-[60vh] flex-col items-center justify-center gap-3 px-6 py-10 text-center"
+              >
+                <div
+                  className="flex items-center gap-2 rounded-2xl border border-white/10 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A]"
+                  style={{
+                    background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT_DIM})`,
+                    boxShadow: `0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset`,
+                  }}
+                >
+                  <ShieldCheck size={15} strokeWidth={2.8} /> Access unlocked
+                </div>
+                <p className="font-mono text-[9px] font-bold tracking-wider text-[#C8FF4D]">
+                  Gates cleared — full prep throughput restored.
+                </p>
+              </motion.div>
+            ) : (
+              <div className="relative mx-auto flex max-h-[min(78vh,760px)] min-h-[540px] flex-col px-4 pt-7 pb-4">
+                <div className="min-h-0 flex-1 space-y-5 overflow-y-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  {/* cap alert */}
+                  <section className="flex items-center gap-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.05] px-2.5 py-1.5">
+                    <AlertTriangle size={12} className="shrink-0 text-amber-300" />
+                    <span className="font-mono text-[8px] font-bold tracking-wider text-amber-300">
+                      FREE TIER CAP — CLEARANCE REQUIRED
+                    </span>
+                  </section>
+
+                  {/* headline */}
+                  <section>
+                    <h1
+                      id="paywall-title"
+                      className="text-[26px] font-black uppercase leading-[1.1] tracking-tight"
+                    >
+                      Your loop is{" "}
+                      <span
+                        className="bg-gradient-to-r bg-clip-text text-transparent"
+                        style={{ backgroundImage: `linear-gradient(90deg, ${ACCENT}, #4ADE80)` }}
+                      >
+                        capped.
+                      </span>
+                    </h1>
+                    <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
+                      Free users run a single lane at limited throughput. Clear the cap to open
+                      every exam track and unlock adaptive telemetry.
+                    </p>
+                  </section>
+
+                  {/* HUD metrics grid */}
+                  <section className="grid grid-cols-2 gap-2.5">
+                    {PREP_METRICS.map(({ id, label, value, meta, Icon, warn }) => (
+                      <div
+                        key={id}
+                        className={cn(
+                          "relative overflow-hidden rounded-xl border bg-black/40 p-3",
+                          warn ? "border-amber-400/25" : "border-white/10",
+                        )}
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span
+                            className={cn(
+                              "font-mono text-[7px] font-bold tracking-[0.18em]",
+                              warn ? "text-amber-300/80" : "text-muted-foreground/60",
+                            )}
+                          >
+                            {label}
+                          </span>
+                          <Icon size={12} className={warn ? "text-amber-300" : "text-[#C8FF4D]"} />
+                        </div>
+                        <div className="mt-1.5 flex items-baseline gap-1">
+                          <span
+                            className="font-mono text-[18px] font-bold leading-none"
+                            style={{ color: warn ? "#FBBF24" : ACCENT }}
+                          >
+                            {value}
+                          </span>
+                          <span className="font-mono text-[8px] font-medium text-muted-foreground/50">
+                            {meta}
+                          </span>
+                        </div>
+                        {warn && (
+                          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+                        )}
+                      </div>
+                    ))}
+                  </section>
+
+                  {/* throttle bar */}
+                  <section className="rounded-xl border border-white/10 bg-black/40 p-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[8px] font-bold tracking-[0.2em] text-muted-foreground/70">
+                        LOOP THROTTLE
+                      </span>
+                      <span className="font-mono text-[10px] font-bold" style={{ color: ACCENT }}>
+                        {throttle}%
+                      </span>
+                    </div>
+                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${throttle}%` }}
+                        transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
+                        className="h-full rounded-full"
+                        style={{ background: `linear-gradient(90deg, ${ACCENT}, #4ADE80)` }}
+                      />
+                    </div>
+                    <p className="mt-1.5 font-mono text-[7px] font-medium tracking-wider text-muted-foreground/40">
+                      THROUGHPUT SCALES WITH CLEARANCE TIER
+                    </p>
+                  </section>
+
+                  {/* unlocked telemetry */}
+                  <section>
+                    <div className="flex items-center justify-between">
+                      <h2 className="font-mono text-[9px] font-bold tracking-[0.2em] text-muted-foreground/80">
+                        UNLOCKED TELEMETRY
+                      </h2>
+                      <span className="font-mono text-[8px] font-bold tracking-wider text-[#C8FF4D]">
+                        {PREP_TELEMETRY.length} MODULES
+                      </span>
+                    </div>
+
+                    <ul className="mt-3 space-y-2.5">
+                      {PREP_TELEMETRY.map(({ id, title, desc, Icon, tile, badge }) => (
+                        <li
+                          key={id}
+                          className="flex gap-3 rounded-xl border border-white/10 bg-black/40 p-3"
+                        >
+                          <span
+                            className={cn(
+                              "grid size-8 shrink-0 place-items-center rounded-lg border",
+                              tile,
+                            )}
+                          >
+                            <Icon size={15} />
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-start justify-between gap-2">
+                              <h3 className="text-[11px] font-bold uppercase leading-snug tracking-wide">
+                                {title}
+                              </h3>
+                              {badge && (
+                                <span className="shrink-0 rounded border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[#C8FF4D]">
+                                  {badge}
+                                </span>
+                              )}
+                            </div>
+                            <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground/70">
+                              {desc}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+
+                  {/* clearance tiers */}
+                  <section>
+                    <div className="flex items-center justify-between">
+                      <h2 className="font-mono text-[9px] font-bold tracking-[0.2em] text-muted-foreground/80">
+                        CLEARANCE TIERS
+                      </h2>
+                      <span className="font-mono text-[8px] font-bold tracking-wider text-cyan-300">
+                        SCALABLE ACCESS
+                      </span>
+                    </div>
+
+                    <div
+                      role="radiogroup"
+                      aria-label="Clearance tiers"
+                      className="mt-3 space-y-2.5"
+                    >
+                      {PREP_OPTIONS.map((o) => {
+                        const active = o.id === planOptionId;
+                        return (
+                          <button
+                            key={o.id}
+                            type="button"
+                            role="radio"
+                            aria-checked={active}
+                            onClick={() => setPlanOptionId(o.id)}
+                            className={cn(
+                              "w-full rounded-xl border p-3 text-left transition",
+                              active
+                                ? "border-[#C8FF4D] bg-[#C8FF4D]/[0.05] shadow-[0_0_24px_rgba(200,255,77,0.18)]"
+                                : "border-white/10 bg-white/[0.02] hover:border-white/25",
+                            )}
+                          >
+                            <div className="flex items-start gap-3">
+                              <span
+                                className={cn(
+                                  "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border",
+                                  active ? "border-[#C8FF4D]" : "border-muted-foreground/40",
+                                )}
+                              >
+                                {active && <span className="size-2 rounded-full bg-[#C8FF4D]" />}
+                              </span>
+
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-start justify-between gap-2">
+                                  <div>
+                                    <div className="flex flex-wrap items-center gap-1.5">
+                                      <h3 className="text-[12px] font-bold uppercase tracking-wide">
+                                        {o.title}
+                                      </h3>
+                                      {o.badge && (
+                                        <span className="rounded bg-[#C8FF4D] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[#0A0C0A]">
+                                          {o.badge}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">
+                                      {o.desc}
+                                    </p>
+                                  </div>
+                                  <div
+                                    className={cn(
+                                      "shrink-0 text-right text-[15px] font-bold",
+                                      o.price === "FREE"
+                                        ? "text-muted-foreground/80"
+                                        : "text-[#C8FF4D]",
+                                    )}
+                                  >
+                                    {o.price}
+                                    <span className="text-[9px] font-normal text-muted-foreground/50">
+                                      {o.priceSuffix}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div
+                                  className={cn(
+                                    "mt-2 font-mono text-[7px] font-bold tracking-wider",
+                                    active ? "text-[#C8FF4D]" : "text-muted-foreground/40",
+                                  )}
+                                >
+                                  {o.note}
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </section>
+                </div>
+
+                {/* sticky CTA */}
+                <footer className="sticky bottom-0 z-10 -mx-4 border-t border-[#C8FF4D]/20 bg-[#07090F]/95 px-4 pb-1 pt-3 backdrop-blur">
+                  <button
+                    type="button"
+                    onClick={confirmPlan}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-mono text-[11px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+                    style={{
+                      background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT_DIM})`,
+                      boxShadow:
+                        "0 0 28px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset",
+                    }}
+                  >
+                    <Zap size={14} />
+                    {selectedPlan.cta}
+                    {selectedPlan.price !== "FREE" && ` — ${selectedPlan.price}/YEAR`}
+                  </button>
+                  <p className="mt-2 text-center text-[9px] font-medium text-muted-foreground/35">
+                    You can change this anytime in Settings.
+                  </p>
+                </footer>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>,
     document.body,
   );
