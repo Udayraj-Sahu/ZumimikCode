@@ -519,7 +519,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <button type="button" onClick={() => setOnboardingOpen(true)} className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#C7F252] to-[#9fd42f] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all hover:shadow-[0_0_20px_rgba(199,242,82,0.35)] active:scale-95">
+                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#C7F252] to-[#9fd42f] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all hover:shadow-[0_0_20px_rgba(199,242,82,0.35)] active:scale-95">
                     CONTINUE SETUP
                     <ChevronRight size={14} className="mt-px" />
                   </button>

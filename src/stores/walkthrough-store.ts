@@ -16,7 +16,7 @@ export const useWalkthroughStore = create<WalkthroughState>()(
       reset: () => set({ completed: false }),
     }),
     {
-      name: "exam-arena-walkthrough",
+      name: "exam-arena-walkthrough-v2",
       storage: createJSONStorage(() => safeLocalStorage),
     },
   ),

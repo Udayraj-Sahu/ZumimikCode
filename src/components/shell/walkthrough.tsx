@@ -14,32 +14,13 @@ const WELCOME_DELAY = 900;
 function buildSteps(domainLabel: string): DriveStep[] {
   const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
 
-  return [
+  const steps: DriveStep[] = [
     {
+      element: "[data-tour-continue-setup]",
       popover: {
-        title: `Welcome to ${domainLabel}`,
-        description: `Quick tour of the dashboard — hit Next to see how to navigate, sprint, and track streaks for ${domainLabel} prep.`,
+        title: "Finish Your Setup",
+        description: `Tap CONTINUE SETUP to pick your goal and tailor the app for ${domainLabel}.`,
         side: "bottom",
-        align: "center",
-        showProgress: true,
-      },
-    },
-    {
-      element: isMobile ? "[data-tour-mobile-nav]" : "[data-tour-nav]",
-      popover: {
-        title: "Your navigation bar",
-        description: "Tap here to move between Dashboard, Sprints, Analytics, and more.",
-        side: isMobile ? "top" : "right",
-        align: "start",
-      },
-    },
-    {
-      element: "[data-tour-start-sprint]",
-      popover: {
-        title: "Start a Sprint",
-        description:
-          "Tap 'START SPRINT' to begin a timed challenge that sharpens your speed and accuracy.",
-        side: "left",
         align: "center",
       },
     },
@@ -53,12 +34,39 @@ function buildSteps(domainLabel: string): DriveStep[] {
       },
     },
     {
+      element: isMobile ? "[data-tour-mobile-nav]" : "[data-tour-nav]",
       popover: {
-        title: "You're Ready!",
-        description: "Start your first sprint or explore the dashboard. See you in the arena!",
+        title: "Your navigation bar",
+        description: "Tap here to move between Dashboard, Sprints, Analytics, and more.",
+        side: isMobile ? "top" : "right",
+        align: "start",
       },
     },
   ];
+
+  if (!isMobile) {
+    steps.push(
+      {
+        element: "[data-tour-start-sprint]",
+        popover: {
+          title: "Start a Sprint",
+          description:
+            "Tap 'START SPRINT' to begin a timed challenge that sharpens your speed and accuracy.",
+          side: "left",
+          align: "center",
+        },
+      },
+      {
+        popover: {
+          title: "You're Ready!",
+          description: "Finish setup and start your first sprint. See you in the arena!",
+          showProgress: true,
+        },
+      },
+    );
+  }
+
+  return steps;
 }
 
 export function Walkthrough() {
@@ -92,8 +100,10 @@ export function Walkthrough() {
           (temporalWindow === "whenever" || temporalWindow === "not_sure")));
     if (hooksPending) return;
 
-    startedRef.current = true;
+    let cancelled = false;
     const timer = setTimeout(() => {
+      if (cancelled) return;
+      startedRef.current = true;
       start({
         steps: buildSteps(domainLabel),
         config: {
@@ -120,7 +130,10 @@ export function Walkthrough() {
       setTimeout(refresh, 250);
     }, WELCOME_DELAY);
 
-    return () => clearTimeout(timer);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [
     completed,
     pathname,
