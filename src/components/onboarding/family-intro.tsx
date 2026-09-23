@@ -1,338 +1,332 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import {
-  Activity,
   ArrowRight,
-  Camera,
-  Gamepad2,
-  Printer,
+  Baby,
+  BookOpen,
+  EyeOff,
+  HeartHandshake,
+  Moon,
+  ShieldCheck,
   Sparkles,
-  Swords,
-  X,
+  Users,
+  WifiOff,
   Zap,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-type Tone = "cyan" | "fuchsia" | "lime";
+const ACCENT = "#C8FF4D";
 
-const TONES: Record<
-  Tone,
-  {
-    wrap: string;
-    num: string;
-    text: string;
-    tag: string;
-    tile: string;
-    accent: string;
-    chip: string;
-  }
+type Persona = "parent" | "student";
+
+const PERSONA_COPY: Record<
+  Persona,
+  { eyebrow: string; who: string; quote: string; sub: string; iconClass: string }
 > = {
-  cyan: {
-    wrap: "border-cyan-400/25 bg-cyan-400/[0.03]",
-    num: "border-cyan-400/40 bg-cyan-400/10 text-cyan-300",
-    text: "text-cyan-300",
-    tag: "border-cyan-400/30 bg-cyan-400/10 text-cyan-300",
-    tile: "border-cyan-400/40 bg-cyan-400/10 text-cyan-300",
-    accent: "border-l-cyan-400/60",
-    chip: "border-cyan-400/30 bg-cyan-400/[0.05]",
+  parent: {
+    eyebrow: "FOR THE PROUD PARENT",
+    who: "PARENT MODE",
+    quote:
+      "I see exactly where my child is strong — and exactly where they aren't. No arguments, no guessing.",
+    sub: "Real progress you can trust, in minutes a day.",
+    iconClass: "text-[#C8FF4D]",
   },
-  fuchsia: {
-    wrap: "border-fuchsia-400/25 bg-fuchsia-400/[0.03]",
-    num: "border-fuchsia-400/40 bg-fuchsia-400/10 text-fuchsia-300",
-    text: "text-fuchsia-300",
-    tag: "border-fuchsia-400/30 bg-fuchsia-400/10 text-fuchsia-300",
-    tile: "border-fuchsia-400/40 bg-fuchsia-400/10 text-fuchsia-300",
-    accent: "border-l-fuchsia-400/60",
-    chip: "border-fuchsia-400/30 bg-fuchsia-400/[0.05]",
-  },
-  lime: {
-    wrap: "border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.03]",
-    num: "border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]",
-    text: "text-[#C8FF4D]",
-    tag: "border-[#C8FF4D]/30 bg-[#C8FF4D]/10 text-[#C8FF4D]",
-    tile: "border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]",
-    accent: "border-l-[#C8FF4D]/60",
-    chip: "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.05]",
+  student: {
+    eyebrow: "FOR THE CURIOUS STUDENT",
+    who: "STUDENT MODE",
+    quote: "It feels like a game — and I keep winning. My streak grows every day I try.",
+    sub: "Quick wins, cool drills and a board that celebrates you.",
+    iconClass: "text-emerald-300",
   },
 };
 
-const STAGES: { age: string; label: string; tone: Tone }[] = [
-  { age: "AGES 6-12", label: "Tactile Base", tone: "cyan" },
-  { age: "AGES 10-15", label: "Co-op Dojo", tone: "fuchsia" },
-  { age: "AGES 16+", label: "99+ %ile Engine", tone: "lime" },
-];
-
-const SECTIONS: {
+const GROWTH: {
   id: string;
-  num: string;
-  eyebrow: string;
-  tag: string;
+  time: string;
   title: string;
   desc: string;
-  tone: Tone;
-  items: { title: string; badge?: string; desc: string; Icon: typeof Printer }[];
+  Icon: typeof Baby;
 }[] = [
   {
-    id: "kids",
-    num: "01",
-    eyebrow: "AGES 6-12 ECOSYSTEM",
-    tag: "ZERO-SCREEN FOCUS",
-    title: "Kids Olympiad & Tactile Foundation",
-    desc: "Physical worksheets engineered for deep neuroplasticity, reinforced by lightning micro-sessions.",
-    tone: "cyan",
-    items: [
-      {
-        title: "Zero-Screen Printable Vedic Grids",
-        badge: "PDF PACKS",
-        desc: "High-contrast, downloadable offline drills with tactile Nikhilam balance dots. Zero blue light, total kinesthetic calculation confidence.",
-        Icon: Printer,
-      },
-      {
-        title: "5-Min Micro-Games: Dot Battles",
-        badge: "DAILY DRILL",
-        desc: "Gamified subitizing & fast pattern triggers. Dual training tracks: Nikhilam quant speed & word-logic matrices to lock in working memory.",
-        Icon: Gamepad2,
-      },
-      {
-        title: "Vision Grading & BKT Loop",
-        badge: "AUTO-CALIBRATE",
-        desc: "Snap a phone photo of the child's physical worksheet. Instant local neural OCR grades handwritten work and recalculates Bayesian Knowledge Tracing scores.",
-        Icon: Camera,
-      },
-    ],
+    id: "kid",
+    time: "AGES 6-12",
+    title: "Tactile Foundation",
+    desc: "Printable zero-screen drills and 5-minute micro-games that build number sense through touch.",
+    Icon: Baby,
   },
   {
-    id: "coop",
-    num: "02",
-    eyebrow: "COOPERATIVE DOJO MODE",
-    tag: "ZERO HOMEWORK DRAG",
-    title: "Family Collaborative Sessions",
-    desc: "Shift from stressful homework policing to synchronized mental sparring and shared breakthroughs.",
-    tone: "fuchsia",
-    items: [
-      {
-        title: "10-Min Weekend Sparring",
-        desc: "Parent & student solve staggered multi-digit patterns simultaneously. Parent solves with executive complexity; child uses rapid visual sutras.",
-        Icon: Swords,
-      },
-      {
-        title: "Empathetic Telemetry",
-        desc: "Zero medicalized or anxiety-inducing metrics. Only measures reaction latency decay, working memory agility, and sustained visual momentum.",
-        Icon: Activity,
-      },
-    ],
+    id: "student",
+    time: "AGES 10-15",
+    title: "Family Co-op Sessions",
+    desc: "Parent and child solve together — synchronized mental sparring that replaces homework fights.",
+    Icon: Users,
+  },
+  {
+    id: "exam",
+    time: "AGES 16+",
+    title: "99+ %ile Engine",
+    desc: "Executive speed math tuned for high-stakes exams, carried by the same daily habit.",
+    Icon: BookOpen,
   },
 ];
+
+const PEACEOF_MIND: { label: string; Icon: typeof ShieldCheck }[] = [
+  { label: "DPDP & COPPA safe", Icon: ShieldCheck },
+  { label: "Works offline", Icon: WifiOff },
+  { label: "Zero ads, zero tracking", Icon: EyeOff },
+];
+
+function FadeUp({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const anim = el.animate(
+      [
+        { opacity: 0, transform: "translateY(14px)" },
+        { opacity: 1, transform: "translateY(0)" },
+      ],
+      { duration: 500, delay, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" },
+    );
+    return () => anim.cancel();
+  }, [delay]);
+
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+}
+
+function GlowBall({ className }: { className: string }) {
+  return (
+    <div
+      aria-hidden
+      className={cn("pointer-events-none absolute rounded-full blur-[90px]", className)}
+      style={{ willChange: "transform" }}
+    />
+  );
+}
 
 export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: () => void }) {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const exitingRef = useRef(false);
+  const closingRef = useRef(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
-      overlayRef.current.animate(
-        [{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }],
-        {
-          duration: 320,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-        },
-      );
+      overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 320,
+        easing: "ease-out",
+        fill: "forwards",
+      });
     }
     return () => {
       document.body.style.overflow = "";
     };
   }, []);
 
-  const exit = useCallback((cb: () => void) => {
-    if (exitingRef.current) return;
-    exitingRef.current = true;
+  const exit = (cb: () => void) => {
+    if (closingRef.current) return;
+    closingRef.current = true;
     const el = overlayRef.current;
     if (!el) return cb();
     el.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 180,
+      duration: 200,
       easing: "ease-in",
       fill: "forwards",
-    }).addEventListener("finish", cb, { once: true });
-  }, []);
+    }).addEventListener(
+      "finish",
+      () => {
+        setTimeout(cb, 60);
+      },
+      { once: true },
+    );
+  };
 
   return createPortal(
     <div
       ref={overlayRef}
       className="fixed inset-0 z-[210] overflow-y-auto"
       style={{
-        background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+        background: "radial-gradient(120% 90% at 50% 0%, #10150e 0%, #0a0c09 46%, #070906 100%)",
       }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="family-hook-title"
     >
-      <div className="pointer-events-none absolute -top-20 left-0 h-56 w-56 rounded-full bg-cyan-500/10 blur-[90px]" />
-      <div className="pointer-events-none absolute right-0 top-[55%] h-64 w-64 rounded-full bg-fuchsia-600/[0.08] blur-[100px]" />
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px"
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)",
-        }}
-      />
+      <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[#C8FF4D]/[0.14]" />
+      <GlowBall className="right-[-60px] top-[38%] h-52 w-52 bg-emerald-400/[0.10]" />
+      <GlowBall className="bottom-[12%] left-[-70px] h-52 w-52 bg-[#C8FF4D]/[0.08]" />
 
-      <div className="relative min-h-full w-full max-w-[400px] mx-auto pb-10">
-        {/* top bar */}
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-[#0a0a0d]/85 px-4 py-3 backdrop-blur">
-          <div className="flex items-center gap-3">
-            <button
-              aria-label="Close"
-              onClick={() => exit(onClose)}
-              className="text-cyan-300 hover:text-cyan-200 transition-colors"
-            >
-              <X size={18} />
-            </button>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className=" text-[11px] font-bold tracking-[0.25em] text-[#C8FF4D]">
-                  EXAM ARENA
-                </span>
-                <span className="rounded border border-cyan-400/40 bg-cyan-400/10 px-1.5 py-px  text-[7px] font-bold tracking-wider text-cyan-300">
-                  ECOSYSTEM PREVIEW
-                </span>
-              </div>
-              <div className="mt-0.5 text-[10px] font-medium tracking-wide text-muted-foreground/70">
-                FAMILY HUB
-              </div>
+      <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-4">
+        <header className="flex items-center justify-center">
+          <span className="grid h-8 w-8 place-items-center rounded-xl border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.08]">
+            <Sparkles size={15} className="text-[#C8FF4D]" />
+          </span>
+          <div className="ml-2.5">
+            <div className="text-[15px] font-bold tracking-[0.2em] text-foreground">FAMILY HUB</div>
+            <div className="text-center text-[9px] font-medium tracking-wider text-muted-foreground/70">
+              ONE APP FOR EVERYONE
             </div>
           </div>
-          <span className="grid h-7 w-7 place-items-center rounded-lg border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]">
-            <Sparkles size={14} />
-          </span>
         </header>
 
-        {/* hero */}
-        <section className="relative px-4 pt-5">
-          <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5">
-            <span className=" text-[8px] font-bold tracking-wider text-cyan-300">
-              PRE-PRICING COGNITIVE ROADMAP // MULTI-GEN PROTOCOL
-            </span>
-            <span className="shrink-0 rounded border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-1.5 py-px  text-[8px] font-bold text-[#C8FF4D]">
-              HUD v4.2
-            </span>
-          </div>
-
-          <h1
-            id="family-hook-title"
-            className="mt-4 text-[26px] font-black uppercase leading-[1.1] tracking-tight text-foreground"
-          >
-            From zero-screen foundation to{" "}
-            <span className="bg-gradient-to-r from-cyan-300 to-emerald-300 bg-clip-text text-transparent">
-              99+ %ile mastery.
-            </span>
-          </h1>
-          <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground/75">
-            How the Exam Arena ecosystem adapts seamlessly from 6-minute daily tactile kids games to
-            high-stakes 16+ executive exam protocols.
-          </p>
-
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            {STAGES.map(({ age, label, tone }) => (
-              <div
-                key={age}
-                className={`rounded-lg border px-2 py-2 text-center ${TONES[tone].chip}`}
+        <div className="flex grow flex-col justify-center py-10">
+          <FadeUp delay={70}>
+            <h1
+              id="family-hook-title"
+              className="mt-4 text-center text-[37px] font-extrabold uppercase leading-[0.98] tracking-tight text-foreground"
+            >
+              Learning together
+              <br />
+              <span
+                className="text-transparent"
+                style={{
+                  background: "linear-gradient(90deg,#C8FF4D,#9be66a)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                }}
               >
-                <div className={` text-[8px] font-bold tracking-wider ${TONES[tone].text}`}>
-                  {age}
-                </div>
-                <div className="mt-0.5 text-[10px] font-bold text-foreground/80">{label}</div>
-              </div>
-            ))}
-          </div>
-        </section>
+                family style.
+              </span>
+            </h1>
+          </FadeUp>
 
-        {/* sections */}
-        <div className="relative mt-6 space-y-5 px-4">
-          {SECTIONS.map((s) => {
-            const t = TONES[s.tone];
-            return (
-              <section key={s.id} className={`rounded-2xl border p-3.5 ${t.wrap}`}>
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={` grid h-6 w-6 place-items-center rounded border text-[10px] font-bold ${t.num}`}
-                    >
-                      {s.num}
-                    </span>
-                    <span className={` text-[9px] font-bold tracking-widest ${t.text}`}>
-                      {s.eyebrow}
-                    </span>
-                  </div>
-                  <span
-                    className={`shrink-0 rounded border px-1.5 py-0.5  text-[7px] font-bold tracking-wider ${t.tag}`}
+          <FadeUp delay={140}>
+            <p className="mx-auto mt-3 max-w-[320px] text-center text-[12.5px] leading-relaxed text-muted-foreground/80">
+              One calm routine grows with every age — from tactile drills for the little ones to a
+              99+ %ile engine for the older preps.
+            </p>
+          </FadeUp>
+
+          <div className="mt-5 space-y-3">
+            {(Object.keys(PERSONA_COPY) as Persona[]).map((p, i) => {
+              const c = PERSONA_COPY[p];
+              return (
+                <FadeUp key={p} delay={200 + i * 90}>
+                  <div
+                    className={cn(
+                      "relative rounded-[20px] border bg-white/[0.035] p-4",
+                      p === "parent" ? "border-[#C8FF4D]/20" : "border-emerald-200/15",
+                    )}
                   >
-                    {s.tag}
-                  </span>
-                </div>
-
-                <h2 className="mt-3 text-[17px] font-black uppercase leading-tight tracking-tight text-foreground">
-                  {s.title}
-                </h2>
-                <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground/70">
-                  {s.desc}
-                </p>
-
-                <ul className="mt-3 space-y-2.5">
-                  {s.items.map(({ title, badge, desc, Icon }) => (
-                    <li
-                      key={title}
-                      className={`flex gap-3 rounded-xl border border-l-2 border-white/10 bg-black/40 p-3 ${t.accent}`}
-                    >
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 top-0 h-px"
+                      style={{
+                        background:
+                          p === "parent"
+                            ? "linear-gradient(90deg, transparent, rgba(200,255,77,0.45), transparent)"
+                            : "linear-gradient(90deg, transparent, rgba(110,231,183,0.4), transparent)",
+                      }}
+                    />
+                    <div className="flex items-center justify-between">
                       <span
-                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border ${t.tile}`}
+                        className={cn(
+                          "text-[8px] font-bold tracking-[0.18em]",
+                          p === "parent" ? "text-[#C8FF4D]" : "text-emerald-300",
+                        )}
                       >
-                        <Icon size={15} />
+                        {c.eyebrow}
                       </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <h3 className="text-[11px] font-bold uppercase leading-snug tracking-wide text-foreground">
-                            {title}
-                          </h3>
-                          {badge && (
-                            <span
-                              className={`shrink-0 rounded border px-1.5 py-px  text-[7px] font-bold tracking-wider ${t.tag}`}
-                            >
-                              {badge}
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-1 text-[10px] leading-relaxed text-muted-foreground/70">
-                          {desc}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            );
-          })}
+                      <span className="rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[7px] font-bold tracking-wider text-muted-foreground">
+                        {c.who}
+                      </span>
+                    </div>
+                    <blockquote className="mt-2.5 text-[13px] font-semibold leading-snug text-foreground">
+                      "{c.quote}"
+                    </blockquote>
+                    <p className="mt-1.5 text-[9.5px] leading-snug text-muted-foreground/70">
+                      {c.sub}
+                    </p>
+                  </div>
+                </FadeUp>
+              );
+            })}
+          </div>
         </div>
 
-        {/* CTA */}
-        <button
-          onClick={() => exit(onDone)}
-          className="mt-6 w-full rounded-xl py-3.5  text-[12px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
-          style={{
-            background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
-            boxShadow: "0 0 28px rgba(163,230,53,0.35), 0 1px 0 rgba(255,255,255,0.25) inset",
-          }}
-        >
-          CONTINUE TO DOJO
-          <ArrowRight size={14} className="ml-2 inline -mt-0.5" />
-        </button>
+        <div className="mt-auto">
+          <FadeUp delay={380}>
+            <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.03] p-1.5">
+              {GROWTH.map((g, i) => (
+                <div key={g.id} className="flex items-center gap-3 rounded-[14px] px-3 py-2.5">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.07] text-[#C8FF4D]">
+                    <g.Icon size={16} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[8px] font-bold tracking-[0.14em] text-muted-foreground/70">
+                        {g.time}
+                      </span>
+                      {i === 0 && (
+                        <span className="rounded-full border border-[#C8FF4D]/30 bg-[#C8FF4D]/10 px-1.5 py-px text-[7px] font-bold text-[#C8FF4D]">
+                          STARTS HERE
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-[12px] font-bold leading-snug text-foreground">
+                      {g.title}
+                    </div>
+                    <div className="mt-0.5 text-[9.5px] leading-snug text-muted-foreground/70">
+                      {g.desc}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </FadeUp>
 
-        <button
-          onClick={() => exit(onClose)}
-          className="mx-auto mt-3 block text-[10px] text-muted-foreground/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
-        >
-          Skip for now
-        </button>
+          <div className="mt-3 flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#C8FF4D]/10 text-[#C8FF4D]">
+              <HeartHandshake size={15} />
+            </span>
+            <div className="flex flex-1 flex-wrap gap-x-3 gap-y-1">
+              {PEACEOF_MIND.map(({ label, Icon }) => (
+                <span
+                  key={label}
+                  className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-muted-foreground/75"
+                >
+                  <Icon size={11} /> {label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <FadeUp delay={460}>
+            <button
+              onClick={() => exit(onDone)}
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+              style={{
+                background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+                boxShadow:
+                  "0 10px 34px rgba(163,230,53,0.28), 0 1px 0 rgba(255,255,255,0.25) inset",
+              }}
+            >
+              BRING THE WHOLE FAMILY IN
+              <ArrowRight size={14} />
+            </button>
+          </FadeUp>
+
+          <button
+            onClick={() => exit(onClose)}
+            className="mx-auto mt-3 flex items-center gap-1.5 text-[10px] text-muted-foreground/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
+          >
+            <Moon size={11} /> Skip for now
+          </button>
+        </div>
       </div>
     </div>,
     document.body,
