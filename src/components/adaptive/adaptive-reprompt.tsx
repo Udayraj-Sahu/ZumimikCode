@@ -32,10 +32,10 @@ import { VEDIC_USE_CASES } from "@/lib/types/onboarding";
 import type { PlanId, StoryCommitment, VedicUseCaseId } from "@/lib/types/onboarding";
 
 const EXAM_OPTIONS = [
-  { id: "cat", label: "CAT", icon: GraduationCap, color: "#34D399" },
-  { id: "gmat", label: "GMAT", icon: Calculator, color: "#22D3EE" },
-  { id: "gre", label: "GRE", icon: BookOpen, color: "#A78BFA" },
-  { id: "vedic-math", label: "Speed Math", icon: Zap, color: "#FBBF24" },
+  { id: "cat", label: "CAT", icon: GraduationCap },
+  { id: "gmat", label: "GMAT", icon: Calculator },
+  { id: "gre", label: "GRE", icon: BookOpen },
+  { id: "vedic-math", label: "Speed Math", icon: Zap },
 ];
 
 const TEMPORAL_OPTIONS = [
@@ -76,7 +76,9 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   }));
   const [plan, setPlan] = useState<PlanId>(store.planId ?? "initiate");
   const [lane, setLane] = useState<string>(store.planLane || store.targetExam || "cat");
-  const [featureHookVariant, setFeatureHookVariant] = useState<"this_year" | "whenever" | "not_sure" | "vedic" | null>(null);
+  const [featureHookVariant, setFeatureHookVariant] = useState<
+    "this_year" | "whenever" | "not_sure" | "vedic" | null
+  >(null);
   const [showArena, setShowArena] = useState(false);
   const [showPitch, setShowPitch] = useState(false);
   const [showFamily, setShowFamily] = useState(false);
@@ -84,9 +86,14 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     if (!open) return;
-    if (overlayRef.current) gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+    if (overlayRef.current)
+      gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
     if (panelRef.current) {
-      gsap.fromTo(panelRef.current, { opacity: 0, y: 32, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" });
+      gsap.fromTo(
+        panelRef.current,
+        { opacity: 0, y: 32, scale: 0.97 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" },
+      );
     }
   }, [open]);
 
@@ -105,7 +112,10 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   }, [step, direction, animateStepTransition]);
 
   const handleClose = useCallback(() => {
-    if (!overlayRef.current || !panelRef.current) { setOpen(false); return; }
+    if (!overlayRef.current || !panelRef.current) {
+      setOpen(false);
+      return;
+    }
     gsap.to(panelRef.current, { opacity: 0, y: 20, scale: 0.97, duration: 0.2, ease: "power2.in" });
     gsap.to(overlayRef.current, { opacity: 0, duration: 0.2, onComplete: () => setOpen(false) });
   }, []);
@@ -167,7 +177,13 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   const finishWithExit = () => {
     if (overlayRef.current && panelRef.current) {
-      gsap.to(panelRef.current, { opacity: 0, y: 20, scale: 0.97, duration: 0.2, ease: "power2.in" });
+      gsap.to(panelRef.current, {
+        opacity: 0,
+        y: 20,
+        scale: 0.97,
+        duration: 0.2,
+        ease: "power2.in",
+      });
       gsap.to(overlayRef.current, { opacity: 0, duration: 0.2, onComplete: finish });
     } else {
       finish();
@@ -176,7 +192,10 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   if (!open) {
     return (
-      <div className="mt-4 relative rounded-3xl border border-dashed border-white/[0.08] px-5 py-6 flex flex-col items-center gap-3 text-center" style={{ background: "rgba(255,255,255,0.03)" }}>
+      <div
+        className="mt-4 relative rounded-3xl border border-dashed border-white/[0.08] px-5 py-6 flex flex-col items-center gap-3 text-center"
+        style={{ background: "rgba(255,255,255,0.03)" }}
+      >
         <span className="grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
           <Sparkles size={18} className="text-[#C8FF4D]" />
         </span>
@@ -186,7 +205,10 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
         </p>
         <button
           type="button"
-          onClick={() => { setStep(0); setOpen(true); }}
+          onClick={() => {
+            setStep(0);
+            setOpen(true);
+          }}
           className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[#C8FF4D] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
         >
           Set up adaptive
@@ -233,13 +255,23 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                     key={label}
                     className={cn(
                       "flex items-center justify-center rounded-full transition-all duration-300",
-                      isActive ? "size-8 bg-[#C8FF4D]/15 ring-2 ring-[#C8FF4D]/40" : isDone ? "size-6 bg-[#C8FF4D]/10" : "size-6 bg-white/[0.05]",
+                      isActive
+                        ? "size-8 bg-[#C8FF4D]/15 ring-2 ring-[#C8FF4D]/40"
+                        : isDone
+                          ? "size-6 bg-[#C8FF4D]/10"
+                          : "size-6 bg-white/[0.05]",
                     )}
                   >
                     {isDone ? (
                       <Check size={10} className="text-[#C8FF4D]" />
                     ) : (
-                      <StepIcon size={isActive ? 14 : 10} className={cn("transition-colors duration-300", isActive ? "text-[#C8FF4D]" : "text-muted-foreground/40")} />
+                      <StepIcon
+                        size={isActive ? 14 : 10}
+                        className={cn(
+                          "transition-colors duration-300",
+                          isActive ? "text-[#C8FF4D]" : "text-muted-foreground/40",
+                        )}
+                      />
                     )}
                   </div>
                 );
@@ -249,138 +281,190 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
           <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${((Math.min(step, TOTAL_STEPS - 1) + 1) / TOTAL_STEPS) * 100}%`, background: ACCENT }}
+              style={{
+                width: `${((Math.min(step, TOTAL_STEPS - 1) + 1) / TOTAL_STEPS) * 100}%`,
+                background: ACCENT,
+              }}
             />
           </div>
         </div>
 
         {/* Content — one step at a time */}
-        <div data-reprompt-scroll className="flex-1 min-h-0 px-5 overflow-y-auto pt-4 pb-6 scroll-smooth" style={{ scrollbarWidth: "none" }}>
+        <div
+          data-reprompt-scroll
+          className="flex-1 min-h-0 px-5 overflow-y-auto pt-4 pb-6 scroll-smooth"
+          style={{ scrollbarWidth: "none" }}
+        >
           <div ref={contentRef} className="flex flex-col">
-              {step === 0 && (
-                <div className="flex flex-col">
-                  <div className="mb-5">
-                    <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Adaptive Learning</h2>
-                    <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Which exam are you preparing for?</p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    {EXAM_OPTIONS.map((opt) => {
-                      const active = exam === opt.id;
-                      return (
-                        <button
-                          key={opt.id}
-                          type="button"
-                          onClick={() => { setExam(opt.id); if (store.targetExam !== opt.id) setLane(opt.id); }}
-                          className={cn(
-                            "flex items-center gap-2.5 rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.97]",
-                            active ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]" : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
-                          )}
-                        >
-                          <div className="size-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: active ? "#C8FF4D20" : "rgba(255,255,255,0.04)" }}>
-                            <opt.icon size={14} style={{ color: active ? ACCENT : "rgba(255,255,255,0.35)" }} />
-                          </div>
-                          <span className={cn("text-[12px] font-bold", active ? "text-foreground" : "text-foreground/60")}>{opt.label}</span>
-                          {active && <Check size={12} className="ml-auto text-[#C8FF4D]" strokeWidth={3} />}
-                        </button>
-                      );
-                    })}
-                  </div>
+            {step === 0 && (
+              <div className="flex flex-col">
+                <div className="mb-5">
+                  <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
+                    Adaptive Learning
+                  </h2>
+                  <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+                    Which exam are you preparing for?
+                  </p>
                 </div>
-              )}
-
-              {step === 1 && (
-                <div className="flex flex-col">
-                  <div className="mb-5">
-                    <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
-                      {isVedic ? "Speed Math Setup" : `${EXAM_OPTIONS.find((e) => e.id === exam)?.label ?? ""} Setup`}
-                    </h2>
-                    <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
-                      {isVedic ? "What's your goal with speed math?" : "When is your exam?"}
-                    </p>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    {(isVedic
-                      ? VEDIC_USE_CASES.map((u) => ({
-                          key: u.id,
-                          label: u.label,
-                          desc: u.desc,
-                          active: vedicUseCase === u.id,
-                          onClick: () => {
-                            setVedicUseCase(u.id);
-                            if (u.id === "speed" || u.id === "brain-gym") {
-                              setFeatureHookVariant("vedic");
-                            } else if (u.id === "kid" || u.id === "exam") {
-                              setShowFamily(true);
-                            }
-                          },
-                        }))
-                      : TEMPORAL_OPTIONS.map((opt) => ({
-                          key: opt.value,
-                          label: opt.label,
-                          desc: opt.desc,
-                          active: temporal === opt.value,
-                          onClick: () => {
-                            setTemporal(opt.value);
-                            setFeatureHookVariant(opt.value as "this_year" | "whenever" | "not_sure");
-                          },
-                        }))
-                    ).map((opt) => (
+                <div className="grid grid-cols-2 gap-2.5">
+                  {EXAM_OPTIONS.map((opt) => {
+                    const active = exam === opt.id;
+                    return (
                       <button
-                        key={opt.key}
+                        key={opt.id}
                         type="button"
-                        onClick={opt.onClick}
+                        onClick={() => {
+                          setExam(opt.id);
+                          if (store.targetExam !== opt.id) setLane(opt.id);
+                        }}
                         className={cn(
-                          "relative flex items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
-                          opt.active ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]" : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+                          "flex items-center gap-2.5 rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.97]",
+                          active
+                            ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                            : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
                         )}
                       >
-                        <div className="min-w-0 flex-1">
-                          <p className={cn("text-[13px] font-bold leading-tight", opt.active ? "text-foreground" : "text-foreground/60")}>{opt.label}</p>
-                          <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium">{opt.desc}</p>
+                        <div
+                          className="size-8 rounded-lg flex items-center justify-center shrink-0"
+                          style={{ background: active ? "#C8FF4D20" : "rgba(255,255,255,0.04)" }}
+                        >
+                          <opt.icon
+                            size={14}
+                            style={{ color: active ? ACCENT : "rgba(255,255,255,0.35)" }}
+                          />
                         </div>
-                        {opt.active && (
-                          <div className="size-4 rounded-full flex items-center justify-center bg-[#C8FF4D] shrink-0">
-                            <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
-                          </div>
+                        <span
+                          className={cn(
+                            "text-[12px] font-bold",
+                            active ? "text-foreground" : "text-foreground/60",
+                          )}
+                        >
+                          {opt.label}
+                        </span>
+                        {active && (
+                          <Check size={12} className="ml-auto text-[#C8FF4D]" strokeWidth={3} />
                         )}
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
-              )}
+              </div>
+            )}
 
-              {step === 2 && (
-                <div className="flex flex-col">
-                  <div className="mb-5">
-                    <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Tell us your story</h2>
-                    <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Lifestyle integration protocol</p>
-                  </div>
-                  <StoryCommitmentMatrix
-                    value={story}
-                    onChange={(patch) => setStory((prev) => ({ ...prev, ...patch }))}
+            {step === 1 && (
+              <div className="flex flex-col">
+                <div className="mb-5">
+                  <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
+                    {isVedic
+                      ? "Speed Math Setup"
+                      : `${EXAM_OPTIONS.find((e) => e.id === exam)?.label ?? ""} Setup`}
+                  </h2>
+                  <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+                    {isVedic ? "What's your goal with speed math?" : "When is your exam?"}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {(isVedic
+                    ? VEDIC_USE_CASES.map((u) => ({
+                        key: u.id,
+                        label: u.label,
+                        desc: u.desc,
+                        active: vedicUseCase === u.id,
+                        onClick: () => {
+                          setVedicUseCase(u.id);
+                          if (u.id === "speed" || u.id === "brain-gym") {
+                            setFeatureHookVariant("vedic");
+                          } else if (u.id === "kid" || u.id === "exam") {
+                            setShowFamily(true);
+                          }
+                        },
+                      }))
+                    : TEMPORAL_OPTIONS.map((opt) => ({
+                        key: opt.value,
+                        label: opt.label,
+                        desc: opt.desc,
+                        active: temporal === opt.value,
+                        onClick: () => {
+                          setTemporal(opt.value);
+                          setFeatureHookVariant(opt.value as "this_year" | "whenever" | "not_sure");
+                        },
+                      }))
+                  ).map((opt) => (
+                    <button
+                      key={opt.key}
+                      type="button"
+                      onClick={opt.onClick}
+                      className={cn(
+                        "relative flex items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
+                        opt.active
+                          ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                          : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+                      )}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p
+                          className={cn(
+                            "text-[13px] font-bold leading-tight",
+                            opt.active ? "text-foreground" : "text-foreground/60",
+                          )}
+                        >
+                          {opt.label}
+                        </p>
+                        <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium">
+                          {opt.desc}
+                        </p>
+                      </div>
+                      {opt.active && (
+                        <div className="size-4 rounded-full flex items-center justify-center bg-[#C8FF4D] shrink-0">
+                          <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="flex flex-col">
+                <div className="mb-5">
+                  <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
+                    Tell us your story
+                  </h2>
+                  <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+                    Lifestyle integration protocol
+                  </p>
+                </div>
+                <StoryCommitmentMatrix
+                  value={story}
+                  onChange={(patch) => setStory((prev) => ({ ...prev, ...patch }))}
+                />
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="flex flex-col">
+                <div className="mb-5">
+                  <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
+                    Select your plan
+                  </h2>
+                  <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+                    Choose your training parameters.
+                  </p>
+                </div>
+                {isVedic ? (
+                  <SeatBuilderSelector />
+                ) : (
+                  <PlanSelector
+                    value={plan}
+                    onChange={setPlan}
+                    lane={lane}
+                    onLaneChange={setLane}
                   />
-                </div>
-              )}
-
-              {step === 3 && (
-                <div className="flex flex-col">
-                  <div className="mb-5">
-                    <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Select your plan</h2>
-                    <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Choose your training parameters.</p>
-                  </div>
-                  {isVedic ? (
-                    <SeatBuilderSelector />
-                  ) : (
-                    <PlanSelector
-                      value={plan}
-                      onChange={setPlan}
-                      lane={lane}
-                      onLaneChange={setLane}
-                    />
-                  )}
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Footer */}
@@ -395,14 +479,18 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                 <ChevronLeft size={14} />
                 Back
               </button>
-            ) : <div />}
+            ) : (
+              <div />
+            )}
             <button
               type="button"
               onClick={step === TOTAL_STEPS - 1 ? finishWithExit : goNext}
               disabled={!canNext}
               className={cn(
                 "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
-                canNext ? "text-[#0A0C0A]" : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
+                canNext
+                  ? "text-[#0A0C0A]"
+                  : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
               style={canNext ? { background: ACCENT } : undefined}
             >
@@ -489,7 +577,10 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   if (!open) {
     return (
-      <div className="mt-4 relative rounded-3xl border border-dashed border-white/[0.08] px-5 py-6 flex flex-col items-center gap-3 text-center" style={{ background: "rgba(255,255,255,0.03)" }}>
+      <div
+        className="mt-4 relative rounded-3xl border border-dashed border-white/[0.08] px-5 py-6 flex flex-col items-center gap-3 text-center"
+        style={{ background: "rgba(255,255,255,0.03)" }}
+      >
         <span className="grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
           <Sparkles size={18} className="text-[#C8FF4D]" />
         </span>
@@ -499,7 +590,10 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
         </p>
         <button
           type="button"
-          onClick={() => { setStep(0); setOpen(true); }}
+          onClick={() => {
+            setStep(0);
+            setOpen(true);
+          }}
           className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[#C8FF4D] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
         >
           Set up adaptive
@@ -510,7 +604,11 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   }
 
   return featureHookVariant ? (
-    <FeatureIntro variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
+    <FeatureIntro
+      variant={featureHookVariant}
+      onDone={featureHookDone}
+      onClose={() => setFeatureHookVariant(null)}
+    />
   ) : (
     mainOverlay
   );

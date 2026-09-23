@@ -31,7 +31,6 @@ import { AddPrepModal } from "@/components/learn/add-prep-modal";
 import { AdaptiveReprompt } from "@/components/adaptive/adaptive-reprompt";
 import { AdaptiveDashboard } from "@/components/adaptive/adaptive-dashboard";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
-import { resolveJourneyProfile } from "@/lib/adaptive/modes";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { MockArenaIntro } from "@/components/paywall/mock-arena-intro";
 import { usePlanStore } from "@/stores/plan-store";
@@ -89,16 +88,33 @@ function getInsight(topics: { name: string; value: number }[]): string {
   const sorted = [...topics].sort((a, b) => b.value - a.value);
   const best = sorted[0];
   const worst = sorted[sorted.length - 1];
-  if (best.value === worst.value) return `Consistent across all topics at ${best.value}%. Keep building!`;
-  if (best.value >= 80 && worst.value >= 60) return `Strong across the board. ${best.name} (${best.value}%) leads the way.`;
-  if (worst.value < 50) return `${best.name} (${best.value}%) is your strength. Focus on ${worst.name} (${worst.value}%) to close the gap.`;
+  if (best.value === worst.value)
+    return `Consistent across all topics at ${best.value}%. Keep building!`;
+  if (best.value >= 80 && worst.value >= 60)
+    return `Strong across the board. ${best.name} (${best.value}%) leads the way.`;
+  if (worst.value < 50)
+    return `${best.name} (${best.value}%) is your strength. Focus on ${worst.name} (${worst.value}%) to close the gap.`;
   return `${best.name} (${best.value}%) leads. ${worst.name} (${worst.value}%) needs more practice.`;
 }
 
 type Mode = "explore" | "adaptive" | "mock";
 
-const MODES: { id: Mode; label: string; Icon: LucideIcon; color: string; accent: string; subtitle: string }[] = [
-  { id: "explore", label: "Topic Explorer", Icon: Grid3x3, color: "#34D399", accent: "#34D399", subtitle: "Browse topics and track your mastery" },
+const MODES: {
+  id: Mode;
+  label: string;
+  Icon: LucideIcon;
+  color: string;
+  accent: string;
+  subtitle: string;
+}[] = [
+  {
+    id: "explore",
+    label: "Topic Explorer",
+    Icon: Grid3x3,
+    color: "#34D399",
+    accent: "#34D399",
+    subtitle: "Browse topics and track your mastery",
+  },
   {
     id: "adaptive",
     label: "Adaptive Learning",
@@ -127,10 +143,6 @@ function LearnPageContent() {
   const goal = useOnboardingStore((s) => s.goal);
   const activeLearnDomain = useOnboardingStore((s) => s.activeLearnDomain);
   const setActiveLearnDomain = useOnboardingStore((s) => s.setActiveLearnDomain);
-  const temporalWindow = useOnboardingStore((s) => s.temporalWindow);
-  const vedicUseCase = useOnboardingStore((s) => s.vedicUseCase);
-  const focusMode = useOnboardingStore((s) => s.focusMode);
-  const dailyMinutes = useOnboardingStore((s) => s.dailyMinutes);
   const canTakeMock = usePlanStore((s) => s.canTakeMock);
   const recordMock = usePlanStore((s) => s.recordMock);
   const openPaywall = usePaywallStore((s) => s.openPaywall);
@@ -172,22 +184,14 @@ function LearnPageContent() {
     return { accuracy: "91%", questions: "2,845", percentile: "78%ile", speed: "42s" };
   }, [prepExams.length]);
 
-  const adaptiveAccent = useMemo(() => {
-    const domain = primaryExam;
-    if (!domain) return "#C8FF4D";
-    return resolveJourneyProfile({
-      domain,
-      temporalWindow,
-      vedicUseCase,
-      focusMode,
-      dailyMinutes: dailyMinutes ?? 30,
-    }).accent;
-  }, [primaryExam]);
+  const adaptiveAccent = "#C8FF4D";
 
   const todayLabel = useMemo(
     () =>
-      new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric" }).format(new Date()),
-    []
+      new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric" }).format(
+        new Date(),
+      ),
+    [],
   );
 
   useEffect(() => {
@@ -240,8 +244,12 @@ function LearnPageContent() {
           <BookOpen size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
-        <h1 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Choose Your Path</h1>
-        <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">Master topics, adaptive sprints &amp; timed mocks.</p>
+        <h1 className="mt-3 text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
+          Choose Your Path
+        </h1>
+        <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">
+          Master topics, adaptive sprints &amp; timed mocks.
+        </p>
       </header>
 
       {/* Outer glass card wrapping all content */}
@@ -250,541 +258,704 @@ function LearnPageContent() {
         className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pb-4 pt-5 transition-colors duration-500"
         style={{ borderColor: GLASS_BORDER, background: outerBg }}
       >
-          <div ref={glowTopRef} className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500" />
-          <div ref={glowBottomRef} className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500" />
+        <div
+          ref={glowTopRef}
+          className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-15 pointer-events-none transition-opacity duration-500"
+        />
+        <div
+          ref={glowBottomRef}
+          className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none transition-opacity duration-500"
+        />
 
-          {/* Tab mode selector — 3D push keys: active pops up, others sit flat/sunken */}
-          <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5">
-            <div className="grid grid-cols-3 gap-2.5">
-              {MODES.map((m) => {
-                const isActive = m.id === mode;
-                return (
-                  <motion.button
-                    key={m.id}
-                    type="button"
-                    onClick={() => goTo(m.id)}
-                    initial={false}
-                    animate={{ y: isActive ? -2 : 0, scale: isActive ? 1.02 : 1 }}
-                    transition={{ type: "spring", stiffness: 260, damping: 30 }}
-                    className="relative"
+        {/* Tab mode selector — 3D push keys: active pops up, others sit flat/sunken */}
+        <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5">
+          <div className="grid grid-cols-3 gap-2.5">
+            {MODES.map((m) => {
+              const isActive = m.id === mode;
+              return (
+                <motion.button
+                  key={m.id}
+                  type="button"
+                  onClick={() => goTo(m.id)}
+                  initial={false}
+                  animate={{ y: isActive ? -2 : 0, scale: isActive ? 1.02 : 1 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                  className="relative"
+                >
+                  {/* Top light bevel — only on the raised active key */}
+                  <div
+                    className="absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
+                    style={{
+                      opacity: isActive ? 1 : 0,
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)",
+                    }}
+                  />
+                  <div
+                    className={`flex flex-col items-center justify-center gap-1.5 py-4 rounded-2xl transition-all duration-500 ease-out ${isActive ? "font-semibold" : "font-medium"}`}
+                    style={
+                      isActive
+                        ? {
+                            background:
+                              "linear-gradient(180deg, rgba(199,242,82,0.18), rgba(199,242,82,0.05))",
+                            boxShadow:
+                              "0 8px 18px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.35)",
+                          }
+                        : {
+                            background: "rgba(255,255,255,0.02)",
+                            boxShadow:
+                              "inset 0 2px 4px rgba(0,0,0,0.5), inset 0 -1px 1px rgba(255,255,255,0.04)",
+                          }
+                    }
                   >
-                    {/* Top light bevel — only on the raised active key */}
-                    <div
-                      className="absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
-                      style={{
-                        opacity: isActive ? 1 : 0,
-                        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)",
-                      }}
-                    />
-                    <div
-                      className={`flex flex-col items-center justify-center gap-1.5 py-4 rounded-2xl transition-all duration-500 ease-out ${isActive ? "font-semibold" : "font-medium"}`}
+                    <motion.span
+                      animate={{ scale: isActive ? 1.05 : 1 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      className="block"
+                    >
+                      <m.Icon
+                        size={16}
+                        strokeWidth={2.2}
+                        style={{ color: isActive ? "var(--accent)" : "rgba(255,255,255,0.45)" }}
+                      />
+                    </motion.span>
+                    <span
+                      className="relative z-10 text-[11px] leading-none tracking-[0.02em] transition-colors duration-500 ease-out"
                       style={
                         isActive
                           ? {
-                              background: "linear-gradient(180deg, rgba(199,242,82,0.18), rgba(199,242,82,0.05))",
-                              boxShadow:
-                                "0 8px 18px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.35)",
+                              color: "var(--accent)",
+                              textShadow: "0 1px 1px rgba(0,0,0,0.6)",
                             }
                           : {
-                              background: "rgba(255,255,255,0.02)",
-                              boxShadow: "inset 0 2px 4px rgba(0,0,0,0.5), inset 0 -1px 1px rgba(255,255,255,0.04)",
+                              color: "rgba(255,255,255,0.5)",
+                              textShadow: "0 1px 2px rgba(0,0,0,0.8)",
                             }
                       }
                     >
-                      <motion.span
-                        animate={{ scale: isActive ? 1.05 : 1 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        className="block"
-                      >
-                        <m.Icon
-                          size={16}
-                          strokeWidth={2.2}
-                          style={{ color: isActive ? "var(--accent)" : "rgba(255,255,255,0.45)" }}
-                        />
-                      </motion.span>
-                      <span
-                        className="relative z-10 text-[11px] leading-none tracking-[0.02em] transition-colors duration-500 ease-out"
-                        style={
-                          isActive
-                            ? {
-                                color: "var(--accent)",
-                                textShadow: "0 1px 1px rgba(0,0,0,0.6)",
-                              }
-                            : {
-                                color: "rgba(255,255,255,0.5)",
-                                textShadow: "0 1px 2px rgba(0,0,0,0.8)",
-                              }
-                        }
-                      >
-                        {m.label}
-                      </span>
-                    </div>
-                    {/* Bottom drop shadow for the raised key */}
-                    <div
-                      className="absolute -bottom-2 left-2 right-2 h-3 rounded-full transition-opacity duration-500 ease-out pointer-events-none"
-                      style={{
-                        opacity: isActive ? 1 : 0,
-                        background: "radial-gradient(ellipse at center, rgba(0,0,0,0.5), transparent 70%)",
-                        filter: "blur(4px)",
-                      }}
-                    />
-                  </motion.button>
-                );
-              })}
-            </div>
-          </div>
-
-      <AnimatePresence mode="wait" initial={false}>
-        {mode === "explore" && (
-        <motion.div
-          key="explore"
-          variants={tabVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={tabTransition}
-        >
-        <>
-          {/* Add Prep CTA — ungated in Topic Explorer */}
-          <button
-            type="button"
-            onClick={() => { setAddPrepGated(false); setShowAddPrep(true); }}
-            className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 min-h-[44px] flex items-center justify-center gap-2 text-[13px] font-semibold tracking-widest uppercase text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <Plus size={15} strokeWidth={2.5} />
-            ADD PREP
-          </button>
-
-          {/* Exam Tabs */}
-          <div className="rounded-3xl border backdrop-blur-xl p-4 mt-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-            <p className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">EXAM PREP</p>
-            {prepExams.length === 0 ? (
-              <div className="flex items-center justify-center py-4">
-                <span className="text-[12px] text-muted-foreground/50">Select exam via add prep</span>
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {prepExams.map((id) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => { setActiveDomain(id); setActiveLearnDomain(id); }}
-                    className={cn(
-                      "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
-                      activeDomain === id
-                        ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
-                        : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]"
-                    )}
-                  >
-                    {DOMAIN_LABELS[id]}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Topic Cards */}
-          {prepExams.length > 0 && (
-          <motion.div
-            key={`${activeDomain}-topics`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="flex flex-col gap-3 mt-5"
-          >
-            {topics.map((topic, i) => {
-              const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
-              const color = TOPIC_COLORS[i % TOPIC_COLORS.length];
-              return (
-                <button
-                  key={topic.name}
-                  type="button"
-                  onClick={() => router.push(`/learn/explorer?domain=${activeDomain}&topic=${encodeURIComponent(topic.name.toLowerCase())}`)}
-                  className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
-                  style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="h-9 w-9 rounded-xl flex items-center justify-center" style={{ background: `${color}15` }}>
-                        <Icon size={16} style={{ color }} />
-                      </div>
-                      <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">{topic.name}</h3>
-                    </div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-[13px] font-bold tracking-[-0.02em]" style={{ color }}>
-                        {topic.value}%
-                      </span>
-                      <span className="text-micro font-medium uppercase tracking-wider text-muted-foreground/50">mastery</span>
-                    </div>
+                      {m.label}
+                    </span>
                   </div>
-                  <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{
-                        width: `${topic.value}%`,
-                        background: `linear-gradient(90deg, ${color}88, ${color})`,
-                        boxShadow: `0 0 8px ${color}40`,
-                      }}
-                    />
-                  </div>
-                </button>
+                  {/* Bottom drop shadow for the raised key */}
+                  <div
+                    className="absolute -bottom-2 left-2 right-2 h-3 rounded-full transition-opacity duration-500 ease-out pointer-events-none"
+                    style={{
+                      opacity: isActive ? 1 : 0,
+                      background:
+                        "radial-gradient(ellipse at center, rgba(0,0,0,0.5), transparent 70%)",
+                      filter: "blur(4px)",
+                    }}
+                  />
+                </motion.button>
               );
             })}
-
-            {topics.length === 0 && (
-              <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
-                <BookOpen size={24} className="mx-auto text-muted-foreground/25 mb-3" />
-                <p className="text-[13px] text-muted-foreground/45 font-normal">No topics yet. Add a prep to get started.</p>
-              </div>
-            )}
-          </motion.div>
-          )}
-
-          {/* Resume Protocol — above Sensei Insight */}
-          <ResumeProtocolCard domain={activeDomain} accent="#34D399" kind="sprint" className="mt-5 px-0" />
-
-          {/* Sensei Insight */}
-          {prepExams.length > 0 && topics.length > 0 && (
-            <div className="relative rounded-3xl border backdrop-blur-xl p-5 mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.03) 100%)" }}>
-              <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#3B82F6] to-[#22D3EE]" />
-              <div className="flex items-center gap-2.5 mb-3">
-                <div className="h-7 w-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
-                  <Sparkles size={14} className="text-[#3B82F6]" />
-                </div>
-                <p className="text-micro font-semibold tracking-[0.18em] text-[#3B82F6]/70 uppercase">SENSEI INSIGHT</p>
-              </div>
-              <p className="text-[13px] text-foreground/70 font-normal leading-relaxed pl-1 italic">
-                &ldquo;{getInsight(topics)}&rdquo;
-              </p>
-            </div>
-          )}
-
-          {/* Explore Techniques */}
-          {prepExams.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-8 text-center rounded-3xl border border-dashed border-white/[0.08] mt-5" style={{ background: GLASS_BG }}>
-              <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
-                <Lock size={16} className="text-muted-foreground/45" />
-              </span>
-              <span className="text-[13px] text-muted-foreground/50">Select an exam to explore techniques</span>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => router.push("/learn/explorer")}
-              className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
-              style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
-            >
-              EXPLORE TECHNIQUES
-              <ArrowRight size={14} />
-            </button>
-          )}
-        </>
-        </motion.div>
-        )}
-
-        {mode === "adaptive" && (
-        <motion.div
-          key="adaptive"
-          variants={tabVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={tabTransition}
-        >
-          {/* Toolbar — pill + gated ADD PREP */}
-          <div className="flex items-center justify-between gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
-              <CalendarDays size={12} style={{ color: adaptiveAccent }} />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/70">
-                {todayLabel}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => { setAddPrepGated(true); setShowAddPrep(true); }}
-              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
-            >
-              <Plus size={12} strokeWidth={3} /> ADD PREP
-            </button>
           </div>
+        </div>
 
-          {/* Exam switcher — mirrors Mock tab, secondary exams locked */}
-          {prepExams.length > 1 && (
-            <div className="relative mt-4 mb-1">
-              <div
-                className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
-              >
-                {prepExams.map((id) => {
-                  const isPrimary = id === primaryExam;
-                  const active = isPrimary;
-                  return (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => {
-                        if (isPrimary) {
-                          setActiveDomain(id);
-                        } else {
-                          openPaywall("prep");
-                        }
-                      }}
-                      className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
-                    >
-                      {active && (
-                        <motion.div
-                          layoutId="adaptive-exam-slider"
-                          transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                          className="absolute inset-0 rounded-2xl"
-                          style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)" }}
-                        />
-                      )}
-                      <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
-                        {isPrimary ? <GraduationCap size={14} className="relative" /> : <Lock size={12} className="relative text-muted-foreground/50" />}
-                        <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
-                        {!isPrimary && (
-                          <span className="relative text-[7px] font-black tracking-[0.14em] px-1.5 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.45)" }}>
-                            PRO
-                          </span>
-                        )}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Your Stats — mirrors Mock tab, colored per variant */}
-          <YourStatsCard
-            collapsed={statsCollapsed}
-            onToggle={() => setStatsCollapsed((v) => !v)}
-            hasPrep={prepExams.length > 0}
-            stats={mockStats}
-            color={adaptiveAccent}
-          />
-
-          {/* Today's Practice / Resume — start entry only when goal is set */}
-          <ResumeProtocolCard domain={primaryExam} accent={adaptiveAccent} showStartEntry={!!goal} kind="sprint" className="mt-5 px-0" />
-
-          {justExploring && prepExams.length === 0 ? (
-            <AdaptiveDashboard domain={primaryExam} />
-          ) : !goal ? (
-            <AdaptiveReprompt onDone={() => setMode("adaptive")} />
-          ) : prepExams.length === 0 ? (
-            <div className="mt-4 flex flex-col items-center gap-3 py-10 text-center rounded-3xl border border-dashed border-white/[0.08]" style={{ background: GLASS_BG }}>
-              <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
-                <Lock size={16} className="text-muted-foreground/45" />
-              </span>
-              <span className="text-[13px] text-muted-foreground/50">Select exam via add prep</span>
-            </div>
-          ) : (
-            <AdaptiveDashboard domain={primaryExam} />
-          )}
-        </motion.div>
-        )}
-
-        {mode === "mock" && (
-        <motion.div
-          key="mock"
-          variants={tabVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          transition={tabTransition}
-        >
-          {/* Header */}
-          <div className="relative mb-5 flex items-start justify-between gap-3">
-            <div>
-              <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
-                {prepExams.length === 0 && justExploring ? "Random Test" : (DOMAIN_LABELS[primaryExam] || "Mock")}{" "}
-                <span className="bg-gradient-to-r from-primary to-[#d4ff6e] bg-clip-text text-transparent">{prepExams.length === 0 && justExploring ? "Prep" : "Papers"}</span>
-              </h2>
-              <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">{prepExams.length === 0 && justExploring ? "Mixed questions from every exam style." : "Full-length and sectional timed tests."}</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => { setAddPrepGated(true); setShowAddPrep(true); }}
-              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+        <AnimatePresence mode="wait" initial={false}>
+          {mode === "explore" && (
+            <motion.div
+              key="explore"
+              variants={tabVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={tabTransition}
             >
-              <Plus size={12} strokeWidth={3} /> ADD PREP
-            </button>
-          </div>
+              <>
+                {/* Add Prep CTA — ungated in Topic Explorer */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAddPrepGated(false);
+                    setShowAddPrep(true);
+                  }}
+                  className="w-full rounded-2xl border border-primary/20 bg-primary/5 backdrop-blur-xl py-3.5 min-h-[44px] flex items-center justify-center gap-2 text-[13px] font-semibold tracking-widest uppercase text-primary transition-all hover:bg-primary/[0.08] hover:border-primary/35 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <Plus size={15} strokeWidth={2.5} />
+                  ADD PREP
+                </button>
 
-          {/* Exam switcher — sliding segmented control */}
-          {prepExams.length > 1 && (
-            <div className="relative mt-2 mb-5">
-              <div
-                className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-                style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
-              >
-                {prepExams.map((id) => {
-                  const isPrimary = id === primaryExam;
-                  const active = isPrimary;
-                  return (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => {
-                        if (isPrimary) {
-                          setActiveDomain(id);
-                        } else {
-                          openPaywall("prep");
-                        }
-                      }}
-                      className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
-                    >
-                      {active && (
-                        <motion.div
-                          layoutId="mock-exam-slider"
-                          transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                          className="absolute inset-0 rounded-2xl"
-                          style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)" }}
-                        />
-                      )}
-                      <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
-                        {isPrimary ? <GraduationCap size={14} className="relative" /> : <Lock size={12} className="relative text-muted-foreground/50" />}
-                        <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
-                        {!isPrimary && (
-                          <span className="relative text-[7px] font-black tracking-[0.14em] px-1.5 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.45)" }}>
-                            PRO
-                          </span>
-                        )}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-{/* Stats card */}
-          <YourStatsCard
-            collapsed={statsCollapsed}
-            onToggle={() => setStatsCollapsed((v) => !v)}
-            hasPrep={prepExams.length > 0}
-            stats={mockStats}
-            color="#C8FF4D"
-          />
-
-          {/* Mock resume — shows only when a mock is in progress */}
-          <ResumeProtocolCard domain={mockExamDomain} accent="#C8FF4D" kind="mock" className="mt-4 px-0" />
-
-          {/* Section filter chips */}
-          {(prepExams.length > 0 || justExploring) && (() => {
-            const sectionSet = new Set<string>();
-            (mockPapers ?? []).forEach((p) => p.sections.forEach((s) => sectionSet.add(s.label)));
-            const sections = ["all", ...Array.from(sectionSet)];
-            return (
-              <div className="flex items-center gap-2 overflow-x-auto mt-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                {sections.map((sec) => (
-                  <button
-                    key={sec}
-                    type="button"
-                    onClick={() => setMockSection(sec)}
-                    className={cn(
-                      "shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-semibold transition-all",
-                      mockSection === sec
-                        ? "bg-gradient-to-r from-primary to-[#a8e62e] text-[#0A0C0A]"
-                        : "border border-white/[0.07] text-muted-foreground/60 hover:bg-white/[0.05]",
-                    )}
-                  >
-                    {sec === "all" ? "All" : sec}
-                  </button>
-                ))}
-              </div>
-            );
-          })()}
-
-          {/* Paper list */}
-          <motion.div
-            key={`${mockSection}-${mockExamDomain}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="flex flex-col gap-3 mt-5"
-          >
-            {mockLoading && (
-              <div className="flex flex-col gap-3">
-                {[0, 1].map((i) => (
-                  <div key={i} className="rounded-3xl border backdrop-blur-xl p-5 animate-pulse" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-                    <div className="h-4 w-2/3 rounded bg-white/[0.06] mb-3" />
-                    <div className="h-3 w-1/2 rounded bg-white/[0.04]" />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {!mockLoading && (mockPapers ?? [])
-              .filter((p) => mockSection === "all" || p.sections.some((s) => s.label === mockSection))
-              .map((paper) => (
+                {/* Exam Tabs */}
                 <div
-                  key={paper.id}
-                  className="group rounded-3xl border backdrop-blur-xl p-5 transition-all hover:bg-white/[0.05]"
+                  className="rounded-3xl border backdrop-blur-xl p-4 mt-5"
                   style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <div className="size-8 shrink-0 rounded-lg grid place-items-center" style={{ background: `${paper.accent}1a` }}>
-                          <FileText size={14} style={{ color: paper.accent }} />
-                        </div>
-                        <h3 className="text-[13.5px] font-semibold tracking-[-0.01em] text-foreground leading-snug">{paper.title}</h3>
-                      </div>
-                    </div>
-                    <div className="shrink-0 grid size-7 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
-                      <ArrowRight size={12} />
-                    </div>
-                  </div>
-
-                  <p className="text-micro text-muted-foreground/50 mt-3 font-normal">
-                    {paper.sections.map((s) => s.label).join(" | ")} • {paper.totalQuestions} Questions • {formatDuration(paper.durationMinutes)}
+                  <p className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">
+                    EXAM PREP
                   </p>
-
-                  <div className="flex items-center justify-between mt-4 gap-3">
-                    <div className="flex flex-wrap gap-1.5">
-                      {paper.sections.map((s) => (
-                        <span key={s.id} className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07]" style={{ color: paper.accent, background: `${paper.accent}0d` }}>
-                          {s.label} · {s.questions}
-                        </span>
+                  {prepExams.length === 0 ? (
+                    <div className="flex items-center justify-center py-4">
+                      <span className="text-[12px] text-muted-foreground/50">
+                        Select exam via add prep
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {prepExams.map((id) => (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => {
+                            setActiveDomain(id);
+                            setActiveLearnDomain(id);
+                          }}
+                          className={cn(
+                            "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
+                            activeDomain === id
+                              ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
+                              : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
+                          )}
+                        >
+                          {DOMAIN_LABELS[id]}
+                        </button>
                       ))}
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (!canTakeMock()) {
-                          setShowMockArena(true);
-                          return;
-                        }
-                        recordMock();
-                        router.push(`/learn/mock/run?paper=${paper.id}&domain=${mockExamDomain}`);
-                      }}
-                      className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      <Play size={12} strokeWidth={2.5} /> Take Test
-                    </button>
+                  )}
+                </div>
+
+                {/* Topic Cards */}
+                {prepExams.length > 0 && (
+                  <motion.div
+                    key={`${activeDomain}-topics`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="flex flex-col gap-3 mt-5"
+                  >
+                    {topics.map((topic, i) => {
+                      const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
+                      const color = TOPIC_COLORS[i % TOPIC_COLORS.length];
+                      return (
+                        <button
+                          key={topic.name}
+                          type="button"
+                          onClick={() =>
+                            router.push(
+                              `/learn/explorer?domain=${activeDomain}&topic=${encodeURIComponent(topic.name.toLowerCase())}`,
+                            )
+                          }
+                          className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                          style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <div
+                                className="h-9 w-9 rounded-xl flex items-center justify-center"
+                                style={{ background: `${color}15` }}
+                              >
+                                <Icon size={16} style={{ color }} />
+                              </div>
+                              <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">
+                                {topic.name}
+                              </h3>
+                            </div>
+                            <div className="flex items-baseline gap-1">
+                              <span
+                                className="text-[13px] font-bold tracking-[-0.02em]"
+                                style={{ color }}
+                              >
+                                {topic.value}%
+                              </span>
+                              <span className="text-micro font-medium uppercase tracking-wider text-muted-foreground/50">
+                                mastery
+                              </span>
+                            </div>
+                          </div>
+                          <div className="h-[6px] w-full rounded-full bg-white/[0.05] overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all duration-700"
+                              style={{
+                                width: `${topic.value}%`,
+                                background: `linear-gradient(90deg, ${color}88, ${color})`,
+                                boxShadow: `0 0 8px ${color}40`,
+                              }}
+                            />
+                          </div>
+                        </button>
+                      );
+                    })}
+
+                    {topics.length === 0 && (
+                      <div
+                        className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center"
+                        style={{ background: GLASS_BG }}
+                      >
+                        <BookOpen size={24} className="mx-auto text-muted-foreground/25 mb-3" />
+                        <p className="text-[13px] text-muted-foreground/45 font-normal">
+                          No topics yet. Add a prep to get started.
+                        </p>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+
+                {/* Resume Protocol — above Sensei Insight */}
+                <ResumeProtocolCard
+                  domain={activeDomain}
+                  accent="#34D399"
+                  kind="sprint"
+                  className="mt-5 px-0"
+                />
+
+                {/* Sensei Insight */}
+                {prepExams.length > 0 && topics.length > 0 && (
+                  <div
+                    className="relative rounded-3xl border backdrop-blur-xl p-5 mt-5 overflow-hidden"
+                    style={{
+                      borderColor: GLASS_BORDER,
+                      background:
+                        "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+                    }}
+                  >
+                    <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#3B82F6] to-[#22D3EE]" />
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div className="h-7 w-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
+                        <Sparkles size={14} className="text-[#3B82F6]" />
+                      </div>
+                      <p className="text-micro font-semibold tracking-[0.18em] text-[#3B82F6]/70 uppercase">
+                        SENSEI INSIGHT
+                      </p>
+                    </div>
+                    <p className="text-[13px] text-foreground/70 font-normal leading-relaxed pl-1 italic">
+                      &ldquo;{getInsight(topics)}&rdquo;
+                    </p>
+                  </div>
+                )}
+
+                {/* Explore Techniques */}
+                {prepExams.length === 0 ? (
+                  <div
+                    className="flex flex-col items-center gap-3 py-8 text-center rounded-3xl border border-dashed border-white/[0.08] mt-5"
+                    style={{ background: GLASS_BG }}
+                  >
+                    <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+                      <Lock size={16} className="text-muted-foreground/45" />
+                    </span>
+                    <span className="text-[13px] text-muted-foreground/50">
+                      Select an exam to explore techniques
+                    </span>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => router.push("/learn/explorer")}
+                    className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                    style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                  >
+                    EXPLORE TECHNIQUES
+                    <ArrowRight size={14} />
+                  </button>
+                )}
+              </>
+            </motion.div>
+          )}
+
+          {mode === "adaptive" && (
+            <motion.div
+              key="adaptive"
+              variants={tabVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={tabTransition}
+            >
+              {/* Toolbar — pill + gated ADD PREP */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
+                  <CalendarDays size={12} style={{ color: adaptiveAccent }} />
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/70">
+                    {todayLabel}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAddPrepGated(true);
+                    setShowAddPrep(true);
+                  }}
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+                >
+                  <Plus size={12} strokeWidth={3} /> ADD PREP
+                </button>
+              </div>
+
+              {/* Exam switcher — mirrors Mock tab, secondary exams locked */}
+              {prepExams.length > 1 && (
+                <div className="relative mt-4 mb-1">
+                  <div
+                    className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    style={{
+                      borderColor: "rgba(255,255,255,0.08)",
+                      background: "rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    {prepExams.map((id) => {
+                      const isPrimary = id === primaryExam;
+                      const active = isPrimary;
+                      return (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => {
+                            if (isPrimary) {
+                              setActiveDomain(id);
+                            } else {
+                              openPaywall("prep");
+                            }
+                          }}
+                          className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                        >
+                          {active && (
+                            <motion.div
+                              layoutId="adaptive-exam-slider"
+                              transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                              className="absolute inset-0 rounded-2xl"
+                              style={{
+                                background: "linear-gradient(180deg, #d7ff7e, #a8e62e)",
+                                boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)",
+                              }}
+                            />
+                          )}
+                          <span
+                            className="relative flex items-center gap-2 transition-colors duration-300"
+                            style={{
+                              textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none",
+                            }}
+                          >
+                            {isPrimary ? (
+                              <GraduationCap size={14} className="relative" />
+                            ) : (
+                              <Lock size={12} className="relative text-muted-foreground/50" />
+                            )}
+                            <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
+                            {!isPrimary && (
+                              <span
+                                className="relative text-[7px] font-black tracking-[0.14em] px-1.5 py-0.5 rounded-full"
+                                style={{
+                                  background: "rgba(255,255,255,0.08)",
+                                  color: "rgba(255,255,255,0.45)",
+                                }}
+                              >
+                                PRO
+                              </span>
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
-              ))}
+              )}
 
-            {!mockLoading && (mockPapers ?? []).length === 0 && (
-              <div className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center" style={{ background: GLASS_BG }}>
-                <FileText size={24} className="mx-auto text-muted-foreground/25 mb-3" />
-                <p className="text-[13px] text-muted-foreground/45 font-normal">No papers yet for {mockExamDomain === "random" ? "Random Test Prep" : (DOMAIN_LABELS[mockExamDomain] || "this exam")}.</p>
+              {/* Your Stats — mirrors Mock tab, colored per variant */}
+              <YourStatsCard
+                collapsed={statsCollapsed}
+                onToggle={() => setStatsCollapsed((v) => !v)}
+                hasPrep={prepExams.length > 0}
+                stats={mockStats}
+                color={adaptiveAccent}
+              />
+
+              {/* Today's Practice / Resume — start entry only when goal is set */}
+              <ResumeProtocolCard
+                domain={primaryExam}
+                accent={adaptiveAccent}
+                showStartEntry={!!goal}
+                kind="sprint"
+                className="mt-5 px-0"
+              />
+
+              {justExploring && prepExams.length === 0 ? (
+                <AdaptiveDashboard domain={primaryExam} />
+              ) : !goal ? (
+                <AdaptiveReprompt onDone={() => setMode("adaptive")} />
+              ) : prepExams.length === 0 ? (
+                <div
+                  className="mt-4 flex flex-col items-center gap-3 py-10 text-center rounded-3xl border border-dashed border-white/[0.08]"
+                  style={{ background: GLASS_BG }}
+                >
+                  <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
+                    <Lock size={16} className="text-muted-foreground/45" />
+                  </span>
+                  <span className="text-[13px] text-muted-foreground/50">
+                    Select exam via add prep
+                  </span>
+                </div>
+              ) : (
+                <AdaptiveDashboard domain={primaryExam} />
+              )}
+            </motion.div>
+          )}
+
+          {mode === "mock" && (
+            <motion.div
+              key="mock"
+              variants={tabVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={tabTransition}
+            >
+              {/* Header */}
+              <div className="relative mb-5 flex items-start justify-between gap-3">
+                <div>
+                  <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
+                    {prepExams.length === 0 && justExploring
+                      ? "Random Test"
+                      : DOMAIN_LABELS[primaryExam] || "Mock"}{" "}
+                    <span className="bg-gradient-to-r from-primary to-[#d4ff6e] bg-clip-text text-transparent">
+                      {prepExams.length === 0 && justExploring ? "Prep" : "Papers"}
+                    </span>
+                  </h2>
+                  <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">
+                    {prepExams.length === 0 && justExploring
+                      ? "Mixed questions from every exam style."
+                      : "Full-length and sectional timed tests."}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAddPrepGated(true);
+                    setShowAddPrep(true);
+                  }}
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+                >
+                  <Plus size={12} strokeWidth={3} /> ADD PREP
+                </button>
               </div>
-            )}
-          </motion.div>
-        </motion.div>
-        )}
-      </AnimatePresence>
 
-      {showAddPrep && (
-        <AddPrepModal gated={addPrepGated} onClose={() => setShowAddPrep(false)} />
-      )}
-      {showMockArena && <MockArenaIntro onClose={() => setShowMockArena(false)} />}
-      <PaywallModal />
+              {/* Exam switcher — sliding segmented control */}
+              {prepExams.length > 1 && (
+                <div className="relative mt-2 mb-5">
+                  <div
+                    className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    style={{
+                      borderColor: "rgba(255,255,255,0.08)",
+                      background: "rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    {prepExams.map((id) => {
+                      const isPrimary = id === primaryExam;
+                      const active = isPrimary;
+                      return (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => {
+                            if (isPrimary) {
+                              setActiveDomain(id);
+                            } else {
+                              openPaywall("prep");
+                            }
+                          }}
+                          className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                        >
+                          {active && (
+                            <motion.div
+                              layoutId="mock-exam-slider"
+                              transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                              className="absolute inset-0 rounded-2xl"
+                              style={{
+                                background: "linear-gradient(180deg, #d7ff7e, #a8e62e)",
+                                boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)",
+                              }}
+                            />
+                          )}
+                          <span
+                            className="relative flex items-center gap-2 transition-colors duration-300"
+                            style={{
+                              textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none",
+                            }}
+                          >
+                            {isPrimary ? (
+                              <GraduationCap size={14} className="relative" />
+                            ) : (
+                              <Lock size={12} className="relative text-muted-foreground/50" />
+                            )}
+                            <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
+                            {!isPrimary && (
+                              <span
+                                className="relative text-[7px] font-black tracking-[0.14em] px-1.5 py-0.5 rounded-full"
+                                style={{
+                                  background: "rgba(255,255,255,0.08)",
+                                  color: "rgba(255,255,255,0.45)",
+                                }}
+                              >
+                                PRO
+                              </span>
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Stats card */}
+              <YourStatsCard
+                collapsed={statsCollapsed}
+                onToggle={() => setStatsCollapsed((v) => !v)}
+                hasPrep={prepExams.length > 0}
+                stats={mockStats}
+                color="#C8FF4D"
+              />
+
+              {/* Mock resume — shows only when a mock is in progress */}
+              <ResumeProtocolCard
+                domain={mockExamDomain}
+                accent="#C8FF4D"
+                kind="mock"
+                className="mt-4 px-0"
+              />
+
+              {/* Section filter chips */}
+              {(prepExams.length > 0 || justExploring) &&
+                (() => {
+                  const sectionSet = new Set<string>();
+                  (mockPapers ?? []).forEach((p) =>
+                    p.sections.forEach((s) => sectionSet.add(s.label)),
+                  );
+                  const sections = ["all", ...Array.from(sectionSet)];
+                  return (
+                    <div className="flex items-center gap-2 overflow-x-auto mt-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                      {sections.map((sec) => (
+                        <button
+                          key={sec}
+                          type="button"
+                          onClick={() => setMockSection(sec)}
+                          className={cn(
+                            "shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-semibold transition-all",
+                            mockSection === sec
+                              ? "bg-gradient-to-r from-primary to-[#a8e62e] text-[#0A0C0A]"
+                              : "border border-white/[0.07] text-muted-foreground/60 hover:bg-white/[0.05]",
+                          )}
+                        >
+                          {sec === "all" ? "All" : sec}
+                        </button>
+                      ))}
+                    </div>
+                  );
+                })()}
+
+              {/* Paper list */}
+              <motion.div
+                key={`${mockSection}-${mockExamDomain}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="flex flex-col gap-3 mt-5"
+              >
+                {mockLoading && (
+                  <div className="flex flex-col gap-3">
+                    {[0, 1].map((i) => (
+                      <div
+                        key={i}
+                        className="rounded-3xl border backdrop-blur-xl p-5 animate-pulse"
+                        style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                      >
+                        <div className="h-4 w-2/3 rounded bg-white/[0.06] mb-3" />
+                        <div className="h-3 w-1/2 rounded bg-white/[0.04]" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {!mockLoading &&
+                  (mockPapers ?? [])
+                    .filter(
+                      (p) =>
+                        mockSection === "all" || p.sections.some((s) => s.label === mockSection),
+                    )
+                    .map((paper) => (
+                      <div
+                        key={paper.id}
+                        className="group rounded-3xl border backdrop-blur-xl p-5 transition-all hover:bg-white/[0.05]"
+                        style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <div
+                                className="size-8 shrink-0 rounded-lg grid place-items-center"
+                                style={{ background: `${paper.accent}1a` }}
+                              >
+                                <FileText size={14} style={{ color: paper.accent }} />
+                              </div>
+                              <h3 className="text-[13.5px] font-semibold tracking-[-0.01em] text-foreground leading-snug">
+                                {paper.title}
+                              </h3>
+                            </div>
+                          </div>
+                          <div className="shrink-0 grid size-7 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
+                            <ArrowRight size={12} />
+                          </div>
+                        </div>
+
+                        <p className="text-micro text-muted-foreground/50 mt-3 font-normal">
+                          {paper.sections.map((s) => s.label).join(" | ")} • {paper.totalQuestions}{" "}
+                          Questions • {formatDuration(paper.durationMinutes)}
+                        </p>
+
+                        <div className="flex items-center justify-between mt-4 gap-3">
+                          <div className="flex flex-wrap gap-1.5">
+                            {paper.sections.map((s) => (
+                              <span
+                                key={s.id}
+                                className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07]"
+                                style={{ color: paper.accent, background: `${paper.accent}0d` }}
+                              >
+                                {s.label} · {s.questions}
+                              </span>
+                            ))}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (!canTakeMock()) {
+                                setShowMockArena(true);
+                                return;
+                              }
+                              recordMock();
+                              router.push(
+                                `/learn/mock/run?paper=${paper.id}&domain=${mockExamDomain}`,
+                              );
+                            }}
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                          >
+                            <Play size={12} strokeWidth={2.5} /> Take Test
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                {!mockLoading && (mockPapers ?? []).length === 0 && (
+                  <div
+                    className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center"
+                    style={{ background: GLASS_BG }}
+                  >
+                    <FileText size={24} className="mx-auto text-muted-foreground/25 mb-3" />
+                    <p className="text-[13px] text-muted-foreground/45 font-normal">
+                      No papers yet for{" "}
+                      {mockExamDomain === "random"
+                        ? "Random Test Prep"
+                        : DOMAIN_LABELS[mockExamDomain] || "this exam"}
+                      .
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {showAddPrep && <AddPrepModal gated={addPrepGated} onClose={() => setShowAddPrep(false)} />}
+        {showMockArena && <MockArenaIntro onClose={() => setShowMockArena(false)} />}
+        <PaywallModal />
       </div>
     </div>
   );
@@ -802,11 +973,18 @@ function StatBox({ value, label, color }: { value: string; label: string; color?
   return (
     <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3.5">
       <div className="flex items-center justify-between">
-        <span className="size-1.5 rounded-full" style={{ backgroundColor: color ?? "var(--primary)" }} />
+        <span
+          className="size-1.5 rounded-full"
+          style={{ backgroundColor: color ?? "var(--primary)" }}
+        />
         <ArrowRight size={10} className="text-muted-foreground/40" />
       </div>
-      <div className="mt-2.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-none">{value}</div>
-      <div className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/45">{label}</div>
+      <div className="mt-2.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-none">
+        {value}
+      </div>
+      <div className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/45">
+        {label}
+      </div>
     </div>
   );
 }
@@ -827,8 +1005,14 @@ function YourStatsCard({
   color: string;
 }) {
   return (
-    <div className="relative rounded-3xl border backdrop-blur-xl mt-5 overflow-hidden" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-      <div className="absolute -top-10 -right-10 size-32 rounded-full opacity-[0.07] pointer-events-none" style={{ background: `radial-gradient(circle, ${color}, transparent 70%)` }} />
+    <div
+      className="relative rounded-3xl border backdrop-blur-xl mt-5 overflow-hidden"
+      style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+    >
+      <div
+        className="absolute -top-10 -right-10 size-32 rounded-full opacity-[0.07] pointer-events-none"
+        style={{ background: `radial-gradient(circle, ${color}, transparent 70%)` }}
+      />
 
       <button
         type="button"
@@ -836,9 +1020,15 @@ function YourStatsCard({
         className="w-full flex items-center justify-between gap-2 px-5 py-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
         aria-expanded={!collapsed}
       >
-        <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">Your Stats</span>
+        <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
+          Your Stats
+        </span>
         <span className="grid size-6 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">
-          <ChevronUp size={12} className="transition-transform duration-300" style={{ transform: collapsed ? "rotate(180deg)" : "none" }} />
+          <ChevronUp
+            size={12}
+            className="transition-transform duration-300"
+            style={{ transform: collapsed ? "rotate(180deg)" : "none" }}
+          />
         </span>
       </button>
 
@@ -855,7 +1045,9 @@ function YourStatsCard({
                 <span className="relative grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
                   <Lock size={16} className="text-muted-foreground/45" />
                 </span>
-                <span className="text-[12px] text-muted-foreground/50">Select a prep to view your progress</span>
+                <span className="text-[12px] text-muted-foreground/50">
+                  Select a prep to view your progress
+                </span>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2.5">

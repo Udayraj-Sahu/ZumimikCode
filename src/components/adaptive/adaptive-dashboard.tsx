@@ -1,12 +1,35 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Grid3x3, Sigma, Pentagon, Sparkles, Target, Flame, Clock, ChevronRight, Calculator, ListChecks, BookOpen, Zap, Brain, TrendingUp, ShieldCheck, Trophy, CalendarDays } from "lucide-react";
+import {
+  Grid3x3,
+  Sigma,
+  Pentagon,
+  Sparkles,
+  Target,
+  Flame,
+  Clock,
+  ChevronRight,
+  Calculator,
+  ListChecks,
+  BookOpen,
+  Zap,
+  Brain,
+  TrendingUp,
+  ShieldCheck,
+  Trophy,
+  CalendarDays,
+} from "lucide-react";
 import { useAdaptiveState, useTodayPlan } from "@/hooks/queries/use-adaptive";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { resolveJourneyProfile } from "@/lib/adaptive/modes";
 import type { JourneyProfile, TimeBlock } from "@/lib/adaptive/modes";
-import type { AdaptiveTopicState, PracticeRecommendation, MockRecommendation, AdaptiveDomainState } from "@/lib/types/adaptive";
+import type {
+  AdaptiveTopicState,
+  PracticeRecommendation,
+  MockRecommendation,
+  AdaptiveDomainState,
+} from "@/lib/types/adaptive";
 
 const TEMPORAL_LABELS: Record<string, string> = {
   this_year: "This Year",
@@ -39,7 +62,15 @@ function sprintHref(rec: PracticeRecommendation, domain: string): string {
   return `/play/sprint?topic=${encodeURIComponent(rec.topicId)}&length=${rec.length}&difficulty=${encodeURIComponent(rec.difficulty)}&adaptive=1&domain=${encodeURIComponent(domain)}`;
 }
 
-function CircularGauge({ percent, accent, segments }: { percent: number; accent: string; segments?: { id: string; color: string; mastery: number }[] }) {
+function CircularGauge({
+  percent,
+  accent,
+  segments,
+}: {
+  percent: number;
+  accent: string;
+  segments?: { id: string; color: string; mastery: number }[];
+}) {
   const r = 54;
   const c = 2 * Math.PI * r;
 
@@ -83,18 +114,31 @@ function CircularGauge({ percent, accent, segments }: { percent: number; accent:
           })()
         ) : (
           <circle
-            cx="60" cy="60" r={r} fill="none"
-            stroke={accent} strokeWidth="8" strokeLinecap="round"
+            cx="60"
+            cy="60"
+            r={r}
+            fill="none"
+            stroke={accent}
+            strokeWidth="8"
+            strokeLinecap="round"
             strokeDasharray={c}
             strokeDashoffset={c * (1 - Math.max(0, Math.min(100, percent)) / 100)}
             className="transition-all duration-700"
-            style={{ filter: `drop-shadow(0 0 8px ${accent}55)`, transformOrigin: "60px 60px", transform: "rotate(-90deg)" }}
+            style={{
+              filter: `drop-shadow(0 0 8px ${accent}55)`,
+              transformOrigin: "60px 60px",
+              transform: "rotate(-90deg)",
+            }}
           />
         )}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[28px] font-black tracking-tight text-foreground leading-none">{percent}%</span>
-        <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-muted-foreground/50 mt-1">ready</span>
+        <span className="text-[28px] font-black tracking-tight text-foreground leading-none">
+          {percent}%
+        </span>
+        <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-muted-foreground/50 mt-1">
+          ready
+        </span>
       </div>
     </div>
   );
@@ -144,7 +188,9 @@ function ModeHeader({
       />
       <div
         className="pointer-events-none absolute inset-x-8 top-0 h-px"
-        style={{ background: `linear-gradient(90deg, transparent, ${profile.accent}66, transparent)` }}
+        style={{
+          background: `linear-gradient(90deg, transparent, ${profile.accent}66, transparent)`,
+        }}
       />
 
       <div className="relative flex items-center justify-between gap-3">
@@ -153,7 +199,10 @@ function ModeHeader({
           style={{ borderColor: `${profile.accent}30`, background: `${profile.accent}0d` }}
         >
           <Target size={11} style={{ color: profile.accent }} />
-          <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: profile.accent }}>
+          <span
+            className="text-[10px] font-bold uppercase tracking-wider"
+            style={{ color: profile.accent }}
+          >
             {profile.title}
             {temporalLabel ? ` · ${temporalLabel}` : ""}
           </span>
@@ -170,19 +219,34 @@ function ModeHeader({
 
       <h2
         className="relative mt-3 bg-clip-text text-transparent text-[22px] font-black tracking-[-0.03em] leading-tight"
-        style={{ backgroundImage: `linear-gradient(90deg, ${profile.accent}, rgba(255,255,255,0.92))` }}
+        style={{
+          backgroundImage: `linear-gradient(90deg, ${profile.accent}, rgba(255,255,255,0.92))`,
+        }}
       >
         {isPath ? "Your Learning Path" : profile.title}
       </h2>
-      <p className="relative mt-1.5 text-[12px] font-medium text-muted-foreground/55">{profile.subtitle}</p>
+      <p className="relative mt-1.5 text-[12px] font-medium text-muted-foreground/55">
+        {profile.subtitle}
+      </p>
     </div>
   );
 }
 
-function CardHeader({ children, accent, action }: { children: React.ReactNode; accent: string; action?: React.ReactNode }) {
+function CardHeader({
+  children,
+  accent,
+  action,
+}: {
+  children: React.ReactNode;
+  accent: string;
+  action?: React.ReactNode;
+}) {
   return (
     <div className="flex items-center justify-between gap-3">
-      <p className="text-[9px] font-semibold tracking-[0.18em] uppercase" style={{ color: `${accent}d9` }}>
+      <p
+        className="text-[9px] font-semibold tracking-[0.18em] uppercase"
+        style={{ color: `${accent}d9` }}
+      >
         {children}
       </p>
       {action}
@@ -192,17 +256,49 @@ function CardHeader({ children, accent, action }: { children: React.ReactNode; a
 
 function ExamReadyBlock({ ctx }: { ctx: VariantCtx }) {
   const mission = [
-    ...(ctx.weak ? [{ n: "01", t: ctx.weak.topicLabel, d: `${ctx.weak.length} q · ${ctx.weak.difficulty}`, href: sprintHref(ctx.weak, ctx.domain) }] : []),
-    ...(ctx.practice ? [{ n: "02", t: ctx.practice.topicLabel, d: `${ctx.practice.length} q · spaced review`, href: sprintHref(ctx.practice, ctx.domain) }] : []),
-    ...(ctx.mock ? [{ n: "03", t: "Full-length Mock", d: `${ctx.mock.length} q · exam simulation`, href: "/learn?mode=mock" }] : []),
+    ...(ctx.weak
+      ? [
+          {
+            n: "01",
+            t: ctx.weak.topicLabel,
+            d: `${ctx.weak.length} q · ${ctx.weak.difficulty}`,
+            href: sprintHref(ctx.weak, ctx.domain),
+          },
+        ]
+      : []),
+    ...(ctx.practice
+      ? [
+          {
+            n: "02",
+            t: ctx.practice.topicLabel,
+            d: `${ctx.practice.length} q · spaced review`,
+            href: sprintHref(ctx.practice, ctx.domain),
+          },
+        ]
+      : []),
+    ...(ctx.mock
+      ? [
+          {
+            n: "03",
+            t: "Full-length Mock",
+            d: `${ctx.mock.length} q · exam simulation`,
+            href: "/learn?mode=mock",
+          },
+        ]
+      : []),
   ];
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <CardHeader accent={ctx.profile.accent}>Today&apos;s Mission</CardHeader>
       <div className="mt-3.5 flex flex-col gap-3">
         {mission.length === 0 && (
           <div className="rounded-2xl border border-dashed border-white/[0.06] px-4 py-6 text-center">
-            <p className="text-[11px] text-muted-foreground/50">Complete a sprint to unlock your mission.</p>
+            <p className="text-[11px] text-muted-foreground/50">
+              Complete a sprint to unlock your mission.
+            </p>
           </div>
         )}
         {mission.map((m) => (
@@ -212,7 +308,9 @@ function ExamReadyBlock({ ctx }: { ctx: VariantCtx }) {
             onClick={() => ctx.router.push(m.href)}
             className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-3 text-left transition-all hover:bg-white/[0.04] active:scale-[0.98]"
           >
-            <span className="font-mono text-[11px] font-bold" style={{ color: ctx.profile.accent }}>{m.n}</span>
+            <span className="font-mono text-[11px] font-bold" style={{ color: ctx.profile.accent }}>
+              {m.n}
+            </span>
             <div className="min-w-0 flex-1">
               <p className="text-[13px] font-bold text-foreground/85 truncate">{m.t}</p>
               <p className="text-micro text-muted-foreground/50 truncate">{m.d}</p>
@@ -222,16 +320,26 @@ function ExamReadyBlock({ ctx }: { ctx: VariantCtx }) {
         ))}
       </div>
 
-      <div className="mt-4 rounded-2xl border p-4" style={{ borderColor: `${ctx.profile.accent}25`, background: `${ctx.profile.accent}0a` }}>
+      <div
+        className="mt-4 rounded-2xl border p-4"
+        style={{ borderColor: `${ctx.profile.accent}25`, background: `${ctx.profile.accent}0a` }}
+      >
         <div className="flex items-center gap-2">
           <Zap size={12} style={{ color: ctx.profile.accent }} />
-          <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: ctx.profile.accent }}>Tactical Module</p>
+          <p
+            className="text-[10px] font-bold uppercase tracking-wider"
+            style={{ color: ctx.profile.accent }}
+          >
+            Tactical Module
+          </p>
         </div>
         <p className="mt-1.5 text-[13px] font-bold text-foreground leading-tight">
           {ctx.weak ? `Master ${ctx.weak.topicLabel}` : "Targeted intervention"}
         </p>
         <p className="mt-1 text-micro text-muted-foreground/55">
-          {ctx.weak ? `${ctx.weak.mastery}% mastered · ${ctx.weak.length} questions → tap to start` : "Your engine will create one after your first sprint."}
+          {ctx.weak
+            ? `${ctx.weak.mastery}% mastered · ${ctx.weak.length} questions → tap to start`
+            : "Your engine will create one after your first sprint."}
         </p>
       </div>
     </div>
@@ -242,12 +350,21 @@ function GapCloserBlock({ ctx }: { ctx: VariantCtx }) {
   const gap = 100 - ctx.overall;
   const gaps = [...ctx.topics].sort((a, b) => a.mastery - b.mastery).slice(0, 3);
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-      <CardHeader accent={ctx.profile.accent} action={(
-        <span className="rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
-          {gap}% gap
-        </span>
-      )}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
+      <CardHeader
+        accent={ctx.profile.accent}
+        action={
+          <span
+            className="rounded-full px-2.5 py-1 text-[10px] font-bold"
+            style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}
+          >
+            {gap}% gap
+          </span>
+        }
+      >
         Your Preparation Gap
       </CardHeader>
       <div className="mt-3.5 flex items-center gap-5">
@@ -257,18 +374,31 @@ function GapCloserBlock({ ctx }: { ctx: VariantCtx }) {
           segments={ctx.topics.map((t) => ({ id: t.id, color: t.color, mastery: t.mastery }))}
         />
         <div>
-          <p className="text-[13px] font-semibold text-foreground/80">You don&apos;t need to rush.<br />You need to become ready.</p>
+          <p className="text-[13px] font-semibold text-foreground/80">
+            You don&apos;t need to rush.
+            <br />
+            You need to become ready.
+          </p>
           <p className="mt-2 text-[11px] text-muted-foreground/55">
-            Current readiness <span className="font-bold" style={{ color: ctx.profile.accent }}>{ctx.overall}%</span>
+            Current readiness{" "}
+            <span className="font-bold" style={{ color: ctx.profile.accent }}>
+              {ctx.overall}%
+            </span>
           </p>
         </div>
       </div>
       {gaps.length > 0 && (
         <div className="mt-4">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50 mb-2">Your biggest gaps</p>
+          <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50 mb-2">
+            Your biggest gaps
+          </p>
           <div className="flex flex-wrap gap-1.5">
             {gaps.map((t) => (
-              <span key={t.id} className="rounded-full border border-white/[0.07] px-3 py-1 text-[10px] font-bold text-muted-foreground/70" style={{ background: `${t.color}12` }}>
+              <span
+                key={t.id}
+                className="rounded-full border border-white/[0.07] px-3 py-1 text-[10px] font-bold text-muted-foreground/70"
+                style={{ background: `${t.color}12` }}
+              >
                 {t.name} · {t.mastery}%
               </span>
             ))}
@@ -288,15 +418,24 @@ const DISCOVERY_PHASES = [
 
 function DiscoveryBlock({ ctx }: { ctx: VariantCtx }) {
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <CardHeader accent={ctx.profile.accent}>Current Focus</CardHeader>
       <p className="mt-3.5 mb-4 text-[12px] text-muted-foreground/55">
-        Your exam date isn&apos;t fixed yet — that&apos;s okay. We&apos;ll build your skills while you figure it out.
+        Your exam date isn&apos;t fixed yet — that&apos;s okay. We&apos;ll build your skills while
+        you figure it out.
       </p>
       <div className="flex flex-col gap-2.5">
         {DISCOVERY_PHASES.map((p, i) => (
-          <div key={p.t} className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-3">
-            <span className="font-mono text-[11px] font-bold" style={{ color: ctx.profile.accent }}>0{i + 1}</span>
+          <div
+            key={p.t}
+            className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-3"
+          >
+            <span className="font-mono text-[11px] font-bold" style={{ color: ctx.profile.accent }}>
+              0{i + 1}
+            </span>
             <div className="min-w-0 flex-1">
               <p className="text-[13px] font-bold text-foreground/85">{p.t}</p>
               <p className="text-micro text-muted-foreground/50">{p.d}</p>
@@ -312,24 +451,45 @@ function GuidedLearningBlock({ ctx }: { ctx: VariantCtx }) {
   const weak = ctx.topics[0];
   const next = ctx.topics[1] ?? weak;
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <CardHeader accent={ctx.profile.accent}>Today&apos;s Lesson</CardHeader>
       <div className="mt-3.5 flex flex-col gap-2">
         {ctx.topics.slice(0, 3).map((t, i) => (
-          <div key={t.id} className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-3">
-            <span className="grid size-7 place-items-center rounded-lg" style={{ background: `${t.color}15` }}>
-              <span className="text-[11px] font-bold" style={{ color: t.color }}>{["①", "②", "③"][i]}</span>
+          <div
+            key={t.id}
+            className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-3"
+          >
+            <span
+              className="grid size-7 place-items-center rounded-lg"
+              style={{ background: `${t.color}15` }}
+            >
+              <span className="text-[11px] font-bold" style={{ color: t.color }}>
+                {["①", "②", "③"][i]}
+              </span>
             </span>
             <p className="text-[13px] font-bold text-foreground/85">{t.name}</p>
-            <span className="ml-auto text-micro font-bold" style={{ color: t.color }}>{["Foundation", "Learn", "Practice"][i]}</span>
+            <span className="ml-auto text-micro font-bold" style={{ color: t.color }}>
+              {["Foundation", "Learn", "Practice"][i]}
+            </span>
           </div>
         ))}
       </div>
       {weak && (
-        <div className="mt-4 rounded-2xl border p-4" style={{ borderColor: `${ctx.profile.accent}25`, background: `${ctx.profile.accent}0a` }}>
+        <div
+          className="mt-4 rounded-2xl border p-4"
+          style={{ borderColor: `${ctx.profile.accent}25`, background: `${ctx.profile.accent}0a` }}
+        >
           <div className="flex items-center gap-2">
             <Brain size={12} style={{ color: ctx.profile.accent }} />
-            <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: ctx.profile.accent }}>Adaptive Note</p>
+            <p
+              className="text-[10px] font-bold uppercase tracking-wider"
+              style={{ color: ctx.profile.accent }}
+            >
+              Adaptive Note
+            </p>
           </div>
           <p className="mt-1.5 text-[12px] text-foreground/75 leading-snug">
             {weak.mastery === 0
@@ -344,33 +504,56 @@ function GuidedLearningBlock({ ctx }: { ctx: VariantCtx }) {
 
 function SpeedTrainingBlock({ ctx }: { ctx: VariantCtx }) {
   const accuracy = ctx.data?.lastSession?.accuracy ?? 0;
-  const avgSec = ctx.data && ctx.data.totalTimeSpent > 0 && ctx.data.sessionCount > 0
-    ? Math.max(3, Math.round((ctx.data.totalTimeSpent / (ctx.data.sessionCount * Math.max(ctx.data.topics.length, 1))) / 6))
-    : 8.4;
+  const avgSec =
+    ctx.data && ctx.data.totalTimeSpent > 0 && ctx.data.sessionCount > 0
+      ? Math.max(
+          3,
+          Math.round(
+            ctx.data.totalTimeSpent /
+              (ctx.data.sessionCount * Math.max(ctx.data.topics.length, 1)) /
+              6,
+          ),
+        )
+      : 8.4;
   const target = Math.max(4, avgSec - 1.5);
   const weak = ctx.topics[0];
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <CardHeader accent={ctx.profile.accent}>Speed Training</CardHeader>
       <div className="mt-3.5 grid grid-cols-2 gap-2.5">
         <div className="rounded-2xl border border-white/[0.06] p-3.5">
-          <p className="text-micro font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">Current Speed</p>
+          <p className="text-micro font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">
+            Current Speed
+          </p>
           <p className="mt-1.5 text-[22px] font-black tracking-tight text-foreground leading-none">
-            {avgSec}<span className="text-[12px] font-bold text-muted-foreground/50"> sec/q</span>
+            {avgSec}
+            <span className="text-[12px] font-bold text-muted-foreground/50"> sec/q</span>
           </p>
         </div>
         <div className="rounded-2xl border border-white/[0.06] p-3.5">
-          <p className="text-micro font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">Accuracy</p>
+          <p className="text-micro font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">
+            Accuracy
+          </p>
           <p className="mt-1.5 text-[22px] font-black tracking-tight text-foreground leading-none">
-            {accuracy > 0 ? `${accuracy}%` : "--"}<span className="text-[12px] font-bold text-muted-foreground/50"> last</span>
+            {accuracy > 0 ? `${accuracy}%` : "--"}
+            <span className="text-[12px] font-bold text-muted-foreground/50"> last</span>
           </p>
         </div>
       </div>
       {weak && (
-        <div className="mt-4 rounded-2xl border p-4" style={{ borderColor: `${ctx.profile.accent}25`, background: `${ctx.profile.accent}0a` }}>
+        <div
+          className="mt-4 rounded-2xl border p-4"
+          style={{ borderColor: `${ctx.profile.accent}25`, background: `${ctx.profile.accent}0a` }}
+        >
           <div className="flex items-center justify-between gap-2">
             <p className="text-[13px] font-bold text-foreground">Today&apos;s Challenge</p>
-            <span className="rounded-full bg-white/[0.06] px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider" style={{ color: ctx.profile.accent }}>
+            <span
+              className="rounded-full bg-white/[0.06] px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider"
+              style={{ color: ctx.profile.accent }}
+            >
               Target &lt; {target}s
             </span>
           </div>
@@ -386,25 +569,47 @@ function SpeedTrainingBlock({ ctx }: { ctx: VariantCtx }) {
 function PerformanceBlock({ ctx }: { ctx: VariantCtx }) {
   const weak = ctx.topics[0];
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <CardHeader accent={ctx.profile.accent}>Competitive Exam Mode</CardHeader>
       <div className="mt-3.5 flex items-center gap-5">
         <CircularGauge percent={ctx.overall} accent={ctx.profile.accent} />
         <div>
-          <p className="text-[13px] font-semibold text-foreground/80">Speed + accuracy under exam conditions.</p>
+          <p className="text-[13px] font-semibold text-foreground/80">
+            Speed + accuracy under exam conditions.
+          </p>
           <p className="mt-2 text-[11px] text-muted-foreground/55">
-            Weak area: <span className="font-bold" style={{ color: ctx.profile.accent }}>{weak?.name ?? "—"}</span>
+            Weak area:{" "}
+            <span className="font-bold" style={{ color: ctx.profile.accent }}>
+              {weak?.name ?? "—"}
+            </span>
           </p>
         </div>
       </div>
       {weak && (
-        <div className="mt-4 rounded-2xl border p-4" style={{ borderColor: `${ctx.profile.accent}25`, background: `${ctx.profile.accent}0a` }}>
+        <div
+          className="mt-4 rounded-2xl border p-4"
+          style={{ borderColor: `${ctx.profile.accent}25`, background: `${ctx.profile.accent}0a` }}
+        >
           <div className="flex items-center gap-2">
             <ShieldCheck size={12} style={{ color: ctx.profile.accent }} />
-            <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: ctx.profile.accent }}>Tactical Module</p>
+            <p
+              className="text-[10px] font-bold uppercase tracking-wider"
+              style={{ color: ctx.profile.accent }}
+            >
+              Tactical Module
+            </p>
           </div>
-          <p className="mt-1.5 text-[13px] font-bold text-foreground leading-tight">{ctx.weak?.topicLabel ?? `Rapid ${weak.name}`}</p>
-          <p className="mt-1 text-micro text-muted-foreground/55">{ctx.weak ? `${ctx.weak.length} questions · target 90%+ accuracy` : "Start with a sprint to calibrate speed."}</p>
+          <p className="mt-1.5 text-[13px] font-bold text-foreground leading-tight">
+            {ctx.weak?.topicLabel ?? `Rapid ${weak.name}`}
+          </p>
+          <p className="mt-1 text-micro text-muted-foreground/55">
+            {ctx.weak
+              ? `${ctx.weak.length} questions · target 90%+ accuracy`
+              : "Start with a sprint to calibrate speed."}
+          </p>
         </div>
       )}
     </div>
@@ -421,26 +626,38 @@ function BrainGymBlock({ ctx }: { ctx: VariantCtx }) {
     { t: "Memory Challenge", d: "5 min" },
   ];
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <CardHeader accent={ctx.profile.accent}>Today&apos;s Mental Workout</CardHeader>
       <div className="mt-3.5 grid grid-cols-2 gap-2.5">
         <div className="rounded-2xl border border-white/[0.06] p-3.5">
           <div className="flex items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">
             <Trophy size={11} style={{ color: ctx.profile.accent }} /> Today&apos;s Score
           </div>
-          <p className="mt-1.5 text-[22px] font-black tracking-tight text-foreground leading-none">{score}</p>
+          <p className="mt-1.5 text-[22px] font-black tracking-tight text-foreground leading-none">
+            {score}
+          </p>
         </div>
         <div className="rounded-2xl border border-white/[0.06] p-3.5">
           <div className="flex items-center gap-1.5 text-micro font-semibold uppercase tracking-[0.14em] text-muted-foreground/50">
             <TrendingUp size={11} style={{ color: ctx.profile.accent }} /> Personal Best
           </div>
-          <p className="mt-1.5 text-[22px] font-black tracking-tight text-foreground leading-none">{pb}</p>
+          <p className="mt-1.5 text-[22px] font-black tracking-tight text-foreground leading-none">
+            {pb}
+          </p>
         </div>
       </div>
       <div className="mt-4 flex flex-col gap-2">
         {workouts.map((w, i) => (
-          <div key={w.t} className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold" style={{ color: ctx.profile.accent }}>{String(i + 1).padStart(2, "0")}</span>
+          <div
+            key={w.t}
+            className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-2.5"
+          >
+            <span className="font-mono text-[10px] font-bold" style={{ color: ctx.profile.accent }}>
+              {String(i + 1).padStart(2, "0")}
+            </span>
             <p className="text-[12px] font-bold text-foreground/80">{w.t}</p>
             <span className="ml-auto text-micro text-muted-foreground/50">{w.d}</span>
           </div>
@@ -454,14 +671,20 @@ function BrainGymBlock({ ctx }: { ctx: VariantCtx }) {
 
 function StatsBlock({ ctx }: { ctx: VariantCtx }) {
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <CardHeader
         accent={ctx.profile.accent}
-        action={(
-          <span className="rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
+        action={
+          <span
+            className="rounded-full px-2.5 py-1 text-[10px] font-bold"
+            style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}
+          >
             {ctx.overall}% ready
           </span>
-        )}
+        }
       >
         Curriculum Preparedness
       </CardHeader>
@@ -473,44 +696,73 @@ function StatsBlock({ ctx }: { ctx: VariantCtx }) {
         />
         <div className="flex-1 min-w-0 flex flex-col gap-2.5">
           <div className="flex items-center gap-2.5">
-            <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: `${ctx.profile.accent}12` }}>
+            <div
+              className="size-7 rounded-lg flex items-center justify-center"
+              style={{ background: `${ctx.profile.accent}12` }}
+            >
               <Grid3x3 size={12} style={{ color: ctx.profile.accent }} />
             </div>
             <span className="text-[13px] font-semibold text-foreground/80">Topics Mastered</span>
-            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>{ctx.mastered}/{ctx.topics.length}</span>
+            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
+              {ctx.mastered}/{ctx.topics.length}
+            </span>
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: `${ctx.profile.accent}12` }}>
+            <div
+              className="size-7 rounded-lg flex items-center justify-center"
+              style={{ background: `${ctx.profile.accent}12` }}
+            >
               <Flame size={12} style={{ color: ctx.profile.accent }} />
             </div>
             <span className="text-[13px] font-semibold text-foreground/80">Daily Streak</span>
-            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>{ctx.bestStreak} days</span>
+            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
+              {ctx.bestStreak} days
+            </span>
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: `${ctx.profile.accent}12` }}>
+            <div
+              className="size-7 rounded-lg flex items-center justify-center"
+              style={{ background: `${ctx.profile.accent}12` }}
+            >
               <Clock size={12} style={{ color: ctx.profile.accent }} />
             </div>
             <span className="text-[13px] font-semibold text-foreground/80">Time Spent</span>
-            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>{ctx.hours}h</span>
+            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
+              {ctx.hours}h
+            </span>
           </div>
         </div>
       </div>
       {ctx.topics.length > 0 && (
         <div className="mt-4 rounded-2xl border border-white/[0.06] p-3">
           <div className="flex items-center justify-between">
-            <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground/50">Pending Across Topics</p>
-            <span className="text-[10px] font-bold" style={{ color: ctx.profile.accent }}>{ctx.topics.length - ctx.mastered} topics</span>
+            <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-muted-foreground/50">
+              Pending Across Topics
+            </p>
+            <span className="text-[10px] font-bold" style={{ color: ctx.profile.accent }}>
+              {ctx.topics.length - ctx.mastered} topics
+            </span>
           </div>
           <div className="mt-2.5 flex flex-col gap-1.5">
-            {[...ctx.topics].sort((a, b) => a.mastery - b.mastery).map((t) => (
-              <div key={t.id} className="flex items-center gap-2">
-                <span className="size-1.5 shrink-0 rounded-full" style={{ background: t.color, boxShadow: `0 0 6px ${t.color}66` }} />
-                <span className="min-w-0 flex-1 truncate text-[11px] font-semibold text-foreground/70">{t.name}</span>
-                <span className="shrink-0 text-[10px] font-mono font-bold" style={{ color: t.color }}>
-                  {100 - t.mastery}% pending
-                </span>
-              </div>
-            ))}
+            {[...ctx.topics]
+              .sort((a, b) => a.mastery - b.mastery)
+              .map((t) => (
+                <div key={t.id} className="flex items-center gap-2">
+                  <span
+                    className="size-1.5 shrink-0 rounded-full"
+                    style={{ background: t.color, boxShadow: `0 0 6px ${t.color}66` }}
+                  />
+                  <span className="min-w-0 flex-1 truncate text-[11px] font-semibold text-foreground/70">
+                    {t.name}
+                  </span>
+                  <span
+                    className="shrink-0 text-[10px] font-mono font-bold"
+                    style={{ color: t.color }}
+                  >
+                    {100 - t.mastery}% pending
+                  </span>
+                </div>
+              ))}
           </div>
         </div>
       )}
@@ -522,26 +774,46 @@ function TimeBudgetBlock({ ctx }: { ctx: VariantCtx }) {
   if (ctx.timeBudget.length === 0) return null;
   const total = ctx.timeBudget.reduce((s, b) => s + b.minutes, 0);
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <div className="flex items-center justify-between">
-        <p className="text-[9px] font-semibold tracking-[0.18em] uppercase" style={{ color: `${ctx.profile.accent}d9` }}>
+        <p
+          className="text-[9px] font-semibold tracking-[0.18em] uppercase"
+          style={{ color: `${ctx.profile.accent}d9` }}
+        >
           Daily Budget
         </p>
-        <span className="rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
+        <span
+          className="rounded-full px-2.5 py-1 text-[10px] font-bold"
+          style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}
+        >
           {total} min
         </span>
       </div>
       <div className="mt-3.5 flex flex-col gap-2">
         {ctx.timeBudget.map((b, i) => (
-          <div key={b.label} className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold" style={{ color: `${ctx.profile.accent}99` }}>
+          <div
+            key={b.label}
+            className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-2.5"
+          >
+            <span
+              className="font-mono text-[10px] font-bold"
+              style={{ color: `${ctx.profile.accent}99` }}
+            >
               {String(i + 1).padStart(2, "0")}
             </span>
-            <span className="min-w-0 truncate text-[12px] font-semibold text-foreground/80">{b.label}</span>
+            <span className="min-w-0 truncate text-[12px] font-semibold text-foreground/80">
+              {b.label}
+            </span>
             <div className="flex-1 h-1.5 rounded-full bg-white/[0.05] overflow-hidden">
               <div
                 className="h-full rounded-full"
-                style={{ width: `${Math.round((b.minutes / total) * 100)}%`, background: `${ctx.profile.accent}99` }}
+                style={{
+                  width: `${Math.round((b.minutes / total) * 100)}%`,
+                  background: `${ctx.profile.accent}99`,
+                }}
               />
             </div>
             <span className="shrink-0 text-[12px] font-bold" style={{ color: ctx.profile.accent }}>
@@ -557,14 +829,20 @@ function TimeBudgetBlock({ ctx }: { ctx: VariantCtx }) {
 function TopicMasteryList({ ctx }: { ctx: VariantCtx }) {
   const mastered = ctx.topics.filter((t) => t.mastery >= 80).length;
   return (
-    <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+    <div
+      className="rounded-3xl border backdrop-blur-xl p-5"
+      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+    >
       <CardHeader
         accent={ctx.profile.accent}
-        action={(
-          <span className="rounded-full px-2.5 py-1 text-[10px] font-bold" style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}>
+        action={
+          <span
+            className="rounded-full px-2.5 py-1 text-[10px] font-bold"
+            style={{ background: `${ctx.profile.accent}12`, color: ctx.profile.accent }}
+          >
             {mastered}/{ctx.topics.length} mastered
           </span>
-        )}
+        }
       >
         Your Topics
       </CardHeader>
@@ -574,17 +852,38 @@ function TopicMasteryList({ ctx }: { ctx: VariantCtx }) {
           const Icon = iconMeta?.icon ?? Grid3x3;
           const iconColor = iconMeta?.color ?? t.color;
           return (
-            <div key={t.id} className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-3">
-              <div className="size-8 shrink-0 rounded-lg flex items-center justify-center" style={{ background: `${iconColor}12` }}>
+            <div
+              key={t.id}
+              className="flex items-center gap-3 rounded-2xl border border-white/[0.06] px-4 py-3"
+            >
+              <div
+                className="size-8 shrink-0 rounded-lg flex items-center justify-center"
+                style={{ background: `${iconColor}12` }}
+              >
                 <Icon size={14} style={{ color: iconColor }} />
               </div>
-              <span className="max-w-[110px] truncate text-[13px] font-semibold text-foreground/85">{t.name}</span>
+              <span className="max-w-[110px] truncate text-[13px] font-semibold text-foreground/85">
+                {t.name}
+              </span>
               <div className="flex-1 h-2 rounded-full bg-white/[0.05] overflow-hidden">
-                <div className="h-full rounded-full transition-all duration-700" style={{ width: `${t.mastery}%`, background: `linear-gradient(90deg, ${t.color}88, ${t.color})` }} />
+                <div
+                  className="h-full rounded-full transition-all duration-700"
+                  style={{
+                    width: `${t.mastery}%`,
+                    background: `linear-gradient(90deg, ${t.color}88, ${t.color})`,
+                  }}
+                />
               </div>
-              <span className="w-8 text-right text-[13px] font-bold" style={{ color: t.color }}>{t.mastery}%</span>
+              <span className="w-8 text-right text-[13px] font-bold" style={{ color: t.color }}>
+                {t.mastery}%
+              </span>
               {t.status === "NEW" && (
-                <span className="text-[8px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5" style={{ background: `${t.color}18`, color: t.color }}>New</span>
+                <span
+                  className="text-[8px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5"
+                  style={{ background: `${t.color}18`, color: t.color }}
+                >
+                  New
+                </span>
               )}
             </div>
           );
@@ -608,13 +907,16 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
 
   const temporalLabel = temporalWindow ? (TEMPORAL_LABELS[temporalWindow] ?? "") : "";
 
-  const profile = resolveJourneyProfile({
-    domain,
-    temporalWindow,
-    vedicUseCase,
-    focusMode,
-    dailyMinutes: dailyMinutes ?? 30,
-  });
+  const profile: JourneyProfile = {
+    ...resolveJourneyProfile({
+      domain,
+      temporalWindow,
+      vedicUseCase,
+      focusMode,
+      dailyMinutes: dailyMinutes ?? 30,
+    }),
+    accent: "#C8FF4D",
+  };
 
   const daysRemaining = (() => {
     const raw = examDates[domain];
@@ -626,7 +928,10 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
 
   if (!data) {
     return (
-      <div className="rounded-3xl border border-white/[0.08] px-5 py-6" style={{ background: "rgba(255,255,255,0.04)" }}>
+      <div
+        className="rounded-3xl border border-white/[0.08] px-5 py-6"
+        style={{ background: "rgba(255,255,255,0.04)" }}
+      >
         <div className="h-4 w-40 rounded-xl bg-white/[0.06] animate-pulse mb-4" />
         <div className="size-[120px] rounded-full bg-white/[0.06] animate-pulse mx-auto" />
         <div className="h-3 w-3/4 rounded-xl bg-white/[0.05] animate-pulse mt-5 mx-auto" />
@@ -636,7 +941,8 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
 
   const topics = data.topics;
   const mastered = topics.filter((t) => t.mastery >= 80).length;
-  const overall = topics.length > 0 ? Math.round(topics.reduce((s, t) => s + t.mastery, 0) / topics.length) : 0;
+  const overall =
+    topics.length > 0 ? Math.round(topics.reduce((s, t) => s + t.mastery, 0) / topics.length) : 0;
   const bestStreak = topics.reduce((m, t) => Math.max(m, t.bestStreak), 0);
   const hours = Math.max(0, Math.round((data.totalTimeSpent ?? 0) / 3600));
 
