@@ -2,7 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Check, Clock, Plus, ShieldCheck, X, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  BicepsFlexed,
+  Brain,
+  Check,
+  Clock,
+  Crown,
+  Plus,
+  ShieldCheck,
+  Trophy,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
@@ -44,6 +54,7 @@ const STACK: {
   tag: string;
   list: number;
   badge?: string;
+  Icon: typeof Trophy;
 }[] = [
   {
     id: "kid1",
@@ -52,6 +63,7 @@ const STACK: {
     desc: "Nikhilam & IMO shortcuts • Live Arena Duels",
     tag: "OLYMPIAD FOUNDATION",
     list: 600,
+    Icon: Trophy,
   },
   {
     id: "kid2",
@@ -60,6 +72,7 @@ const STACK: {
     desc: "School mental speed • Table mastery & confidence",
     tag: "FOUNDATION SPEED CORE",
     list: 600,
+    Icon: BicepsFlexed,
   },
   {
     id: "elder",
@@ -69,43 +82,20 @@ const STACK: {
     tag: "MICRO-KEEPER",
     list: 600,
     badge: "PREMIUM",
+    Icon: Brain,
   },
 ];
 
-function SectionHeader({
-  n,
-  title,
-  tag,
-  tagClass,
-  numClass,
-  titleClass,
-}: {
-  n: number;
-  title: string;
-  tag: string;
-  tagClass: string;
-  numClass: string;
-  titleClass: string;
-}) {
+function SectionTitle({ marker, title, tag }: { marker: string; title: string; tag: string }) {
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
-        <span
-          className={cn(
-            "grid h-5 w-5 place-items-center rounded-full border  text-[10px] font-bold",
-            numClass,
-          )}
-        >
-          {n}
+        <span className="grid h-6 w-6 place-items-center rounded-full border border-[#C8FF4D]/35 bg-[#C8FF4D]/10 text-[10px] font-black text-[#C8FF4D]">
+          {marker}
         </span>
-        <h2 className={cn(" text-[10px] font-bold tracking-widest", titleClass)}>{title}</h2>
+        <h2 className="text-[10px] font-black tracking-[0.18em] text-foreground">{title}</h2>
       </div>
-      <span
-        className={cn(
-          "shrink-0 rounded border px-1.5 py-0.5  text-[7px] font-bold tracking-wider",
-          tagClass,
-        )}
-      >
+      <span className="shrink-0 rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[8px] font-bold tracking-wider text-[#C8FF4D]">
         {tag}
       </span>
     </div>
@@ -144,18 +134,13 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
     onCheckout?.(total);
   }, [total, onCheckout]);
 
+  const seatCount = stacked.length + 1;
+
   return (
-    <div className="flex flex-col gap-5">
-      {/* 1 — primary seat */}
+    <div className="space-y-6">
+      {/* 1 — head of the table */}
       <section>
-        <SectionHeader
-          n={1}
-          title="PRIMARY SEAT (PARENT TRACK)"
-          tag="REQUIRED BASE"
-          tagClass="border-fuchsia-400/30 bg-fuchsia-400/10 text-fuchsia-300"
-          numClass="border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]"
-          titleClass="text-[#C8FF4D]"
-        />
+        <SectionTitle marker="1" title="HEAD OF THE TABLE" tag="REQUIRED BASE" />
         <div role="radiogroup" aria-label="Primary seat" className="mt-3 space-y-2.5">
           {PRIMARY.map((p) => {
             const selected = p.id === primaryId;
@@ -166,31 +151,45 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 aria-checked={selected}
                 onClick={() => setPrimaryId(p.id)}
                 className={cn(
-                  "w-full rounded-xl border p-3 text-left transition",
+                  "relative w-full overflow-hidden rounded-2xl border p-3.5 text-left transition",
                   selected
-                    ? "border-[#C8FF4D] bg-[#C8FF4D]/[0.05] shadow-[0_0_24px_rgba(200,255,77,0.15)]"
-                    : "border-white/[0.06] bg-white/[0.02] hover:border-white/25",
+                    ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/[0.05]"
+                    : "border-white/[0.07] bg-black/25 hover:border-white/25",
                 )}
               >
+                {selected && (
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 top-0 h-px"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, transparent, rgba(200,255,77,0.5), transparent)",
+                    }}
+                  />
+                )}
                 <div className="flex items-start gap-3">
                   <span
                     className={cn(
-                      "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border-2",
+                      "mt-0.5 grid size-5 shrink-0 place-items-center rounded-full border-2",
                       selected ? "border-[#C8FF4D]" : "border-white/25",
                     )}
                   >
-                    {selected && <span className="size-2 rounded-full bg-[#C8FF4D]" />}
+                    {selected && <span className="size-2.5 rounded-full bg-[#C8FF4D]" />}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="flex flex-wrap items-center gap-1.5">
+                          <Crown
+                            size={13}
+                            className={cn(selected ? "text-[#C8FF4D]" : "text-muted-foreground/50")}
+                          />
                           <h3 className="text-[12px] font-bold uppercase tracking-wide text-foreground">
                             {p.title}
                           </h3>
                           {selected && (
-                            <span className="rounded bg-[#C8FF4D] px-1.5 py-px  text-[7px] font-bold tracking-wider text-[#0A0C0A]">
-                              ACTIVE SEAT
+                            <span className="rounded bg-[#C8FF4D] px-1.5 py-px text-[7px] font-bold tracking-wider text-[#0A0C0A]">
+                              HOLDING THIS SEAT
                             </span>
                           )}
                         </div>
@@ -210,7 +209,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                       <span className="flex items-center gap-1 text-[9px] text-muted-foreground/50">
                         <Clock size={10} /> {p.time}
                       </span>
-                      <span className=" text-[8px] font-bold tracking-wider text-[#C8FF4D]">
+                      <span className="text-[8px] font-bold tracking-wider text-[#C8FF4D]">
                         {p.tag}
                       </span>
                     </div>
@@ -222,16 +221,9 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
         </div>
       </section>
 
-      {/* 2 — stack vertical seats */}
+      {/* 2 — pull up a chair */}
       <section>
-        <SectionHeader
-          n={2}
-          title="STACK VERTICAL SEATS"
-          tag={`${STACK_DISCOUNT_PCT}% OFF STACK ENABLED`}
-          tagClass="border-cyan-400/30 bg-cyan-400/10 text-cyan-300"
-          numClass="border-cyan-400/40 bg-cyan-400/10 text-cyan-300"
-          titleClass="text-cyan-300"
-        />
+        <SectionTitle marker="2" title="PULL UP A CHAIR" tag={`${STACK_DISCOUNT_PCT}% OFF EACH`} />
         <div className="mt-3 space-y-2.5">
           {STACK.map((s) => {
             const added = stacked.includes(s.id);
@@ -241,45 +233,57 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 aria-pressed={added}
                 onClick={() => toggleSeat(s.id)}
                 className={cn(
-                  "w-full rounded-xl border p-3 text-left transition",
+                  "w-full rounded-2xl border p-3.5 text-left transition",
                   added
-                    ? "border-cyan-400 bg-cyan-400/[0.04] shadow-[0_0_24px_rgba(34,211,238,0.18)]"
-                    : "border-white/[0.06] bg-white/[0.02] hover:border-white/25",
+                    ? "border-[#C8FF4D]/40 bg-[#C8FF4D]/[0.04]"
+                    : "border-white/[0.07] bg-black/25 hover:border-white/25",
                 )}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <h3 className="text-[12px] font-bold uppercase leading-snug tracking-wide text-foreground">
-                        {s.title}
-                      </h3>
-                      {s.badge && (
-                        <span className="rounded border border-fuchsia-400/40 bg-fuchsia-400/15 px-1.5 py-px  text-[7px] font-bold tracking-wider text-fuchsia-300">
-                          {s.badge}
-                        </span>
+                  <div className="flex min-w-0 items-start gap-3">
+                    <span
+                      className={cn(
+                        "grid h-9 w-9 shrink-0 place-items-center rounded-xl border",
+                        added
+                          ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/10 text-[#C8FF4D]"
+                          : "border-white/10 bg-white/[0.03] text-muted-foreground/60",
                       )}
+                    >
+                      <s.Icon size={16} />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <h3 className="text-[12px] font-bold uppercase leading-snug tracking-wide text-foreground">
+                          {s.title}
+                        </h3>
+                        {s.badge && (
+                          <span className="rounded border border-fuchsia-400/40 bg-fuchsia-400/15 px-1.5 py-px text-[7px] font-bold tracking-wider text-fuchsia-300">
+                            {s.badge}
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">
+                        {s.desc}
+                      </p>
                     </div>
-                    <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">
-                      {s.desc}
-                    </p>
                   </div>
                   <span
                     className={cn(
-                      "flex shrink-0 items-center gap-1 rounded-md border px-2 py-1  text-[8px] font-bold tracking-wider",
+                      "flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[8px] font-bold tracking-wider",
                       added
-                        ? "border-cyan-400 bg-cyan-400 text-[#0A0C0A]"
+                        ? "border-[#C8FF4D] bg-[#C8FF4D] text-[#0A0C0A]"
                         : "border-white/20 text-muted-foreground/70",
                     )}
                   >
                     {added ? <Check size={10} /> : <Plus size={10} />}
-                    {added ? "ADDED" : "ADD SEAT"}
+                    {added ? "SEATED" : "ADD"}
                   </span>
                 </div>
-                <div className="mt-2.5 flex items-end justify-between">
+                <div className="mt-2.5 flex items-end justify-between pl-0.5">
                   <span
                     className={cn(
-                      " text-[8px] font-bold tracking-wider",
-                      added ? "text-cyan-300" : "text-muted-foreground/50",
+                      "text-[8px] font-bold tracking-wider",
+                      added ? "text-[#C8FF4D]" : "text-muted-foreground/50",
                     )}
                   >
                     {s.tag}
@@ -300,22 +304,29 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
         </div>
       </section>
 
-      {/* summary */}
-      <section className="rounded-2xl border border-[#C8FF4D]/25 bg-black/50 p-3.5">
+      {/* reservation receipt */}
+      <section className="relative overflow-hidden rounded-2xl border border-[#C8FF4D]/25 bg-[#0a0c0a] p-4">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.45), transparent)",
+          }}
+        />
         <div className="flex items-start justify-between gap-2">
           <div>
-            <p className=" text-[7px] font-bold tracking-[0.2em] text-[#C8FF4D]">
-              ACTIVE CONFIGURATION SUMMARY
+            <p className="text-[8px] font-black tracking-[0.2em] text-[#C8FF4D]">
+              YOUR RESERVATION
             </p>
             <h2 className="mt-1 text-[14px] font-black uppercase tracking-tight text-foreground">
-              Vertical seat breakdown
+              {seatCount} seat{seatCount > 1 ? "s" : ""} at the table
             </h2>
           </div>
-          <div className="shrink-0 rounded-lg border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-2.5 py-1 text-center">
+          <div className="shrink-0 rounded-xl border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-3 py-1.5 text-center">
             <div className="text-[14px] font-black leading-none text-[#C8FF4D]">
               {inr(monthly)}/mo
             </div>
-            <div className="mt-0.5  text-[6px] tracking-widest text-muted-foreground/50">
+            <div className="mt-0.5 text-[6px] tracking-widest text-muted-foreground/50">
               EFFECTIVE
             </div>
           </div>
@@ -325,22 +336,22 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
           {lines.map((l) => (
             <li
               key={l.label}
-              className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-2.5 py-2 text-[10px]"
+              className="flex items-center justify-between gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-2.5 py-2 text-[10px]"
             >
               <span className="text-muted-foreground/80">{l.label}</span>
-              <span className="shrink-0  font-bold text-foreground">{inr(l.amount)}</span>
+              <span className="shrink-0 font-bold text-foreground">{inr(l.amount)}</span>
             </li>
           ))}
           <li className="flex items-center justify-between gap-2 rounded-lg border border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06] px-2.5 py-2 text-[10px]">
             <span className="text-muted-foreground/80">
               Vs 1-on-1 Private Tutors ({inr(PRIVATE_TUTOR_ANNUAL)}/yr)
             </span>
-            <span className="shrink-0  text-[9px] font-bold text-[#C8FF4D]">SAVE {savePct}%</span>
+            <span className="shrink-0 text-[9px] font-bold text-[#C8FF4D]">SAVE {savePct}%</span>
           </li>
         </ul>
       </section>
 
-      <p className="flex items-center justify-center gap-1.5 text-center  text-[7px] tracking-wider text-muted-foreground/50">
+      <p className="flex items-center justify-center gap-1.5 text-center text-[7px] tracking-wider text-muted-foreground/50">
         <ShieldCheck size={10} />
         100% COPPA & DPDP COMPLIANT • ZERO ADS • CANCEL ANYTIME
       </p>
@@ -358,13 +369,11 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
-      overlayRef.current.animate(
-        [{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }],
-        {
-          duration: 320,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-        },
-      );
+      overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 300,
+        easing: "ease-out",
+        fill: "forwards",
+      });
     }
     return () => {
       document.body.style.overflow = "";
@@ -382,7 +391,7 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
     const done = () => onCloseRef.current();
     if (!el) return done();
     el.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 180,
+      duration: 200,
       easing: "ease-in",
       fill: "forwards",
     }).addEventListener("finish", done, { once: true });
@@ -399,97 +408,80 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
       ref={overlayRef}
       className="fixed inset-0 z-[220] overflow-y-auto"
       style={{
-        background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+        background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
       }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="seat-builder-hook-title"
     >
-      <div className="pointer-events-none absolute -top-16 right-0 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.08] blur-[90px]" />
-      <div className="pointer-events-none absolute left-0 top-[50%] h-64 w-64 rounded-full bg-cyan-500/[0.08] blur-[100px]" />
       <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 22px)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[-80px] h-52 w-52 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[90px]"
+      />
+      <div
+        aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{
-          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)",
+          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
         }}
       />
 
-      <div className="relative mx-auto w-full max-w-[400px] min-h-full">
-        {/* top bar */}
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-[#0a0a0d]/85 px-4 py-3 backdrop-blur">
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-7 w-7 place-items-center rounded-lg border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]">
-              <Zap size={14} />
-            </span>
-            <div>
-              <div className=" text-[11px] font-bold tracking-[0.25em] text-[#C8FF4D]">
-                EXAM ARENA
-              </div>
-              <div className="text-[10px] font-medium tracking-wide text-muted-foreground/70">
-                SEAT BUILDER HUB
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 rounded-full border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-2.5 py-1  text-[8px] font-bold tracking-wider text-[#C8FF4D]">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#C8FF4D]" />
-              MULTI-PLAN {STACK_DISCOUNT_PCT}% OFF
-            </span>
-            <button
-              aria-label="Close"
-              onClick={exit}
-              className="text-[#C8FF4D] transition-colors hover:text-[#D9FF85] active:scale-95"
+      <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-6">
+        <section className="mt-8 text-center">
+          <h1
+            id="seat-builder-hook-title"
+            className="text-[34px] font-extrabold uppercase leading-[0.98] tracking-tight text-foreground"
+          >
+            One seat is
+            <br />
+            never{" "}
+            <span
+              className="text-transparent"
+              style={{
+                background: "linear-gradient(90deg, #C8FF4D, #9be66a)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+              }}
             >
-              <X size={18} />
-            </button>
-          </div>
-        </header>
+              enough.
+            </span>
+          </h1>
+          <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-muted-foreground/80">
+            Head of the table picks the primary lane, then pull up chairs for everyone else — each
+            extra seat gets the stack on the spot.
+          </p>
+        </section>
 
-        <div className="relative space-y-5 px-4 pb-8 pt-5">
-          {/* hero */}
-          <section>
-            <div className="rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5">
-              <span className=" text-[8px] font-bold tracking-wider text-cyan-300">
-                MODULAR PROTOCOL ARCHITECTURE
-              </span>
-            </div>
-            <h2
-              id="seat-builder-hook-title"
-              className="mt-3 text-[26px] font-black uppercase leading-[1.1] tracking-tight text-foreground"
-            >
-              Build your{" "}
-              <span className="bg-gradient-to-r from-[#C8FF4D] to-cyan-300 bg-clip-text text-transparent">
-                cognitive suite
-              </span>
-            </h2>
-            <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground/70">
-              Select primary track, then stack additional family seats with instant{" "}
-              {STACK_DISCOUNT_PCT}% multi-seat discount.
-            </p>
-          </section>
-
+        <div className="mt-6">
           <SeatBuilderSelector onCheckout={setTotal} />
-
-          {/* CTA */}
-          <button
-            onClick={confirm}
-            className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5  text-[11px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
-            style={{
-              background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
-              boxShadow: "0 0 28px rgba(200,255,77,0.35), 0 1px 0 rgba(255,255,255,0.25) inset",
-            }}
-          >
-            <Zap size={14} />
-            ACTIVATE CONFIGURED PASS ({inr(total)}/YEAR)
-          </button>
-
-          <button
-            onClick={exit}
-            className="mx-auto block text-center text-[10px] text-muted-foreground/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
-          >
-            Cancel and return to training
-          </button>
         </div>
+
+        <button
+          onClick={confirm}
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+          style={{
+            background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+            boxShadow: "0 10px 34px rgba(163,230,53,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
+          }}
+        >
+          RESERVE YOUR SEATS FOR {inr(total)}/YR
+          <ArrowRight size={14} />
+        </button>
+
+        <button
+          onClick={exit}
+          className="mx-auto block text-center text-[10px] text-muted-foreground/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
+        >
+          Reserve later
+        </button>
       </div>
     </div>,
     document.body,
