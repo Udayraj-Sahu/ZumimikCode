@@ -39,7 +39,12 @@ import { PlanIntro } from "@/components/onboarding/plan-intro";
 
 const PERSONA_OPTIONS = [
   { label: "Student", icon: GraduationCap, color: "#34D399", desc: "Currently studying" },
-  { label: "Working Professional", icon: Briefcase, color: "#22D3EE", desc: "Balancing work & prep" },
+  {
+    label: "Working Professional",
+    icon: Briefcase,
+    color: "#22D3EE",
+    desc: "Balancing work & prep",
+  },
   { label: "Job Seeker", icon: Search, color: "#A78BFA", desc: "Preparing for next role" },
   { label: "Parent", icon: Heart, color: "#FB7185", desc: "Guiding a child" },
   { label: "Educator", icon: BookOpen, color: "#FBBF24", desc: "Teaching & mentoring" },
@@ -84,8 +89,18 @@ const TRIGGER_GROUPED = [
 ];
 
 const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
 const YEARS = Array.from({ length: 30 }, (_, i) => 2010 - i);
@@ -123,13 +138,17 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
   const [localFirstName, setLocalFirstName] = useState(store.firstName);
   const [localPersona, setLocalPersona] = useState<string | null>(store.persona);
-  const [localGoal, setLocalGoal] = useState<string | null>(store.goal ?? goalForExam(store.targetExam));
+  const [localGoal, setLocalGoal] = useState<string | null>(
+    store.goal ?? goalForExam(store.targetExam),
+  );
   const [localTemporal, setLocalTemporal] = useState<TemporalWindowId | null>(store.temporalWindow);
   const [localTriggers, setLocalTriggers] = useState<string[]>(store.triggers);
   const [localSex, setLocalSex] = useState<string | null>(store.sex);
   const [localDob, setLocalDob] = useState(store.dob);
   const [localVedicUseCase, setLocalVedicUseCase] = useState<string | null>(store.vedicUseCase);
-  const [featureHookVariant, setFeatureHookVariant] = useState<TemporalWindowId | "vedic" | null>(null);
+  const [featureHookVariant, setFeatureHookVariant] = useState<TemporalWindowId | "vedic" | null>(
+    null,
+  );
   const [showFamily, setShowFamily] = useState(false);
   const [showFamilyHub, setShowFamilyHub] = useState(false);
   const [showSeatBuilder, setShowSeatBuilder] = useState(false);
@@ -137,6 +156,13 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const [showArena, setShowArena] = useState(false);
   const [showPitch, setShowPitch] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
+
+  const preloadFamilyHub = showFamily || featureHookVariant === "vedic";
+  const preloadSeatBuilder = showFamilyHub;
+  const preloadStory = showSeatBuilder || showPlan;
+  const preloadArena = featureHookVariant === "this_year";
+  const preloadPitch = featureHookVariant === "whenever" || featureHookVariant === "not_sure";
+  const preloadPlan = showArena || showPitch;
 
   const handleTemporal = (v: TemporalWindowId | null) => {
     setLocalTemporal(v);
@@ -174,14 +200,19 @@ export function OnboardingModal({ onClose, inline }: Props) {
     if (inline) return;
     if (overlayRef.current && panelRef.current) {
       gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
-      gsap.fromTo(panelRef.current, { opacity: 0, y: 32, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" });
+      gsap.fromTo(
+        panelRef.current,
+        { opacity: 0, y: 32, scale: 0.97 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" },
+      );
     }
   }, [inline]);
 
   const animateStepTransition = useCallback((dir: 1 | -1) => {
     if (!contentRef.current) return;
     const el = contentRef.current;
-    gsap.fromTo(el,
+    gsap.fromTo(
+      el,
       { opacity: 0, x: dir * 40 },
       { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" },
     );
@@ -210,9 +241,18 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
   const handleClose = () => {
     persistPartial();
-    if (inline) { onClose(); return; }
+    if (inline) {
+      onClose();
+      return;
+    }
     if (overlayRef.current && panelRef.current) {
-      gsap.to(panelRef.current, { opacity: 0, y: 20, scale: 0.97, duration: 0.2, ease: "power2.in" });
+      gsap.to(panelRef.current, {
+        opacity: 0,
+        y: 20,
+        scale: 0.97,
+        duration: 0.2,
+        ease: "power2.in",
+      });
       gsap.to(overlayRef.current, { opacity: 0, duration: 0.2, onComplete: onClose });
     } else {
       onClose();
@@ -240,14 +280,21 @@ export function OnboardingModal({ onClose, inline }: Props) {
     store.finishOnboarding();
     setCompleted(true);
     if (contentRef.current) {
-      gsap.fromTo(contentRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" });
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" },
+      );
     }
     setTimeout(() => animateExitUp(), 2300);
   };
 
   const animateExitUp = () => {
     const overlay = overlayRef.current;
-    if (!overlay) { onClose(); return; }
+    if (!overlay) {
+      onClose();
+      return;
+    }
     if (panelRef.current) {
       gsap.to(panelRef.current, { y: -40, duration: 0.6, ease: "power2.in" });
     }
@@ -354,7 +401,14 @@ export function OnboardingModal({ onClose, inline }: Props) {
       </div>
 
       {/* Content */}
-      <div data-onboard-scroll className={cn("flex-1 min-h-0 px-5", completed ? "overflow-hidden" : "overflow-y-auto pt-4 pb-6 scroll-smooth")} style={{ scrollbarWidth: "none" }}>
+      <div
+        data-onboard-scroll
+        className={cn(
+          "flex-1 min-h-0 px-5",
+          completed ? "overflow-hidden" : "overflow-y-auto pt-4 pb-6 scroll-smooth",
+        )}
+        style={{ scrollbarWidth: "none" }}
+      >
         {completed ? (
           <div ref={completeRef} className="h-full flex flex-col">
             <CompletionScreen />
@@ -366,11 +420,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
               switch (id) {
                 case "name":
                   return (
-                    <StepName
-                      value={localFirstName}
-                      onChange={setLocalFirstName}
-                      onNext={goNext}
-                    />
+                    <StepName value={localFirstName} onChange={setLocalFirstName} onNext={goNext} />
                   );
                 case "persona":
                   return (
@@ -394,12 +444,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                     />
                   );
                 case "triggers":
-                  return (
-                    <StepTriggers
-                      value={localTriggers}
-                      onChange={setLocalTriggers}
-                    />
-                  );
+                  return <StepTriggers value={localTriggers} onChange={setLocalTriggers} />;
                 case "details":
                   return (
                     <StepDetails
@@ -430,7 +475,9 @@ export function OnboardingModal({ onClose, inline }: Props) {
                 <ChevronLeft size={14} />
                 Back
               </button>
-            ) : <div />}
+            ) : (
+              <div />
+            )}
             <button
               type="button"
               onClick={step === totalSteps - 1 ? handleFinish : goNext}
@@ -443,11 +490,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
               )}
               style={canNext ? { background: "#C8FF4D" } : undefined}
             >
-              {step === totalSteps - 1 ? (
-                <Sparkles size={16} />
-              ) : (
-                <ArrowRight size={16} />
-              )}
+              {step === totalSteps - 1 ? <Sparkles size={16} /> : <ArrowRight size={16} />}
             </button>
           </div>
         </div>
@@ -473,38 +516,44 @@ export function OnboardingModal({ onClose, inline }: Props) {
     goNext();
   };
 
-  const familyHubIntro = showFamilyHub ? (
-    <FamilyHubIntro
-      onDone={() => {
-        setShowFamilyHub(false);
-        setShowSeatBuilder(true);
-      }}
-      onClose={() => {
-        setShowFamilyHub(false);
-        setShowSeatBuilder(true);
-      }}
-    />
-  ) : null;
+  const familyHubIntro =
+    showFamilyHub || preloadFamilyHub ? (
+      <FamilyHubIntro
+        preloaded={!showFamilyHub}
+        onDone={() => {
+          setShowFamilyHub(false);
+          setShowSeatBuilder(true);
+        }}
+        onClose={() => {
+          setShowFamilyHub(false);
+          setShowSeatBuilder(true);
+        }}
+      />
+    ) : null;
 
-  const seatBuilderIntro = showSeatBuilder ? (
-    <SeatBuilderIntro
-      onClose={() => {
-        setShowSeatBuilder(false);
-        store.setPlanHookSeen(true);
-        setShowStory(true);
-      }}
-    />
-  ) : null;
+  const seatBuilderIntro =
+    showSeatBuilder || preloadSeatBuilder ? (
+      <SeatBuilderIntro
+        preloaded={!showSeatBuilder}
+        onClose={() => {
+          setShowSeatBuilder(false);
+          store.setPlanHookSeen(true);
+          setShowStory(true);
+        }}
+      />
+    ) : null;
 
-  const storyIntro = showStory ? (
-    <StoryIntro
-      onClose={() => {
-        setShowStory(false);
-        store.setStoryHookSeen(true);
-        goNext();
-      }}
-    />
-  ) : null;
+  const storyIntro =
+    showStory || preloadStory ? (
+      <StoryIntro
+        preloaded={!showStory}
+        onClose={() => {
+          setShowStory(false);
+          store.setStoryHookSeen(true);
+          goNext();
+        }}
+      />
+    ) : null;
 
   const familyIntro = showFamily ? (
     <FamilyIntro
@@ -519,63 +568,86 @@ export function OnboardingModal({ onClose, inline }: Props) {
     />
   ) : null;
 
-  const arenaIntro = showArena ? (
-    <ArenaIntro
-      onClose={() => {
-        setShowArena(false);
-        store.setArenaHookSeen(true);
-        setShowPlan(true);
-      }}
-    />
-  ) : null;
+  const arenaIntro =
+    showArena || preloadArena ? (
+      <ArenaIntro
+        preloaded={!showArena}
+        onClose={() => {
+          setShowArena(false);
+          store.setArenaHookSeen(true);
+          setShowPlan(true);
+        }}
+      />
+    ) : null;
 
-  const pitchIntro = showPitch ? (
-    <PitchIntro
-      onClose={() => {
-        setShowPitch(false);
-        store.setPitchHookSeen(true);
-        setShowPlan(true);
-      }}
-    />
-  ) : null;
+  const pitchIntro =
+    showPitch || preloadPitch ? (
+      <PitchIntro
+        preloaded={!showPitch}
+        onClose={() => {
+          setShowPitch(false);
+          store.setPitchHookSeen(true);
+          setShowPlan(true);
+        }}
+      />
+    ) : null;
 
-  const planIntro = showPlan ? (
-    <PlanIntro
-      onClose={() => {
-        setShowPlan(false);
-        store.setPlanHookSeen(true);
-        setShowStory(true);
-      }}
-    />
-  ) : null;
+  const planIntro =
+    showPlan || preloadPlan ? (
+      <PlanIntro
+        preloaded={!showPlan}
+        onClose={() => {
+          setShowPlan(false);
+          store.setPlanHookSeen(true);
+          setShowStory(true);
+        }}
+      />
+    ) : null;
 
   const introOverlay = featureHookVariant ? (
-    <FeatureIntro variant={featureHookVariant} onDone={featureHookDone} onClose={() => setFeatureHookVariant(null)} />
+    <FeatureIntro
+      variant={featureHookVariant}
+      onDone={featureHookDone}
+      onClose={() => setFeatureHookVariant(null)}
+    />
   ) : null;
 
-  if (inline) return <>{panel}{introOverlay}{familyIntro}{familyHubIntro}{seatBuilderIntro}{storyIntro}{arenaIntro}{pitchIntro}{planIntro}</>;
+  if (inline)
+    return (
+      <>
+        {panel}
+        {introOverlay}
+        {familyIntro}
+        {familyHubIntro}
+        {seatBuilderIntro}
+        {storyIntro}
+        {arenaIntro}
+        {pitchIntro}
+        {planIntro}
+      </>
+    );
 
   return (
     <>
       {createPortal(
-    <div
-      ref={overlayRef}
-      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm"
-      role="dialog"
-      aria-modal="true"
-      onClick={handleClose}
-    >
-      <div
-        ref={panelRef}
-        className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl flex flex-col"
-        style={{ background: "rgba(14,17,13,0.98)" }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {panel}
-      </div>
-    </div>,
-    document.body,
-  )}
+        <div
+          ref={overlayRef}
+          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          onClick={handleClose}
+        >
+          <div
+            ref={panelRef}
+            className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl flex flex-col"
+            style={{ background: "rgba(14,17,13,0.98)" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {panel}
+          </div>
+        </div>,
+        document.body,
+      )}
       {introOverlay}
       {familyIntro}
       {familyHubIntro}
@@ -590,28 +662,46 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
 /* ── Step sub-components ── */
 
-function StepName({ value, onChange, onNext }: { value: string; onChange: (v: string) => void; onNext: () => void }) {
+function StepName({
+  value,
+  onChange,
+  onNext,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  onNext: () => void;
+}) {
   return (
     <div className="flex flex-col">
       <div className="mb-6">
-        <div className="size-11 rounded-2xl flex items-center justify-center mb-4" style={{ background: "rgba(200,255,77,0.1)" }}>
+        <div
+          className="size-11 rounded-2xl flex items-center justify-center mb-4"
+          style={{ background: "rgba(200,255,77,0.1)" }}
+        >
           <User size={20} className="text-[#C8FF5A]" />
         </div>
-        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">What&apos;s your first name?</h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">So we can personalise your experience</p>
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
+          What&apos;s your first name?
+        </h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+          So we can personalise your experience
+        </p>
       </div>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        onKeyDown={(e) => { if (e.key === "Enter" && value.trim().length > 0) onNext(); }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && value.trim().length > 0) onNext();
+        }}
         placeholder="Type your name..."
         className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/25 outline-none focus:border-[#C8FF5A]/30 focus:ring-1 focus:ring-[#C8FF5A]/20 transition-all"
         autoFocus
       />
       {value.trim().length > 0 && (
         <p className="mt-3 text-[12px] text-muted-foreground/60 font-medium">
-          Hey <span className="text-foreground/70 font-bold">{value.trim()}</span>, nice to meet you!
+          Hey <span className="text-foreground/70 font-bold">{value.trim()}</span>, nice to meet
+          you!
         </p>
       )}
     </div>
@@ -660,11 +750,18 @@ function StepSingleSelect({
                 <Icon size={16} style={{ color: active ? "#C8FF4D" : "rgba(255,255,255,0.3)" }} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className={cn("text-[12px] font-bold leading-tight truncate", active ? "text-foreground" : "text-foreground/60")}>
+                <p
+                  className={cn(
+                    "text-[12px] font-bold leading-tight truncate",
+                    active ? "text-foreground" : "text-foreground/60",
+                  )}
+                >
                   {opt.label}
                 </p>
                 {opt.desc && (
-                  <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium truncate">{opt.desc}</p>
+                  <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium truncate">
+                    {opt.desc}
+                  </p>
                 )}
               </div>
               {active && (
@@ -718,7 +815,10 @@ function StepGoal({
       const r = target.getBoundingClientRect();
       const c = container.getBoundingClientRect();
       if (r.bottom > c.bottom) {
-        container.scrollTo({ top: container.scrollTop + (r.bottom - c.bottom) + 16, behavior: "smooth" });
+        container.scrollTo({
+          top: container.scrollTop + (r.bottom - c.bottom) + 16,
+          behavior: "smooth",
+        });
       } else if (r.top < c.top) {
         container.scrollTo({ top: container.scrollTop + (r.top - c.top) - 16, behavior: "smooth" });
       }
@@ -729,8 +829,12 @@ function StepGoal({
   return (
     <div className="flex flex-col">
       <div className="mb-5">
-        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">What brings you here?</h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">We&apos;ll tailor content to your goal</p>
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
+          What brings you here?
+        </h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+          We&apos;ll tailor content to your goal
+        </p>
       </div>
       <div ref={listRef} className="flex flex-col gap-3">
         {GOAL_OPTIONS.map((opt) => {
@@ -757,11 +861,18 @@ function StepGoal({
                   <Icon size={16} style={{ color: active ? "#C8FF4D" : "rgba(255,255,255,0.3)" }} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className={cn("text-[12px] font-bold leading-tight truncate", active ? "text-foreground" : "text-foreground/60")}>
+                  <p
+                    className={cn(
+                      "text-[12px] font-bold leading-tight truncate",
+                      active ? "text-foreground" : "text-foreground/60",
+                    )}
+                  >
                     {opt.label}
                   </p>
                   {opt.desc && (
-                    <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium truncate">{opt.desc}</p>
+                    <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium truncate">
+                      {opt.desc}
+                    </p>
                   )}
                 </div>
                 {active && (
@@ -819,10 +930,16 @@ function GoalPanel({ title, children }: { title: string; children: React.ReactNo
   }, []);
 
   return (
-    <div ref={ref} data-panel className="mt-2.5 w-full rounded-2xl border border-white/[0.06] bg-white/[0.02] px-4 py-4">
+    <div
+      ref={ref}
+      data-panel
+      className="mt-2.5 w-full rounded-2xl border border-white/[0.06] bg-white/[0.02] px-4 py-4"
+    >
       <div className="flex items-center gap-2 mb-3">
         <span className="w-1.5 h-1.5 rounded-sm bg-[#C8FF4D]" />
-        <p className="text-[9px] font-bold tracking-[0.14em] text-muted-foreground/55 uppercase">{title}</p>
+        <p className="text-[9px] font-bold tracking-[0.14em] text-muted-foreground/55 uppercase">
+          {title}
+        </p>
       </div>
       <div className="flex flex-col gap-1">{children}</div>
     </div>
@@ -846,12 +963,28 @@ function GoalRadioRow({
       onClick={onClick}
       className="w-full flex items-center gap-3 rounded-xl px-2 py-3 text-left transition-colors hover:bg-white/[0.03]"
     >
-      <span className={cn("size-4 rounded-full border flex items-center justify-center shrink-0", active ? "border-[#C8FF4D]" : "border-white/[0.18]")}>
+      <span
+        className={cn(
+          "size-4 rounded-full border flex items-center justify-center shrink-0",
+          active ? "border-[#C8FF4D]" : "border-white/[0.18]",
+        )}
+      >
         {active && <span className="size-2 rounded-full bg-[#C8FF4D]" />}
       </span>
       <span className="min-w-0 flex-1">
-        <span className={cn("block text-[13px] font-semibold leading-tight", active ? "text-foreground" : "text-foreground/60")}>{label}</span>
-        {sub && <span className="block text-micro text-muted-foreground/55 mt-0.5 font-medium">{sub}</span>}
+        <span
+          className={cn(
+            "block text-[13px] font-semibold leading-tight",
+            active ? "text-foreground" : "text-foreground/60",
+          )}
+        >
+          {label}
+        </span>
+        {sub && (
+          <span className="block text-micro text-muted-foreground/55 mt-0.5 font-medium">
+            {sub}
+          </span>
+        )}
       </span>
     </button>
   );
@@ -861,7 +994,9 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
   return (
     <div className="flex flex-col">
       <div className="mb-4">
-        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Which describe you right now?</h2>
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
+          Which describe you right now?
+        </h2>
         <p className="text-[13px] text-muted-foreground/50 mt-1 font-medium">Pick all that apply</p>
       </div>
       <div className="flex flex-col gap-4">
@@ -912,16 +1047,28 @@ function StepDetails({
   sex: string | null;
   onSexChange: (v: string) => void;
   dob: { day: number; month: string; year: number };
-  onDobChange: (fn: (prev: { day: number; month: string; year: number }) => { day: number; month: string; year: number }) => void;
+  onDobChange: (
+    fn: (prev: { day: number; month: string; year: number }) => {
+      day: number;
+      month: string;
+      year: number;
+    },
+  ) => void;
 }) {
   return (
     <div className="flex flex-col">
       <div className="mb-5">
-        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">Personal Details</h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">Help us personalise your journey</p>
+        <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
+          Personal Details
+        </h2>
+        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+          Help us personalise your journey
+        </p>
       </div>
 
-      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-2.5 uppercase">Gender</p>
+      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-2.5 uppercase">
+        Gender
+      </p>
       <div className="flex gap-2.5 mb-6">
         {["Male", "Female"].map((s) => (
           <button
@@ -940,7 +1087,9 @@ function StepDetails({
         ))}
       </div>
 
-      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-3 uppercase">Date of Birth</p>
+      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-3 uppercase">
+        Date of Birth
+      </p>
       <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
         <div className="flex">
           <ScrollColumn
@@ -1013,7 +1162,11 @@ function ScrollColumn({
         <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[rgba(14,17,13,0.98)] to-transparent z-10 pointer-events-none" />
         <div
           className="absolute left-1 right-1 h-10 rounded-xl border z-0 pointer-events-none"
-          style={{ top: PAD * ITEM_H, background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.06)" }}
+          style={{
+            top: PAD * ITEM_H,
+            background: "rgba(255,255,255,0.03)",
+            borderColor: "rgba(255,255,255,0.06)",
+          }}
         />
         <div
           ref={containerRef}
@@ -1035,7 +1188,9 @@ function ScrollColumn({
                 }}
                 className={cn(
                   "w-full flex items-center justify-center snap-center transition-all duration-200",
-                  isActive ? "text-foreground font-bold text-[15px]" : "text-muted-foreground/30 text-[13px] font-medium",
+                  isActive
+                    ? "text-foreground font-bold text-[15px]"
+                    : "text-muted-foreground/30 text-[13px] font-medium",
                 )}
                 style={{ height: ITEM_H }}
               >
@@ -1056,7 +1211,8 @@ function CompletionScreen() {
 
   useEffect(() => {
     if (boxRef.current) {
-      gsap.fromTo(boxRef.current.children,
+      gsap.fromTo(
+        boxRef.current.children,
         { opacity: 0, y: 10 },
         { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" },
       );
@@ -1066,34 +1222,60 @@ function CompletionScreen() {
   const name = store.firstName?.trim() || "Champion";
 
   const badges = [
-    store.planId ? { l: "PLAN", v: PLANS.find((p) => p.id === store.planId)?.name ?? "Initiate" } : null,
+    store.planId
+      ? { l: "PLAN", v: PLANS.find((p) => p.id === store.planId)?.name ?? "Initiate" }
+      : null,
     store.dailyMinutes ? { l: "DAILY", v: `${store.dailyMinutes} min` } : null,
-    store.selectedDrill ? { l: "DRILL", v: DRILLS.find((d) => d.id === store.selectedDrill)?.label ?? "None" } : null,
+    store.selectedDrill
+      ? { l: "DRILL", v: DRILLS.find((d) => d.id === store.selectedDrill)?.label ?? "None" }
+      : null,
   ].filter(Boolean);
 
   return (
     <div className="h-full flex flex-col justify-between py-5 text-center px-1">
       <div className="flex flex-col items-center">
         <div className="relative">
-          <div className="absolute -inset-8 rounded-full opacity-30 blur-2xl pointer-events-none" style={{ background: "radial-gradient(circle, rgba(167,139,250,0.45), transparent 70%)" }} />
+          <div
+            className="absolute -inset-8 rounded-full opacity-30 blur-2xl pointer-events-none"
+            style={{
+              background: "radial-gradient(circle, rgba(167,139,250,0.45), transparent 70%)",
+            }}
+          />
           <CelebrationAvatar />
         </div>
         <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
           <Sparkles size={12} className="text-[#C8FF4D]" />
-          <span className="text-micro font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">Profile complete</span>
+          <span className="text-micro font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">
+            Profile complete
+          </span>
         </div>
         <h2 className="mt-4 text-[24px] font-black tracking-[-0.03em] text-foreground">
           You&apos;re all set, <span className="text-[#C8FF4D]">{name}</span>!
         </h2>
-        <p className="mt-1.5 text-[12px] text-muted-foreground/40 font-medium">Let&apos;s start your fight</p>
+        <p className="mt-1.5 text-[12px] text-muted-foreground/40 font-medium">
+          Let&apos;s start your fight
+        </p>
       </div>
 
-      <div ref={boxRef} className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-5 mt-8">
-        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(167,139,250,0.35), transparent)" }} />
+      <div
+        ref={boxRef}
+        className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-5 mt-8"
+      >
+        <div
+          className="absolute top-0 left-0 right-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(167,139,250,0.35), transparent)",
+          }}
+        />
         <div className="relative flex items-center justify-around gap-2">
-          {[{ l: "PERSONA", v: store.persona || "Student" }, { l: "GOAL", v: store.goal || "Master math" }].map((item) => (
+          {[
+            { l: "PERSONA", v: store.persona || "Student" },
+            { l: "GOAL", v: store.goal || "Master math" },
+          ].map((item) => (
             <div key={item.l} className="flex flex-col items-center gap-1">
-              <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">{item.l}</span>
+              <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">
+                {item.l}
+              </span>
               <span className="text-[13px] font-bold text-foreground/70">{item.v}</span>
             </div>
           ))}
@@ -1102,7 +1284,9 @@ function CompletionScreen() {
           <div className="relative mt-4 flex items-center justify-around gap-2 border-t border-white/[0.05] pt-4">
             {badges.map((item) => (
               <div key={item!.l} className="flex flex-col items-center gap-1">
-                <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">{item!.l}</span>
+                <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">
+                  {item!.l}
+                </span>
                 <span className="text-[12px] font-bold text-foreground/70">{item!.v}</span>
               </div>
             ))}
@@ -1128,9 +1312,20 @@ function CelebrationAvatar() {
     tl.to(avatarRef.current, { y: -7, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 1 });
     sparks.forEach((s, i) => {
       const angle = (i / sparks.length) * Math.PI * 2;
-      gsap.fromTo(s,
+      gsap.fromTo(
+        s,
         { opacity: 0, scale: 0, x: 0, y: 0 },
-        { opacity: [0, 1, 0] as never, scale: [0, 1, 0.4] as never, x: Math.cos(angle) * 34, y: Math.sin(angle) * 34, duration: 1.4, ease: "power1.out", repeat: -1, repeatDelay: 0.9, delay: i * 0.18 },
+        {
+          opacity: [0, 1, 0] as never,
+          scale: [0, 1, 0.4] as never,
+          x: Math.cos(angle) * 34,
+          y: Math.sin(angle) * 34,
+          duration: 1.4,
+          ease: "power1.out",
+          repeat: -1,
+          repeatDelay: 0.9,
+          delay: i * 0.18,
+        },
       );
     });
     return () => {
@@ -1144,12 +1339,24 @@ function CelebrationAvatar() {
       <div ref={sparkleRef} className="absolute inset-0 pointer-events-none">
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <div className="size-1.5 rounded-full" style={{ background: ["#A78BFA", "#22D3EE", "#A78BFA", "#22D3EE", "#A78BFA", "#22D3EE"][i] }} />
+            <div
+              className="size-1.5 rounded-full"
+              style={{
+                background: ["#A78BFA", "#22D3EE", "#A78BFA", "#22D3EE", "#A78BFA", "#22D3EE"][i],
+              }}
+            />
           </div>
         ))}
       </div>
       <div ref={avatarRef}>
-        <div className="relative size-20 rounded-2xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(139,92,246,0.28), rgba(34,211,238,0.10))", border: "1px solid rgba(167,139,250,0.30)", boxShadow: "0 8px 30px rgba(139,92,246,0.18)" }}>
+        <div
+          className="relative size-20 rounded-2xl flex items-center justify-center"
+          style={{
+            background: "linear-gradient(135deg, rgba(139,92,246,0.28), rgba(34,211,238,0.10))",
+            border: "1px solid rgba(167,139,250,0.30)",
+            boxShadow: "0 8px 30px rgba(139,92,246,0.18)",
+          }}
+        >
           <div className="flex items-center gap-3">
             <div className="size-2.5 rounded-full bg-[#A78BFA]" />
             <div className="size-2.5 rounded-full bg-[#A78BFA]" />

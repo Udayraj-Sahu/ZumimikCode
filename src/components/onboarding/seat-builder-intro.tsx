@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
@@ -361,12 +361,19 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
 
 /* ── plan hook overlay for vedic (dashboard) ── */
 
-export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
+export function SeatBuilderIntro({
+  onClose,
+  preloaded = false,
+}: {
+  onClose: () => void;
+  preloaded?: boolean;
+}) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
   const [total, setTotal] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (preloaded) return;
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
       overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
@@ -378,7 +385,7 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [preloaded]);
 
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
@@ -406,12 +413,16 @@ export function SeatBuilderIntro({ onClose }: { onClose: () => void }) {
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[220] overflow-y-auto"
+      className={cn(
+        "fixed inset-0 z-[220] overflow-y-auto",
+        preloaded && "invisible pointer-events-none",
+      )}
       style={{
         background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
       }}
       role="dialog"
       aria-modal="true"
+      aria-hidden={preloaded || undefined}
       aria-labelledby="seat-builder-hook-title"
     >
       <div

@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { animate, stagger } from "animejs";
 import { useReducedMotion } from "motion/react";
 import { Brain, ChevronRight, Crosshair, Flame, Star, Target } from "lucide-react";
+import { cn } from "@/lib/utils";
 import Backlight from "@/components/ui/backlight";
 
 const LIME = "#C8FF4D";
@@ -48,7 +49,13 @@ const FINE_PRINT =
 
 const RATING = 4.8;
 
-export function PitchIntro({ onClose }: { onClose: () => void }) {
+export function PitchIntro({
+  onClose,
+  preloaded = false,
+}: {
+  onClose: () => void;
+  preloaded?: boolean;
+}) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
   const pitchRef = useRef<HTMLDivElement>(null);
@@ -57,7 +64,8 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
   const streakRef = useRef<HTMLSpanElement>(null);
   const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (preloaded) return;
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
       overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
@@ -68,9 +76,10 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [preloaded]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (preloaded) return;
     if (reduceMotion) return;
     const anims: ReturnType<typeof animate>[] = [];
 
@@ -120,7 +129,7 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
     return () => {
       anims.forEach((a) => a.cancel());
     };
-  }, [reduceMotion]);
+  }, [preloaded, reduceMotion]);
 
   const exit = useCallback((cb: () => void) => {
     if (closingRef.current) return;
@@ -137,12 +146,16 @@ export function PitchIntro({ onClose }: { onClose: () => void }) {
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[210] flex items-center justify-center overflow-y-auto"
+      className={cn(
+        "fixed inset-0 z-[210] flex items-center justify-center overflow-y-auto",
+        preloaded && "invisible pointer-events-none",
+      )}
       style={{
         background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
       }}
       role="dialog"
       aria-modal="true"
+      aria-hidden={preloaded || undefined}
       aria-labelledby="pitch-hook-title"
     >
       <div className="pointer-events-none absolute left-6 top-24 h-48 w-48 rounded-full bg-fuchsia-500/10 blur-[90px]" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
@@ -119,11 +119,20 @@ function GlowBall({ className }: { className: string }) {
   );
 }
 
-export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: () => void }) {
+export function FamilyIntro({
+  onDone,
+  onClose,
+  preloaded = false,
+}: {
+  onDone: () => void;
+  onClose: () => void;
+  preloaded?: boolean;
+}) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (preloaded) return;
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
       overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
@@ -135,7 +144,7 @@ export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: 
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [preloaded]);
 
   const exit = (cb: () => void) => {
     if (closingRef.current) return;
@@ -158,12 +167,16 @@ export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: 
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[210] overflow-y-auto"
+      className={cn(
+        "fixed inset-0 z-[210] overflow-y-auto",
+        preloaded && "invisible pointer-events-none",
+      )}
       style={{
         background: "radial-gradient(120% 90% at 50% 0%, #10150e 0%, #0a0c09 46%, #070906 100%)",
       }}
       role="dialog"
       aria-modal="true"
+      aria-hidden={preloaded || undefined}
       aria-labelledby="family-hook-title"
     >
       <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[#C8FF4D]/[0.14]" />
@@ -246,7 +259,7 @@ export function FamilyIntro({ onDone, onClose }: { onDone: () => void; onClose: 
                       </span>
                     </div>
                     <blockquote className="mt-2.5 text-[13px] font-semibold leading-snug text-foreground">
-                      "{c.quote}"
+                      {`\u201C${c.quote}\u201D`}
                     </blockquote>
                     <p className="mt-1.5 text-[9.5px] leading-snug text-muted-foreground/70">
                       {c.sub}

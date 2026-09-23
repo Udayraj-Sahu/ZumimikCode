@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
@@ -97,11 +97,20 @@ function FadeUp({
   );
 }
 
-export function FamilyHubIntro({ onDone, onClose }: { onDone: () => void; onClose: () => void }) {
+export function FamilyHubIntro({
+  onDone,
+  onClose,
+  preloaded = false,
+}: {
+  onDone: () => void;
+  onClose: () => void;
+  preloaded?: boolean;
+}) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (preloaded) return;
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
       overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
@@ -113,7 +122,7 @@ export function FamilyHubIntro({ onDone, onClose }: { onDone: () => void; onClos
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [preloaded]);
 
   const exit = (cb: () => void) => {
     if (closingRef.current) return;
@@ -136,12 +145,16 @@ export function FamilyHubIntro({ onDone, onClose }: { onDone: () => void; onClos
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[220] overflow-y-auto"
+      className={cn(
+        "fixed inset-0 z-[220] overflow-y-auto",
+        preloaded && "invisible pointer-events-none",
+      )}
       style={{
         background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
       }}
       role="dialog"
       aria-modal="true"
+      aria-hidden={preloaded || undefined}
       aria-labelledby="family-hub-hook-title"
     >
       <div

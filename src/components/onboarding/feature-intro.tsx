@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   motion,
@@ -273,14 +273,16 @@ type Props = {
   variant: Variant;
   onDone: () => void;
   onClose: () => void;
+  preloaded?: boolean;
 };
 
-export function FeatureIntro({ variant, onDone, onClose }: Props) {
+export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Props) {
   const copy = VARIANT_COPY[variant];
   const overlayRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (preloaded) return;
     if (!overlayRef.current) return;
     if (reduceMotion) return;
     const el = overlayRef.current;
@@ -288,18 +290,7 @@ export function FeatureIntro({ variant, onDone, onClose }: Props) {
       duration: 320,
       easing: "cubic-bezier(0.22, 1, 0.36, 1)",
     });
-  }, [reduceMotion]);
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.stopPropagation();
-        exit(onClose);
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  });
+  }, [preloaded, reduceMotion]);
 
   const exitingRef = useRef(false);
   const exit = useCallback((cb: () => void) => {
@@ -314,11 +305,27 @@ export function FeatureIntro({ variant, onDone, onClose }: Props) {
     }).addEventListener("finish", cb, { once: true });
   }, []);
 
+  useEffect(() => {
+    if (preloaded) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        exit(onClose);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [preloaded, exit, onClose]);
+
   return createPortal(
     <MotionConfig reducedMotion="user">
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[210] overflow-hidden flex flex-col items-center"
+        className={cn(
+          "fixed inset-0 z-[210] overflow-hidden flex flex-col items-center",
+          preloaded && "invisible pointer-events-none",
+        )}
+        aria-hidden={preloaded || undefined}
         style={{
           background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
         }}

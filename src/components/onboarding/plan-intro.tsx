@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { MotionConfig, motion } from "motion/react";
 import { Check, CreditCard, Lock, QrCode, ShieldCheck, Smartphone } from "lucide-react";
@@ -279,7 +279,13 @@ const PAY_MODES: { id: "upi" | "wallet" | "card"; label: string; Icon: typeof Qr
 
 const COUPON = { code: "VIP_EARLYBIRD", amount: 100, note: "Early Adopter Neural Grant" };
 
-export function PlanIntro({ onClose }: { onClose: () => void }) {
+export function PlanIntro({
+  onClose,
+  preloaded = false,
+}: {
+  onClose: () => void;
+  preloaded?: boolean;
+}) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -300,7 +306,8 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
 
   const deckIndex = PLANS.findIndex((p) => p.id === planId);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (preloaded) return;
     document.body.style.overflow = "hidden";
     if (overlayRef.current) {
       overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
@@ -312,7 +319,7 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [preloaded]);
 
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
@@ -341,12 +348,16 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
     <MotionConfig reducedMotion="user">
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[70] overflow-y-auto"
+        className={cn(
+          "fixed inset-0 z-[70] overflow-y-auto",
+          preloaded && "invisible pointer-events-none",
+        )}
         style={{
           background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
         }}
         role="dialog"
         aria-modal="true"
+        aria-hidden={preloaded || undefined}
         aria-labelledby="plan-hook-title"
       >
         <div

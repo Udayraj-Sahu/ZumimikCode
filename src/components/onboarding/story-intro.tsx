@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { MotionConfig, motion, type Variants } from "motion/react";
 import {
@@ -911,7 +911,13 @@ const itemVariants: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: [0.22, 1, 0.36, 1] } },
 };
 
-export function StoryIntro({ onClose }: { onClose: () => void }) {
+export function StoryIntro({
+  onClose,
+  preloaded = false,
+}: {
+  onClose: () => void;
+  preloaded?: boolean;
+}) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -933,7 +939,8 @@ export function StoryIntro({ onClose }: { onClose: () => void }) {
     };
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (preloaded) return;
     if (overlayRef.current) {
       const el = overlayRef.current;
       el.animate([{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }], {
@@ -941,7 +948,7 @@ export function StoryIntro({ onClose }: { onClose: () => void }) {
         easing: "cubic-bezier(0.22, 1, 0.36, 1)",
       });
     }
-  }, []);
+  }, [preloaded]);
 
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
@@ -973,12 +980,16 @@ export function StoryIntro({ onClose }: { onClose: () => void }) {
     <MotionConfig reducedMotion="user">
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[70] overflow-y-auto flex justify-center"
+        className={cn(
+          "fixed inset-0 z-[70] flex justify-center overflow-y-auto overflow-x-clip",
+          preloaded && "invisible pointer-events-none",
+        )}
         style={{
           background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
         }}
         role="dialog"
         aria-modal="true"
+        aria-hidden={preloaded || undefined}
       >
         <div className="relative w-full max-w-[430px] min-h-full px-[14px] pb-[24px]">
           {/* ambient glows */}
