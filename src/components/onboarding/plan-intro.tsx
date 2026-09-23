@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { MotionConfig, motion } from "motion/react";
-import { Check, CreditCard, Lock, QrCode, ShieldCheck, Smartphone, X } from "lucide-react";
+import { Check, CreditCard, Lock, QrCode, ShieldCheck, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PLANS } from "@/lib/types/onboarding";
 import type { PlanId } from "@/lib/types/onboarding";
@@ -83,7 +83,40 @@ const CARD_CODE: Record<PlanId, string> = {
   "dual-lane": "0000 7070 1340",
 };
 
-/* ── Presentational: plan selector (reused by AdaptiveReprompt) ── */
+function FadeUp({
+  delay = 0,
+  className,
+  children,
+}: {
+  delay?: number;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.animate(
+      [
+        { opacity: 0, transform: "translateY(14px)" },
+        { opacity: 1, transform: "translateY(0)" },
+      ],
+      {
+        duration: 550,
+        delay,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        fill: "backwards",
+      },
+    );
+  }, [delay]);
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+}
+
+/* ── Presentational: plan selector (reused by AdaptiveReprompt & paywall) ── */
 
 export function PlanSelector({
   value,
@@ -126,20 +159,19 @@ export function PlanSelector({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 + idx * 0.05, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "relative w-full rounded-2xl border p-3 text-left transition",
+              "relative w-full rounded-[20px] border p-3.5 text-left transition",
               selected
                 ? "border-[#C8FF4D]/55 bg-[#C8FF4D]/[0.06] shadow-[0_0_24px_rgba(200,255,77,0.12)]"
-                : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.14]",
+                : "border-white/[0.07] bg-black/25 hover:border-white/[0.16]",
             )}
           >
             {p.badge && selected && (
-              <span className="absolute -top-2 right-3 rounded-full bg-[#C8FF4D] px-2 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-[0.14em] text-[#0A0C0A]">
+              <span className="absolute -top-2 right-3 rounded-full bg-[#C8FF4D] px-2 py-0.5 text-[8px] font-bold tracking-[0.14em] text-[#0A0C0A]">
                 {p.badge}
               </span>
             )}
 
             <div className="flex items-start gap-3">
-              {/* radio */}
               <span
                 className={cn(
                   "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border-2 transition-colors",
@@ -184,10 +216,10 @@ export function PlanSelector({
                 {tracks && selected && (
                   <div className="mt-3">
                     <div className="flex items-center justify-between">
-                      <span className="font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.14em] text-muted-foreground/50">
+                      <span className="text-[9px] tracking-[0.14em] text-muted-foreground/50">
                         UNLOCKED TRACKS:
                       </span>
-                      <span className="font-[family-name:var(--font-space-grotesk)] text-[9px] font-bold text-cyan-400">
+                      <span className="text-[9px] font-bold text-cyan-400">
                         {p.lanes} Lanes Active
                       </span>
                     </div>
@@ -269,277 +301,287 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
   const deckIndex = PLANS.findIndex((p) => p.id === planId);
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     if (overlayRef.current) {
-      const el = overlayRef.current;
-      el.animate([{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }], {
+      overlayRef.current.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: 320,
-        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        easing: "ease-out",
+        fill: "forwards",
       });
     }
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, []);
 
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
   const closingRef = useRef(false);
 
-  const confirm = useCallback(() => {
-    if (closingRef.current) return;
-    closingRef.current = true;
-    store.setPlanId(planId);
-    store.setPlanLane(lane);
-    const done = () => onCloseRef.current();
-    const el = overlayRef.current;
-    if (!el) return done();
-    el.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 180,
-      easing: "ease-in",
-      fill: "forwards",
-    }).addEventListener("finish", done, { once: true });
-  }, [store, planId, lane]);
-
-  const skip = useCallback(() => {
+  const fadeOut = useCallback(() => {
     if (closingRef.current) return;
     closingRef.current = true;
     const done = () => onCloseRef.current();
     const el = overlayRef.current;
     if (!el) return done();
     el.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 180,
+      duration: 200,
       easing: "ease-in",
       fill: "forwards",
     }).addEventListener("finish", done, { once: true });
   }, []);
 
+  const confirm = useCallback(() => {
+    store.setPlanId(planId);
+    store.setPlanLane(lane);
+    fadeOut();
+  }, [store, planId, lane, fadeOut]);
+
   return createPortal(
     <MotionConfig reducedMotion="user">
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[70] flex overflow-y-auto justify-center"
+        className="fixed inset-0 z-[70] overflow-y-auto"
         style={{
-          background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+          background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
         }}
         role="dialog"
         aria-modal="true"
+        aria-labelledby="plan-hook-title"
       >
-        <div className="relative w-full max-w-[400px] min-h-full px-4 pb-8 pt-8">
-          {/* ambient glows */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[90px]"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-0 right-0 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.07] blur-[90px]"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px"
-            style={{
-              background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.35), transparent)",
-            }}
-          />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-[-90px] h-56 w-56 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[95px]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          }}
+        />
 
-          {/* heading */}
-          <section className="relative text-center">
-            <p className="font-[family-name:var(--font-space-grotesk)] text-[10px] font-semibold uppercase tracking-[0.28em] text-fuchsia-400">
-              {"Elite Unlock Terminal"}
-            </p>
-            <h1 className="mt-2 text-[clamp(1.55rem,7vw,1.9rem)] font-black uppercase leading-[1.05] tracking-[-0.02em] text-foreground">
-              Insert your
-              <span className="block bg-gradient-to-r from-[#C8FF4D] to-[#A9E93E] bg-clip-text text-transparent">
-                protocol card
+        <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-8">
+          {/* centered brand */}
+          <FadeUp className="flex justify-center">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.07] px-4 py-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C8FF4D] opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C8FF4D]" />
+              </span>
+              <span className="text-[11px] font-bold tracking-[0.22em] text-[#C8FF4D]">
+                MEMBERSHIP
+              </span>
+            </div>
+          </FadeUp>
+
+          {/* hero */}
+          <FadeUp delay={80} className="mt-5 text-center">
+            <h1
+              id="plan-hook-title"
+              className="text-[34px] font-extrabold uppercase leading-[0.98] tracking-tight text-foreground"
+            >
+              Pick your{" "}
+              <span
+                className="text-transparent"
+                style={{
+                  background: "linear-gradient(90deg, #C8FF4D, #e8ffb0)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                }}
+              >
+                pace.
               </span>
             </h1>
-            <p className="mx-auto mt-2.5 flex max-w-[300px] items-center justify-center gap-1.5 text-[13px] text-muted-foreground/70">
-              Target locked:{" "}
-              <span className="font-[family-name:var(--font-space-grotesk)] font-bold text-foreground">
-                {laneLabel(lane)}
-              </span>
+            <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-muted-foreground/80">
+              One pass, tuned to your exam —{" "}
+              <span className="font-semibold text-foreground">{laneLabel(lane)}</span>. Upgrade
+              lanes any time from Settings.
             </p>
-          </section>
+          </FadeUp>
 
           {/* billing switch */}
-          <div className="relative mt-6 grid grid-cols-2 gap-1 rounded-2xl border border-white/[0.08] bg-black/40 p-1">
-            {(["annual", "monthly"] as const).map((b) => {
-              const active = billing === b;
-              const off =
-                b === "annual"
-                  ? realDiscount(PLANS[0].billing.annual, PLANS[0].billing.monthly)
-                  : 0;
-              return (
-                <button
-                  key={b}
-                  type="button"
-                  onClick={() => setBilling(b)}
-                  className={cn(
-                    "rounded-xl px-3 py-2 text-center transition",
-                    active
-                      ? "border border-[#C8FF4D]/50 bg-[#C8FF4D]/10 shadow-[0_0_18px_rgba(200,255,77,0.12)]"
-                      : "border border-transparent hover:bg-white/5",
-                  )}
-                >
-                  <div className="flex items-center justify-center gap-1.5">
-                    <span
-                      className={cn(
-                        "font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-widest",
-                        active ? "text-foreground" : "text-muted-foreground/70",
-                      )}
-                    >
-                      {b.toUpperCase()}
-                    </span>
-                    {off > 0 && (
-                      <span className="rounded bg-[#C8FF4D] px-1 py-px text-[8px] font-bold text-[#0A0C0A]">
-                        -{off}%
-                      </span>
-                    )}
-                  </div>
-                  <div className="mt-0.5 text-[11px] text-muted-foreground/60">
-                    {inr(PLANS[0].billing[b])}/{b === "annual" ? "yr" : "mo"}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* fanned plan deck */}
-          <div className="relative mt-5" style={{ perspective: 1000 }}>
-            <div className="relative h-[216px]">
-              {PLANS.map((p, idx) => {
-                const diff = idx - deckIndex;
-                const sel = diff === 0;
-                const s = DECK_STYLE[p.id];
-                const tag =
-                  p.id === "initiate"
-                    ? "FREE · FOREVER"
-                    : p.id === "single-lane"
-                      ? laneLabel(lane).toUpperCase()
-                      : "×2 LANES";
+          <FadeUp delay={140} className="mt-6">
+            <div className="grid grid-cols-2 gap-1 rounded-2xl border border-white/[0.08] bg-black/40 p-1">
+              {(["annual", "monthly"] as const).map((b) => {
+                const active = billing === b;
+                const off =
+                  b === "annual"
+                    ? realDiscount(PLANS[0].billing.annual, PLANS[0].billing.monthly)
+                    : 0;
                 return (
-                  <motion.button
-                    key={p.id}
+                  <button
+                    key={b}
                     type="button"
-                    onClick={() => setPlanId(p.id)}
-                    aria-pressed={sel}
-                    initial={false}
-                    animate={{
-                      rotateY: diff * -17,
-                      x: diff * 34,
-                      scale: 1 - Math.min(0.14, Math.abs(diff) * 0.07),
-                      opacity: 1 - Math.min(0.45, Math.abs(diff) * 0.22),
-                      zIndex: 10 - Math.abs(diff),
-                    }}
-                    transition={{ type: "spring", stiffness: 240, damping: 26 }}
+                    onClick={() => setBilling(b)}
                     className={cn(
-                      "absolute inset-x-0 top-0 mx-auto w-[300px] overflow-hidden rounded-[22px] border p-4 text-left backdrop-blur-xl transition-shadow",
-                      s.ring,
-                      sel && s.glow,
+                      "rounded-xl px-3 py-2 text-center transition",
+                      active
+                        ? "border border-[#C8FF4D]/50 bg-[#C8FF4D]/10 shadow-[0_0_18px_rgba(200,255,77,0.12)]"
+                        : "border border-transparent hover:bg-white/5",
                     )}
                   >
-                    {/* card face gradient */}
-                    <div
-                      className={cn(
-                        "pointer-events-none absolute inset-0 bg-gradient-to-br",
-                        s.grad,
-                      )}
-                    />
-
-                    {/* holo shimmer */}
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute -top-16 left-1/2 h-32 w-[260px] -translate-x-1/2 rotate-[-14deg] opacity-60"
-                      style={{
-                        background:
-                          "linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)",
-                        filter: "blur(6px)",
-                      }}
-                    />
-
-                    <div className="relative">
-                      <div className="flex items-start justify-between gap-2">
-                        <span className="font-[family-name:var(--font-space-grotesk)] text-[15px] font-black uppercase tracking-tight text-white">
-                          {p.name}
-                        </span>
-                        <span
-                          className={cn(
-                            "rounded-md border px-1.5 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-[0.14em]",
-                            s.tag,
-                            sel ? "opacity-100" : "opacity-60",
-                          )}
-                        >
-                          {tag}
-                        </span>
-                      </div>
-
-                      {/* emv chip + code */}
-                      <div className="mt-3 flex items-center justify-between">
-                        <span
-                          className={cn(
-                            "grid h-8 w-11 place-items-center rounded-md border bg-gradient-to-br",
-                            s.chip,
-                          )}
-                        >
-                          <span className="h-4 w-7 rounded-[3px] border border-black/30 bg-black/20" />
-                        </span>
-                        <span className="font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-[0.22em] text-white/70">
-                          {CARD_CODE[p.id]}
-                        </span>
-                      </div>
-
-                      <div className="mt-3 flex items-baseline gap-1.5">
-                        <motion.span
-                          key={`${planId}-${billing}`}
-                          initial={{ y: -8, opacity: 0 }}
-                          animate={{ y: 0, opacity: 1 }}
-                          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                          className={cn(
-                            "text-[34px] font-black leading-none tracking-tight",
-                            s.price,
-                          )}
-                        >
-                          {inr(price)}
-                        </motion.span>
-                        <span className="text-[11px] font-medium text-muted-foreground/60">
-                          /{unit}
-                        </span>
-                        {pct > 0 && billing === "annual" && (
-                          <span className="ml-auto rounded bg-[#FB7185]/15 px-1.5 py-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold text-rose-300">
-                            SAVE {pct}%
-                          </span>
-                        )}
-                      </div>
-
-                      <p
+                    <div className="flex items-center justify-center gap-1.5">
+                      <span
                         className={cn(
-                          "mt-1 text-[11px] leading-snug",
-                          sel ? "text-muted-foreground/70" : "text-muted-foreground/40",
+                          "text-[10px] font-bold tracking-widest",
+                          active ? "text-foreground" : "text-muted-foreground/70",
                         )}
                       >
-                        {p.id === "dual-lane"
-                          ? `${laneLabel(lane)} (${laneQualifier(lane)}) + 1 more lane in parallel`
-                          : p.desc}
-                      </p>
-
-                      {/* magstripe */}
-                      <div
-                        className="mt-3 h-1.5 rounded-full opacity-70"
-                        style={{
-                          background:
-                            "repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 5px, rgba(255,255,255,0.05) 5px 9px)",
-                        }}
-                      />
-                      <div className="mt-1.5 flex items-center justify-between font-[family-name:var(--font-space-grotesk)] text-[7px] tracking-[0.2em] text-white/30">
-                        <span>ARENA · {p.id.toUpperCase()}</span>
-                        <span>{sel ? "ACTIVE" : "SLOT"}</span>
-                      </div>
+                        {b.toUpperCase()}
+                      </span>
+                      {off > 0 && (
+                        <span className="rounded bg-[#C8FF4D] px-1 py-px text-[8px] font-bold text-[#0A0C0A]">
+                          -{off}%
+                        </span>
+                      )}
                     </div>
-                  </motion.button>
+                    <div className="mt-0.5 text-[11px] text-muted-foreground/60">
+                      {inr(PLANS[0].billing[b])}/{b === "annual" ? "yr" : "mo"}
+                    </div>
+                  </button>
                 );
               })}
             </div>
-          </div>
+          </FadeUp>
+
+          {/* fanned plan deck */}
+          <FadeUp delay={200} className="mt-5">
+            <div style={{ perspective: 1000 }}>
+              <div className="relative h-[216px]">
+                {PLANS.map((p, idx) => {
+                  const diff = idx - deckIndex;
+                  const sel = diff === 0;
+                  const s = DECK_STYLE[p.id];
+                  const tag =
+                    p.id === "initiate"
+                      ? "FREE · FOREVER"
+                      : p.id === "single-lane"
+                        ? laneLabel(lane).toUpperCase()
+                        : "×2 LANES";
+                  return (
+                    <motion.button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setPlanId(p.id)}
+                      aria-pressed={sel}
+                      initial={false}
+                      animate={{
+                        rotateY: diff * -17,
+                        x: diff * 34,
+                        scale: 1 - Math.min(0.14, Math.abs(diff) * 0.07),
+                        opacity: 1 - Math.min(0.45, Math.abs(diff) * 0.22),
+                        zIndex: 10 - Math.abs(diff),
+                      }}
+                      transition={{ type: "spring", stiffness: 240, damping: 26 }}
+                      className={cn(
+                        "absolute inset-x-0 top-0 mx-auto w-[300px] overflow-hidden rounded-[22px] border p-4 text-left backdrop-blur-xl transition-shadow",
+                        s.ring,
+                        sel && s.glow,
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "pointer-events-none absolute inset-0 bg-gradient-to-br",
+                          s.grad,
+                        )}
+                      />
+
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute -top-16 left-1/2 h-32 w-[260px] -translate-x-1/2 rotate-[-14deg] opacity-60"
+                        style={{
+                          background:
+                            "linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)",
+                          filter: "blur(6px)",
+                        }}
+                      />
+
+                      <div className="relative">
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-[15px] font-black uppercase tracking-tight text-white">
+                            {p.name}
+                          </span>
+                          <span
+                            className={cn(
+                              "rounded-md border px-1.5 py-0.5 text-[8px] font-bold tracking-[0.14em]",
+                              s.tag,
+                              sel ? "opacity-100" : "opacity-60",
+                            )}
+                          >
+                            {tag}
+                          </span>
+                        </div>
+
+                        <div className="mt-3 flex items-center justify-between">
+                          <span
+                            className={cn(
+                              "grid h-8 w-11 place-items-center rounded-md border bg-gradient-to-br",
+                              s.chip,
+                            )}
+                          >
+                            <span className="h-4 w-7 rounded-[3px] border border-black/30 bg-black/20" />
+                          </span>
+                          <span className="text-[10px] font-bold tracking-[0.22em] text-white/70">
+                            {CARD_CODE[p.id]}
+                          </span>
+                        </div>
+
+                        <div className="mt-3 flex items-baseline gap-1.5">
+                          <motion.span
+                            key={`${planId}-${billing}`}
+                            initial={{ y: -8, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                            className={cn(
+                              "text-[34px] font-black leading-none tracking-tight",
+                              s.price,
+                            )}
+                          >
+                            {inr(price)}
+                          </motion.span>
+                          <span className="text-[11px] font-medium text-muted-foreground/60">
+                            /{unit}
+                          </span>
+                          {pct > 0 && billing === "annual" && (
+                            <span className="ml-auto rounded bg-[#FB7185]/15 px-1.5 py-0.5 text-[8px] font-bold text-rose-300">
+                              SAVE {pct}%
+                            </span>
+                          )}
+                        </div>
+
+                        <p
+                          className={cn(
+                            "mt-1 text-[11px] leading-snug",
+                            sel ? "text-muted-foreground/70" : "text-muted-foreground/40",
+                          )}
+                        >
+                          {p.id === "dual-lane"
+                            ? `${laneLabel(lane)} (${laneQualifier(lane)}) + 1 more lane in parallel`
+                            : p.desc}
+                        </p>
+
+                        <div
+                          className="mt-3 h-1.5 rounded-full opacity-70"
+                          style={{
+                            background:
+                              "repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 5px, rgba(255,255,255,0.05) 5px 9px)",
+                          }}
+                        />
+                        <div className="mt-1.5 flex items-center justify-between text-[7px] tracking-[0.2em] text-white/30">
+                          <span>ARENA · {p.id.toUpperCase()}</span>
+                          <span>{sel ? "ACTIVE" : "SLOT"}</span>
+                        </div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+          </FadeUp>
 
           {/* deck selector tabs */}
-          <div className="relative mt-2 flex gap-1.5">
+          <FadeUp delay={240} className="mt-2 flex gap-1.5">
             {PLANS.map((p) => {
               const active = p.id === planId;
               return (
@@ -556,7 +598,7 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                 >
                   <div
                     className={cn(
-                      "font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-widest",
+                      "text-[8px] font-bold tracking-widest",
                       active ? "text-[#C8FF4D]" : "text-muted-foreground/60",
                     )}
                   >
@@ -571,64 +613,52 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                 </button>
               );
             })}
-          </div>
+          </FadeUp>
 
           {/* voucher */}
           {couponOn && (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="relative mt-4 overflow-hidden rounded-2xl border border-dashed border-[#C8FF4D]/40 bg-gradient-to-r from-[#C8FF4D]/[0.08] to-transparent"
-            >
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -left-6 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full"
-                style={{ background: "#0A0C0A", border: "1px solid rgba(200,255,77,0.4)" }}
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -right-6 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full"
-                style={{ background: "#0A0C0A", border: "1px solid rgba(200,255,77,0.4)" }}
-              />
-              <div className="relative flex items-center justify-between gap-2 px-4 py-3">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="rounded bg-[#C8FF4D] px-1 py-px font-[family-name:var(--font-space-grotesk)] text-[7px] font-black tracking-[0.18em] text-[#0A0C0A]">
-                      VIP WINTER
-                    </span>
-                    <span className="font-[family-name:var(--font-space-grotesk)] text-[11px] font-bold tracking-[0.14em] text-[#C8FF4D]">
-                      {COUPON.code}
-                    </span>
+            <FadeUp delay={260} className="mt-4">
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="relative overflow-hidden rounded-[20px] border border-dashed border-[#C8FF4D]/40 bg-gradient-to-r from-[#C8FF4D]/[0.08] to-transparent"
+              >
+                <div className="relative flex items-center justify-between gap-2 px-4 py-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="rounded bg-[#C8FF4D] px-1 py-px text-[7px] font-black tracking-[0.18em] text-[#0A0C0A]">
+                        VIP WINTER
+                      </span>
+                      <span className="text-[11px] font-bold tracking-[0.14em] text-[#C8FF4D]">
+                        {COUPON.code}
+                      </span>
+                    </div>
+                    <div className="mt-1 text-[10px] text-muted-foreground/60">{COUPON.note}</div>
                   </div>
-                  <div className="mt-1 text-[10px] text-muted-foreground/60">{COUPON.note}</div>
+                  <div className="shrink-0 text-right">
+                    <div className="text-[9px] tracking-[0.14em] text-[#C8FF4D]/80">CASHBACK</div>
+                    <div className="text-[18px] font-black leading-none text-white">
+                      -{inr(COUPON.amount)}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setCouponOn(false)}
+                      className="mt-0.5 text-[8px] font-bold tracking-wider text-red-400/80 transition-colors hover:text-red-300"
+                    >
+                      REMOVE
+                    </button>
+                  </div>
                 </div>
-                <div className="shrink-0 text-right">
-                  <div className="font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.14em] text-[#C8FF4D]/80">
-                    CASHBACK
-                  </div>
-                  <div className="text-[18px] font-black leading-none text-white">
-                    -{inr(COUPON.amount)}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setCouponOn(false)}
-                    className="mt-0.5 font-[family-name:var(--font-space-grotesk)] text-[8px] font-bold tracking-wider text-red-400/80 transition-colors hover:text-red-300"
-                  >
-                    REMOVE
-                  </button>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </FadeUp>
           )}
 
-          {/* payment slots */}
-          <div className="relative mt-5">
-            <p className="mb-2 font-[family-name:var(--font-space-grotesk)] text-[9px] tracking-[0.2em] text-muted-foreground/60">
-              PAYMENT SLOT
-            </p>
+          {/* payment modes */}
+          <FadeUp delay={320} className="mt-5">
+            <p className="mb-2 text-[9px] tracking-[0.2em] text-muted-foreground/60">PAY WITH</p>
             <div className="grid grid-cols-3 gap-2">
-              {PAY_MODES.map(({ id, label, Icon }, i) => {
+              {PAY_MODES.map(({ id, label, Icon }) => {
                 const active = pay === id;
                 return (
                   <button
@@ -636,16 +666,11 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                     type="button"
                     onClick={() => setPay(id)}
                     className={cn(
-                      "relative flex h-14 flex-col items-center justify-center gap-1 overflow-hidden rounded-[14px] border text-[10px] font-medium transition",
+                      "flex h-14 flex-col items-center justify-center gap-1 rounded-[18px] border text-[10px] font-medium transition",
                       active
                         ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/10 text-[#C8FF4D] shadow-[0_0_16px_rgba(200,255,77,0.12)]"
-                        : "border-white/[0.08] bg-white/[0.02] text-muted-foreground/60 hover:border-white/[0.16]",
+                        : "border-white/[0.08] bg-black/25 text-muted-foreground/60 hover:border-white/[0.16]",
                     )}
-                    style={{
-                      borderTopRightRadius: i % 2 === 0 ? 4 : 14,
-                      borderTopLeftRadius: i % 2 === 1 ? 4 : 14,
-                      transform: `rotate(${i === 0 ? -1.2 : i === 2 ? 1.2 : 0}deg)`,
-                    }}
                   >
                     {active && (
                       <span className="pointer-events-none absolute inset-x-2 top-0 h-px bg-gradient-to-r from-transparent via-[#C8FF4D]/70 to-transparent" />
@@ -656,71 +681,80 @@ export function PlanIntro({ onClose }: { onClose: () => void }) {
                 );
               })}
             </div>
-          </div>
+          </FadeUp>
 
           {/* receipt */}
-          <div className="relative mt-5 space-y-1.5 rounded-2xl border border-dashed border-white/15 bg-black/40 p-3 text-[12px]">
-            <div className="flex justify-between text-muted-foreground/70">
-              <span>
-                Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} ·{" "}
-                {billing === "annual" ? "Annual" : "Monthly"})
-              </span>
-              <span>{inr(subtotal)}</span>
-            </div>
-            {couponOn && (
-              <div className="flex justify-between text-[#C8FF4D]">
+          <FadeUp delay={380} className="mt-4">
+            <div className="space-y-1.5 rounded-[20px] border border-dashed border-white/15 bg-black/40 p-3.5 text-[12px]">
+              <div className="flex justify-between text-muted-foreground/70">
                 <span>
-                  Code{" "}
-                  <span className="font-[family-name:var(--font-space-grotesk)]">
-                    {COUPON.code}
+                  Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} ·{" "}
+                  {billing === "annual" ? "Annual" : "Monthly"})
+                </span>
+                <span>{inr(subtotal)}</span>
+              </div>
+              {couponOn && (
+                <div className="flex justify-between text-[#C8FF4D]">
+                  <span>Code {COUPON.code}</span>
+                  <span>-{inr(discount)}</span>
+                </div>
+              )}
+              <div className="flex items-end justify-between border-t border-dashed border-white/10 pt-2">
+                <span className="text-[13px] font-bold text-muted-foreground/80">
+                  Total Due Today
+                </span>
+                <span>
+                  <motion.span
+                    key={`${total}-${unit}`}
+                    initial={{ y: -6, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-[22px] font-black leading-none text-foreground"
+                  >
+                    {inr(total)}
+                  </motion.span>
+                  <span className="ml-1 text-[10px] font-bold text-muted-foreground/60">
+                    /{unit}
                   </span>
                 </span>
-                <span>-{inr(discount)}</span>
               </div>
-            )}
-            <div className="flex items-end justify-between border-t border-dashed border-white/10 pt-2">
-              <span className="text-[13px] font-bold text-muted-foreground/80">
-                Total Due Today
-              </span>
-              <span>
-                <motion.span
-                  key={`${total}-${unit}`}
-                  initial={{ y: -6, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-[22px] font-black leading-none text-foreground"
-                >
-                  {inr(total)}
-                </motion.span>
-                <span className="ml-1 font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold text-muted-foreground/60">
-                  /{unit}
-                </span>
-              </span>
             </div>
-          </div>
+          </FadeUp>
 
           {/* CTA */}
-          <button
-            type="button"
-            onClick={confirm}
-            className="group relative mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] transition active:scale-[0.98]"
-            style={{
-              background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
-              boxShadow: "0 10px 30px rgba(200,255,77,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
-            }}
-          >
-            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
-            <Lock size={14} strokeWidth={2.5} className="relative" />
-            <span className="relative">Activate Protocol</span>
-            <span className="relative font-[family-name:var(--font-space-grotesk)] text-[10px] font-bold tracking-normal opacity-80">
-              {inr(total)}/{billing === "annual" ? "YEAR" : "MONTH"}
-            </span>
-          </button>
+          <FadeUp delay={440} className="mt-4">
+            <button
+              type="button"
+              onClick={confirm}
+              className="group relative flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] transition active:scale-[0.98]"
+              style={{
+                background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+                boxShadow:
+                  "0 10px 30px rgba(200,255,77,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
+              }}
+            >
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+              <Lock size={14} strokeWidth={2.5} className="relative" />
+              <span className="relative">
+                {planId === "initiate" ? "Start Free Plan" : "Start My Pass"}
+              </span>
+              <span className="relative font-bold tracking-normal opacity-80">
+                {inr(total)}/{billing === "annual" ? "YEAR" : "MONTH"}
+              </span>
+            </button>
 
-          <p className="relative mt-3 flex items-center justify-center gap-1.5 text-center text-[10px] text-muted-foreground/45">
-            <ShieldCheck size={12} />
-            Adaptive engine calibrated • Change anytime in Settings
-          </p>
+            <button
+              onClick={fadeOut}
+              className="mx-auto mt-3 block text-[10px] text-muted-foreground/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
+            >
+              Skip for now
+            </button>
+
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[10px] text-muted-foreground/45">
+              <ShieldCheck size={12} />
+              Adaptive engine calibrated • Change anytime in Settings
+            </p>
+          </FadeUp>
         </div>
       </div>
     </MotionConfig>,
