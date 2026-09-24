@@ -3,6 +3,7 @@
 import { Zap, Trophy, Target, Star, Flame, Shield, Swords, Medal, User } from "lucide-react";
 import { useProfileData } from "@/hooks/queries/use-profile";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { PageContainer } from "@/components/ui/page-container";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Flame, Zap, Medal, Star, Shield, Swords,
@@ -23,7 +24,7 @@ export default function ProfilePage() {
   const { profile, stats, achievements } = data;
 
   return (
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <PageContainer className="pt-0">
         <div className="pt-5 pb-4 border-b border-border mb-5 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
             <User size={12} className="text-primary" />
@@ -108,6 +109,6 @@ export default function ProfilePage() {
             })}
           </div>
         </section>
-      </div>
+      </PageContainer>
   );
 }

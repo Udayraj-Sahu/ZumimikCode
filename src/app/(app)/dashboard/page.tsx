@@ -27,6 +27,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageContainer } from "@/components/ui/page-container";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { ExamDateModal } from "@/components/dashboard/exam-date-modal";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -397,13 +398,13 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-6 max-w-5xl mx-auto overflow-x-hidden">
+    <PageContainer className="pt-0 pb-6 overflow-x-hidden">
 
       {/* Ambient glow behind header */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
 
       {/* Header */}
-      <div ref={animateSection} data-section-index={0} className="relative px-6 pt-8 pb-2 text-center">
+      <div ref={animateSection} data-section-index={0} className="relative pt-8 pb-2 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-4">
           <Sparkles size={12} className="text-primary" />
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
@@ -854,7 +855,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Access */}
-      <div ref={animateSection} data-section-index={5} className="px-5 mt-6">
+      <div ref={animateSection} data-section-index={5} className="mt-6">
         <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
           <SectionLabel>QUICK ACCESS</SectionLabel>
           <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 mt-4">
@@ -891,7 +892,7 @@ export default function DashboardPage() {
       <ResumeProtocolCard accent="#C8FF4D" />
 
       {/* Topic Mastery + Recent Activity */}
-      <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 px-5 mt-6">
+      <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 mt-6">
         {/* Topic Mastery */}
         <div ref={animateSection} data-section-index={6}>
           <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
@@ -954,7 +955,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Cognitive Radar + Upcoming */}
-      <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 px-5 mt-4">
+      <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 mt-4">
         {/* Cognitive Radar */}
         <div ref={animateSection} data-section-index={8}>
           <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
@@ -1011,7 +1012,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Leaderboard */}
-      <div ref={animateSection} data-section-index={10} className="px-5 mt-4 mb-4">
+      <div ref={animateSection} data-section-index={10} className="mt-4 mb-4">
         <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
           <SectionHeading className="mb-4">Leaderboard</SectionHeading>
           <div className="flex flex-col">
@@ -1043,7 +1044,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Invite Friends & Referral */}
-      <div ref={animateSection} data-section-index={11} className="px-5 mt-4">
+      <div ref={animateSection} data-section-index={11} className="mt-4">
         <InviteCard />
       </div>
 
@@ -1091,6 +1092,6 @@ export default function DashboardPage() {
           }}
         />
       )}
-    </div>
+    </PageContainer>
   );
 }

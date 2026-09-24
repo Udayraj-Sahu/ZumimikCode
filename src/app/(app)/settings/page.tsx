@@ -30,6 +30,7 @@ import {
 import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { PageContainer } from "@/components/ui/page-container";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { DOMAIN_LABELS } from "@/lib/types/template";
@@ -76,7 +77,7 @@ function Row({ icon, title, subtitle, danger, onClick }: RowProps) {
 function CollapsibleSection({ label, defaultOpen = false, children }: { label: string; defaultOpen?: boolean; children: React.ReactNode }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="px-4">
+    <div>
       {open ? (
         <>
           <button
@@ -127,7 +128,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 /* ------------------------------------------------------------------ */
 function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initials: string; badge: string; onEdit: () => void }) {
   return (
-    <div className="relative flex flex-col items-center px-6 pt-6 pb-1 text-center">
+    <div className="relative flex flex-col items-center pt-6 pb-1 text-center">
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
       <div className="relative mb-3 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
           <Settings size={12} className="text-primary" />
@@ -176,7 +177,7 @@ function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string
 
 function PerformanceOverview({ sessions, streak, rank, xp }: { sessions: string; streak: string; rank: string; xp: string }) {
   return (
-    <div className="px-4">
+    <div>
       <SectionLabel>PERFORMANCE OVERVIEW</SectionLabel>
       <div className="grid grid-cols-2 gap-3">
         <StatCard icon={<span className="text-lg">🎯</span>} value={sessions} label="Sessions" />
@@ -193,7 +194,7 @@ function PerformanceOverview({ sessions, streak, rank, xp }: { sessions: string;
 /* ------------------------------------------------------------------ */
 function SubscriptionCard() {
   return (
-    <div className="px-4">
+    <div>
       <SectionLabel>SUBSCRIPTION</SectionLabel>
       <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.03) 100%)" }}>
         <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
@@ -260,7 +261,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-4 max-w-5xl mx-auto">
+    <PageContainer>
       {/* Ambient glow */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.2) 0%, transparent 70%)" }} />
 
@@ -282,7 +283,7 @@ export default function SettingsPage() {
         <SubscriptionCard />
 
         {/* Prep / Membership */}
-        <div className="px-4">
+        <div>
           <SectionLabel>PREP / MEMBERSHIP</SectionLabel>
           {prepExams.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
@@ -349,13 +350,13 @@ export default function SettingsPage() {
         </CollapsibleSection>
 
         {/* Logout */}
-        <div className="px-4">
+        <div>
           <Row icon={<LogOut className="h-5 w-5" />} title="Logout" subtitle="Sign out of your account" danger onClick={handleLogout} />
         </div>
       </div>
 
       {showAddPrep && <AddPrepModal onClose={() => setShowAddPrep(false)} />}
       <PaywallModal />
-    </div>
+    </PageContainer>
   );
 }

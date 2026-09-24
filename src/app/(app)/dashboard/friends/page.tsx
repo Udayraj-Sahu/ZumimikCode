@@ -6,6 +6,7 @@ import { Users, UserPlus, Swords, Zap, Award, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useFriends } from "@/hooks/queries/use-friends";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { PageContainer } from "@/components/ui/page-container";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -40,7 +41,7 @@ export default function FriendsPage() {
   const requestCount = data?.requests.length ?? 0;
 
   return (
-    <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
+    <PageContainer>
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Users size={12} className="text-primary" />
@@ -217,6 +218,6 @@ export default function FriendsPage() {
           )}
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

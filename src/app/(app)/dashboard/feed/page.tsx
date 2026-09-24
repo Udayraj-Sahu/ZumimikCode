@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Search, Play, Clock, Sparkles, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { PageContainer } from "@/components/ui/page-container";
 import { FEED_HERO, FEED_CATEGORIES, FEED_STORIES, FEED_VIDEOS } from "@/lib/mock/feed";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
@@ -37,7 +38,7 @@ export default function FeedPage() {
   }, [activeCategory]);
 
   return (
-    <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
+    <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
@@ -164,6 +165,6 @@ export default function FeedPage() {
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

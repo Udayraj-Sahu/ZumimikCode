@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Users, Plus, Crown, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { PageContainer } from "@/components/ui/page-container";
 import { MOCK_CLUBS, CLUB_FILTERS, type ClubFilter } from "@/lib/mock/clubs";
 import type { Club } from "@/lib/types/clubs";
 
@@ -54,7 +55,7 @@ export default function ClubsPage() {
   });
 
   return (
-    <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
+    <PageContainer>
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Users size={12} className="text-primary" />
@@ -119,7 +120,7 @@ export default function ClubsPage() {
       >
         <Plus size={22} strokeWidth={2.5} />
       </button>
-    </div>
+    </PageContainer>
   );
 }
 
