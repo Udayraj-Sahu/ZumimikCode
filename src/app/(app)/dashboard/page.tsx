@@ -42,6 +42,7 @@ import { PitchIntro } from "@/components/onboarding/pitch-intro";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 import { InviteCard } from "@/components/dashboard/invite-card";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
+import { useResumeStore } from "@/stores/resume-store";
 
 const ACCENT = "#C7F252";
 const GLASS_BG = "rgba(255,255,255,0.04)";
@@ -279,6 +280,8 @@ export default function DashboardPage() {
   const pitchHookSeen = useOnboardingStore((s) => s.pitchHookSeen);
   const setPitchHookSeen = useOnboardingStore((s) => s.setPitchHookSeen);
   const temporalWindow = useOnboardingStore((s) => s.temporalWindow);
+  const resumeSnapshot = useResumeStore((s) => s.snapshot);
+  const hasResume = Boolean(resumeSnapshot);
   const { data } = useDashboardData(targetExam);
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
@@ -854,11 +857,23 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Quick Access */}
-      <div ref={animateSection} data-section-index={5} className="mt-6">
-        <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+      {/* Quick Access + Resume Protocol */}
+      <div
+        ref={animateSection}
+        data-section-index={5}
+        className={cn(
+          "min-w-0 mt-6",
+          hasResume && "md:grid md:grid-cols-2 md:items-stretch md:gap-5"
+        )}
+      >
+        <div className="h-full rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
           <SectionLabel>QUICK ACCESS</SectionLabel>
-          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 mt-4">
+          <div
+            className={cn(
+              "grid gap-3 mt-4 grid-cols-4",
+              hasResume ? "md:grid-cols-4 lg:grid-cols-4" : "md:grid-cols-6 lg:grid-cols-8"
+            )}
+          >
             {QUICK_ACCESS_ITEMS.map((q) => {
               const label = q.label === "Exam Prep" && examLabel !== "Exam" ? `${examLabel} Prep` : q.label;
               return (
@@ -886,10 +901,10 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+        {hasResume && (
+          <ResumeProtocolCard accent="#C8FF4D" className="mt-4 px-5 md:mt-0 md:px-0 md:min-w-0 md:h-full" />
+        )}
       </div>
-
-      {/* Resume Protocol */}
-      <ResumeProtocolCard accent="#C8FF4D" />
 
       {/* Topic Mastery + Recent Activity */}
       <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 mt-6">

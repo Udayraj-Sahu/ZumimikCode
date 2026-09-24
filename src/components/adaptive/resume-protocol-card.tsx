@@ -102,7 +102,7 @@ export function ResumeProtocolCard({
 
   return (
     <div className={cn("mt-4 px-5", className)}>
-      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+      <div className="relative h-full overflow-hidden rounded-3xl border backdrop-blur-xl" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
         <div className="absolute left-0 right-0 top-0 h-[3px]" style={{ background: `linear-gradient(90deg, ${accent}, ${accentSecondary})` }} />
 
           <div className="px-5 py-5">
