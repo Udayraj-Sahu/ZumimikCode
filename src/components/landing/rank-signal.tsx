@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { AuthModal } from "@/components/onboarding/auth-modal";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/auth-store";
 
 const RINGS = [
   { delay: 0, size: 180, opacity: 0.4 },
@@ -29,6 +30,7 @@ export function RankSignal() {
   const [heroVisible, setHeroVisible] = useState(true);
   const [showAuth, setShowAuth] = useState(false);
   const router = useRouter();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
@@ -199,8 +201,8 @@ export function RankSignal() {
           >
             <motion.button
               onClick={() => {
-                if (window.innerWidth < 640) {
-                  router.push("/onboarding");
+                if (isAuthenticated) {
+                  router.push("/dashboard");
                 } else {
                   setShowAuth(true);
                 }

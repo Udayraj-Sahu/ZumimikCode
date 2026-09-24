@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useLayoutEffect, useEffect, useCallback } from "react";
+import { useState, useLayoutEffect, useEffect, useCallback, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { SplashScreen } from "@/components/shell/splash-screen";
 import { useAuthStore } from "@/stores/auth-store";
@@ -11,6 +11,7 @@ export function AppEntry({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const platformRef = useRef<"native" | "web">("web");
 
   useLayoutEffect(() => {
     document.documentElement.classList.remove("loading");
@@ -21,6 +22,7 @@ export function AppEntry({ children }: { children: React.ReactNode }) {
 
     try {
       if ((window as any).Capacitor?.isNativePlatform?.()) {
+        platformRef.current = "native";
         setState("native");
         return;
       }
@@ -30,6 +32,7 @@ export function AppEntry({ children }: { children: React.ReactNode }) {
     import("@capacitor/core")
       .then(({ Capacitor }) => {
         if (cancelled) return;
+        platformRef.current = Capacitor.isNativePlatform() ? "native" : "web";
         setState(Capacitor.isNativePlatform() ? "native" : "web");
       })
       .catch(() => {
@@ -56,7 +59,10 @@ export function AppEntry({ children }: { children: React.ReactNode }) {
   if (state === "loading") return <div className="fixed inset-0 bg-background" />;
   if (state === "native") return <SplashScreen onComplete={handleSplashComplete} />;
 
-  if (!isAuthenticated) return <OnboardingPage />;
+  if (!isAuthenticated) {
+    if (pathname === "/" && platformRef.current === "web") return <>{children}</>;
+    return <OnboardingPage />;
+  }
 
   return <>{children}</>;
 }
