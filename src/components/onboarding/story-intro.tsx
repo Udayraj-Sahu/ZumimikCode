@@ -981,7 +981,7 @@ export function StoryIntro({
       <div
         ref={overlayRef}
         className={cn(
-          "fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
+          "fixed inset-0 z-[70] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
         )}
         role="dialog"
@@ -989,7 +989,7 @@ export function StoryIntro({
         aria-hidden={preloaded || undefined}
       >
         <div
-          className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
+          className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
           style={{
             background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
           }}
@@ -1008,7 +1008,7 @@ export function StoryIntro({
             }}
           />
 
-          <div className="flex-1 min-h-0 overflow-y-auto px-[14px] pb-[24px]">
+          <div className="relative mx-auto w-full max-w-[430px] px-[14px] pb-[24px] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto md:px-6">
             <div className="relative flex flex-col">
             {/* Protocol pill */}
             <motion.div

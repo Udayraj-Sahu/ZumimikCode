@@ -170,7 +170,7 @@ export function FamilyIntro({
     <div
       ref={overlayRef}
       className={cn(
-        "fixed inset-0 z-[210] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
+        "fixed inset-0 z-[210] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
       )}
       role="dialog"
@@ -179,7 +179,7 @@ export function FamilyIntro({
       aria-labelledby="family-hook-title"
     >
       <div
-        className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
+        className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
           background: "radial-gradient(120% 90% at 50% 0%, #10150e 0%, #0a0c09 46%, #070906 100%)",
         }}
@@ -188,7 +188,7 @@ export function FamilyIntro({
         <GlowBall className="right-[-60px] top-[38%] h-52 w-52 bg-emerald-400/[0.10]" />
         <GlowBall className="bottom-[12%] left-[-70px] h-52 w-52 bg-[#C8FF4D]/[0.08]" />
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-8 pt-[max(1rem,env(safe-area-inset-top))]">
+        <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto">
         <header className="flex items-center justify-center">
           <span className="grid h-8 w-8 place-items-center rounded-xl border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.08]">
             <Sparkles size={15} className="text-[#C8FF4D]" />

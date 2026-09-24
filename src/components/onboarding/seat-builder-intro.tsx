@@ -416,7 +416,7 @@ export function SeatBuilderIntro({
     <div
       ref={overlayRef}
       className={cn(
-        "fixed inset-0 z-[220] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
+        "fixed inset-0 z-[220] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
       )}
       role="dialog"
@@ -425,7 +425,7 @@ export function SeatBuilderIntro({
       aria-labelledby="seat-builder-hook-title"
     >
       <div
-        className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
+        className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
           background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
         }}
@@ -450,7 +450,7 @@ export function SeatBuilderIntro({
           }}
         />
 
-        <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))]">
+        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto">
         <section className="mt-8 text-center">
           <h1
             id="seat-builder-hook-title"

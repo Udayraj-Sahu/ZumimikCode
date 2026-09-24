@@ -322,7 +322,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
       <div
         ref={overlayRef}
         className={cn(
-          "fixed inset-0 z-[210] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
+          "fixed inset-0 z-[210] flex flex-col items-center overflow-hidden md:justify-center md:bg-black/60 md:backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
         )}
         aria-hidden={preloaded || undefined}
@@ -331,7 +331,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
         aria-labelledby="feature-hook-title"
       >
         <div
-          className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
+          className="relative flex h-full w-full flex-col overflow-hidden md:h-auto md:min-h-0 md:max-w-md md:max-h-[90vh] md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
           style={{
             background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
           }}
@@ -349,7 +349,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
             }}
           />
 
-          <div className="relative flex min-h-0 flex-1 flex-col">
+          <div className="relative mx-auto flex h-full w-full max-w-[360px] flex-col md:min-h-0 md:max-w-none md:flex-1">
             <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {/* Protocol pill */}
             <div className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-3">
