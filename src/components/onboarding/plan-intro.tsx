@@ -749,7 +749,6 @@ export function PlanIntro({
                   "0 10px 30px rgba(200,255,77,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
               }}
             >
-              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
               <Lock size={14} strokeWidth={2.5} className="relative" />
               <span className="relative">
                 {planId === "initiate" ? "Start Free Plan" : "Start My Pass"}

@@ -1073,7 +1073,6 @@ export function StoryIntro({
                   "0 10px 34px rgba(200,255,77,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
               }}
             >
-              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/55 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
               <span className="relative flex items-center gap-2.5">
                 <Lock size={14} strokeWidth={3} />
                 Start configuring
