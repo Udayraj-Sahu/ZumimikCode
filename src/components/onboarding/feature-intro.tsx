@@ -322,32 +322,35 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
       <div
         ref={overlayRef}
         className={cn(
-          "fixed inset-0 z-[210] overflow-hidden flex flex-col items-center",
+          "fixed inset-0 z-[210] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
         )}
         aria-hidden={preloaded || undefined}
-        style={{
-          background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
-        }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="feature-hook-title"
       >
-        <motion.div
-          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[440px] h-[320px] rounded-full"
-          style={{ background: "radial-gradient(circle, #22D3EE40, transparent 70%)" }}
-          animate={{ opacity: [0.12, 0.22, 0.12] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        />
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+            background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
           }}
-        />
+        >
+          <motion.div
+            className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[440px] h-[320px] rounded-full"
+            style={{ background: "radial-gradient(circle, #22D3EE40, transparent 70%)" }}
+            animate={{ opacity: [0.12, 0.22, 0.12] }}
+            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-px"
+            style={{
+              background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+            }}
+          />
 
-        <div className="relative flex h-full w-full max-w-[360px] flex-col">
-          <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="relative flex min-h-0 flex-1 flex-col">
+            <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {/* Protocol pill */}
             <div className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-3">
               <motion.div
@@ -463,6 +466,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               </motion.span>
             </button>
           </footer>
+        </div>
         </div>
       </div>
     </MotionConfig>,

@@ -782,7 +782,7 @@ export function StoryCommitmentMatrix({
 
       {/* Reclaim modules */}
       <SectionHead right="Where it hides" icon={<Layers size={12} />} title="Dead-time presets" />
-      <div className="mt-3 flex flex-col gap-2.5">
+      <div className="mt-3 flex flex-col gap-2.5 md:grid md:grid-cols-3 md:gap-3">
         {RECLAIM_MODULES.map((m) => (
           <ReclaimModule
             key={m.id}
@@ -981,17 +981,19 @@ export function StoryIntro({
       <div
         ref={overlayRef}
         className={cn(
-          "fixed inset-0 z-[70] flex justify-center overflow-y-auto overflow-x-clip",
+          "fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
         )}
-        style={{
-          background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
-        }}
         role="dialog"
         aria-modal="true"
         aria-hidden={preloaded || undefined}
       >
-        <div className="relative w-full max-w-[430px] min-h-full px-[14px] pb-[24px]">
+        <div
+          className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
+          style={{
+            background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+          }}
+        >
           {/* ambient glows */}
           <div
             aria-hidden
@@ -1006,7 +1008,8 @@ export function StoryIntro({
             }}
           />
 
-          <div className="relative flex flex-col">
+          <div className="flex-1 min-h-0 overflow-y-auto px-[14px] pb-[24px]">
+            <div className="relative flex flex-col">
             {/* Protocol pill */}
             <motion.div
               initial={{ opacity: 0, y: 8 }}
@@ -1080,6 +1083,7 @@ export function StoryIntro({
               You can adjust all of this anytime in Settings.
             </p>
           </motion.div>
+          </div>
         </div>
       </div>
     </MotionConfig>,

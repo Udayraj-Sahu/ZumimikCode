@@ -227,31 +227,34 @@ export function ArenaIntro({
     <div
       ref={overlayRef}
       className={cn(
-        "fixed inset-0 z-[210] overflow-y-auto",
+        "fixed inset-0 z-[210] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
       )}
-      style={{
-        background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
-      }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="arena-hook-title"
     >
-      {/* ambient glow + hairline */}
       <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[-90px] h-56 w-56 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[95px]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
         style={{
-          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
         }}
-      />
+      >
+        {/* ambient glow + hairline */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-[-90px] h-56 w-56 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[95px]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          }}
+        />
 
-      <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))]">
-        {/* centered brand */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))]">
+          {/* centered brand */}
         <FadeUp className="flex justify-center">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.07] px-4 py-1.5">
             <span className="relative flex h-2 w-2">
@@ -313,7 +316,7 @@ export function ArenaIntro({
         </FadeUp>
 
         {/* live lanes */}
-        <FadeUp delay={240} className="mt-4 space-y-2.5">
+        <FadeUp delay={240} className="mt-4 space-y-2.5 md:grid md:grid-cols-2 md:gap-2.5 md:space-y-0">
           {lanes.map(({ id, title, desc, Icon, tone }) => (
             <div
               key={id}
@@ -441,6 +444,7 @@ export function ArenaIntro({
             Continue to dashboard
           </button>
         </FadeUp>
+        </div>
       </div>
     </div>,
     document.body,

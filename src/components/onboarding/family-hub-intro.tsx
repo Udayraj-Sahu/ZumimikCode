@@ -148,34 +148,37 @@ export function FamilyHubIntro({
     <div
       ref={overlayRef}
       className={cn(
-        "fixed inset-0 z-[220] overflow-y-auto",
+        "fixed inset-0 z-[220] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
       )}
-      style={{
-        background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
-      }}
       role="dialog"
       aria-modal="true"
       aria-hidden={preloaded || undefined}
       aria-labelledby="family-hub-hook-title"
     >
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
         style={{
-          backgroundImage: "radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px)",
-          backgroundSize: "26px 26px",
+          background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
         }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px"
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
-        }}
-      />
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.5]"
+          style={{
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          }}
+        />
 
-      <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))]">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))]">
         <div className="mt-4">
           <FadeUp delay={60}>
             <h1
@@ -232,7 +235,7 @@ export function FamilyHubIntro({
                   SHARED FAMILY WALL
                 </span>
               </div>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2.5 md:grid md:grid-cols-3 md:gap-2.5 md:space-y-0">
                 {WALL.map(({ Icon, title, desc }) => (
                   <li key={title} className="flex items-start gap-3">
                     <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-[#C8FF4D]">
@@ -254,7 +257,7 @@ export function FamilyHubIntro({
         <div className="mt-4">
           <FadeUp delay={360}>
             <div className="rounded-[18px] border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.04] p-4">
-              <ul className="space-y-2.5">
+              <ul className="space-y-2.5 md:grid md:grid-cols-3 md:gap-2.5 md:space-y-0">
                 {SAVINGS.map(({ Icon, title, text }) => (
                   <li key={title} className="flex items-center gap-3">
                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#C8FF4D]/25 bg-black/30 text-[#C8FF4D]">
@@ -296,6 +299,7 @@ export function FamilyHubIntro({
             Skip for now
           </button>
         </div>
+      </div>
       </div>
     </div>,
     document.body,

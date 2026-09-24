@@ -170,22 +170,25 @@ export function FamilyIntro({
     <div
       ref={overlayRef}
       className={cn(
-        "fixed inset-0 z-[210] overflow-y-auto",
+        "fixed inset-0 z-[210] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
       )}
-      style={{
-        background: "radial-gradient(120% 90% at 50% 0%, #10150e 0%, #0a0c09 46%, #070906 100%)",
-      }}
       role="dialog"
       aria-modal="true"
       aria-hidden={preloaded || undefined}
       aria-labelledby="family-hook-title"
     >
-      <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[#C8FF4D]/[0.14]" />
-      <GlowBall className="right-[-60px] top-[38%] h-52 w-52 bg-emerald-400/[0.10]" />
-      <GlowBall className="bottom-[12%] left-[-70px] h-52 w-52 bg-[#C8FF4D]/[0.08]" />
+      <div
+        className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
+        style={{
+          background: "radial-gradient(120% 90% at 50% 0%, #10150e 0%, #0a0c09 46%, #070906 100%)",
+        }}
+      >
+        <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[#C8FF4D]/[0.14]" />
+        <GlowBall className="right-[-60px] top-[38%] h-52 w-52 bg-emerald-400/[0.10]" />
+        <GlowBall className="bottom-[12%] left-[-70px] h-52 w-52 bg-[#C8FF4D]/[0.08]" />
 
-      <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1rem,env(safe-area-inset-top))]">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pb-8 pt-[max(1rem,env(safe-area-inset-top))]">
         <header className="flex items-center justify-center">
           <span className="grid h-8 w-8 place-items-center rounded-xl border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.08]">
             <Sparkles size={15} className="text-[#C8FF4D]" />
@@ -226,7 +229,7 @@ export function FamilyIntro({
             </p>
           </FadeUp>
 
-          <div className="mt-5 space-y-3">
+          <div className="mt-5 space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
             {(Object.keys(PERSONA_COPY) as Persona[]).map((p, i) => {
               const c = PERSONA_COPY[p];
               return (
@@ -275,7 +278,7 @@ export function FamilyIntro({
 
         <div className="mt-auto">
           <FadeUp delay={380}>
-            <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.03] p-1.5">
+            <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.03] p-1.5 md:grid md:grid-cols-3 md:gap-1.5">
               {GROWTH.map((g, i) => (
                 <div key={g.id} className="flex items-center gap-3 rounded-[14px] px-3 py-2.5">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.07] text-[#C8FF4D]">
@@ -342,6 +345,7 @@ export function FamilyIntro({
             <Moon size={11} /> Skip for now
           </button>
         </div>
+      </div>
       </div>
     </div>,
     document.body,

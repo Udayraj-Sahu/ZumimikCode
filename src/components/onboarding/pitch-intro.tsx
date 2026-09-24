@@ -150,28 +150,31 @@ export function PitchIntro({
     <div
       ref={overlayRef}
       className={cn(
-        "fixed inset-0 z-[210] flex items-center justify-center overflow-y-auto",
+        "fixed inset-0 z-[210] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
       )}
-      style={{
-        background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
-      }}
       role="dialog"
       aria-modal="true"
       aria-hidden={preloaded || undefined}
       aria-labelledby="pitch-hook-title"
     >
-      <div className="pointer-events-none absolute left-6 top-24 h-48 w-48 rounded-full bg-fuchsia-500/10 blur-[90px]" />
-      <div className="pointer-events-none absolute bottom-10 right-4 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.08] blur-[90px]" />
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
         style={{
-          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
         }}
-      />
+      >
+        <div className="pointer-events-none absolute left-6 top-24 h-48 w-48 rounded-full bg-fuchsia-500/10 blur-[90px]" />
+        <div className="pointer-events-none absolute bottom-10 right-4 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.08] blur-[90px]" />
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          }}
+        />
 
-      <div className="relative w-full max-w-[400px] px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-8">
-        <section ref={pitchRef}>
+        <div className="flex-1 min-h-0 overflow-y-auto px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-8">
+          <section ref={pitchRef}>
           {/* badge */}
           <div
             data-stage
@@ -300,7 +303,7 @@ export function PitchIntro({
           </div>
 
           {/* tracks */}
-          <ul className="mt-5 space-y-2.5">
+          <ul className="mt-5 space-y-2.5 md:grid md:grid-cols-3 md:gap-2.5 md:space-y-0">
             {TRACKS.map(({ id, lead, punch, sub, Icon, accent, bar }) => (
               <li
                 key={id}
@@ -381,6 +384,7 @@ export function PitchIntro({
             </button>
           </div>
         </section>
+        </div>
       </div>
     </div>,
     document.body,

@@ -141,7 +141,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
       {/* 1 — head of the table */}
       <section>
         <SectionTitle marker="1" title="HEAD OF THE TABLE" tag="REQUIRED BASE" />
-        <div role="radiogroup" aria-label="Primary seat" className="mt-3 space-y-2.5">
+        <div role="radiogroup" aria-label="Primary seat" className="mt-3 space-y-2.5 md:grid md:grid-cols-2 md:gap-2.5 md:space-y-0">
           {PRIMARY.map((p) => {
             const selected = p.id === primaryId;
             return (
@@ -224,7 +224,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
       {/* 2 — pull up a chair */}
       <section>
         <SectionTitle marker="2" title="PULL UP A CHAIR" tag={`${STACK_DISCOUNT_PCT}% OFF EACH`} />
-        <div className="mt-3 space-y-2.5">
+        <div className="mt-3 space-y-2.5 md:grid md:grid-cols-2 md:gap-2.5 md:space-y-0">
           {STACK.map((s) => {
             const added = stacked.includes(s.id);
             return (
@@ -416,38 +416,41 @@ export function SeatBuilderIntro({
     <div
       ref={overlayRef}
       className={cn(
-        "fixed inset-0 z-[220] overflow-y-auto",
+        "fixed inset-0 z-[220] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
       )}
-      style={{
-        background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
-      }}
       role="dialog"
       aria-modal="true"
       aria-hidden={preloaded || undefined}
       aria-labelledby="seat-builder-hook-title"
     >
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.5]"
+        className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
         style={{
-          backgroundImage:
-            "repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 22px)",
+          background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
         }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[-80px] h-52 w-52 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[90px]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px"
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
-        }}
-      />
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.5]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 22px)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-[-80px] h-52 w-52 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[90px]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          }}
+        />
 
-      <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))]">
+        <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))]">
         <section className="mt-8 text-center">
           <h1
             id="seat-builder-hook-title"
@@ -495,6 +498,7 @@ export function SeatBuilderIntro({
         >
           Reserve later
         </button>
+        </div>
       </div>
     </div>,
     document.body,

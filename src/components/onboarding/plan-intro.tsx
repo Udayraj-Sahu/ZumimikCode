@@ -351,16 +351,19 @@ export function PlanIntro({
       <div
         ref={overlayRef}
         className={cn(
-          "fixed inset-0 z-[70] overflow-y-auto",
-          preloaded && "invisible pointer-events-none",
-        )}
+"fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
+        preloaded && "invisible pointer-events-none",
+      )}
+      role="dialog"
+      aria-modal="true"
+      aria-hidden={preloaded || undefined}
+      aria-labelledby="plan-hook-title"
+    >
+      <div
+        className="relative flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl"
         style={{
           background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
         }}
-        role="dialog"
-        aria-modal="true"
-        aria-hidden={preloaded || undefined}
-        aria-labelledby="plan-hook-title"
       >
         <div
           aria-hidden
@@ -374,7 +377,7 @@ export function PlanIntro({
           }}
         />
 
-        <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))]">
+        <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))]">
           {/* centered brand */}
           <FadeUp className="flex justify-center">
             <div className="inline-flex items-center gap-2.5 rounded-full border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.07] px-4 py-1.5">
@@ -770,6 +773,7 @@ export function PlanIntro({
           </FadeUp>
         </div>
       </div>
+      </div>,
     </MotionConfig>,
     document.body,
   );
