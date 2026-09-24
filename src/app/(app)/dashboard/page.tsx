@@ -1011,9 +1011,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Leaderboard */}
-      <div ref={animateSection} data-section-index={10} className="mt-4 mb-4">
-        <div className="rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+      {/* Leaderboard + Invite Friends & Referral */}
+      <div className="mt-4 mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div ref={animateSection} data-section-index={10}>
+        <div className="h-full rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
           <SectionHeading className="mb-4">Leaderboard</SectionHeading>
           <div className="flex flex-col">
             {leaderboard.map((l, i) => (
@@ -1043,9 +1044,9 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Invite Friends & Referral */}
-      <div ref={animateSection} data-section-index={11} className="mt-4">
+      <div ref={animateSection} data-section-index={11}>
         <InviteCard />
+      </div>
       </div>
 
       {habitModalOpen && (

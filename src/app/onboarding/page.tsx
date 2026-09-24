@@ -112,7 +112,7 @@ export default function OnboardingPage() {
             <div className="absolute -inset-2 rounded-3xl bg-primary/5 blur-xl" />
           </div>
           <div className="text-center">
-            <h1 className="text-3xl font-black tracking-[0.15em] text-foreground">
+            <h1 className="text-3xl md:text-4xl font-black tracking-[0.15em] text-foreground">
               EXAM ARENA
             </h1>
             <div className="flex items-center justify-center gap-2 mt-1.5">
@@ -126,7 +126,7 @@ export default function OnboardingPage() {
         </div>
 
         {/* Tagline */}
-        <div ref={taglineRef} className="text-center mb-10 max-w-xs">
+        <div ref={taglineRef} className="text-center mb-10 max-w-xs md:max-w-md">
           <p className="text-sm leading-relaxed text-muted-foreground/70">
             Not a coaching app.
             <br />
@@ -156,11 +156,14 @@ export default function OnboardingPage() {
         </div>
 
         {/* Auth buttons */}
-        <div ref={buttonsRef} className="flex flex-col gap-3 w-full max-w-xs">
+        <div
+          ref={buttonsRef}
+          className="flex flex-col gap-3 w-full max-w-xs md:flex-row md:max-w-lg md:gap-4"
+        >
           <button
             type="button"
             onClick={() => handleLogin("google")}
-            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
+            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring md:flex-1"
           >
             <span className="grid size-8 place-items-center rounded-lg bg-white/10 group-hover:bg-white/15 transition-colors">
               <Globe size={16} className="text-foreground/80" />
@@ -170,7 +173,7 @@ export default function OnboardingPage() {
           <button
             type="button"
             onClick={() => handleLogin("phone")}
-            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
+            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring md:flex-1"
           >
             <span className="grid size-8 place-items-center rounded-lg bg-white/10 group-hover:bg-white/15 transition-colors">
               <Smartphone size={16} className="text-foreground/80" />

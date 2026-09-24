@@ -26,6 +26,7 @@ import {
   X,
   ChevronDown,
   Settings,
+  Trash2,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -70,6 +71,26 @@ function Row({ icon, title, subtitle, danger, onClick }: RowProps) {
         </span>
       </span>
       <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/30" />
+    </button>
+  );
+}
+
+function HeadingTile({ icon, danger, onClick, label, heading }: { icon: React.ReactNode; danger?: boolean; onClick?: () => void; label?: string; heading: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl border backdrop-blur-xl px-3 py-5 text-center transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+      style={{ borderColor: danger ? "rgba(255,92,92,0.25)" : GLASS_BORDER, background: danger ? "rgba(255,92,92,0.06)" : GLASS_BG }}
+    >
+      <span className={danger ? "text-[#ff5c5c]" : "text-primary"}>
+        {icon}
+      </span>
+      <span className={danger ? "block text-[12px] font-semibold text-[#ff5c5c] tracking-[-0.01em]" : "block text-[12px] font-semibold text-foreground tracking-[-0.01em]"}>
+        {heading}
+      </span>
     </button>
   );
 }
@@ -280,78 +301,119 @@ export default function SettingsPage() {
           rank="47"
           xp="2,340"
         />
-        <SubscriptionCard />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <SubscriptionCard />
 
-        {/* Prep / Membership */}
-        <div>
-          <SectionLabel>PREP / MEMBERSHIP</SectionLabel>
-          {prepExams.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
-              <p className="text-[12px] text-muted-foreground/60 font-normal">No active preps yet</p>
-            </div>
-          ) : (
-            <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-              <div className="flex flex-wrap gap-2">
-                {prepExams.map((id) => (
-                  <span
-                    key={id}
-                    className={cn(
-                      "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
-                      id === targetExam
-                        ? "bg-primary/10 text-primary border border-primary/20"
-                        : "bg-white/[0.04] text-foreground/80 border border-white/[0.06]",
-                    )}
-                  >
-                    {DOMAIN_LABELS[id]}
-                    {id === targetExam && <Check size={11} strokeWidth={3} className="ml-1 inline text-primary" />}
-                  </span>
-                ))}
+          {/* Prep / Membership */}
+          <div className="flex flex-col">
+            <SectionLabel>PREP / MEMBERSHIP</SectionLabel>
+            {prepExams.length === 0 ? (
+              <div className="flex-1 rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
+                <p className="text-[12px] text-muted-foreground/60 font-normal">No active preps yet</p>
               </div>
-            </div>
-          )}
-          <button
-            type="button"
-            onClick={() => setShowAddPrep(true)}
-            className="mt-3 w-full rounded-2xl border border-dashed border-primary/20 bg-primary/5 backdrop-blur-xl py-4 text-[13px] font-semibold text-primary transition-all hover:border-primary/35 hover:bg-primary/[0.08] active:scale-[0.98]"
-          >
-            + Add Prep
-          </button>
+            ) : (
+              <div className="flex-1 rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+                <div className="flex flex-wrap gap-2">
+                  {prepExams.map((id) => (
+                    <span
+                      key={id}
+                      className={cn(
+                        "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
+                        id === targetExam
+                          ? "bg-primary/10 text-primary border border-primary/20"
+                          : "bg-white/[0.04] text-foreground/80 border border-white/[0.06]",
+                      )}
+                    >
+                      {DOMAIN_LABELS[id]}
+                      {id === targetExam && <Check size={11} strokeWidth={3} className="ml-1 inline text-primary" />}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => setShowAddPrep(true)}
+              className="mt-3 w-full rounded-2xl border border-dashed border-primary/20 bg-primary/5 backdrop-blur-xl py-4 text-[13px] font-semibold text-primary transition-all hover:border-primary/35 hover:bg-primary/[0.08] active:scale-[0.98]"
+            >
+              + Add Prep
+            </button>
+          </div>
         </div>
 
-        {/* Activity & Records */}
-        <CollapsibleSection label="ACTIVITY & RECORDS" defaultOpen>
-          <div className="space-y-2.5">
-            <Row icon={<Clock className="h-5 w-5" />} title="Past Sessions" subtitle="View your sprint history" onClick={() => router.push("/settings/history")} />
-            <Row icon={<FileText className="h-5 w-5" />} title="Reports" subtitle="Performance analytics" onClick={() => router.push("/settings/reports")} />
-            <Row icon={<Award className="h-5 w-5" />} title="Achievements" subtitle="3/6 unlocked" onClick={() => router.push("/settings/achievements")} />
-            <Row icon={<Trophy className="h-5 w-5" />} title="Leaderboard" subtitle="See your ranking" onClick={() => router.push("/settings/leaderboard")} />
-          </div>
-        </CollapsibleSection>
+        {/* Activity & Records + Account Settings */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CollapsibleSection label="ACTIVITY & RECORDS" defaultOpen>
+            <div className="space-y-2.5 md:hidden">
+              <Row icon={<Clock className="h-5 w-5" />} title="Past Sessions" subtitle="View your sprint history" onClick={() => router.push("/settings/history")} />
+              <Row icon={<FileText className="h-5 w-5" />} title="Reports" subtitle="Performance analytics" onClick={() => router.push("/settings/reports")} />
+              <Row icon={<Award className="h-5 w-5" />} title="Achievements" subtitle="3/6 unlocked" onClick={() => router.push("/settings/achievements")} />
+              <Row icon={<Trophy className="h-5 w-5" />} title="Leaderboard" subtitle="See your ranking" onClick={() => router.push("/settings/leaderboard")} />
+            </div>
+            <div className="hidden md:grid grid-cols-2 gap-2.5">
+              <HeadingTile icon={<Clock className="h-5 w-5" />} heading="Past Sessions" onClick={() => router.push("/settings/history")} />
+              <HeadingTile icon={<FileText className="h-5 w-5" />} heading="Reports" onClick={() => router.push("/settings/reports")} />
+              <HeadingTile icon={<Award className="h-5 w-5" />} heading="Achievements" onClick={() => router.push("/settings/achievements")} />
+              <HeadingTile icon={<Trophy className="h-5 w-5" />} heading="Leaderboard" onClick={() => router.push("/settings/leaderboard")} />
+            </div>
+          </CollapsibleSection>
 
-        {/* Account Settings */}
-        <CollapsibleSection label="ACCOUNT SETTINGS" defaultOpen>
-          <div className="space-y-2.5">
-            <Row icon={<User className="h-5 w-5" />} title="Personal Details" subtitle="Name, email, phone" onClick={() => router.push("/settings/profile/edit")} />
-            <Row icon={<Bell className="h-5 w-5" />} title="Notification Preferences" subtitle="Push & reminders" onClick={() => router.push("/settings/notifications")} />
-            <Row icon={<Calendar className="h-5 w-5" />} title="Class Calendar" subtitle="Schedule & planning" onClick={() => router.push("/settings/planner")} />
-            <Row icon={<Phone className="h-5 w-5" />} title="Call Reminder" subtitle="Coming soon" />
-            <Row icon={<DollarSign className="h-5 w-5" />} title="Payments" subtitle="Coming soon" />
-            <Row icon={<Laptop className="h-5 w-5" />} title="Linked Devices" subtitle="Manage logged-in devices" onClick={() => router.push("/settings/linked-devices")} />
-          </div>
-        </CollapsibleSection>
+          <CollapsibleSection label="ACCOUNT SETTINGS" defaultOpen>
+            <div className="space-y-2.5 md:hidden">
+              <Row icon={<User className="h-5 w-5" />} title="Personal Details" subtitle="Name, email, phone" onClick={() => router.push("/settings/profile/edit")} />
+              <Row icon={<Bell className="h-5 w-5" />} title="Notification Preferences" subtitle="Push & reminders" onClick={() => router.push("/settings/notifications")} />
+              <Row icon={<Calendar className="h-5 w-5" />} title="Class Calendar" subtitle="Schedule & planning" onClick={() => router.push("/settings/planner")} />
+              <Row icon={<Phone className="h-5 w-5" />} title="Call Reminder" subtitle="Coming soon" />
+              <Row icon={<DollarSign className="h-5 w-5" />} title="Payments" subtitle="Coming soon" />
+              <Row icon={<Laptop className="h-5 w-5" />} title="Linked Devices" subtitle="Manage logged-in devices" onClick={() => router.push("/settings/linked-devices")} />
+            </div>
+            <div className="hidden md:grid grid-cols-3 gap-2.5">
+              <HeadingTile icon={<User className="h-5 w-5" />} heading="Personal Details" onClick={() => router.push("/settings/profile/edit")} />
+              <HeadingTile icon={<Bell className="h-5 w-5" />} heading="Notification" onClick={() => router.push("/settings/notifications")} />
+              <HeadingTile icon={<Calendar className="h-5 w-5" />} heading="Class Calendar" onClick={() => router.push("/settings/planner")} />
+              <HeadingTile icon={<Phone className="h-5 w-5" />} heading="Call Reminder" />
+              <HeadingTile icon={<DollarSign className="h-5 w-5" />} heading="Payments" />
+              <HeadingTile icon={<Laptop className="h-5 w-5" />} heading="Linked Devices" onClick={() => router.push("/settings/linked-devices")} />
+            </div>
+          </CollapsibleSection>
+        </div>
 
-        {/* Support */}
-        <CollapsibleSection label="SUPPORT" defaultOpen>
-          <div className="space-y-2.5">
-            <Row icon={<HelpCircle className="h-5 w-5" />} title="Help Center" subtitle="Guides & tutorials" onClick={() => router.push("/settings/help")} />
-            <Row icon={<MessageSquare className="h-5 w-5" />} title="FAQs" subtitle="Common questions" />
-            <Row icon={<Phone className="h-5 w-5" />} title="Contact Support" subtitle="We're here to help" />
-          </div>
-        </CollapsibleSection>
+        {/* Support + Account & Session */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CollapsibleSection label="SUPPORT" defaultOpen>
+            <div className="space-y-2.5 md:hidden">
+              <Row icon={<HelpCircle className="h-5 w-5" />} title="Help Center" subtitle="Guides & tutorials" onClick={() => router.push("/settings/help")} />
+              <Row icon={<MessageSquare className="h-5 w-5" />} title="FAQs" subtitle="Common questions" />
+              <Row icon={<Phone className="h-5 w-5" />} title="Contact Support" subtitle="We're here to help" />
+            </div>
+            <div className="hidden md:grid grid-cols-3 gap-2.5">
+              <HeadingTile icon={<HelpCircle className="h-5 w-5" />} heading="Help Center" onClick={() => router.push("/settings/help")} />
+              <HeadingTile icon={<MessageSquare className="h-5 w-5" />} heading="FAQs" />
+              <HeadingTile icon={<Phone className="h-5 w-5" />} heading="Contact Support" />
+            </div>
+          </CollapsibleSection>
 
-        {/* Logout */}
-        <div>
-          <Row icon={<LogOut className="h-5 w-5" />} title="Logout" subtitle="Sign out of your account" danger onClick={handleLogout} />
+          <CollapsibleSection label="ACCOUNT & SESSION" defaultOpen>
+            <div className="space-y-2.5 md:hidden">
+              <Row icon={<LogOut className="h-5 w-5" />} title="Logout" subtitle="Sign out of your account" danger onClick={handleLogout} />
+              <button
+                type="button"
+                className="flex w-full items-center gap-4 rounded-2xl border border-[#ff5c5c]/25 bg-[#ff5c5c]/[0.06] backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-[#ff5c5c]/[0.12] active:scale-[0.99]"
+              >
+                <span className="text-[#ff5c5c]">
+                  <Trash2 className="h-5 w-5" />
+                </span>
+                <span>
+                  <span className="block text-[13px] font-semibold text-[#ff5c5c]">Delete Account Permanently</span>
+                  <span className="block text-[11px] text-muted-foreground/40">This cannot be undone</span>
+                </span>
+              </button>
+            </div>
+            <div className="hidden md:grid grid-cols-2 gap-2.5">
+              <HeadingTile icon={<LogOut className="h-5 w-5" />} heading="Logout" danger onClick={handleLogout} />
+              <HeadingTile icon={<Trash2 className="h-5 w-5" />} heading="Delete Account" danger />
+            </div>
+          </CollapsibleSection>
         </div>
       </div>
 

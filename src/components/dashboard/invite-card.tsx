@@ -53,7 +53,7 @@ export function InviteCard() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-3xl border p-5"
+      className="relative overflow-hidden rounded-3xl border p-5 h-full"
       style={{ borderColor: "rgba(34,211,238,0.14)", background: "linear-gradient(135deg, rgba(34,211,238,0.05) 0%, rgba(255,255,255,0.02) 60%)" }}
     >
       <div className="absolute -top-12 -right-12 size-32 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.45), transparent 70%)" }} />

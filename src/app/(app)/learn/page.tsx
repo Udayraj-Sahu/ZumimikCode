@@ -270,7 +270,7 @@ function LearnPageContent() {
 
         {/* Tab mode selector — 3D push keys: active pops up, others sit flat/sunken */}
         <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5">
-          <div className="grid grid-cols-3 gap-2.5">
+          <div className="grid grid-cols-3 gap-2.5 md:max-w-2xl md:mx-auto md:w-full">
             {MODES.map((m) => {
               const isActive = m.id === mode;
               return (
@@ -392,7 +392,7 @@ function LearnPageContent() {
                       </span>
                     </div>
                   ) : (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 md:grid md:grid-cols-3 md:gap-2.5">
                       {prepExams.map((id) => (
                         <button
                           key={id}
@@ -402,7 +402,7 @@ function LearnPageContent() {
                             setActiveLearnDomain(id);
                           }}
                           className={cn(
-                            "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
+                            "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all md:justify-self-start",
                             activeDomain === id
                               ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
                               : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
@@ -422,7 +422,7 @@ function LearnPageContent() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="flex flex-col gap-3 mt-5"
+                    className="flex flex-col gap-3 mt-5 md:grid md:grid-cols-2 md:gap-4"
                   >
                     {topics.map((topic, i) => {
                       const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
@@ -823,7 +823,7 @@ function LearnPageContent() {
                   );
                   const sections = ["all", ...Array.from(sectionSet)];
                   return (
-                    <div className="flex items-center gap-2 overflow-x-auto mt-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <div className="flex items-center gap-2 overflow-x-auto mt-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:overflow-visible">
                       {sections.map((sec) => (
                         <button
                           key={sec}
@@ -849,7 +849,7 @@ function LearnPageContent() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="flex flex-col gap-3 mt-5"
+                className="flex flex-col gap-3 mt-5 md:grid md:grid-cols-2 md:gap-4"
               >
                 {mockLoading && (
                   <div className="flex flex-col gap-3">
@@ -1051,7 +1051,7 @@ function YourStatsCard({
                 </span>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
                 <StatBox value={stats.accuracy} label="Accuracy" color={color} />
                 <StatBox value={stats.questions} label="Questions" color={color} />
                 <StatBox value={stats.percentile} label="Percentile" color={color} />
