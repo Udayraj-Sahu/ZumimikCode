@@ -11,28 +11,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Walkthrough } from "@/components/shell/walkthrough";
 import { RatePrompt } from "@/components/shell/rate-prompt";
 
-const PRIMARY_NAV: { label: string; href: string }[] = [
-  { label: "Arena", href: "/dashboard" },
-  { label: "Quests", href: "/play/configure-sprint" },
-  { label: "Compete", href: "/play/duel" },
-  { label: "Practice", href: "/learn/practice" },
-  { label: "Analytics", href: "/dashboard/analytics" },
-];
-
-const FLYOUT_HREFS = [
-  "/settings/leaderboard",
-  "/settings/history",
-  "/settings/achievements",
-  "/settings",
-  "/dashboard/friends",
-  "/settings/planner",
-  "/settings/reports",
-  "/settings/notifications",
-  "/settings/help",
-  "/settings/profile",
-];
-
-const NAV_BY_HREF = new Map(NAV_ITEMS.map((item) => [item.href, item]));
+const SIDEBAR_HREFS = new Set(["/dashboard", "/learn", "/play", "/settings"]);
 
 const EXAM_ROUTES = ["/play/sprint", "/learn/mock/run", "/learn/practice"];
 
@@ -90,8 +69,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     [],
   );
 
-  const visibleItems = PRIMARY_NAV.map((p) => ({ ...NAV_BY_HREF.get(p.href)!, label: p.label }));
-  const flyoutItems = FLYOUT_HREFS.map((href) => NAV_BY_HREF.get(href)!).filter(Boolean);
+  const visibleItems = MOBILE_NAV;
+  const flyoutItems = NAV_ITEMS.filter((item) => !SIDEBAR_HREFS.has(item.href));
   const anyFlyoutActive = flyoutItems.some((item) => pathname === item.href);
   const isExamFlow = EXAM_ROUTES.some((route) => pathname.startsWith(route));
   const avatarInitial = user?.name?.[0]?.toUpperCase() ?? "U";

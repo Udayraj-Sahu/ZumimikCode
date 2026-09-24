@@ -37,7 +37,7 @@ function buildSteps(domainLabel: string): DriveStep[] {
       element: isMobile ? "[data-tour-mobile-nav]" : "[data-tour-nav]",
       popover: {
         title: "Your navigation bar",
-        description: "Tap here to move between Dashboard, Sprints, Analytics, and more.",
+        description: "Tap here to move between Home, Learn, Play, and Settings — and open More for everything else.",
         side: isMobile ? "top" : "right",
         align: "start",
       },
