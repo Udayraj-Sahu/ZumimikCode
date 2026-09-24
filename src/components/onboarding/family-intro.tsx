@@ -229,7 +229,7 @@ export function FamilyIntro({
             </p>
           </FadeUp>
 
-          <div className="mt-5 space-y-3 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
+          <div className="mt-5 space-y-3">
             {(Object.keys(PERSONA_COPY) as Persona[]).map((p, i) => {
               const c = PERSONA_COPY[p];
               return (
@@ -278,7 +278,7 @@ export function FamilyIntro({
 
         <div className="mt-auto">
           <FadeUp delay={380}>
-            <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.03] p-1.5 md:grid md:grid-cols-3 md:gap-1.5">
+            <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.03] p-1.5">
               {GROWTH.map((g, i) => (
                 <div key={g.id} className="flex items-center gap-3 rounded-[14px] px-3 py-2.5">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.07] text-[#C8FF4D]">

@@ -303,7 +303,7 @@ export function PitchIntro({
           </div>
 
           {/* tracks */}
-          <ul className="mt-5 space-y-2.5 md:grid md:grid-cols-3 md:gap-2.5 md:space-y-0">
+          <ul className="mt-5 space-y-2.5">
             {TRACKS.map(({ id, lead, punch, sub, Icon, accent, bar }) => (
               <li
                 key={id}

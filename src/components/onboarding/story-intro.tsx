@@ -782,7 +782,7 @@ export function StoryCommitmentMatrix({
 
       {/* Reclaim modules */}
       <SectionHead right="Where it hides" icon={<Layers size={12} />} title="Dead-time presets" />
-      <div className="mt-3 flex flex-col gap-2.5 md:grid md:grid-cols-3 md:gap-3">
+      <div className="mt-3 flex flex-col gap-2.5">
         {RECLAIM_MODULES.map((m) => (
           <ReclaimModule
             key={m.id}

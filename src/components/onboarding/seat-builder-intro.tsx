@@ -141,7 +141,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
       {/* 1 — head of the table */}
       <section>
         <SectionTitle marker="1" title="HEAD OF THE TABLE" tag="REQUIRED BASE" />
-        <div role="radiogroup" aria-label="Primary seat" className="mt-3 space-y-2.5 md:grid md:grid-cols-2 md:gap-2.5 md:space-y-0">
+        <div role="radiogroup" aria-label="Primary seat" className="mt-3 space-y-2.5">
           {PRIMARY.map((p) => {
             const selected = p.id === primaryId;
             return (
@@ -224,7 +224,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
       {/* 2 — pull up a chair */}
       <section>
         <SectionTitle marker="2" title="PULL UP A CHAIR" tag={`${STACK_DISCOUNT_PCT}% OFF EACH`} />
-        <div className="mt-3 space-y-2.5 md:grid md:grid-cols-2 md:gap-2.5 md:space-y-0">
+        <div className="mt-3 space-y-2.5">
           {STACK.map((s) => {
             const added = stacked.includes(s.id);
             return (

@@ -235,7 +235,7 @@ export function FamilyHubIntro({
                   SHARED FAMILY WALL
                 </span>
               </div>
-              <ul className="space-y-2.5 md:grid md:grid-cols-3 md:gap-2.5 md:space-y-0">
+              <ul className="space-y-2.5">
                 {WALL.map(({ Icon, title, desc }) => (
                   <li key={title} className="flex items-start gap-3">
                     <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-[#C8FF4D]">
@@ -257,7 +257,7 @@ export function FamilyHubIntro({
         <div className="mt-4">
           <FadeUp delay={360}>
             <div className="rounded-[18px] border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.04] p-4">
-              <ul className="space-y-2.5 md:grid md:grid-cols-3 md:gap-2.5 md:space-y-0">
+              <ul className="space-y-2.5">
                 {SAVINGS.map(({ Icon, title, text }) => (
                   <li key={title} className="flex items-center gap-3">
                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#C8FF4D]/25 bg-black/30 text-[#C8FF4D]">

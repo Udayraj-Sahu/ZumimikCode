@@ -316,7 +316,7 @@ export function ArenaIntro({
         </FadeUp>
 
         {/* live lanes */}
-        <FadeUp delay={240} className="mt-4 space-y-2.5 md:grid md:grid-cols-2 md:gap-2.5 md:space-y-0">
+        <FadeUp delay={240} className="mt-4 space-y-2.5">
           {lanes.map(({ id, title, desc, Icon, tone }) => (
             <div
               key={id}
