@@ -170,7 +170,7 @@ export function PitchIntro({
         }}
       />
 
-      <div className="relative w-full max-w-[400px] px-5 py-8">
+      <div className="relative w-full max-w-[400px] px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-8">
         <section ref={pitchRef}>
           {/* badge */}
           <div

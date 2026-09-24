@@ -349,7 +349,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
         <div className="relative flex h-full w-full max-w-[360px] flex-col">
           <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {/* Protocol pill */}
-            <div className="flex justify-center pt-4 pb-3">
+            <div className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-3">
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}

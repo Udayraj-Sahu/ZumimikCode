@@ -175,7 +175,7 @@ export function FamilyHubIntro({
         }}
       />
 
-      <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-6">
+      <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))]">
         <div className="mt-4">
           <FadeUp delay={60}>
             <h1

@@ -1012,7 +1012,7 @@ export function StoryIntro({
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="flex justify-center pt-4"
+              className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))]"
             >
               <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
                 <Sparkles size={12} className="text-[#C8FF4D]" />

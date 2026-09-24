@@ -250,7 +250,7 @@ export function ArenaIntro({
         }}
       />
 
-      <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-8">
+      <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))]">
         {/* centered brand */}
         <FadeUp className="flex justify-center">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.07] px-4 py-1.5">

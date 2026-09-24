@@ -447,7 +447,7 @@ export function SeatBuilderIntro({
         }}
       />
 
-      <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-6">
+      <div className="relative mx-auto min-h-full w-full max-w-[400px] px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))]">
         <section className="mt-8 text-center">
           <h1
             id="seat-builder-hook-title"
