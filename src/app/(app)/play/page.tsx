@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -119,7 +120,7 @@ export default function PlayPage() {
   const comingSoon = COMING_SOON[activeTab];
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+    <PageContainer>
       {/* Header */}
       <header className="mb-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
@@ -188,6 +189,6 @@ export default function PlayPage() {
           </div>
         )}
       </main>
-    </div>
+    </PageContainer>
   );
 }

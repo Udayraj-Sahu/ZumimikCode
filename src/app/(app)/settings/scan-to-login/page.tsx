@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -86,7 +87,7 @@ export default function ScanToLoginPage() {
   const isBusy = scan.isPending || approve.isPending;
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+    <PageContainer>
       <div ref={animateSection} className="mx-auto max-w-md">
         {/* Header */}
         <div className="text-center">
@@ -258,6 +259,6 @@ export default function ScanToLoginPage() {
           })}
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

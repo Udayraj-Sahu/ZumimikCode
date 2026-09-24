@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -24,17 +25,17 @@ export function ClientTechniquePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6 animate-pulse">
+      <PageContainer className="pb-6 animate-pulse">
         <div className="h-10 w-32 rounded-xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-32 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-64 rounded-3xl" style={{ background: GLASS_BG }} />
-      </div>
+      </PageContainer>
     );
   }
 
   if (error || !technique) {
     return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
+    <PageContainer className="pb-6">
         <div
           className="flex flex-col items-center gap-4 rounded-3xl p-8 text-center"
           style={{ background: GLASS_BG, border: `1px solid rgba(239,68,68,0.12)` }}
@@ -48,12 +49,12 @@ export function ClientTechniquePage() {
             Go Back
           </button>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-6">
+    <PageContainer className="pb-6">
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
           <Lightbulb size={12} className="text-primary" />
@@ -96,6 +97,6 @@ export function ClientTechniquePage() {
         </div>
         <DifficultyTabs levels={technique.levels} techniqueName={technique.name} />
       </div>
-    </div>
+    </PageContainer>
   );
 }

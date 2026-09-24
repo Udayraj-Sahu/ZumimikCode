@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import gsap from "gsap";
@@ -49,7 +50,7 @@ export default function NotificationsPage() {
   const unreadCount = notifications?.filter((n) => !n.read).length ?? 0;
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+    <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
@@ -169,6 +170,6 @@ export default function NotificationsPage() {
           </div>
         )}
       </div>
-    </div>
+    </PageContainer>
   );
 }

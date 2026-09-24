@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
@@ -34,7 +35,7 @@ export default function AnalysisPage() {
 
   if (!result || !session) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 text-center">
+      <PageContainer className="text-center">
         <p className="text-[13px] text-muted-foreground">No sprint data found.</p>
         <button
           type="button"
@@ -43,13 +44,13 @@ export default function AnalysisPage() {
         >
           Start a Sprint
         </button>
-      </div>
+      </PageContainer>
     );
   }
 
   if (wrongAnswers.length === 0) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 text-center">
+      <PageContainer className="text-center">
         <div className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-primary/10 border border-primary/20">
           <Check size={28} className="text-primary" />
         </div>
@@ -74,12 +75,12 @@ export default function AnalysisPage() {
             Dashboard
           </button>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+    <PageContainer>
       {/* Centered pill badge */}
       <div className="flex flex-col items-center gap-2 mb-6">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-5 py-2">
@@ -179,6 +180,6 @@ export default function AnalysisPage() {
           Dashboard
         </button>
       </div>
-    </div>
+    </PageContainer>
   );
 }

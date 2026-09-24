@@ -48,6 +48,36 @@
   --chrome-avatar: #8a6a5a;
   --cta-from: #C7F252;
   --cta-to: #A8D43A;
+
+  /* Responsive foundation tokens */
+  --page-padding: 16px;
+  --content-max-width: 64rem;
+  --header-height: 56px;
+  --bottom-nav-height: 64px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+}
+
+@media (min-width: 600px) {
+  :root {
+    --page-padding: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-padding: 40px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  :root {
+    --header-height: 48px;
+    --bottom-nav-height: 56px;
+  }
 }
 
 .light {

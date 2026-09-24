@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useRef, useLayoutEffect, useMemo, useEffect, Suspense } from "react";
 import { motion, AnimatePresence, type Variants } from "motion/react";
@@ -237,7 +238,7 @@ function LearnPageContent() {
   };
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+    <PageContainer>
       {/* Page header — matches app pattern */}
       <header className="mb-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
@@ -957,7 +958,7 @@ function LearnPageContent() {
         {showMockArena && <MockArenaIntro onClose={() => setShowMockArena(false)} />}
         <PaywallModal />
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

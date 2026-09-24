@@ -1,4 +1,7 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
+import { ExamShell } from "@/components/exam/exam-shell";
+import { QuestionNavigator } from "@/components/exam/question-navigator";
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -130,6 +133,15 @@ export default function PracticePage() {
     }
   };
 
+  const handleJump = (index: number) => {
+    if (!session) return;
+    const q = session.questions[index];
+    if (!q) return;
+    setCurrentIndex(index);
+    setRevealed(answers[q.id] !== undefined);
+    setHintOpen(false);
+  };
+
   const stepProgress = useStepProgress();
   const loadTemplates = useTemplateStore((s) => s.loadTemplates);
   const currentTemplate = useTemplateStore((s) => s.templates[s.currentIndex] ?? null);
@@ -208,7 +220,7 @@ export default function PracticePage() {
   /* ================================================================ */
   if (phase === "config") {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+      <PageContainer>
         <div ref={headerRef} className="mb-6 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <Dumbbell size={12} className="text-primary" />
@@ -427,7 +439,7 @@ export default function PracticePage() {
             </div>
           </>
         )}
-      </div>
+      </PageContainer>
     );
   }
 
@@ -437,7 +449,7 @@ export default function PracticePage() {
   if (phase === "done" && completed) {
     const accuracy = Math.round((completed.correct / completed.total) * 100);
     return (
-      <div className="min-h-screen mx-auto max-w-lg px-5 pt-8 pb-4" ref={contentRef}>
+      <PageContainer ref={contentRef} size="sm" className="pt-8">
         <div className="text-center mb-6">
           <div className={cn(
             "mx-auto mb-4 grid size-20 place-items-center rounded-full text-[28px] font-bold backdrop-blur-xl",
@@ -488,7 +500,7 @@ export default function PracticePage() {
             Dashboard
           </button>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
@@ -499,7 +511,7 @@ export default function PracticePage() {
     const sprintTopic = searchParams.get("topic") || "";
     const sprintDifficulty = searchParams.get("difficulty") || "beginner";
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-8 pb-4" ref={contentRef}>
+      <PageContainer ref={contentRef} className="pt-8">
         <div className="text-center mb-6">
           <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-[#F59E0B]/10 backdrop-blur-xl">
             <Check size={32} className="text-[#F59E0B]" />
@@ -550,7 +562,7 @@ export default function PracticePage() {
             Dashboard
           </button>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
@@ -559,7 +571,7 @@ export default function PracticePage() {
   /* ================================================================ */
   if (practiceType === "templates" && rendererPhase === "active" && currentTemplate) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+      <PageContainer>
         <div ref={headerRef} className="flex items-center justify-between mb-3">
           <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
             {domainLabel} &middot; {currentTemplate.concept?.technique_name}
@@ -621,7 +633,7 @@ export default function PracticePage() {
             </button>
           </div>
         )}
-      </div>
+      </PageContainer>
     );
   }
 
@@ -630,125 +642,55 @@ export default function PracticePage() {
   /* ================================================================ */
   if (practiceType === "templates" && (loadingTemplates || rendererPhase === "idle")) {
     return (
-      <div className="max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
+      <PageContainer className="animate-pulse">
         <div className="h-12 rounded-2xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-48 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-12 rounded-2xl" style={{ background: GLASS_BG }} />
-      </div>
+      </PageContainer>
     );
   }
 
   if (isLoading || !session) {
     return (
-      <div className="max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
+      <PageContainer className="animate-pulse">
         <div className="h-12 rounded-2xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-48 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-12 rounded-2xl" style={{ background: GLASS_BG }} />
-      </div>
+      </PageContainer>
     );
   }
 
   /* ================================================================ */
   /*  ACTIVE MCQ                                                       */
   /* ================================================================ */
+  const practiceAnsweredFlags = session.questions.map((q) => answers[q.id] !== undefined);
+  const showNavigator = session.questions.length >= 6;
+
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-      <div ref={headerRef} className="flex items-center justify-between mb-3">
-        <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
-          Practice &middot; {session.topicLabel}
-        </span>
-        <span className="text-[11px] font-mono text-muted-foreground/55">
-          {currentIndex + 1}/{session.questions.length}
-        </span>
-      </div>
-
-      <div className="h-1.5 w-full rounded-full mb-6" style={{ background: GLASS_BG }}>
-        <div
-          className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-          style={{ width: `${((currentIndex + (revealed ? 1 : 0)) / session.questions.length) * 100}%` }}
-        />
-      </div>
-
-      {question && (
-        <div key={question.id} ref={questionRef}>
-          <p className="text-[16px] font-bold leading-snug text-foreground mb-5 tracking-[-0.01em]">{question.text}</p>
-          {!revealed && question.hint && (
-            <div className="mb-5">
-              {!hintOpen ? (
-                <button
-                  type="button"
-                  onClick={() => setHintOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.06] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-primary outline-none transition-all hover:bg-primary/[0.12]"
-                >
-                  <Lightbulb size={12} /> Need a hint?
-                </button>
-              ) : (
-                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
-                  <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
-                    <Lightbulb size={12} /> Hint
-                  </p>
-                  <p className="text-[13px] leading-relaxed text-foreground/80">{question.hint}</p>
-                </div>
-              )}
+    <PageContainer>
+      <ExamShell
+        header={
+          <>
+            <div ref={headerRef} className="flex items-center justify-between mb-3">
+              <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+                Practice &middot; {session.topicLabel}
+              </span>
+              <span className="text-[11px] font-mono text-muted-foreground/55">
+                {currentIndex + 1}/{session.questions.length}
+              </span>
             </div>
-          )}
-          <div className="flex flex-col gap-2.5">
-            {question.options.map((option, i) => {
-              const isSelected = answers[question.id] === i;
-              const isCorrect = i === question.correctIndex;
-              let style: React.CSSProperties = { borderColor: GLASS_BORDER, background: GLASS_BG };
-              let labelClass = "bg-white/[0.04] text-muted-foreground/50";
-              if (revealed) {
-                if (isCorrect) {
-                  style = { borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.06)" };
-                  labelClass = "bg-[#C7F252]/10 text-[#C7F252]";
-                } else if (isSelected) {
-                  style = { borderColor: "rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.06)" };
-                  labelClass = "bg-destructive/10 text-destructive";
-                } else {
-                  style = { borderColor: "rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.015)" };
-                  labelClass = "bg-white/[0.02] text-muted-foreground/20";
-                }
-              }
-              return (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => handleSelect(i)}
-                  disabled={revealed}
-                  className="flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 text-left outline-none transition-all active:scale-[0.98]"
-                  style={style}
-                >
-                  <span className={cn(
-                    "grid size-8 shrink-0 place-items-center rounded-xl text-[11px] font-bold",
-                    labelClass,
-                  )}>
-                    {String.fromCharCode(65 + i)}
-                  </span>
-                  <span className="flex-1 text-[13px] font-medium">{option}</span>
-                  {revealed && isCorrect && <Check size={18} className="text-[#C7F252] shrink-0" />}
-                  {revealed && isSelected && !isCorrect && <X size={18} className="text-destructive shrink-0" />}
-                </button>
-              );
-            })}
-          </div>
 
-          {revealed && (
-            <div className="mt-5 space-y-3">
-              {question.explanation ? (
-                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
-                  <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
-                    <Lightbulb size={12} /> Why it&apos;s this
-                  </p>
-                  <p className="text-[13px] leading-relaxed text-foreground/80">{question.explanation}</p>
-                </div>
-              ) : (
-                question.hint && (
-                  <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-                    <p className="text-[12px] text-muted-foreground/60 leading-relaxed">{question.hint}</p>
-                  </div>
-                )
-              )}
+            <div className="h-1.5 w-full rounded-full mb-5" style={{ background: GLASS_BG }}>
+              <div
+                className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                style={{ width: `${((currentIndex + (revealed ? 1 : 0)) / session.questions.length) * 100}%` }}
+              />
+            </div>
+          </>
+        }
+        footer={
+          revealed ? (
+            <div className="flex flex-col items-center">
               <button
                 type="button"
                 onClick={handleNext}
@@ -757,23 +699,116 @@ export default function PracticePage() {
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
             </div>
-          )}
-        </div>
-      )}
-
-      {!revealed && (
-        <div className="mt-6 flex justify-center gap-1.5">
-          {session.questions.map((_, i) => (
-            <span
-              key={i}
-              className={cn(
-                "size-2 rounded-full transition-all duration-300",
-                i === currentIndex ? "bg-primary scale-125" : i < currentIndex || answers[session.questions[i]?.id] !== undefined ? "bg-primary/40" : "bg-white/10",
-              )}
+          ) : (
+            <div className="flex justify-center gap-1.5 md:hidden">
+              {session.questions.map((_, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "size-2 rounded-full transition-all duration-300",
+                    i === currentIndex ? "bg-primary scale-125" : i < currentIndex || answers[session.questions[i]?.id] !== undefined ? "bg-primary/40" : "bg-white/10",
+                  )}
+                />
+              ))}
+            </div>
+          )
+        }
+        navigator={
+          showNavigator ? (
+            <QuestionNavigator
+              count={session.questions.length}
+              currentIndex={currentIndex}
+              answered={practiceAnsweredFlags}
+              onSelect={handleJump}
             />
-          ))}
-        </div>
-      )}
-    </div>
+          ) : undefined
+        }
+      >
+        {question && (
+          <div key={question.id} ref={questionRef}>
+            <p className="text-[16px] font-bold leading-snug text-foreground mb-5 tracking-[-0.01em]">{question.text}</p>
+            {!revealed && question.hint && (
+              <div className="mb-5">
+                {!hintOpen ? (
+                  <button
+                    type="button"
+                    onClick={() => setHintOpen(true)}
+                    className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.06] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-primary outline-none transition-all hover:bg-primary/[0.12]"
+                  >
+                    <Lightbulb size={12} /> Need a hint?
+                  </button>
+                ) : (
+                  <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                    <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
+                      <Lightbulb size={12} /> Hint
+                    </p>
+                    <p className="text-[13px] leading-relaxed text-foreground/80">{question.hint}</p>
+                  </div>
+                )}
+              </div>
+            )}
+            <div className="flex flex-col gap-2.5">
+              {question.options.map((option, i) => {
+                const isSelected = answers[question.id] === i;
+                const isCorrect = i === question.correctIndex;
+                let style: React.CSSProperties = { borderColor: GLASS_BORDER, background: GLASS_BG };
+                let labelClass = "bg-white/[0.04] text-muted-foreground/50";
+                if (revealed) {
+                  if (isCorrect) {
+                    style = { borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.06)" };
+                    labelClass = "bg-[#C7F252]/10 text-[#C7F252]";
+                  } else if (isSelected) {
+                    style = { borderColor: "rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.06)" };
+                    labelClass = "bg-destructive/10 text-destructive";
+                  } else {
+                    style = { borderColor: "rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.015)" };
+                    labelClass = "bg-white/[0.02] text-muted-foreground/20";
+                  }
+                }
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => handleSelect(i)}
+                    disabled={revealed}
+                    className="flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 text-left outline-none transition-all active:scale-[0.98]"
+                    style={style}
+                  >
+                    <span className={cn(
+                      "grid size-8 shrink-0 place-items-center rounded-xl text-[11px] font-bold",
+                      labelClass,
+                    )}>
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="flex-1 text-[13px] font-medium">{option}</span>
+                    {revealed && isCorrect && <Check size={18} className="text-[#C7F252] shrink-0" />}
+                    {revealed && isSelected && !isCorrect && <X size={18} className="text-destructive shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            {revealed && (
+              <div className="mt-5 space-y-3">
+                {question.explanation ? (
+                  <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                    <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
+                      <Lightbulb size={12} /> Why it&apos;s this
+                    </p>
+                    <p className="text-[13px] leading-relaxed text-foreground/80">{question.explanation}</p>
+                  </div>
+                ) : (
+                  question.hint && (
+                    <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+                      <p className="text-[12px] text-muted-foreground/60 leading-relaxed">{question.hint}</p>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </ExamShell>
+    </PageContainer>
   );
 }

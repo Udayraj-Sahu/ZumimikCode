@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -58,16 +59,16 @@ export default function ConfigureSprintPage() {
 
   if (isLoading || !data) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 flex items-center justify-center">
+      <PageContainer className="flex items-center justify-center">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
+      </PageContainer>
     );
   }
 
   const { topics, config } = data;
 
   return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+      <PageContainer>
         <div ref={headerRef} className="text-center mb-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <BookOpen size={12} className="text-primary" />
@@ -313,6 +314,6 @@ export default function ConfigureSprintPage() {
             </span>
           </button>
         </div>
-      </div>
+      </PageContainer>
   );
 }

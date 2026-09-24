@@ -31,6 +31,7 @@ type SprintState = {
   answerCurrent: (questionId: string, optionIndex: number) => void;
   nextQuestion: () => void;
   tick: () => void;
+  jumpTo: (index: number) => void;
   completeSprint: (session?: SprintSessionMeta) => void;
   getResult: (questions: Question[]) => SprintResult;
   reset: () => void;
@@ -83,6 +84,12 @@ export const useSprintStore = create<SprintState>((set, get) => ({
   nextQuestion: () =>
     set((state) => ({
       currentIndex: state.currentIndex + 1,
+    })),
+
+  jumpTo: (index) =>
+    set((state) => ({
+      currentIndex: Math.max(0, index),
+      questionStartTime: Date.now(),
     })),
 
   tick: () =>

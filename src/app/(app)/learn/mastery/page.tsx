@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useCallback, useRef, useEffect, useMemo } from "react";
 import gsap from "gsap";
@@ -44,7 +45,7 @@ export default function MasteryPage() {
     : 0;
 
   return (
-    <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
+    <PageContainer>
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
           <Target size={12} className="text-primary" />
@@ -141,6 +142,6 @@ export default function MasteryPage() {
           </div>
         )}
       </div>
-    </div>
+    </PageContainer>
   );
 }

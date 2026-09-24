@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -56,7 +57,7 @@ export default function LinkedDevicesPage() {
   };
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+    <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
@@ -162,6 +163,6 @@ export default function LinkedDevicesPage() {
       >
         <Plus size={15} /> Link a new device
       </button>
-    </div>
+    </PageContainer>
   );
 }

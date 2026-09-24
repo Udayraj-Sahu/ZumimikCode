@@ -34,6 +34,8 @@ const FLYOUT_HREFS = [
 
 const NAV_BY_HREF = new Map(NAV_ITEMS.map((item) => [item.href, item]));
 
+const EXAM_ROUTES = ["/play/sprint", "/learn/mock/run", "/learn/practice"];
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -91,6 +93,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const visibleItems = PRIMARY_NAV.map((p) => ({ ...NAV_BY_HREF.get(p.href)!, label: p.label }));
   const flyoutItems = FLYOUT_HREFS.map((href) => NAV_BY_HREF.get(href)!).filter(Boolean);
   const anyFlyoutActive = flyoutItems.some((item) => pathname === item.href);
+  const isExamFlow = EXAM_ROUTES.some((route) => pathname.startsWith(route));
   const avatarInitial = user?.name?.[0]?.toUpperCase() ?? "U";
   const displayName = (user?.name ?? "Operative").toUpperCase();
 
@@ -214,7 +217,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <main className="lg:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pb-24 lg:pb-0 pt-[max(0px,env(safe-area-inset-top))]">
+      <main className={cn(
+        "lg:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pt-[max(0px,env(safe-area-inset-top))] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
+        isExamFlow ? "pb-0" : "pb-[max(calc(var(--bottom-nav-height)+2rem),env(safe-area-inset-bottom))] lg:pb-0",
+      )}>
         <div key={pathname} ref={pageRef}>
           {children}
         </div>
@@ -225,7 +231,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         ref={mobileNavRef}
         data-tour-mobile-nav
         aria-label="Primary mobile"
-        className="fixed inset-x-0 bottom-[calc(1rem+max(0px,env(safe-area-inset-bottom)))] z-40 flex justify-center px-5 lg:hidden pointer-events-none"
+        className={cn(
+          "fixed inset-x-0 bottom-[calc(1rem+max(0px,env(safe-area-inset-bottom)))] z-40 flex justify-center px-5",
+          isExamFlow ? "hidden" : "lg:hidden",
+          "pointer-events-none",
+        )}
       >
         <div className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[#14170F]/90 backdrop-blur-2xl px-2 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] pointer-events-auto">
           {MOBILE_NAV.map((item) => {

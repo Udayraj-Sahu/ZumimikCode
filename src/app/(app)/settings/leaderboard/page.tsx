@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useCallback } from "react";
 import gsap from "gsap";
@@ -97,7 +98,7 @@ export default function LeaderboardPage() {
   const xpToNext = prevRank && me ? prevRank.xp - me.xp : 0;
 
   return (
-    <div className="min-h-screen px-5 pt-6 pb-4 max-w-5xl mx-auto">
+    <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
@@ -193,6 +194,6 @@ export default function LeaderboardPage() {
           </>
         )}
       </div>
-    </div>
+    </PageContainer>
   );
 }

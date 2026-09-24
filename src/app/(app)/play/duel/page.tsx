@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -128,7 +129,7 @@ export default function DuelPage() {
 
   if (phase === "config") {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+      <PageContainer>
         <div ref={headerRef} className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
             <Swords size={12} className="text-primary" />
@@ -196,13 +197,13 @@ export default function DuelPage() {
             <Swords size={16} /> Start Duel
           </button>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
   if (phase === "done" && result) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4" ref={resultRef}>
+      <PageContainer ref={resultRef}>
         <div className="text-center">
           <div className={cn(
             "mx-auto mb-4 grid size-20 place-items-center rounded-full text-[28px]",
@@ -259,22 +260,22 @@ export default function DuelPage() {
             Dashboard
           </button>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
   if (sessionLoading || !session) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
+      <PageContainer className="animate-pulse">
         <div className="h-14 rounded-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
         <div className="h-48 rounded-3xl mb-4" style={{ backgroundColor: GLASS_BG }} />
         <div className="h-12 rounded-xl" style={{ backgroundColor: GLASS_BG }} />
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+    <PageContainer>
       <div className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3" style={{ backgroundColor: GLASS_BG }}>
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-2">
@@ -361,6 +362,6 @@ export default function DuelPage() {
           )}
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

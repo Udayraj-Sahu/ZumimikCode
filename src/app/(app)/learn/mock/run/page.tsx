@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useEffect, useCallback, useRef, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,6 +14,8 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import type { Question } from "@/lib/types/sprint-session";
 import TrustBadge from "@/components/ui/trust-badge";
 import ContentFeedback from "@/components/ui/content-feedback";
+import { ExamShell } from "@/components/exam/exam-shell";
+import { QuestionNavigator } from "@/components/exam/question-navigator";
 
 const GLASS_BG = "rgba(255,255,255,0.04)";
 const GLASS_BORDER = "rgba(255,255,255,0.08)";
@@ -38,7 +41,7 @@ function MockRunContent() {
   const clearSnapshot = useResumeStore((s) => s.clearSnapshot);
   const {
     status, currentIndex, timeLeft, answers,
-    initSprint, resumeSprint, answerCurrent, nextQuestion, tick, completeSprint, reset,
+    initSprint, resumeSprint, answerCurrent, nextQuestion, tick, jumpTo, completeSprint, reset,
   } = useSprintStore();
 
   const isResume = resumeParam && !!snapshot && snapshot.kind === "mock" && snapshot.paperId === paperId;
@@ -153,6 +156,12 @@ function MockRunContent() {
 
   const answerCount = Object.keys(answers).length;
 
+  const answeredFlags = useMemo(
+    () => activeQuestions.map((q) => answers[q.id] !== undefined),
+    [activeQuestions, answers],
+  );
+  const showNavigator = activeQuestions.length >= 6;
+
   useEffect(() => {
     if (status === "active" && answerCount > 0) {
       commitSnapshot();
@@ -213,6 +222,14 @@ function MockRunContent() {
     }
   };
 
+  const handleJump = (index: number) => {
+    if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current);
+    if (index < 0 || index >= (activeQuestions.length ?? 1)) return;
+    setSelectedIndex(null);
+    setShowFeedback(false);
+    jumpTo(index);
+  };
+
   const headerRef = useCallback((el: HTMLDivElement | null) => {
     if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
   }, []);
@@ -225,7 +242,7 @@ function MockRunContent() {
 
   if (!paperId) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 text-center">
+      <PageContainer className="text-center">
         <p className="text-[13px] text-muted-foreground">No mock paper selected.</p>
         <button
           type="button"
@@ -234,13 +251,13 @@ function MockRunContent() {
         >
           Browse Papers
         </button>
-      </div>
+      </PageContainer>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 text-center">
+      <PageContainer className="text-center">
         <p className="text-[13px] font-semibold text-destructive">Failed to load mock paper.</p>
         <p className="mt-2 text-[12px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
         <div className="mt-6 flex justify-center gap-3">
@@ -260,17 +277,17 @@ function MockRunContent() {
             Retry
           </button>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
   if (!isResume && (isLoading || !data)) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
+      <PageContainer className="animate-pulse">
         <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
         <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
         <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
-      </div>
+      </PageContainer>
     );
   }
 
@@ -280,109 +297,60 @@ function MockRunContent() {
   const isTimerLow = timeLeft <= 120;
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
-      <div ref={headerRef} className="pb-3 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
-          <FileText size={10} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MOCK TEST</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => { reset(); router.push("/learn?mode=mock"); }}
-            className="grid size-11 place-items-center outline-none transition-opacity hover:opacity-70 active:opacity-50 focus-visible:ring-2 focus-visible:ring-ring rounded-xl text-muted-foreground/60 backdrop-blur-xl"
-            style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
-            aria-label="Back to papers"
-          >
-            <ArrowLeft size={20} />
-          </button>
-          <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50">
-            {currentIndex + 1} / {activeQuestions.length}
-          </span>
-        </div>
-      </div>
-
-      <div className="h-1.5 w-full rounded-full mb-5" style={{ backgroundColor: GLASS_BG }}>
-        <div
-          className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-
-      <div className="flex items-center justify-between mb-5">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary max-w-[60%] truncate">
-          <FileText size={10} />
-          {activeTopicLabel}
-        </span>
-        <div className="flex items-center gap-2">
-          {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
-          <span className={cn(
-            "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-micro font-bold font-mono backdrop-blur-xl",
-            isTimerLow ? "bg-destructive/10 text-destructive border border-destructive/20" : "text-muted-foreground border border-white/[0.06]",
-          )}
-          style={!isTimerLow ? { backgroundColor: GLASS_BG } : undefined}>
-            <Clock size={10} />
-            {formatTime(timeLeft)}
-          </span>
-        </div>
-      </div>
-
-      {question && (
-        <div key={question.id} ref={questionRef}>
-          <p className="text-[16px] font-bold leading-snug text-foreground mb-5">
-            {question.text}
-          </p>
-
-          <div className="flex flex-col gap-2.5">
-            {question.options.map((option, i) => {
-              const isSelected = selectedIndex === i;
-              const isCorrect = i === question.correctIndex;
-              let variantStyles: React.CSSProperties = { backgroundColor: GLASS_BG, borderColor: GLASS_BORDER };
-              let variantClass = "border backdrop-blur-xl text-foreground hover:bg-white/[0.06] active:bg-white/[0.06]" as string;
-              if (showFeedback) {
-                if (isSelected && isCorrect) {
-                  variantClass = "border text-primary";
-                  variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
-                } else if (isSelected && !isCorrect) {
-                  variantClass = "border text-destructive";
-                  variantStyles = { backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" };
-                } else if (isCorrect) {
-                  variantClass = "border text-primary";
-                  variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
-                } else {
-                  variantClass = "border text-muted-foreground/40";
-                  variantStyles = { backgroundColor: "rgba(255,255,255,0.02)", borderColor: "rgba(255,255,255,0.04)" };
-                }
-              }
-
-              return (
+    <PageContainer>
+      <ExamShell
+        header={
+          <>
+            <div ref={headerRef} className="pb-3 text-center">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+                <FileText size={10} className="text-primary" />
+                <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MOCK TEST</span>
+              </div>
+              <div className="flex items-center justify-between">
                 <button
-                  key={i}
                   type="button"
-                  onClick={() => handleSelect(i)}
-                  disabled={showFeedback}
-                  className={cn(
-                    "flex items-center gap-3 rounded-3xl border p-4 text-left outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
-                    variantClass,
-                  )}
-                  style={variantStyles}
+                  onClick={() => { reset(); router.push("/learn?mode=mock"); }}
+                  className="grid size-11 place-items-center outline-none transition-opacity hover:opacity-70 active:opacity-50 focus-visible:ring-2 focus-visible:ring-ring rounded-xl text-muted-foreground/60 backdrop-blur-xl"
+                  style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+                  aria-label="Back to papers"
                 >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-muted text-micro font-bold text-muted-foreground">
-                    {String.fromCharCode(65 + i)}
-                  </span>
-                  <span className="flex-1 text-[13px] font-medium">{option}</span>
-                  {showFeedback && isSelected && (
-                    <span className={cn("size-5", isCorrect ? "text-primary" : "text-destructive")}>
-                      {isCorrect ? <Check size={20} /> : <X size={20} />}
-                    </span>
-                  )}
+                  <ArrowLeft size={20} />
                 </button>
-              );
-            })}
-          </div>
+                <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50">
+                  {currentIndex + 1} / {activeQuestions.length}
+                </span>
+              </div>
+            </div>
 
-          {showFeedback && (
-            <div ref={feedbackRef} className="mt-5 flex flex-col items-center gap-3">
+            <div className="h-1.5 w-full rounded-full mb-5" style={{ backgroundColor: GLASS_BG }}>
+              <div
+                className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <div className="flex items-center justify-between mb-5">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary max-w-[60%] truncate">
+                <FileText size={10} />
+                {activeTopicLabel}
+              </span>
+              <div className="flex items-center gap-2">
+                {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
+                <span className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-micro font-bold font-mono backdrop-blur-xl",
+                  isTimerLow ? "bg-destructive/10 text-destructive border border-destructive/20" : "text-muted-foreground border border-white/[0.06]",
+                )}
+                style={!isTimerLow ? { backgroundColor: GLASS_BG } : undefined}>
+                  <Clock size={10} />
+                  {formatTime(timeLeft)}
+                </span>
+              </div>
+            </div>
+          </>
+        }
+        footer={
+          showFeedback ? (
+            <div ref={feedbackRef} className="flex flex-col items-center">
               <button
                 type="button"
                 onClick={handleNext}
@@ -390,37 +358,106 @@ function MockRunContent() {
               >
                 {isLast ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
-              <ContentFeedback questionId={question.id} />
             </div>
-          )}
-        </div>
-      )}
-
-      {!showFeedback && (
-        <div className="mt-6 flex justify-center gap-1.5">
-          {activeQuestions.map((_, i) => (
-            <span
-              key={i}
-              className={cn(
-                "size-2 rounded-full transition-all duration-300",
-                i === currentIndex ? "bg-primary scale-125" : i < currentIndex ? "bg-primary/40" : "bg-muted",
-              )}
+          ) : (
+            <div className="flex justify-center gap-1.5 md:hidden">
+              {activeQuestions.map((_, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "size-2 rounded-full transition-all duration-300",
+                    i === currentIndex ? "bg-primary scale-125" : i < currentIndex ? "bg-primary/40" : "bg-muted",
+                  )}
+                />
+              ))}
+            </div>
+          )
+        }
+        navigator={
+          showNavigator ? (
+            <QuestionNavigator
+              count={activeQuestions.length}
+              currentIndex={currentIndex}
+              answered={answeredFlags}
+              onSelect={handleJump}
             />
-          ))}
-        </div>
-      )}
-    </div>
+          ) : undefined
+        }
+      >
+        {question && (
+          <div key={question.id} ref={questionRef}>
+            <p className="text-[16px] font-bold leading-snug text-foreground mb-5">
+              {question.text}
+            </p>
+
+            <div className="flex flex-col gap-2.5">
+              {question.options.map((option, i) => {
+                const isSelected = selectedIndex === i;
+                const isCorrect = i === question.correctIndex;
+                let variantStyles: React.CSSProperties = { backgroundColor: GLASS_BG, borderColor: GLASS_BORDER };
+                let variantClass = "border backdrop-blur-xl text-foreground hover:bg-white/[0.06] active:bg-white/[0.06]" as string;
+                if (showFeedback) {
+                  if (isSelected && isCorrect) {
+                    variantClass = "border text-primary";
+                    variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
+                  } else if (isSelected && !isCorrect) {
+                    variantClass = "border text-destructive";
+                    variantStyles = { backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" };
+                  } else if (isCorrect) {
+                    variantClass = "border text-primary";
+                    variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
+                  } else {
+                    variantClass = "border text-muted-foreground/40";
+                    variantStyles = { backgroundColor: "rgba(255,255,255,0.02)", borderColor: "rgba(255,255,255,0.04)" };
+                  }
+                }
+
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => handleSelect(i)}
+                    disabled={showFeedback}
+                    className={cn(
+                      "flex items-center gap-3 rounded-3xl border p-4 text-left outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
+                      variantClass,
+                    )}
+                    style={variantStyles}
+                  >
+                    <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-muted text-micro font-bold text-muted-foreground">
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="flex-1 text-[13px] font-medium">{option}</span>
+                    {showFeedback && isSelected && (
+                      <span className={cn("size-5", isCorrect ? "text-primary" : "text-destructive")}>
+                        {isCorrect ? <Check size={20} /> : <X size={20} />}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {showFeedback && (
+              <div className="mt-5">
+                <ContentFeedback questionId={question.id} />
+              </div>
+            )}
+          </div>
+        )}
+      </ExamShell>
+    </PageContainer>
   );
 }
 
 export default function MockRunPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
+      <PageContainer className="animate-pulse">
         <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
         <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
         <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
-      </div>
+      </PageContainer>
     }>
       <MockRunContent />
     </Suspense>

@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useCallback, useMemo, useEffect, Suspense } from "react";
 import gsap from "gsap";
@@ -132,7 +133,7 @@ function ExplorerContent() {
 
   if (prepExams.length === 0) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+      <PageContainer>
         {/* Branded header at top */}
         <div className="relative text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5">
@@ -168,12 +169,12 @@ function ExplorerContent() {
 
         {showAddPrep && <AddPrepModal gated={false} onClose={() => setShowAddPrep(false)} />}
         <PaywallModal />
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 overflow-x-hidden">
+    <PageContainer className="overflow-x-hidden">
       {/* Header */}
       <div ref={headerRef} className="relative text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 mb-4">
@@ -339,7 +340,7 @@ function ExplorerContent() {
           </motion.div>
         </AnimatePresence>
       </div>
-    </div>
+    </PageContainer>
   );
 }
 

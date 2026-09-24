@@ -1,4 +1,5 @@
 "use client";
+import { PageContainer } from "@/components/ui/page-container";
 
 import { useCallback, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -27,11 +28,11 @@ export default function SprintResultsPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 animate-pulse">
+        <PageContainer className="animate-pulse">
           <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
           <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
           <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
-        </div>
+        </PageContainer>
       }
     >
       <SprintResultsContent />
@@ -97,7 +98,7 @@ function SprintResultsContent() {
 
   if (!result || !session) {
     return (
-      <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4 text-center">
+      <PageContainer className="text-center">
         <p className="text-[13px] text-muted-foreground">No sprint results found.</p>
         <button
           type="button"
@@ -106,12 +107,12 @@ function SprintResultsContent() {
         >
           Start a Sprint
         </button>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-5 pt-6 pb-4">
+    <PageContainer>
       {/* Header */}
       <div ref={resultRef}>
         <div className="flex justify-center">
@@ -200,6 +201,6 @@ function SprintResultsContent() {
           Dashboard
         </button>
       </div>
-    </div>
+    </PageContainer>
   );
 }
