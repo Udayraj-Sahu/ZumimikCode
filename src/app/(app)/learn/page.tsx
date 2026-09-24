@@ -392,7 +392,7 @@ function LearnPageContent() {
                       </span>
                     </div>
                   ) : (
-                    <div className="flex flex-wrap gap-2 md:grid md:grid-cols-3 md:gap-2.5">
+                    <div className="flex flex-wrap gap-1.5 md:grid md:grid-cols-3 md:gap-2">
                       {prepExams.map((id) => (
                         <button
                           key={id}
