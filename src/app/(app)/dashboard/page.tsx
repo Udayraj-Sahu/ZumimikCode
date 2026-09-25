@@ -402,6 +402,7 @@ export default function DashboardPage() {
 
   return (
     <PageContainer className="pt-0 pb-6 overflow-x-hidden">
+      <div className="mx-auto w-full md:max-w-3xl">
 
       {/* Ambient glow behind header */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
@@ -1108,6 +1109,7 @@ export default function DashboardPage() {
           }}
         />
       )}
+      </div>
     </PageContainer>
   );
 }

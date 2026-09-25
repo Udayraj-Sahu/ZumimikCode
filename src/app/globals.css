@@ -156,3 +156,49 @@
     font-family: var(--font-space-grotesk), system-ui, sans-serif;
   }
 }
+
+/*
+ * Desktop font upscale (web only).
+ * Applies at >=1024px (the app's desktop tier, same as --page-padding 40px).
+ * Below 1024px (Android phones, APK WebView, limited split-screen) all sizes are untouched.
+ * Unlayered rules win over the layered Tailwind utilities, so these override the
+ * arbitrary-pixel utilities (e.g. text-[11px]) and named sizes app-wide on desktop.
+ */
+@media (min-width: 1024px) {
+  .text-\[6px\] { font-size: 8px; }
+  .text-\[7px\] { font-size: 9px; }
+  .text-\[8px\] { font-size: 10px; }
+  .text-\[9px\] { font-size: 11px; }
+  .text-\[10px\] { font-size: 12px; }
+  .text-\[11px\] { font-size: 14px; }
+  .text-\[12px\] { font-size: 15px; }
+  .text-\[13px\] { font-size: 16px; }
+  .text-\[14px\] { font-size: 17px; }
+  .text-\[15px\] { font-size: 18px; }
+  .text-\[16px\] { font-size: 19px; }
+  .text-\[17px\] { font-size: 20px; }
+  .text-\[18px\] { font-size: 21px; }
+  .text-\[19px\] { font-size: 22px; }
+  .text-\[20px\] { font-size: 23px; }
+  .text-\[22px\] { font-size: 25px; }
+  .text-\[23px\] { font-size: 26px; }
+  .text-\[24px\] { font-size: 27px; }
+  .text-\[26px\] { font-size: 29px; }
+  .text-\[28px\] { font-size: 31px; }
+  .text-\[32px\] { font-size: 35px; }
+  .text-\[34px\] { font-size: 37px; }
+  .text-\[36px\] { font-size: 39px; }
+  .text-\[37px\] { font-size: 40px; }
+  .text-\[58px\] { font-size: 62px; }
+
+  .text-micro { font-size: 13px; }
+  .text-xs { font-size: 14px; }
+  .text-sm { font-size: 16px; }
+  .text-base { font-size: 18px; }
+  .text-lg { font-size: 20px; }
+  .text-xl { font-size: 22px; }
+  .text-2xl { font-size: 26px; }
+  .text-3xl { font-size: 32px; }
+  .text-4xl { font-size: 38px; }
+  .text-5xl { font-size: 50px; }
+}

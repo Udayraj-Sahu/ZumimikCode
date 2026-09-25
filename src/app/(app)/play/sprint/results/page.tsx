@@ -113,6 +113,7 @@ function SprintResultsContent() {
 
   return (
     <PageContainer>
+      <div className="mx-auto w-full md:max-w-3xl">
       {/* Header */}
       <div ref={resultRef}>
         <div className="flex justify-center">
@@ -200,6 +201,7 @@ function SprintResultsContent() {
         >
           Dashboard
         </button>
+      </div>
       </div>
     </PageContainer>
   );

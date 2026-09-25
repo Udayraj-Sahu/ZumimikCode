@@ -383,7 +383,7 @@ function LearnPageContent() {
                   className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 mt-5"
                   style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                 >
-                  <p className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">
+                  <p className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-2">
                     EXAM PREP
                   </p>
                   {prepExams.length === 0 ? (
@@ -393,7 +393,7 @@ function LearnPageContent() {
                       </span>
                     </div>
                   ) : (
-                    <div className="flex flex-wrap gap-1.5 md:grid md:grid-cols-3 md:gap-2">
+                    <div className="flex flex-wrap gap-1.5">
                       {prepExams.map((id) => (
                         <button
                           key={id}
@@ -403,7 +403,7 @@ function LearnPageContent() {
                             setActiveLearnDomain(id);
                           }}
                           className={cn(
-                            "text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all md:justify-self-start",
+                            "text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all",
                             activeDomain === id
                               ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
                               : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",

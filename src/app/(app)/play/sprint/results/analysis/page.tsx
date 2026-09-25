@@ -58,18 +58,18 @@ export default function AnalysisPage() {
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">
           No wrong answers to analyze.
         </p>
-        <div className="mt-6 flex flex-col gap-3 max-[359px]:gap-2">
+        <div className="mt-6 flex flex-col gap-3 md:flex-row md:gap-3 max-[359px]:gap-2">
           <button
             type="button"
             onClick={() => router.push("/play/sprint/results")}
-            className="rounded-3xl bg-cta text-[#0A0C0A] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+            className="md:flex-1 rounded-3xl bg-cta text-[#0A0C0A] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
           >
             Back to Results
           </button>
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+            className="md:flex-1 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
             style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             Dashboard
@@ -81,6 +81,7 @@ export default function AnalysisPage() {
 
   return (
     <PageContainer>
+      <div className="mx-auto w-full md:max-w-3xl">
       {/* Centered pill badge */}
       <div className="flex flex-col items-center gap-2 mb-6 max-[359px]:mb-4 max-[359px]:gap-1.5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-5 py-2 max-[359px]:px-4">
@@ -162,11 +163,11 @@ export default function AnalysisPage() {
       </div>
 
       {/* Bottom navigation */}
-      <div className="mt-8 flex flex-col gap-3 max-[359px]:gap-2">
+      <div className="mt-8 flex flex-col gap-3 md:flex-row md:gap-3 max-[359px]:gap-2">
         <button
           type="button"
           onClick={() => router.push("/play/sprint/results")}
-          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+          className="md:flex-1 flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
           style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           <ChevronLeft size={16} /> Back to Results
@@ -174,11 +175,12 @@ export default function AnalysisPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
-          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+          className="md:flex-1 flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
           style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           Dashboard
         </button>
+      </div>
       </div>
     </PageContainer>
   );

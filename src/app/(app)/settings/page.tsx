@@ -283,6 +283,7 @@ export default function SettingsPage() {
 
   return (
     <PageContainer>
+      <div className="mx-auto w-full md:max-w-3xl">
       {/* Ambient glow */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.2) 0%, transparent 70%)" }} />
 
@@ -384,12 +385,12 @@ export default function SettingsPage() {
             <div className="space-y-2.5 md:hidden max-[359px]:space-y-2">
               <Row icon={<HelpCircle className="h-5 w-5" />} title="Help Center" subtitle="Guides & tutorials" onClick={() => router.push("/settings/help")} />
               <Row icon={<MessageSquare className="h-5 w-5" />} title="FAQs" subtitle="Common questions" />
-              <Row icon={<Phone className="h-5 w-5" />} title="Contact Support" subtitle="We're here to help" />
+              <Row icon={<Phone className="h-5 w-5" />} title="Support" subtitle="We're here to help" />
             </div>
             <div className="hidden md:grid grid-cols-3 gap-2.5 md:items-stretch">
               <HeadingTile icon={<HelpCircle className="h-5 w-5" />} heading="Help Center" onClick={() => router.push("/settings/help")} />
               <HeadingTile icon={<MessageSquare className="h-5 w-5" />} heading="FAQs" />
-              <HeadingTile icon={<Phone className="h-5 w-5" />} heading="Contact Support" />
+              <HeadingTile icon={<Phone className="h-5 w-5" />} heading="Support" />
             </div>
           </CollapsibleSection>
 
@@ -419,6 +420,7 @@ export default function SettingsPage() {
 
       {showAddPrep && <AddPrepModal onClose={() => setShowAddPrep(false)} />}
       <PaywallModal />
+      </div>
     </PageContainer>
   );
 }

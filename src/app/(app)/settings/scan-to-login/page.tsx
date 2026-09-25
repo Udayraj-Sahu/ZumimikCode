@@ -88,6 +88,7 @@ export default function ScanToLoginPage() {
 
   return (
     <PageContainer>
+      <div className="mx-auto w-full md:max-w-2xl">
       <div ref={animateSection} className="mx-auto max-w-md">
         {/* Header */}
         <div className="text-center">
@@ -258,6 +259,7 @@ export default function ScanToLoginPage() {
             );
           })}
         </div>
+      </div>
       </div>
     </PageContainer>
   );

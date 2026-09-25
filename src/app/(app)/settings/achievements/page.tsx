@@ -221,6 +221,7 @@ export default function AchievementsPage() {
 
   return (
     <PageContainer>
+      <div className="mx-auto w-full md:max-w-3xl">
       {/* Header */}
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
@@ -333,6 +334,7 @@ export default function AchievementsPage() {
           100% { transform: translateX(100%); }
         }
       `}</style>
+      </div>
     </PageContainer>
   );
 }

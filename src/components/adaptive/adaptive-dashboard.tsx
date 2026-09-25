@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   Grid3x3,
   Sigma,
@@ -21,6 +22,7 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { useAdaptiveState, useTodayPlan } from "@/hooks/queries/use-adaptive";
+import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { resolveJourneyProfile } from "@/lib/adaptive/modes";
 import type { JourneyProfile, TimeBlock } from "@/lib/adaptive/modes";
@@ -242,7 +244,7 @@ function CardHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
       <p
         className="text-[9px] font-semibold tracking-[0.18em] uppercase"
         style={{ color: `${accent}d9` }}
@@ -672,7 +674,7 @@ function BrainGymBlock({ ctx }: { ctx: VariantCtx }) {
 function StatsBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
-      className="rounded-3xl border backdrop-blur-xl p-5"
+      className="rounded-3xl border backdrop-blur-xl p-5 overflow-hidden"
       style={{ borderColor: "rgba(255,255,255,0.08)" }}
     >
       <CardHeader
@@ -688,46 +690,46 @@ function StatsBlock({ ctx }: { ctx: VariantCtx }) {
       >
         Curriculum Preparedness
       </CardHeader>
-      <div className="mt-3.5 flex items-center gap-5">
+      <div className="mt-3.5 flex flex-col items-center gap-4">
         <CircularGauge
           percent={ctx.overall}
           accent={ctx.profile.accent}
           segments={ctx.topics.map((t) => ({ id: t.id, color: t.color, mastery: t.mastery }))}
         />
-        <div className="flex-1 min-w-0 flex flex-col gap-2.5">
-          <div className="flex items-center gap-2.5">
+        <div className="w-full min-w-0 flex flex-col gap-2.5">
+          <div className="flex min-w-0 items-center gap-2.5">
             <div
               className="size-7 rounded-lg flex items-center justify-center"
               style={{ background: `${ctx.profile.accent}12` }}
             >
               <Grid3x3 size={12} style={{ color: ctx.profile.accent }} />
             </div>
-            <span className="text-[13px] font-semibold text-foreground/80">Topics Mastered</span>
-            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
+            <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground/80">Topics Mastered</span>
+            <span className="ml-auto shrink-0 text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
               {ctx.mastered}/{ctx.topics.length}
             </span>
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex min-w-0 items-center gap-2.5">
             <div
               className="size-7 rounded-lg flex items-center justify-center"
               style={{ background: `${ctx.profile.accent}12` }}
             >
               <Flame size={12} style={{ color: ctx.profile.accent }} />
             </div>
-            <span className="text-[13px] font-semibold text-foreground/80">Daily Streak</span>
-            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
+            <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground/80">Daily Streak</span>
+            <span className="ml-auto shrink-0 text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
               {ctx.bestStreak} days
             </span>
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex min-w-0 items-center gap-2.5">
             <div
               className="size-7 rounded-lg flex items-center justify-center"
               style={{ background: `${ctx.profile.accent}12` }}
             >
               <Clock size={12} style={{ color: ctx.profile.accent }} />
             </div>
-            <span className="text-[13px] font-semibold text-foreground/80">Time Spent</span>
-            <span className="ml-auto text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
+            <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground/80">Time Spent</span>
+            <span className="ml-auto shrink-0 text-[13px] font-bold" style={{ color: ctx.profile.accent }}>
               {ctx.hours}h
             </span>
           </div>
@@ -897,6 +899,14 @@ function TopicMasteryList({ ctx }: { ctx: VariantCtx }) {
 
 export function AdaptiveDashboard({ domain }: { domain: string }) {
   const router = useRouter();
+  const [isNative] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return !!(window as any).Capacitor?.isNativePlatform?.();
+    } catch {
+      return false;
+    }
+  });
   const temporalWindow = useOnboardingStore((s) => s.temporalWindow);
   const vedicUseCase = useOnboardingStore((s) => s.vedicUseCase);
   const focusMode = useOnboardingStore((s) => s.focusMode);
@@ -988,6 +998,15 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
       {/* Right column — live instruments */}
       <div className="md:col-span-2 flex flex-col gap-4 min-w-0">
         <StatsBlock ctx={ctx} />
+      </div>
+
+      {/* Daily budget + your topics — side by side on web, native keeps stacked on phones */}
+      <div
+        className={cn(
+          "md:col-span-5 grid gap-4 items-start min-w-0",
+          isNative ? "grid-cols-1 md:grid-cols-2" : "grid-cols-2",
+        )}
+      >
         <TimeBudgetBlock ctx={ctx} />
         <TopicMasteryList ctx={ctx} />
       </div>

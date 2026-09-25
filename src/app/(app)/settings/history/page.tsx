@@ -135,6 +135,7 @@ export default function HistoryPage() {
 
   return (
     <PageContainer>
+      <div className="mx-auto w-full md:max-w-3xl">
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Clock size={12} className="text-primary" />
@@ -143,9 +144,9 @@ export default function HistoryPage() {
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Review your past sprint performances</p>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex flex-wrap gap-2 max-[359px]:gap-1.5">
-        <div className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 min-h-[28px]" style={{ backgroundColor: GLASS_BG }}>
-          <Filter size={11} className="text-muted-foreground/40" />
+      <div ref={animateSection} data-section-index="0" className="mt-5 space-y-2 max-[359px]:space-y-1.5">
+        <div className="flex w-fit max-w-full items-center gap-1.5 rounded-lg px-2.5 py-1 min-h-[28px]" style={{ backgroundColor: GLASS_BG }}>
+          <Filter size={11} className="shrink-0 text-muted-foreground/40" />
           <select
             value={topicFilter}
             onChange={(e) => { setTopicFilter(e.target.value); setPage(0); }}
@@ -156,32 +157,34 @@ export default function HistoryPage() {
             ))}
           </select>
         </div>
-        <div className="flex flex-wrap gap-1 max-[359px]:gap-0.5">
-          {DIFFICULTY_FILTER.map((d) => (
-            <button
-              key={d.id}
-              type="button"
-              onClick={() => { setDiffFilter(d.id); setPage(0); }}
-              className={cn(
-                "rounded-lg px-2 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
-                diffFilter === d.id
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
-              )}
-            >
-              {d.label}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center gap-2 max-[359px]:gap-1.5">
+          <div className="flex flex-wrap gap-1 max-[359px]:gap-0.5">
+            {DIFFICULTY_FILTER.map((d) => (
+              <button
+                key={d.id}
+                type="button"
+                onClick={() => { setDiffFilter(d.id); setPage(0); }}
+                className={cn(
+                  "rounded-lg px-2 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
+                  diffFilter === d.id
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
+                )}
+              >
+                {d.label}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => setSortAsc(!sortAsc)}
+            className="ml-auto flex items-center gap-1 rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[28px] max-[359px]:gap-0.5 whitespace-nowrap"
+            style={{ backgroundColor: GLASS_BG }}
+          >
+            <ArrowUpDown size={12} />
+            {sortAsc ? "Oldest" : "Newest"}
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => setSortAsc(!sortAsc)}
-          className="ml-auto flex items-center gap-1 rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[28px] max-[359px]:gap-0.5 whitespace-nowrap"
-          style={{ backgroundColor: GLASS_BG }}
-        >
-          <ArrowUpDown size={12} />
-          {sortAsc ? "Oldest" : "Newest"}
-        </button>
       </div>
 
       <div ref={animateSection} data-section-index="1" className="mt-4">
@@ -270,6 +273,7 @@ export default function HistoryPage() {
             ))}
           </div>
         )}
+      </div>
       </div>
     </PageContainer>
   );
