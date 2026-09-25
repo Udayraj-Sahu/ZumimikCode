@@ -40,7 +40,7 @@ export default function PlannerPage() {
   return (
     <PageContainer>
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Calendar size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PLANNER</span>
         </div>
@@ -63,39 +63,39 @@ export default function PlannerPage() {
 
         {data && (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 max-[359px]:gap-2 md:items-stretch">
+              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Flame size={14} className="text-primary" />
-                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">STREAK</p>
+                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">STREAK</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.weekStreak}d</p>
               </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Target size={14} className="text-chart-2" />
-                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">PLANNED</p>
+                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">PLANNED</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.totalPlanned}</p>
               </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={14} className="text-chart-3" />
-                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">DONE</p>
+                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">DONE</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.totalCompleted}</p>
               </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <TrendingUp size={14} className="text-chart-4" />
-                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">RATE</p>
+                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">RATE</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.completionRate}%</p>
               </div>
             </div>
 
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">This Week</p>
-            <div ref={gridRef} className="grid grid-cols-3 gap-2 sm:grid-cols-7 sm:overflow-x-visible">
+            <div ref={gridRef} className="grid grid-cols-3 gap-2 sm:grid-cols-7 sm:overflow-x-visible max-[359px]:gap-1.5 md:items-stretch">
               {data.days.map((day) => {
                 const pct = day.planned > 0 ? Math.round((day.completed / day.planned) * 100) : 0;
                 return (
@@ -103,7 +103,7 @@ export default function PlannerPage() {
                     key={day.date}
                     data-day-card
                     className={cn(
-                      "rounded-xl border p-2 sm:p-3 flex flex-col items-center text-center transition-all backdrop-blur-xl",
+                      "rounded-xl border p-2 sm:p-3 flex flex-col items-center text-center transition-all backdrop-blur-xl max-[359px]:p-1.5",
                       day.isToday
                         ? "border-primary bg-primary/5"
                         : "border-white/[0.06]",
@@ -111,7 +111,7 @@ export default function PlannerPage() {
                     style={!day.isToday ? { background: GLASS_BG } : undefined}
                   >
                     <p className={cn(
-                      "text-micro font-semibold mb-1",
+                      "text-micro font-semibold mb-1 whitespace-nowrap",
                       day.isToday ? "text-primary" : "text-muted-foreground/40",
                     )}>
                       {day.dayLabel.slice(0, 2)}
@@ -150,7 +150,7 @@ export default function PlannerPage() {
               })}
             </div>
 
-            <div className="mt-6 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 text-center" style={{ background: GLASS_BG }}>
+            <div className="mt-6 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 text-center max-[359px]:p-4" style={{ background: GLASS_BG }}>
               <Calendar size={24} className="mx-auto text-muted-foreground/20 mb-2" />
               <p className="text-[12px] font-semibold text-foreground/80">Stay Consistent</p>
               <p className="text-micro text-muted-foreground/60 mt-1">Complete your daily planned sprints to build momentum</p>

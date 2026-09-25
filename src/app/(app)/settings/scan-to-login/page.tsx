@@ -91,7 +91,7 @@ export default function ScanToLoginPage() {
       <div ref={animateSection} className="mx-auto max-w-md">
         {/* Header */}
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
             <QrCode size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SCAN TO LOGIN</span>
           </div>
@@ -100,10 +100,10 @@ export default function ScanToLoginPage() {
           </p>
         </div>
 
-        <div className="mt-6 rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))" }}>
+        <div className="mt-6 rounded-3xl border backdrop-blur-xl p-6 max-[359px]:p-4" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))" }}>
           {step === "code" && (
             <>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 max-[359px]:gap-2">
                 <div className="grid size-10 place-items-center rounded-xl bg-primary/10">
                   <MonitorSmartphone size={18} className="text-primary" />
                 </div>
@@ -114,7 +114,7 @@ export default function ScanToLoginPage() {
               </div>
 
               <div className="mt-5">
-                <label className="text-micro font-semibold tracking-[0.14em] text-muted-foreground/40 uppercase">8-digit code</label>
+                <label className="text-micro font-semibold tracking-[0.14em] text-muted-foreground/40 uppercase whitespace-nowrap">8-digit code</label>
                 <input
                   value={displayCode}
                   onChange={(e) => setEntered(e.target.value)}
@@ -123,12 +123,12 @@ export default function ScanToLoginPage() {
                   autoCapitalize="characters"
                   autoCorrect="off"
                   spellCheck={false}
-                  className="mt-2 w-full rounded-2xl border border-white/[0.08] bg-white/[0.04] px-4 py-4 text-center text-[22px] font-extrabold tracking-[0.3em] text-foreground placeholder:text-foreground/20 outline-none transition-colors focus:border-primary/40"
+                  className="mt-2 w-full rounded-2xl border border-white/[0.08] bg-white/[0.04] px-4 py-4 text-center text-[22px] font-extrabold tracking-[0.3em] text-foreground placeholder:text-foreground/20 outline-none transition-colors focus:border-primary/40 max-[359px]:px-3 max-[359px]:py-3"
                 />
               </div>
 
               {errorMsg && (
-                <div className="mt-3 flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-[11px] text-destructive">
+                <div className="mt-3 flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-[11px] text-destructive max-[359px]:gap-1.5 max-[359px]:p-2.5">
                   <AlertTriangle size={13} className="mt-0.5 shrink-0" />
                   {errorMsg}
                 </div>
@@ -138,7 +138,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleScan}
                 disabled={dirty || isBusy}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 disabled:opacity-40"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 {scan.isPending ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
@@ -159,7 +159,7 @@ export default function ScanToLoginPage() {
                 </p>
               </div>
 
-              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3">
+              <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3 max-[359px]:gap-2 max-[359px]:p-2.5">
                 <div className="grid size-9 place-items-center rounded-xl bg-white/[0.06]">
                   <Globe size={16} className="text-foreground/60" />
                 </div>
@@ -172,7 +172,7 @@ export default function ScanToLoginPage() {
               </div>
 
               {errorMsg && (
-                <div className="mt-3 flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-[11px] text-destructive">
+                <div className="mt-3 flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-[11px] text-destructive max-[359px]:gap-1.5 max-[359px]:p-2.5">
                   <AlertTriangle size={13} className="mt-0.5 shrink-0" />
                   {errorMsg}
                 </div>
@@ -182,7 +182,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleApprove}
                 disabled={isBusy}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 disabled:opacity-40"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: "linear-gradient(90deg, #34D399, #10B981)" }}
               >
                 {approve.isPending ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
@@ -192,7 +192,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleCancel}
                 disabled={isBusy}
-                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.04] py-3 text-[12px] font-bold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-95 disabled:opacity-40"
+                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.07] bg-white/[0.04] py-3 text-[12px] font-bold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 whitespace-nowrap"
               >
                 <X size={14} /> Cancel
               </button>
@@ -211,7 +211,7 @@ export default function ScanToLoginPage() {
               <button
                 type="button"
                 onClick={() => router.replace("/dashboard")}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 Done <ArrowRight size={15} />
@@ -229,7 +229,7 @@ export default function ScanToLoginPage() {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 Try again <ArrowRight size={15} />
@@ -239,12 +239,12 @@ export default function ScanToLoginPage() {
         </div>
 
         {/* Steps */}
-        <div className="mt-6 flex items-center justify-center gap-2">
+        <div className="mt-6 flex items-center justify-center gap-2 max-[359px]:gap-1.5">
           {(["phone", "web", "check"] as const).map((k, i) => {
             const Icon = STEP_ICON[k];
             const active = step === "approved" ? i <= 2 : i === 0;
             return (
-              <div key={k} className="flex items-center gap-2">
+              <div key={k} className="flex items-center gap-2 max-[359px]:gap-1.5">
                 {i > 0 && <div className="h-px w-6 bg-white/[0.08]" />}
                 <div
                   className={cn(

@@ -101,7 +101,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
     <div
       data-achievement-card
       className={cn(
-        "relative rounded-3xl border p-4 flex flex-col items-center text-center transition-all backdrop-blur-xl overflow-hidden",
+        "relative rounded-3xl border p-4 flex flex-col items-center text-center transition-all backdrop-blur-xl overflow-hidden max-[359px]:p-3",
         item.unlocked
           ? "border-white/[0.06]"
           : "border-dashed border-white/[0.08] opacity-60",
@@ -223,7 +223,7 @@ export default function AchievementsPage() {
     <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Trophy size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ACHIEVEMENTS</span>
         </div>
@@ -235,7 +235,7 @@ export default function AchievementsPage() {
       {/* Hero ring + stats */}
       {total > 0 && (
         <div ref={animateSection} data-section-index="0" className="mt-5">
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 flex items-center gap-5" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 flex items-center gap-5 max-[359px]:gap-3 max-[359px]:p-4" style={{ background: GLASS_BG }}>
             {/* Large ring */}
             <div className="relative shrink-0">
               <ProgressRing progress={percent} tier="platinum" size={80} stroke={4} />
@@ -244,26 +244,26 @@ export default function AchievementsPage() {
               </div>
             </div>
             {/* Stats */}
-            <div className="flex-1 grid grid-cols-2 gap-3">
+            <div className="flex-1 grid grid-cols-2 gap-3 max-[359px]:gap-2 md:items-stretch">
               <div>
                 <p className="text-[18px] font-bold text-foreground">{unlocked}</p>
-                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider">Unlocked</p>
+                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider whitespace-nowrap">Unlocked</p>
               </div>
               <div>
                 <p className="text-[18px] font-bold text-foreground">{total - unlocked}</p>
-                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider">Remaining</p>
+                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider whitespace-nowrap">Remaining</p>
               </div>
               <div>
                 <p className="text-[18px] font-bold" style={{ color: TIER_STYLES.gold.ring }}>
                   {achievements?.filter((a) => a.tier === "gold" && a.unlocked).length ?? 0}
                 </p>
-                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider">Gold</p>
+                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider whitespace-nowrap">Gold</p>
               </div>
               <div>
                 <p className="text-[18px] font-bold" style={{ color: TIER_STYLES.platinum.ring }}>
                   {achievements?.filter((a) => a.tier === "platinum" && a.unlocked).length ?? 0}
                 </p>
-                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider">Platinum</p>
+                <p className="text-micro text-muted-foreground/40 font-semibold uppercase tracking-wider whitespace-nowrap">Platinum</p>
               </div>
             </div>
           </div>
@@ -271,14 +271,14 @@ export default function AchievementsPage() {
       )}
 
       {/* Category tabs */}
-      <div ref={animateSection} data-section-index="1" className="mt-5 flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+      <div ref={animateSection} data-section-index="1" className="mt-5 flex gap-2 overflow-x-auto pb-1 scrollbar-thin max-[359px]:gap-1.5">
         {CATEGORIES.map((cat) => (
           <button
             key={cat.id}
             type="button"
             onClick={() => setActiveCategory(cat.id)}
             className={cn(
-              "shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[32px] backdrop-blur-xl",
+              "shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[32px] backdrop-blur-xl max-[359px]:px-2.5 whitespace-nowrap",
               activeCategory === cat.id
                 ? "bg-primary text-primary-foreground"
                 : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -293,7 +293,7 @@ export default function AchievementsPage() {
       {/* Content */}
       <div ref={animateSection} data-section-index="2" className="mt-5">
         {isLoading && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-[359px]:gap-2 md:items-stretch">
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={i}
@@ -318,7 +318,7 @@ export default function AchievementsPage() {
         )}
 
         {filtered.length > 0 && (
-          <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 max-[359px]:gap-2 md:items-stretch">
             {filtered.map((item, i) => (
               <AchievementCard key={item.id} item={item} index={i} />
             ))}

@@ -46,7 +46,7 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
           <button
             type="button"
             onClick={() => toggle(item.id)}
-            className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
+            className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring rounded-xl max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-3"
           >
             <span className="text-[12px] font-semibold text-foreground/80">{item.question}</span>
             <ChevronDown
@@ -104,16 +104,16 @@ export default function HelpPage() {
   return (
     <PageContainer>
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <HelpCircle size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">HELP</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Frequently asked questions and app information</p>
       </div>
 
-      <div ref={sectionsRef} className="mt-6 flex flex-col gap-6">
+      <div ref={sectionsRef} className="mt-6 flex flex-col gap-6 md:grid md:grid-cols-2 md:items-stretch md:gap-6">
         {isLoading && (
-          <div className="animate-pulse space-y-4">
+          <div className="animate-pulse space-y-4 md:col-span-2">
             <div className="h-52 rounded-3xl" style={{ background: GLASS_BG }} />
             <div className="h-24 rounded-3xl" style={{ background: GLASS_BG }} />
             <div className="h-20 rounded-3xl" style={{ background: GLASS_BG }} />
@@ -121,7 +121,7 @@ export default function HelpPage() {
         )}
 
         {error && (
-          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl">
+          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl md:col-span-2">
             <p className="text-[12px] font-semibold text-destructive">Failed to load help content</p>
             <p className="mt-1 text-micro text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           </div>
@@ -130,14 +130,14 @@ export default function HelpPage() {
         {data && (
           <>
             <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl overflow-hidden" style={{ background: GLASS_BG }}>
-              <div className="px-4 pt-4 pb-2 flex items-center gap-2">
+              <div className="px-4 pt-4 pb-2 flex items-center gap-2 max-[359px]:px-3 max-[359px]:pt-3 max-[359px]:pb-2">
                 <HelpCircle size={16} className="text-primary" />
                 <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">FAQ</h2>
               </div>
               <FaqAccordion items={data.faq} />
             </div>
 
-            <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
+            <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5 max-[359px]:p-3" style={{ background: GLASS_BG }}>
               <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">App Info</h2>
               <div className="space-y-2 text-[12px]">
                 <div className="flex justify-between">
@@ -155,11 +155,11 @@ export default function HelpPage() {
               </div>
             </div>
 
-            <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
+            <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5 max-[359px]:p-3" style={{ background: GLASS_BG }}>
               <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Contact & Support</h2>
               <a
                 href="mailto:report@examarena.io"
-                className="flex items-center gap-3 rounded-xl border border-white/[0.06] px-4 py-3 text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl"
+                className="flex items-center gap-3 rounded-xl border border-white/[0.06] px-4 py-3 text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-2.5 whitespace-nowrap"
                 style={{ background: GLASS_BG }}
               >
                 <Mail size={16} className="text-muted-foreground/40" />
@@ -168,17 +168,17 @@ export default function HelpPage() {
             </div>
 
             <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl overflow-hidden divide-y divide-white/[0.06]" style={{ background: GLASS_BG }}>
-              <h2 className="px-4 pt-4 pb-2 text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Legal</h2>
+              <h2 className="px-4 pt-4 pb-2 text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 max-[359px]:px-3 max-[359px]:pt-3 max-[359px]:pb-2">Legal</h2>
               <button
                 type="button"
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-3 whitespace-nowrap"
               >
                 <FileText size={16} className="text-muted-foreground/40" />
                 Terms of Service
               </button>
               <button
                 type="button"
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center gap-3 px-4 py-3.5 text-left text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-3 whitespace-nowrap"
               >
                 <ShieldCheck size={16} className="text-muted-foreground/40" />
                 Privacy Policy

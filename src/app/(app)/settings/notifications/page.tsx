@@ -53,7 +53,7 @@ export default function NotificationsPage() {
     <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Bell size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">NOTIFICATIONS</span>
         </div>
@@ -64,7 +64,7 @@ export default function NotificationsPage() {
           <div className="mt-3 flex justify-center">
             <button
               type="button"
-              className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-colors min-h-[44px]"
+              className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-colors min-h-[44px] max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-2.5 whitespace-nowrap"
               style={{ background: "linear-gradient(to right, #C7F252, #A8D43A)", color: "#0A0C0A" }}
             >
               <CheckCheck size={14} />
@@ -75,12 +75,12 @@ export default function NotificationsPage() {
       </div>
 
       {/* Filter tabs */}
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 max-[359px]:gap-1.5">
         <button
           type="button"
           onClick={() => setFilter("all")}
           className={cn(
-            "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
             filter === "all"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -93,7 +93,7 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("unread")}
           className={cn(
-            "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
             filter === "unread"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -138,7 +138,7 @@ export default function NotificationsPage() {
                 <div
                   key={n.id}
                   data-notification-item
-                  className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-white/[0.04] active:bg-white/[0.06]"
+                  className="flex items-start gap-3 px-4 py-3.5 transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-3"
                 >
                   <div className={cn(
                     "grid size-9 shrink-0 place-items-center rounded-xl mt-0.5",
@@ -147,7 +147,7 @@ export default function NotificationsPage() {
                     <Icon size={16} className={n.read ? "text-muted-foreground/40" : "text-primary"} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 max-[359px]:gap-1.5">
                       {!n.read && <span className="size-2 shrink-0 rounded-full bg-primary" />}
                       <p className={cn(
                         "text-[11px] font-semibold truncate",

@@ -26,7 +26,7 @@ export default function ProfilePage() {
   return (
       <PageContainer className="pt-0">
         <div className="pt-5 pb-4 border-b border-border mb-5 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2 max-[359px]:px-3">
             <User size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PROFILE</span>
           </div>
@@ -55,19 +55,19 @@ export default function ProfilePage() {
           </div>
         </header>
 
-        <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4">
+        <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-4 max-[359px]:gap-2 md:items-stretch">
           {stats.map((s) => {
             const Icon = s.label === "Sessions" ? Target : s.label === "Streak" ? Flame : Trophy;
             return (
               <div
                 key={s.label}
-                className="relative overflow-hidden rounded-2xl border border-border/40 bg-card px-3 py-4 text-center transition-all active:scale-95 sm:p-5"
+                className="relative overflow-hidden rounded-2xl border border-border/40 bg-card px-3 py-4 text-center transition-all active:scale-95 sm:p-5 max-[359px]:p-2.5"
               >
                 <Icon className="mx-auto size-3.5 text-muted-foreground/30 sm:size-4" aria-hidden="true" />
                 <p className="mt-1.5 text-fluid-xl font-black tracking-tight text-primary sm:text-fluid-2xl">
                   {s.value}
                 </p>
-                <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50">
+                <p className="text-fluid-xs font-bold uppercase tracking-widest text-muted-foreground/50 whitespace-nowrap">
                   {s.label}
                 </p>
               </div>
@@ -79,13 +79,13 @@ export default function ProfilePage() {
           <h2 className="mb-3 text-fluid-sm font-bold uppercase tracking-widest text-primary">
             Achievements
           </h2>
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-6">
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-6 max-[359px]:gap-2 md:items-stretch">
             {achievements.map((a) => {
               const Icon = ICON_MAP[a.icon] || Star;
               return (
                 <div
                   key={a.label}
-                  className={`rounded-2xl border px-3 py-4 text-center transition-all sm:p-5 ${
+                  className={`rounded-2xl border px-3 py-4 text-center transition-all sm:p-5 max-[359px]:p-2.5 ${
                     a.unlocked
                       ? "border-border/40 bg-card"
                       : "border-dashed border-border/20 opacity-40"
@@ -98,7 +98,7 @@ export default function ProfilePage() {
                   >
                     <Icon className="size-4 sm:size-5" aria-hidden="true" />
                   </div>
-                  <p className="text-fluid-xs font-bold uppercase tracking-wide sm:text-fluid-sm">
+                  <p className="text-fluid-xs font-bold uppercase tracking-wide sm:text-fluid-sm whitespace-nowrap">
                     {a.label}
                   </p>
                   <p className="mt-0.5 text-fluid-xs text-muted-foreground/60">

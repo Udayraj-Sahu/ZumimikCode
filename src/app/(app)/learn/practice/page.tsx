@@ -222,7 +222,7 @@ export default function PracticePage() {
     return (
       <PageContainer>
         <div ref={headerRef} className="mb-6 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 max-[359px]:px-3 mb-3">
             <Dumbbell size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PRACTICE</span>
           </div>
@@ -233,12 +233,12 @@ export default function PracticePage() {
 
         {/* Practice Type Toggle */}
         <div ref={animateSection} data-section-index="0" className="mb-5">
-          <div className="flex gap-2 rounded-3xl border backdrop-blur-xl p-1.5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+          <div className="flex gap-2 max-[359px]:gap-1.5 rounded-3xl border backdrop-blur-xl p-1.5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
             <button
               type="button"
               onClick={() => setPracticeType("mcq")}
               className={cn(
-                "flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
+                "flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 max-[359px]:py-2.5 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                 practiceType === "mcq"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground/50 hover:text-foreground",
@@ -250,7 +250,7 @@ export default function PracticePage() {
               type="button"
               onClick={() => setPracticeType("templates")}
               className={cn(
-                "flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
+                "flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 max-[359px]:py-2.5 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                 practiceType === "templates"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground/50 hover:text-foreground",
@@ -266,7 +266,7 @@ export default function PracticePage() {
           <>
             <div ref={animateSection} data-section-index="1" className="mb-5">
               <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Choose Topic</p>
-              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+              <div className="grid grid-cols-2 gap-2.5 max-[359px]:gap-1.5 sm:grid-cols-3">
                 {sprintTopics.map((t) => {
                   const Icon = t.icon;
                   const active = topic === t.id;
@@ -276,7 +276,7 @@ export default function PracticePage() {
                       type="button"
                       onClick={() => setTopic(t.id)}
                       className={cn(
-                        "flex flex-col items-center gap-2 rounded-3xl border backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98]",
+                        "flex flex-col items-center gap-2 rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 outline-none transition-all active:scale-[0.98]",
                         active
                           ? "border-primary/40 bg-primary/[0.08] shadow-[0_0_24px_-4px_var(--primary)]"
                           : "border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06]",
@@ -286,7 +286,7 @@ export default function PracticePage() {
                       <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: active ? "rgba(199,242,82,0.12)" : GLASS_BG }}>
                         <Icon size={20} className={active ? "text-[#C7F252]" : "text-muted-foreground/30"} />
                       </div>
-                      <span className="text-[11px] font-semibold text-center leading-tight">{t.label}</span>
+                      <span className="text-[11px] font-semibold text-center leading-tight whitespace-nowrap">{t.label}</span>
                     </button>
                   );
                 })}
@@ -295,7 +295,7 @@ export default function PracticePage() {
 
             <div ref={animateSection} data-section-index="2" className="mb-5">
               <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Difficulty</p>
-              <div className="flex gap-2">
+              <div className="flex gap-2 max-[359px]:gap-1.5">
                 {["Beginner", "Intermediate", "Advanced"].map((d) => {
                   const active = difficulty === d;
                   return (
@@ -304,7 +304,7 @@ export default function PracticePage() {
                       type="button"
                       onClick={() => setDifficulty(d)}
                       className={cn(
-                        "flex-1 rounded-2xl border backdrop-blur-xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
+                        "flex-1 rounded-2xl border backdrop-blur-xl py-3 max-[359px]:px-1 max-[359px]:py-2.5 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                         active
                           ? "border-primary/40 bg-primary/[0.08] text-foreground"
                           : "border-white/[0.06] bg-white/[0.03] text-muted-foreground/50 hover:bg-white/[0.06]",
@@ -334,7 +334,7 @@ export default function PracticePage() {
         {/* ── TEMPLATES: NO EXAM ──────────────────────────────────── */}
         {practiceType === "templates" && !targetExam && (
           <div ref={animateSection} data-section-index="1" className="mt-2">
-            <div className="flex flex-col items-center gap-4 rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-8 text-center" style={{ background: GLASS_BG }}>
+            <div className="flex flex-col items-center gap-4 max-[359px]:gap-3 rounded-3xl border border-dashed border-white/[0.06] backdrop-blur-xl p-8 max-[359px]:p-4 text-center" style={{ background: GLASS_BG }}>
               <div className="h-14 w-14 rounded-2xl bg-white/[0.04] flex items-center justify-center">
                 <Target size={24} className="text-muted-foreground/20" />
               </div>
@@ -345,7 +345,7 @@ export default function PracticePage() {
               <button
                 type="button"
                 onClick={() => router.push("/onboarding")}
-                className="rounded-2xl bg-primary px-6 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                className="rounded-2xl bg-primary px-6 py-2.5 max-[359px]:px-4 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 Go to Onboarding
               </button>
@@ -358,7 +358,7 @@ export default function PracticePage() {
           <>
             <div ref={animateSection} data-section-index="1" className="mb-5">
               <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Category</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-[359px]:gap-1.5">
                 {[
                   { id: "all", label: "All Techniques" },
                   { id: "multiplication", label: "Multiplication" },
@@ -372,7 +372,7 @@ export default function PracticePage() {
                       type="button"
                       onClick={() => setTemplateCategory(cat.id)}
                       className={cn(
-                        "flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98]",
+                        "flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 outline-none transition-all active:scale-[0.98]",
                         active
                           ? "border-primary/40 bg-primary/[0.08]"
                           : "border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.06]",
@@ -394,7 +394,7 @@ export default function PracticePage() {
 
             <div ref={animateSection} data-section-index="2" className="mb-5">
               <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Mode</p>
-              <div className="flex gap-2">
+              <div className="flex gap-2 max-[359px]:gap-1.5">
                 {([
                   { value: "solve_along" as const, label: "Solve Along" },
                   { value: "quick" as const, label: "Quick" },
@@ -407,7 +407,7 @@ export default function PracticePage() {
                       type="button"
                       onClick={() => setRenderMode(m.value)}
                       className={cn(
-                        "flex-1 rounded-2xl border backdrop-blur-xl py-3 text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
+                        "flex-1 rounded-2xl border backdrop-blur-xl py-3 max-[359px]:px-1 max-[359px]:py-2.5 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                         active
                           ? "border-primary/40 bg-primary/[0.08] text-foreground"
                           : "border-white/[0.06] bg-white/[0.03] text-muted-foreground/50 hover:bg-white/[0.06]",
@@ -450,7 +450,7 @@ export default function PracticePage() {
     const accuracy = Math.round((completed.correct / completed.total) * 100);
     return (
       <PageContainer ref={contentRef} size="sm" className="pt-8">
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 max-[359px]:mb-4">
           <div className={cn(
             "mx-auto mb-4 grid size-20 place-items-center rounded-full text-[28px] font-bold backdrop-blur-xl",
             accuracy >= 80 ? "bg-primary/10 text-primary" : accuracy >= 50 ? "bg-[#F59E0B]/10 text-[#F59E0B]" : "bg-destructive/10 text-destructive",
@@ -462,22 +462,22 @@ export default function PracticePage() {
           </h1>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mb-5">
-          <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+        <div className="grid grid-cols-2 gap-3 mb-5 max-[359px]:gap-2 max-[359px]:mb-4">
+          <div className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Correct</p>
             <p className="mt-1 text-[22px] font-bold text-foreground">{completed.correct}/{completed.total}</p>
           </div>
-          <div className="rounded-3xl border backdrop-blur-xl p-4 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+          <div className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Accuracy</p>
             <p className="mt-1 text-[22px] font-bold text-primary">{accuracy}%</p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 max-[359px]:gap-2">
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
           >
             Practice Again <ChevronRight size={16} />
           </button>
@@ -485,7 +485,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={() => router.push(returnTo)}
-              className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04]"
+              className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
               style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
             >
               Back to Sprint Setup
@@ -494,7 +494,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04]"
+            className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
             style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
           >
             Dashboard
@@ -512,7 +512,7 @@ export default function PracticePage() {
     const sprintDifficulty = searchParams.get("difficulty") || "beginner";
     return (
       <PageContainer ref={contentRef} className="pt-8">
-        <div className="text-center mb-6">
+        <div className="text-center mb-6 max-[359px]:mb-4">
           <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-[#F59E0B]/10 backdrop-blur-xl">
             <Check size={32} className="text-[#F59E0B]" />
           </div>
@@ -524,14 +524,14 @@ export default function PracticePage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 max-[359px]:gap-2">
           {sprintTopic && (
             <button
               type="button"
               onClick={() =>
                 router.push(`/play/sprint?topic=${sprintTopic}&length=5&difficulty=${sprintDifficulty}`)
               }
-              className="flex items-center justify-center gap-2 rounded-3xl bg-[#F59E0B] py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+              className="flex items-center justify-center gap-2 rounded-3xl bg-[#F59E0B] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
             >
               <Zap size={16} /> Start 5-Question Sprint
             </button>
@@ -539,7 +539,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
           >
             Practice Another <ChevronRight size={16} />
           </button>
@@ -547,7 +547,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={() => router.push(returnTo)}
-              className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04]"
+              className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
               style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
             >
               Back to Sprint Setup
@@ -556,7 +556,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04]"
+            className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
             style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
           >
             Dashboard
@@ -572,16 +572,16 @@ export default function PracticePage() {
   if (practiceType === "templates" && rendererPhase === "active" && currentTemplate) {
     return (
       <PageContainer>
-        <div ref={headerRef} className="flex items-center justify-between mb-3">
-          <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+            <div ref={headerRef} className="flex items-center justify-between mb-3 max-[359px]:mb-2 max-[359px]:gap-1.5">
+          <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 whitespace-nowrap">
             {domainLabel} &middot; {currentTemplate.concept?.technique_name}
           </span>
-          <span className="text-[11px] font-mono text-muted-foreground/55">
+          <span className="text-[11px] font-mono text-muted-foreground/55 whitespace-nowrap">
             {storeCurrentIndex + 1}/{storeTemplates.length}
           </span>
         </div>
 
-        <div className="h-1.5 w-full rounded-full mb-6" style={{ background: GLASS_BG }}>
+        <div className="h-1.5 w-full rounded-full mb-6 max-[359px]:mb-4" style={{ background: GLASS_BG }}>
           <div
             className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
             style={{
@@ -609,7 +609,7 @@ export default function PracticePage() {
         )}
 
         {(stepProgress.isCorrect !== null || stepProgress.allRevealed || renderMode === "quick") && (
-          <div className="mt-6 flex gap-3">
+          <div className="mt-6 flex gap-3 max-[359px]:gap-1.5">
             {storeCurrentIndex > 0 && (
               <button
                 type="button"
@@ -617,7 +617,7 @@ export default function PracticePage() {
                   useTemplateStore.getState().prevTemplate();
                   stepProgress.reset();
                 }}
-                className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl px-5 py-4 text-[11px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.06]"
+                className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl px-5 py-4 max-[359px]:px-3 max-[359px]:py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.06] whitespace-nowrap"
                 style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
               >
                 <ChevronLeft size={14} /> Previous
@@ -626,7 +626,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={handleTemplateNext}
-              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
             >
               {storeCurrentIndex >= storeTemplates.length - 1 ? "See Results" : "Next"}{" "}
               <ChevronRight size={16} />
@@ -671,16 +671,16 @@ export default function PracticePage() {
       <ExamShell
         header={
           <>
-            <div ref={headerRef} className="flex items-center justify-between mb-3">
-              <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+<div ref={headerRef} className="flex items-center justify-between mb-3 max-[359px]:mb-2 max-[359px]:gap-1.5">
+              <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 whitespace-nowrap">
                 Practice &middot; {session.topicLabel}
               </span>
-              <span className="text-[11px] font-mono text-muted-foreground/55">
+              <span className="text-[11px] font-mono text-muted-foreground/55 whitespace-nowrap">
                 {currentIndex + 1}/{session.questions.length}
               </span>
             </div>
 
-            <div className="h-1.5 w-full rounded-full mb-5" style={{ background: GLASS_BG }}>
+            <div className="h-1.5 w-full rounded-full mb-5 max-[359px]:mb-4" style={{ background: GLASS_BG }}>
               <div
                 className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
                 style={{ width: `${((currentIndex + (revealed ? 1 : 0)) / session.questions.length) * 100}%` }}
@@ -694,7 +694,7 @@ export default function PracticePage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99]"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
@@ -733,12 +733,12 @@ export default function PracticePage() {
                   <button
                     type="button"
                     onClick={() => setHintOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.06] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-primary outline-none transition-all hover:bg-primary/[0.12]"
+                    className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.06] px-4 py-2 max-[359px]:px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-primary outline-none transition-all hover:bg-primary/[0.12] whitespace-nowrap"
                   >
                     <Lightbulb size={12} /> Need a hint?
                   </button>
                 ) : (
-                  <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                  <div className="rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
                     <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
                       <Lightbulb size={12} /> Hint
                     </p>
@@ -747,7 +747,7 @@ export default function PracticePage() {
                 )}
               </div>
             )}
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5 max-[359px]:gap-2">
               {question.options.map((option, i) => {
                 const isSelected = answers[question.id] === i;
                 const isCorrect = i === question.correctIndex;
@@ -771,7 +771,7 @@ export default function PracticePage() {
                     type="button"
                     onClick={() => handleSelect(i)}
                     disabled={revealed}
-                    className="flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 text-left outline-none transition-all active:scale-[0.98]"
+                    className="flex items-center gap-3 rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 text-left outline-none transition-all active:scale-[0.98]"
                     style={style}
                   >
                     <span className={cn(
@@ -791,7 +791,7 @@ export default function PracticePage() {
             {revealed && (
               <div className="mt-5 space-y-3">
                 {question.explanation ? (
-                  <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                  <div className="rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
                     <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
                       <Lightbulb size={12} /> Why it&apos;s this
                     </p>
@@ -799,7 +799,7 @@ export default function PracticePage() {
                   </div>
                 ) : (
                   question.hint && (
-                    <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+                    <div className="rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
                       <p className="text-[12px] text-muted-foreground/60 leading-relaxed">{question.hint}</p>
                     </div>
                   )

@@ -47,7 +47,7 @@ export default function MasteryPage() {
   return (
     <PageContainer>
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 max-[359px]:px-3 mb-3">
           <Target size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MASTERY</span>
         </div>
@@ -58,22 +58,22 @@ export default function MasteryPage() {
 
       {/* Summary stat */}
       {topics.length > 0 && (
-        <div ref={animateSection} data-section-index="0" className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
+        <div ref={animateSection} data-section-index="0" className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3 max-[359px]:gap-2">
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">AVERAGE</p>
             <p className="text-[20px] font-bold text-primary mt-1">{average}%</p>
           </div>
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">TOPICS</p>
             <p className="text-[20px] font-bold text-foreground mt-1">{topics.length}</p>
           </div>
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">BEST</p>
             <p className="text-[20px] font-bold text-chart-2 mt-1">
               {Math.max(...topics.map((t) => t.value))}%
             </p>
           </div>
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ background: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ background: GLASS_BG }}>
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">NEEDS WORK</p>
             <p className="text-[20px] font-bold text-chart-3 mt-1">
               {Math.min(...topics.map((t) => t.value))}%
@@ -85,7 +85,7 @@ export default function MasteryPage() {
       {/* Topic list */}
       <div ref={animateSection} data-section-index="1" className="mt-6">
         {isLoading && (
-          <div className="space-y-3">
+          <div className="space-y-3 max-[359px]:space-y-2">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="h-20 rounded-3xl animate-pulse" style={{ background: GLASS_BG }} />
             ))}
@@ -110,7 +110,7 @@ export default function MasteryPage() {
               <div
                 key={t.name}
                 data-mastery-bar
-                className="px-5 py-4"
+                className="px-5 py-4 max-[359px]:px-4 max-[359px]:py-3"
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[12px] font-bold text-foreground/80">{t.name}</span>

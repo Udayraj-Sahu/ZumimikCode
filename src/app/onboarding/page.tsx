@@ -102,9 +102,9 @@ export default function OnboardingPage() {
       </div>
 
       {/* Hero */}
-      <div ref={heroRef} className="relative flex flex-1 flex-col items-center justify-center px-6 w-full">
+      <div ref={heroRef} className="relative flex flex-1 flex-col items-center justify-center px-6 max-[359px]:px-4 w-full">
         {/* Brand */}
-        <div ref={brandRef} className="flex flex-col items-center gap-4 mb-8">
+        <div ref={brandRef} className="flex flex-col items-center gap-4 mb-8 max-[359px]:gap-3 max-[359px]:mb-6">
           <div className="relative">
             <div className="grid size-16 place-items-center rounded-2xl bg-primary/10 ring-1 ring-primary/20">
               <Swords size={32} className="text-primary" />
@@ -126,7 +126,7 @@ export default function OnboardingPage() {
         </div>
 
         {/* Tagline */}
-        <div ref={taglineRef} className="text-center mb-10 max-w-xs md:max-w-md">
+        <div ref={taglineRef} className="text-center mb-10 max-[359px]:mb-8 max-w-xs md:max-w-md">
           <p className="text-sm leading-relaxed text-muted-foreground/70">
             Not a coaching app.
             <br />
@@ -138,13 +138,13 @@ export default function OnboardingPage() {
         </div>
 
         {/* Feature pills */}
-        <div ref={featuresRef} className="flex flex-wrap items-center justify-center gap-3 mb-12">
+        <div ref={featuresRef} className="flex flex-wrap items-center justify-center gap-3 mb-12 max-[359px]:gap-2 max-[359px]:mb-10">
           {FEATURES.map((f) => {
             const Icon = f.icon;
             return (
               <div
                 key={f.label}
-                className="flex items-center gap-2 rounded-full border border-border/40 bg-card/60 backdrop-blur-sm px-3.5 py-2"
+                className="flex items-center gap-2 rounded-full border border-border/40 bg-card/60 backdrop-blur-sm px-3.5 py-2 max-[359px]:gap-1.5 max-[359px]:px-3 max-[359px]:py-1.5"
               >
                 <Icon size={13} style={{ color: f.color }} />
                 <span className="text-[11px] font-semibold text-muted-foreground/70">
@@ -158,12 +158,12 @@ export default function OnboardingPage() {
         {/* Auth buttons */}
         <div
           ref={buttonsRef}
-          className="flex flex-col gap-3 w-full max-w-xs md:flex-row md:max-w-lg md:gap-4"
+          className="flex flex-col gap-3 w-full max-w-xs md:flex-row md:max-w-lg md:gap-4 max-[359px]:gap-2.5"
         >
           <button
             type="button"
             onClick={() => handleLogin("google")}
-            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring md:flex-1"
+            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring md:flex-1 max-[359px]:gap-2.5 max-[359px]:px-4 max-[359px]:py-3.5"
           >
             <span className="grid size-8 place-items-center rounded-lg bg-white/10 group-hover:bg-white/15 transition-colors">
               <Globe size={16} className="text-foreground/80" />
@@ -173,7 +173,7 @@ export default function OnboardingPage() {
           <button
             type="button"
             onClick={() => handleLogin("phone")}
-            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring md:flex-1"
+            className="group flex items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card px-5 py-4 text-sm font-bold text-foreground outline-none transition-all hover:border-primary/30 hover:bg-accent/30 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring md:flex-1 max-[359px]:gap-2.5 max-[359px]:px-4 max-[359px]:py-3.5"
           >
             <span className="grid size-8 place-items-center rounded-lg bg-white/10 group-hover:bg-white/15 transition-colors">
               <Smartphone size={16} className="text-foreground/80" />
@@ -184,7 +184,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Footer */}
-      <div ref={footerRef} className="relative pb-8 pt-4 text-center px-6">
+      <div ref={footerRef} className="relative pb-8 max-[359px]:pb-6 max-[359px]:pt-3 pt-4 text-center px-6 max-[359px]:px-4">
         <p className="text-[11px] text-muted-foreground/40 leading-relaxed">
           By continuing, you agree to our{" "}
           <span className="text-muted-foreground/60 font-medium">Terms of Service</span>

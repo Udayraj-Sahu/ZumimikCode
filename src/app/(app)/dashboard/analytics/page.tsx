@@ -27,7 +27,7 @@ export default function AnalyticsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen px-5 pt-6 pb-4 flex items-center justify-center">
+      <div className="min-h-screen px-5 pt-6 pb-4 flex items-center justify-center max-[359px]:px-4">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
@@ -35,12 +35,12 @@ export default function AnalyticsPage() {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen px-5 pt-6 pb-4 flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen px-5 pt-6 pb-4 flex flex-col items-center justify-center gap-4 max-[359px]:px-4">
         <p className="text-[13px] text-muted-foreground">Failed to load analytics.</p>
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:px-4"
         >
           Retry
         </button>
@@ -53,17 +53,17 @@ export default function AnalyticsPage() {
   return (
       <PageContainer>
         <div ref={headerRef} className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
             <TrendingUp size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYTICS</span>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Deep-dive performance metrics from your last {stats.totalSessions} sessions.</p>
         </div>
 
-        <div className="flex flex-col gap-6 mt-6">
+        <div className="flex flex-col gap-6 mt-6 max-[359px]:gap-4">
           <div
             ref={animateSection} data-section-index={0}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-3"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-[359px]:gap-2"
           >
             {[
               { label: "TOTAL SESSIONS", value: String(stats.totalSessions) },
@@ -73,7 +73,7 @@ export default function AnalyticsPage() {
             ].map((s, i) => (
               <div
                 key={i}
-                className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4"
+                className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3"
                 style={{ background: GLASS_BG }}
               >
                 <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-1.5">
@@ -88,7 +88,7 @@ export default function AnalyticsPage() {
 
           <div
             ref={animateSection} data-section-index={1}
-            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5"
+            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 max-[359px]:p-4"
             style={{ background: GLASS_BG }}
           >
             <div className="flex items-center justify-between mb-4">
@@ -102,7 +102,7 @@ export default function AnalyticsPage() {
               {weekly.map((d) => (
                 <span
                   key={d.day}
-                  className="text-micro text-center flex-1 font-mono text-muted-foreground/50"
+                  className="text-micro text-center flex-1 font-mono text-muted-foreground/50 whitespace-nowrap"
                 >
                   {d.pct}%
                 </span>
@@ -123,7 +123,7 @@ export default function AnalyticsPage() {
               {weekly.map((d) => (
                 <span
                   key={d.day}
-                  className="text-micro text-center flex-1 tracking-[0.05em] text-muted-foreground/50"
+                  className="text-micro text-center flex-1 tracking-[0.05em] text-muted-foreground/50 whitespace-nowrap"
                 >
                   {d.day}
                 </span>
@@ -133,7 +133,7 @@ export default function AnalyticsPage() {
 
           <div
             ref={animateSection} data-section-index={2}
-            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5"
+            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 max-[359px]:p-4"
             style={{ background: GLASS_BG }}
           >
             <h2 className="text-[13px] font-bold tracking-[0.08em] text-foreground mb-3">

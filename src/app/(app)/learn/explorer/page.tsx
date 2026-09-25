@@ -136,14 +136,14 @@ function ExplorerContent() {
       <PageContainer>
         {/* Branded header at top */}
         <div className="relative text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 max-[359px]:px-3">
             <Compass size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
           </div>
         </div>
 
         <div className="flex items-center justify-center pt-14 pb-10">
-          <div className="relative w-full max-w-sm rounded-3xl border border-white/[0.08] backdrop-blur-xl px-6 py-8" style={{ background: "rgba(255,255,255,0.04)" }}>
+          <div className="relative w-full max-w-sm rounded-3xl border border-white/[0.08] backdrop-blur-xl px-6 py-8 max-[359px]:p-4" style={{ background: "rgba(255,255,255,0.04)" }}>
             <div className="absolute -top-12 -right-12 size-40 rounded-full opacity-[0.07] pointer-events-none" style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }} />
             <div className="flex flex-col items-center gap-4 text-center">
               <span className="relative grid size-14 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
@@ -158,7 +158,7 @@ function ExplorerContent() {
               <button
                 type="button"
                 onClick={() => setShowAddPrep(true)}
-                className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-[12px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.97] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 max-[359px]:px-4 whitespace-nowrap text-[12px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.97] outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <Plus size={13} strokeWidth={3} /> ADD PREP
                 <ArrowRight size={13} strokeWidth={2.5} />
@@ -175,9 +175,10 @@ function ExplorerContent() {
 
   return (
     <PageContainer className="overflow-x-hidden">
+      <div className="mx-auto w-full md:max-w-3xl">
       {/* Header */}
       <div ref={headerRef} className="relative text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 mb-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 max-[359px]:px-3 mb-4">
           <Compass size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
         </div>
@@ -201,7 +202,7 @@ function ExplorerContent() {
                   key={id}
                   type="button"
                   onClick={() => handleExamSwitch(id)}
-                  className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 max-[359px]:px-2 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
                 >
                   {active && (
@@ -225,7 +226,7 @@ function ExplorerContent() {
 
       {/* Subject tabs */}
       {subjects.length > 1 && (
-        <div ref={animateSection} data-section-index={1} className="relative mt-6 flex items-center gap-2.5 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div ref={animateSection} data-section-index={1} className="relative mt-6 flex items-center gap-2.5 max-[359px]:gap-1.5 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {subjects.map((subject, idx) => {
             const active = activeSubject === idx;
             return (
@@ -246,7 +247,7 @@ function ExplorerContent() {
                   }}
                 />
                 <div
-                  className="relative flex items-center gap-1.5 rounded-full border px-4 py-2 text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-500 ease-out focus-visible:ring-2 focus-visible:ring-ring"
+                  className="relative flex items-center gap-1.5 rounded-full border px-4 py-2 max-[359px]:px-3 text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all duration-500 ease-out focus-visible:ring-2 focus-visible:ring-ring"
                   style={
                     active
                       ? {
@@ -283,9 +284,9 @@ function ExplorerContent() {
 
       {/* Conquest stats */}
       {subjects.length > 0 && (
-        <div ref={animateSection} data-section-index={2} className="mt-6 grid grid-cols-2 gap-3">
+        <div ref={animateSection} data-section-index={2} className="mt-6 grid grid-cols-2 gap-3 max-[359px]:gap-2">
           <div
-            className="relative overflow-hidden rounded-2xl border backdrop-blur-xl px-4 py-4"
+            className="relative overflow-hidden rounded-2xl border backdrop-blur-xl px-4 py-4 max-[359px]:p-3"
             style={{ borderColor: "rgba(34,211,238,0.18)", background: "rgba(255,255,255,0.03)" }}
           >
             <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, #22D3EE, transparent 70%)" }} />
@@ -302,7 +303,7 @@ function ExplorerContent() {
             </p>
           </div>
           <div
-            className="relative overflow-hidden rounded-2xl border backdrop-blur-xl px-4 py-4"
+            className="relative overflow-hidden rounded-2xl border backdrop-blur-xl px-4 py-4 max-[359px]:p-3"
             style={{ borderColor: "rgba(139,92,246,0.18)", background: "rgba(255,255,255,0.03)" }}
           >
             <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, #8B5CF6, transparent 70%)" }} />
@@ -339,6 +340,7 @@ function ExplorerContent() {
             />
           </motion.div>
         </AnimatePresence>
+      </div>
       </div>
     </PageContainer>
   );

@@ -77,7 +77,7 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
     <button
       type="button"
       onClick={() => mode.href && router.push(mode.href)}
-      className="relative w-full rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98] overflow-hidden"
+      className="relative w-full rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98] overflow-hidden max-[359px]:p-4"
       style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
     >
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10" style={{ background: `radial-gradient(circle, ${mode.color}, transparent)` }} />
@@ -103,7 +103,7 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
         {mode.desc}
       </p>
 
-      <div className="absolute right-5 bottom-4 opacity-60" style={{ color: mode.color }}>
+      <div className="absolute right-5 bottom-4 opacity-60 max-[359px]:right-4 max-[359px]:bottom-3" style={{ color: mode.color }}>
         <Icon size={32} strokeWidth={1.8} />
       </div>
     </button>
@@ -121,9 +121,10 @@ export default function PlayPage() {
 
   return (
     <PageContainer>
+      <div className="mx-auto w-full md:max-w-3xl">
       {/* Header */}
       <header className="mb-5">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Gamepad2 size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PLAY</span>
         </div>
@@ -136,7 +137,7 @@ export default function PlayPage() {
       </header>
 
       {/* Tabs */}
-      <nav className="grid grid-cols-4 gap-2.5 mb-5">
+      <nav className="grid grid-cols-4 gap-2.5 mb-5 max-[359px]:gap-1.5">
         {TABS.map((tab) => {
           const isActive = tab.id === activeTab;
           const Icon = tab.icon;
@@ -146,7 +147,7 @@ export default function PlayPage() {
               type="button"
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                "flex flex-col items-center gap-2 py-3 rounded-2xl transition-all",
+                "flex flex-col items-center gap-2 py-3 rounded-2xl transition-all max-[359px]:py-2.5 max-[359px]:gap-1.5",
                 isActive
                   ? "border border-white/[0.08] bg-white/[0.06] backdrop-blur-xl shadow-lg"
                   : "border border-transparent bg-white/[0.02]"
@@ -161,7 +162,7 @@ export default function PlayPage() {
                 <Icon size={16} strokeWidth={2.2} style={{ color: isActive ? tab.color : "#6B7280" }} />
               </div>
               <span
-                className="text-micro font-semibold tracking-[0.02em]"
+                className="text-micro font-semibold tracking-[0.02em] whitespace-nowrap"
                 style={{ color: isActive ? tab.color : "rgba(107,114,128,0.5)" }}
               >
                 {tab.label}
@@ -172,11 +173,11 @@ export default function PlayPage() {
       </nav>
 
       {/* Mode Cards */}
-      <main className="flex flex-col gap-3">
+      <main className="flex flex-col gap-3 md:grid md:grid-cols-2 md:items-stretch md:gap-5">
         {modes.length > 0 ? (
           modes.map((mode) => <ModeCardButton key={mode.id} mode={mode} />)
         ) : (
-          <div className="flex flex-col items-center justify-center py-16 text-center rounded-3xl border border-dashed border-white/[0.06]" style={{ background: GLASS_BG }}>
+          <div className="flex flex-col items-center justify-center py-16 text-center rounded-3xl border border-dashed border-white/[0.06] md:col-span-2" style={{ background: GLASS_BG }}>
             <div className="h-14 w-14 rounded-2xl bg-white/[0.04] flex items-center justify-center mb-4">
               <Trophy size={24} className="text-muted-foreground/20" />
             </div>
@@ -189,6 +190,7 @@ export default function PlayPage() {
           </div>
         )}
       </main>
+      </div>
     </PageContainer>
   );
 }

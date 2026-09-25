@@ -307,34 +307,34 @@ function SprintContent() {
       <ExamShell
         header={
           <>
-            <div ref={headerRef} className="pb-3 text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+            <div ref={headerRef} className="pb-3 max-[359px]:pb-2 text-center">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
                 <Zap size={10} className="text-primary" />
                 <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT</span>
               </div>
               <div className="flex justify-center">
-                <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50 pb-0.5">
+                <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50 pb-0.5 whitespace-nowrap">
                   {currentIndex + 1} / {activeQuestions.length}
                 </span>
               </div>
             </div>
 
-            <div className="h-1.5 w-full rounded-full mb-5" style={{ backgroundColor: GLASS_BG }}>
+            <div className="h-1.5 w-full rounded-full mb-5 max-[359px]:mb-4" style={{ backgroundColor: GLASS_BG }}>
               <div
                 className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
 
-            <div className="flex items-center justify-between mb-5">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary">
+            <div className="flex items-center justify-between mb-5 max-[359px]:mb-4">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary max-[359px]:px-2.5 whitespace-nowrap">
                 <Zap size={10} />
                 {activeTopicLabel}
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 max-[359px]:gap-1.5">
                 {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
                 <span className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-micro font-bold font-mono backdrop-blur-xl",
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-micro font-bold font-mono backdrop-blur-xl max-[359px]:px-2.5 whitespace-nowrap",
                   isTimerLow ? "bg-destructive/10 text-destructive border border-destructive/20" : "text-muted-foreground border border-white/[0.06]",
                 )}
                 style={!isTimerLow ? { backgroundColor: GLASS_BG } : undefined}>
@@ -351,7 +351,7 @@ function SprintContent() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta text-[#0A0C0A] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
               >
                 {isLast ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
@@ -383,11 +383,11 @@ function SprintContent() {
       >
         {question && (
           <div key={question.id} ref={questionRef}>
-            <p className="text-[16px] font-bold leading-snug text-foreground mb-5">
+            <p className="text-[16px] font-bold leading-snug text-foreground mb-5 max-[359px]:mb-4">
               {question.text}
             </p>
 
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5 max-[359px]:gap-2">
               {question.options.map((option, i) => {
                 const isSelected = selectedIndex === i;
                 const isCorrect = i === question.correctIndex;
@@ -416,7 +416,7 @@ function SprintContent() {
                     onClick={() => handleSelect(i)}
                     disabled={showFeedback}
                     className={cn(
-                      "flex items-center gap-3 rounded-3xl border p-4 text-left outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
+                      "flex items-center gap-3 rounded-3xl border p-4 text-left outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] max-[359px]:gap-2.5 max-[359px]:p-3",
                       variantClass,
                     )}
                     style={variantStyles}
@@ -436,7 +436,7 @@ function SprintContent() {
             </div>
 
             {showFeedback && (
-              <div className="mt-5">
+              <div className="mt-5 max-[359px]:mt-4">
                 <ContentFeedback questionId={question.id} />
               </div>
             )}

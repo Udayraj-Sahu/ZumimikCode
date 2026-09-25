@@ -239,9 +239,10 @@ function LearnPageContent() {
 
   return (
     <PageContainer>
+      <div className="mx-auto w-full md:max-w-3xl">
       {/* Page header — matches app pattern */}
       <header className="mb-5">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 max-[359px]:px-3">
           <BookOpen size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
@@ -256,7 +257,7 @@ function LearnPageContent() {
       {/* Outer glass card wrapping all content */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pb-4 pt-5 transition-colors duration-500"
+        className="relative overflow-hidden rounded-3xl border backdrop-blur-xl px-5 pb-4 pt-5 max-[359px]:px-4 max-[359px]:pb-3 max-[359px]:pt-4 transition-colors duration-500"
         style={{ borderColor: GLASS_BORDER, background: outerBg }}
       >
         <div
@@ -269,8 +270,8 @@ function LearnPageContent() {
         />
 
         {/* Tab mode selector — 3D push keys: active pops up, others sit flat/sunken */}
-        <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5">
-          <div className="grid grid-cols-3 gap-2.5 md:max-w-2xl md:mx-auto md:w-full">
+        <div className="relative -mx-5 -mt-5 mb-2 px-5 pt-4 pb-5 max-[359px]:-mx-4 max-[359px]:px-4 max-[359px]:pt-3 max-[359px]:pb-4">
+          <div className="grid grid-cols-3 gap-2.5 max-[359px]:gap-1.5 md:max-w-2xl md:mx-auto md:w-full">
             {MODES.map((m) => {
               const isActive = m.id === mode;
               return (
@@ -321,7 +322,7 @@ function LearnPageContent() {
                       />
                     </motion.span>
                     <span
-                      className="relative z-10 text-[11px] leading-none tracking-[0.02em] transition-colors duration-500 ease-out"
+                      className="relative z-10 text-[11px] leading-none tracking-[0.02em] transition-colors duration-500 ease-out whitespace-nowrap"
                       style={
                         isActive
                           ? {
@@ -379,7 +380,7 @@ function LearnPageContent() {
 
                 {/* Exam Tabs */}
                 <div
-                  className="rounded-3xl border backdrop-blur-xl p-4 mt-5"
+                  className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 mt-5"
                   style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                 >
                   <p className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-3">
@@ -402,7 +403,7 @@ function LearnPageContent() {
                             setActiveLearnDomain(id);
                           }}
                           className={cn(
-                            "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all md:justify-self-start",
+                            "text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all md:justify-self-start",
                             activeDomain === id
                               ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
                               : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
@@ -422,7 +423,7 @@ function LearnPageContent() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="flex flex-col gap-3 mt-5 md:grid md:grid-cols-2 md:gap-4"
+                    className="flex flex-col gap-3 mt-5 max-[359px]:gap-2 md:grid md:grid-cols-2 md:items-stretch md:gap-4"
                   >
                     {topics.map((topic, i) => {
                       const Icon = TOPIC_ICONS[topic.name] || Grid3x3;
@@ -436,7 +437,7 @@ function LearnPageContent() {
                               `/learn/explorer?domain=${activeDomain}&topic=${encodeURIComponent(topic.name.toLowerCase())}`,
                             )
                           }
-                          className="group rounded-3xl border backdrop-blur-xl p-5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
+                          className="group rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
                           style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                         >
                           <div className="flex items-center justify-between mb-4">
@@ -479,7 +480,7 @@ function LearnPageContent() {
 
                     {topics.length === 0 && (
                       <div
-                        className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center"
+                        className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center md:col-span-2"
                         style={{ background: GLASS_BG }}
                       >
                         <BookOpen size={24} className="mx-auto text-muted-foreground/25 mb-3" />
@@ -562,10 +563,10 @@ function LearnPageContent() {
               transition={tabTransition}
             >
               {/* Toolbar — pill + gated ADD PREP */}
-              <div className="flex items-center justify-between gap-3">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
+              <div className="flex items-center justify-between gap-3 max-[359px]:gap-1.5">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 max-[359px]:px-3 backdrop-blur-sm">
                   <CalendarDays size={12} style={{ color: adaptiveAccent }} />
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/70">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/70 whitespace-nowrap">
                     {todayLabel}
                   </span>
                 </div>
@@ -575,7 +576,7 @@ function LearnPageContent() {
                     setAddPrepGated(true);
                     setShowAddPrep(true);
                   }}
-                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 max-[359px]:px-3 max-[359px]:py-1.5 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
                 >
                   <Plus size={12} strokeWidth={3} /> ADD PREP
                 </button>
@@ -605,7 +606,7 @@ function LearnPageContent() {
                               openPaywall("prep");
                             }
                           }}
-                          className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 max-[359px]:px-2 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
                         >
                           {active && (
@@ -722,7 +723,7 @@ function LearnPageContent() {
                     setAddPrepGated(true);
                     setShowAddPrep(true);
                   }}
-                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 max-[359px]:px-3 max-[359px]:py-1.5 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
                 >
                   <Plus size={12} strokeWidth={3} /> ADD PREP
                 </button>
@@ -752,7 +753,7 @@ function LearnPageContent() {
                               openPaywall("prep");
                             }
                           }}
-                          className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 max-[359px]:px-2 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
                         >
                           {active && (
@@ -823,14 +824,14 @@ function LearnPageContent() {
                   );
                   const sections = ["all", ...Array.from(sectionSet)];
                   return (
-                    <div className="flex items-center gap-2 overflow-x-auto mt-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:overflow-visible">
+                    <div className="flex items-center gap-2 max-[359px]:gap-1.5 overflow-x-auto mt-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:overflow-visible">
                       {sections.map((sec) => (
                         <button
                           key={sec}
                           type="button"
                           onClick={() => setMockSection(sec)}
                           className={cn(
-                            "shrink-0 rounded-full px-3.5 py-1.5 text-[11px] font-semibold transition-all",
+                            "shrink-0 rounded-full px-3.5 py-1.5 max-[359px]:px-3 whitespace-nowrap text-[11px] font-semibold transition-all",
                             mockSection === sec
                               ? "bg-gradient-to-r from-primary to-[#a8e62e] text-[#0A0C0A]"
                               : "border border-white/[0.07] text-muted-foreground/60 hover:bg-white/[0.05]",
@@ -849,10 +850,10 @@ function LearnPageContent() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="flex flex-col gap-3 mt-5 md:grid md:grid-cols-2 md:gap-4"
+                className="flex flex-col gap-3 mt-5 max-[359px]:gap-2 md:grid md:grid-cols-2 md:items-stretch md:gap-4"
               >
                 {mockLoading && (
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3 max-[359px]:gap-2 md:col-span-2">
                     {[0, 1].map((i) => (
                       <div
                         key={i}
@@ -875,7 +876,7 @@ function LearnPageContent() {
                     .map((paper) => (
                       <div
                         key={paper.id}
-                        className="group rounded-3xl border backdrop-blur-xl p-5 transition-all hover:bg-white/[0.05]"
+                        className="group rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4 transition-all hover:bg-white/[0.05]"
                         style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
                       >
                         <div className="flex items-start justify-between gap-3">
@@ -902,12 +903,12 @@ function LearnPageContent() {
                           Questions • {formatDuration(paper.durationMinutes)}
                         </p>
 
-                        <div className="flex items-center justify-between mt-4 gap-3">
+                        <div className="flex items-center justify-between mt-4 gap-3 max-[359px]:gap-1.5">
                           <div className="flex flex-wrap gap-1.5">
                             {paper.sections.map((s) => (
                               <span
                                 key={s.id}
-                                className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07]"
+                                className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07] whitespace-nowrap"
                                 style={{ color: paper.accent, background: `${paper.accent}0d` }}
                               >
                                 {s.label} · {s.questions}
@@ -926,7 +927,7 @@ function LearnPageContent() {
                                 `/learn/mock/run?paper=${paper.id}&domain=${mockExamDomain}`,
                               );
                             }}
-                            className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] px-4 py-2 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] px-4 py-2 max-[359px]:px-3 whitespace-nowrap text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                           >
                             <Play size={12} strokeWidth={2.5} /> Take Test
                           </button>
@@ -936,7 +937,7 @@ function LearnPageContent() {
 
                 {!mockLoading && (mockPapers ?? []).length === 0 && (
                   <div
-                    className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center"
+                    className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center md:col-span-2"
                     style={{ background: GLASS_BG }}
                   >
                     <FileText size={24} className="mx-auto text-muted-foreground/25 mb-3" />
@@ -958,6 +959,7 @@ function LearnPageContent() {
         {showMockArena && <MockArenaIntro onClose={() => setShowMockArena(false)} />}
         <PaywallModal />
       </div>
+      </div>
     </PageContainer>
   );
 }
@@ -972,7 +974,7 @@ export default function LearnPage() {
 
 function StatBox({ value, label, color }: { value: string; label: string; color?: string }) {
   return (
-    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3.5">
+    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3.5 max-[359px]:p-3">
       <div className="flex items-center justify-between">
         <span
           className="size-1.5 rounded-full"
@@ -1051,7 +1053,7 @@ function YourStatsCard({
                 </span>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2.5 max-[359px]:gap-1.5 md:grid-cols-4">
                 <StatBox value={stats.accuracy} label="Accuracy" color={color} />
                 <StatBox value={stats.questions} label="Questions" color={color} />
                 <StatBox value={stats.percentile} label="Percentile" color={color} />

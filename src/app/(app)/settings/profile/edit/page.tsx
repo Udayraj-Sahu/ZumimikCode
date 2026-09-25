@@ -37,7 +37,7 @@ export default function EditProfilePage() {
   return (
     <PageContainer>
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <User size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PROFILE</span>
         </div>
@@ -57,42 +57,42 @@ export default function EditProfilePage() {
           <p className="mt-3 text-micro text-muted-foreground/50">Tap the camera icon to change photo</p>
         </div>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 max-[359px]:gap-4">
           <div>
-            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 whitespace-nowrap">
               Full Name
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary max-[359px]:px-3 max-[359px]:py-3"
               placeholder="Your name"
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 whitespace-nowrap">
               Email Address
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary max-[359px]:px-3 max-[359px]:py-3"
               placeholder="email@example.com"
             />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
+            <label className="mb-1.5 block text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 whitespace-nowrap">
               Phone Number
             </label>
             <input
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+              className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary max-[359px]:px-3 max-[359px]:py-3"
               placeholder="+91 98765 43210"
             />
           </div>
@@ -103,7 +103,7 @@ export default function EditProfilePage() {
           onClick={handleSave}
           disabled={saved}
           className={cn(
-            "mt-8 flex w-full items-center justify-center gap-2 rounded-3xl py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+            "mt-8 flex w-full items-center justify-center gap-2 rounded-3xl py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring max-[359px]:py-3 whitespace-nowrap",
             saved
               ? "bg-primary/30 text-primary/60 cursor-not-allowed"
               : "bg-cta text-[#0A0C0A] hover:opacity-90 active:scale-[0.98]",

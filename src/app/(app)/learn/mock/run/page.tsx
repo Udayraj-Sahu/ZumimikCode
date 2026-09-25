@@ -247,7 +247,7 @@ function MockRunContent() {
         <button
           type="button"
           onClick={() => router.push("/learn?mode=mock")}
-          className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-6 py-3 max-[359px]:px-4 whitespace-nowrap text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Browse Papers
         </button>
@@ -260,11 +260,11 @@ function MockRunContent() {
       <PageContainer className="text-center">
         <p className="text-[13px] font-semibold text-destructive">Failed to load mock paper.</p>
         <p className="mt-2 text-[12px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
-        <div className="mt-6 flex justify-center gap-3">
+        <div className="mt-6 flex justify-center gap-3 max-[359px]:gap-1.5">
           <button
             type="button"
             onClick={() => router.push("/learn?mode=mock")}
-            className="rounded-xl border backdrop-blur-xl px-5 py-3 text-[12px] font-bold text-foreground outline-none transition-colors hover:bg-white/[0.06]"
+            className="rounded-xl border backdrop-blur-xl px-5 py-3 max-[359px]:px-4 text-[12px] font-bold text-foreground outline-none transition-colors hover:bg-white/[0.06] whitespace-nowrap"
             style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             Back
@@ -272,7 +272,7 @@ function MockRunContent() {
           <button
             type="button"
             onClick={() => router.refresh()}
-            className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-3 max-[359px]:px-4 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
           >
             Retry
           </button>
@@ -301,28 +301,28 @@ function MockRunContent() {
       <ExamShell
         header={
           <>
-            <div ref={headerRef} className="pb-3 text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+            <div ref={headerRef} className="pb-3 text-center max-[359px]:pb-2">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 max-[359px]:px-3 mb-3">
                 <FileText size={10} className="text-primary" />
                 <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MOCK TEST</span>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between max-[359px]:gap-1.5">
                 <button
                   type="button"
                   onClick={() => { reset(); router.push("/learn?mode=mock"); }}
-                  className="grid size-11 place-items-center outline-none transition-opacity hover:opacity-70 active:opacity-50 focus-visible:ring-2 focus-visible:ring-ring rounded-xl text-muted-foreground/60 backdrop-blur-xl"
+                  className="grid size-11 max-[359px]:size-10 place-items-center outline-none transition-opacity hover:opacity-70 active:opacity-50 focus-visible:ring-2 focus-visible:ring-ring rounded-xl text-muted-foreground/60 backdrop-blur-xl"
                   style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
                   aria-label="Back to papers"
                 >
                   <ArrowLeft size={20} />
                 </button>
-                <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50">
+                <span className="text-micro font-bold uppercase tracking-widest text-muted-foreground/50 whitespace-nowrap">
                   {currentIndex + 1} / {activeQuestions.length}
                 </span>
               </div>
             </div>
 
-            <div className="h-1.5 w-full rounded-full mb-5" style={{ backgroundColor: GLASS_BG }}>
+            <div className="h-1.5 w-full rounded-full mb-5 max-[359px]:mb-4" style={{ backgroundColor: GLASS_BG }}>
               <div
                 className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
@@ -330,14 +330,14 @@ function MockRunContent() {
             </div>
 
             <div className="flex items-center justify-between mb-5">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 text-micro font-bold uppercase tracking-wider text-primary max-w-[60%] truncate">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 border border-primary/20 px-3 py-1 max-[359px]:px-2.5 text-micro font-bold uppercase tracking-wider text-primary max-w-[60%] truncate whitespace-nowrap">
                 <FileText size={10} />
                 {activeTopicLabel}
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 max-[359px]:gap-1.5">
                 {question?.trustStatus && <TrustBadge status={question.trustStatus} />}
                 <span className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-micro font-bold font-mono backdrop-blur-xl",
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 max-[359px]:px-2.5 text-micro font-bold font-mono backdrop-blur-xl whitespace-nowrap",
                   isTimerLow ? "bg-destructive/10 text-destructive border border-destructive/20" : "text-muted-foreground border border-white/[0.06]",
                 )}
                 style={!isTimerLow ? { backgroundColor: GLASS_BG } : undefined}>
@@ -354,7 +354,7 @@ function MockRunContent() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta text-[#0A0C0A] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
               >
                 {isLast ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
@@ -386,11 +386,11 @@ function MockRunContent() {
       >
         {question && (
           <div key={question.id} ref={questionRef}>
-            <p className="text-[16px] font-bold leading-snug text-foreground mb-5">
+            <p className="text-[16px] font-bold leading-snug text-foreground mb-5 max-[359px]:mb-4">
               {question.text}
             </p>
 
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5 max-[359px]:gap-2">
               {question.options.map((option, i) => {
                 const isSelected = selectedIndex === i;
                 const isCorrect = i === question.correctIndex;
@@ -419,7 +419,7 @@ function MockRunContent() {
                     onClick={() => handleSelect(i)}
                     disabled={showFeedback}
                     className={cn(
-                      "flex items-center gap-3 rounded-3xl border p-4 text-left outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
+                      "flex items-center gap-3 rounded-3xl border p-4 max-[359px]:p-3 text-left outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
                       variantClass,
                     )}
                     style={variantStyles}

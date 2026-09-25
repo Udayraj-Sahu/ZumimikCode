@@ -56,7 +56,7 @@ function Row({ icon, title, subtitle, danger, onClick }: RowProps) {
     <button
       type="button"
       onClick={onClick}
-      className="w-full flex items-center gap-4 rounded-2xl border backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-white/[0.06] active:scale-[0.99]"
+      className="w-full flex items-center gap-4 rounded-2xl border backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-white/[0.06] active:scale-[0.99] max-[359px]:gap-3 max-[359px]:px-4 max-[359px]:py-3"
       style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
     >
       <span className={danger ? "text-[#ff5c5c]" : "text-primary"}>
@@ -88,7 +88,7 @@ function HeadingTile({ icon, danger, onClick, label, heading }: { icon: React.Re
       <span className={danger ? "text-[#ff5c5c]" : "text-primary"}>
         {icon}
       </span>
-      <span className={danger ? "block text-[12px] font-semibold text-[#ff5c5c] tracking-[-0.01em]" : "block text-[12px] font-semibold text-foreground tracking-[-0.01em]"}>
+      <span className={danger ? "block text-[12px] font-semibold text-[#ff5c5c] tracking-[-0.01em] whitespace-nowrap" : "block text-[12px] font-semibold text-foreground tracking-[-0.01em] whitespace-nowrap"}>
         {heading}
       </span>
     </button>
@@ -104,7 +104,7 @@ function CollapsibleSection({ label, defaultOpen = false, children }: { label: s
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="flex w-full items-center justify-between pt-6 pb-3 text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase"
+            className="flex w-full items-center justify-between pt-6 pb-3 text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase max-[359px]:pt-5 max-[359px]:pb-2"
           >
             {label}
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground/40 rotate-180" />
@@ -115,7 +115,7 @@ function CollapsibleSection({ label, defaultOpen = false, children }: { label: s
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="mt-6 flex w-full items-center justify-between rounded-2xl border backdrop-blur-xl px-5 py-4 transition-all hover:bg-white/[0.06] active:scale-[0.99]"
+          className="mt-6 flex w-full items-center justify-between rounded-2xl border backdrop-blur-xl px-5 py-4 transition-all hover:bg-white/[0.06] active:scale-[0.99] max-[359px]:px-4 max-[359px]:py-3"
           style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
         >
           <span className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
@@ -130,7 +130,7 @@ function CollapsibleSection({ label, defaultOpen = false, children }: { label: s
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="px-1 pt-6 pb-3 text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase">
+    <p className="px-1 pt-6 pb-3 text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase max-[359px]:pt-5 max-[359px]:pb-2">
       {children}
     </p>
   );
@@ -164,7 +164,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         </button>
       </div>
       <h1 className="mt-3 text-[16px] font-bold tracking-[-0.02em] text-foreground">{name}</h1>
-      <div className="mt-1.5 flex items-center gap-2 text-[11px]">
+      <div className="mt-1.5 flex items-center gap-2 text-[11px] max-[359px]:gap-1.5 whitespace-nowrap">
         <span className="flex items-center gap-1 font-semibold text-primary">
           <Shield className="h-3 w-3" /> {badge}
         </span>
@@ -173,7 +173,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         <span className="text-muted-foreground/30">·</span>
         <span className="text-muted-foreground/40 font-normal">Mumbai, India</span>
       </div>
-      <button type="button" onClick={onEdit} className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.05em] text-primary">
+      <button type="button" onClick={onEdit} className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.05em] text-primary whitespace-nowrap">
         <Pencil className="h-3 w-3" /> EDIT PROFILE
       </button>
     </div>
@@ -185,12 +185,12 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
 /* ------------------------------------------------------------------ */
 function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return (
-    <div className="flex-1 rounded-2xl border backdrop-blur-xl px-4 py-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+    <div className="flex-1 rounded-2xl border backdrop-blur-xl px-4 py-4 max-[359px]:p-3" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
       <div className="flex items-center justify-between text-primary">
         {icon}
         <span className="text-[17px] font-bold tracking-[-0.02em] text-foreground">{value}</span>
       </div>
-      <p className="mt-2.5 text-micro font-semibold tracking-[0.14em] text-muted-foreground/60 uppercase">{label}</p>
+      <p className="mt-2.5 text-micro font-semibold tracking-[0.14em] text-muted-foreground/60 uppercase whitespace-nowrap">{label}</p>
       <div className="mt-2 h-[2px] w-full rounded-full bg-white/[0.04]" />
     </div>
   );
@@ -200,7 +200,7 @@ function PerformanceOverview({ sessions, streak, rank, xp }: { sessions: string;
   return (
     <div>
       <SectionLabel>PERFORMANCE OVERVIEW</SectionLabel>
-      <div className="grid grid-cols-2 gap-3 max-[359px]:gap-2">
+      <div className="grid grid-cols-2 gap-3 max-[359px]:gap-2 md:items-stretch">
         <StatCard icon={<span className="text-lg">🎯</span>} value={sessions} label="Sessions" />
         <StatCard icon={<span className="text-lg">🔥</span>} value={streak} label="Streak" />
         <StatCard icon={<Trophy className="h-5 w-5" />} value={`#${rank}`} label="Rank" />
@@ -217,10 +217,10 @@ function SubscriptionCard() {
   return (
     <div>
       <SectionLabel>SUBSCRIPTION</SectionLabel>
-      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.03) 100%)" }}>
+      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.03) 100%)" }}>
         <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
         <div className="relative flex items-start justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 max-[359px]:gap-2">
             <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
               <CreditCard className="h-5 w-5 text-primary" />
             </div>
@@ -231,7 +231,7 @@ function SubscriptionCard() {
           </div>
           <span className="rounded-full bg-white/[0.06] border border-white/[0.06] px-3 py-1 text-micro font-semibold tracking-[0.05em] text-muted-foreground/60">CURRENT</span>
         </div>
-        <ul className="relative mt-4 space-y-2.5 text-[12px]">
+        <ul className="relative mt-4 space-y-2.5 text-[12px] max-[359px]:space-y-2">
           <li className="flex items-center gap-2.5 text-foreground/80 font-normal">
             <Check className="h-3.5 w-3.5 text-primary shrink-0" /> 5 sprints per day
           </li>
@@ -245,7 +245,7 @@ function SubscriptionCard() {
             <X className="h-3.5 w-3.5 shrink-0" /> Unlimited sprints
           </li>
         </ul>
-        <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-primary to-[#a8e62e] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-primary-foreground shadow-[0_0_20px_rgba(199,242,82,0.25)] transition-all hover:shadow-[0_0_30px_rgba(199,242,82,0.35)] active:scale-[0.98]">
+        <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-primary to-[#a8e62e] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-primary-foreground shadow-[0_0_20px_rgba(199,242,82,0.25)] transition-all hover:shadow-[0_0_30px_rgba(199,242,82,0.35)] active:scale-[0.98] max-[359px]:py-3 whitespace-nowrap">
           Upgrade to Pro — $9.99/mo
         </button>
       </div>
@@ -294,31 +294,31 @@ export default function SettingsPage() {
         onEdit={() => router.push("/settings/profile/edit")}
       />
 
-      <div className="mt-2 space-y-4">
+      <div className="mt-2 space-y-4 max-[359px]:space-y-3">
         <PerformanceOverview
           sessions="47"
           streak="12-Day"
           rank="47"
           xp="2,340"
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:items-stretch max-[359px]:gap-3">
           <SubscriptionCard />
 
           {/* Prep / Membership */}
           <div className="flex flex-col">
             <SectionLabel>PREP / MEMBERSHIP</SectionLabel>
             {prepExams.length === 0 ? (
-              <div className="flex-1 rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center" style={{ background: GLASS_BG }}>
+              <div className="flex-1 rounded-2xl border border-dashed border-white/[0.06] backdrop-blur-xl py-8 text-center max-[359px]:py-6" style={{ background: GLASS_BG }}>
                 <p className="text-[12px] text-muted-foreground/60 font-normal">No active preps yet</p>
               </div>
             ) : (
-              <div className="flex-1 rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
-                <div className="flex flex-wrap gap-2">
+              <div className="flex-1 rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+                <div className="flex flex-wrap gap-2 max-[359px]:gap-1.5">
                   {prepExams.map((id) => (
                     <span
                       key={id}
                       className={cn(
-                        "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all",
+                        "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all max-[359px]:px-3 whitespace-nowrap",
                         id === targetExam
                           ? "bg-primary/10 text-primary border border-primary/20"
                           : "bg-white/[0.04] text-foreground/80 border border-white/[0.06]",
@@ -334,7 +334,7 @@ export default function SettingsPage() {
             <button
               type="button"
               onClick={() => setShowAddPrep(true)}
-              className="mt-3 w-full rounded-2xl border border-dashed border-primary/20 bg-primary/5 backdrop-blur-xl py-4 text-[13px] font-semibold text-primary transition-all hover:border-primary/35 hover:bg-primary/[0.08] active:scale-[0.98]"
+              className="mt-3 w-full rounded-2xl border border-dashed border-primary/20 bg-primary/5 backdrop-blur-xl py-4 text-[13px] font-semibold text-primary transition-all hover:border-primary/35 hover:bg-primary/[0.08] active:scale-[0.98] max-[359px]:py-3 whitespace-nowrap"
             >
               + Add Prep
             </button>
@@ -342,15 +342,15 @@ export default function SettingsPage() {
         </div>
 
         {/* Activity & Records + Account Settings */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:items-stretch max-[359px]:gap-3">
           <CollapsibleSection label="ACTIVITY & RECORDS" defaultOpen>
-            <div className="space-y-2.5 md:hidden">
+            <div className="space-y-2.5 md:hidden max-[359px]:space-y-2">
               <Row icon={<Clock className="h-5 w-5" />} title="Past Sessions" subtitle="View your sprint history" onClick={() => router.push("/settings/history")} />
               <Row icon={<FileText className="h-5 w-5" />} title="Reports" subtitle="Performance analytics" onClick={() => router.push("/settings/reports")} />
               <Row icon={<Award className="h-5 w-5" />} title="Achievements" subtitle="3/6 unlocked" onClick={() => router.push("/settings/achievements")} />
               <Row icon={<Trophy className="h-5 w-5" />} title="Leaderboard" subtitle="See your ranking" onClick={() => router.push("/settings/leaderboard")} />
             </div>
-            <div className="hidden md:grid grid-cols-2 gap-2.5">
+            <div className="hidden md:grid grid-cols-2 gap-2.5 md:items-stretch">
               <HeadingTile icon={<Clock className="h-5 w-5" />} heading="Past Sessions" onClick={() => router.push("/settings/history")} />
               <HeadingTile icon={<FileText className="h-5 w-5" />} heading="Reports" onClick={() => router.push("/settings/reports")} />
               <HeadingTile icon={<Award className="h-5 w-5" />} heading="Achievements" onClick={() => router.push("/settings/achievements")} />
@@ -359,7 +359,7 @@ export default function SettingsPage() {
           </CollapsibleSection>
 
           <CollapsibleSection label="ACCOUNT SETTINGS" defaultOpen>
-            <div className="space-y-2.5 md:hidden">
+            <div className="space-y-2.5 md:hidden max-[359px]:space-y-2">
               <Row icon={<User className="h-5 w-5" />} title="Personal Details" subtitle="Name, email, phone" onClick={() => router.push("/settings/profile/edit")} />
               <Row icon={<Bell className="h-5 w-5" />} title="Notification Preferences" subtitle="Push & reminders" onClick={() => router.push("/settings/notifications")} />
               <Row icon={<Calendar className="h-5 w-5" />} title="Class Calendar" subtitle="Schedule & planning" onClick={() => router.push("/settings/planner")} />
@@ -367,7 +367,7 @@ export default function SettingsPage() {
               <Row icon={<DollarSign className="h-5 w-5" />} title="Payments" subtitle="Coming soon" />
               <Row icon={<Laptop className="h-5 w-5" />} title="Linked Devices" subtitle="Manage logged-in devices" onClick={() => router.push("/settings/linked-devices")} />
             </div>
-            <div className="hidden md:grid grid-cols-3 gap-2.5">
+            <div className="hidden md:grid grid-cols-3 gap-2.5 md:items-stretch">
               <HeadingTile icon={<User className="h-5 w-5" />} heading="Personal Details" onClick={() => router.push("/settings/profile/edit")} />
               <HeadingTile icon={<Bell className="h-5 w-5" />} heading="Notification" onClick={() => router.push("/settings/notifications")} />
               <HeadingTile icon={<Calendar className="h-5 w-5" />} heading="Class Calendar" onClick={() => router.push("/settings/planner")} />
@@ -379,14 +379,14 @@ export default function SettingsPage() {
         </div>
 
         {/* Support + Account & Session */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:items-stretch max-[359px]:gap-3">
           <CollapsibleSection label="SUPPORT" defaultOpen>
-            <div className="space-y-2.5 md:hidden">
+            <div className="space-y-2.5 md:hidden max-[359px]:space-y-2">
               <Row icon={<HelpCircle className="h-5 w-5" />} title="Help Center" subtitle="Guides & tutorials" onClick={() => router.push("/settings/help")} />
               <Row icon={<MessageSquare className="h-5 w-5" />} title="FAQs" subtitle="Common questions" />
               <Row icon={<Phone className="h-5 w-5" />} title="Contact Support" subtitle="We're here to help" />
             </div>
-            <div className="hidden md:grid grid-cols-3 gap-2.5">
+            <div className="hidden md:grid grid-cols-3 gap-2.5 md:items-stretch">
               <HeadingTile icon={<HelpCircle className="h-5 w-5" />} heading="Help Center" onClick={() => router.push("/settings/help")} />
               <HeadingTile icon={<MessageSquare className="h-5 w-5" />} heading="FAQs" />
               <HeadingTile icon={<Phone className="h-5 w-5" />} heading="Contact Support" />
@@ -394,11 +394,11 @@ export default function SettingsPage() {
           </CollapsibleSection>
 
           <CollapsibleSection label="ACCOUNT & SESSION" defaultOpen>
-            <div className="space-y-2.5 md:hidden">
+            <div className="space-y-2.5 md:hidden max-[359px]:space-y-2">
               <Row icon={<LogOut className="h-5 w-5" />} title="Logout" subtitle="Sign out of your account" danger onClick={handleLogout} />
               <button
                 type="button"
-                className="flex w-full items-center gap-4 rounded-2xl border border-[#ff5c5c]/25 bg-[#ff5c5c]/[0.06] backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-[#ff5c5c]/[0.12] active:scale-[0.99]"
+                className="flex w-full items-center gap-4 rounded-2xl border border-[#ff5c5c]/25 bg-[#ff5c5c]/[0.06] backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-[#ff5c5c]/[0.12] active:scale-[0.99] max-[359px]:gap-3 max-[359px]:px-4 max-[359px]:py-3"
               >
                 <span className="text-[#ff5c5c]">
                   <Trash2 className="h-5 w-5" />
@@ -409,7 +409,7 @@ export default function SettingsPage() {
                 </span>
               </button>
             </div>
-            <div className="hidden md:grid grid-cols-2 gap-2.5">
+            <div className="hidden md:grid grid-cols-2 gap-2.5 md:items-stretch">
               <HeadingTile icon={<LogOut className="h-5 w-5" />} heading="Logout" danger onClick={handleLogout} />
               <HeadingTile icon={<Trash2 className="h-5 w-5" />} heading="Delete Account" danger />
             </div>

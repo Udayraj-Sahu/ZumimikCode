@@ -43,7 +43,7 @@ export default function FriendsPage() {
   return (
     <PageContainer>
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Users size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FRIENDS</span>
         </div>
@@ -52,19 +52,19 @@ export default function FriendsPage() {
         <div className="mt-3 flex justify-center">
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-xl bg-cta text-[#0A0C0A] px-3 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
+            className="flex items-center gap-1.5 rounded-xl bg-cta text-[#0A0C0A] px-3 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-2.5 max-[359px]:py-2 whitespace-nowrap"
           >
             <UserPlus size={14} /> Add
           </button>
         </div>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 overflow-x-auto">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 overflow-x-auto max-[359px]:gap-1.5">
         <button
           type="button"
           onClick={() => setTab("friends")}
           className={cn(
-            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-3 max-[359px]:py-2.5 whitespace-nowrap",
             tab === "friends"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground",
@@ -78,7 +78,7 @@ export default function FriendsPage() {
           type="button"
           onClick={() => setTab("activity")}
           className={cn(
-            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-3 max-[359px]:py-2.5 whitespace-nowrap",
             tab === "activity"
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground"
@@ -91,7 +91,7 @@ export default function FriendsPage() {
           type="button"
           onClick={() => setTab("requests")}
           className={cn(
-            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]",
+            "rounded-full px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-3 max-[359px]:py-2.5 whitespace-nowrap",
             tab === "requests"
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground"
@@ -104,7 +104,7 @@ export default function FriendsPage() {
 
       <div ref={animateSection} data-section-index="1" className="mt-4">
         {isLoading && (
-          <div className="animate-pulse space-y-3">
+          <div className="animate-pulse space-y-3 max-[359px]:space-y-2">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="h-20 rounded-3xl" style={{ background: GLASS_BG }} />
             ))}
@@ -112,38 +112,38 @@ export default function FriendsPage() {
         )}
 
         {error && (
-          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl" style={{ background: GLASS_BG, borderColor: GLASS_BORDER }}>
+          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl max-[359px]:p-4" style={{ background: GLASS_BG, borderColor: GLASS_BORDER }}>
             <p className="text-[12px] font-semibold text-destructive">Failed to load friends</p>
           </div>
         )}
 
-        <div ref={listRef} className="flex flex-col gap-3">
+        <div ref={listRef} className="flex flex-col gap-3 max-[359px]:gap-1.5">
           {tab === "friends" && data?.friends.map((f) => (
             <div
               key={f.id}
               data-friend-item
-              className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4"
+              className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4 max-[359px]:gap-2"
               style={{ background: GLASS_BG }}
             >
               <div className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-[12px] font-black text-primary">
                 {f.initials}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 max-[359px]:gap-1.5">
                   <p className="text-[12px] font-bold text-foreground/80 truncate">{f.name}</p>
                   <span className="rounded-xl bg-white/[0.06] px-1.5 py-0.5 text-micro font-bold uppercase tracking-wider text-muted-foreground">
                     {f.level}
                   </span>
                 </div>
-                <div className="flex items-center gap-3 mt-0.5 text-micro text-muted-foreground/40">
-                  <span className="flex items-center gap-1"><Zap size={10} /> {f.xp.toLocaleString()} XP</span>
-                  <span className="flex items-center gap-1">Streak: {f.streak}d</span>
-                  <span>{f.lastActive}</span>
+                <div className="flex items-center gap-3 mt-0.5 text-micro text-muted-foreground/40 max-[359px]:gap-2">
+                  <span className="flex items-center gap-1 whitespace-nowrap"><Zap size={10} /> {f.xp.toLocaleString()} XP</span>
+                  <span className="flex items-center gap-1 whitespace-nowrap">Streak: {f.streak}d</span>
+                  <span className="whitespace-nowrap">{f.lastActive}</span>
                 </div>
               </div>
               <button
                 type="button"
-                className="flex items-center gap-1 rounded-xl px-3 py-2 text-micro font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-1 rounded-xl px-3 py-2 text-micro font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
                 style={{ background: "rgba(255,255,255,0.04)" }}
               >
                 <Swords size={12} /> Duel
@@ -158,7 +158,7 @@ export default function FriendsPage() {
               <div
                 key={a.id}
                 data-friend-item
-                className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4"
+                className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4 max-[359px]:gap-2"
                 style={{ background: GLASS_BG }}
               >
                 <div className="grid size-9 shrink-0 place-items-center rounded-full bg-white/[0.06]">
@@ -176,7 +176,7 @@ export default function FriendsPage() {
 
           {tab === "requests" && (
             data?.requests.length === 0 ? (
-              <div className="py-10 text-center">
+              <div className="py-10 text-center max-[359px]:py-8">
                 <Users size={28} className="mx-auto text-muted-foreground/20 mb-2" />
                 <p className="text-[12px] text-muted-foreground/60">No pending requests</p>
               </div>
@@ -185,7 +185,7 @@ export default function FriendsPage() {
                 <div
                   key={f.id}
                   data-friend-item
-                  className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4"
+                  className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4 max-[359px]:gap-2"
                   style={{ background: GLASS_BG }}
                 >
                   <div className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-[12px] font-black text-primary">
@@ -195,7 +195,7 @@ export default function FriendsPage() {
                     <p className="text-[12px] font-bold text-foreground/80">{f.name}</p>
                     <p className="text-micro text-muted-foreground/40">{f.level} &middot; {f.xp.toLocaleString()} XP</p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 max-[359px]:gap-1.5">
             <button
               type="button"
               aria-label={`Accept friend request from ${f.name}`}

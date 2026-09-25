@@ -58,7 +58,7 @@ export default function ReportsPage() {
   return (
     <PageContainer>
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <FileText size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">REPORTS</span>
         </div>
@@ -66,21 +66,21 @@ export default function ReportsPage() {
         <div className="mt-3 flex justify-center">
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-full bg-cta text-[#0A0C0A] px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center gap-1.5 rounded-full bg-cta text-[#0A0C0A] px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-1.5 whitespace-nowrap"
           >
             <Download size={14} /> Export
           </button>
         </div>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 max-[359px]:gap-1.5">
         {(["7d", "30d", "90d"] as const).map((p) => (
           <button
             key={p}
             type="button"
             onClick={() => setPeriod(p)}
             className={cn(
-              "rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring border backdrop-blur-xl",
+              "rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring border backdrop-blur-xl whitespace-nowrap",
               period === p
                 ? "bg-primary text-primary-foreground border-primary"
                 : "border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -108,32 +108,32 @@ export default function ReportsPage() {
 
         {data && (
           <>
-            <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+            <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 max-[359px]:gap-2 md:items-stretch">
+              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={14} className="text-primary" />
-                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">SPRINTS</p>
+                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">SPRINTS</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.summary.totalSprints}</p>
               </div>
-              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Award size={14} className="text-chart-2" />
-                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">TOTAL XP</p>
+                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">TOTAL XP</p>
                 </div>
                 <p className="text-[20px] font-bold text-primary">{data.summary.totalXP.toLocaleString()}</p>
               </div>
-              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Target size={14} className="text-chart-3" />
-                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">AVG ACC.</p>
+                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">AVG ACC.</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.summary.avgAccuracy}%</p>
               </div>
-              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ background: GLASS_BG }}>
+              <div data-stat-card className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
                 <div className="flex items-center gap-2 mb-1">
                   <Clock size={14} className="text-chart-4" />
-                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider">TOTAL TIME</p>
+                  <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">TOTAL TIME</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{formatTime(data.summary.totalTime)}</p>
               </div>
@@ -145,7 +145,7 @@ export default function ReportsPage() {
                 <div
                   key={t.topic}
                   data-topic-row
-                  className="flex items-center gap-3 px-4 py-3"
+                  className="flex items-center gap-3 px-4 py-3 max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-2.5"
                 >
                   <div className="flex-1 min-w-0">
                     <p className="text-[12px] font-semibold text-foreground/80">{t.label}</p>
@@ -154,7 +154,7 @@ export default function ReportsPage() {
                       <span>{t.xp} XP</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 shrink-0">
+                  <div className="flex items-center gap-3 shrink-0 max-[359px]:gap-2">
                     <div className="w-16 sm:w-24 h-1.5 rounded-full bg-muted overflow-hidden">
                       <div
                         className={cn(
@@ -175,7 +175,7 @@ export default function ReportsPage() {
               ))}
             </div>
 
-            <div className="mt-6 rounded-3xl border border-primary/30 bg-primary/5 backdrop-blur-xl p-4 flex items-center gap-3">
+            <div className="mt-6 rounded-3xl border border-primary/30 bg-primary/5 backdrop-blur-xl p-4 flex items-center gap-3 max-[359px]:gap-2 max-[359px]:p-3">
               <Award size={20} className="text-primary shrink-0" />
               <div>
                 <p className="text-[12px] font-bold text-primary">Best Accuracy: {data.summary.bestAccuracy}%</p>

@@ -43,7 +43,7 @@ function HistoryRow({
       type="button"
       data-history-row
       onClick={() => onSelect(entry)}
-      className="flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
+      className="flex w-full items-center gap-3 px-4 py-3 text-left outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring rounded-xl max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-2.5"
     >
       <div className={cn(
         "grid size-9 shrink-0 place-items-center rounded-xl",
@@ -58,7 +58,7 @@ function HistoryRow({
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-[12px] font-semibold text-foreground/80 truncate">{entry.topicLabel}</p>
-        <div className="flex items-center gap-2 text-micro text-muted-foreground/40 mt-0.5">
+        <div className="flex items-center gap-2 text-micro text-muted-foreground/40 mt-0.5 max-[359px]:gap-1.5">
           <span>{entry.difficulty}</span>
           <span>&middot;</span>
           <span>{entry.score}/{entry.total}</span>
@@ -136,34 +136,34 @@ export default function HistoryPage() {
   return (
     <PageContainer>
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Clock size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">HISTORY</span>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Review your past sprint performances</p>
       </div>
 
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex flex-wrap gap-2">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex flex-wrap gap-2 max-[359px]:gap-1.5">
         <div className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 min-h-[28px]" style={{ backgroundColor: GLASS_BG }}>
           <Filter size={11} className="text-muted-foreground/40" />
           <select
             value={topicFilter}
             onChange={(e) => { setTopicFilter(e.target.value); setPage(0); }}
-            className="bg-transparent text-[12px] font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="bg-transparent text-[12px] font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded whitespace-nowrap"
           >
             {TOPICS_FILTER_HISTORY.map((t) => (
               <option key={t.id} value={t.id}>{t.label}</option>
             ))}
           </select>
         </div>
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-1 max-[359px]:gap-0.5">
           {DIFFICULTY_FILTER.map((d) => (
             <button
               key={d.id}
               type="button"
               onClick={() => { setDiffFilter(d.id); setPage(0); }}
               className={cn(
-                "rounded-lg px-2 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                "rounded-lg px-2 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
                 diffFilter === d.id
                   ? "bg-primary text-primary-foreground"
                   : "bg-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -176,7 +176,7 @@ export default function HistoryPage() {
         <button
           type="button"
           onClick={() => setSortAsc(!sortAsc)}
-          className="ml-auto flex items-center gap-1 rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[28px]"
+          className="ml-auto flex items-center gap-1 rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider text-muted-foreground outline-none hover:text-foreground active:text-foreground active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring min-h-[28px] max-[359px]:gap-0.5 whitespace-nowrap"
           style={{ backgroundColor: GLASS_BG }}
         >
           <ArrowUpDown size={12} />
@@ -186,7 +186,7 @@ export default function HistoryPage() {
 
       <div ref={animateSection} data-section-index="1" className="mt-4">
         {selected && (
-          <div ref={detailRef} className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4" style={{ backgroundColor: GLASS_BG }}>
+          <div ref={detailRef} className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ backgroundColor: GLASS_BG }}>
             <div className="flex items-center justify-between mb-3">
               <p className="text-[12px] font-bold text-foreground/80">{selected.topicLabel}</p>
               <button
@@ -197,7 +197,7 @@ export default function HistoryPage() {
                 Close
               </button>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center mb-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center mb-3 max-[359px]:gap-1.5 md:items-stretch">
               <div className="rounded-xl p-2" style={{ backgroundColor: GLASS_BG }}>
                 <p className="text-micro text-muted-foreground/40">Score</p>
                 <p className="text-[13px] font-bold text-foreground">{selected.score}/{selected.total}</p>
@@ -254,7 +254,7 @@ export default function HistoryPage() {
         )}
 
         {totalPages > 1 && (
-          <div className="mt-4 flex items-center justify-center gap-2">
+          <div className="mt-4 flex items-center justify-center gap-2 max-[359px]:gap-1.5">
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i}

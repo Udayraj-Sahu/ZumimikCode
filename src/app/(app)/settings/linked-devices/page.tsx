@@ -60,7 +60,7 @@ export default function LinkedDevicesPage() {
     <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Monitor size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LINKED DEVICES</span>
         </div>
@@ -104,12 +104,12 @@ export default function LinkedDevicesPage() {
               const { Icon } = PLATFORM_META[device.platform];
               const isConfirming = confirmingId === device.id;
               return (
-                <div key={device.id} className="flex items-center gap-4 px-5 py-4">
+                <div key={device.id} className="flex items-center gap-4 px-5 py-4 max-[359px]:gap-2 max-[359px]:px-4 max-[359px]:py-3">
                   <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-white/[0.06]">
                     <Icon size={18} className={device.current ? "text-primary" : "text-foreground/60"} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 max-[359px]:gap-1.5">
                       <p className="text-[13px] font-semibold text-foreground truncate">{device.name}</p>
                       {device.current && (
                         <span className="flex shrink-0 items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[9px] font-bold tracking-wide text-primary uppercase">
@@ -129,7 +129,7 @@ export default function LinkedDevicesPage() {
                     onClick={() => handleRevoke(device)}
                     disabled={revoke.isPending}
                     className={cn(
-                      "flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-[11px] font-bold transition-all active:scale-95",
+                      "flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-[11px] font-bold transition-all active:scale-95 max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-2 whitespace-nowrap",
                       isConfirming
                         ? "bg-[#ff5c5c] text-[#0A0C0A]"
                         : "border border-white/[0.07] bg-white/[0.04] text-[#ff5c5c]",
@@ -159,7 +159,7 @@ export default function LinkedDevicesPage() {
       <button
         type="button"
         onClick={() => router.push("/settings/scan-to-login")}
-        className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/25 bg-primary/[0.05] py-4 text-[13px] font-semibold text-primary transition-all hover:border-primary/40 hover:bg-primary/[0.08] active:scale-[0.98]"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/25 bg-primary/[0.05] py-4 text-[13px] font-semibold text-primary transition-all hover:border-primary/40 hover:bg-primary/[0.08] active:scale-[0.98] max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
       >
         <Plus size={15} /> Link a new device
       </button>

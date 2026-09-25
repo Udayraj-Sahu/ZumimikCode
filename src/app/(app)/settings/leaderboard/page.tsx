@@ -25,7 +25,7 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
     <div
       data-leaderboard-row
       className={cn(
-        "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors",
+        "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-2.5",
         entry.me ? "bg-primary/5 border border-primary/20" : "hover:bg-white/[0.04] active:bg-white/[0.06]",
       )}
     >
@@ -45,7 +45,7 @@ function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: numb
           {entry.me && <span className="ml-2 text-micro text-primary/60 font-normal">(You)</span>}
         </p>
       </div>
-      <div className="flex items-center gap-2 shrink-0">
+      <div className="flex items-center gap-2 shrink-0 max-[359px]:gap-1.5">
         <div className="hidden sm:block w-20 h-1.5 rounded-full bg-muted overflow-hidden">
           <div
             className="h-full rounded-full bg-primary/60"
@@ -101,7 +101,7 @@ export default function LeaderboardPage() {
     <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Trophy size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LEADERBOARD</span>
         </div>
@@ -109,14 +109,14 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Period tabs */}
-      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2">
+      <div ref={animateSection} data-section-index="0" className="mt-5 flex gap-2 max-[359px]:gap-1.5">
         {PERIODS.map((p) => (
           <button
             key={p}
             type="button"
             onClick={() => setPeriod(p)}
             className={cn(
-              "rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+              "rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
               period === p
                 ? "bg-primary text-primary-foreground"
                 : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -162,9 +162,9 @@ export default function LeaderboardPage() {
 
             {/* Your rank summary */}
             {me && (
-              <div ref={animateSection} data-section-index="2" className="mt-6 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5" style={{ background: GLASS_BG }}>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
-                  <div className="flex items-center gap-3">
+              <div ref={animateSection} data-section-index="2" className="mt-6 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5 max-[359px]:p-3" style={{ background: GLASS_BG }}>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 max-[359px]:gap-2">
+                  <div className="flex items-center gap-3 max-[359px]:gap-2">
                     <div className="grid size-10 place-items-center rounded-full bg-primary/10">
                       <Target size={18} className="text-primary" />
                     </div>
@@ -175,13 +175,13 @@ export default function LeaderboardPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 sm:gap-6 text-[12px]">
+                  <div className="flex items-center gap-4 sm:gap-6 text-[12px] max-[359px]:gap-2">
                     <div>
                       <span className="text-muted-foreground/60">XP: </span>
                       <span className="font-bold font-mono text-foreground">{me.xp.toLocaleString()}</span>
                     </div>
                     {xpToNext > 0 && prevRank && (
-                      <div className="flex items-center gap-1 text-chart-3">
+                      <div className="flex items-center gap-1 text-chart-3 max-[359px]:gap-0.5 whitespace-nowrap">
                         <ArrowUp size={14} />
                         <span className="font-bold font-mono">{xpToNext.toLocaleString()} XP</span>
                         <span className="text-muted-foreground/60 text-micro">to #{prevRank.rank}</span>

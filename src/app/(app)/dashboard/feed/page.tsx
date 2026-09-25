@@ -41,7 +41,7 @@ export default function FeedPage() {
     <PageContainer>
       {/* Header */}
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Compass size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FEED</span>
         </div>
@@ -50,14 +50,14 @@ export default function FeedPage() {
 
       {/* Search bar */}
       <div ref={animateSection} data-section-index="0" className="mt-4">
-        <div className="flex items-center gap-2.5 rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3">
+        <div className="flex items-center gap-2.5 rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3 max-[359px]:px-3 max-[359px]:py-2.5">
           <Search size={16} className="text-muted-foreground/50 shrink-0" />
           <span className="text-[12px] text-muted-foreground/50">Search topics, tips...</span>
         </div>
       </div>
 
       {/* Category chips */}
-      <div ref={animateSection} data-section-index="1" className="mt-4 flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
+      <div ref={animateSection} data-section-index="1" className="mt-4 flex gap-2 overflow-x-auto pb-1 scrollbar-thin max-[359px]:gap-1.5">
         {FEED_CATEGORIES.map((cat) => (
           <button
             key={cat}
@@ -75,7 +75,7 @@ export default function FeedPage() {
         ))}
       </div>
 
-      <div className="mt-5 flex flex-col gap-5">
+      <div className="mt-5 flex flex-col gap-5 max-[359px]:gap-4">
         {/* Hero card */}
         <div ref={animateSection} data-section-index="2" className="relative rounded-3xl overflow-hidden h-[160px]">
           <img
@@ -84,9 +84,9 @@ export default function FeedPage() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
-          <div className="relative h-full flex flex-col justify-between p-4">
+          <div className="relative h-full flex flex-col justify-between p-4 max-[359px]:p-3">
             <div className="flex items-center gap-2 self-start">
-              <span className="flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/25 rounded-full px-3 py-1.5 text-[11px] font-bold text-white">
+              <span className="flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/25 rounded-full px-3 py-1.5 text-[11px] font-bold text-white max-[359px]:px-2.5 whitespace-nowrap">
                 <Sparkles size={10} /> {FEED_HERO.badge}
               </span>
             </div>
@@ -99,12 +99,12 @@ export default function FeedPage() {
         {/* Study tips */}
         <div ref={animateSection} data-section-index="3">
           <h2 className="text-[13px] font-bold text-foreground mb-3">Study Tips</h2>
-          <div ref={scrollRef} className="flex flex-col gap-3">
+          <div ref={scrollRef} className="flex flex-col gap-3 md:grid md:grid-cols-2 md:items-stretch md:gap-5 max-[359px]:gap-1.5">
             {FEED_STORIES.map((story) => (
               <div
                 key={story.id}
                 data-feed-story
-                className="flex items-center gap-3.5 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3.5 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex items-center gap-3.5 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3.5 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-2.5 max-[359px]:p-3"
                 style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
               >
                 <img
@@ -121,7 +121,7 @@ export default function FeedPage() {
                   </p>
                   <div className="flex items-center gap-1.5 mt-1.5">
                     <Clock size={9} className="text-muted-foreground/40" />
-                    <span className="text-micro text-muted-foreground/40 font-semibold">
+                    <span className="text-micro text-muted-foreground/40 font-semibold whitespace-nowrap">
                       {story.readTime}
                     </span>
                   </div>
@@ -134,7 +134,7 @@ export default function FeedPage() {
         {/* Strategy videos */}
         <div ref={animateSection} data-section-index="4">
           <h2 className="text-[13px] font-bold text-foreground mb-3">Strategy Videos</h2>
-          <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin">
+          <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin max-[359px]:gap-1.5">
             {FEED_VIDEOS.map((video) => (
               <div
                 key={video.id}

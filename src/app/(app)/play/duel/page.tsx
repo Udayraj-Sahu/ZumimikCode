@@ -131,23 +131,23 @@ export default function DuelPage() {
     return (
       <PageContainer>
         <div ref={headerRef} className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-3 max-[359px]:px-3">
             <Swords size={12} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">DUEL</span>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Compete head-to-head in real-time</p>
         </div>
 
-        <div ref={animateSection} data-section-index="0" className="mt-6">
+        <div ref={animateSection} data-section-index="0" className="mt-6 max-[359px]:mt-4">
           <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Select Topic</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-[359px]:gap-1.5">
             {(setup?.topics ?? []).map((t) => (
               <button
                 key={t.id}
                 type="button"
                 onClick={() => setTopic(t.id)}
                 className={cn(
-                  "rounded-xl border py-3 px-3 text-micro font-bold text-center outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                  "rounded-xl border py-3 px-3 text-micro font-bold text-center outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring max-[359px]:px-2.5 max-[359px]:py-2.5",
                   topic === t.id
                     ? "border-primary bg-primary/10 shadow-[0_0_0_1px_var(--primary)] text-foreground"
                     : "border-white/[0.06] text-muted-foreground hover:bg-white/[0.06] active:bg-white/[0.08]",
@@ -160,23 +160,23 @@ export default function DuelPage() {
           </div>
         </div>
 
-        <div ref={animateSection} data-section-index="1" className="mt-6">
+        <div ref={animateSection} data-section-index="1" className="mt-6 max-[359px]:mt-4">
           <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Your Opponent</p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-[359px]:gap-1.5">
             {DUEL_OPPONENTS.map((o) => (
               <button
                 key={o.name}
                 type="button"
                 onClick={() => setOpponent(o)}
                 className={cn(
-                  "flex items-center gap-3 rounded-xl border px-4 py-3 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring",
+                  "flex items-center gap-3 rounded-xl border px-4 py-3 outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-2.5",
                   opponent.name === o.name
                     ? "border-primary bg-primary/10 shadow-[0_0_0_1px_var(--primary)]"
                     : "border-white/[0.06] hover:bg-white/[0.06]",
                 )}
                 style={opponent.name !== o.name ? { backgroundColor: GLASS_BG } : undefined}
               >
-                <div className="grid size-9 place-items-center rounded-full bg-primary/10 text-[12px] font-bold text-primary">
+                <div className="grid size-9 max-[359px]:size-8 place-items-center rounded-full bg-primary/10 text-[12px] font-bold text-primary">
                   {o.initials}
                 </div>
                 <div className="text-left">
@@ -188,11 +188,11 @@ export default function DuelPage() {
           </div>
         </div>
 
-        <div ref={animateSection} data-section-index="2" className="mt-8">
+        <div ref={animateSection} data-section-index="2" className="mt-8 max-[359px]:mt-5">
           <button
             type="button"
             onClick={startDuel}
-            className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Swords size={16} /> Start Duel
           </button>
@@ -219,20 +219,20 @@ export default function DuelPage() {
           </p>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-2 gap-4">
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
+        <div className="mt-6 grid grid-cols-2 sm:grid-cols-2 gap-4 max-[359px]:gap-2">
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
             <p className="text-micro font-semibold tracking-widest text-muted-foreground/50">YOUR SCORE</p>
             <p className="mt-1 text-[20px] font-bold text-primary">{result.yourScore}</p>
             <p className="text-micro text-muted-foreground/40">{result.yourAccuracy}% accuracy</p>
           </div>
-          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 text-center" style={{ backgroundColor: GLASS_BG }}>
+          <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
             <p className="text-micro font-semibold tracking-widest text-muted-foreground/50">{opponent.name}</p>
             <p className="mt-1 text-[20px] font-bold text-foreground/60">{result.opponentScore}</p>
             <p className="text-micro text-muted-foreground/40">{result.opponentAccuracy}% accuracy</p>
           </div>
         </div>
 
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3">
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-2 gap-3 max-[359px]:gap-2">
           <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 text-center" style={{ backgroundColor: GLASS_BG }}>
             <p className="text-micro text-muted-foreground/40">Your Time</p>
             <p className="text-[13px] font-bold font-mono text-foreground/80">{result.yourTime}s</p>
@@ -243,18 +243,18 @@ export default function DuelPage() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-6 flex flex-col gap-3 max-[359px]:gap-2">
           <button
             type="button"
             onClick={startDuel}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Swords size={16} /> Rematch
           </button>
           <button
             type="button"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
             style={{ backgroundColor: GLASS_BG }}
           >
             Dashboard
@@ -276,7 +276,7 @@ export default function DuelPage() {
 
   return (
     <PageContainer>
-      <div className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3" style={{ backgroundColor: GLASS_BG }}>
+      <div className="mb-4 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 max-[359px]:p-2.5" style={{ backgroundColor: GLASS_BG }}>
         <div className="flex items-center justify-between mb-1.5">
           <div className="flex items-center gap-2">
             <div className="grid size-6 place-items-center rounded-full bg-primary/10 text-micro font-bold text-primary">
@@ -296,7 +296,7 @@ export default function DuelPage() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 max-[359px]:mb-2">
         <span className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">
           Duel &middot; {session.topicLabel}
         </span>
@@ -305,14 +305,14 @@ export default function DuelPage() {
         </span>
       </div>
 
-      <div className="h-1.5 w-full rounded-full bg-white/[0.06] mb-6">
+      <div className="h-1.5 w-full rounded-full bg-white/[0.06] mb-6 max-[359px]:mb-4">
         <div className="h-full rounded-full bg-primary transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
       </div>
 
       {question && (
         <div key={question.id} ref={questionRef}>
-          <p className="text-[16px] font-bold leading-snug text-foreground mb-5">{question.text}</p>
-          <div className="flex flex-col gap-2.5">
+          <p className="text-[16px] font-bold leading-snug text-foreground mb-5 max-[359px]:mb-4">{question.text}</p>
+          <div className="flex flex-col gap-2.5 max-[359px]:gap-2">
             {question.options.map((option, i) => {
               const isSelected = answers[question.id] === i;
               const isCorrect = i === question.correctIndex;
@@ -333,7 +333,7 @@ export default function DuelPage() {
                   onClick={() => handleSelect(i)}
                   disabled={revealed}
                   className={cn(
-                    "flex items-center gap-3 rounded-2xl border p-4 text-left outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
+                    "flex items-center gap-3 rounded-2xl border p-4 text-left outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] max-[359px]:gap-2.5 max-[359px]:p-3",
                     variant,
                   )}
                   style={!revealed || (!isCorrect && !isSelected) ? variantStyle : undefined}
@@ -350,11 +350,11 @@ export default function DuelPage() {
           </div>
 
           {revealed && (
-            <div className="mt-5">
+            <div className="mt-5 max-[359px]:mt-4">
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>

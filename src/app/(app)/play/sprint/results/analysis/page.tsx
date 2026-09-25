@@ -58,11 +58,11 @@ export default function AnalysisPage() {
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">
           No wrong answers to analyze.
         </p>
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-6 flex flex-col gap-3 max-[359px]:gap-2">
           <button
             type="button"
             onClick={() => router.push("/play/sprint/results")}
-            className="rounded-3xl bg-cta text-[#0A0C0A] py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-3xl bg-cta text-[#0A0C0A] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
           >
             Back to Results
           </button>
@@ -82,8 +82,8 @@ export default function AnalysisPage() {
   return (
     <PageContainer>
       {/* Centered pill badge */}
-      <div className="flex flex-col items-center gap-2 mb-6">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-5 py-2">
+      <div className="flex flex-col items-center gap-2 mb-6 max-[359px]:mb-4 max-[359px]:gap-1.5">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-5 py-2 max-[359px]:px-4">
           <TrendingUp size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
         </div>
@@ -94,7 +94,7 @@ export default function AnalysisPage() {
       </div>
 
       {/* Wrong answers list */}
-      <div className="flex flex-col gap-5">
+      <div className="grid gap-5 max-[359px]:gap-4 md:grid-cols-2 md:items-start">
         {wrongAnswers.map(({ answer, question, wrongIndex }) => (
           <div
             key={question.id}
@@ -102,7 +102,7 @@ export default function AnalysisPage() {
             style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             {/* Question header */}
-            <div className="px-4 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgba(255,255,255,0.04)" }}>
+            <div className="px-4 max-[359px]:px-3 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgba(255,255,255,0.04)" }}>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-wider">
                   <span className="grid size-5 place-items-center rounded bg-destructive/10 text-destructive">
@@ -120,8 +120,8 @@ export default function AnalysisPage() {
             </div>
 
             {/* User vs correct answer */}
-            <div className="grid grid-cols-2 gap-2 px-4 pt-4">
-              <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" }}>
+            <div className="grid grid-cols-2 gap-2 max-[359px]:gap-1.5 px-4 max-[359px]:px-3 pt-4">
+              <div className="rounded-xl border p-3 max-[359px]:p-2.5 text-center" style={{ backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" }}>
                 <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
                   Your Answer
                 </p>
@@ -129,7 +129,7 @@ export default function AnalysisPage() {
                   {question.options[answer.selectedIndex] ?? "(unanswered)"}
                 </p>
               </div>
-              <div className="rounded-xl border p-3 text-center" style={{ backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" }}>
+              <div className="rounded-xl border p-3 max-[359px]:p-2.5 text-center" style={{ backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" }}>
                 <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
                   Correct
                 </p>
@@ -140,7 +140,7 @@ export default function AnalysisPage() {
             </div>
 
             {/* Explanation */}
-            <div className="px-4 py-4">
+            <div className="px-4 max-[359px]:px-3 py-4 max-[359px]:py-3.5">
               {question.explanation ? (
                 <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
                   <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-2">
@@ -162,11 +162,11 @@ export default function AnalysisPage() {
       </div>
 
       {/* Bottom navigation */}
-      <div className="mt-8 flex flex-col gap-3">
+      <div className="mt-8 flex flex-col gap-3 max-[359px]:gap-2">
         <button
           type="button"
           onClick={() => router.push("/play/sprint/results")}
-          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
           style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           <ChevronLeft size={16} /> Back to Results
@@ -174,7 +174,7 @@ export default function AnalysisPage() {
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
-          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
           style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
         >
           Dashboard
