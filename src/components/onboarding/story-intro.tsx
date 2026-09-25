@@ -1008,7 +1008,7 @@ export function StoryIntro({
             }}
           />
 
-          <div className="relative mx-auto w-full max-w-[430px] px-[14px] pb-[24px] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto md:px-6">
+          <div className="relative mx-auto w-full max-w-[430px] px-[14px] pb-[24px] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto md:px-6 max-[359px]:px-3">
             <div className="relative flex flex-col">
             {/* Protocol pill */}
             <motion.div

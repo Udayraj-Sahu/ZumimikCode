@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { AuthModal } from "@/components/onboarding/auth-modal";
@@ -71,7 +72,11 @@ export function FloatingActions() {
       >
         Build the Muscle
       </button>
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      {showAuth &&
+        createPortal(
+          <AuthModal onClose={() => setShowAuth(false)} />,
+          document.body
+        )}
     </div>
   );
 }

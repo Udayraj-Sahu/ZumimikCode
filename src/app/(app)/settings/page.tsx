@@ -151,7 +151,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
   return (
     <div className="relative flex flex-col items-center pt-6 pb-1 text-center">
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
-      <div className="relative mb-3 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
+      <div className="relative mb-3 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 max-[359px]:gap-1.5 max-[359px]:px-3">
           <Settings size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
         </div>
@@ -200,7 +200,7 @@ function PerformanceOverview({ sessions, streak, rank, xp }: { sessions: string;
   return (
     <div>
       <SectionLabel>PERFORMANCE OVERVIEW</SectionLabel>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 max-[359px]:gap-2">
         <StatCard icon={<span className="text-lg">🎯</span>} value={sessions} label="Sessions" />
         <StatCard icon={<span className="text-lg">🔥</span>} value={streak} label="Streak" />
         <StatCard icon={<Trophy className="h-5 w-5" />} value={`#${rank}`} label="Rank" />

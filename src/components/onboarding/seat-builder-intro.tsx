@@ -450,7 +450,7 @@ export function SeatBuilderIntro({
           }}
         />
 
-        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto">
+        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
         <section className="mt-8 text-center">
           <h1
             id="seat-builder-hook-title"

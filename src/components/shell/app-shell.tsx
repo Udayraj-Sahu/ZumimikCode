@@ -216,7 +216,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           "pointer-events-none",
         )}
       >
-        <div className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[#14170F]/90 backdrop-blur-2xl px-2 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] pointer-events-auto">
+        <div className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[#14170F]/90 backdrop-blur-2xl px-2 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] pointer-events-auto max-[359px]:gap-0.5 max-[359px]:px-1.5">
           {MOBILE_NAV.map((item) => {
             const active = pathname === item.href;
             const Icon = item.icon;
@@ -228,13 +228,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "relative flex items-center justify-center rounded-full outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring",
                   active
-                    ? "bg-primary/15 text-primary px-4 py-2.5 gap-2"
-                    : "text-muted-foreground/50 hover:text-muted-foreground px-3 py-2.5",
+                    ? "bg-primary/15 text-primary px-4 py-2.5 gap-2 max-[359px]:px-3 max-[359px]:gap-1.5"
+                    : "text-muted-foreground/50 hover:text-muted-foreground px-3 py-2.5 max-[359px]:px-2.5",
                 )}
               >
                 <Icon className="size-[18px] shrink-0" strokeWidth={active ? 2.4 : 1.8} />
                 {active && (
-                  <span className="text-[11px] font-bold tracking-wide">{item.label}</span>
+                  <span className="text-[11px] font-bold tracking-wide max-[319px]:hidden">{item.label}</span>
                 )}
               </Link>
             );

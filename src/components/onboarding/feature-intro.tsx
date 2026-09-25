@@ -350,7 +350,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
           />
 
           <div className="relative mx-auto flex h-full w-full max-w-[360px] flex-col md:min-h-0 md:max-w-none md:flex-1">
-            <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4">
             {/* Protocol pill */}
             <div className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-3">
               <motion.div
@@ -441,7 +441,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
             </motion.div>
           </div>
 
-          <footer className="shrink-0 border-t border-white/10 bg-[#0a0a0d]/85 px-5 py-4 backdrop-blur">
+          <footer className="shrink-0 px-5 py-4">
             <button
               type="button"
               onClick={(e) => {

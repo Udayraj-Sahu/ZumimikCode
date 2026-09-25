@@ -407,7 +407,7 @@ export default function DashboardPage() {
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
 
       {/* Header */}
-      <div ref={animateSection} data-section-index={0} className="relative pt-8 pb-2 text-center">
+      <div ref={animateSection} data-section-index={0} className="relative pt-8 pb-2 text-center max-[359px]:pt-5">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-4">
           <Sparkles size={12} className="text-primary" />
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
@@ -866,11 +866,11 @@ export default function DashboardPage() {
           hasResume && "md:grid md:grid-cols-2 md:items-stretch md:gap-5"
         )}
       >
-        <div className="h-full rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+        <div className="h-full rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
           <SectionLabel>QUICK ACCESS</SectionLabel>
           <div
             className={cn(
-              "grid gap-3 mt-4 grid-cols-4",
+              "grid gap-3 mt-4 grid-cols-4 max-[359px]:gap-2",
               hasResume ? "md:grid-cols-4 lg:grid-cols-4" : "md:grid-cols-6 lg:grid-cols-8"
             )}
           >
