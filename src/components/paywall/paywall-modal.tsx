@@ -18,7 +18,6 @@ import {
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
-import { MockArenaSelector } from "@/components/paywall/mock-arena-selector";
 import type { PlanId } from "@/lib/types/onboarding";
 import { cn } from "@/lib/utils";
 
@@ -198,16 +197,7 @@ export function PaywallModal() {
     setTimeout(requestClose, 450);
   };
 
-  const activateMock = (optionId: string) => {
-    setPlanId(optionId === "bundle" ? "dual-lane" : "single-lane");
-    setPlanLane(lane);
-    setPro();
-    setState("success");
-    setTimeout(requestClose, 450);
-  };
-
   if (!open || !action) return null;
-  const isMock = action === "mock";
 
   const selectedPlan = PREP_OPTIONS.find((o) => o.id === planOptionId)!;
   const throttle = planOptionId === "dual-lane" ? 100 : planOptionId === "single-lane" ? 72 : 19;
@@ -246,34 +236,7 @@ export function PaywallModal() {
           style={{ background: `linear-gradient(90deg, transparent, ${ACCENT}55, transparent)` }}
         />
 
-        {isMock ? (
-          <div className="relative mx-auto flex max-h-[min(78vh,760px)] min-h-[540px] flex-col px-4 pt-7 pb-4">
-            {state === "success" ? (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="relative flex min-h-[60vh] flex-col items-center justify-center gap-3 text-center"
-              >
-                <div
-                  className="flex items-center gap-2 rounded-2xl border border-white/10 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A]"
-                  style={{
-                    background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT_DIM})`,
-                    boxShadow: `0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset`,
-                  }}
-                >
-                  <ShieldCheck size={15} strokeWidth={2.8} /> Unlimited mocks activated
-                </div>
-                <p className="font-mono text-[9px] font-bold tracking-wider text-[#C8FF4D]">
-                  Gates unlocked — unlimited mocks are live.
-                </p>
-              </motion.div>
-            ) : (
-              <MockArenaSelector onActivate={activateMock} />
-            )}
-          </div>
-        ) : (
-          <>
-            {state === "success" ? (
+        {state === "success" ? (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -542,8 +505,6 @@ export function PaywallModal() {
                   </p>
                 </footer>
               </div>
-            )}
-          </>
         )}
       </div>
     </div>,
