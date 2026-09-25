@@ -137,17 +137,24 @@ export function PaywallModal() {
   const [state, setState] = useState<"idle" | "success">("idle");
   const overlayRef = useRef<HTMLDivElement>(null);
   const wasOpenRef = useRef(false);
+  const [isNative] = useState(
+    () => typeof window !== "undefined" && !!(window as any).Capacitor?.isNativePlatform?.(),
+  );
+  const [closing, setClosing] = useState(false);
 
   useEffect(() => {
     if (open && !wasOpenRef.current) {
+      setClosing(false);
       setPlanOptionId(planId ?? "dual-lane");
       setLane(planLane || targetExam || "cat");
       setState("idle");
       if (overlayRef.current) {
         overlayRef.current.animate(
-          [{ transform: "translateY(100%)" }, { transform: "translateY(0%)" }],
+          isNative
+            ? [{ transform: "translateY(100%)" }, { transform: "translateY(0%)" }]
+            : [{ transform: "translateX(100%)" }, { transform: "translateX(0%)" }],
           {
-            duration: 300,
+            duration: 320,
             easing: "cubic-bezier(0.22, 1, 0.36, 1)",
           },
         );
@@ -158,19 +165,37 @@ export function PaywallModal() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open, planId, planLane, targetExam]);
+  }, [open, planId, planLane, targetExam, isNative]);
+
+  const requestClose = () => {
+    if (closing) return;
+    if (isNative) {
+      closePaywall();
+      return;
+    }
+    setClosing(true);
+    overlayRef.current
+      ?.animate(
+        [{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }],
+        {
+          duration: 280,
+          easing: "cubic-bezier(0.33, 1, 0.68, 1)",
+        },
+      )
+      .finished.then(() => closePaywall());
+  };
 
   const confirmPlan = () => {
     const isFree = planOptionId === "initiate";
     setPlanId(planOptionId as PlanId);
     setPlanLane(lane);
     if (isFree) {
-      closePaywall();
+      requestClose();
       return;
     }
     setPro();
     setState("success");
-    setTimeout(closePaywall, 450);
+    setTimeout(requestClose, 450);
   };
 
   const activateMock = (optionId: string) => {
@@ -178,7 +203,7 @@ export function PaywallModal() {
     setPlanLane(lane);
     setPro();
     setState("success");
-    setTimeout(closePaywall, 450);
+    setTimeout(requestClose, 450);
   };
 
   if (!open || !action) return null;
@@ -190,17 +215,28 @@ export function PaywallModal() {
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[70] overflow-hidden flex flex-col items-center justify-end px-5"
+      className={cn(
+        "fixed inset-0 z-[70] flex flex-col items-center px-5",
+        isNative ? "justify-end overflow-hidden" : "justify-center overflow-y-auto py-6",
+      )}
     >
       <div
         className="fixed inset-0 -z-10"
-        onClick={closePaywall}
+        onClick={requestClose}
         style={{ background: "rgba(3,4,6,0.6)" }}
       />
 
-      <div className="relative w-full max-w-[400px] overflow-hidden bg-[#07090F] rounded-t-[24px] border border-white/[0.06] border-b-0 shadow-[0_-12px_60px_rgba(0,0,0,0.6)]">
-        {/* grab handle */}
-        <div className="absolute left-1/2 top-2.5 z-20 h-1 w-9 -translate-x-1/2 rounded-full bg-white/[0.12]" />
+      <div
+        className={cn(
+          "relative w-full max-w-[400px] overflow-hidden bg-[#07090F] border border-white/[0.06]",
+          isNative
+            ? "rounded-t-[24px] border-b-0 shadow-[0_-12px_60px_rgba(0,0,0,0.6)]"
+            : "rounded-[24px] shadow-[0_12px_60px_rgba(0,0,0,0.6)]",
+        )}
+      >
+        {isNative && (
+          <div className="absolute left-1/2 top-2.5 z-20 h-1 w-9 -translate-x-1/2 rounded-full bg-white/[0.12]" />
+        )}
 
         {/* ambient glow */}
         <div className="pointer-events-none absolute -top-16 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-lime-400/[0.07] blur-[90px]" />

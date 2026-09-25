@@ -148,7 +148,7 @@ function SprintContent() {
     () => activeQuestions.map((q) => answers[q.id] !== undefined),
     [activeQuestions, answers],
   );
-  const showNavigator = activeQuestions.length >= 6;
+  const showNavigator = activeQuestions.length >= 3;
 
   useEffect(() => {
     if (status === "active" && answerCount > 0) {
@@ -377,6 +377,8 @@ function SprintContent() {
               currentIndex={currentIndex}
               answered={answeredFlags}
               onSelect={handleJump}
+              progress={progress}
+              currentQuestionText={question?.text ?? null}
             />
           ) : undefined
         }

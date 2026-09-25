@@ -88,7 +88,7 @@ function HeadingTile({ icon, danger, onClick, label, heading }: { icon: React.Re
       <span className={danger ? "text-[#ff5c5c]" : "text-primary"}>
         {icon}
       </span>
-      <span className={danger ? "block text-[12px] font-semibold text-[#ff5c5c] tracking-[-0.01em] whitespace-nowrap" : "block text-[12px] font-semibold text-foreground tracking-[-0.01em] whitespace-nowrap"}>
+      <span className={danger ? "block text-[12px] font-semibold text-[#ff5c5c] tracking-[-0.01em] leading-tight break-words" : "block text-[12px] font-semibold text-foreground tracking-[-0.01em] leading-tight break-words"}>
         {heading}
       </span>
     </button>
