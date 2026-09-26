@@ -60,9 +60,10 @@
   --space-lg: 24px;
   --space-xl: 32px;
 
+}
+
 /* Design palette (single source of truth; mirrors src/lib/theme-tokens.ts) */
 :root {
-/* Design palette (single source of truth; mirrors src/lib/theme-tokens.ts) */
   --lime: #C8FF4D;
   --lime-bright: #C8FF5A;
   --cta-lime: #C7F252;
@@ -302,7 +303,6 @@
   --lime-05: rgba(200,255,77,0.05);
   --bg-blue-95: rgba(7,9,15,0.95);
   --warm-black-95: rgba(26,22,9,0.95);
-}
 }
 
 @media (min-width: 600px) {
