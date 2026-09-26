@@ -197,7 +197,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
         style={{ background: "rgba(255,255,255,0.03)" }}
       >
         <span className="grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
-          <Sparkles size={18} className="text-[#C8FF4D]" />
+          <Sparkles size={18} className="text-[var(--lime)]" />
         </span>
         <p className="text-[13px] font-semibold text-foreground/80">Finish your adaptive setup</p>
         <p className="text-[11px] text-muted-foreground/45 max-w-[240px]">
@@ -209,7 +209,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
             setStep(0);
             setOpen(true);
           }}
-          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[#C8FF4D] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--lime)] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[var(--bg)] transition-all hover:opacity-90 active:scale-95"
         >
           Set up adaptive
           <ArrowRight size={12} strokeWidth={2.5} />
@@ -234,7 +234,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header with step icons */}
-        <div className="sticky top-0 z-10 px-5 pt-4 pb-4 bg-[rgba(14,17,13,0.98)] shrink-0">
+        <div className="sticky top-0 z-10 px-5 pt-4 pb-4 bg-[var(--overlay)] shrink-0">
           <div className="flex items-center justify-between mb-3">
             <button
               type="button"
@@ -256,20 +256,20 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                     className={cn(
                       "flex items-center justify-center rounded-full transition-all duration-300",
                       isActive
-                        ? "size-8 bg-[#C8FF4D]/15 ring-2 ring-[#C8FF4D]/40"
+                        ? "size-8 bg-[var(--lime-15)] ring-2 ring-[var(--lime-40)]"
                         : isDone
-                          ? "size-6 bg-[#C8FF4D]/10"
+                          ? "size-6 bg-[var(--lime-10)]"
                           : "size-6 bg-white/[0.05]",
                     )}
                   >
                     {isDone ? (
-                      <Check size={10} className="text-[#C8FF4D]" />
+                      <Check size={10} className="text-[var(--lime)]" />
                     ) : (
                       <StepIcon
                         size={isActive ? 14 : 10}
                         className={cn(
                           "transition-colors duration-300",
-                          isActive ? "text-[#C8FF4D]" : "text-muted-foreground/40",
+                          isActive ? "text-[var(--lime)]" : "text-muted-foreground/40",
                         )}
                       />
                     )}
@@ -320,7 +320,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                         className={cn(
                           "flex items-center gap-2.5 rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.97]",
                           active
-                            ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                            ? "border-[var(--lime-30)] bg-[var(--lime-06)]"
                             : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
                         )}
                       >
@@ -342,7 +342,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                           {opt.label}
                         </span>
                         {active && (
-                          <Check size={12} className="ml-auto text-[#C8FF4D]" strokeWidth={3} />
+                          <Check size={12} className="ml-auto text-[var(--lime)]" strokeWidth={3} />
                         )}
                       </button>
                     );
@@ -397,7 +397,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                       className={cn(
                         "relative flex items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
                         opt.active
-                          ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                          ? "border-[var(--lime-30)] bg-[var(--lime-06)]"
                           : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
                       )}
                     >
@@ -415,8 +415,8 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                         </p>
                       </div>
                       {opt.active && (
-                        <div className="size-4 rounded-full flex items-center justify-center bg-[#C8FF4D] shrink-0">
-                          <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
+                        <div className="size-4 rounded-full flex items-center justify-center bg-[var(--lime)] shrink-0">
+                          <Check size={8} className="text-[var(--bg)]" strokeWidth={3} />
                         </div>
                       )}
                     </button>
@@ -468,7 +468,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 px-5 pb-6 pt-3 bg-[rgba(14,17,13,0.98)] shrink-0">
+        <div className="sticky bottom-0 px-5 pb-6 pt-3 bg-[var(--overlay)] shrink-0">
           <div className="flex items-center justify-between">
             {step > 0 ? (
               <button
@@ -489,7 +489,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
               className={cn(
                 "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
                 canNext
-                  ? "text-[#0A0C0A]"
+                  ? "text-[var(--bg)]"
                   : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
               style={canNext ? { background: ACCENT } : undefined}
@@ -582,7 +582,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
         style={{ background: "rgba(255,255,255,0.03)" }}
       >
         <span className="grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
-          <Sparkles size={18} className="text-[#C8FF4D]" />
+          <Sparkles size={18} className="text-[var(--lime)]" />
         </span>
         <p className="text-[13px] font-semibold text-foreground/80">Finish your adaptive setup</p>
         <p className="text-[11px] text-muted-foreground/45 max-w-[240px]">
@@ -594,7 +594,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
             setStep(0);
             setOpen(true);
           }}
-          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[#C8FF4D] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--lime)] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[var(--bg)] transition-all hover:opacity-90 active:scale-95"
         >
           Set up adaptive
           <ArrowRight size={12} strokeWidth={2.5} />

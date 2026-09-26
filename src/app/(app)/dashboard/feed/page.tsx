@@ -144,7 +144,7 @@ export default function FeedPage() {
                   </p>
                 </div>
                 <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                  <span className="bg-cta px-1.5 py-0.5 rounded text-[8px] font-bold text-[#0A0C0A]">
+                  <span className="bg-cta px-1.5 py-0.5 rounded text-[8px] font-bold text-[var(--bg)]">
                     {video.source}
                   </span>
                 </div>

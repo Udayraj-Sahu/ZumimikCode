@@ -182,7 +182,7 @@ function SlottedDigit({ value, delay = 0 }: { value: number; delay?: number }) {
             className="flex w-full items-center justify-center"
             style={{
               height: "1em",
-              textShadow: "0 1px 0 rgba(255,255,255,0.22), 0 -1px 1px rgba(0,0,0,0.5)",
+              textShadow: "0 1px 0 var(--glass-22), 0 -1px 1px var(--black-50)",
             }}
           >
             {d}
@@ -191,7 +191,7 @@ function SlottedDigit({ value, delay = 0 }: { value: number; delay?: number }) {
       </span>
       <span
         className="pointer-events-none absolute inset-0 rounded-[0.12em]"
-        style={{ boxShadow: "inset 0 0.09em 0.16em rgba(0,0,0,0.55), inset 0 -0.05em 0.1em rgba(255,255,255,0.18)" }}
+        style={{ boxShadow: "inset 0 0.09em 0.16em var(--black-55), inset 0 -0.05em 0.1em var(--glass-18)" }}
       />
     </span>
   );
@@ -230,7 +230,7 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
   return (
     <div
       className="relative flex-1 rounded-2xl border overflow-hidden flex flex-col px-4 pt-3 pb-3.5"
-      style={{ borderColor: `${accent}26`, background: `linear-gradient(180deg, ${accent}1A 0%, rgba(255,255,255,0.02) 100%)` }}
+      style={{ borderColor: `${accent}26`, background: `linear-gradient(180deg, ${accent}1A 0%, var(--glass-02) 100%)` }}
     >
       <div className="flex items-center gap-2.5">
         <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: `${accent}26` }}>
@@ -245,10 +245,10 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
       <button
         type="button"
         onClick={() => router.push(href)}
-        className="flex items-center justify-center gap-2 rounded-xl px-5 py-2 text-[11.5px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all active:scale-95"
-        style={{ background: `linear-gradient(90deg, ${ctaFrom}, ${ctaTo})`, boxShadow: `0 0 0 rgba(0,0,0,0)` }}
+        className="flex items-center justify-center gap-2 rounded-xl px-5 py-2 text-[11.5px] font-semibold tracking-[-0.01em] text-[var(--bg)] transition-all active:scale-95"
+        style={{ background: `linear-gradient(90deg, ${ctaFrom}, ${ctaTo})`, boxShadow: `0 0 0 var(--black-00)` }}
         onMouseEnter={(e) => { e.currentTarget.style.boxShadow = glowShadow; }}
-        onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 0 rgba(0,0,0,0)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 0 var(--black-00)"; }}
       >
         {cta}
       </button>
@@ -413,7 +413,7 @@ export default function DashboardPage() {
             <button
               type="button"
               onClick={() => refetch()}
-              className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-xl bg-cta text-[var(--bg)] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
             >
               Retry
             </button>
@@ -444,7 +444,7 @@ export default function DashboardPage() {
       <div className="mx-auto w-full md:max-w-3xl">
 
       {/* Ambient glow behind header */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, var(--cta-25) 0%, transparent 70%)" }} />
 
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative pt-8 pb-2 text-center max-[359px]:pt-5">
@@ -453,14 +453,14 @@ export default function DashboardPage() {
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2]">
-          Welcome back, <span className="bg-gradient-to-r from-primary via-[#d4ff6e] to-primary bg-clip-text text-transparent">{displayName}</span>
+          Welcome back, <span className="bg-gradient-to-r from-primary via-[var(--lime-pale)] to-primary bg-clip-text text-transparent">{displayName}</span>
         </h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
         <div data-tour-streak className="mt-5 flex items-center justify-center gap-3">
           <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-md px-4 py-2.5">
-            <Flame size={15} className="text-[#FF6B35]" strokeWidth={2.5} />
-            <span className="text-[13px] font-semibold tracking-[-0.01em] text-[#FF6B35]">{streak.current} Day</span>
+            <Flame size={15} className="text-[var(--orange)]" strokeWidth={2.5} />
+            <span className="text-[13px] font-semibold tracking-[-0.01em] text-[var(--orange)]">{streak.current} Day</span>
           </div>
           <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-md px-4 py-2.5">
             <Zap size={15} className="text-primary" strokeWidth={2.5} />
@@ -479,15 +479,15 @@ export default function DashboardPage() {
         >
           {/* Slide 1: Profile status — teaser or complete card */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, rgba(199,242,82,0.06) 0%, rgba(255,255,255,0.02) 55%, rgba(199,242,82,0.03) 100%)" }}>
-              <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.35), transparent)" }} />
-              <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.4), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, var(--cta-06) 0%, var(--glass-02) 55%, var(--cta-03) 100%)" }}>
+              <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-35), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-40), transparent)" }} />
 
               {profileComplete ? (
                 <>
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="size-11 rounded-full flex items-center justify-center text-[#0A0C0A] font-black text-[16px] shrink-0 shadow-[0_0_18px_rgba(199,242,82,0.35)]" style={{ background: "linear-gradient(135deg, #C7F252, #8fca2a)" }}>
+                      <div className="size-11 rounded-full flex items-center justify-center text-[var(--bg)] font-black text-[16px] shrink-0 shadow-[0_0_18px_var(--cta-35)]" style={{ background: "linear-gradient(135deg, #C7F252, #8fca2a)" }}>
                         {(firstName?.[0] ?? "?").toUpperCase()}
                       </div>
                       <div className="min-w-0">
@@ -530,7 +530,7 @@ export default function DashboardPage() {
                 <>
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="size-8 rounded-xl flex items-center justify-center shadow-[0_0_14px_rgba(199,242,82,0.2)]" style={{ background: "rgba(199,242,82,0.12)" }}>
+                      <div className="size-8 rounded-xl flex items-center justify-center shadow-[0_0_14px_var(--cta-20)]" style={{ background: "rgba(199,242,82,0.12)" }}>
                         <Sparkles size={14} className="text-primary" />
                       </div>
                       <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
@@ -563,7 +563,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#C7F252] to-[#9fd42f] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all hover:shadow-[0_0_20px_rgba(199,242,82,0.35)] active:scale-95">
+                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--cta-lime)] to-[var(--lime-dark)] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all hover:shadow-[0_0_20px_var(--cta-35)] active:scale-95">
                     CONTINUE SETUP
                     <ChevronRight size={14} className="mt-px" />
                   </button>
@@ -574,8 +574,8 @@ export default function DashboardPage() {
 
           {/* Slide 2: Your Stats */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 1 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, rgba(199,242,82,0.05) 0%, rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.02) 100%)" }}>
-              <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, var(--cta-05) 0%, var(--glass-02) 45%, var(--glass-02) 100%)" }}>
+              <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-30), transparent)" }} />
               <div className="relative flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
                   <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
@@ -628,17 +628,17 @@ export default function DashboardPage() {
 
           {/* Slide 3: This Week + Daily Habits */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(52,211,153,0.06) 0%, rgba(255,255,255,0.02) 100%)" }}>
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.3), transparent)" }} />
-              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, var(--emerald-30), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, var(--emerald-40), transparent)" }} />
               <div className="relative flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2.5">
                   <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
-                    <Flame size={15} className="text-[#34D399]" />
+                    <Flame size={15} className="text-[var(--emerald)]" />
                   </div>
-                  <SectionLabel className="text-[#34D399]">THIS WEEK</SectionLabel>
+                  <SectionLabel className="text-[var(--emerald)]">THIS WEEK</SectionLabel>
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#34D399]">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--emerald)]">
                   <Flame size={11} />
                   {streak.current} day
                 </div>
@@ -647,14 +647,14 @@ export default function DashboardPage() {
                 {streak.labels.map((day, i) => {
                   const done = streak.days[i];
                   return (
-                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_rgba(52,211,153,0.3)]" : "")} style={{ background: done ? `linear-gradient(135deg, #34D399, #10B981)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
+                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_var(--emerald-30)]" : "")} style={{ background: done ? `linear-gradient(135deg, #34D399, #10B981)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
                       {day}
                     </div>
                   );
                 })}
               </div>
               <div className="relative h-px w-full bg-white/[0.05]" />
-              <SectionLabel className="text-[#34D399] mt-3.5">DAILY HABITS</SectionLabel>
+              <SectionLabel className="text-[var(--emerald)] mt-3.5">DAILY HABITS</SectionLabel>
               <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
               <p className="relative mt-0.5 text-[11px] text-muted-foreground/60 font-normal">Daily check-ins · Streaks · Stay accountable</p>
               <div className="relative mt-3 flex-1 flex items-center gap-4">
@@ -671,7 +671,7 @@ export default function DashboardPage() {
                 <div className="flex-1 min-w-0 space-y-3">
                   <div className="flex items-center gap-2">
                     <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
-                      <Flame size={13} className="text-[#34D399]" />
+                      <Flame size={13} className="text-[var(--emerald)]" />
                     </div>
                     <div className="flex-1">
                       <p className="text-[11px] font-bold text-foreground/80 leading-none">{habitStats.currentStreak} day streak</p>
@@ -680,12 +680,12 @@ export default function DashboardPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
-                      <Target size={13} className="text-[#34D399]" />
+                      <Target size={13} className="text-[var(--emerald)]" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <p className="text-[11px] font-bold text-foreground/80 leading-none">Completion</p>
-                        <p className="text-micro font-bold text-[#34D399]">{habitStats.completionRate}%</p>
+                        <p className="text-micro font-bold text-[var(--emerald)]">{habitStats.completionRate}%</p>
                       </div>
                       <div className="mt-1.5 h-1 w-full rounded-full bg-white/[0.05] overflow-hidden">
                         <div className="h-full rounded-full transition-all duration-700" style={{ width: `${habitStats.completionRate}%`, background: "linear-gradient(90deg, #10B981, #34D399)" }} />
@@ -707,7 +707,7 @@ export default function DashboardPage() {
                 {habits.length > 3 && <span className="text-[8px] text-muted-foreground/50 font-medium">+{habits.length - 3}</span>}
               </div>
               <div className="relative mt-3 flex items-center justify-between">
-                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[#34D399] to-[#10B981] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[#0A0C0A] transition-all hover:shadow-[0_0_16px_rgba(52,211,153,0.3)] active:scale-95">
+                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[var(--emerald)] to-[var(--emerald-solid)] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[var(--bg)] transition-all hover:shadow-[0_0_16px_var(--emerald-30)] active:scale-95">
                   VIEW HABITS
                 </button>
                 <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60 font-normal">
@@ -720,9 +720,9 @@ export default function DashboardPage() {
 
           {/* Slide 4: Practice + Technique */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 3 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, rgba(34,211,238,0.08) 0%, rgba(245,158,11,0.06) 50%, rgba(255,255,255,0.02) 100%)" }}>
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.25), transparent)" }} />
-              <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(245,158,11,0.3), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, var(--cyan-08) 0%, var(--amber-06) 50%, var(--glass-02) 100%)" }}>
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cyan-25), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--amber-30), transparent)" }} />
 
               <SlideActionCard
                 accent="#22D3EE"
@@ -735,7 +735,7 @@ export default function DashboardPage() {
                 ctaFrom="#22D3EE"
                 ctaTo="#06B6D4"
                 href="/learn/practice"
-                glowShadow="0 0 16px rgba(34,211,238,0.3)"
+                glowShadow="0 0 16px var(--cyan-30)"
               />
 
               <SlideActionCard
@@ -748,16 +748,16 @@ export default function DashboardPage() {
                 ctaFrom="#F59E0B"
                 ctaTo="#D97706"
                 href="/learn/explorer"
-                glowShadow="0 0 16px rgba(245,158,11,0.3)"
+                glowShadow="0 0 16px var(--amber-30)"
               />
             </div>
           </div>
 
           {/* Slide 5: Exam Prep Readiness */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, rgba(199,242,82,0.08) 0%, rgba(34,211,238,0.05) 50%, rgba(255,255,255,0.02) 100%)" }}>
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
-              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.4), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--cta-08) 0%, var(--cyan-05) 50%, var(--glass-02) 100%)" }}>
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-30), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-40), transparent)" }} />
 
               {(() => {
                 const masteredCount = topics.filter((t) => t.value >= 80).length;
@@ -808,9 +808,9 @@ export default function DashboardPage() {
                           <p className="text-[12px] text-foreground/80 font-normal leading-snug mt-1">
                             You&apos;ve covered <span className="font-bold text-foreground">{masteredCount} of {topics.length || 1}</span> topics expected for {DOMAIN_LABELS[targetExam] || targetExam}.
                           </p>
-                          <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/10 border border-[#34D399]/20 px-2.5 py-1">
-                            <span className="size-1.5 rounded-full bg-[#34D399]" />
-                            <span className="text-[9px] font-bold text-[#34D399]">On track</span>
+                          <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-[var(--emerald-10)] border border-[var(--emerald-20)] px-2.5 py-1">
+                            <span className="size-1.5 rounded-full bg-[var(--emerald)]" />
+                            <span className="text-[9px] font-bold text-[var(--emerald)]">On track</span>
                           </div>
                         </div>
                       </div>
@@ -854,7 +854,7 @@ export default function DashboardPage() {
 
                     {/* Countdown section */}
                     <div className="relative flex-1 flex flex-col items-center justify-center px-5 py-5 text-center border-t border-white/[0.06]">
-                      <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, rgba(199,242,82,0.18), transparent 60%)" }} />
+                      <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, var(--cta-18), transparent 60%)" }} />
                       {examDate ? (
                         <>
                           <p className="relative flex items-baseline justify-center text-[26px] font-black not-italic tracking-tighter leading-none text-white">
@@ -1050,8 +1050,8 @@ export default function DashboardPage() {
                     <p className="text-[11px] text-muted-foreground/60 mt-0.5 font-normal">{u.time}</p>
                   </div>
                   {u.tag === "LIVE" ? (
-                    <span className="flex items-center gap-1.5 rounded-full bg-[#FF6B35]/15 px-3 py-1 text-[11px] font-semibold text-[#FF6B35]">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#FF6B35] animate-pulse" />
+                    <span className="flex items-center gap-1.5 rounded-full bg-[var(--orange-15)] px-3 py-1 text-[11px] font-semibold text-[var(--orange)]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--orange)] animate-pulse" />
                       {u.tag}
                     </span>
                   ) : (
@@ -1084,7 +1084,7 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-3">
                   <span className={cn(
                     "text-[13px] font-bold w-8 tracking-[-0.01em]",
-                    l.rank === 1 ? "text-[#FFD700]" : l.rank === 2 ? "text-[#C0C0C0]" : l.rank === 3 ? "text-[#CD7F32]" : "text-muted-foreground/60"
+                    l.rank === 1 ? "text-[var(--gold)]" : l.rank === 2 ? "text-[var(--silver)]" : l.rank === 3 ? "text-[var(--bronze)]" : "text-muted-foreground/60"
                   )}>
                     {l.rank <= 3 ? ["🥇", "🥈", "🥉"][l.rank - 1] : `#${l.rank}`}
                   </span>

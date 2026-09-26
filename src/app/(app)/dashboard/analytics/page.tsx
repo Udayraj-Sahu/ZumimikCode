@@ -27,7 +27,7 @@ export default function AnalyticsPage() {
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:px-4"
+          className="rounded-xl bg-cta text-[var(--bg)] px-5 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:px-4"
         >
           Retry
         </button>

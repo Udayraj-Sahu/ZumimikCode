@@ -114,7 +114,7 @@ function Panel({ className, children }: { className?: string; children: React.Re
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{
-          background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+          background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
         }}
       />
       {children}
@@ -191,7 +191,7 @@ export function ArenaIntro({
       title: `Lane 01 · ${label(primary)} Quant`,
       desc: "Full syllabus, predictive percentile, timed drills",
       Icon: TrendingUp,
-      tone: "text-[#C8FF4D] border-[#C8FF4D]/40 bg-[#C8FF4D]/10",
+      tone: "text-[var(--lime)] border-[var(--lime-40)] bg-[var(--lime-10)]",
       badge: "LIVE",
     });
   }
@@ -243,25 +243,25 @@ export function ArenaIntro({
         {/* ambient glow + hairline */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[-90px] h-56 w-56 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[95px]"
+          className="pointer-events-none absolute left-1/2 top-[-90px] h-56 w-56 -translate-x-1/2 rounded-full bg-[var(--lime-12)] blur-[95px]"
         />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
           }}
         />
 
         <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
           {/* centered brand */}
         <FadeUp className="flex justify-center">
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.07] px-4 py-1.5">
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-4 py-1.5">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C8FF4D] opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C8FF4D]" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--lime)] opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--lime)]" />
             </span>
-            <span className="text-[11px] font-bold tracking-[0.22em] text-[#C8FF4D]">ARENA</span>
+            <span className="text-[11px] font-bold tracking-[0.22em] text-[var(--lime)]">ARENA</span>
           </div>
         </FadeUp>
 
@@ -297,7 +297,7 @@ export function ArenaIntro({
             <div className="grid grid-cols-4 divide-x divide-white/[0.06]">
               {statCells.map(({ label: l, value, suffix, Icon }) => (
                 <div key={l} className="px-2 first:pl-1">
-                  <Icon size={12} className="text-[#C8FF4D]" />
+                  <Icon size={12} className="text-[var(--lime)]" />
                   <div className="mt-2 text-[17px] font-bold text-foreground tabular-nums">
                     <span ref={value} />
                     {suffix}
@@ -310,7 +310,7 @@ export function ArenaIntro({
             </div>
           </Panel>
           <p className="mt-2 flex items-center justify-center gap-1.5 text-[8.5px] font-bold tracking-[0.18em] text-muted-foreground/60">
-            <Flame size={10} className="text-[#C8FF4D]" />
+            <Flame size={10} className="text-[var(--lime)]" />
             {lanes.length} LANE{lanes.length > 1 ? "S" : ""} ACTIVE • LIVE TELEMETRY
           </p>
         </FadeUp>
@@ -333,7 +333,7 @@ export function ArenaIntro({
                   {desc}
                 </div>
               </div>
-              <span className="shrink-0 rounded-full border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-2 py-0.5 text-[8px] font-bold tracking-wider text-[#C8FF4D]">
+              <span className="shrink-0 rounded-full border border-[var(--lime-40)] bg-[var(--lime-10)] px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]">
                 LIVE
               </span>
             </div>
@@ -344,7 +344,7 @@ export function ArenaIntro({
         {radar.length > 0 && (
           <FadeUp delay={320} className="mt-4">
             <Panel className="p-3.5">
-              <div className="mb-2.5 flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-[#C8FF4D]">
+              <div className="mb-2.5 flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-[var(--lime)]">
                 <Radar size={11} /> SKILL RADAR
               </div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-2.5">
@@ -373,7 +373,7 @@ export function ArenaIntro({
         {topics.length > 0 && (
           <FadeUp delay={380} className="mt-4">
             <Panel className="p-3.5">
-              <div className="mb-2.5 text-[9px] font-bold tracking-[0.2em] text-[#C8FF4D]">
+              <div className="mb-2.5 text-[9px] font-bold tracking-[0.2em] text-[var(--lime)]">
                 {label(primary).toUpperCase()} MASTERY MAP
               </div>
               <ul className="space-y-2">
@@ -391,7 +391,7 @@ export function ArenaIntro({
                         }}
                       />
                     </div>
-                    <span className="w-7 text-right text-[9px] text-[#C8FF4D] tabular-nums">
+                    <span className="w-7 text-right text-[9px] text-[var(--lime)] tabular-nums">
                       {tp.value}%
                     </span>
                   </li>
@@ -415,7 +415,7 @@ export function ArenaIntro({
                 >
                   <span className="flex-1 truncate text-[11px] text-foreground/90">{ev.title}</span>
                   <span className="mr-2 text-[9.5px] text-muted-foreground/70">{ev.time}</span>
-                  <span className="rounded border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-1.5 py-0.5 text-[8px] font-bold text-[#C8FF4D]">
+                  <span className="rounded border border-[var(--lime-40)] bg-[var(--lime-10)] px-1.5 py-0.5 text-[8px] font-bold text-[var(--lime)]">
                     {ev.tag}
                   </span>
                 </div>
@@ -428,10 +428,10 @@ export function ArenaIntro({
         <FadeUp delay={500} className="mt-6">
           <button
             onClick={() => exit(onClose)}
-            className="flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold tracking-[0.12em] text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+            className="flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
             style={{
               background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
-              boxShadow: "0 10px 34px rgba(163,230,53,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
+              boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
             }}
           >
             ENTER {lanes.length > 1 ? "MULTI-LANE" : "YOUR"} ARENA

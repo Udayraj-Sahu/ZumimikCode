@@ -284,7 +284,7 @@ export default function PracticePage() {
                       aria-label={`Select ${t.label}`}
                     >
                       <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: active ? "rgba(199,242,82,0.12)" : GLASS_BG }}>
-                        <Icon size={20} className={active ? "text-[#C7F252]" : "text-muted-foreground/30"} />
+                        <Icon size={20} className={active ? "text-[var(--cta-lime)]" : "text-muted-foreground/30"} />
                       </div>
                       <span className="text-[11px] font-semibold text-center leading-tight whitespace-nowrap">{t.label}</span>
                     </button>
@@ -323,7 +323,7 @@ export default function PracticePage() {
                 type="button"
                 disabled={!topic}
                 onClick={startPractice}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BookOpen size={16} /> Start Practice
               </button>
@@ -381,7 +381,7 @@ export default function PracticePage() {
                     >
                       <span className={cn(
                         "rounded-xl px-2.5 py-1 text-micro font-bold",
-                        cat.id === "all" ? "bg-primary/10 text-primary" : "bg-[#F59E0B]/10 text-[#F59E0B]",
+                        cat.id === "all" ? "bg-primary/10 text-primary" : "bg-[var(--amber-10)] text-[var(--amber)]",
                       )}>
                         {cat.label === "All Techniques" ? "ALL" : cat.label.slice(0, 4).toUpperCase()}
                       </span>
@@ -431,7 +431,7 @@ export default function PracticePage() {
                 type="button"
                 disabled={loadingTemplates}
                 onClick={() => startTemplatePractice()}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BrainCircuit size={16} />
                 {loadingTemplates ? "Loading..." : `Start ${domainLabel} ${renderMode === "quick" ? "Quick" : renderMode === "guided" ? "Guided" : "Solve-Along"}`}
@@ -453,7 +453,7 @@ export default function PracticePage() {
         <div className="text-center mb-6 max-[359px]:mb-4">
           <div className={cn(
             "mx-auto mb-4 grid size-20 place-items-center rounded-full text-[28px] font-bold backdrop-blur-xl",
-            accuracy >= 80 ? "bg-primary/10 text-primary" : accuracy >= 50 ? "bg-[#F59E0B]/10 text-[#F59E0B]" : "bg-destructive/10 text-destructive",
+            accuracy >= 80 ? "bg-primary/10 text-primary" : accuracy >= 50 ? "bg-[var(--amber-10)] text-[var(--amber)]" : "bg-destructive/10 text-destructive",
           )}>
             {accuracy}%
           </div>
@@ -477,7 +477,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
           >
             Practice Again <ChevronRight size={16} />
           </button>
@@ -485,7 +485,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={() => router.push(returnTo)}
-              className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
+              className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--amber)] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
               style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
             >
               Back to Sprint Setup
@@ -513,8 +513,8 @@ export default function PracticePage() {
     return (
       <PageContainer ref={contentRef} className="pt-8">
         <div className="text-center mb-6 max-[359px]:mb-4">
-          <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-[#F59E0B]/10 backdrop-blur-xl">
-            <Check size={32} className="text-[#F59E0B]" />
+          <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-[var(--amber-10)] backdrop-blur-xl">
+            <Check size={32} className="text-[var(--amber)]" />
           </div>
           <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
             Technique Learned!
@@ -531,7 +531,7 @@ export default function PracticePage() {
               onClick={() =>
                 router.push(`/play/sprint?topic=${sprintTopic}&length=5&difficulty=${sprintDifficulty}`)
               }
-              className="flex items-center justify-center gap-2 rounded-3xl bg-[#F59E0B] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+              className="flex items-center justify-center gap-2 rounded-3xl bg-[var(--amber)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
             >
               <Zap size={16} /> Start 5-Question Sprint
             </button>
@@ -539,7 +539,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
           >
             Practice Another <ChevronRight size={16} />
           </button>
@@ -547,7 +547,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={() => router.push(returnTo)}
-              className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#F59E0B] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
+              className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--amber)] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
               style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
             >
               Back to Sprint Setup
@@ -599,7 +599,7 @@ export default function PracticePage() {
 
         {stepProgress.allRevealed && renderMode === "solve_along" && (
           <div className="mt-5 text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#F59E0B]">
+            <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[var(--amber)]">
               Now you try it!
             </p>
             <p className="mt-0.5 text-[11px] text-muted-foreground/55 font-normal">
@@ -626,7 +626,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={handleTemplateNext}
-              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
             >
               {storeCurrentIndex >= storeTemplates.length - 1 ? "See Results" : "Next"}{" "}
               <ChevronRight size={16} />
@@ -656,7 +656,7 @@ export default function PracticePage() {
         <div
           role="alert"
           className="flex flex-col items-center gap-4 rounded-3xl p-8 text-center"
-          style={{ background: GLASS_BG, border: "1px solid rgba(239,68,68,0.12)" }}
+          style={{ background: GLASS_BG, border: "1px solid var(--red-12)" }}
         >
           <p className="text-[13px] font-semibold text-destructive">
             {sessionError instanceof Error ? sessionError.message : "Couldn't start this practice session."}
@@ -726,7 +726,7 @@ export default function PracticePage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>
@@ -788,7 +788,7 @@ export default function PracticePage() {
                 if (revealed) {
                   if (isCorrect) {
                     style = { borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.06)" };
-                    labelClass = "bg-[#C7F252]/10 text-[#C7F252]";
+                    labelClass = "bg-[var(--cta-lime-10)] text-[var(--cta-lime)]";
                   } else if (isSelected) {
                     style = { borderColor: "rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.06)" };
                     labelClass = "bg-destructive/10 text-destructive";
@@ -813,7 +813,7 @@ export default function PracticePage() {
                       {String.fromCharCode(65 + i)}
                     </span>
                     <span className="flex-1 text-[13px] font-medium">{option}</span>
-                    {revealed && isCorrect && <Check size={18} className="text-[#C7F252] shrink-0" />}
+                    {revealed && isCorrect && <Check size={18} className="text-[var(--cta-lime)] shrink-0" />}
                     {revealed && isSelected && !isCorrect && <X size={18} className="text-destructive shrink-0" />}
                   </button>
                 );

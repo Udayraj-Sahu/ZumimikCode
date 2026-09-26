@@ -296,7 +296,7 @@ export default function ConfigureSprintPage() {
             }}
             disabled={!topic}
             className={cn(
-              "group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[#0A0C0A] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring sm:text-[16px] whitespace-nowrap",
+              "group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring sm:text-[16px] whitespace-nowrap",
               !topic && "opacity-40 cursor-not-allowed hover:scale-100",
             )}
           >

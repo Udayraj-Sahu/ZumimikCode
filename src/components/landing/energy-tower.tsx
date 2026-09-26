@@ -30,7 +30,7 @@ export function EnergyTower() {
             <motion.div className="absolute inset-x-0 bottom-0 rounded" style={{
               height: energyHeight,
               background: "linear-gradient(to top, #C8FF5A, #3B82F6, #1a1a1a)",
-              boxShadow: "0 0 20px rgba(200,255,90,0.4)"
+              boxShadow: "0 0 20px var(--lime-bright-40)"
             }} />
             {RANKS.map((_, i) => (
               <div key={i} className="absolute w-full flex justify-center" style={{ bottom: `${(i / (RANKS.length - 1)) * 100}%` }}>
@@ -60,7 +60,7 @@ export function EnergyTower() {
                 </div>
                 {i === RANKS.length - 1 && (
                   <motion.div className="absolute inset-0 pointer-events-none rounded"
-                    style={{ background: "rgba(200,255,90,0.03)", border: "1px solid rgba(200,255,90,0.2)" }}
+                    style={{ background: "rgba(200,255,90,0.03)", border: "1px solid var(--lime-bright-20)" }}
                     animate={{ opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 2.5, repeat: Infinity }} />
                 )}

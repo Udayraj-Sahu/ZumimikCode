@@ -31,13 +31,13 @@ const ACCENT = "#C8FF4D";
 type Tone = "lime" | "cyan" | "fuchsia";
 
 const toneChip: Record<Tone, string> = {
-  lime: "border-[#C8FF4D]/50 bg-[#C8FF4D]/10 text-[#C8FF4D]",
+  lime: "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)]",
   cyan: "border-cyan-400/50 bg-cyan-400/10 text-cyan-400",
   fuchsia: "border-fuchsia-400/50 bg-fuchsia-400/10 text-fuchsia-400",
 };
 
 const toneText: Record<Tone, string> = {
-  lime: "text-[#C8FF4D]",
+  lime: "text-[var(--lime)]",
   cyan: "text-cyan-400",
   fuchsia: "text-fuchsia-400",
 };
@@ -231,7 +231,7 @@ function SectionHead({
           "flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground",
         )}
       >
-        <span className="flex-none [&>svg]:size-[12px] [&>svg]:text-[#C8FF4D]">{icon}</span>
+        <span className="flex-none [&>svg]:size-[12px] [&>svg]:text-[var(--lime)]">{icon}</span>
         {title}
       </h2>
       {right && (
@@ -299,7 +299,7 @@ function Sel({
       }}
     >
       {options.map((o) => (
-        <option key={o} value={o} className="bg-[#0b0d0c] text-foreground">
+        <option key={o} value={o} className="bg-[var(--bg-deep)] text-foreground">
           {to12h(o)}
         </option>
       ))}
@@ -352,8 +352,8 @@ function Stepper({
         disabled={idx >= options.length - 1}
         onClick={() => onSpin(options[idx + 1])}
         className={cn(
-          "grid size-6 place-items-center rounded-full text-[#0A0C0A] transition-opacity disabled:opacity-35",
-          tone === "lime" ? "bg-[#C8FF4D]" : tone === "cyan" ? "bg-cyan-400" : "bg-fuchsia-400",
+          "grid size-6 place-items-center rounded-full text-[var(--bg)] transition-opacity disabled:opacity-35",
+          tone === "lime" ? "bg-[var(--lime)]" : tone === "cyan" ? "bg-cyan-400" : "bg-fuchsia-400",
         )}
       >
         <Plus size={12} strokeWidth={3} />
@@ -563,8 +563,8 @@ function ReclaimModule({
             className={cn(
               "grid size-5 shrink-0 place-items-center rounded-full border transition-all",
               active
-                ? "bg-[#C8FF4D] text-[#0A0C0A] shadow-[0_0_12px_rgba(200,255,77,0.5)]"
-                : "border-white/[0.12] bg-white/[0.03] text-[#C8FF4D]/50",
+                ? "bg-[var(--lime)] text-[var(--bg)] shadow-[0_0_12px_var(--lime-50)]"
+                : "border-white/[0.12] bg-white/[0.03] text-[var(--lime-50)]",
             )}
           >
             {active && <Check size={10} strokeWidth={3.5} />}
@@ -669,14 +669,14 @@ export function StoryCommitmentMatrix({
               "flex items-start gap-2 text-[9px] font-semibold uppercase leading-[1.45] tracking-[0.16em] text-muted-foreground",
             )}
           >
-            <Hourglass size={13} className="mt-px flex-none text-[#C8FF4D]" />
+            <Hourglass size={13} className="mt-px flex-none text-[var(--lime)]" />
             <span>
               Annual time
               <br />
               reclaimed
             </span>
           </span>
-          <span className="inline-flex flex-none items-center gap-[6px] rounded-full border border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.08] px-2.5 py-1.5  text-[8.5px] font-bold uppercase leading-[1.4] tracking-[0.12em] text-[#C8FF4D]">
+          <span className="inline-flex flex-none items-center gap-[6px] rounded-full border border-[var(--lime-30)] bg-[var(--lime-08)] px-2.5 py-1.5  text-[8.5px] font-bold uppercase leading-[1.4] tracking-[0.12em] text-[var(--lime)]">
             <Zap size={11} />
             <span>
               Speed booster
@@ -688,9 +688,9 @@ export function StoryCommitmentMatrix({
         <p className="relative my-2 flex items-baseline gap-2 whitespace-nowrap" aria-live="polite">
           <b
             className={cn(
-              "text-[clamp(26px,8vw,34px)] font-bold leading-none tracking-[-0.02em] text-[#C8FF4D] tabular-nums",
+              "text-[clamp(26px,8vw,34px)] font-bold leading-none tracking-[-0.02em] text-[var(--lime)] tabular-nums",
             )}
-            style={{ textShadow: "0 0 24px rgba(200,255,77,0.4)" }}
+            style={{ textShadow: "0 0 24px var(--lime-40)" }}
           >
             +{shownHours}
           </b>
@@ -722,7 +722,7 @@ export function StoryCommitmentMatrix({
             style={{
               width: `${shownPct}%`,
               background: "linear-gradient(90deg, #22D3EE, #C8FF4D)",
-              boxShadow: "0 0 10px rgba(200,255,77,0.5)",
+              boxShadow: "0 0 10px var(--lime-50)",
               transition: "width 300ms ease",
             }}
           />
@@ -745,7 +745,7 @@ export function StoryCommitmentMatrix({
             <h3 className={cn("text-[13px] font-semibold leading-tight text-foreground")}>
               Sprint session
             </h3>
-            <p className="mt-0.5 text-[9px] font-medium text-[#C8FF4D]">
+            <p className="mt-0.5 text-[9px] font-medium text-[var(--lime)]">
               {sprints} {sprints === 1 ? "sprint" : "sprints"} × {Math.round(mins / sprints)} min
               blocks
             </p>
@@ -818,7 +818,7 @@ export function StoryCommitmentMatrix({
               "flex items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-muted-foreground",
             )}
           >
-            <Sigma size={12} className="flex-none text-[#C8FF4D]" />
+            <Sigma size={12} className="flex-none text-[var(--lime)]" />
             Dynamic formula
           </span>
           <span
@@ -834,14 +834,14 @@ export function StoryCommitmentMatrix({
             {sprints} {sprints === 1 ? "Stack" : "Stacks"} configured
           </span>
           <span className=" text-[11px] font-medium text-muted-foreground/60">=</span>
-          <span className="rounded-md border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-[#C8FF4D]">
+          <span className="rounded-md border border-[var(--lime-40)] bg-[var(--lime-10)] px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-[var(--lime)]">
             {mins} min/day
           </span>
         </div>
         <p className="mt-2.5 text-[10px] leading-[1.4] font-medium text-muted-foreground/80">
           daily practice compounded across {daysActive} day{daysActive === 1 ? "" : "s"} a week
         </p>
-        <span className="mt-2 inline-block rounded-md border border-[#C8FF4D]/40 bg-[#C8FF4D]/[0.08] px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-[#C8FF4D]">
+        <span className="mt-2 inline-block rounded-md border border-[var(--lime-40)] bg-[var(--lime-08)] px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-[var(--lime)]">
           {weekdayLabel(weeklyMin)} reclaimed
         </span>
         <p className="mt-2.5  flex items-center gap-1.5 text-[9.5px] leading-[1.3] text-cyan-400">
@@ -1018,7 +1018,7 @@ export function StoryIntro({
         <div
           className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
           style={{
-            background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+            background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
           }}
         >
           {/* ambient glows */}
@@ -1031,7 +1031,7 @@ export function StoryIntro({
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 h-px"
             style={{
-              background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+              background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
             }}
           />
 
@@ -1045,9 +1045,9 @@ export function StoryIntro({
               className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))]"
             >
               <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
-                <Sparkles size={12} className="text-[#C8FF4D]" />
+                <Sparkles size={12} className="text-[var(--lime)]" />
                 <span
-                  className={cn("text-[11px] font-semibold tracking-[0.22em] text-[#C8FF4D]/85")}
+                  className={cn("text-[11px] font-semibold tracking-[0.22em] text-[var(--lime-85)]")}
                 >
                   DECODE YOUR DAY
                 </span>
@@ -1103,11 +1103,11 @@ export function StoryIntro({
             <button
               type="button"
               onClick={close}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A] transition-transform active:scale-[0.98]"
+              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--bg)] transition-transform active:scale-[0.98]"
               style={{
                 background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
                 boxShadow:
-                  "0 10px 34px rgba(200,255,77,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
+                  "0 10px 34px var(--lime-25), 0 1px 0 var(--glass-25) inset",
               }}
             >
               <span className="relative flex items-center gap-2.5">

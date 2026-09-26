@@ -33,7 +33,7 @@ export function ClientTechniquePage() {
     <PageContainer className="pb-6">
         <div
           className="flex flex-col items-center gap-4 rounded-3xl p-8 text-center"
-          style={{ background: GLASS_BG, border: `1px solid rgba(239,68,68,0.12)` }}
+          style={{ background: GLASS_BG, border: `1px solid var(--red-12)` }}
         >
           <p className="text-[13px] font-semibold text-destructive">Technique not found</p>
           <button

@@ -31,7 +31,7 @@ const PERSONA_COPY: Record<
     quote:
       "I see exactly where my child is strong — and exactly where they aren't. No arguments, no guessing.",
     sub: "Real progress you can trust, in minutes a day.",
-    iconClass: "text-[#C8FF4D]",
+    iconClass: "text-[var(--lime)]",
   },
   student: {
     eyebrow: "FOR THE CURIOUS STUDENT",
@@ -184,14 +184,14 @@ export function FamilyIntro({
           background: "radial-gradient(120% 90% at 50% 0%, #10150e 0%, #0a0c09 46%, #070906 100%)",
         }}
       >
-        <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[#C8FF4D]/[0.14]" />
+        <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[var(--lime-14)]" />
         <GlowBall className="right-[-60px] top-[38%] h-52 w-52 bg-emerald-400/[0.10]" />
-        <GlowBall className="bottom-[12%] left-[-70px] h-52 w-52 bg-[#C8FF4D]/[0.08]" />
+        <GlowBall className="bottom-[12%] left-[-70px] h-52 w-52 bg-[var(--lime-08)]" />
 
         <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
         <header className="flex items-center justify-center">
-          <span className="grid h-8 w-8 place-items-center rounded-xl border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.08]">
-            <Sparkles size={15} className="text-[#C8FF4D]" />
+          <span className="grid h-8 w-8 place-items-center rounded-xl border border-[var(--lime-25)] bg-[var(--lime-08)]">
+            <Sparkles size={15} className="text-[var(--lime)]" />
           </span>
           <div className="ml-2.5">
             <div className="text-[15px] font-bold tracking-[0.2em] text-foreground">FAMILY HUB</div>
@@ -237,7 +237,7 @@ export function FamilyIntro({
                   <div
                     className={cn(
                       "relative rounded-[20px] border bg-white/[0.035] p-4",
-                      p === "parent" ? "border-[#C8FF4D]/20" : "border-emerald-200/15",
+                      p === "parent" ? "border-[var(--lime-20)]" : "border-emerald-200/15",
                     )}
                   >
                     <div
@@ -246,15 +246,15 @@ export function FamilyIntro({
                       style={{
                         background:
                           p === "parent"
-                            ? "linear-gradient(90deg, transparent, rgba(200,255,77,0.45), transparent)"
-                            : "linear-gradient(90deg, transparent, rgba(110,231,183,0.4), transparent)",
+                            ? "linear-gradient(90deg, transparent, var(--lime-45), transparent)"
+                            : "linear-gradient(90deg, transparent, var(--emerald-light-40), transparent)",
                       }}
                     />
                     <div className="flex items-center justify-between">
                       <span
                         className={cn(
                           "text-[8px] font-bold tracking-[0.18em]",
-                          p === "parent" ? "text-[#C8FF4D]" : "text-emerald-300",
+                          p === "parent" ? "text-[var(--lime)]" : "text-emerald-300",
                         )}
                       >
                         {c.eyebrow}
@@ -281,7 +281,7 @@ export function FamilyIntro({
             <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.03] p-1.5">
               {GROWTH.map((g, i) => (
                 <div key={g.id} className="flex items-center gap-3 rounded-[14px] px-3 py-2.5">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.07] text-[#C8FF4D]">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[var(--lime-20)] bg-[var(--lime-07)] text-[var(--lime)]">
                     <g.Icon size={16} />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -290,7 +290,7 @@ export function FamilyIntro({
                         {g.time}
                       </span>
                       {i === 0 && (
-                        <span className="rounded-full border border-[#C8FF4D]/30 bg-[#C8FF4D]/10 px-1.5 py-px text-[7px] font-bold text-[#C8FF4D]">
+                        <span className="rounded-full border border-[var(--lime-30)] bg-[var(--lime-10)] px-1.5 py-px text-[7px] font-bold text-[var(--lime)]">
                           STARTS HERE
                         </span>
                       )}
@@ -308,7 +308,7 @@ export function FamilyIntro({
           </FadeUp>
 
           <div className="mt-3 flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3">
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#C8FF4D]/10 text-[#C8FF4D]">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--lime-10)] text-[var(--lime)]">
               <HeartHandshake size={15} />
             </span>
             <div className="flex flex-1 flex-wrap gap-x-3 gap-y-1">
@@ -326,11 +326,11 @@ export function FamilyIntro({
           <FadeUp delay={460}>
             <button
               onClick={() => exit(onDone)}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
               style={{
                 background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
                 boxShadow:
-                  "0 10px 34px rgba(163,230,53,0.28), 0 1px 0 rgba(255,255,255,0.25) inset",
+                  "0 10px 34px var(--lime-mid-28), 0 1px 0 var(--glass-25) inset",
               }}
             >
               BRING THE WHOLE FAMILY IN

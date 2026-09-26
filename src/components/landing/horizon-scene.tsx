@@ -104,7 +104,7 @@ export function HorizonScene() {
 
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden select-none bg-background cursor-crosshair">
-      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at ${50 + parallaxX * 8}% ${horizonYVal - 10}%, rgba(200,255,90,0.03) 0%, transparent 60%)` }} />
+      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at ${50 + parallaxX * 8}% ${horizonYVal - 10}%, var(--lime-bright-03) 0%, transparent 60%)` }} />
       <div className="absolute left-0 right-0 bottom-0 bg-background" style={{ top: `${horizonYVal}%` }} />
 
       <svg className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
@@ -155,7 +155,7 @@ export function HorizonScene() {
               </div>
             </motion.div>
             <motion.div animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 4 }} transition={{ duration: 0.25 }} style={{ pointerEvents: "none", position: "absolute", top: "100%", left: "50%", transform: "translateX(-50%)", marginTop: 10, width: 180 }}>
-              <div style={{ borderTop: "1px solid rgba(200,255,90,0.2)", paddingTop: 10 }}>
+              <div style={{ borderTop: "1px solid var(--lime-bright-20)", paddingTop: 10 }}>
                 {[["SOLVED", lm.stats.solved.toLocaleString()], ["MASTERY", lm.stats.mastery], ["STRONG", lm.stats.strong], ["WEAK", lm.stats.weak], ["NEXT", lm.stats.upcoming]].map(([k, v]) => (
                   <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 5, gap: 8 }}>
                     <span className="font-mono" style={{ fontSize: 9, fontWeight: 700, color: "#8B8B8B", letterSpacing: "0.12em", flexShrink: 0 }}>{k}</span>

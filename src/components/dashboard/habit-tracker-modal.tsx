@@ -335,12 +335,12 @@ export function HabitTrackerModal({ onClose }: Props) {
         className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl"
         style={{
           background: "linear-gradient(180deg, #111116 0%, #0d0d0d 30%)",
-          boxShadow: "0 -8px 60px rgba(52,211,153,0.12), 0 0 1px rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.06)",
+          boxShadow: "0 -8px 60px var(--emerald-12), 0 0 1px var(--glass-06)",
+          border: "1px solid var(--glass-06)",
         }}
       >
         {/* Gradient glow behind header */}
-        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[120px] rounded-full opacity-30" style={{ background: "radial-gradient(circle, rgba(52,211,153,0.4) 0%, transparent 70%)" }} />
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[120px] rounded-full opacity-30" style={{ background: "radial-gradient(circle, var(--emerald-40) 0%, transparent 70%)" }} />
 
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4" style={{ background: "linear-gradient(180deg, #111116ee 0%, #111116cc 100%)", backdropFilter: "blur(20px)" }}>
@@ -389,7 +389,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                   strokeDashoffset={`${2 * Math.PI * 40 * (1 - todayPct / 100)}`}
                   transform="rotate(-90 46 46)"
                   className="transition-all duration-700"
-                  style={{ filter: "drop-shadow(0 0 6px rgba(52,211,153,0.4))" }}
+                  style={{ filter: "drop-shadow(0 0 6px var(--emerald-40))" }}
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -411,7 +411,7 @@ export function HabitTrackerModal({ onClose }: Props) {
           </div>
 
           {/* Calendar Heatmap */}
-          <div className="rounded-3xl p-4" style={{ background: GLASS_BG, border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="rounded-3xl p-4" style={{ background: GLASS_BG, border: "1px solid var(--glass-06)" }}>
             <div className="flex items-center justify-between mb-3">
               <button type="button" onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear((y) => y - 1); } else setCalMonth((m) => m - 1); }} className="text-muted-foreground/40 hover:text-foreground transition-colors text-[16px] font-bold px-2 py-1 rounded-lg hover:bg-white/5">
                 ‹
@@ -448,7 +448,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                     key={day}
                     className={cn(
                       "aspect-square rounded-[4px] flex items-center justify-center text-micro font-medium transition-all duration-300",
-                      isToday && "ring-1 shadow-[0_0_8px_rgba(52,211,153,0.4)]",
+                      isToday && "ring-1 shadow-[0_0_8px_var(--emerald-40)]",
                     )}
                     style={{ background: bg, color: tc, ...(isToday ? { ringColor: VIOLET } : {}) }}
                   >
@@ -488,13 +488,13 @@ export function HabitTrackerModal({ onClose }: Props) {
                           : "border-white/[0.06] hover:border-white/[0.12]",
                       )}
                       style={h.todayCompleted
-                        ? { background: `linear-gradient(135deg, ${VIOLET_DIM}, rgba(52,211,153,0.06))`, border: `1px solid ${VIOLET_GLOW}` }
+                        ? { background: `linear-gradient(135deg, ${VIOLET_DIM}, var(--emerald-06))`, border: `1px solid ${VIOLET_GLOW}` }
                         : { background: GLASS_BG }}
                     >
                       <div
                         className={cn(
                           "shrink-0 size-9 rounded-xl flex items-center justify-center transition-all duration-200",
-                          h.todayCompleted ? "text-[#0A0C0A]" : "border bg-white/[0.03]",
+                          h.todayCompleted ? "text-[var(--bg)]" : "border bg-white/[0.03]",
                         )}
                         style={h.todayCompleted
                           ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }
@@ -518,7 +518,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           onClick={(e) => { e.stopPropagation(); handleToggleReminder(h.id, h.reminderTime, h.name, h.reminderDays); }}
                           className={cn(
                             "size-7 rounded-lg flex items-center justify-center transition-all shrink-0",
-                            h.reminderTime ? "bg-[rgba(52,211,153,0.12)]" : "text-muted-foreground/20 hover:text-muted-foreground/50 hover:bg-white/5",
+                            h.reminderTime ? "bg-[var(--emerald-12)]" : "text-muted-foreground/20 hover:text-muted-foreground/50 hover:bg-white/5",
                           )}
                           style={h.reminderTime ? { color: VIOLET } : undefined}
                           title={h.reminderTime ? `Reminds ${reminderLabel(h.reminderDays, h.reminderTime)}` : "Set reminder"}
@@ -574,7 +574,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           <button
                             type="button"
                             onClick={(e) => { e.stopPropagation(); setDraftDays(draftDays.length === 7 ? [] : allDays()); }}
-                            className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide transition-colors", draftDays.length === 7 ? "text-[#0A0C0A]" : "text-muted-foreground/40 hover:text-foreground")}
+                            className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide transition-colors", draftDays.length === 7 ? "text-[var(--bg)]" : "text-muted-foreground/40 hover:text-foreground")}
                             style={draftDays.length === 7 ? { background: `${VIOLET}22`, border: `1px solid ${VIOLET}40` } : undefined}
                           >
                             {"Every day"}
@@ -591,7 +591,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                                 onClick={(e) => { e.stopPropagation(); setDraftDays((prev) => (active ? prev.filter((d) => d !== jsDay) : [...prev, jsDay])); }}
                                 className={cn(
                                   "flex h-8 flex-1 items-center justify-center rounded-lg text-[11px] font-bold transition-all",
-                                  active ? "text-[#0A0C0A]" : "bg-white/[0.05] text-muted-foreground/40 hover:bg-white/[0.08]",
+                                  active ? "text-[var(--bg)]" : "bg-white/[0.05] text-muted-foreground/40 hover:bg-white/[0.08]",
                                 )}
                                 style={active ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 10px ${VIOLET_GLOW}` } : undefined}
                               >
@@ -608,7 +608,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           type="button"
                           onClick={() => handleSetTime(h.id, draftTime, h.name, draftDays)}
                           disabled={draftDays.length === 0}
-                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-micro font-bold uppercase tracking-widest text-[#0A0C0A] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
+                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-micro font-bold uppercase tracking-widest text-[var(--bg)] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
                           style={{ background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }}
                         >
                           <Bell size={11} /> Set reminder
@@ -638,7 +638,7 @@ export function HabitTrackerModal({ onClose }: Props) {
               <input
                 type="text" placeholder="Habit name..." value={newName} onChange={(e) => setNewName(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") handleAddHabit(); }} autoFocus
-                className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground/30 outline-none focus:border-[rgba(52,211,153,0.3)] transition-colors"
+                className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground/30 outline-none focus:border-[var(--emerald-30)] transition-colors"
               />
               <div className="flex items-center gap-2">
                 <span className="text-micro text-muted-foreground/40 font-semibold shrink-0">ICON</span>
@@ -647,7 +647,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                     const IC = ICON_MAP[iconName] || Zap;
                     return (
                       <button key={iconName} type="button" onClick={() => setNewIcon(iconName)}
-                        className={cn("size-8 rounded-lg flex items-center justify-center transition-all", newIcon === iconName ? "bg-[rgba(52,211,153,0.15)]" : "bg-white/[0.04] text-muted-foreground/40 hover:bg-white/[0.08]")}
+                        className={cn("size-8 rounded-lg flex items-center justify-center transition-all", newIcon === iconName ? "bg-[var(--emerald-15)]" : "bg-white/[0.04] text-muted-foreground/40 hover:bg-white/[0.08]")}
                         style={newIcon === iconName ? { color: VIOLET } : undefined}
                       >
                         <IC size={14} />
@@ -668,7 +668,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                 </div>
               </div>
               <button type="button" onClick={handleAddHabit} disabled={!newName.trim()}
-                className={cn("w-full rounded-xl py-2.5 text-[13px] font-semibold transition-all", newName.trim() ? "text-[#0A0C0A]" : "bg-white/[0.06] text-muted-foreground/30 cursor-not-allowed")}
+                className={cn("w-full rounded-xl py-2.5 text-[13px] font-semibold transition-all", newName.trim() ? "text-[var(--bg)]" : "bg-white/[0.06] text-muted-foreground/30 cursor-not-allowed")}
                 style={newName.trim() ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 16px ${VIOLET_GLOW}` } : undefined}
               >
                 Add Habit
@@ -676,7 +676,7 @@ export function HabitTrackerModal({ onClose }: Props) {
             </div>
           ) : (
             <button type="button" onClick={() => setShowAdd(true)}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl border border-dashed py-3.5 text-[13px] font-semibold transition-all hover:bg-[rgba(52,211,153,0.04)]"
+              className="w-full flex items-center justify-center gap-2 rounded-2xl border border-dashed py-3.5 text-[13px] font-semibold transition-all hover:bg-[var(--emerald-04)]"
               style={{ borderColor: "rgba(52,211,153,0.15)", color: `${VIOLET}80` }}
             >
               <Plus size={14} />

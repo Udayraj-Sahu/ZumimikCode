@@ -38,7 +38,7 @@ export default function FriendsPage() {
         <div className="mt-3 flex justify-center">
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-xl bg-cta text-[#0A0C0A] px-3 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-2.5 max-[359px]:py-2 whitespace-nowrap"
+            className="flex items-center gap-1.5 rounded-xl bg-cta text-[var(--bg)] px-3 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-2.5 max-[359px]:py-2 whitespace-nowrap"
           >
             <UserPlus size={14} /> Add
           </button>
@@ -69,7 +69,7 @@ export default function FriendsPage() {
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground"
           )}
-          style={tab !== "activity" ? { background: GLASS_BG, border: "1px solid rgba(255,255,255,0.06)" } : undefined}
+          style={tab !== "activity" ? { background: GLASS_BG, border: "1px solid var(--glass-06)" } : undefined}
         >
           Activity
         </button>
@@ -82,7 +82,7 @@ export default function FriendsPage() {
               ? "bg-primary text-primary-foreground"
               : "text-muted-foreground hover:text-foreground"
           )}
-          style={tab !== "requests" ? { background: GLASS_BG, border: "1px solid rgba(255,255,255,0.06)" } : undefined}
+          style={tab !== "requests" ? { background: GLASS_BG, border: "1px solid var(--glass-06)" } : undefined}
         >
           Requests {requestCount > 0 && <span className="ml-1 text-primary">({requestCount})</span>}
         </button>

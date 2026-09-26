@@ -21,8 +21,8 @@ const TRACKS = [
     punch: "keeps the feed away.",
     sub: "5-minute adaptive set, tuned to your pace.",
     Icon: Target,
-    accent: "text-[#C8FF4D]",
-    bar: "from-[#C8FF4D]/60 to-transparent",
+    accent: "text-[var(--lime)]",
+    bar: "from-[var(--lime-60)] to-transparent",
   },
   {
     id: "speed",
@@ -161,15 +161,15 @@ export function PitchIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
         }}
       >
         <div className="pointer-events-none absolute left-6 top-24 h-48 w-48 rounded-full bg-fuchsia-500/10 blur-[90px]" />
-        <div className="pointer-events-none absolute bottom-10 right-4 h-56 w-56 rounded-full bg-[#C8FF4D]/[0.08] blur-[90px]" />
+        <div className="pointer-events-none absolute bottom-10 right-4 h-56 w-56 rounded-full bg-[var(--lime-08)] blur-[90px]" />
         <div
           className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
           }}
         />
 
@@ -179,9 +179,9 @@ export function PitchIntro({
           <div
             data-stage
             style={reduceMotion ? undefined : { opacity: 0 }}
-            className="mx-auto flex w-fit items-center gap-1.5 rounded-full border border-[#C8FF4D]/30 bg-[#C8FF4D]/10 px-3 py-1  text-[9px] font-bold tracking-[0.3em] text-[#C8FF4D]"
+            className="mx-auto flex w-fit items-center gap-1.5 rounded-full border border-[var(--lime-30)] bg-[var(--lime-10)] px-3 py-1  text-[9px] font-bold tracking-[0.3em] text-[var(--lime)]"
           >
-            <span className="inline-block size-1.5 animate-pulse rounded-full bg-[#FB7185]" />
+            <span className="inline-block size-1.5 animate-pulse rounded-full bg-[var(--rose)]" />
             ADAPTIVE TRAINING
           </div>
 
@@ -196,7 +196,7 @@ export function PitchIntro({
               className="text-[34px] font-black uppercase leading-[1.04] tracking-tight text-foreground"
             >
               Stop feeding
-              <span className="block bg-gradient-to-r from-[#C8FF4D] via-[#B9F45C] to-[#86efac] bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-[var(--lime)] via-[var(--lime-light)] to-[var(--emerald-pale)] bg-clip-text text-transparent">
                 the algorithm
               </span>
             </h1>
@@ -205,7 +205,7 @@ export function PitchIntro({
           {/* progress hero */}
           <div data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mt-5">
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <div className="pointer-events-none absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[#C8FF4D]/10 blur-3xl" />
+              <div className="pointer-events-none absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[var(--lime-10)] blur-3xl" />
               <div className="relative flex items-center gap-5">
                 {/* ring */}
                 <div className="relative grid size-[104px] shrink-0 place-items-center">
@@ -229,7 +229,7 @@ export function PitchIntro({
                       strokeLinecap="round"
                       strokeDasharray={RING_CIRC}
                       strokeDashoffset={reduceMotion ? RING_CIRC * (1 - RING_PCT) : RING_CIRC}
-                      style={{ filter: "drop-shadow(0 0 6px rgba(200,255,77,0.5))" }}
+                      style={{ filter: "drop-shadow(0 0 6px var(--lime-50))" }}
                     />
                   </svg>
                   <div className="absolute inset-0 grid place-items-center text-center">
@@ -255,7 +255,7 @@ export function PitchIntro({
                     scrolling than last week.
                   </p>
                   <div className="mt-2.5 flex items-center gap-2  text-[8px] tracking-[0.18em] text-white/45">
-                    <span className="inline-block size-1 rounded-full bg-[#C8FF4D]" />
+                    <span className="inline-block size-1 rounded-full bg-[var(--lime)]" />
                     NEXT SPRINT · 5 MIN READY
                   </div>
                 </div>
@@ -281,7 +281,7 @@ export function PitchIntro({
                 >
                   0
                 </span>
-                <span className=" text-[12px] font-bold text-[#C8FF4D]">HRS</span>
+                <span className=" text-[12px] font-bold text-[var(--lime)]">HRS</span>
               </div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5">
@@ -293,7 +293,7 @@ export function PitchIntro({
                   }}
                   data-count="1.2"
                   data-decimals="1"
-                  className=" text-[24px] font-black leading-none text-[#C8FF4D]"
+                  className=" text-[24px] font-black leading-none text-[var(--lime)]"
                 >
                   0.0
                 </span>
@@ -330,7 +330,7 @@ export function PitchIntro({
                   </div>
                   <ChevronRight
                     size={14}
-                    className="mt-1 shrink-0 text-white/25 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-[#C8FF4D]"
+                    className="mt-1 shrink-0 text-white/25 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-[var(--lime)]"
                   />
                 </div>
               </li>
@@ -354,7 +354,7 @@ export function PitchIntro({
           >
             <div className="flex gap-1" aria-label={`Rated ${RATING} out of 5`}>
               {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} size={13} className="fill-[#C8FF4D] text-[#C8FF4D]" />
+                <Star key={i} size={13} className="fill-[var(--lime)] text-[var(--lime)]" />
               ))}
             </div>
             <span className=" text-[9px] tracking-[0.2em] text-muted-foreground/60">
@@ -367,10 +367,10 @@ export function PitchIntro({
             <Backlight color="rgba(200,255,77,0.22)">
               <button
                 onClick={() => exit(onClose)}
-                className="w-full rounded-xl py-3.5  text-[12px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+                className="w-full rounded-xl py-3.5  text-[12px] font-bold tracking-wider text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
                 style={{
                   background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
-                  boxShadow: "0 0 28px rgba(163,230,53,0.35), 0 1px 0 rgba(255,255,255,0.25) inset",
+                  boxShadow: "0 0 28px var(--lime-mid-35), 0 1px 0 var(--glass-25) inset",
                 }}
               >
                 START TRAINING

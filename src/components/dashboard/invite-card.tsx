@@ -54,9 +54,9 @@ export function InviteCard() {
   return (
     <div
       className="relative overflow-hidden rounded-3xl border p-5 h-full"
-      style={{ borderColor: "rgba(34,211,238,0.14)", background: "linear-gradient(135deg, rgba(34,211,238,0.05) 0%, rgba(255,255,255,0.02) 60%)" }}
+      style={{ borderColor: "rgba(34,211,238,0.14)", background: "linear-gradient(135deg, var(--cyan-05) 0%, var(--glass-02) 60%)" }}
     >
-      <div className="absolute -top-12 -right-12 size-32 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.45), transparent 70%)" }} />
+      <div className="absolute -top-12 -right-12 size-32 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cyan-45), transparent 70%)" }} />
 
       <div className="relative flex flex-wrap items-center gap-x-3 gap-y-2">
         <div className="flex items-center gap-2.5">
@@ -81,7 +81,7 @@ export function InviteCard() {
         <button
           type="button"
           onClick={handleCopy}
-          className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[11px] font-bold text-[#0A0C0A] transition-all active:scale-95"
+          className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
           style={{ background: copied ? "#34D399" : `linear-gradient(90deg, ${ACCENT}, #06b6d4)` }}
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
@@ -94,7 +94,7 @@ export function InviteCard() {
         onClick={handleShare}
         className="relative mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.04] py-3 text-[11px] font-bold text-foreground/80 transition-all hover:bg-white/[0.07] active:scale-[0.98]"
       >
-        <Share2 size={14} className="text-[#22D3EE]" />
+        <Share2 size={14} className="text-[var(--cyan)]" />
         Share invite link
       </button>
 

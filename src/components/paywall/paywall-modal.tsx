@@ -94,7 +94,7 @@ const PREP_TELEMETRY: {
     title: "Infinite Simulated Batteries",
     desc: "Full-length drills with authentic percentile scaling and test-day time pressure.",
     Icon: Signal,
-    tile: "border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]",
+    tile: "border-[var(--lime-40)] bg-[var(--lime-10)] text-[var(--lime)]",
   },
   {
     id: "adaptive",
@@ -108,7 +108,7 @@ const PREP_TELEMETRY: {
     title: "Weekly Performance Report",
     desc: "Post-session breakdown showing exactly where you lost seconds and which shortcuts save the most.",
     Icon: BarChart3,
-    tile: "border-[#C8FF4D]/40 bg-[#C8FF4D]/10 text-[#C8FF4D]",
+    tile: "border-[var(--lime-40)] bg-[var(--lime-10)] text-[var(--lime)]",
   },
   {
     id: "mentor",
@@ -218,10 +218,10 @@ export function PaywallModal() {
 
       <div
         className={cn(
-          "relative w-full max-w-[400px] overflow-hidden bg-[#07090F] border border-white/[0.06]",
+          "relative w-full max-w-[400px] overflow-hidden bg-[var(--bg-blue)] border border-white/[0.06]",
           isNative
-            ? "rounded-t-[24px] border-b-0 shadow-[0_-12px_60px_rgba(0,0,0,0.6)]"
-            : "rounded-[24px] shadow-[0_12px_60px_rgba(0,0,0,0.6)]",
+            ? "rounded-t-[24px] border-b-0 shadow-[0_-12px_60px_var(--black-60)]"
+            : "rounded-[24px] shadow-[0_12px_60px_var(--black-60)]",
         )}
       >
         {isNative && (
@@ -243,15 +243,15 @@ export function PaywallModal() {
                 className="relative flex min-h-[60vh] flex-col items-center justify-center gap-3 px-6 py-10 text-center"
               >
                 <div
-                  className="flex items-center gap-2 rounded-2xl border border-white/10 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0A0C0A]"
+                  className="flex items-center gap-2 rounded-2xl border border-white/10 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--bg)]"
                   style={{
                     background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT_DIM})`,
-                    boxShadow: `0 10px 34px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset`,
+                    boxShadow: `0 10px 34px var(--lime-30), 0 1px 0 var(--glass-25) inset`,
                   }}
                 >
                   <ShieldCheck size={15} strokeWidth={2.8} /> Access unlocked
                 </div>
-                <p className="font-mono text-[9px] font-bold tracking-wider text-[#C8FF4D]">
+                <p className="font-mono text-[9px] font-bold tracking-wider text-[var(--lime)]">
                   Gates cleared — full prep throughput restored.
                 </p>
               </motion.div>
@@ -305,7 +305,7 @@ export function PaywallModal() {
                           >
                             {label}
                           </span>
-                          <Icon size={12} className={warn ? "text-amber-300" : "text-[#C8FF4D]"} />
+                          <Icon size={12} className={warn ? "text-amber-300" : "text-[var(--lime)]"} />
                         </div>
                         <div className="mt-1.5 flex items-baseline gap-1">
                           <span
@@ -355,7 +355,7 @@ export function PaywallModal() {
                       <h2 className="font-mono text-[9px] font-bold tracking-[0.2em] text-muted-foreground/80">
                         UNLOCKED TELEMETRY
                       </h2>
-                      <span className="font-mono text-[8px] font-bold tracking-wider text-[#C8FF4D]">
+                      <span className="font-mono text-[8px] font-bold tracking-wider text-[var(--lime)]">
                         {PREP_TELEMETRY.length} MODULES
                       </span>
                     </div>
@@ -380,7 +380,7 @@ export function PaywallModal() {
                                 {title}
                               </h3>
                               {badge && (
-                                <span className="shrink-0 rounded border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[#C8FF4D]">
+                                <span className="shrink-0 rounded border border-[var(--lime-40)] bg-[var(--lime-10)] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[var(--lime)]">
                                   {badge}
                                 </span>
                               )}
@@ -422,7 +422,7 @@ export function PaywallModal() {
                             className={cn(
                               "w-full rounded-xl border p-3 text-left transition",
                               active
-                                ? "border-[#C8FF4D] bg-[#C8FF4D]/[0.05] shadow-[0_0_24px_rgba(200,255,77,0.18)]"
+                                ? "border-[var(--lime)] bg-[var(--lime-05)] shadow-[0_0_24px_var(--lime-18)]"
                                 : "border-white/10 bg-white/[0.02] hover:border-white/25",
                             )}
                           >
@@ -430,10 +430,10 @@ export function PaywallModal() {
                               <span
                                 className={cn(
                                   "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border",
-                                  active ? "border-[#C8FF4D]" : "border-muted-foreground/40",
+                                  active ? "border-[var(--lime)]" : "border-muted-foreground/40",
                                 )}
                               >
-                                {active && <span className="size-2 rounded-full bg-[#C8FF4D]" />}
+                                {active && <span className="size-2 rounded-full bg-[var(--lime)]" />}
                               </span>
 
                               <div className="min-w-0 flex-1">
@@ -444,7 +444,7 @@ export function PaywallModal() {
                                         {o.title}
                                       </h3>
                                       {o.badge && (
-                                        <span className="rounded bg-[#C8FF4D] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[#0A0C0A]">
+                                        <span className="rounded bg-[var(--lime)] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[var(--bg)]">
                                           {o.badge}
                                         </span>
                                       )}
@@ -458,7 +458,7 @@ export function PaywallModal() {
                                       "shrink-0 text-right text-[15px] font-bold",
                                       o.price === "FREE"
                                         ? "text-muted-foreground/80"
-                                        : "text-[#C8FF4D]",
+                                        : "text-[var(--lime)]",
                                     )}
                                   >
                                     {o.price}
@@ -470,7 +470,7 @@ export function PaywallModal() {
                                 <div
                                   className={cn(
                                     "mt-2 font-mono text-[7px] font-bold tracking-wider",
-                                    active ? "text-[#C8FF4D]" : "text-muted-foreground/40",
+                                    active ? "text-[var(--lime)]" : "text-muted-foreground/40",
                                   )}
                                 >
                                   {o.note}
@@ -485,15 +485,15 @@ export function PaywallModal() {
                 </div>
 
                 {/* sticky CTA */}
-                <footer className="sticky bottom-0 z-10 -mx-4 border-t border-[#C8FF4D]/20 bg-[#07090F]/95 px-4 pb-1 pt-3 backdrop-blur">
+                <footer className="sticky bottom-0 z-10 -mx-4 border-t border-[var(--lime-20)] bg-[var(--bg-blue-95)] px-4 pb-1 pt-3 backdrop-blur">
                   <button
                     type="button"
                     onClick={confirmPlan}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-mono text-[11px] font-bold tracking-wider text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-mono text-[11px] font-bold tracking-wider text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
                     style={{
                       background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT_DIM})`,
                       boxShadow:
-                        "0 0 28px rgba(200,255,77,0.3), 0 1px 0 rgba(255,255,255,0.25) inset",
+                        "0 0 28px var(--lime-30), 0 1px 0 var(--glass-25) inset",
                     }}
                   >
                     <Zap size={14} />

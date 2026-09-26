@@ -120,8 +120,8 @@ export default function LinkedDevicesPage() {
                     className={cn(
                       "flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-[11px] font-bold transition-all active:scale-95 max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-2 whitespace-nowrap",
                       isConfirming
-                        ? "bg-[#ff5c5c] text-[#0A0C0A]"
-                        : "border border-white/[0.07] bg-white/[0.04] text-[#ff5c5c]",
+                        ? "bg-[var(--red-soft)] text-[var(--bg)]"
+                        : "border border-white/[0.07] bg-white/[0.04] text-[var(--red-soft)]",
                     )}
                   >
                     <LogOut size={13} />

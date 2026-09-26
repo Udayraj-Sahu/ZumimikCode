@@ -57,11 +57,11 @@ function Row({ icon, title, subtitle, danger, onClick }: RowProps) {
       className="w-full flex items-center gap-4 rounded-2xl border backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-white/[0.06] active:scale-[0.99] max-[359px]:gap-3 max-[359px]:px-4 max-[359px]:py-3"
       style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
     >
-      <span className={danger ? "text-[#ff5c5c]" : "text-primary"}>
+      <span className={danger ? "text-[var(--red-soft)]" : "text-primary"}>
         {icon}
       </span>
       <span className="flex-1 min-w-0">
-        <span className={danger ? "block text-[13px] font-semibold text-[#ff5c5c] tracking-[-0.01em]" : "block text-[13px] font-semibold text-foreground tracking-[-0.01em]"}>
+        <span className={danger ? "block text-[13px] font-semibold text-[var(--red-soft)] tracking-[-0.01em]" : "block text-[13px] font-semibold text-foreground tracking-[-0.01em]"}>
           {title}
         </span>
         <span className="block text-[12px] text-muted-foreground/40 mt-0.5 font-normal">
@@ -83,10 +83,10 @@ function HeadingTile({ icon, danger, onClick, label, heading }: { icon: React.Re
       className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl border backdrop-blur-xl px-3 py-5 text-center transition-all hover:bg-white/[0.06] active:scale-[0.98]"
       style={{ borderColor: danger ? "rgba(255,92,92,0.25)" : GLASS_BORDER, background: danger ? "rgba(255,92,92,0.06)" : GLASS_BG }}
     >
-      <span className={danger ? "text-[#ff5c5c]" : "text-primary"}>
+      <span className={danger ? "text-[var(--red-soft)]" : "text-primary"}>
         {icon}
       </span>
-      <span className={danger ? "block text-[12px] font-semibold text-[#ff5c5c] tracking-[-0.01em] leading-tight break-words" : "block text-[12px] font-semibold text-foreground tracking-[-0.01em] leading-tight break-words"}>
+      <span className={danger ? "block text-[12px] font-semibold text-[var(--red-soft)] tracking-[-0.01em] leading-tight break-words" : "block text-[12px] font-semibold text-foreground tracking-[-0.01em] leading-tight break-words"}>
         {heading}
       </span>
     </button>
@@ -148,7 +148,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initials: string; badge: string; onEdit: () => void }) {
   return (
     <div className="relative flex flex-col items-center pt-6 pb-1 text-center">
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.25) 0%, transparent 70%)" }} />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-25) 0%, transparent 70%)" }} />
       <div className="relative mb-3 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 max-[359px]:gap-1.5 max-[359px]:px-3">
           <Settings size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
@@ -157,7 +157,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 backdrop-blur-sm">
           <span className="text-lg font-bold tracking-[-0.02em] text-primary">{initials}</span>
         </div>
-        <button type="button" className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.3)]">
+        <button type="button" className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_0_12px_var(--cta-30)]">
           <Pencil className="h-2.5 w-2.5" />
         </button>
       </div>
@@ -215,8 +215,8 @@ function SubscriptionCard() {
   return (
     <div>
       <SectionLabel>SUBSCRIPTION</SectionLabel>
-      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, rgba(199,242,82,0.04) 0%, rgba(255,255,255,0.03) 100%)" }}>
-        <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.3), transparent)" }} />
+      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, var(--cta-04) 0%, var(--glass-03) 100%)" }}>
+        <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-30), transparent)" }} />
         <div className="relative flex items-start justify-between">
           <div className="flex items-center gap-3 max-[359px]:gap-2">
             <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -243,7 +243,7 @@ function SubscriptionCard() {
             <X className="h-3.5 w-3.5 shrink-0" /> Unlimited sprints
           </li>
         </ul>
-        <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-primary to-[#a8e62e] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-primary-foreground shadow-[0_0_20px_rgba(199,242,82,0.25)] transition-all hover:shadow-[0_0_30px_rgba(199,242,82,0.35)] active:scale-[0.98] max-[359px]:py-3 whitespace-nowrap">
+        <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-primary to-[var(--lime-mid)] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-primary-foreground shadow-[0_0_20px_var(--cta-25)] transition-all hover:shadow-[0_0_30px_var(--cta-35)] active:scale-[0.98] max-[359px]:py-3 whitespace-nowrap">
           Upgrade to Pro — $9.99/mo
         </button>
       </div>
@@ -281,7 +281,7 @@ export default function SettingsPage() {
     <PageContainer>
       <div className="mx-auto w-full md:max-w-3xl">
       {/* Ambient glow */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, rgba(199,242,82,0.2) 0%, transparent 70%)" }} />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-20) 0%, transparent 70%)" }} />
 
       {/* Profile summary */}
       <ProfileHeader
@@ -395,13 +395,13 @@ export default function SettingsPage() {
               <Row icon={<LogOut className="h-5 w-5" />} title="Logout" subtitle="Sign out of your account" danger onClick={handleLogout} />
               <button
                 type="button"
-                className="flex w-full items-center gap-4 rounded-2xl border border-[#ff5c5c]/25 bg-[#ff5c5c]/[0.06] backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-[#ff5c5c]/[0.12] active:scale-[0.99] max-[359px]:gap-3 max-[359px]:px-4 max-[359px]:py-3"
+                className="flex w-full items-center gap-4 rounded-2xl border border-[var(--red-soft-25)] bg-[var(--red-soft-06)] backdrop-blur-xl px-5 py-4 text-left transition-all hover:bg-[var(--red-soft-12)] active:scale-[0.99] max-[359px]:gap-3 max-[359px]:px-4 max-[359px]:py-3"
               >
-                <span className="text-[#ff5c5c]">
+                <span className="text-[var(--red-soft)]">
                   <Trash2 className="h-5 w-5" />
                 </span>
                 <span>
-                  <span className="block text-[13px] font-semibold text-[#ff5c5c]">Delete Account Permanently</span>
+                  <span className="block text-[13px] font-semibold text-[var(--red-soft)]">Delete Account Permanently</span>
                   <span className="block text-[11px] text-muted-foreground/40">This cannot be undone</span>
                 </span>
               </button>

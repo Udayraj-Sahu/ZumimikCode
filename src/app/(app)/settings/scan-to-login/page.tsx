@@ -92,7 +92,7 @@ export default function ScanToLoginPage() {
           </p>
         </div>
 
-        <div className="mt-6 rounded-3xl border backdrop-blur-xl p-6 max-[359px]:p-4" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))" }}>
+        <div className="mt-6 rounded-3xl border backdrop-blur-xl p-6 max-[359px]:p-4" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, var(--glass-bg), var(--glass-01))" }}>
           {step === "code" && (
             <>
               <div className="flex items-center gap-3 max-[359px]:gap-2">
@@ -130,7 +130,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleScan}
                 disabled={dirty || isBusy}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 {scan.isPending ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
@@ -143,7 +143,7 @@ export default function ScanToLoginPage() {
             <>
               <div className="flex flex-col items-center py-4 text-center">
                 <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(52,211,153,0.12)" }}>
-                  <Loader2 size={24} className="animate-spin text-[#34D399]" />
+                  <Loader2 size={24} className="animate-spin text-[var(--emerald)]" />
                 </div>
                 <p className="mt-3 text-[16px] font-bold text-foreground leading-tight">Code found</p>
                 <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">
@@ -158,7 +158,7 @@ export default function ScanToLoginPage() {
                 <div className="flex-1">
                   <p className="text-[12px] font-semibold text-foreground">Chrome on Windows</p>
                   <p className="text-micro text-muted-foreground/40">
-                    <span className="inline-flex items-center gap-1 text-[#34D399]"><ShieldCheck size={9} /> Secured device</span> · Mumbai, IN
+                    <span className="inline-flex items-center gap-1 text-[var(--emerald)]"><ShieldCheck size={9} /> Secured device</span> · Mumbai, IN
                   </p>
                 </div>
               </div>
@@ -174,7 +174,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleApprove}
                 disabled={isBusy}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: "linear-gradient(90deg, #34D399, #10B981)" }}
               >
                 {approve.isPending ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
@@ -194,7 +194,7 @@ export default function ScanToLoginPage() {
           {step === "approved" && (
             <div className="flex flex-col items-center py-6 text-center">
               <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(52,211,153,0.12)" }}>
-                <Check size={24} className="text-[#34D399]" />
+                <Check size={24} className="text-[var(--emerald)]" />
               </div>
               <p className="mt-3 text-[16px] font-bold text-foreground leading-tight">Device linked</p>
               <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">
@@ -203,7 +203,7 @@ export default function ScanToLoginPage() {
               <button
                 type="button"
                 onClick={() => router.replace("/dashboard")}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 Done <ArrowRight size={15} />
@@ -214,14 +214,14 @@ export default function ScanToLoginPage() {
           {step === "error" && (
             <div className="flex flex-col items-center py-6 text-center">
               <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(255,92,92,0.12)" }}>
-                <AlertTriangle size={24} className="text-[#ff5c5c]" />
+                <AlertTriangle size={24} className="text-[var(--red-soft)]" />
               </div>
               <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Link failed</p>
               <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">{errorMsg ?? "Something went wrong."}</p>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 Try again <ArrowRight size={15} />

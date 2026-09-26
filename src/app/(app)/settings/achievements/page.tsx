@@ -76,7 +76,7 @@ function ShimmerOverlay() {
       <div
         className="absolute inset-0 -translate-x-full animate-[shimmer_3s_ease-in-out_infinite] opacity-[0.07]"
         style={{
-          background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)",
+          background: "linear-gradient(90deg, transparent 0%, var(--glass-40) 50%, transparent 100%)",
         }}
       />
     </div>

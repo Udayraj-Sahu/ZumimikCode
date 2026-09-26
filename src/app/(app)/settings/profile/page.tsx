@@ -22,7 +22,7 @@ export default function ProfilePage() {
             <button
               type="button"
               onClick={() => location.reload()}
-              className="mt-4 rounded-xl bg-cta px-6 py-3 text-[12px] font-bold uppercase tracking-wider text-[#0A0C0A]"
+              className="mt-4 rounded-xl bg-cta px-6 py-3 text-[12px] font-bold uppercase tracking-wider text-[var(--bg)]"
             >
               Retry
             </button>

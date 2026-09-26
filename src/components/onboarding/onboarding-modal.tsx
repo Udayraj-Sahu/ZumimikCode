@@ -383,7 +383,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const panel = (
     <div className="flex-1 min-h-0 flex flex-col">
       {/* Header with 5 step icons */}
-      <div className="sticky top-0 z-10 px-5 pt-4 pb-4 bg-[rgba(14,17,13,0.98)]">
+      <div className="sticky top-0 z-10 px-5 pt-4 pb-4 bg-[var(--overlay)]">
         <div className="flex items-center justify-between mb-3">
           <button
             type="button"
@@ -403,20 +403,20 @@ export function OnboardingModal({ onClose, inline }: Props) {
                   className={cn(
                     "flex items-center justify-center rounded-full transition-all duration-300",
                     isActive
-                      ? "size-8 bg-[#C8FF4D]/15 ring-2 ring-[#C8FF4D]/40"
+                      ? "size-8 bg-[var(--lime-15)] ring-2 ring-[var(--lime-40)]"
                       : isDone
-                        ? "size-6 bg-[#C8FF4D]/10"
+                        ? "size-6 bg-[var(--lime-10)]"
                         : "size-6 bg-white/[0.05]",
                   )}
                 >
                   {isDone ? (
-                    <Check size={10} className="text-[#C8FF4D]" />
+                    <Check size={10} className="text-[var(--lime)]" />
                   ) : (
                     <StepIcon
                       size={isActive ? 14 : 10}
                       className={cn(
                         "transition-colors duration-300",
-                        isActive ? "text-[#C8FF4D]" : "text-muted-foreground/40",
+                        isActive ? "text-[var(--lime)]" : "text-muted-foreground/40",
                       )}
                     />
                   )}
@@ -519,7 +519,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
               className={cn(
                 "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
                 canNext
-                  ? "text-[#0A0C0A]"
+                  ? "text-[var(--bg)]"
                   : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
               style={canNext ? { background: "#C8FF4D" } : undefined}
@@ -712,7 +712,7 @@ function StepName({
           className="size-11 rounded-2xl flex items-center justify-center mb-4"
           style={{ background: "rgba(200,255,77,0.1)" }}
         >
-          <User size={20} className="text-[#C8FF5A]" />
+          <User size={20} className="text-[var(--lime-bright)]" />
         </div>
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           What&apos;s your first name?
@@ -729,7 +729,7 @@ function StepName({
           if (e.key === "Enter" && value.trim().length > 0) onNext();
         }}
         placeholder="Type your name..."
-        className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/25 outline-none focus:border-[#C8FF5A]/30 focus:ring-1 focus:ring-[#C8FF5A]/20 transition-all"
+        className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/25 outline-none focus:border-[var(--lime-bright-30)] focus:ring-1 focus:ring-[var(--lime-bright-20)] transition-all"
         autoFocus
       />
       {value.trim().length > 0 && (
@@ -773,7 +773,7 @@ function StepSingleSelect({
               className={cn(
                 "relative flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
                 active
-                  ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                  ? "border-[var(--lime-30)] bg-[var(--lime-06)]"
                   : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
               )}
             >
@@ -799,8 +799,8 @@ function StepSingleSelect({
                 )}
               </div>
               {active && (
-                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[#C8FF4D]">
-                  <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
+                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--lime)]">
+                  <Check size={8} className="text-[var(--bg)]" strokeWidth={3} />
                 </div>
               )}
             </button>
@@ -884,7 +884,7 @@ function StepGoal({
                 className={cn(
                   "relative w-full flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
                   active
-                    ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06]"
+                    ? "border-[var(--lime-30)] bg-[var(--lime-06)]"
                     : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
                 )}
               >
@@ -910,8 +910,8 @@ function StepGoal({
                   )}
                 </div>
                 {active && (
-                  <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[#C8FF4D]">
-                    <Check size={8} className="text-[#0A0C0A]" strokeWidth={3} />
+                  <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--lime)]">
+                    <Check size={8} className="text-[var(--bg)]" strokeWidth={3} />
                   </div>
                 )}
               </button>
@@ -970,7 +970,7 @@ function GoalPanel({ title, children }: { title: string; children: React.ReactNo
       className="mt-2.5 w-full rounded-2xl border border-white/[0.06] bg-white/[0.02] px-4 py-4"
     >
       <div className="flex items-center gap-2 mb-3">
-        <span className="w-1.5 h-1.5 rounded-sm bg-[#C8FF4D]" />
+        <span className="w-1.5 h-1.5 rounded-sm bg-[var(--lime)]" />
         <p className="text-[9px] font-bold tracking-[0.14em] text-muted-foreground/55 uppercase">
           {title}
         </p>
@@ -1000,10 +1000,10 @@ function GoalRadioRow({
       <span
         className={cn(
           "size-4 rounded-full border flex items-center justify-center shrink-0",
-          active ? "border-[#C8FF4D]" : "border-white/[0.18]",
+          active ? "border-[var(--lime)]" : "border-white/[0.18]",
         )}
       >
-        {active && <span className="size-2 rounded-full bg-[#C8FF4D]" />}
+        {active && <span className="size-2 rounded-full bg-[var(--lime)]" />}
       </span>
       <span className="min-w-0 flex-1">
         <span
@@ -1055,7 +1055,7 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                     className={cn(
                       "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[10px] font-bold transition-all active:scale-95",
                       active
-                        ? "text-[#0A0C0A] bg-[#C8FF4D]"
+                        ? "text-[var(--bg)] bg-[var(--lime)]"
                         : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
                     )}
                   >
@@ -1112,7 +1112,7 @@ function StepDetails({
             className={cn(
               "flex-1 flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-[13px] font-bold transition-all active:scale-[0.98]",
               sex === s
-                ? "border-[#FF5C5C]/30 bg-[#FF5C5C]/10 text-[#FF5C5C]"
+                ? "border-[var(--red-soft-30)] bg-[var(--red-soft-10)] text-[var(--red-soft)]"
                 : "border-white/[0.06] bg-white/[0.03] text-foreground/60 hover:bg-white/[0.05]",
             )}
           >
@@ -1192,8 +1192,8 @@ function ScrollColumn({
         {label}
       </p>
       <div className="relative" style={{ height: ITEM_H * VISIBLE }}>
-        <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[rgba(14,17,13,0.98)] to-transparent z-10 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[rgba(14,17,13,0.98)] to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[var(--overlay)] to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[var(--overlay)] to-transparent z-10 pointer-events-none" />
         <div
           className="absolute left-1 right-1 h-10 rounded-xl border z-0 pointer-events-none"
           style={{
@@ -1272,19 +1272,19 @@ function CompletionScreen() {
           <div
             className="absolute -inset-8 rounded-full opacity-30 blur-2xl pointer-events-none"
             style={{
-              background: "radial-gradient(circle, rgba(167,139,250,0.45), transparent 70%)",
+              background: "radial-gradient(circle, var(--violet-purple-45), transparent 70%)",
             }}
           />
           <CelebrationAvatar />
         </div>
-        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.08] px-4 py-1.5">
-          <Sparkles size={12} className="text-[#C8FF4D]" />
-          <span className="text-micro font-bold tracking-[0.14em] uppercase text-[#C8FF4D]">
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--lime-20)] bg-[var(--lime-08)] px-4 py-1.5">
+          <Sparkles size={12} className="text-[var(--lime)]" />
+          <span className="text-micro font-bold tracking-[0.14em] uppercase text-[var(--lime)]">
             Profile complete
           </span>
         </div>
         <h2 className="mt-4 text-[24px] font-black tracking-[-0.03em] text-foreground">
-          You&apos;re all set, <span className="text-[#C8FF4D]">{name}</span>!
+          You&apos;re all set, <span className="text-[var(--lime)]">{name}</span>!
         </h2>
         <p className="mt-1.5 text-[12px] text-muted-foreground/40 font-medium">
           Let&apos;s start your fight
@@ -1298,7 +1298,7 @@ function CompletionScreen() {
         <div
           className="absolute top-0 left-0 right-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(167,139,250,0.35), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--violet-purple-35), transparent)",
           }}
         />
         <div className="relative flex items-center justify-around gap-2">
@@ -1386,17 +1386,17 @@ function CelebrationAvatar() {
         <div
           className="relative size-20 rounded-2xl flex items-center justify-center"
           style={{
-            background: "linear-gradient(135deg, rgba(139,92,246,0.28), rgba(34,211,238,0.10))",
-            border: "1px solid rgba(167,139,250,0.30)",
-            boxShadow: "0 8px 30px rgba(139,92,246,0.18)",
+            background: "linear-gradient(135deg, var(--violet-deep-28), var(--cyan-10))",
+            border: "1px solid var(--violet-purple-30)",
+            boxShadow: "0 8px 30px var(--violet-deep-18)",
           }}
         >
           <div className="flex items-center gap-3">
-            <div className="size-2.5 rounded-full bg-[#A78BFA]" />
-            <div className="size-2.5 rounded-full bg-[#A78BFA]" />
+            <div className="size-2.5 rounded-full bg-[var(--violet)]" />
+            <div className="size-2.5 rounded-full bg-[var(--violet)]" />
           </div>
-          <div className="absolute bottom-5.5 left-1/2 -translate-x-1/2 w-5 h-2 rounded-b-full border-b-[1.5px] border-[#A78BFA]/70" />
-          <div className="absolute -top-1.5 -right-1.5 text-micro text-[#A78BFA]">
+          <div className="absolute bottom-5.5 left-1/2 -translate-x-1/2 w-5 h-2 rounded-b-full border-b-[1.5px] border-[var(--violet-purple-70)]" />
+          <div className="absolute -top-1.5 -right-1.5 text-micro text-[var(--violet)]">
             <Sparkles size={10} fill="currentColor" />
           </div>
         </div>

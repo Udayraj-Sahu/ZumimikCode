@@ -50,7 +50,7 @@ export default function ReportsPage() {
         <div className="mt-3 flex justify-center">
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-full bg-cta text-[#0A0C0A] px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-1.5 whitespace-nowrap"
+            className="flex items-center gap-1.5 rounded-full bg-cta text-[var(--bg)] px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-1.5 whitespace-nowrap"
           >
             <Download size={14} /> Export
           </button>

@@ -121,7 +121,7 @@ export function RankSignal() {
               width: 120,
               height: 120,
               background:
-                "radial-gradient(circle, rgba(200,255,90,0.3) 0%, rgba(200,255,90,0.0) 70%)",
+                "radial-gradient(circle, var(--lime-bright-30) 0%, var(--lime-bright-00) 70%)",
               filter: "blur(8px)",
             }}
             animate={{ scale: [1, 1.3, 1], opacity: [0.6, 1, 0.6] }}

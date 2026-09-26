@@ -181,7 +181,7 @@ function ModeHeader({
       className="relative overflow-hidden rounded-3xl border p-5"
       style={{
         borderColor: "rgba(255,255,255,0.08)",
-        background: `linear-gradient(160deg, ${profile.accent}12 0%, rgba(255,255,255,0.02) 60%)`,
+        background: `linear-gradient(160deg, ${profile.accent}12 0%, var(--glass-02) 60%)`,
       }}
     >
       <div
@@ -222,7 +222,7 @@ function ModeHeader({
       <h2
         className="relative mt-3 bg-clip-text text-transparent text-[22px] font-black tracking-[-0.03em] leading-tight"
         style={{
-          backgroundImage: `linear-gradient(90deg, ${profile.accent}, rgba(255,255,255,0.92))`,
+          backgroundImage: `linear-gradient(90deg, ${profile.accent}, var(--glass-92))`,
         }}
       >
         {isPath ? "Your Learning Path" : profile.title}

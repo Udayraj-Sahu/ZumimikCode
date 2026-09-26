@@ -149,7 +149,7 @@ function ExplorerContent() {
               <button
                 type="button"
                 onClick={() => setShowAddPrep(true)}
-                className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 max-[359px]:px-4 whitespace-nowrap text-[12px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.97] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="mt-1 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 max-[359px]:px-4 whitespace-nowrap text-[12px] font-bold text-[var(--bg)] transition-all hover:opacity-90 active:scale-[0.97] outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <Plus size={13} strokeWidth={3} /> ADD PREP
                 <ArrowRight size={13} strokeWidth={2.5} />
@@ -183,7 +183,7 @@ function ExplorerContent() {
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
         </div>
         <h1 className="text-[24px] font-bold tracking-[-0.02em] text-foreground leading-tight">
-          Explore <span className="bg-gradient-to-r from-primary via-[#d4ff6e] to-primary bg-clip-text text-transparent">{label}</span>
+          Explore <span className="bg-gradient-to-r from-primary via-[var(--lime-pale)] to-primary bg-clip-text text-transparent">{label}</span>
         </h1>
         <p className="mt-1.5 text-[12px] text-muted-foreground/45 font-normal">Tap nodes to branch out and explore your study map.</p>
       </div>
@@ -210,10 +210,10 @@ function ExplorerContent() {
                       layoutId="explorer-exam-slider"
                       transition={{ type: "spring", stiffness: 400, damping: 32 }}
                       className="absolute inset-0 rounded-2xl"
-                      style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)" }}
+                      style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px var(--cta-40)" }}
                     />
                   )}
-                  <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none" }}>
+                  <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 var(--glass-35)" : "none" }}>
                     <GraduationCap size={14} className="relative" />
                     <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
                   </span>
@@ -243,7 +243,7 @@ function ExplorerContent() {
                   className="absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
                   style={{
                     opacity: active ? 1 : 0,
-                    background: "linear-gradient(90deg, transparent, rgba(199,242,82,0.8), transparent)",
+                    background: "linear-gradient(90deg, transparent, var(--cta-80), transparent)",
                   }}
                 />
                 <div
@@ -252,16 +252,16 @@ function ExplorerContent() {
                     active
                       ? {
                           borderColor: "rgba(199,242,82,0.35)",
-                          background: "linear-gradient(180deg, rgba(199,242,82,0.18), rgba(199,242,82,0.05))",
+                          background: "linear-gradient(180deg, var(--cta-18), var(--cta-05))",
                           color: "var(--primary)",
                           boxShadow:
-                            "0 8px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.35)",
+                            "0 8px 18px var(--black-35), inset 0 1px 0 var(--glass-30), inset 0 -2px 6px var(--black-35)",
                         }
                       : {
                           borderColor: "rgba(255,255,255,0.07)",
                           background: "rgba(255,255,255,0.02)",
                           color: "rgba(255,255,255,0.5)",
-                          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4)",
+                          boxShadow: "inset 0 2px 4px var(--black-40)",
                         }
                   }
                 >
@@ -269,8 +269,8 @@ function ExplorerContent() {
                   <span
                     style={
                       active
-                        ? { textShadow: "0 1px 1px rgba(0,0,0,0.6)" }
-                        : { textShadow: "0 1px 2px rgba(0,0,0,0.7)" }
+                        ? { textShadow: "0 1px 1px var(--black-60)" }
+                        : { textShadow: "0 1px 2px var(--black-70)" }
                     }
                   >
                     {subject.title}
@@ -292,9 +292,9 @@ function ExplorerContent() {
             <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, #22D3EE, transparent 70%)" }} />
             <div className="relative flex items-center justify-between">
               <span className="grid size-9 place-items-center rounded-xl" style={{ background: "rgba(34,211,238,0.14)" }}>
-                <Layers size={15} className="text-[#22D3EE]" />
+                <Layers size={15} className="text-[var(--cyan)]" />
               </span>
-              <span className="text-[26px] font-black leading-none tracking-[-0.02em] text-[#22D3EE]">
+              <span className="text-[26px] font-black leading-none tracking-[-0.02em] text-[var(--cyan)]">
                 {conquest.topics}
               </span>
             </div>
@@ -309,9 +309,9 @@ function ExplorerContent() {
             <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, #8B5CF6, transparent 70%)" }} />
             <div className="relative flex items-center justify-between">
               <span className="grid size-9 place-items-center rounded-xl" style={{ background: "rgba(139,92,246,0.14)" }}>
-                <ClipboardList size={15} className="text-[#8B5CF6]" />
+                <ClipboardList size={15} className="text-[var(--violet-deep)]" />
               </span>
-              <span className="text-[26px] font-black leading-none tracking-[-0.02em] text-[#8B5CF6]">
+              <span className="text-[26px] font-black leading-none tracking-[-0.02em] text-[var(--violet-deep)]">
                 {conquest.practiceSets}
               </span>
             </div>

@@ -134,7 +134,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
             <div
               className={cn(
-                "absolute left-[calc(100%+14px)] top-0 z-50 w-[190px] rounded-[10px] border border-chrome-border bg-chrome-raised p-2 shadow-[0_12px_30px_rgba(0,0,0,0.5)] transition-[opacity,transform,visibility] duration-150",
+                "absolute left-[calc(100%+14px)] top-0 z-50 w-[190px] rounded-[10px] border border-chrome-border bg-chrome-raised p-2 shadow-[0_12px_30px_var(--black-50)] transition-[opacity,transform,visibility] duration-150",
                 moreOpen ? "visible translate-x-0 opacity-100" : "invisible -translate-x-1.5 opacity-0",
               )}
             >
@@ -216,7 +216,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           "pointer-events-none",
         )}
       >
-        <div className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[#14170F]/90 backdrop-blur-2xl px-2 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] pointer-events-auto max-[359px]:gap-0.5 max-[359px]:px-1.5">
+        <div className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[var(--blackgreen-90)] backdrop-blur-2xl px-2 py-1.5 shadow-[0_8px_32px_var(--black-50)] pointer-events-auto max-[359px]:gap-0.5 max-[359px]:px-1.5">
           {MOBILE_NAV.map((item) => {
             const active = pathname === item.href;
             const Icon = item.icon;

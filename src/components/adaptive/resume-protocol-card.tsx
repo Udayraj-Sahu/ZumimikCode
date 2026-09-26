@@ -91,7 +91,7 @@ export function ResumeProtocolCard({
         <button
           type="button"
           onClick={() => router.push(startHref)}
-          className="group flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-[11px] font-bold uppercase tracking-widest text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.98]"
+          className="group flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-[11px] font-bold uppercase tracking-widest text-[var(--bg)] transition-all hover:opacity-90 active:scale-[0.98]"
           style={{ background: `linear-gradient(90deg, ${accent}, #C8FF4D)` }}
         >
           Start Practice <ChevronRight size={14} />
@@ -144,7 +144,7 @@ export function ResumeProtocolCard({
               <button
                 type="button"
                 onClick={continueHref}
-                className="flex-1 flex items-center justify-center gap-2 rounded-2xl py-3 text-[11px] font-bold uppercase tracking-widest text-[#0A0C0A] transition-all hover:opacity-90 active:scale-[0.98]"
+                className="flex-1 flex items-center justify-center gap-2 rounded-2xl py-3 text-[11px] font-bold uppercase tracking-widest text-[var(--bg)] transition-all hover:opacity-90 active:scale-[0.98]"
                 style={{ background: "#C8FF4D" }}
               >
                 <Play size={12} strokeWidth={2.5} /> Resume

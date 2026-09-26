@@ -233,7 +233,7 @@ function BranchNode({
           !unavailable && "hover:scale-[1.02] active:scale-95",
           unavailable && "opacity-45 cursor-not-allowed",
           depth === 0
-            ? "border-transparent bg-gradient-to-r from-[#C7F252] to-[#a8e62e] text-[#0A0C0A] shadow-[0_12px_40px_-14px_var(--primary)]"
+            ? "border-transparent bg-gradient-to-r from-[var(--cta-lime)] to-[var(--lime-mid)] text-[var(--bg)] shadow-[0_12px_40px_-14px_var(--primary)]"
             : "bg-white/[0.05]",
           isFocus ? "ring-2 ring-primary ring-offset-1 ring-offset-transparent" : "",
         )}
@@ -246,7 +246,7 @@ function BranchNode({
         <span
           className={cn(
             "flex size-8 shrink-0 items-center justify-center rounded-xl",
-            depth === 0 ? "bg-[#0A0C0A]/10" : "",
+            depth === 0 ? "bg-[var(--bg-10)]" : "",
           )}
           style={depth === 0 ? undefined : { background: meta.softBg, color: meta.color }}
           aria-hidden
@@ -263,7 +263,7 @@ function BranchNode({
           <span
             className={cn(
               "block max-w-[200px] text-[13px] font-semibold leading-snug",
-              depth === 0 ? "text-[#0A0C0A]" : "text-foreground",
+              depth === 0 ? "text-[var(--bg)]" : "text-foreground",
             )}
           >
             {node.title}
@@ -271,7 +271,7 @@ function BranchNode({
           <span
             className={cn(
               "block text-[9px] font-medium uppercase tracking-wider",
-              depth === 0 ? "text-[#0A0C0A]/60" : "",
+              depth === 0 ? "text-[var(--bg-60)]" : "",
             )}
             style={depth === 0 ? undefined : { color: meta.color }}
           >
@@ -284,7 +284,7 @@ function BranchNode({
             className={cn(
               "flex size-5 items-center justify-center rounded-full transition-transform duration-200",
               isOpen ? "rotate-180" : "",
-              depth === 0 ? "bg-[#0A0C0A]/10 text-[#0A0C0A]" : "bg-white/[0.06] text-muted-foreground",
+              depth === 0 ? "bg-[var(--bg-10)] text-[var(--bg)]" : "bg-white/[0.06] text-muted-foreground",
             )}
           >
             <ChevronDown size={12} />

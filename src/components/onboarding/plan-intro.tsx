@@ -59,7 +59,7 @@ const DECK_STYLE: Record<
   },
   "single-lane": {
     ring: "border-cyan-400/40 bg-cyan-400/[0.06]",
-    glow: "shadow-[0_0_30px_rgba(34,211,238,0.22)]",
+    glow: "shadow-[0_0_30px_var(--cyan-22)]",
     price: "text-cyan-300",
     tag: "border-cyan-400/50 bg-cyan-400/15 text-cyan-300",
     grad: "from-cyan-400/[0.14] via-cyan-400/[0.04] to-transparent",
@@ -67,13 +67,13 @@ const DECK_STYLE: Record<
     holo: "from-cyan-500/60 via-white/25 to-cyan-500/60",
   },
   "dual-lane": {
-    ring: "border-[#C8FF4D]/50 bg-[#C8FF4D]/[0.07]",
-    glow: "shadow-[0_0_34px_rgba(200,255,77,0.32)]",
-    price: "text-[#C8FF4D]",
-    tag: "border-[#C8FF4D]/50 bg-[#C8FF4D]/15 text-[#C8FF4D]",
-    grad: "from-[#C8FF4D]/[0.16] via-[#C8FF4D]/[0.04] to-transparent",
-    chip: "from-[#C8FF4D] to-lime-500/60 border-[#E9FFA8]/70",
-    holo: "from-[#C8FF4D]/70 via-white/30 to-[#C8FF4D]/70",
+    ring: "border-[var(--lime-50)] bg-[var(--lime-07)]",
+    glow: "shadow-[0_0_34px_var(--lime-32)]",
+    price: "text-[var(--lime)]",
+    tag: "border-[var(--lime-50)] bg-[var(--lime-15)] text-[var(--lime)]",
+    grad: "from-[var(--lime-16)] via-[var(--lime-04)] to-transparent",
+    chip: "from-[var(--lime)] to-lime-500/60 border-[var(--lime-pale-3-70)]",
+    holo: "from-[var(--lime-70)] via-white/30 to-[var(--lime-70)]",
   },
 };
 
@@ -161,12 +161,12 @@ export function PlanSelector({
             className={cn(
               "relative w-full rounded-[20px] border p-3.5 text-left transition",
               selected
-                ? "border-[#C8FF4D]/55 bg-[#C8FF4D]/[0.06] shadow-[0_0_24px_rgba(200,255,77,0.12)]"
+                ? "border-[var(--lime-55)] bg-[var(--lime-06)] shadow-[0_0_24px_var(--lime-12)]"
                 : "border-white/[0.07] bg-black/25 hover:border-white/[0.16]",
             )}
           >
             {p.badge && selected && (
-              <span className="absolute -top-2 right-3 rounded-full bg-[#C8FF4D] px-2 py-0.5 text-[8px] font-bold tracking-[0.14em] text-[#0A0C0A]">
+              <span className="absolute -top-2 right-3 rounded-full bg-[var(--lime)] px-2 py-0.5 text-[8px] font-bold tracking-[0.14em] text-[var(--bg)]">
                 {p.badge}
               </span>
             )}
@@ -176,11 +176,11 @@ export function PlanSelector({
                 className={cn(
                   "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border-2 transition-colors",
                   selected
-                    ? "border-[#C8FF4D] bg-[#C8FF4D] shadow-[0_0_10px_rgba(200,255,77,0.4)]"
+                    ? "border-[var(--lime)] bg-[var(--lime)] shadow-[0_0_10px_var(--lime-40)]"
                     : "border-white/20 bg-transparent",
                 )}
               >
-                {selected && <Check size={9} className="text-[#0A0C0A]" strokeWidth={3.5} />}
+                {selected && <Check size={9} className="text-[var(--bg)]" strokeWidth={3.5} />}
               </span>
 
               <div className="min-w-0 flex-1">
@@ -196,7 +196,7 @@ export function PlanSelector({
                         {p.name}
                       </span>
                       {p.id === "single-lane" && (
-                        <span className="rounded bg-[#C8FF4D]/15 px-1.5 py-0.5 text-[8px] font-bold tracking-[0.1em] text-[#C8FF4D]">
+                        <span className="rounded bg-[var(--lime-15)] px-1.5 py-0.5 text-[8px] font-bold tracking-[0.1em] text-[var(--lime)]">
                           {laneLabel(lane).toUpperCase()}
                         </span>
                       )}
@@ -205,7 +205,7 @@ export function PlanSelector({
                       {p.desc}
                     </div>
                   </div>
-                  <div className="shrink-0 text-right text-[13px] font-bold text-[#C8FF4D]">
+                  <div className="shrink-0 text-right text-[13px] font-bold text-[var(--lime)]">
                     {inr(shown)}
                     <span className="text-[10px] font-normal text-muted-foreground/45">
                       /{unit}
@@ -252,7 +252,7 @@ export function PlanSelector({
                         key={f}
                         className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/50"
                       >
-                        <span className="grid size-4 shrink-0 place-items-center rounded-full bg-[#C8FF4D]/12 text-[#C8FF4D]">
+                        <span className="grid size-4 shrink-0 place-items-center rounded-full bg-[var(--lime-12)] text-[var(--lime)]">
                           <Check size={9} strokeWidth={3.5} />
                         </span>
                         {f}
@@ -367,25 +367,25 @@ export function PlanIntro({
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[-90px] h-56 w-56 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[95px]"
+          className="pointer-events-none absolute left-1/2 top-[-90px] h-56 w-56 -translate-x-1/2 rounded-full bg-[var(--lime-12)] blur-[95px]"
         />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
           }}
         />
 
         <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
           {/* centered brand */}
           <FadeUp className="flex justify-center">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#C8FF4D]/25 bg-[#C8FF4D]/[0.07] px-4 py-1.5">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-4 py-1.5">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C8FF4D] opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C8FF4D]" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--lime)] opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--lime)]" />
               </span>
-              <span className="text-[11px] font-bold tracking-[0.22em] text-[#C8FF4D]">
+              <span className="text-[11px] font-bold tracking-[0.22em] text-[var(--lime)]">
                 MEMBERSHIP
               </span>
             </div>
@@ -433,7 +433,7 @@ export function PlanIntro({
                     className={cn(
                       "rounded-xl px-3 py-2 text-center transition",
                       active
-                        ? "border border-[#C8FF4D]/50 bg-[#C8FF4D]/10 shadow-[0_0_18px_rgba(200,255,77,0.12)]"
+                        ? "border border-[var(--lime-50)] bg-[var(--lime-10)] shadow-[0_0_18px_var(--lime-12)]"
                         : "border border-transparent hover:bg-white/5",
                     )}
                   >
@@ -447,7 +447,7 @@ export function PlanIntro({
                         {b.toUpperCase()}
                       </span>
                       {off > 0 && (
-                        <span className="rounded bg-[#C8FF4D] px-1 py-px text-[8px] font-bold text-[#0A0C0A]">
+                        <span className="rounded bg-[var(--lime)] px-1 py-px text-[8px] font-bold text-[var(--bg)]">
                           -{off}%
                         </span>
                       )}
@@ -508,7 +508,7 @@ export function PlanIntro({
                         className="pointer-events-none absolute -top-16 left-1/2 h-32 w-[260px] -translate-x-1/2 rotate-[-14deg] opacity-60"
                         style={{
                           background:
-                            "linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)",
+                            "linear-gradient(90deg, transparent, var(--glass-25), transparent)",
                           filter: "blur(6px)",
                         }}
                       />
@@ -560,7 +560,7 @@ export function PlanIntro({
                             /{unit}
                           </span>
                           {pct > 0 && billing === "annual" && (
-                            <span className="ml-auto rounded bg-[#FB7185]/15 px-1.5 py-0.5 text-[8px] font-bold text-rose-300">
+                            <span className="ml-auto rounded bg-[var(--rose-15)] px-1.5 py-0.5 text-[8px] font-bold text-rose-300">
                               SAVE {pct}%
                             </span>
                           )}
@@ -581,7 +581,7 @@ export function PlanIntro({
                           className="mt-3 h-1.5 rounded-full opacity-70"
                           style={{
                             background:
-                              "repeating-linear-gradient(90deg, rgba(255,255,255,0.35) 0 5px, rgba(255,255,255,0.05) 5px 9px)",
+                              "repeating-linear-gradient(90deg, var(--glass-35) 0 5px, var(--glass-05) 5px 9px)",
                           }}
                         />
                         <div className="mt-1.5 flex items-center justify-between text-[7px] tracking-[0.2em] text-white/30">
@@ -608,14 +608,14 @@ export function PlanIntro({
                   className={cn(
                     "flex-1 rounded-lg border px-1 py-1.5 text-center transition",
                     active
-                      ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/10"
+                      ? "border-[var(--lime-50)] bg-[var(--lime-10)]"
                       : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.16]",
                   )}
                 >
                   <div
                     className={cn(
                       "text-[8px] font-bold tracking-widest",
-                      active ? "text-[#C8FF4D]" : "text-muted-foreground/60",
+                      active ? "text-[var(--lime)]" : "text-muted-foreground/60",
                     )}
                   >
                     {p.name.toUpperCase()}
@@ -638,22 +638,22 @@ export function PlanIntro({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="relative overflow-hidden rounded-[20px] border border-dashed border-[#C8FF4D]/40 bg-gradient-to-r from-[#C8FF4D]/[0.08] to-transparent"
+                className="relative overflow-hidden rounded-[20px] border border-dashed border-[var(--lime-40)] bg-gradient-to-r from-[var(--lime-08)] to-transparent"
               >
                 <div className="relative flex items-center justify-between gap-2 px-4 py-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="rounded bg-[#C8FF4D] px-1 py-px text-[7px] font-black tracking-[0.18em] text-[#0A0C0A]">
+                      <span className="rounded bg-[var(--lime)] px-1 py-px text-[7px] font-black tracking-[0.18em] text-[var(--bg)]">
                         VIP WINTER
                       </span>
-                      <span className="text-[11px] font-bold tracking-[0.14em] text-[#C8FF4D]">
+                      <span className="text-[11px] font-bold tracking-[0.14em] text-[var(--lime)]">
                         {COUPON.code}
                       </span>
                     </div>
                     <div className="mt-1 text-[10px] text-muted-foreground/60">{COUPON.note}</div>
                   </div>
                   <div className="shrink-0 text-right">
-                    <div className="text-[9px] tracking-[0.14em] text-[#C8FF4D]/80">CASHBACK</div>
+                    <div className="text-[9px] tracking-[0.14em] text-[var(--lime-80)]">CASHBACK</div>
                     <div className="text-[18px] font-black leading-none text-white">
                       -{inr(COUPON.amount)}
                     </div>
@@ -684,12 +684,12 @@ export function PlanIntro({
                     className={cn(
                       "flex h-14 flex-col items-center justify-center gap-1 rounded-[18px] border text-[10px] font-medium transition",
                       active
-                        ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/10 text-[#C8FF4D] shadow-[0_0_16px_rgba(200,255,77,0.12)]"
+                        ? "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)] shadow-[0_0_16px_var(--lime-12)]"
                         : "border-white/[0.08] bg-black/25 text-muted-foreground/60 hover:border-white/[0.16]",
                     )}
                   >
                     {active && (
-                      <span className="pointer-events-none absolute inset-x-2 top-0 h-px bg-gradient-to-r from-transparent via-[#C8FF4D]/70 to-transparent" />
+                      <span className="pointer-events-none absolute inset-x-2 top-0 h-px bg-gradient-to-r from-transparent via-[var(--lime-70)] to-transparent" />
                     )}
                     <Icon size={15} />
                     {label}
@@ -710,7 +710,7 @@ export function PlanIntro({
                 <span>{inr(subtotal)}</span>
               </div>
               {couponOn && (
-                <div className="flex justify-between text-[#C8FF4D]">
+                <div className="flex justify-between text-[var(--lime)]">
                   <span>Code {COUPON.code}</span>
                   <span>-{inr(discount)}</span>
                 </div>
@@ -742,11 +742,11 @@ export function PlanIntro({
             <button
               type="button"
               onClick={confirm}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[#0A0C0A] transition active:scale-[0.98]"
+              className="group relative flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] transition active:scale-[0.98]"
               style={{
                 background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
                 boxShadow:
-                  "0 10px 30px rgba(200,255,77,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
+                  "0 10px 30px var(--lime-25), 0 1px 0 var(--glass-25) inset",
               }}
             >
               <Lock size={14} strokeWidth={2.5} className="relative" />

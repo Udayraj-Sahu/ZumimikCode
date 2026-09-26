@@ -90,12 +90,12 @@ function SectionTitle({ marker, title, tag }: { marker: string; title: string; t
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
-        <span className="grid h-6 w-6 place-items-center rounded-full border border-[#C8FF4D]/35 bg-[#C8FF4D]/10 text-[10px] font-black text-[#C8FF4D]">
+        <span className="grid h-6 w-6 place-items-center rounded-full border border-[var(--lime-35)] bg-[var(--lime-10)] text-[10px] font-black text-[var(--lime)]">
           {marker}
         </span>
         <h2 className="text-[10px] font-black tracking-[0.18em] text-foreground">{title}</h2>
       </div>
-      <span className="shrink-0 rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[8px] font-bold tracking-wider text-[#C8FF4D]">
+      <span className="shrink-0 rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]">
         {tag}
       </span>
     </div>
@@ -153,7 +153,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 className={cn(
                   "relative w-full overflow-hidden rounded-2xl border p-3.5 text-left transition",
                   selected
-                    ? "border-[#C8FF4D]/50 bg-[#C8FF4D]/[0.05]"
+                    ? "border-[var(--lime-50)] bg-[var(--lime-05)]"
                     : "border-white/[0.07] bg-black/25 hover:border-white/25",
                 )}
               >
@@ -163,7 +163,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                     className="pointer-events-none absolute inset-x-0 top-0 h-px"
                     style={{
                       background:
-                        "linear-gradient(90deg, transparent, rgba(200,255,77,0.5), transparent)",
+                        "linear-gradient(90deg, transparent, var(--lime-50), transparent)",
                     }}
                   />
                 )}
@@ -171,10 +171,10 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                   <span
                     className={cn(
                       "mt-0.5 grid size-5 shrink-0 place-items-center rounded-full border-2",
-                      selected ? "border-[#C8FF4D]" : "border-white/25",
+                      selected ? "border-[var(--lime)]" : "border-white/25",
                     )}
                   >
-                    {selected && <span className="size-2.5 rounded-full bg-[#C8FF4D]" />}
+                    {selected && <span className="size-2.5 rounded-full bg-[var(--lime)]" />}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
@@ -182,13 +182,13 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                         <div className="flex flex-wrap items-center gap-1.5">
                           <Crown
                             size={13}
-                            className={cn(selected ? "text-[#C8FF4D]" : "text-muted-foreground/50")}
+                            className={cn(selected ? "text-[var(--lime)]" : "text-muted-foreground/50")}
                           />
                           <h3 className="text-[12px] font-bold uppercase tracking-wide text-foreground">
                             {p.title}
                           </h3>
                           {selected && (
-                            <span className="rounded bg-[#C8FF4D] px-1.5 py-px text-[7px] font-bold tracking-wider text-[#0A0C0A]">
+                            <span className="rounded bg-[var(--lime)] px-1.5 py-px text-[7px] font-bold tracking-wider text-[var(--bg)]">
                               HOLDING THIS SEAT
                             </span>
                           )}
@@ -197,7 +197,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                           {p.desc}
                         </p>
                       </div>
-                      <div className="shrink-0 text-right text-[14px] font-bold text-[#C8FF4D]">
+                      <div className="shrink-0 text-right text-[14px] font-bold text-[var(--lime)]">
                         {inr(p.price)}
                         <span className="text-[9px] font-normal text-muted-foreground/50">
                           {" "}
@@ -209,7 +209,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                       <span className="flex items-center gap-1 text-[9px] text-muted-foreground/50">
                         <Clock size={10} /> {p.time}
                       </span>
-                      <span className="text-[8px] font-bold tracking-wider text-[#C8FF4D]">
+                      <span className="text-[8px] font-bold tracking-wider text-[var(--lime)]">
                         {p.tag}
                       </span>
                     </div>
@@ -235,7 +235,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 className={cn(
                   "w-full rounded-2xl border p-3.5 text-left transition",
                   added
-                    ? "border-[#C8FF4D]/40 bg-[#C8FF4D]/[0.04]"
+                    ? "border-[var(--lime-40)] bg-[var(--lime-04)]"
                     : "border-white/[0.07] bg-black/25 hover:border-white/25",
                 )}
               >
@@ -245,7 +245,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                       className={cn(
                         "grid h-9 w-9 shrink-0 place-items-center rounded-xl border",
                         added
-                          ? "border-[#C8FF4D]/30 bg-[#C8FF4D]/10 text-[#C8FF4D]"
+                          ? "border-[var(--lime-30)] bg-[var(--lime-10)] text-[var(--lime)]"
                           : "border-white/10 bg-white/[0.03] text-muted-foreground/60",
                       )}
                     >
@@ -271,7 +271,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                     className={cn(
                       "flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[8px] font-bold tracking-wider",
                       added
-                        ? "border-[#C8FF4D] bg-[#C8FF4D] text-[#0A0C0A]"
+                        ? "border-[var(--lime)] bg-[var(--lime)] text-[var(--bg)]"
                         : "border-white/20 text-muted-foreground/70",
                     )}
                   >
@@ -283,7 +283,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                   <span
                     className={cn(
                       "text-[8px] font-bold tracking-wider",
-                      added ? "text-[#C8FF4D]" : "text-muted-foreground/50",
+                      added ? "text-[var(--lime)]" : "text-muted-foreground/50",
                     )}
                   >
                     {s.tag}
@@ -292,7 +292,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                     <span className="mr-1.5 text-[10px] text-muted-foreground/50 line-through">
                       {inr(s.list)}
                     </span>
-                    <span className="text-[14px] font-bold text-[#C8FF4D]">
+                    <span className="text-[14px] font-bold text-[var(--lime)]">
                       {inr(stackPrice(s.list))}
                     </span>
                     <span className="text-[9px] text-muted-foreground/50"> /yr</span>
@@ -305,25 +305,25 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
       </section>
 
       {/* reservation receipt */}
-      <section className="relative overflow-hidden rounded-2xl border border-[#C8FF4D]/25 bg-[#0a0c0a] p-4">
+      <section className="relative overflow-hidden rounded-2xl border border-[var(--lime-25)] bg-[var(--bg)] p-4">
         <span
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.45), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--lime-45), transparent)",
           }}
         />
         <div className="flex items-start justify-between gap-2">
           <div>
-            <p className="text-[8px] font-black tracking-[0.2em] text-[#C8FF4D]">
+            <p className="text-[8px] font-black tracking-[0.2em] text-[var(--lime)]">
               YOUR RESERVATION
             </p>
             <h2 className="mt-1 text-[14px] font-black uppercase tracking-tight text-foreground">
               {seatCount} seat{seatCount > 1 ? "s" : ""} at the table
             </h2>
           </div>
-          <div className="shrink-0 rounded-xl border border-[#C8FF4D]/40 bg-[#C8FF4D]/10 px-3 py-1.5 text-center">
-            <div className="text-[14px] font-black leading-none text-[#C8FF4D]">
+          <div className="shrink-0 rounded-xl border border-[var(--lime-40)] bg-[var(--lime-10)] px-3 py-1.5 text-center">
+            <div className="text-[14px] font-black leading-none text-[var(--lime)]">
               {inr(monthly)}/mo
             </div>
             <div className="mt-0.5 text-[6px] tracking-widest text-muted-foreground/50">
@@ -342,11 +342,11 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
               <span className="shrink-0 font-bold text-foreground">{inr(l.amount)}</span>
             </li>
           ))}
-          <li className="flex items-center justify-between gap-2 rounded-lg border border-[#C8FF4D]/30 bg-[#C8FF4D]/[0.06] px-2.5 py-2 text-[10px]">
+          <li className="flex items-center justify-between gap-2 rounded-lg border border-[var(--lime-30)] bg-[var(--lime-06)] px-2.5 py-2 text-[10px]">
             <span className="text-muted-foreground/80">
               Vs 1-on-1 Private Tutors ({inr(PRIVATE_TUTOR_ANNUAL)}/yr)
             </span>
-            <span className="shrink-0 text-[9px] font-bold text-[#C8FF4D]">SAVE {savePct}%</span>
+            <span className="shrink-0 text-[9px] font-bold text-[var(--lime)]">SAVE {savePct}%</span>
           </li>
         </ul>
       </section>
@@ -435,18 +435,18 @@ export function SeatBuilderIntro({
           className="pointer-events-none absolute inset-0 opacity-[0.5]"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 22px)",
+              "repeating-linear-gradient(0deg, var(--glass-025) 0px, var(--glass-025) 1px, transparent 1px, transparent 22px)",
           }}
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[-80px] h-52 w-52 -translate-x-1/2 rounded-full bg-[#C8FF4D]/[0.12] blur-[90px]"
+          className="pointer-events-none absolute left-1/2 top-[-80px] h-52 w-52 -translate-x-1/2 rounded-full bg-[var(--lime-12)] blur-[90px]"
         />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
           }}
         />
 
@@ -482,10 +482,10 @@ export function SeatBuilderIntro({
 
         <button
           onClick={confirm}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
           style={{
             background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
-            boxShadow: "0 10px 34px rgba(163,230,53,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
+            boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
           }}
         >
           RESERVE YOUR SEATS FOR {inr(total)}/YR

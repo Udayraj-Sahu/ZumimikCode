@@ -207,7 +207,7 @@ function LearnPageContent() {
   }, [activeDomain]);
 
   const activeMode = MODES.find((m) => m.id === mode)!;
-  const outerBg = "linear-gradient(180deg, rgba(20,23,15,0.9) 0%, rgba(10,12,10,0.85) 100%)";
+  const outerBg = "linear-gradient(180deg, var(--blackgreen-90) 0%, var(--screen-tint-85) 100%)";
 
   const cardRef = useRef<HTMLDivElement | null>(null);
   const glowTopRef = useRef<HTMLDivElement | null>(null);
@@ -286,7 +286,7 @@ function LearnPageContent() {
                     style={{
                       opacity: isActive ? 1 : 0,
                       background:
-                        "linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)",
+                        "linear-gradient(90deg, transparent, var(--glass-70), transparent)",
                     }}
                   />
                   <div
@@ -295,14 +295,14 @@ function LearnPageContent() {
                       isActive
                         ? {
                             background:
-                              "linear-gradient(180deg, rgba(199,242,82,0.18), rgba(199,242,82,0.05))",
+                              "linear-gradient(180deg, var(--cta-18), var(--cta-05))",
                             boxShadow:
-                              "0 8px 18px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -2px 6px rgba(0,0,0,0.35)",
+                              "0 8px 18px var(--black-40), 0 2px 4px var(--black-30), inset 0 1px 0 var(--glass-35), inset 0 -2px 6px var(--black-35)",
                           }
                         : {
                             background: "rgba(255,255,255,0.02)",
                             boxShadow:
-                              "inset 0 2px 4px rgba(0,0,0,0.5), inset 0 -1px 1px rgba(255,255,255,0.04)",
+                              "inset 0 2px 4px var(--black-50), inset 0 -1px 1px var(--glass-bg)",
                           }
                     }
                   >
@@ -323,11 +323,11 @@ function LearnPageContent() {
                         isActive
                           ? {
                               color: "var(--accent)",
-                              textShadow: "0 1px 1px rgba(0,0,0,0.6)",
+                              textShadow: "0 1px 1px var(--black-60)",
                             }
                           : {
                               color: "rgba(255,255,255,0.5)",
-                              textShadow: "0 1px 2px rgba(0,0,0,0.8)",
+                              textShadow: "0 1px 2px var(--black-80)",
                             }
                       }
                     >
@@ -340,7 +340,7 @@ function LearnPageContent() {
                     style={{
                       opacity: isActive ? 1 : 0,
                       background:
-                        "radial-gradient(ellipse at center, rgba(0,0,0,0.5), transparent 70%)",
+                        "radial-gradient(ellipse at center, var(--black-50), transparent 70%)",
                       filter: "blur(4px)",
                     }}
                   />
@@ -401,7 +401,7 @@ function LearnPageContent() {
                           className={cn(
                             "text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all",
                             activeDomain === id
-                              ? "bg-gradient-to-r from-primary to-[#a8e62e] text-primary-foreground shadow-[0_0_12px_rgba(199,242,82,0.25)]"
+                              ? "bg-gradient-to-r from-primary to-[var(--lime-mid)] text-primary-foreground shadow-[0_0_12px_var(--cta-25)]"
                               : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
                           )}
                         >
@@ -483,7 +483,7 @@ function LearnPageContent() {
                         <button
                           type="button"
                           onClick={() => refetchDashboard()}
-                          className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                          className="mt-4 rounded-xl bg-cta text-[var(--bg)] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
                         >
                           Retry
                         </button>
@@ -519,15 +519,15 @@ function LearnPageContent() {
                     style={{
                       borderColor: GLASS_BORDER,
                       background:
-                        "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+                        "linear-gradient(135deg, var(--blue-06) 0%, var(--glass-03) 100%)",
                     }}
                   >
-                    <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#3B82F6] to-[#22D3EE]" />
+                    <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-[var(--blue)] to-[var(--cyan)]" />
                     <div className="flex items-center gap-2.5 mb-3">
-                      <div className="h-7 w-7 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
-                        <Sparkles size={14} className="text-[#3B82F6]" />
+                      <div className="h-7 w-7 rounded-lg bg-[var(--blue-10)] flex items-center justify-center">
+                        <Sparkles size={14} className="text-[var(--blue)]" />
                       </div>
-                      <p className="text-micro font-semibold tracking-[0.18em] text-[#3B82F6]/70 uppercase">
+                      <p className="text-micro font-semibold tracking-[0.18em] text-[var(--blue-70)] uppercase">
                         SENSEI INSIGHT
                       </p>
                     </div>
@@ -588,7 +588,7 @@ function LearnPageContent() {
                     setAddPrepGated(true);
                     setShowAddPrep(true);
                   }}
-                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 max-[359px]:px-3 max-[359px]:py-1.5 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 max-[359px]:px-3 max-[359px]:py-1.5 text-[11px] font-bold text-[var(--bg)] transition-all hover:opacity-90 active:scale-95"
                 >
                   <Plus size={12} strokeWidth={3} /> ADD PREP
                 </button>
@@ -628,14 +628,14 @@ function LearnPageContent() {
                               className="absolute inset-0 rounded-2xl"
                               style={{
                                 background: "linear-gradient(180deg, #d7ff7e, #a8e62e)",
-                                boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)",
+                                boxShadow: "0 6px 16px -4px var(--cta-40)",
                               }}
                             />
                           )}
                           <span
                             className="relative flex items-center gap-2 transition-colors duration-300"
                             style={{
-                              textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none",
+                              textShadow: active ? "0 1px 0 var(--glass-35)" : "none",
                             }}
                           >
                             {isPrimary ? (
@@ -719,7 +719,7 @@ function LearnPageContent() {
                     {prepExams.length === 0 && justExploring
                       ? "Random Test"
                       : DOMAIN_LABELS[primaryExam] || "Mock"}{" "}
-                    <span className="bg-gradient-to-r from-primary to-[#d4ff6e] bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-primary to-[var(--lime-pale)] bg-clip-text text-transparent">
                       {prepExams.length === 0 && justExploring ? "Prep" : "Papers"}
                     </span>
                   </h2>
@@ -735,7 +735,7 @@ function LearnPageContent() {
                     setAddPrepGated(true);
                     setShowAddPrep(true);
                   }}
-                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 max-[359px]:px-3 max-[359px]:py-1.5 text-[11px] font-bold text-[#0A0C0A] transition-all hover:opacity-90 active:scale-95"
+                  className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 max-[359px]:px-3 max-[359px]:py-1.5 text-[11px] font-bold text-[var(--bg)] transition-all hover:opacity-90 active:scale-95"
                 >
                   <Plus size={12} strokeWidth={3} /> ADD PREP
                 </button>
@@ -775,14 +775,14 @@ function LearnPageContent() {
                               className="absolute inset-0 rounded-2xl"
                               style={{
                                 background: "linear-gradient(180deg, #d7ff7e, #a8e62e)",
-                                boxShadow: "0 6px 16px -4px rgba(199,242,82,0.4)",
+                                boxShadow: "0 6px 16px -4px var(--cta-40)",
                               }}
                             />
                           )}
                           <span
                             className="relative flex items-center gap-2 transition-colors duration-300"
                             style={{
-                              textShadow: active ? "0 1px 0 rgba(255,255,255,0.35)" : "none",
+                              textShadow: active ? "0 1px 0 var(--glass-35)" : "none",
                             }}
                           >
                             {isPrimary ? (
@@ -845,7 +845,7 @@ function LearnPageContent() {
                           className={cn(
                             "shrink-0 rounded-full px-3.5 py-1.5 max-[359px]:px-3 whitespace-nowrap text-[11px] font-semibold transition-all",
                             mockSection === sec
-                              ? "bg-gradient-to-r from-primary to-[#a8e62e] text-[#0A0C0A]"
+                              ? "bg-gradient-to-r from-primary to-[var(--lime-mid)] text-[var(--bg)]"
                               : "border border-white/[0.07] text-muted-foreground/60 hover:bg-white/[0.05]",
                           )}
                         >
@@ -939,7 +939,7 @@ function LearnPageContent() {
                                 `/learn/mock/run?paper=${paper.id}&domain=${mockExamDomain}`,
                               );
                             }}
-                            className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] px-4 py-2 max-[359px]:px-3 whitespace-nowrap text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[var(--lime-mid)] px-4 py-2 max-[359px]:px-3 whitespace-nowrap text-[11px] font-bold uppercase tracking-wider text-[var(--bg)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                           >
                             <Play size={12} strokeWidth={2.5} /> Take Test
                           </button>
@@ -956,7 +956,7 @@ function LearnPageContent() {
                     <button
                       type="button"
                       onClick={() => refetchPapers()}
-                      className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                      className="mt-4 rounded-xl bg-cta text-[var(--bg)] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
                     >
                       Retry
                     </button>

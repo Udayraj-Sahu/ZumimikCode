@@ -207,7 +207,7 @@ export default function AuthPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))" }}>
+        <div className="rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, var(--glass-bg), var(--glass-01))" }}>
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-xl grid place-items-center" style={{ background: `${ACCENT}1A` }}>
               <MonitorSmartphone size={18} style={{ color: ACCENT }} />
@@ -225,7 +225,7 @@ export default function AuthPage() {
               <button
                 type="button"
                 onClick={() => boot.current?.()}
-                className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[#0A0C0A] transition-all active:scale-95"
+                className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 <RefreshCw size={13} /> Retry
@@ -234,7 +234,7 @@ export default function AuthPage() {
           ) : !showScannerHint && (status === "approved" || alreadyApproved) ? (
             <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
               <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(52,211,153,0.12)" }}>
-                <Check size={24} className="text-[#34D399]" />
+                <Check size={24} className="text-[var(--emerald)]" />
               </div>
               <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Linked successfully</p>
               <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">Redirecting to your dashboard…</p>
@@ -242,14 +242,14 @@ export default function AuthPage() {
           ) : expired ? (
             <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
               <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(255,92,92,0.12)" }}>
-                <Timer size={24} className="text-[#ff5c5c]" />
+                <Timer size={24} className="text-[var(--red-soft)]" />
               </div>
               <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Code expired</p>
               <p className="mt-1 text-[11px] text-muted-foreground/45 font-normal">This pairing code is no longer valid.</p>
               <button
                 type="button"
                 onClick={() => boot.current?.()}
-                className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[#0A0C0A] transition-all active:scale-95"
+                className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
                 style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
               >
                 <RefreshCw size={13} /> Generate new code
@@ -260,13 +260,13 @@ export default function AuthPage() {
               <div className="mt-5 flex justify-center">
                 <div className="relative">
                   <QrGrid token={code || "PENDING"} />
-                  <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "0 0 30px rgba(199,242,82,0.25) inset" }} />
+                  <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "0 0 30px var(--cta-25) inset" }} />
                 </div>
               </div>
 
               <div className="mt-4 flex items-center justify-center gap-2">
                 <button type="button" onClick={handleCopy} disabled={!code} className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[11px] font-bold text-foreground/70 transition-all hover:bg-white/[0.07] active:scale-95 disabled:opacity-50">
-                  {copied ? <Check size={13} className="text-[#34D399]" /> : <Copy size={13} />}
+                  {copied ? <Check size={13} className="text-[var(--emerald)]" /> : <Copy size={13} />}
                   {copied ? "Code copied" : code ? `Code: ${code}` : "Generating code…"}
                 </button>
               </div>
@@ -285,7 +285,7 @@ export default function AuthPage() {
                       </div>
                       <span className="flex-1 text-[12px] text-muted-foreground/70 font-medium">{s.text}</span>
                       {i === 0 && status === "scanned" && (
-                        <span className="flex items-center gap-1 text-micro font-bold text-[#34D399]">
+                        <span className="flex items-center gap-1 text-micro font-bold text-[var(--emerald)]">
                           <Loader2 size={11} className="animate-spin" /> Device detected
                         </span>
                       )}
@@ -307,7 +307,7 @@ export default function AuthPage() {
             <button
               type="button"
               onClick={() => boot.current?.()}
-              className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[#0A0C0A] transition-all active:scale-95"
+              className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95"
               style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
             >
               <RefreshCw size={15} /> New code

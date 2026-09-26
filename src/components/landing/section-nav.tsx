@@ -51,7 +51,7 @@ export function SectionNav() {
                 height: 32,
                 background:
                   i <= active
-                    ? "linear-gradient(to bottom, #C8FF5A, rgba(200,255,90,0.3))"
+                    ? "linear-gradient(to bottom, #C8FF5A, var(--lime-bright-30))"
                     : "rgba(255,255,255,0.08)",
               }}
               animate={{ opacity: 1 }}

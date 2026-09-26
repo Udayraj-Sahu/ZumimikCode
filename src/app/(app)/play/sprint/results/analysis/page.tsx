@@ -38,7 +38,7 @@ export default function AnalysisPage() {
         <button
           type="button"
           onClick={() => router.push("/play/configure-sprint")}
-          className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 rounded-xl bg-cta text-[var(--bg)] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Start a Sprint
         </button>
@@ -60,7 +60,7 @@ export default function AnalysisPage() {
           <button
             type="button"
             onClick={() => router.push("/play/sprint/results")}
-            className="md:flex-1 rounded-3xl bg-cta text-[#0A0C0A] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+            className="md:flex-1 rounded-3xl bg-cta text-[var(--bg)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
           >
             Back to Results
           </button>

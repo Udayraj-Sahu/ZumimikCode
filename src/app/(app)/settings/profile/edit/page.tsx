@@ -134,7 +134,7 @@ export default function EditProfilePage() {
             "mt-8 flex w-full items-center justify-center gap-2 rounded-3xl py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring max-[359px]:py-3 whitespace-nowrap",
             saved
               ? "bg-primary/30 text-primary/60 cursor-not-allowed"
-              : "bg-cta text-[#0A0C0A] hover:opacity-90 active:scale-[0.98]",
+              : "bg-cta text-[var(--bg)] hover:opacity-90 active:scale-[0.98]",
           )}
         >
           {saved ? (

@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground px-6 text-center relative overflow-hidden">
       <div className="absolute inset-0" style={{
-        background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(200,255,90,0.03) 0%, transparent 60%)",
+        background: "radial-gradient(ellipse 60% 50% at 50% 50%, var(--lime-bright-03) 0%, transparent 60%)",
       }} />
 
       <div className="relative flex items-center justify-center mb-8">
@@ -25,7 +25,7 @@ export default function NotFound() {
           />
         ))}
         <h1 className="font-display text-[clamp(100px,20vw,200px)] font-bold leading-none select-none"
-          style={{ color: "#C8FF5A", textShadow: "0 0 60px rgba(200,255,90,0.3), 0 0 120px rgba(200,255,90,0.1)" }}>
+          style={{ color: "#C8FF5A", textShadow: "0 0 60px var(--lime-bright-30), 0 0 120px var(--lime-bright-10)" }}>
           404
         </h1>
       </div>

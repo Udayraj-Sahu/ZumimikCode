@@ -29,7 +29,7 @@ type Variant = "this_year" | "whenever" | "not_sure" | "vedic";
 type Tone = "lime" | "cyan" | "fuchsia";
 
 const iconTones: Record<Tone, string> = {
-  lime: "border-[#C8FF4D]/50 bg-[#C8FF4D]/10 text-[#C8FF4D]",
+  lime: "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)]",
   cyan: "border-cyan-400/50 bg-cyan-400/10 text-cyan-400",
   fuchsia: "border-fuchsia-400/50 bg-fuchsia-400/10 text-fuchsia-400",
 };
@@ -148,7 +148,7 @@ function SystemCarousel() {
             className={cn(
               "absolute inset-x-0 left-1/2 top-1/2 w-[90%] cursor-pointer rounded-2xl border p-4 text-left transition-colors",
               isCenter
-                ? "border-[#C8FF4D]/40 bg-[#161a14] shadow-[0_0_40px_rgba(200,255,77,0.15)]"
+                ? "border-[var(--lime-40)] bg-[var(--panel-warm)] shadow-[0_0_40px_var(--lime-15)]"
                 : "border-white/10 bg-white/[0.03]",
             )}
           >
@@ -179,7 +179,7 @@ function SystemCarousel() {
             transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
             className="flex items-center gap-1.5 text-muted-foreground"
           >
-            <ChevronUp size={11} className="text-[#C8FF4D]/70" />
+            <ChevronUp size={11} className="text-[var(--lime-70)]" />
             <span className=" text-[9px] uppercase tracking-[0.18em] text-muted-foreground/70">
               Swipe up for more details
             </span>
@@ -194,7 +194,7 @@ function SystemCarousel() {
 }
 
 const FACTS: { value: string; label: string; valueClass: string }[] = [
-  { value: "5", label: "Exam tracks", valueClass: "text-[#C8FF4D]" },
+  { value: "5", label: "Exam tracks", valueClass: "text-[var(--lime)]" },
   { value: "2", label: "Free mock papers", valueClass: "text-cyan-400" },
   { value: "Daily", label: "Drill routine", valueClass: "text-fuchsia-400" },
 ];
@@ -333,7 +333,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
         <div
           className="relative flex h-full w-full flex-col overflow-hidden md:h-auto md:min-h-0 md:max-w-md md:max-h-[90vh] md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
           style={{
-            background: "linear-gradient(180deg, rgba(10,12,10,0.99) 0%, rgba(14,17,13,0.99) 100%)",
+            background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
           }}
         >
           <motion.div
@@ -345,7 +345,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-px"
             style={{
-              background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+              background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
             }}
           />
 
@@ -359,8 +359,8 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm"
               >
-                <Sparkles size={12} className="text-[#C8FF4D]" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8FF4D]/85">
+                <Sparkles size={12} className="text-[var(--lime)]" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--lime-85)]">
                   {copy.pill}
                 </span>
               </motion.div>
@@ -448,7 +448,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                 e.stopPropagation();
                 exit(onDone);
               }}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-[#a8e62e] py-3 text-[11px] font-bold uppercase tracking-wider text-[#0A0C0A] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-[var(--lime-mid)] py-3 text-[11px] font-bold uppercase tracking-wider text-[var(--bg)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
             >
               Enter Exam Arena{" "}
               <motion.span

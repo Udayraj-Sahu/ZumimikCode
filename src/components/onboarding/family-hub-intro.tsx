@@ -166,7 +166,7 @@ export function FamilyHubIntro({
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-[0.5]"
           style={{
-            backgroundImage: "radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(var(--glass-045) 1px, transparent 1px)",
             backgroundSize: "26px 26px",
           }}
         />
@@ -174,7 +174,7 @@ export function FamilyHubIntro({
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{
-            background: "linear-gradient(90deg, transparent, rgba(200,255,77,0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
           }}
         />
 
@@ -187,7 +187,7 @@ export function FamilyHubIntro({
             >
               Whole house.
               <br />
-              <span className="text-[#C8FF4D]">One plan.</span>
+              <span className="text-[var(--lime)]">One plan.</span>
             </h1>
           </FadeUp>
 
@@ -206,7 +206,7 @@ export function FamilyHubIntro({
                 <span className="text-[9px] font-bold tracking-[0.2em] text-muted-foreground/70">
                   OPEN SEATS
                 </span>
-                <span className="rounded-full border border-[#C8FF4D]/25 bg-[#C8FF4D]/10 px-2 py-px text-[8px] font-bold text-[#C8FF4D]">
+                <span className="rounded-full border border-[var(--lime-25)] bg-[var(--lime-10)] px-2 py-px text-[8px] font-bold text-[var(--lime)]">
                   ADD ON PASS
                 </span>
               </div>
@@ -216,7 +216,7 @@ export function FamilyHubIntro({
                     key={id}
                     className="rounded-xl border border-white/[0.06] bg-black/30 px-2 py-2.5 text-center"
                   >
-                    <Icon size={14} className="mx-auto text-[#C8FF4D]" />
+                    <Icon size={14} className="mx-auto text-[var(--lime)]" />
                     <div className="mt-1.5 text-[10px] font-bold text-foreground">{label}</div>
                     <div className="text-[8.5px] leading-snug text-muted-foreground/60">{desc}</div>
                   </div>
@@ -230,7 +230,7 @@ export function FamilyHubIntro({
           <FadeUp delay={280}>
             <div className="rounded-[18px] border border-white/[0.08] bg-white/[0.03] p-3.5">
               <div className="mb-3 flex items-center gap-1.5">
-                <Home size={12} className="text-[#C8FF4D]" />
+                <Home size={12} className="text-[var(--lime)]" />
                 <span className="text-[9px] font-bold tracking-[0.2em] text-muted-foreground/70">
                   SHARED FAMILY WALL
                 </span>
@@ -238,7 +238,7 @@ export function FamilyHubIntro({
               <ul className="space-y-2.5">
                 {WALL.map(({ Icon, title, desc }) => (
                   <li key={title} className="flex items-start gap-3">
-                    <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-[#C8FF4D]">
+                    <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-[var(--lime)]">
                       <Icon size={13} />
                     </span>
                     <div className="min-w-0">
@@ -256,11 +256,11 @@ export function FamilyHubIntro({
 
         <div className="mt-4">
           <FadeUp delay={360}>
-            <div className="rounded-[18px] border border-[#C8FF4D]/20 bg-[#C8FF4D]/[0.04] p-4">
+            <div className="rounded-[18px] border border-[var(--lime-20)] bg-[var(--lime-04)] p-4">
               <ul className="space-y-2.5">
                 {SAVINGS.map(({ Icon, title, text }) => (
                   <li key={title} className="flex items-center gap-3">
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[#C8FF4D]/25 bg-black/30 text-[#C8FF4D]">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[var(--lime-25)] bg-black/30 text-[var(--lime)]">
                       <Icon size={14} />
                     </span>
                     <div className="min-w-0">
@@ -280,11 +280,11 @@ export function FamilyHubIntro({
           <FadeUp delay={440}>
             <button
               onClick={() => exit(onDone)}
-              className="flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[#0A0C0A] transition hover:brightness-110 active:scale-[0.98]"
+              className="flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
               style={{
                 background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
                 boxShadow:
-                  "0 10px 34px rgba(163,230,53,0.25), 0 1px 0 rgba(255,255,255,0.25) inset",
+                  "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
               }}
             >
               CONFIGURE HOUSEHOLD SEATS
