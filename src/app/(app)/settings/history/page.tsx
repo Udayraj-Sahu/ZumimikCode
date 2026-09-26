@@ -1,19 +1,18 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { Clock, Zap, Award, ChevronRight, Check, X, Filter, ArrowUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useHistory } from "@/hooks/queries/use-history";
 import { getTopicFilters, DIFFICULTY_FILTER } from "@/lib/mock/history";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { HistoryEntry } from "@/lib/types/history";
 import { usePageMeta } from "@/hooks/use-page-meta";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG } from "@/lib/theme-tokens";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -90,33 +89,21 @@ export default function HistoryPage() {
   const perPage = 10;
   const listRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, staggerIn, reduced } = useEntranceAnimations();
 
   useEffect(() => {
     if (listRef.current && entries && entries.length > 0) {
       const rows = listRef.current.querySelectorAll<HTMLElement>("[data-history-row]");
-      if (rows.length) {
-        gsap.fromTo(rows, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.3, stagger: 0.04, ease: "power2.out" });
-      }
+      staggerIn(rows, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.3, stagger: 0.04, ease: "power2.out" });
     }
-  }, [entries, topicFilter, diffFilter, sortAsc, page]);
+  }, [entries, topicFilter, diffFilter, sortAsc, page, staggerIn]);
 
   useEffect(() => {
+    if (reduced) return;
     if (detailRef.current && selected) {
       gsap.fromTo(detailRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
     }
-  }, [selected]);
+  }, [selected, reduced]);
 
   const filtered = (entries ?? []).filter((e) => {
     if (topicFilter !== "all" && e.topic !== topicFilter) return false;

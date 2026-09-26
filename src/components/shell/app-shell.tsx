@@ -8,6 +8,7 @@ import { LogOut, Zap, Flame, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useAuthStore } from "@/stores/auth-store";
+import { resetAppState } from "@/lib/reset-app-state";
 import { Walkthrough } from "@/components/shell/walkthrough";
 import { RatePrompt } from "@/components/shell/rate-prompt";
 
@@ -18,7 +19,6 @@ const EXAM_ROUTES = ["/play/sprint", "/learn/mock/run", "/learn/practice"];
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const logout = useAuthStore((s) => s.logout);
   const user = useAuthStore((s) => s.user);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
@@ -186,7 +186,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </span>
             <button
               type="button"
-              onClick={() => { logout(); router.push("/"); }}
+              onClick={() => { void resetAppState().then(() => router.push("/")); }}
               aria-label="Logout"
               className="grid size-11 shrink-0 place-items-center rounded-lg text-chrome-muted outline-none transition-colors hover:bg-white/5 hover:text-chrome-foreground focus-visible:ring-2 focus-visible:ring-ring"
             >

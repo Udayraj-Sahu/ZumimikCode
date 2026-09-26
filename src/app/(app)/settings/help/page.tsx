@@ -1,16 +1,15 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ChevronDown, HelpCircle, Mail, FileText, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useHelpData } from "@/hooks/queries/use-help";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { FaqItem } from "@/lib/types/help";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG } from "@/lib/theme-tokens";
 
 function FaqAccordion({ items }: { items: FaqItem[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -79,27 +78,14 @@ export default function HelpPage() {
   usePageMeta("Help & About — Exam Arena");
   const { data, isLoading, error } = useHelpData();
   const sectionsRef = useRef<HTMLDivElement>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, staggerIn } = useEntranceAnimations();
 
   useEffect(() => {
     if (sectionsRef.current && data) {
       const cards = sectionsRef.current.querySelectorAll<HTMLElement>("[data-help-section]");
-      if (cards.length) {
-        gsap.fromTo(cards, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" });
-      }
+      staggerIn(cards, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.08, ease: "power2.out" });
     }
-  }, [data]);
+  }, [data, staggerIn]);
 
   return (
     <PageContainer>

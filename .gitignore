@@ -4,3 +4,8 @@ out/
 public/sw.js
 *.local
 .DS_Store
+
+# build/test artifacts
+tsconfig.tsbuildinfo
+playwright-report/
+test-results/

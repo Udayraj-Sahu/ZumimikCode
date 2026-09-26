@@ -35,9 +35,7 @@ import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 const tabVariants: Variants = {
   initial: { opacity: 0, y: 8, scale: 0.995 },
@@ -168,9 +166,9 @@ function LearnPageContent() {
     return target || prepExams[0] || (justExploring ? "vedic-math" : "");
   }, [targetExam, prepExams, justExploring]);
 
-  const { data } = useDashboardData(activeDomain);
+  const { data, isLoading: dashLoading, isError: dashError, refetch: refetchDashboard } = useDashboardData(activeDomain);
   const mockExamDomain = prepExams.length === 0 && justExploring ? "random" : primaryExam;
-  const { data: mockPapers, isLoading: mockLoading } = useMockPapers(mockExamDomain);
+  const { data: mockPapers, isLoading: mockLoading, isError: mockError, refetch: refetchPapers } = useMockPapers(mockExamDomain);
   const topics = data?.topics ?? [];
 
   const mockStats = useMemo<StatsSummary>(() => {
@@ -476,7 +474,23 @@ function LearnPageContent() {
                       );
                     })}
 
-                    {topics.length === 0 && (
+                    {dashError && (
+                      <div
+                        className="rounded-3xl border border-dashed border-red-500/30 py-10 text-center md:col-span-2"
+                        style={{ background: GLASS_BG }}
+                      >
+                        <p className="text-[13px] font-semibold text-destructive">Could not load topics.</p>
+                        <button
+                          type="button"
+                          onClick={() => refetchDashboard()}
+                          className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          Retry
+                        </button>
+                      </div>
+                    )}
+
+                    {!dashLoading && !dashError && topics.length === 0 && (
                       <div
                         className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center md:col-span-2"
                         style={{ background: GLASS_BG }}
@@ -933,7 +947,23 @@ function LearnPageContent() {
                       </div>
                     ))}
 
-                {!mockLoading && (mockPapers ?? []).length === 0 && (
+                {mockError && (
+                  <div
+                    className="rounded-3xl border border-dashed border-red-500/30 py-12 text-center md:col-span-2"
+                    style={{ background: GLASS_BG }}
+                  >
+                    <p className="text-[13px] font-semibold text-destructive">Could not load mock papers.</p>
+                    <button
+                      type="button"
+                      onClick={() => refetchPapers()}
+                      className="mt-4 rounded-xl bg-cta text-[#0A0C0A] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                )}
+
+                {!mockLoading && !mockError && (mockPapers ?? []).length === 0 && (
                   <div
                     className="rounded-3xl border border-dashed border-white/[0.06] py-12 text-center md:col-span-2"
                     style={{ background: GLASS_BG }}

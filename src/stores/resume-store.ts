@@ -26,6 +26,7 @@ type ResumeStoreState = {
   snapshot: ResumeSnapshot | null;
   saveSnapshot: (s: ResumeSnapshot) => void;
   clearSnapshot: () => void;
+  reset: () => void;
 };
 
 export const useResumeStore = create<ResumeStoreState>()(
@@ -34,6 +35,7 @@ export const useResumeStore = create<ResumeStoreState>()(
       snapshot: null,
       saveSnapshot: (s) => set({ snapshot: s }),
       clearSnapshot: () => set({ snapshot: null }),
+      reset: () => set({ snapshot: null }),
     }),
     {
       name: "exam-arena-resume",

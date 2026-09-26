@@ -15,6 +15,7 @@ type PlanStoreState = {
   setPro: () => void;
   recordMock: () => void;
   resetMocks: () => void;
+  reset: () => void;
 };
 
 export const usePlanStore = create<PlanStoreState>()(
@@ -29,6 +30,7 @@ export const usePlanStore = create<PlanStoreState>()(
       setPro: () => set({ plan: "pro" }),
       recordMock: () => set((s) => ({ mocksTaken: s.mocksTaken + 1 })),
       resetMocks: () => set({ mocksTaken: 0 }),
+      reset: () => set({ plan: "free", mocksTaken: 0 }),
     }),
     {
       name: "exam-arena-plan",

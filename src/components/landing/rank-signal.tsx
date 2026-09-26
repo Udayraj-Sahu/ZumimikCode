@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring } from "motion/react";
 import { AuthModal } from "@/components/onboarding/auth-modal";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth-store";
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 
 const RINGS = [
   { delay: 0, size: 180, opacity: 0.4 },
@@ -32,13 +33,15 @@ export function RankSignal() {
   const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const rafRef = useRef<number>(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
     const interval = setInterval(() => {
       setStatIndex((i) => (i + 1) % STATS.length);
     }, 2800);
     return () => clearInterval(interval);
-  }, []);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     const el = document.getElementById("hero-buttons-sentinel");

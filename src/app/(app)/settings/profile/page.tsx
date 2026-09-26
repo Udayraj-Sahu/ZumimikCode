@@ -11,12 +11,25 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 export default function ProfilePage() {
   usePageMeta("Profile — Exam Arena");
-  const { data, isLoading } = useProfileData();
+  const { data, isLoading, error } = useProfileData();
 
   if (isLoading || !data) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        {error ? (
+          <div className="text-center">
+            <p className="text-[13px] text-destructive">{error instanceof Error ? error.message : "Something went wrong"}</p>
+            <button
+              type="button"
+              onClick={() => location.reload()}
+              className="mt-4 rounded-xl bg-cta px-6 py-3 text-[12px] font-bold uppercase tracking-wider text-[#0A0C0A]"
+            >
+              Retry
+            </button>
+          </div>
+        ) : (
+          <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        )}
       </div>
     );
   }

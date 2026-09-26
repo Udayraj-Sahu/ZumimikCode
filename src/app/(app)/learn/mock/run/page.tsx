@@ -10,15 +10,14 @@ import { useMockPaperSession } from "@/hooks/queries/use-mock-exam";
 import { useSprintStore } from "@/stores/sprint-store";
 import { useResumeStore, type ResumeSnapshot } from "@/stores/resume-store";
 import { useFeedback } from "@/lib/use-feedback";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { Question } from "@/lib/types/sprint-session";
 import TrustBadge from "@/components/ui/trust-badge";
 import ContentFeedback from "@/components/ui/content-feedback";
 import { ExamShell } from "@/components/exam/exam-shell";
 import { QuestionNavigator } from "@/components/exam/question-navigator";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -137,6 +136,12 @@ function MockRunContent() {
   }, [status, timeLeft, tick]);
 
   useEffect(() => {
+    return () => {
+      if (autoAdvanceRef.current) clearTimeout(autoAdvanceRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
     if (status === "active" && timeLeft <= 0) {
       finishMock();
     }
@@ -230,15 +235,13 @@ function MockRunContent() {
     jumpTo(index);
   };
 
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
+  const { headerRef, reduced } = useEntranceAnimations();
 
   const questionRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) {
+    if (el && !reduced) {
       gsap.fromTo(el, { opacity: 0, x: 16 }, { opacity: 1, x: 0, duration: 0.25, ease: "power2.out" });
     }
-  }, []);
+  }, [reduced]);
 
   if (!paperId) {
     return (

@@ -20,13 +20,13 @@ export function usePollPairingStatus() {
 }
 
 export function useScanPairingCode() {
-  return useMutation<boolean, Error, { sessionId: string; code: string }>({
-    mutationFn: ({ sessionId, code }) => scanPairingCode(sessionId, code),
+  return useMutation<boolean, Error, string>({
+    mutationFn: (code) => scanPairingCode(code),
   });
 }
 
 export function useApprovePairing() {
-  return useMutation<PairingApproval, Error, { sessionId: string; code: string }>({
-    mutationFn: ({ sessionId, code }) => approvePairing(sessionId, code),
+  return useMutation<PairingApproval, Error, string>({
+    mutationFn: (code) => approvePairing(code),
   });
 }

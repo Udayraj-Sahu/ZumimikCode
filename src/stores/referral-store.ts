@@ -27,6 +27,7 @@ type ReferralState = {
   ensureCode: (name?: string) => void;
   markInvited: () => void;
   awardJoin: () => void;
+  reset: () => void;
 };
 
 export const useReferralStore = create<ReferralState>()(
@@ -43,6 +44,7 @@ export const useReferralStore = create<ReferralState>()(
 
       markInvited: () => set((s) => ({ invitesSent: s.invitesSent + 1 })),
       awardJoin: () => set((s) => ({ friendsJoined: s.friendsJoined + 1 })),
+      reset: () => set({ code: null, invitesSent: 0, friendsJoined: 0 }),
     }),
     {
       name: "exam-arena-referral",

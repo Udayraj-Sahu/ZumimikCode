@@ -7,9 +7,7 @@ import { ChevronLeft, Check, X, TrendingUp, Lightbulb, BookOpen } from "lucide-r
 import { useSprintStore } from "@/stores/sprint-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { SprintResult } from "@/lib/types/sprint-session";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function AnalysisPage() {
   usePageMeta("Analysis — Exam Arena");

@@ -8,6 +8,7 @@ type User = {
   name: string;
   email: string;
   role: string;
+  phone?: string;
 };
 
 type AuthState = {
@@ -22,6 +23,7 @@ type AuthState = {
   setToken: (token: string | null) => void;
   setRefreshToken: (token: string | null) => void;
   completeOnboarding: () => void;
+  updateUser: (patch: Partial<Pick<User, "name" | "email" | "phone">>) => void;
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -89,6 +91,11 @@ export const useAuthStore = create<AuthState>()(
       completeOnboarding: () => {
         set({ isOnboarded: true });
       },
+
+      updateUser: (patch) =>
+        set((s) => ({
+          user: s.user ? { ...s.user, ...patch } : s.user,
+        })),
     }),
     {
       name: "exam-arena-auth",

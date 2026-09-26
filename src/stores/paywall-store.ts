@@ -7,6 +7,7 @@ type PaywallStoreState = {
   action: PaywallAction | null;
   openPaywall: (action: PaywallAction) => void;
   closePaywall: () => void;
+  reset: () => void;
 };
 
 export const usePaywallStore = create<PaywallStoreState>((set) => ({
@@ -14,4 +15,5 @@ export const usePaywallStore = create<PaywallStoreState>((set) => ({
   action: null,
   openPaywall: (action) => set({ open: true, action }),
   closePaywall: () => set({ open: false, action: null }),
+  reset: () => set({ open: false, action: null }),
 }));

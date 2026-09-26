@@ -1,6 +1,15 @@
 import { db } from "./db";
 import { useNetworkStore, type QueuedMutation } from "@/stores/network-store";
+import { useAuthStore } from "@/stores/auth-store";
 import { apiUrl } from "@/lib/config";
+
+const MAX_SYNC_RETRIES = 3;
+
+function getAuthHeaders(): Record<string, string> {
+  const token = useAuthStore.getState().token;
+  if (!token) return {};
+  return { Authorization: `Bearer ${token}` };
+}
 
 export async function cacheQueryData(key: string, data: unknown, trustStatus?: string): Promise<void> {
   await db.dashboardCache.put({
@@ -30,17 +39,31 @@ export async function clearExpiredCache(): Promise<void> {
   await Promise.all(expired.map((e) => db.dashboardCache.delete(e.id)));
 }
 
+let syncInFlight: Promise<void> | null = null;
+
 export async function syncAll(): Promise<void> {
-  const queue = useNetworkStore.getState().syncQueue;
-  if (!queue.length) return;
+  if (syncInFlight) return syncInFlight;
+  syncInFlight = doSyncAll().finally(() => {
+    syncInFlight = null;
+  });
+  return syncInFlight;
+}
+
+async function doSyncAll(): Promise<void> {
+  const { syncQueue } = useNetworkStore.getState();
+  if (!syncQueue.length) return;
 
   const { removeFromQueue } = useNetworkStore.getState();
+  if (!useAuthStore.getState().token) return;
 
   const results = await Promise.allSettled(
-    queue.map(async (mutation: QueuedMutation) => {
+    syncQueue.map(async (mutation: QueuedMutation) => {
       const res = await fetch(apiUrl(`/sync/${mutation.key}`), {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...getAuthHeaders(),
+        },
         body: JSON.stringify(mutation.payload),
       });
       if (!res.ok) throw new Error(`Sync failed for ${mutation.key}: ${res.status}`);
@@ -55,6 +78,30 @@ export async function syncAll(): Promise<void> {
       if (mutation.key === "content/feedback") {
         await db.feedbackQueue.delete(mutation.id);
       }
+      continue;
+    }
+    await dropUnrecoverableSyncs(result.reason);
+  }
+}
+
+async function dropUnrecoverableSyncs(error: unknown): Promise<void> {
+  if (!(error instanceof Error)) return;
+  const m = /Sync failed for ([\w/]+): (\d+)/.exec(error.message);
+  if (!m) return;
+  const key = m[1];
+  const status = Number(m[2]);
+  if (status < 400 || status >= 500) return;
+  if (key !== "content/feedback") return;
+
+  const queued = await db.feedbackQueue.toArray();
+  for (const f of queued) {
+    if (f.retryCount + 1 >= MAX_SYNC_RETRIES) {
+      await db.feedbackQueue.delete(f.id);
+      useNetworkStore.getState().removeFromQueue(f.id);
+    } else {
+      await db.feedbackQueue.update(f.id, (entry) => {
+        entry.retryCount += 1;
+      });
     }
   }
 }

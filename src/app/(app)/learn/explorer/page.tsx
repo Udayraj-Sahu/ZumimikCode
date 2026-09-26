@@ -1,8 +1,7 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useState, useCallback, useMemo, useEffect, Suspense } from "react";
-import gsap from "gsap";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSubjectTree } from "@/hooks/queries/use-explorer";
@@ -10,10 +9,11 @@ import { useAllTechniques } from "@/hooks/queries/use-technique";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { MindMap } from "@/components/explorer/mind-map";
-import { Compass, GraduationCap, Lock, Plus, ArrowRight, Layers, ClipboardList } from "lucide-react";
+import { Compass, GraduationCap, Lock, Plus, ArrowRight, Layers, ClipboardList, AlertTriangle } from "lucide-react";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { getTechniqueIdsForTopic } from "@/lib/mock/topic-node-map";
 import type { TopicNode } from "@/lib/types/technique";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 
@@ -73,10 +73,10 @@ function ExplorerContent() {
   const [paramsProcessed, setParamsProcessed] = useState(false);
   const [showAddPrep, setShowAddPrep] = useState(false);
 
-  const { data: trees, isLoading } = useSubjectTree(activeDomain);
+  const { data: trees, isLoading, isError: treesError } = useSubjectTree(activeDomain);
   const subjects = trees ?? [];
 
-  const { data: allTechniques } = useAllTechniques();
+  const { data: allTechniques, isError: techniquesError } = useAllTechniques();
   const availableTechniqueIds = useMemo(
     () => new Set((allTechniques ?? []).map((t) => t.id)),
     [allTechniques],
@@ -113,16 +113,7 @@ function ExplorerContent() {
     }
   };
 
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (!el || el.dataset.animated) return;
-    el.dataset.animated = "true";
-    const i = parseInt(el.dataset.sectionIndex || "0");
-    gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: i * 0.08, ease: "power2.out" });
-  }, []);
+  const { headerRef, animateSection } = useEntranceAnimations();
 
   const label = DOMAIN_LABELS[activeDomain] ?? activeDomain;
 
@@ -176,6 +167,15 @@ function ExplorerContent() {
   return (
     <PageContainer className="overflow-x-hidden">
       <div className="mx-auto w-full md:max-w-3xl">
+      {(treesError || techniquesError) && (
+        <div
+          role="alert"
+          className="mb-4 flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2.5 text-[12px] font-medium text-destructive"
+        >
+          <AlertTriangle size={14} className="shrink-0" />
+          <span>Couldn&apos;t load the study map. Please try again.</span>
+        </div>
+      )}
       {/* Header */}
       <div ref={headerRef} className="relative text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 max-[359px]:px-3 mb-4">

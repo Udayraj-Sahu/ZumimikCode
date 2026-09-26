@@ -1,11 +1,11 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import gsap from "gsap";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useSprintTopics } from "@/hooks/queries/use-sprint";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -14,9 +14,7 @@ import { useResumeStore } from "@/stores/resume-store";
 import { getTemplatesByCategory } from "@/services/templates";
 import { getTemplateCategoriesForTopic } from "@/lib/topic-template-map";
 import type { SolveAlongTemplate } from "@/lib/types/template";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function ConfigureSprintPage() {
   usePageMeta("Configure Sprint — Exam Arena");
@@ -28,6 +26,7 @@ export default function ConfigureSprintPage() {
   const [difficulty, setDifficulty] = useState("Beginner");
   const [templates, setTemplates] = useState<SolveAlongTemplate[]>([]);
   const [loadingTemplates, setLoadingTemplates] = useState(false);
+  const templateReqRef = useRef(0);
 
   useEffect(() => {
     if (!topic) {
@@ -39,23 +38,16 @@ export default function ConfigureSprintPage() {
       setTemplates([]);
       return;
     }
+    const reqId = ++templateReqRef.current;
     setLoadingTemplates(true);
     getTemplatesByCategory(cats[0], targetExam).then((results) => {
+      if (reqId !== templateReqRef.current) return;
       setTemplates(results);
       setLoadingTemplates(false);
     });
   }, [topic, targetExam]);
 
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (!el || el.dataset.animated) return;
-    el.dataset.animated = "true";
-    const i = parseInt(el.dataset.sectionIndex || "0");
-    gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, delay: 0.1 + i * 0.1, ease: "power2.out" });
-  }, []);
+  const { headerRef, animateSection } = useEntranceAnimations();
 
   if (isLoading || !data) {
     return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 
 interface Insight {
   label: string;
@@ -29,6 +30,7 @@ export function AIScanLine() {
   const [scanY, setScanY] = useState(-10);
   const [visible, setVisible] = useState(false);
   const [revealedInsights, setRevealedInsights] = useState<number[]>([]);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const el = ref.current;
@@ -42,7 +44,7 @@ export function AIScanLine() {
   }, []);
 
   useEffect(() => {
-    if (!visible) return;
+    if (!visible || prefersReducedMotion) return;
     let y = -10;
     const interval = setInterval(() => {
       y += 0.6;
@@ -56,7 +58,7 @@ export function AIScanLine() {
     }, 30);
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
+  }, [visible, prefersReducedMotion]);
 
   return (
     <div ref={ref} style={{ position: "relative", width: "100%", height: "clamp(300px, 50vh, 500px)" }}>

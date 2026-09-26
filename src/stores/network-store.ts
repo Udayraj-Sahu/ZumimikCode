@@ -14,6 +14,7 @@ type NetworkState = {
   addToQueue: (mutation: QueuedMutation) => void;
   removeFromQueue: (id: string) => void;
   clearQueue: () => void;
+  reset: () => void;
 };
 
 export const useNetworkStore = create<NetworkState>((set) => ({
@@ -25,4 +26,5 @@ export const useNetworkStore = create<NetworkState>((set) => ({
   removeFromQueue: (id) =>
     set((s) => ({ syncQueue: s.syncQueue.filter((m) => m.id !== id) })),
   clearQueue: () => set({ syncQueue: [] }),
+  reset: () => set({ isOnline: true, syncQueue: [] }),
 }));

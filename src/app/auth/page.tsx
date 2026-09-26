@@ -88,6 +88,7 @@ export default function AuthPage() {
   const [createError, setCreateError] = useState<string | null>(null);
   const [alreadyApproved, setAlreadyApproved] = useState(false);
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const activeSessionRef = useRef<string | null>(null);
 
   const bootstrapped = useRef(false);
 
@@ -138,10 +139,14 @@ export default function AuthPage() {
   useEffect(() => {
     if (!sessionId) return;
     if (pollingRef.current) clearInterval(pollingRef.current);
+    activeSessionRef.current = sessionId;
 
     const tick = async () => {
+      const polledSession = activeSessionRef.current;
+      if (!polledSession) return;
       try {
-        const session = await pollStatus.mutateAsync(sessionId);
+        const session = await pollStatus.mutateAsync(polledSession);
+        if (activeSessionRef.current !== polledSession) return;
         setStatus(session.status);
         setExpiresAt(session.expiresAt);
         if (session.status === "approved") {
@@ -157,6 +162,7 @@ export default function AuthPage() {
     tick();
     pollingRef.current = setInterval(tick, POLL_INTERVAL_MS);
     return () => {
+      activeSessionRef.current = null;
       if (pollingRef.current) clearInterval(pollingRef.current);
     };
   }, [sessionId]); // eslint-disable-line react-hooks/exhaustive-deps

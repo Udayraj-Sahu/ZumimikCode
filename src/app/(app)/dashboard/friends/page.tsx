@@ -1,42 +1,27 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
-import gsap from "gsap";
+import { useState, useRef, useEffect } from "react";
 import { Users, UserPlus, Swords, Zap, Award, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useFriends } from "@/hooks/queries/use-friends";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function FriendsPage() {
   usePageMeta("Friends — Exam Arena");
   const { data, isLoading, error } = useFriends();
   const [tab, setTab] = useState<"friends" | "activity" | "requests">("friends");
   const listRef = useRef<HTMLDivElement>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, staggerIn } = useEntranceAnimations();
 
   useEffect(() => {
     if (listRef.current && data) {
       const items = listRef.current.querySelectorAll<HTMLElement>("[data-friend-item]");
-      if (items.length) {
-        gsap.fromTo(items, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" });
-      }
+      staggerIn(items, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" });
     }
-  }, [data, tab]);
+  }, [data, tab, staggerIn]);
 
   const requestCount = data?.requests.length ?? 0;
 
@@ -119,6 +104,13 @@ export default function FriendsPage() {
         )}
 
         <div ref={listRef} className="flex flex-col gap-3 max-[359px]:gap-1.5">
+          {tab === "friends" && (!data || data.friends.length === 0) && (
+            <div className="py-10 text-center max-[359px]:py-8">
+              <Users size={28} className="mx-auto text-muted-foreground/20 mb-2" />
+              <p className="text-[12px] text-muted-foreground/60">No friends yet</p>
+              <p className="text-micro text-muted-foreground/40 mt-1">Compete to stand out on the leaderboard.</p>
+            </div>
+          )}
           {tab === "friends" && data?.friends.map((f) => (
             <div
               key={f.id}
@@ -152,6 +144,13 @@ export default function FriendsPage() {
             </div>
           ))}
 
+          {tab === "activity" && (!data || data.activity.length === 0) && (
+            <div className="py-10 text-center max-[359px]:py-8">
+              <Zap size={28} className="mx-auto text-muted-foreground/20 mb-2" />
+              <p className="text-[12px] text-muted-foreground/60">No recent activity</p>
+              <p className="text-micro text-muted-foreground/40 mt-1">Friend updates will appear here.</p>
+            </div>
+          )}
           {tab === "activity" && data?.activity.map((a) => {
             const friend = data.friends.find((f) => f.id === a.friendId);
             const Icon = a.type === "sprint" ? Zap : a.type === "duel" ? Swords : Award;

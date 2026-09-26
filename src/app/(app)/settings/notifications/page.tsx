@@ -1,16 +1,14 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useState, useCallback, useRef, useEffect } from "react";
-import gsap from "gsap";
+import { useState, useRef, useEffect } from "react";
 import { Bell, BellDot, Zap, Award, Swords, Info, CheckCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useNotifications } from "@/hooks/queries/use-notifications";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { NotificationItem } from "@/lib/types/notifications";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG } from "@/lib/theme-tokens";
 
 const TYPE_ICON: Record<NotificationItem["type"], typeof Bell> = {
   sprint_reminder: Zap,
@@ -24,27 +22,14 @@ export default function NotificationsPage() {
   const [filter, setFilter] = useState<"all" | "unread">("all");
   const { data: notifications, isLoading, error } = useNotifications();
   const listRef = useRef<HTMLDivElement>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, staggerIn } = useEntranceAnimations();
 
   useEffect(() => {
     if (listRef.current && notifications && notifications.length > 0) {
       const items = listRef.current.querySelectorAll<HTMLElement>("[data-notification-item]");
-      if (items.length) {
-        gsap.fromTo(items, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.06, ease: "power2.out" });
-      }
+      staggerIn(items, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.06, ease: "power2.out" });
     }
-  }, [notifications, filter]);
+  }, [notifications, filter, staggerIn]);
 
   const filtered = notifications?.filter((n) => filter === "all" || !n.read) ?? [];
   const unreadCount = notifications?.filter((n) => !n.read).length ?? 0;

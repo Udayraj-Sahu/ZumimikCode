@@ -103,7 +103,40 @@ const MONTHS = [
   "December",
 ];
 const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
-const YEARS = Array.from({ length: 30 }, (_, i) => 2010 - i);
+
+const MIN_BIRTH_YEAR = 100;
+
+const monthDays = (year: number, month: string): number => {
+  const idx = MONTHS.indexOf(month);
+  if (idx < 0) return 31;
+  return new Date(year, idx + 1, 0).getDate();
+};
+
+const normalizeDob = (dob: { day: number; month: string; year: number }) => {
+  const max = monthDays(dob.year, dob.month);
+  return { ...dob, day: Math.min(Math.max(1, dob.day), max) };
+};
+
+const isValidDob = (dob: { day: number; month: string; year: number }): boolean => {
+  const idx = MONTHS.indexOf(dob.month);
+  if (idx < 0) return false;
+  const now = new Date();
+  if (dob.year > now.getFullYear() || dob.year < now.getFullYear() - MIN_BIRTH_YEAR) {
+    return false;
+  }
+  const date = new Date(dob.year, idx, dob.day);
+  return (
+    date.getFullYear() === dob.year &&
+    date.getMonth() === idx &&
+    date.getDate() === dob.day &&
+    date <= now
+  );
+};
+
+const birthYears = (): number[] => {
+  const current = new Date().getFullYear();
+  return Array.from({ length: MIN_BIRTH_YEAR + 1 }, (_, i) => current - i);
+};
 
 type StepId = "name" | "persona" | "goal" | "triggers" | "details";
 
@@ -343,6 +376,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
       if (isVedic) return localVedicUseCase !== null;
       return true;
     }
+    if (id === "details") return isValidDob(localDob);
     return true;
   })();
 
@@ -1102,14 +1136,14 @@ function StepDetails({
           <ScrollColumn
             items={MONTHS.map((m) => ({ value: m, label: m.slice(0, 3) }))}
             selected={dob.month}
-            onSelect={(v) => onDobChange((prev) => ({ ...prev, month: v }))}
+            onSelect={(v) => onDobChange((prev) => normalizeDob({ ...prev, month: v }))}
             label="MM"
           />
           <div className="w-px bg-white/[0.06] my-3" />
           <ScrollColumn
-            items={YEARS.map((y) => ({ value: String(y), label: String(y) }))}
+            items={birthYears().map((y) => ({ value: String(y), label: String(y) }))}
             selected={String(dob.year)}
-            onSelect={(v) => onDobChange((prev) => ({ ...prev, year: Number(v) }))}
+            onSelect={(v) => onDobChange((prev) => normalizeDob({ ...prev, year: Number(v) }))}
             label="YYYY"
           />
         </div>

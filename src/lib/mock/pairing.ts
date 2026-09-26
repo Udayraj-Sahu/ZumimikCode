@@ -63,9 +63,10 @@ function findSessionIdByCode(code: string): string | null {
   return null;
 }
 
-export function mockScanSession(sessionId: string, code: string): boolean {
-  // In mock, the app only knows the code — resolve the real session from it.
-  const realId = findSessionIdByCode(code) ?? sessionId;
+export function mockScanSession(code: string): boolean {
+  // The app only knows the pairing code — resolve the real session from it.
+  const realId = findSessionIdByCode(code);
+  if (!realId) return false;
   const s = sessions.get(realId);
   if (!s) return false;
   if (s.status !== "pending") return false;
@@ -75,8 +76,9 @@ export function mockScanSession(sessionId: string, code: string): boolean {
   return true;
 }
 
-export function mockApproveSession(sessionId: string, code: string): PairingApproval | null {
-  const realId = findSessionIdByCode(code) ?? sessionId;
+export function mockApproveSession(code: string): PairingApproval | null {
+  const realId = findSessionIdByCode(code);
+  if (!realId) return null;
   const s = sessions.get(realId);
   if (!s) return null;
   if (s.code !== code.toUpperCase()) return null;

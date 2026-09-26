@@ -7,6 +7,7 @@ type SettingsState = {
   hapticEnabled: boolean;
   setSoundEnabled: (v: boolean) => void;
   setHapticEnabled: (v: boolean) => void;
+  reset: () => void;
 };
 
 export const useSettingsStore = create<SettingsState>()(
@@ -16,6 +17,7 @@ export const useSettingsStore = create<SettingsState>()(
       hapticEnabled: true,
       setSoundEnabled: (soundEnabled) => set({ soundEnabled }),
       setHapticEnabled: (hapticEnabled) => set({ hapticEnabled }),
+      reset: () => set({ soundEnabled: true, hapticEnabled: true }),
     }),
     {
       name: "exam-arena-settings",

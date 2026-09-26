@@ -1,29 +1,16 @@
 "use client";
 
-import { useCallback } from "react";
-import gsap from "gsap";
 import { TrendingUp } from "lucide-react";
 import { useAnalyticsData } from "@/hooks/queries/use-analytics";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { PageContainer } from "@/components/ui/page-container";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG } from "@/lib/theme-tokens";
 
 export default function AnalyticsPage() {
   usePageMeta("Analytics — Exam Arena");
   const { data, isLoading, error } = useAnalyticsData();
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (!el || el.dataset.animated) return;
-    el.dataset.animated = "true";
-    const i = parseInt(el.dataset.sectionIndex || "0");
-    gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: i * 0.08, ease: "power2.out" });
-  }, []);
+  const { headerRef, animateSection } = useEntranceAnimations();
 
   if (isLoading) {
     return (

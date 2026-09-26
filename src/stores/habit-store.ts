@@ -55,6 +55,7 @@ type HabitState = {
   getStats: () => HabitStats;
   getLogsForDate: (date: string) => string[];
   getLogsForMonth: (year: number, month: number) => Record<string, number>;
+  reset: () => void;
 };
 
 export const useHabitStore = create<HabitState>()(
@@ -172,6 +173,8 @@ export const useHabitStore = create<HabitState>()(
         });
         return byDate;
       },
+
+      reset: () => set({ habits: DEFAULT_HABITS, logs: SEED_LOGS }),
     }),
     {
       name: "exam-arena-habits",

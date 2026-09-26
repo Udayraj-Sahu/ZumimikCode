@@ -28,17 +28,15 @@ import {
   Settings,
   Trash2,
 } from "lucide-react";
-import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
+import { resetAppState } from "@/lib/reset-app-state";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { cn } from "@/lib/utils";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Reusable row item                                                   */
@@ -259,7 +257,6 @@ function SubscriptionCard() {
 export default function SettingsPage() {
   usePageMeta("Settings — Exam Arena");
   const router = useRouter();
-  const logout = useAuthStore((s) => s.logout);
   const firstName = useOnboardingStore((s) => s.firstName);
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const activePreps = useOnboardingStore((s) => s.activePreps);
@@ -277,8 +274,7 @@ export default function SettingsPage() {
   const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
   const handleLogout = () => {
-    logout();
-    router.replace("/");
+    void resetAppState().then(() => router.replace("/"));
   };
 
   return (

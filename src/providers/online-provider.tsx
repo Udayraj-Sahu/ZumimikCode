@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { useNetworkStore } from "@/stores/network-store";
-import { syncAll } from "@/services/offline/sync";
+import { syncAll, clearExpiredCache } from "@/services/offline/sync";
 import { isOnline, onOnline, onOffline } from "@/services/device";
+import { OfflineBanner } from "@/components/shell/offline-banner";
 
 export function OnlineProvider({ children }: { children: React.ReactNode }) {
   const setOnline = useNetworkStore((s) => s.setOnline);
@@ -14,6 +15,7 @@ export function OnlineProvider({ children }: { children: React.ReactNode }) {
     mounted.current = true;
 
     setOnline(isOnline());
+    clearExpiredCache().catch(() => {});
 
     const goOnline = () => {
       setOnline(true);
@@ -30,5 +32,10 @@ export function OnlineProvider({ children }: { children: React.ReactNode }) {
     };
   }, [setOnline]);
 
-  return <>{children}</>;
+  return (
+    <>
+      <OfflineBanner />
+      {children}
+    </>
+  );
 }

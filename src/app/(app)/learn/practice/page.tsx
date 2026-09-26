@@ -3,7 +3,7 @@ import { PageContainer } from "@/components/ui/page-container";
 import { ExamShell } from "@/components/exam/exam-shell";
 import { QuestionNavigator } from "@/components/exam/question-navigator";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import gsap from "gsap";
 import {
@@ -19,6 +19,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { useStepProgress } from "@/hooks/use-step-progress";
 import { useTemplateStore } from "@/stores/template-store";
@@ -31,12 +32,10 @@ import RendererRouter from "@/components/renderers/renderer-router";
 import type { Question } from "@/lib/types/sprint-session";
 import type { SolveAlongTemplate, RenderMode } from "@/lib/types/template";
 import { DOMAIN_LABELS } from "@/lib/types/template";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 type PracticeType = "mcq" | "templates";
 type Phase = "config" | "active" | "done";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 export default function PracticePage() {
   usePageMeta("Practice — Exam Arena");
@@ -62,7 +61,7 @@ export default function PracticePage() {
   const [rendererCorrect, setRendererCorrect] = useState(0);
   const [rendererTotal, setRendererTotal] = useState(0);
 
-  const { data: session, isLoading } = usePracticeSession(topic, 10, difficulty, targetExam);
+  const { data: session, isLoading, error: sessionError } = usePracticeSession(topic, 10, difficulty, targetExam);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [revealed, setRevealed] = useState(false);
@@ -73,17 +72,7 @@ export default function PracticePage() {
 
   const contentRef = useRef<HTMLDivElement>(null);
   const questionRef = useRef<HTMLDivElement>(null);
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection } = useEntranceAnimations();
 
   useEffect(() => {
     if (questionRef.current) {
@@ -96,6 +85,17 @@ export default function PracticePage() {
       gsap.fromTo(contentRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" });
     }
   }, [completed]);
+
+  const sessionQuestionIds = (session?.questions ?? []).map((q) => q.id).join("|");
+
+  useEffect(() => {
+    if (!session || phase !== "active") return;
+    setCurrentIndex(0);
+    setAnswers({});
+    setRevealed(false);
+    setHintOpen(false);
+    setCompleted(null);
+  }, [sessionQuestionIds]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const startPractice = () => {
     setPhase("active");
@@ -646,6 +646,38 @@ export default function PracticePage() {
         <div className="h-12 rounded-2xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-48 rounded-3xl mb-4" style={{ background: GLASS_BG }} />
         <div className="h-12 rounded-2xl" style={{ background: GLASS_BG }} />
+      </PageContainer>
+    );
+  }
+
+  if (sessionError && !session) {
+    return (
+      <PageContainer>
+        <div
+          role="alert"
+          className="flex flex-col items-center gap-4 rounded-3xl p-8 text-center"
+          style={{ background: GLASS_BG, border: "1px solid rgba(239,68,68,0.12)" }}
+        >
+          <p className="text-[13px] font-semibold text-destructive">
+            {sessionError instanceof Error ? sessionError.message : "Couldn't start this practice session."}
+          </p>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => router.replace("/learn")}
+              className="rounded-xl bg-primary px-5 py-2.5 text-micro font-bold uppercase tracking-wider text-primary-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Back to Learn
+            </button>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="rounded-xl border border-white/[0.08] px-5 py-2.5 text-micro font-bold uppercase tracking-wider text-foreground outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
       </PageContainer>
     );
   }

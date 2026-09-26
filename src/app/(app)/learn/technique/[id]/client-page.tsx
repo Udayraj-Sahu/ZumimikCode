@@ -1,17 +1,14 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import gsap from "gsap";
 import { Lightbulb } from "lucide-react";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useTechnique } from "@/hooks/queries/use-technique";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { QuickReferenceCard } from "@/components/technique/quick-reference-card";
 import { DifficultyTabs } from "@/components/technique/difficulty-tabs";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export function ClientTechniquePage() {
   const params = useParams<{ id: string }>();
@@ -19,9 +16,7 @@ export function ClientTechniquePage() {
   const { data: technique, isLoading, error } = useTechnique(params.id);
   usePageMeta(technique ? `${technique.name} — Exam Arena` : "Technique — Exam Arena");
 
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
+  const { headerRef } = useEntranceAnimations();
 
   if (isLoading) {
     return (

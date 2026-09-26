@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 
 const STARS = [
   { x: 50, y: 20, label: "Mechanics", type: "strength", size: 6 },
@@ -39,6 +40,7 @@ export function ConstellationCoach() {
   const rafRef = useRef<number>(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -52,15 +54,15 @@ export function ConstellationCoach() {
   }, []);
 
   useEffect(() => {
-    if (!visible) return;
+    if (!visible || prefersReducedMotion) return;
     const start = performance.now();
     const tick = (now: number) => {
       setTime((now - start) / 1000);
-      if (visible) rafRef.current = requestAnimationFrame(tick);
+      if (visible && !prefersReducedMotion) rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [visible]);
+  }, [visible, prefersReducedMotion]);
 
   return (
     <section ref={sectionRef} id="ai-coach" className="relative py-16 md:py-32 px-6 overflow-hidden bg-background">
@@ -124,6 +126,7 @@ export function ConstellationCoach() {
                 const pulse = Math.sin(time * 1.5 + i) * 0.5 + 0.5;
                 return (
                   <g key={i} role="button" tabIndex={0}
+                    aria-label={`${star.label} — ${TYPE_LABELS[star.type] ?? star.type}`}
                     onMouseEnter={() => setHoveredStar(i)}
                     onMouseLeave={() => setHoveredStar(null)}
                     onFocus={() => setHoveredStar(i)}

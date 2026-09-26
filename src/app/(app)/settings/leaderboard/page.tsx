@@ -5,13 +5,13 @@ import { useState, useCallback } from "react";
 import gsap from "gsap";
 import { Trophy, Medal, ArrowUp, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useLeaderboard } from "@/hooks/queries/use-leaderboard";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { LeaderboardEntry } from "@/lib/types/dashboard";
+import { GLASS_BG } from "@/lib/theme-tokens";
 
 const PERIODS = ["all", "week", "month"] as const;
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 function RankMedal({ rank }: { rank: number }) {
   if (rank === 1) return <Trophy size={18} className="text-chart-3" />;
@@ -68,22 +68,12 @@ export default function LeaderboardPage() {
   usePageMeta("Leaderboard — Exam Arena");
   const [period, setPeriod] = useState<"week" | "month" | "all">("all");
   const { data: entries, isLoading, error } = useLeaderboard();
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const index = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: index * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, reduced } = useEntranceAnimations();
 
   const animateRows = useCallback((el: HTMLDivElement | null) => {
     if (el && !el.dataset.animated) {
       el.dataset.animated = "true";
+      if (reduced) return;
       const cards = el.querySelectorAll<HTMLElement>("[data-leaderboard-row]");
       if (cards.length) {
         gsap.fromTo(cards, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.35, stagger: 0.03, ease: "power2.out" });
@@ -91,7 +81,7 @@ export default function LeaderboardPage() {
         gsap.fromTo(el, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" });
       }
     }
-  }, []);
+  }, [reduced]);
 
   const me = entries?.find((e) => e.me);
   const prevRank = me ? entries?.find((e) => e.rank === me.rank - 1) : null;

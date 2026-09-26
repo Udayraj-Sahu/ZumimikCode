@@ -6,6 +6,7 @@ import gsap from "gsap";
 import {
   X,
   ArrowLeft,
+  AlertTriangle,
   Flame,
   Target,
   TrendingUp,
@@ -27,14 +28,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GLASS_BG, VIOLET, VIOLET_DIM, VIOLET_GLOW } from "@/lib/theme-tokens";
 import { useHabitStore } from "@/stores/habit-store";
 import { Capacitor } from "@capacitor/core";
 import { LocalNotifications } from "@capacitor/local-notifications";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const VIOLET = "#34D399";
-const VIOLET_DIM = "rgba(52,211,153,0.1)";
-const VIOLET_GLOW = "rgba(52,211,153,0.3)";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Zap, Calculator, BookOpen, CreditCard, Target,
@@ -106,20 +103,30 @@ async function requestNotificationPermission(): Promise<boolean> {
   return result === "granted";
 }
 
-async function scheduleReminder(habitName: string, time: string, days: number[]) {
+function habitBaseId(habitId: string): number {
+  let h = 0;
+  for (let i = 0; i < habitId.length; i++) {
+    h = (h << 5) - h + habitId.charCodeAt(i);
+    h |= 0;
+  }
+  return (Math.abs(h) % 900_000) + 100_000;
+}
+
+async function scheduleReminder(habitId: string, habitName: string, time: string, days: number[]) {
   const [hours, minutes] = time.split(":").map(Number);
   if (isNative) {
     try {
+      const base = habitBaseId(habitId);
       await LocalNotifications.schedule({
-        notifications: days.map((d) => ({
+        notifications: days.map((d, i) => ({
           title: "Habit Reminder",
           body: `Time to: ${habitName}`,
-          id: Math.floor(Math.random() * 1000000),
+          id: base + i,
           schedule: {
             on: { weekday: d + 1, hour: hours, minute: minutes },
             allowWhileIdle: true,
           },
-          extra: { habitId: habitName },
+          extra: { habitId, source: "habit-reminder" },
         })),
       });
     } catch {
@@ -127,10 +134,10 @@ async function scheduleReminder(habitName: string, time: string, days: number[])
     }
     return;
   }
-  days.forEach((d) => scheduleWebReminder(habitName, hours, minutes, d));
+  days.forEach((d) => scheduleWebReminder(habitId, habitName, hours, minutes, d));
 }
 
-function scheduleWebReminder(habitName: string, hours: number, minutes: number, day: number) {
+function scheduleWebReminder(habitId: string, habitName: string, hours: number, minutes: number, day: number) {
   const now = new Date();
   const next = new Date();
   next.setHours(hours, minutes, 0, 0);
@@ -143,19 +150,19 @@ function scheduleWebReminder(habitName: string, hours: number, minutes: number, 
         body: `Time to: ${habitName}`,
         icon: "/favicon.svg",
         badge: "/favicon.svg",
-        tag: `habit-${habitName}`,
+        tag: `habit-${habitId}`,
       });
     }
-    scheduleWebReminder(habitName, hours, minutes, day);
+    scheduleWebReminder(habitId, habitName, hours, minutes, day);
   }, delay);
 }
 
-async function cancelReminder(habitName: string) {
+async function cancelReminder(habitId: string) {
   if (!isNative) return;
   try {
     const pending = await LocalNotifications.getPending();
     const ids = pending.notifications
-      .filter((n) => n.extra?.habitId === habitName)
+      .filter((n) => n.extra?.habitId === habitId && n.extra?.source === "habit-reminder")
       .map((n) => n.id);
     if (ids.length > 0) await LocalNotifications.cancel({ notifications: ids.map((id) => ({ id })) });
   } catch {
@@ -176,6 +183,7 @@ export function HabitTrackerModal({ onClose }: Props) {
   const [draftTime, setDraftTime] = useState("08:00");
   const [draftDays, setDraftDays] = useState<number[]>(allDays());
   const [notifsEnabled, setNotifsEnabled] = useState(false);
+  const [notifError, setNotifError] = useState<string | null>(null);
 
   const habits = useHabitStore((s) => s.habits);
   const logs = useHabitStore((s) => s.logs);
@@ -274,11 +282,15 @@ export function HabitTrackerModal({ onClose }: Props) {
   }, [newName, newIcon, newColor, addHabit]);
 
   const handleToggleReminder = useCallback(async (habitId: string, current: string | undefined, habitName: string, days?: number[]) => {
-    if (current) { setReminder(habitId, undefined); await cancelReminder(habitName); setEditingReminder(null); return; }
+    if (current) { setReminder(habitId, undefined); await cancelReminder(habitId); setEditingReminder(null); return; }
+    setNotifError(null);
     if (!notifsEnabled) {
       const granted = await requestNotificationPermission();
       setNotifsEnabled(granted);
-      if (!granted) return;
+      if (!granted) {
+        setNotifError("Notifications are blocked, so reminders won't be sent. Allow them in your device settings.");
+        return;
+      }
     }
     setDraftTime(current ?? "08:00");
     setDraftDays(days && days.length > 0 ? [...days] : allDays());
@@ -286,8 +298,10 @@ export function HabitTrackerModal({ onClose }: Props) {
   }, [notifsEnabled, setReminder]);
 
   const handleSetTime = useCallback(async (habitId: string, time: string, habitName: string, days: number[]) => {
+    await cancelReminder(habitId);
     setReminder(habitId, time, days);
-    await scheduleReminder(habitName, time, days);
+    await scheduleReminder(habitId, habitName, time, days);
+    setNotifError(null);
     setEditingReminder(null);
   }, [setReminder]);
 
@@ -343,15 +357,26 @@ export function HabitTrackerModal({ onClose }: Props) {
           </div>
           <button
             type="button"
-            onClick={async () => { const g = await requestNotificationPermission(); setNotifsEnabled(g); }}
+            onClick={async () => { setNotifError(null); const g = await requestNotificationPermission(); setNotifsEnabled(g); if (!g) setNotifError("Notifications are blocked, so reminders won't be sent. Allow them in your device settings."); }}
             className="grid size-11 place-items-center rounded-xl transition-colors hover:bg-white/5"
-            title="Enable notifications"
+            title={notifsEnabled ? "Notifications enabled" : "Enable notifications"}
+            aria-label={notifsEnabled ? "Notifications enabled" : "Enable notifications"}
           >
             {notifsEnabled ? <Bell size={16} style={{ color: VIOLET }} /> : <BellOff size={16} className="text-muted-foreground/40" />}
           </button>
         </div>
 
         <div className="px-5 pb-6 pt-2 space-y-5">
+          {notifError && (
+            <div
+              role="alert"
+              className="flex items-start gap-2 rounded-xl border border-amber-400/30 bg-amber-400/10 p-3 text-[10.5px] font-medium leading-relaxed text-amber-200"
+            >
+              <AlertTriangle size={13} className="mt-0.5 shrink-0" />
+              <span>{notifError}</span>
+            </div>
+          )}
+
           {/* Today's circular progress + stats */}
           <div className="flex items-center gap-5">
             <div className="relative shrink-0">
@@ -497,15 +522,17 @@ export function HabitTrackerModal({ onClose }: Props) {
                           )}
                           style={h.reminderTime ? { color: VIOLET } : undefined}
                           title={h.reminderTime ? `Reminds ${reminderLabel(h.reminderDays, h.reminderTime)}` : "Set reminder"}
+                          aria-label={h.reminderTime ? `Reminder set for ${reminderLabel(h.reminderDays, h.reminderTime)}` : "Set reminder"}
                         >
                           {h.reminderTime ? <Bell size={12} /> : <BellOff size={12} />}
                         </button>
                         {h.category === "manual" && (
                           <button
                             type="button"
-                            onClick={(e) => { e.stopPropagation(); removeHabit(h.id); }}
+                            onClick={(e) => { e.stopPropagation(); void cancelReminder(h.id); removeHabit(h.id); }}
                             className="size-7 rounded-lg flex items-center justify-center shrink-0 text-muted-foreground/25 hover:text-destructive hover:bg-destructive/10 transition-all"
                             title="Remove habit"
+                            aria-label="Remove habit"
                           >
                             <Trash2 size={12} />
                           </button>

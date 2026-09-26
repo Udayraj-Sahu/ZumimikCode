@@ -1,33 +1,51 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useState, useCallback, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import gsap from "gsap";
-import { Camera, Check, User } from "lucide-react";
+import { AlertTriangle, Camera, Check, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useProfileData } from "@/hooks/queries/use-profile";
 import { usePageMeta } from "@/hooks/use-page-meta";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { useAuthStore } from "@/stores/auth-store";
 
 export default function EditProfilePage() {
   usePageMeta("Edit Profile — Exam Arena");
   const router = useRouter();
   const { data } = useProfileData();
   const profile = data?.profile;
+  const user = useAuthStore((s) => s.user);
+  const updateUser = useAuthStore((s) => s.updateUser);
 
-  const [name, setName] = useState(profile?.name ?? "");
-  const [email, setEmail] = useState("user@examarena.com");
-  const [phone, setPhone] = useState("+91 98765 43210");
+  const [name, setName] = useState(user?.name ?? profile?.name ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
+  const [phone, setPhone] = useState(user?.phone ?? "");
   const [saved, setSaved] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
+  const { headerRef } = useEntranceAnimations();
 
   const handleSave = () => {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPhone = phone.trim();
+
+    if (!trimmedName) {
+      setErrorMsg("Name is required.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setErrorMsg("Enter a valid email address.");
+      return;
+    }
+    if (trimmedPhone && !/^\+?[0-9\s-]{7,15}$/.test(trimmedPhone)) {
+      setErrorMsg("Enter a valid phone number (7–15 digits).");
+      return;
+    }
+
+    setErrorMsg(null);
+    updateUser({ name: trimmedName, email: trimmedEmail, phone: trimmedPhone || undefined });
     setSaved(true);
     setTimeout(() => {
       router.push("/settings/profile");
@@ -69,6 +87,7 @@ export default function EditProfilePage() {
               onChange={(e) => setName(e.target.value)}
               className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary max-[359px]:px-3 max-[359px]:py-3"
               placeholder="Your name"
+              aria-required="true"
             />
           </div>
 
@@ -82,6 +101,7 @@ export default function EditProfilePage() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl px-4 py-3.5 text-[13px] text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary max-[359px]:px-3 max-[359px]:py-3"
               placeholder="email@example.com"
+              aria-required="true"
             />
           </div>
 
@@ -98,6 +118,13 @@ export default function EditProfilePage() {
             />
           </div>
         </div>
+
+        {errorMsg && (
+          <div className="mt-4 flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-[11px] text-destructive" role="alert">
+            <AlertTriangle size={13} className="mt-0.5 shrink-0" />
+            {errorMsg}
+          </div>
+        )}
 
         <button
           type="button"

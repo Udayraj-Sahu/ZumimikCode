@@ -1,17 +1,15 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import gsap from "gsap";
 import { Monitor, Smartphone, Globe, LogOut, Plus, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useLinkedDevices, useRevokeDevice } from "@/hooks/queries/use-linked-devices";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { LinkedDevice, LinkedDevicePlatform } from "@/lib/types/linked-devices";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG } from "@/lib/theme-tokens";
 
 const PLATFORM_META: Record<LinkedDevicePlatform, { label: string; Icon: typeof Smartphone }> = {
   android: { label: "Android", Icon: Smartphone },
@@ -30,17 +28,7 @@ export default function LinkedDevicesPage() {
   const { data: devices, isLoading, error } = useLinkedDevices();
   const revoke = useRevokeDevice();
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection } = useEntranceAnimations();
 
   const handleRevoke = (device: LinkedDevice) => {
     if (!confirmingId) {

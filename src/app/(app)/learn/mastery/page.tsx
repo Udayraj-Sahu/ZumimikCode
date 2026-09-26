@@ -1,16 +1,14 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useCallback, useRef, useEffect, useMemo } from "react";
-import gsap from "gsap";
+import { useRef, useEffect, useMemo } from "react";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { Target } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { cn } from "@/lib/utils";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
+import { GLASS_BG } from "@/lib/theme-tokens";
 
 export default function MasteryPage() {
   usePageMeta("Topic Mastery — Exam Arena");
@@ -18,27 +16,14 @@ export default function MasteryPage() {
   const { data, isLoading, error } = useDashboardData(targetExam);
   const topics = useMemo(() => data?.topics ?? [], [data?.topics]);
   const gridRef = useRef<HTMLDivElement>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, staggerIn } = useEntranceAnimations();
 
   useEffect(() => {
     if (gridRef.current && topics.length > 0) {
       const bars = gridRef.current.querySelectorAll<HTMLElement>("[data-mastery-bar]");
-      if (bars.length) {
-        gsap.fromTo(bars, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.35, stagger: 0.06, ease: "power2.out" });
-      }
+      staggerIn(bars, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.35, stagger: 0.06, ease: "power2.out" });
     }
-  }, [topics]);
+  }, [topics, staggerIn]);
 
   const average = topics.length > 0
     ? Math.round(topics.reduce((s, t) => s + t.value, 0) / topics.length)

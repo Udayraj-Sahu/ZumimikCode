@@ -54,13 +54,21 @@ function webOneShot(title: string, body: string, time: string) {
   }, delay);
 }
 
-export async function applyStoryNotifications(commitment: StoryCommitment) {
+export type StoryNotificationResult = {
+  requested: boolean;
+  granted: boolean;
+  scheduled: boolean;
+};
+
+export async function applyStoryNotifications(
+  commitment: StoryCommitment,
+): Promise<StoryNotificationResult> {
   const reminder = isTime(commitment.reminderTime) ? commitment.reminderTime : null;
   const trigger = isTime(commitment.triggerTime) ? commitment.triggerTime : null;
-  if (!reminder && !trigger) return;
+  if (!reminder && !trigger) return { requested: false, granted: false, scheduled: false };
 
   const granted = await ensurePermission();
-  if (!granted) return;
+  if (!granted) return { requested: true, granted: false, scheduled: false };
 
   const selectedDays = (commitment.reclaimConfigs?.[commitment.reclaimSlot]?.days ?? commitment.weekDays)
     .map((on, i) => (on ? capWeekday(i) : null))
@@ -97,12 +105,13 @@ export async function applyStoryNotifications(commitment: StoryCommitment) {
       if (notifications.length > 0) {
         await LocalNotifications.schedule({ notifications });
       }
+      return { requested: true, granted: true, scheduled: true };
     } catch {
-      /* scheduling failed silently */
+      return { requested: true, granted: true, scheduled: false };
     }
-    return;
   }
 
   if (reminder) webOneShot("Exam Arena", `Prep time — ${commitment.dailyMinutes ?? 30} min today.`, reminder);
   if (trigger) webOneShot("Exam Arena", `Trigger: ${commitment.triggerType || "Focus"} — start now.`, trigger);
+  return { requested: true, granted: true, scheduled: true };
 }

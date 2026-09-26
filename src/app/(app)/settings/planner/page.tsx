@@ -1,41 +1,26 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useCallback, useRef, useEffect } from "react";
-import gsap from "gsap";
+import { useRef, useEffect } from "react";
 import { Calendar, Zap, Flame, Target, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePlanner } from "@/hooks/queries/use-planner";
 import { usePageMeta } from "@/hooks/use-page-meta";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function PlannerPage() {
   usePageMeta("Study Planner — Exam Arena");
   const { data, isLoading, error } = usePlanner();
   const gridRef = useRef<HTMLDivElement>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, staggerIn } = useEntranceAnimations();
 
   useEffect(() => {
     if (gridRef.current && data) {
       const cards = gridRef.current.querySelectorAll<HTMLElement>("[data-day-card]");
-      if (cards.length) {
-        gsap.fromTo(cards, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: "power2.out" });
-      }
+      staggerIn(cards, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: "power2.out" });
     }
-  }, [data]);
+  }, [data, staggerIn]);
 
   return (
     <PageContainer>

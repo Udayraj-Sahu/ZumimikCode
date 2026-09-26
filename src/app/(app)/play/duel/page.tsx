@@ -1,11 +1,12 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import { Swords, Check, X, ChevronRight, Clock, User, Zap } from "lucide-react";
+import { Swords, Check, X, ChevronRight, Clock, User, Zap, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useDuelSetup } from "@/hooks/queries/use-duel";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
 import { useFeedback } from "@/lib/use-feedback";
@@ -14,9 +15,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
 import type { DuelOpponent, DuelResult } from "@/lib/types/duel";
 import type { Question } from "@/lib/types/sprint-session";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG } from "@/lib/theme-tokens";
 
 type Phase = "config" | "active" | "done";
 
@@ -25,11 +24,11 @@ export default function DuelPage() {
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const { data: setup, isLoading: setupLoading } = useDuelSetup(targetExam);
+  const { data: setup, isLoading: setupLoading, error: setupError } = useDuelSetup(targetExam);
   const [topic, setTopic] = useState("addition");
   const [opponent, setOpponent] = useState<DuelOpponent>(DUEL_OPPONENTS[0]);
   const [phase, setPhase] = useState<Phase>("config");
-  const { data: session, isLoading: sessionLoading } = usePracticeSession(topic, 10, "Intermediate", targetExam);
+  const { data: session, isLoading: sessionLoading, error: sessionError } = usePracticeSession(topic, 10, "Intermediate", targetExam);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
@@ -42,18 +41,7 @@ export default function DuelPage() {
   const questionRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const oppTimerRef = useRef<ReturnType<typeof setInterval>>();
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection } = useEntranceAnimations();
 
   useEffect(() => {
     if (questionRef.current) {
@@ -139,6 +127,24 @@ export default function DuelPage() {
         </div>
 
         <div ref={animateSection} data-section-index="0" className="mt-6 max-[359px]:mt-4">
+          {setupError && (
+            <div
+              role="alert"
+              className="mb-4 flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2.5 text-[12px] font-medium text-destructive"
+            >
+              <AlertTriangle size={14} className="shrink-0" />
+              <span>{setupError instanceof Error ? setupError.message : "Couldn't load duel setup."}</span>
+            </div>
+          )}
+          {sessionError && (
+            <div
+              role="alert"
+              className="mb-4 flex items-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2.5 text-[12px] font-medium text-destructive"
+            >
+              <AlertTriangle size={14} className="shrink-0" />
+              <span>{sessionError instanceof Error ? sessionError.message : "Couldn't prepare the duel session."}</span>
+            </div>
+          )}
           <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Select Topic</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-[359px]:gap-1.5">
             {(setup?.topics ?? []).map((t) => (

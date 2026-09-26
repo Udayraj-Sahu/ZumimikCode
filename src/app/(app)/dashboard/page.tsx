@@ -27,6 +27,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 import { PageContainer } from "@/components/ui/page-container";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { ExamDateModal } from "@/components/dashboard/exam-date-modal";
@@ -45,8 +47,6 @@ import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { useResumeStore } from "@/stores/resume-store";
 
 const ACCENT = "#C7F252";
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
 
 const FALLBACK_TOPICS = [
   { name: "Quantitative Aptitude", value: 92, color: "primary" as const },
@@ -282,7 +282,8 @@ export default function DashboardPage() {
   const temporalWindow = useOnboardingStore((s) => s.temporalWindow);
   const resumeSnapshot = useResumeStore((s) => s.snapshot);
   const hasResume = Boolean(resumeSnapshot);
-  const { data } = useDashboardData(targetExam);
+  const { data, isLoading, isError, error, refetch } = useDashboardData(targetExam);
+  const { reduced } = useEntranceAnimations();
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
@@ -337,13 +338,14 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
+    if (reduced) return;
     if (!carouselRef.current) return;
     const slides = carouselRef.current.children;
     const active = slides[carouselIndex];
     const card = active?.querySelector("[data-carousel-card]") as HTMLElement | null;
     if (!card) return;
     gsap.fromTo(card, { y: 14, opacity: 0.55, scale: 0.985 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" });
-  }, [carouselIndex]);
+  }, [carouselIndex, reduced]);
 
   const topics = data?.topics ?? FALLBACK_TOPICS;
   const overallMastery = topics.length > 0 ? Math.round(topics.reduce((sum, t) => sum + t.value, 0) / topics.length) : 0;
@@ -396,9 +398,46 @@ export default function DashboardPage() {
   const animateSection = useCallback((el: HTMLDivElement | null) => {
     if (!el || el.dataset.animated) return;
     el.dataset.animated = "true";
+    if (reduced) return;
     const i = parseInt(el.dataset.sectionIndex || "0");
     gsap.fromTo(el, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, delay: i * 0.06, ease: "power3.out" });
-  }, []);
+  }, [reduced]);
+
+  if (isError) {
+    return (
+      <PageContainer className="flex items-center justify-center pt-24">
+        <div className="w-full max-w-sm text-center">
+          <p className="text-[13px] font-semibold text-destructive">Failed to load your dashboard.</p>
+          <p className="mt-2 text-[12px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
+          <div className="mt-6 flex justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => refetch()}
+              className="rounded-xl bg-cta text-[#0A0C0A] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </PageContainer>
+    );
+  }
+
+  if (isLoading && !data) {
+    return (
+      <PageContainer className="animate-pulse pt-10 md:max-w-3xl">
+        <div className="mx-auto w-full max-w-3xl md:max-w-3xl">
+          <div className="mx-auto h-16 w-48 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
+          <div className="mx-auto mt-4 h-10 w-64 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
+          <div className="mt-10 h-96 rounded-3xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="h-40 rounded-3xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
+            <div className="h-40 rounded-3xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
+          </div>
+        </div>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer className="pt-0 pb-6 overflow-x-hidden">

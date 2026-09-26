@@ -1,9 +1,8 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import gsap from "gsap";
 import {
   ArrowRight,
   Check,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import { useScanPairingCode, useApprovePairing } from "@/hooks/queries/use-pairing";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { cn } from "@/lib/utils";
 
 const STEP_ICON = { phone: Smartphone, web: Globe, check: Check };
@@ -27,20 +27,17 @@ export default function ScanToLoginPage() {
   const router = useRouter();
   const scan = useScanPairingCode();
   const approve = useApprovePairing();
+  const { animateSection } = useEntranceAnimations();
 
   const [entered, setEntered] = useState("");
   const [step, setStep] = useState<"code" | "scanned" | "approved" | "error">("code");
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const displayCode = entered.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8);
+  const displayCode = entered;
 
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
-    }
-  }, []);
+  const handleCodeChange = (raw: string) => {
+    setEntered(raw.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 8));
+  };
 
   const dirty = displayCode.length !== 8;
 
@@ -48,16 +45,12 @@ export default function ScanToLoginPage() {
     if (dirty) return;
     setErrorMsg(null);
     try {
-      // In a real build we'd resolve the session via the code; the backend
-      // scan endpoint resolves the session server-side from the code too.
-      const placeholders = ["dev-web-01"];
-      const ok = await scan.mutateAsync({ sessionId: placeholders[0], code: displayCode });
+      const ok = await scan.mutateAsync(displayCode);
       if (!ok) {
         setStep("error");
         setErrorMsg("Code not found or already used. Check the code on your screen and try again.");
         return;
       }
-      setSessionId(placeholders[0]);
       setStep("scanned");
     } catch {
       setStep("error");
@@ -66,10 +59,9 @@ export default function ScanToLoginPage() {
   };
 
   const handleApprove = async () => {
-    if (!sessionId) return;
     setErrorMsg(null);
     try {
-      await approve.mutateAsync({ sessionId, code: displayCode });
+      await approve.mutateAsync(displayCode);
       setStep("approved");
     } catch {
       setStep("error");
@@ -80,7 +72,6 @@ export default function ScanToLoginPage() {
   const handleCancel = () => {
     setStep("code");
     setEntered("");
-    setSessionId(null);
     setErrorMsg(null);
   };
 
@@ -118,7 +109,7 @@ export default function ScanToLoginPage() {
                 <label className="text-micro font-semibold tracking-[0.14em] text-muted-foreground/40 uppercase whitespace-nowrap">8-digit code</label>
                 <input
                   value={displayCode}
-                  onChange={(e) => setEntered(e.target.value)}
+                  onChange={(e) => handleCodeChange(e.target.value)}
                   placeholder="E.g. 7K2M9QD"
                   maxLength={8}
                   autoCapitalize="characters"

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { createPortal } from "react-dom";
 import { MotionConfig, motion, type Variants } from "motion/react";
 import {
+  AlertTriangle,
   Brain,
   Check,
   Footprints,
@@ -98,6 +99,17 @@ const toMinutes = (t: string) => {
   const m = /^(\d{1,2}):(\d{2})$/.exec(t ?? "");
   if (!m) return 0;
   return Number(m[1]) * 60 + Number(m[2]);
+};
+
+const LAST_SLOT = 23 * 60 + 45;
+
+const clampWindow = (from: string, to: string): string => {
+  const a = Math.min(LAST_SLOT, toMinutes(from));
+  let b = Math.min(LAST_SLOT, toMinutes(to));
+  if (b <= a) b = Math.min(LAST_SLOT, a + 15);
+  const pad = (n: number) =>
+    `${String(Math.floor(n / 60)).padStart(2, "0")}:${String(n % 60).padStart(2, "0")}`;
+  return `${pad(a)} - ${pad(b)}`;
 };
 
 const safeDays = (v?: boolean[]) =>
@@ -571,13 +583,13 @@ function ReclaimModule({
             <Sel
               label={`${id} window start`}
               value={win.from}
-              onChange={(v) => patchModule(`${v} - ${win.to || "00:00"}`, days)}
+              onChange={(v) => patchModule(clampWindow(v, win.to || "00:00"), days)}
               flex
             />
             <Sel
               label={`${id} window end`}
               value={win.to}
-              onChange={(v) => patchModule(`${win.from || "00:00"} - ${v}`, days)}
+              onChange={(v) => patchModule(clampWindow(win.from || "00:00", v), days)}
               flex
             />
           </div>
@@ -953,6 +965,18 @@ export function StoryIntro({
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
   const closingRef = useRef(false);
+  const [notifError, setNotifError] = useState<string | null>(null);
+
+  const animateOut = useCallback(() => {
+    const done = () => onCloseRef.current();
+    const el = overlayRef.current;
+    if (!el) return done();
+    el.animate([{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }], {
+      duration: 280,
+      easing: "cubic-bezier(0.55, 0, 0.55, 0.2)",
+      fill: "forwards",
+    }).addEventListener("finish", done, { once: true });
+  }, []);
 
   const close = useCallback(() => {
     if (closingRef.current) return;
@@ -965,16 +989,19 @@ export function StoryIntro({
     store.setTriggerTime(value.triggerTime);
     store.setWeekDays(value.weekDays);
     store.setReclaimConfigs(value.reclaimConfigs ?? store.reclaimConfigs);
-    void applyStoryNotifications(value);
-    const done = () => onCloseRef.current();
-    const el = overlayRef.current;
-    if (!el) return done();
-    el.animate([{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }], {
-      duration: 280,
-      easing: "cubic-bezier(0.55, 0, 0.55, 0.2)",
-      fill: "forwards",
-    }).addEventListener("finish", done, { once: true });
-  }, [value, store]);
+    void applyStoryNotifications(value).then((res) => {
+      if (res.requested && !res.scheduled) {
+        setNotifError(
+          res.granted
+            ? "Reminders couldn't be scheduled. You can turn them on in Settings."
+            : "Notifications are blocked, so reminders won't be sent. Allow them in your browser or device settings.",
+        );
+        closingRef.current = false;
+        return;
+      }
+      animateOut();
+    });
+  }, [value, store, animateOut]);
 
   return createPortal(
     <MotionConfig reducedMotion="user">
@@ -1056,6 +1083,16 @@ export function StoryIntro({
           >
             Skip
           </button>
+
+          {notifError && (
+            <div
+              role="alert"
+              className="mt-4 flex items-start gap-2 rounded-xl border border-amber-400/30 bg-amber-400/10 p-3 text-[10.5px] font-medium leading-relaxed text-amber-200"
+            >
+              <AlertTriangle size={13} className="mt-0.5 shrink-0" />
+              <span>{notifError}</span>
+            </div>
+          )}
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}

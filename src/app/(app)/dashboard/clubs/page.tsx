@@ -1,16 +1,14 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
-import gsap from "gsap";
+import { useState, useRef, useEffect } from "react";
 import { Users, Plus, Crown, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
 import { MOCK_CLUBS, CLUB_FILTERS, type ClubFilter } from "@/lib/mock/clubs";
 import type { Club } from "@/lib/types/clubs";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 type Tab = "find" | "yours";
 
@@ -24,27 +22,14 @@ export default function ClubsPage() {
   const [tab, setTab] = useState<Tab>("find");
   const [activeFilter, setActiveFilter] = useState<ClubFilter>("All");
   const listRef = useRef<HTMLDivElement>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, staggerIn } = useEntranceAnimations();
 
   useEffect(() => {
     if (listRef.current) {
       const items = listRef.current.querySelectorAll<HTMLElement>("[data-club-item]");
-      if (items.length) {
-        gsap.fromTo(items, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" });
-      }
+      staggerIn(items, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" });
     }
-  }, [tab, activeFilter]);
+  }, [tab, activeFilter, staggerIn]);
 
   const filteredClubs = MOCK_CLUBS.filter((club) => {
     if (tab === "yours" && !club.isJoined) return false;
@@ -117,6 +102,7 @@ export default function ClubsPage() {
 
       <button
         type="button"
+        aria-label="Create club"
         className="fixed right-5 bottom-20 z-40 grid size-14 place-items-center rounded-full bg-cta text-[#0A0C0A] shadow-lg shadow-primary/30 outline-none transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring max-[359px]:right-4"
       >
         <Plus size={22} strokeWidth={2.5} />
@@ -139,6 +125,8 @@ function ClubCard({ club }: { club: Club }) {
       <img
         src={club.coverUrl}
         alt={club.name}
+        loading="lazy"
+        decoding="async"
         className="w-[52px] h-[70px] shrink-0 rounded-xl object-cover border border-white/[0.06]"
       />
       <div className="flex-1 min-w-0">

@@ -7,6 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import gsap from "gsap";
 import { BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useSprintStore } from "@/stores/sprint-store";
 import { useRateStore } from "@/stores/rate-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -14,9 +15,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { recordAdaptiveSession } from "@/services/adaptive";
 import type { SessionOutcome } from "@/lib/types/adaptive";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -82,15 +81,17 @@ function SprintResultsContent() {
   }, [isAdaptive, lastResult, lastSession, adaptiveDomain]);
 
   const resultRef = useRef<HTMLDivElement>(null);
+  const { reduced } = useEntranceAnimations();
 
   const result: SprintResult | null = lastResult;
   const session: { questions: Question[]; topic: string; topicLabel: string; difficulty: string } | null = lastSession;
 
   useEffect(() => {
+    if (reduced) return;
     if (resultRef.current && result) {
       gsap.fromTo(resultRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" });
     }
-  }, [result]);
+  }, [result, reduced]);
 
   const handleAnalysis = useCallback(() => {
     router.push("/play/sprint/results/analysis");

@@ -30,27 +30,21 @@ export async function pollPairingStatus(sessionId: string): Promise<PairingSessi
   return apiGet<PairingSession>(`/pairing/session/${sessionId}`);
 }
 
-export async function scanPairingCode(
-  sessionId: string,
-  code: string,
-): Promise<boolean> {
+export async function scanPairingCode(code: string): Promise<boolean> {
   if (IS_MOCK) {
     await delay(200);
-    return mockScanSession(sessionId, code);
+    return mockScanSession(code);
   }
-  await apiPost<boolean>(`/pairing/session/${sessionId}/scan`, { code });
+  await apiPost<boolean>("/pairing/session/scan", { code });
   return true;
 }
 
-export async function approvePairing(
-  sessionId: string,
-  code: string,
-): Promise<PairingApproval> {
+export async function approvePairing(code: string): Promise<PairingApproval> {
   if (IS_MOCK) {
     await delay(300);
-    const result = mockApproveSession(sessionId, code);
+    const result = mockApproveSession(code);
     if (!result) throw new Error("Approval failed — invalid code or expired session");
     return result;
   }
-  return apiPost<PairingApproval>(`/pairing/session/${sessionId}/approve`, { code });
+  return apiPost<PairingApproval>("/pairing/session/approve", { code });
 }

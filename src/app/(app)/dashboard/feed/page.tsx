@@ -1,41 +1,26 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
-import gsap from "gsap";
+import { useState, useRef, useEffect } from "react";
 import { Search, Play, Clock, Sparkles, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
 import { FEED_HERO, FEED_CATEGORIES, FEED_STORIES, FEED_VIDEOS } from "@/lib/mock/feed";
-
-const GLASS_BG = "rgba(255,255,255,0.04)";
-const GLASS_BORDER = "rgba(255,255,255,0.08)";
+import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function FeedPage() {
   usePageMeta("Feed — Exam Arena");
   const [activeCategory, setActiveCategory] = useState<string>("Explore");
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const headerRef = useCallback((el: HTMLDivElement | null) => {
-    if (el) gsap.fromTo(el, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
-  }, []);
-
-  const animateSection = useCallback((el: HTMLDivElement | null) => {
-    if (el && !el.dataset.animated) {
-      el.dataset.animated = "true";
-      const idx = parseInt(el.dataset.sectionIndex ?? "0", 10);
-      gsap.fromTo(el, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, delay: idx * 0.08, ease: "power2.out" });
-    }
-  }, []);
+  const { headerRef, animateSection, staggerIn } = useEntranceAnimations();
 
   useEffect(() => {
     if (scrollRef.current) {
       const items = scrollRef.current.querySelectorAll<HTMLElement>("[data-feed-story]");
-      if (items.length) {
-        gsap.fromTo(items, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" });
-      }
+      staggerIn(items, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.3, stagger: 0.05, ease: "power2.out" });
     }
-  }, [activeCategory]);
+  }, [activeCategory, staggerIn]);
 
   return (
     <PageContainer>
@@ -82,6 +67,7 @@ export default function FeedPage() {
           <img
             src={FEED_HERO.imageUrl}
             alt=""
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
@@ -111,6 +97,8 @@ export default function FeedPage() {
                 <img
                   src={story.thumbnailUrl}
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                   className="w-14 h-14 shrink-0 rounded-xl object-cover border border-white/[0.06]"
                 />
                 <div className="flex-1 min-w-0">
@@ -145,6 +133,8 @@ export default function FeedPage() {
                 <img
                   src={video.thumbnailUrl}
                   alt=""
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover opacity-70"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

@@ -48,6 +48,19 @@ export function AppEntry({ children }: { children: React.ReactNode }) {
     }
   }, [state, isAuthenticated, pathname]);
 
+  const isProtectedAppRoute =
+    pathname === "/dashboard" ||
+    pathname.startsWith("/dashboard/") ||
+    pathname.startsWith("/settings") ||
+    pathname.startsWith("/learn") ||
+    pathname.startsWith("/play");
+
+  useEffect(() => {
+    if (state === "web" && !isAuthenticated && isProtectedAppRoute) {
+      router.replace("/onboarding");
+    }
+  }, [state, isAuthenticated, pathname, router, isProtectedAppRoute]);
+
   const handleSplashComplete = useCallback(() => {
     if (useAuthStore.getState().isAuthenticated && pathname === "/") {
       router.replace("/dashboard");
