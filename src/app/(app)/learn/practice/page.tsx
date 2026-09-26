@@ -323,7 +323,7 @@ export default function PracticePage() {
                 type="button"
                 disabled={!topic}
                 onClick={startPractice}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BookOpen size={16} /> Start Practice
               </button>
@@ -431,7 +431,7 @@ export default function PracticePage() {
                 type="button"
                 disabled={loadingTemplates}
                 onClick={() => startTemplatePractice()}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 <BrainCircuit size={16} />
                 {loadingTemplates ? "Loading..." : `Start ${domainLabel} ${renderMode === "quick" ? "Quick" : renderMode === "guided" ? "Guided" : "Solve-Along"}`}
@@ -477,7 +477,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
           >
             Practice Again <ChevronRight size={16} />
           </button>
@@ -531,7 +531,7 @@ export default function PracticePage() {
               onClick={() =>
                 router.push(`/play/sprint?topic=${sprintTopic}&length=5&difficulty=${sprintDifficulty}`)
               }
-              className="flex items-center justify-center gap-2 rounded-3xl bg-[var(--amber)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+              className="flex items-center justify-center gap-2 rounded-3xl bg-[var(--amber)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap keep-white"
             >
               <Zap size={16} /> Start 5-Question Sprint
             </button>
@@ -539,7 +539,7 @@ export default function PracticePage() {
           <button
             type="button"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
           >
             Practice Another <ChevronRight size={16} />
           </button>
@@ -626,7 +626,7 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={handleTemplateNext}
-              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
             >
               {storeCurrentIndex >= storeTemplates.length - 1 ? "See Results" : "Next"}{" "}
               <ChevronRight size={16} />
@@ -726,7 +726,7 @@ export default function PracticePage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>

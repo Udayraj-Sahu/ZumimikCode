@@ -131,7 +131,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleScan}
                 disabled={dirty || isBusy}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
               >
                 {scan.isPending ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
@@ -175,7 +175,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleApprove}
                 disabled={isBusy}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: `linear-gradient(90deg, ${EMERALD}, ${EMERALD_SOLID})` }}
               >
                 {approve.isPending ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
@@ -204,7 +204,7 @@ export default function ScanToLoginPage() {
               <button
                 type="button"
                 onClick={() => router.replace("/dashboard")}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
               >
                 Done <ArrowRight size={15} />
@@ -222,7 +222,7 @@ export default function ScanToLoginPage() {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
                 style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
               >
                 Try again <ArrowRight size={15} />

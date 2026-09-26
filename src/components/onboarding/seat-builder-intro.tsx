@@ -190,7 +190,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                             {p.title}
                           </h3>
                           {selected && (
-                            <span className="rounded bg-[var(--lime)] px-1.5 py-px text-[7px] font-bold tracking-wider text-[var(--bg)]">
+                            <span className="rounded bg-[var(--lime)] px-1.5 py-px text-[7px] font-bold tracking-wider text-[var(--on-accent)]">
                               HOLDING THIS SEAT
                             </span>
                           )}
@@ -273,7 +273,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                     className={cn(
                       "flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[8px] font-bold tracking-wider",
                       added
-                        ? "border-[var(--lime)] bg-[var(--lime)] text-[var(--bg)]"
+                        ? "border-[var(--lime)] bg-[var(--lime)] text-[var(--on-accent)]"
                         : "border-white/20 text-muted-foreground/70",
                     )}
                   >
@@ -487,7 +487,7 @@ export function SeatBuilderIntro({
 
         <button
           onClick={confirm}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
           style={{
             background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
             boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",

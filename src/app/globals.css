@@ -4,6 +4,7 @@
 
 :root {
   color-scheme: dark;
+  --color-white-rgb: 255 255 255;
   --background: #0A0C0A;
   --foreground: #ffffff;
   --card: #14170F;
@@ -64,6 +65,7 @@
 
 /* Design palette (single source of truth; mirrors src/lib/theme-tokens.ts) */
 :root {
+  --on-accent: #0A0C0A;
   --lime: #C8FF4D;
   --lime-bright: #C8FF5A;
   --cta-lime: #C7F252;
@@ -334,6 +336,7 @@
 
 .light {
   color-scheme: light;
+  --color-white-rgb: 0 0 0;
   --background: #FAFAFA;
   --foreground: #0A0A0A;
   --card: #FFFFFF;
@@ -374,6 +377,7 @@
 /* Flip-set design tokens + chrome light values. Generated; do not edit. */
 .light {
   color-scheme: light;
+  --color-white-rgb: 0 0 0;
   --surface: #F5F5F5;
   --chrome: #FFFFFF;
   --chrome-raised: #F4F5F1;
@@ -442,6 +446,7 @@
 /* Cinematic surfaces (landing, onboarding, auth, portals) stay dark even in light mode. */
 .light .dark-scene {
   color-scheme: dark;
+  --color-white-rgb: 255 255 255;
   --background: #0A0C0A;
   --foreground: #ffffff;
   --card: #14170F;
@@ -729,6 +734,11 @@
   --slate-muted: rgb(120 130 125);
 }
 /* ==== END LIGHT THEME ==== */
+
+/* Re-assert white-alpha utilities on surfaces that stay white-on-dark even in light mode (image covers, fixed-colored CTAs, avatars). */
+.light .keep-white {
+  --color-white-rgb: 255 255 255;
+}
 
 
 

@@ -234,7 +234,7 @@ function BranchNode({
           !unavailable && "hover:scale-[1.02] active:scale-95",
           unavailable && "opacity-45 cursor-not-allowed",
           depth === 0
-            ? "border-transparent bg-gradient-to-r from-[var(--cta-lime)] to-[var(--lime-mid)] text-[var(--bg)] shadow-[0_12px_40px_-14px_var(--primary)]"
+            ? "border-transparent bg-gradient-to-r from-[var(--cta-lime)] to-[var(--lime-mid)] text-[var(--on-accent)] shadow-[0_12px_40px_-14px_var(--primary)]"
             : "bg-white/[0.05]",
           isFocus ? "ring-2 ring-primary ring-offset-1 ring-offset-transparent" : "",
         )}
@@ -264,7 +264,7 @@ function BranchNode({
           <span
             className={cn(
               "block max-w-[200px] text-[13px] font-semibold leading-snug",
-              depth === 0 ? "text-[var(--bg)]" : "text-foreground",
+              depth === 0 ? "text-[var(--on-accent)]" : "text-foreground",
             )}
           >
             {node.title}
@@ -285,7 +285,7 @@ function BranchNode({
             className={cn(
               "flex size-5 items-center justify-center rounded-full transition-transform duration-200",
               isOpen ? "rotate-180" : "",
-              depth === 0 ? "bg-[var(--bg-10)] text-[var(--bg)]" : "bg-white/[0.06] text-muted-foreground",
+              depth === 0 ? "bg-[var(--bg-10)] text-[var(--on-accent)]" : "bg-white/[0.06] text-muted-foreground",
             )}
           >
             <ChevronDown size={12} />

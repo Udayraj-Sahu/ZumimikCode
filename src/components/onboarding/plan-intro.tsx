@@ -168,7 +168,7 @@ export function PlanSelector({
             )}
           >
             {p.badge && selected && (
-              <span className="absolute -top-2 right-3 rounded-full bg-[var(--lime)] px-2 py-0.5 text-[8px] font-bold tracking-[0.14em] text-[var(--bg)]">
+              <span className="absolute -top-2 right-3 rounded-full bg-[var(--lime)] px-2 py-0.5 text-[8px] font-bold tracking-[0.14em] text-[var(--on-accent)]">
                 {p.badge}
               </span>
             )}
@@ -182,7 +182,7 @@ export function PlanSelector({
                     : "border-white/20 bg-transparent",
                 )}
               >
-                {selected && <Check size={9} className="text-[var(--bg)]" strokeWidth={3.5} />}
+                {selected && <Check size={9} className="text-[var(--on-accent)]" strokeWidth={3.5} />}
               </span>
 
               <div className="min-w-0 flex-1">
@@ -452,7 +452,7 @@ export function PlanIntro({
                         {b.toUpperCase()}
                       </span>
                       {off > 0 && (
-                        <span className="rounded bg-[var(--lime)] px-1 py-px text-[8px] font-bold text-[var(--bg)]">
+                        <span className="rounded bg-[var(--lime)] px-1 py-px text-[8px] font-bold text-[var(--on-accent)]">
                           -{off}%
                         </span>
                       )}
@@ -648,7 +648,7 @@ export function PlanIntro({
                 <div className="relative flex items-center justify-between gap-2 px-4 py-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="rounded bg-[var(--lime)] px-1 py-px text-[7px] font-black tracking-[0.18em] text-[var(--bg)]">
+                      <span className="rounded bg-[var(--lime)] px-1 py-px text-[7px] font-black tracking-[0.18em] text-[var(--on-accent)]">
                         VIP WINTER
                       </span>
                       <span className="text-[11px] font-bold tracking-[0.14em] text-[var(--lime)]">
@@ -747,7 +747,7 @@ export function PlanIntro({
             <button
               type="button"
               onClick={confirm}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] transition active:scale-[0.98]"
+              className="group relative flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] transition active:scale-[0.98]"
               style={{
                 background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                 boxShadow:

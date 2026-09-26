@@ -331,7 +331,7 @@ export function FamilyIntro({
           <FadeUp delay={460}>
             <button
               onClick={() => exit(onDone)}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
               style={{
                 background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                 boxShadow:

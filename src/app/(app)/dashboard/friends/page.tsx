@@ -38,7 +38,7 @@ export default function FriendsPage() {
         <div className="mt-3 flex justify-center">
           <button
             type="button"
-            className="flex items-center gap-1.5 rounded-xl bg-cta text-[var(--bg)] px-3 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-2.5 max-[359px]:py-2 whitespace-nowrap"
+            className="flex items-center gap-1.5 rounded-xl bg-cta text-[var(--on-accent)] px-3 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-2.5 max-[359px]:py-2 whitespace-nowrap"
           >
             <UserPlus size={14} /> Add
           </button>

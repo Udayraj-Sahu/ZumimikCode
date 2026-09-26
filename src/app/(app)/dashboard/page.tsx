@@ -245,7 +245,7 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
       <button
         type="button"
         onClick={() => router.push(href)}
-        className="flex items-center justify-center gap-2 rounded-xl px-5 py-2 text-[11.5px] font-semibold tracking-[-0.01em] text-[var(--bg)] transition-all active:scale-95"
+        className="flex items-center justify-center gap-2 rounded-xl px-5 py-2 text-[11.5px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] transition-all active:scale-95"
         style={{ background: `linear-gradient(90deg, ${ctaFrom}, ${ctaTo})`, boxShadow: `0 0 0 var(--black-00)` }}
         onMouseEnter={(e) => { e.currentTarget.style.boxShadow = glowShadow; }}
         onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 0 var(--black-00)"; }}
@@ -413,7 +413,7 @@ export default function DashboardPage() {
             <button
               type="button"
               onClick={() => refetch()}
-              className="rounded-xl bg-cta text-[var(--bg)] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-xl bg-cta text-[var(--on-accent)] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
             >
               Retry
             </button>
@@ -487,7 +487,7 @@ export default function DashboardPage() {
                 <>
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="size-11 rounded-full flex items-center justify-center text-[var(--bg)] font-black text-[16px] shrink-0 shadow-[0_0_18px_var(--cta-35)]" style={{ background: `linear-gradient(135deg, ${CTA_LIME}, ${LIME_DEEPER})` }}>
+                      <div className="size-11 rounded-full flex items-center justify-center text-[var(--on-accent)] font-black text-[16px] shrink-0 shadow-[0_0_18px_var(--cta-35)]" style={{ background: `linear-gradient(135deg, ${CTA_LIME}, ${LIME_DEEPER})` }}>
                         {(firstName?.[0] ?? "?").toUpperCase()}
                       </div>
                       <div className="min-w-0">
@@ -563,7 +563,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--cta-lime)] to-[var(--lime-dark)] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all hover:shadow-[0_0_20px_var(--cta-35)] active:scale-95">
+                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--cta-lime)] to-[var(--lime-dark)] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_20px_var(--cta-35)] active:scale-95">
                     CONTINUE SETUP
                     <ChevronRight size={14} className="mt-px" />
                   </button>
@@ -707,7 +707,7 @@ export default function DashboardPage() {
                 {habits.length > 3 && <span className="text-[8px] text-muted-foreground/50 font-medium">+{habits.length - 3}</span>}
               </div>
               <div className="relative mt-3 flex items-center justify-between">
-                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[var(--emerald)] to-[var(--emerald-solid)] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[var(--bg)] transition-all hover:shadow-[0_0_16px_var(--emerald-30)] active:scale-95">
+                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[var(--emerald)] to-[var(--emerald-solid)] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_16px_var(--emerald-30)] active:scale-95">
                   VIEW HABITS
                 </button>
                 <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60 font-normal">

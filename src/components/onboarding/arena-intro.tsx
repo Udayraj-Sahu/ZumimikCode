@@ -434,7 +434,7 @@ export function ArenaIntro({
         <FadeUp delay={500} className="mt-6">
           <button
             onClick={() => exit(onClose)}
-            className="flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
+            className="flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
             style={{
               background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
               boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",

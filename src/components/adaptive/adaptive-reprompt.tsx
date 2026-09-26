@@ -212,7 +212,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
             setStep(0);
             setOpen(true);
           }}
-          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--lime)] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[var(--bg)] transition-all hover:opacity-90 active:scale-95"
+          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--lime)] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[var(--on-accent)] transition-all hover:opacity-90 active:scale-95"
         >
           Set up adaptive
           <ArrowRight size={12} strokeWidth={2.5} />
@@ -420,7 +420,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                       </div>
                       {opt.active && (
                         <div className="size-4 rounded-full flex items-center justify-center bg-[var(--lime)] shrink-0">
-                          <Check size={8} className="text-[var(--bg)]" strokeWidth={3} />
+                          <Check size={8} className="text-[var(--on-accent)]" strokeWidth={3} />
                         </div>
                       )}
                     </button>
@@ -493,7 +493,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
               className={cn(
                 "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
                 canNext
-                  ? "text-[var(--bg)]"
+                  ? "text-[var(--on-accent)]"
                   : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
               style={canNext ? { background: ACCENT } : undefined}
@@ -598,7 +598,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
             setStep(0);
             setOpen(true);
           }}
-          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--lime)] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[var(--bg)] transition-all hover:opacity-90 active:scale-95"
+          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--lime)] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[var(--on-accent)] transition-all hover:opacity-90 active:scale-95"
         >
           Set up adaptive
           <ArrowRight size={12} strokeWidth={2.5} />

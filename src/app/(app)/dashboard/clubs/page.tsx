@@ -103,7 +103,7 @@ export default function ClubsPage() {
       <button
         type="button"
         aria-label="Create club"
-        className="fixed right-5 bottom-20 z-40 grid size-14 place-items-center rounded-full bg-cta text-[var(--bg)] shadow-lg shadow-primary/30 outline-none transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring max-[359px]:right-4"
+        className="fixed right-5 bottom-20 z-40 grid size-14 place-items-center rounded-full bg-cta text-[var(--on-accent)] shadow-lg shadow-primary/30 outline-none transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring max-[359px]:right-4"
       >
         <Plus size={22} strokeWidth={2.5} />
       </button>

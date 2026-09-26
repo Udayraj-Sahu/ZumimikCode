@@ -370,7 +370,7 @@ export function PitchIntro({
             <Backlight color={LIME_22}>
               <button
                 onClick={() => exit(onClose)}
-                className="w-full rounded-xl py-3.5  text-[12px] font-bold tracking-wider text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
+                className="w-full rounded-xl py-3.5  text-[12px] font-bold tracking-wider text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
                 style={{
                   background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                   boxShadow: "0 0 28px var(--lime-mid-35), 0 1px 0 var(--glass-25) inset",

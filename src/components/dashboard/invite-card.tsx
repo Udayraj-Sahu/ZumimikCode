@@ -82,7 +82,7 @@ export function InviteCard() {
         <button
           type="button"
           onClick={handleCopy}
-          className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
+          className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[11px] font-bold text-[var(--on-accent)] transition-all active:scale-95"
           style={{ background: copied ? EMERALD : `linear-gradient(90deg, ${ACCENT}, ${SKY})` }}
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}

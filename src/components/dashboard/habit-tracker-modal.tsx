@@ -503,7 +503,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                       <div
                         className={cn(
                           "shrink-0 size-9 rounded-xl flex items-center justify-center transition-all duration-200",
-                          h.todayCompleted ? "text-[var(--bg)]" : "border bg-white/[0.03]",
+                          h.todayCompleted ? "text-[var(--on-accent)]" : "border bg-white/[0.03]",
                         )}
                         style={h.todayCompleted
                           ? { background: `linear-gradient(135deg, ${VIOLET}, ${EMERALD_SOLID})`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }
@@ -583,7 +583,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           <button
                             type="button"
                             onClick={(e) => { e.stopPropagation(); setDraftDays(draftDays.length === 7 ? [] : allDays()); }}
-                            className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide transition-colors", draftDays.length === 7 ? "text-[var(--bg)]" : "text-muted-foreground/40 hover:text-foreground")}
+                            className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide transition-colors", draftDays.length === 7 ? "text-[var(--on-accent)]" : "text-muted-foreground/40 hover:text-foreground")}
                             style={draftDays.length === 7 ? { background: `${VIOLET}22`, border: `1px solid ${VIOLET}40` } : undefined}
                           >
                             {"Every day"}
@@ -600,7 +600,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                                 onClick={(e) => { e.stopPropagation(); setDraftDays((prev) => (active ? prev.filter((d) => d !== jsDay) : [...prev, jsDay])); }}
                                 className={cn(
                                   "flex h-8 flex-1 items-center justify-center rounded-lg text-[11px] font-bold transition-all",
-                                  active ? "text-[var(--bg)]" : "bg-white/[0.05] text-muted-foreground/40 hover:bg-white/[0.08]",
+                                  active ? "text-[var(--on-accent)]" : "bg-white/[0.05] text-muted-foreground/40 hover:bg-white/[0.08]",
                                 )}
                                 style={active ? { background: `linear-gradient(135deg, ${VIOLET}, ${EMERALD_SOLID})`, boxShadow: `0 0 10px ${VIOLET_GLOW}` } : undefined}
                               >
@@ -617,7 +617,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           type="button"
                           onClick={() => handleSetTime(h.id, draftTime, h.name, draftDays)}
                           disabled={draftDays.length === 0}
-                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-micro font-bold uppercase tracking-widest text-[var(--bg)] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
+                          className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-micro font-bold uppercase tracking-widest text-[var(--on-accent)] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
                           style={{ background: `linear-gradient(135deg, ${VIOLET}, ${EMERALD_SOLID})`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }}
                         >
                           <Bell size={11} /> Set reminder
@@ -677,7 +677,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                 </div>
               </div>
               <button type="button" onClick={handleAddHabit} disabled={!newName.trim()}
-                className={cn("w-full rounded-xl py-2.5 text-[13px] font-semibold transition-all", newName.trim() ? "text-[var(--bg)]" : "bg-white/[0.06] text-muted-foreground/30 cursor-not-allowed")}
+                className={cn("w-full rounded-xl py-2.5 text-[13px] font-semibold transition-all", newName.trim() ? "text-[var(--on-accent)]" : "bg-white/[0.06] text-muted-foreground/30 cursor-not-allowed")}
                 style={newName.trim() ? { background: `linear-gradient(135deg, ${VIOLET}, ${EMERALD_SOLID})`, boxShadow: `0 0 16px ${VIOLET_GLOW}` } : undefined}
               >
                 Add Habit

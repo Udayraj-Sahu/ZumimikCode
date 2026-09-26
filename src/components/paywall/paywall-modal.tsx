@@ -248,7 +248,7 @@ export function PaywallModal() {
                 className="relative flex min-h-[60vh] flex-col items-center justify-center gap-3 px-6 py-10 text-center"
               >
                 <div
-                  className="flex items-center gap-2 rounded-2xl border border-white/10 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--bg)]"
+                  className="flex items-center gap-2 rounded-2xl border border-white/10 px-6 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--on-accent)]"
                   style={{
                     background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT_DIM})`,
                     boxShadow: `0 10px 34px var(--lime-30), 0 1px 0 var(--glass-25) inset`,
@@ -449,7 +449,7 @@ export function PaywallModal() {
                                         {o.title}
                                       </h3>
                                       {o.badge && (
-                                        <span className="rounded bg-[var(--lime)] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[var(--bg)]">
+                                        <span className="rounded bg-[var(--lime)] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[var(--on-accent)]">
                                           {o.badge}
                                         </span>
                                       )}
@@ -494,7 +494,7 @@ export function PaywallModal() {
                   <button
                     type="button"
                     onClick={confirmPlan}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-mono text-[11px] font-bold tracking-wider text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 font-mono text-[11px] font-bold tracking-wider text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
                     style={{
                       background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT_DIM})`,
                       boxShadow:

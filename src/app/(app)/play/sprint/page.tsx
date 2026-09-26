@@ -256,7 +256,7 @@ function SprintContent() {
         <button
           type="button"
           onClick={() => router.push("/play/configure-sprint")}
-          className="mt-4 rounded-xl bg-cta text-[var(--bg)] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 rounded-xl bg-cta text-[var(--on-accent)] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
         >
           Configure Sprint
         </button>
@@ -281,7 +281,7 @@ function SprintContent() {
           <button
             type="button"
             onClick={() => router.refresh()}
-            className="rounded-xl bg-cta text-[var(--bg)] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-xl bg-cta text-[var(--on-accent)] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Retry
           </button>
@@ -354,7 +354,7 @@ function SprintContent() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta text-[var(--bg)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta text-[var(--on-accent)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
               >
                 {isLast ? "See Results" : "Next"} <ChevronRight size={16} />
               </button>

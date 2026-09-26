@@ -63,7 +63,7 @@ export default function FeedPage() {
 
       <div className="mt-5 flex flex-col gap-5 max-[359px]:gap-4">
         {/* Hero card */}
-        <div ref={animateSection} data-section-index="2" className="relative rounded-3xl overflow-hidden h-[160px]">
+        <div ref={animateSection} data-section-index="2" className="keep-white relative rounded-3xl overflow-hidden h-[160px]">
           <img
             src={FEED_HERO.imageUrl}
             alt=""
@@ -127,7 +127,7 @@ export default function FeedPage() {
             {FEED_VIDEOS.map((video) => (
               <div
                 key={video.id}
-                className="w-[120px] shrink-0 rounded-3xl overflow-hidden border border-white/[0.06] backdrop-blur-xl h-[150px] relative outline-none transition-all active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
+                className="keep-white w-[120px] shrink-0 rounded-3xl overflow-hidden border border-white/[0.06] backdrop-blur-xl h-[150px] relative outline-none transition-all active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-ring"
                 style={{ backgroundColor: GLASS_BG }}
               >
                 <img
@@ -144,7 +144,7 @@ export default function FeedPage() {
                   </p>
                 </div>
                 <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                  <span className="bg-cta px-1.5 py-0.5 rounded text-[8px] font-bold text-[var(--bg)]">
+                  <span className="bg-cta px-1.5 py-0.5 rounded text-[8px] font-bold text-[var(--on-accent)]">
                     {video.source}
                   </span>
                 </div>

@@ -354,7 +354,7 @@ function Stepper({
         disabled={idx >= options.length - 1}
         onClick={() => onSpin(options[idx + 1])}
         className={cn(
-          "grid size-6 place-items-center rounded-full text-[var(--bg)] transition-opacity disabled:opacity-35",
+          "grid size-6 place-items-center rounded-full text-[var(--on-accent)] transition-opacity disabled:opacity-35",
           tone === "lime" ? "bg-[var(--lime)]" : tone === "cyan" ? "bg-cyan-400" : "bg-fuchsia-400",
         )}
       >
@@ -565,7 +565,7 @@ function ReclaimModule({
             className={cn(
               "grid size-5 shrink-0 place-items-center rounded-full border transition-all",
               active
-                ? "bg-[var(--lime)] text-[var(--bg)] shadow-[0_0_12px_var(--lime-50)]"
+                ? "bg-[var(--lime)] text-[var(--on-accent)] shadow-[0_0_12px_var(--lime-50)]"
                 : "border-white/[0.12] bg-white/[0.03] text-[var(--lime-50)]",
             )}
           >
@@ -1108,7 +1108,7 @@ export function StoryIntro({
             <button
               type="button"
               onClick={close}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--bg)] transition-transform active:scale-[0.98]"
+              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--on-accent)] transition-transform active:scale-[0.98]"
               style={{
                 background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                 boxShadow:

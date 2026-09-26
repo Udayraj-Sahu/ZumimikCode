@@ -483,7 +483,7 @@ function LearnPageContent() {
                         <button
                           type="button"
                           onClick={() => refetchDashboard()}
-                          className="mt-4 rounded-xl bg-cta text-[var(--bg)] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                          className="mt-4 rounded-xl bg-cta text-[var(--on-accent)] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
                         >
                           Retry
                         </button>
@@ -956,7 +956,7 @@ function LearnPageContent() {
                     <button
                       type="button"
                       onClick={() => refetchPapers()}
-                      className="mt-4 rounded-xl bg-cta text-[var(--bg)] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                      className="mt-4 rounded-xl bg-cta text-[var(--on-accent)] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
                     >
                       Retry
                     </button>

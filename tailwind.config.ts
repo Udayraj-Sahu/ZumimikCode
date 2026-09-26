@@ -10,6 +10,7 @@ const config: Config = {
         mono: ["var(--font-jetbrains-mono)", "monospace"],
       },
       colors: {
+        white: "rgb(var(--color-white-rgb) / <alpha-value>)",
         background: "var(--background)",
         foreground: "var(--foreground)",
         card: "var(--card)",
