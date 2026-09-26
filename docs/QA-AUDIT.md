@@ -27,9 +27,9 @@ Routing map used throughout:
 
 ### Global
 - [~] One source of truth for colors/tokens — `:root` CSS vars in `globals.css` + tailwind `colors` in `tailwind.config.ts`; **JS-side glass/violet tokens centralized** in `src/lib/theme-tokens.ts` (`GLASS_BG`, `GLASS_BORDER`, `VIOLET`, `VIOLET_DIM`, `VIOLET_GLOW`) — replaced 27 files' duplicated local glass/border constants; system-wide hex-usage sweep pending (landing + per-screen accent palettes to Phase 6 follow-up)
-- [N/A] Light theme — **explicitly out of scope** (user directive); project is dark-only
+- [x] Light theme **scoped to app shell** — `.light` flips `[data-theme-scope]` subtrees only (AppShell root + app-internal modal portals: exam-date, add-prep, paywall, adaptive-reprompt, onboarding-modal, habit-tracker-modal, and all 8 onboarding intro overlays arena/feature/story/plan/pitch/seat-builder/family/family-hub). Landing page + landing components + auth/onboarding login page stay **dark always** (zero landing edits per user directive). Toggle: Settings → APPEARANCE.
 - [x] Dark theme completely implemented
-- [~] Theme switching — N/A (dark-only); theme edge cases below verified in dark mode only
+- [~] Theme switching — persisted via `theme-store` (`exam-arena-theme` in localStorage); 5 SVG-attr tokens (`GLASS_BORDER`, `GLASS_025`, `GLASS_02`, `GLASS_06`, `DEEP_BLACK`) are excluded from the flip-set (kept literal) because landing components use them as raw SVG presentation attrs which can't resolve `var()` — accepted tradeoff: these tokens keep dark values inside app pages in light mode (nearly-invisible white-alpha borders/strokes; DEEP_BLACK surfaces stay dark). Habit-tracker-modal uses theme-aware inline panel bg (replaced literal DEEP_BLACK gradient with `var(--bg-2)` when light) for legibility.
 
 ### Theme edge cases
 - [ ] Text readable (dark mode)
@@ -440,10 +440,10 @@ Stores (14): `src/stores/*` (auth, theme[dropped], network, onboarding, settings
 1. **Test infra absent** — no jest/vitest/playwright/cypress; no `test` script (Phase 0).
 2. **Mock-first** — `IS_MOCK` defaults true (`config.ts:4`); most screens render mock data. Real API-state verification (401/403/429/500/timeout) needs the mock layer to simulate failures, or a real backend.
 3. **Token in localStorage** — `auth-store` persists via `safeLocalStorage`; native builds should use `@capacitor/preferences` to avoid WebView storage exposure. (Phase 5.)
-4. **Dark-only product** — `.theme-light` work was reverted by user directive; theme sections apply to dark mode only.
+4. **Dark-default, light-opt-in** — light theme is scoped to `[data-theme-scope]` subtrees (AppShell + app-internal modal portals incl. onboarding-modal, habit-tracker-modal, and the 8 onboarding intro overlays) via Settings → APPEARANCE; landing/onboarding/auth never flip. FOUC mitigation: `html.loading #main-content{opacity:0}` until `AppEntry` removes `loading`. Browser FOUC-prevention can't pre-apply `.light` before React mounts; minor dark→light flash acceptable on in-app reload.
 5. **No `ios/` Capacitor workspace** — iOS device/after-build checks blocked until `npx cap add ios`.
 6. **No analytics/error tracking** — Firebase SDK present but not wired for analytics/crashlytics in frontend. (Phases 6/31.)
 7. **No route-level loading/error boundaries** — only `AppEntry` splash + `not-found`; per-route `loading.tsx`/`error.tsx` absent. (Phases 16/17.)
 8. **No reduced-motion handling** — GSAP entrances (app-shell, dashboard page) ignore `prefers-reduced-motion`. (Phase 20/21.)
 
-> Note: Phase 1 (light theme) is cancelled per user directive — dark-only scope confirmed.
+> Note: Phase 1 (light theme) now ships as a scoped app-shell opt-in (Settings → APPEARANCE); landing/onboarding/auth remain permanently dark per user directive. The 5 tokens excluded from the flip-set (GLASS_BORDER, GLASS_025, GLASS_02, GLASS_06, DEEP_BLACK) stay literal because landing components use them as SVG presentation attrs (see Global/Theme switching above).

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { AMBER, CTA_LIME, CYAN, ROSE, VIOLET_PURPLE } from "@/lib/theme-tokens";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { safeLocalStorage } from "@/lib/browser";
 import type { Habit, HabitLog, HabitStats, HabitWithLog } from "@/lib/types/habit-tracker";
@@ -18,11 +19,11 @@ function subtractDays(d: Date, n: number): Date {
 }
 
 const DEFAULT_HABITS: Habit[] = [
-  { id: "h1", name: "Complete a sprint", icon: "Zap", color: "#C7F252", category: "auto", createdAt: "2026-08-01" },
-  { id: "h2", name: "Practice speed math", icon: "Calculator", color: "#22D3EE", category: "manual", createdAt: "2026-08-01" },
-  { id: "h3", name: "Read for 20 min", icon: "BookOpen", color: "#A78BFA", category: "manual", createdAt: "2026-08-01" },
-  { id: "h4", name: "Review flashcards", icon: "CreditCard", color: "#F59E0B", category: "auto", createdAt: "2026-08-01" },
-  { id: "h5", name: "Solve 10 questions", icon: "Target", color: "#FB7185", category: "manual", createdAt: "2026-08-01" },
+  { id: "h1", name: "Complete a sprint", icon: "Zap", color: CTA_LIME, category: "auto", createdAt: "2026-08-01" },
+  { id: "h2", name: "Practice speed math", icon: "Calculator", color: CYAN, category: "manual", createdAt: "2026-08-01" },
+  { id: "h3", name: "Read for 20 min", icon: "BookOpen", color: VIOLET_PURPLE, category: "manual", createdAt: "2026-08-01" },
+  { id: "h4", name: "Review flashcards", icon: "CreditCard", color: AMBER, category: "auto", createdAt: "2026-08-01" },
+  { id: "h5", name: "Solve 10 questions", icon: "Target", color: ROSE, category: "manual", createdAt: "2026-08-01" },
 ];
 
 const SEED_LOGS: HabitLog[] = (() => {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { GLASS_12, GLASS_15, GLASS_25, GLASS_35, LIME_BRIGHT, LIME_BRIGHT_30, WHITE } from "@/lib/theme-tokens";
 
 interface AchievementProps {
   label: string;
@@ -34,21 +35,21 @@ export function Achievement({ label, sublabel, unlocked = false, delay = 0 }: Ac
       }}>
       <div style={{
         flexShrink: 0, marginTop: "3px", width: "18px", height: "18px",
-        border: `1px solid ${unlocked ? "#C8FF5A" : "rgba(255,255,255,0.15)"}`,
+        border: `1px solid ${unlocked ? LIME_BRIGHT : GLASS_15}`,
         display: "flex", alignItems: "center", justifyContent: "center",
-        boxShadow: unlocked ? "0 0 8px rgba(200,255,90,0.3)" : "none",
+        boxShadow: unlocked ? `0 0 8px ${LIME_BRIGHT_30}` : "none",
         transition: "all 0.4s ease"
       }}>
         {unlocked && (
           <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-            <path d="M1 4L3.5 6.5L9 1" stroke="#C8FF5A" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M1 4L3.5 6.5L9 1" stroke={LIME_BRIGHT} strokeWidth="1.5" strokeLinecap="round" />
           </svg>
         )}
       </div>
       <div>
-        <div className="font-display" style={{ fontSize: "18px", color: unlocked ? "#ffffff" : "rgba(255,255,255,0.25)", letterSpacing: "-0.01em", transition: "color 0.4s ease" }}>{label}</div>
+        <div className="font-display" style={{ fontSize: "18px", color: unlocked ? WHITE : GLASS_25, letterSpacing: "-0.01em", transition: "color 0.4s ease" }}>{label}</div>
         {sublabel && (
-          <div className="font-sans" style={{ fontSize: "12px", color: unlocked ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.12)", marginTop: "2px", letterSpacing: "0.05em" }}>{sublabel}</div>
+          <div className="font-sans" style={{ fontSize: "12px", color: unlocked ? GLASS_35 : GLASS_12, marginTop: "2px", letterSpacing: "0.05em" }}>{sublabel}</div>
         )}
       </div>
     </div>

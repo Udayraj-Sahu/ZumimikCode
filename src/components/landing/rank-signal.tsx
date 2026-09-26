@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { LIME_BRIGHT, LIME_BRIGHT_05, LIME_BRIGHT_RGB, NEAR_BLACK, NEAR_WHITE_BLACK } from "@/lib/theme-tokens";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { AuthModal } from "@/components/onboarding/auth-modal";
 import { useRouter } from "next/navigation";
@@ -84,7 +85,7 @@ export function RankSignal() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, #1a1a1a 0%, #050505 60%, #050505 100%)",
+            `radial-gradient(ellipse 80% 60% at 50% 50%, ${NEAR_WHITE_BLACK} 0%, ${NEAR_BLACK} 60%, ${NEAR_BLACK} 100%)`,
         }}
       />
 
@@ -96,8 +97,8 @@ export function RankSignal() {
             style={{
               width: ring.size,
               height: ring.size,
-              borderColor: `rgba(200, 255, 90, ${ring.opacity})`,
-              boxShadow: `0 0 ${ring.size * 0.06}px rgba(200, 255, 90, ${ring.opacity * 0.5})`,
+              borderColor: `rgba(${LIME_BRIGHT_RGB}, ${ring.opacity})`,
+              boxShadow: `0 0 ${ring.size * 0.06}px rgba(${LIME_BRIGHT_RGB}, ${ring.opacity * 0.5})`,
             }}
             animate={{
               scale: [1, 1.15, 1],
@@ -133,7 +134,7 @@ export function RankSignal() {
               <motion.polygon
                 points="40,4 74,22 74,58 40,76 6,58 6,22"
                 fill="none"
-                stroke="#C8FF5A"
+                stroke={LIME_BRIGHT}
                 strokeWidth="1.5"
                 animate={{ strokeDashoffset: [0, -200] }}
                 style={{ strokeDasharray: 200 }}
@@ -141,15 +142,15 @@ export function RankSignal() {
               />
               <polygon
                 points="40,4 74,22 74,58 40,76 6,58 6,22"
-                fill="rgba(200,255,90,0.05)"
+                fill={LIME_BRIGHT_05}
               />
-              <circle cx="40" cy="40" r="6" fill="#C8FF5A" opacity="0.9" />
+              <circle cx="40" cy="40" r="6" fill={LIME_BRIGHT} opacity="0.9" />
               <motion.circle
                 cx="40"
                 cy="40"
                 r="14"
                 fill="none"
-                stroke="#C8FF5A"
+                stroke={LIME_BRIGHT}
                 strokeWidth="0.75"
                 animate={{ r: [14, 20, 14], opacity: [0.5, 0, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}

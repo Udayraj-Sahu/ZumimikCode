@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { EMERALD_LIGHT, LIME, LIME_LIGHT, NEAR_BLACK_60, YELLOW } from "@/lib/theme-tokens";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import {
@@ -20,9 +21,10 @@ import { usePaywallStore } from "@/stores/paywall-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { PlanId } from "@/lib/types/onboarding";
 import { cn } from "@/lib/utils";
+import { useThemeStore } from "@/stores/theme-store";
 
-const ACCENT = "#C8FF4D";
-const ACCENT_DIM = "#B9F45C";
+const ACCENT = LIME;
+const ACCENT_DIM = LIME_LIGHT;
 const inr = (n: number) => `₹${new Intl.NumberFormat("en-IN").format(n)}`;
 
 type PaywallOption = {
@@ -133,6 +135,7 @@ export function PaywallModal() {
 
   const [planOptionId, setPlanOptionId] = useState<string>("dual-lane");
   const [lane, setLane] = useState<string>(planLane || targetExam || "cat");
+  const theme = useThemeStore((s) => s.theme);
   const [state, setState] = useState<"idle" | "success">("idle");
   const overlayRef = useRef<HTMLDivElement>(null);
   const wasOpenRef = useRef(false);
@@ -205,15 +208,17 @@ export function PaywallModal() {
   return createPortal(
     <div
       ref={overlayRef}
+      data-theme-scope
       className={cn(
         "fixed inset-0 z-[70] flex flex-col items-center px-5",
+        theme === "light" && "light",
         isNative ? "justify-end overflow-hidden" : "justify-center overflow-y-auto py-6",
       )}
     >
       <div
         className="fixed inset-0 -z-10"
         onClick={requestClose}
-        style={{ background: "rgba(3,4,6,0.6)" }}
+        style={{ background: NEAR_BLACK_60 }}
       />
 
       <div
@@ -275,7 +280,7 @@ export function PaywallModal() {
                       Your loop is{" "}
                       <span
                         className="bg-gradient-to-r bg-clip-text text-transparent"
-                        style={{ backgroundImage: `linear-gradient(90deg, ${ACCENT}, #4ADE80)` }}
+                        style={{ backgroundImage: `linear-gradient(90deg, ${ACCENT}, ${EMERALD_LIGHT})` }}
                       >
                         capped.
                       </span>
@@ -310,7 +315,7 @@ export function PaywallModal() {
                         <div className="mt-1.5 flex items-baseline gap-1">
                           <span
                             className="font-mono text-[18px] font-bold leading-none"
-                            style={{ color: warn ? "#FBBF24" : ACCENT }}
+                            style={{ color: warn ? YELLOW : ACCENT }}
                           >
                             {value}
                           </span>
@@ -341,7 +346,7 @@ export function PaywallModal() {
                         animate={{ width: `${throttle}%` }}
                         transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
                         className="h-full rounded-full"
-                        style={{ background: `linear-gradient(90deg, ${ACCENT}, #4ADE80)` }}
+                        style={{ background: `linear-gradient(90deg, ${ACCENT}, ${EMERALD_LIGHT})` }}
                       />
                     </div>
                     <p className="mt-1.5 font-mono text-[7px] font-medium tracking-wider text-muted-foreground/40">

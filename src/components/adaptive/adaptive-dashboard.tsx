@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { CYAN, EMERALD, GLASS_BG, GLASS_BORDER, LIME, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
 import { useState } from "react";
 import {
   Grid3x3,
@@ -40,24 +41,24 @@ const TEMPORAL_LABELS: Record<string, string> = {
 };
 
 const TOPIC_ICONS: Record<string, { icon: typeof Grid3x3; color: string }> = {
-  "Problem Solving": { icon: Calculator, color: "#34D399" },
-  "Data Sufficiency": { icon: ListChecks, color: "#22D3EE" },
-  "Sentence Correction": { icon: BookOpen, color: "#A78BFA" },
-  "Critical Reasoning": { icon: Target, color: "#FBBF24" },
-  "Reading Comp.": { icon: BookOpen, color: "#FB7185" },
-  "Quantitative Apt.": { icon: Calculator, color: "#34D399" },
-  "LR & DI": { icon: ListChecks, color: "#22D3EE" },
-  "Verbal Ability": { icon: BookOpen, color: "#A78BFA" },
-  "Quant Comparison": { icon: Sigma, color: "#34D399" },
-  "Text Completion": { icon: BookOpen, color: "#A78BFA" },
-  "Sentence Equivalence": { icon: Sparkles, color: "#FBBF24" },
-  "Numerical Ability": { icon: Calculator, color: "#34D399" },
-  "General Awareness": { icon: ListChecks, color: "#FBBF24" },
-  "Computer Knowledge": { icon: Pentagon, color: "#A78BFA" },
-  "Vedic Addition": { icon: Calculator, color: "#34D399" },
-  "Vedic Subtraction": { icon: Sigma, color: "#22D3EE" },
-  "Vedic Multiplication": { icon: Zap, color: "#FBBF24" },
-  "Squares & Bases": { icon: Pentagon, color: "#A78BFA" },
+  "Problem Solving": { icon: Calculator, color: EMERALD },
+  "Data Sufficiency": { icon: ListChecks, color: CYAN },
+  "Sentence Correction": { icon: BookOpen, color: VIOLET_PURPLE },
+  "Critical Reasoning": { icon: Target, color: YELLOW },
+  "Reading Comp.": { icon: BookOpen, color: ROSE },
+  "Quantitative Apt.": { icon: Calculator, color: EMERALD },
+  "LR & DI": { icon: ListChecks, color: CYAN },
+  "Verbal Ability": { icon: BookOpen, color: VIOLET_PURPLE },
+  "Quant Comparison": { icon: Sigma, color: EMERALD },
+  "Text Completion": { icon: BookOpen, color: VIOLET_PURPLE },
+  "Sentence Equivalence": { icon: Sparkles, color: YELLOW },
+  "Numerical Ability": { icon: Calculator, color: EMERALD },
+  "General Awareness": { icon: ListChecks, color: YELLOW },
+  "Computer Knowledge": { icon: Pentagon, color: VIOLET_PURPLE },
+  "Vedic Addition": { icon: Calculator, color: EMERALD },
+  "Vedic Subtraction": { icon: Sigma, color: CYAN },
+  "Vedic Multiplication": { icon: Zap, color: YELLOW },
+  "Squares & Bases": { icon: Pentagon, color: VIOLET_PURPLE },
 };
 
 function sprintHref(rec: PracticeRecommendation, domain: string): string {
@@ -90,7 +91,7 @@ function CircularGauge({
   return (
     <div className="relative size-[120px] shrink-0">
       <svg width="120" height="120" viewBox="0 0 120 120">
-        <circle cx="60" cy="60" r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="8" />
+        <circle cx="60" cy="60" r={r} fill="none" style={{ stroke: GLASS_BORDER, strokeWidth: 8 }} />
         {segments && segments.length > 0 ? (
           (() => {
             const n = segments.length;
@@ -180,7 +181,7 @@ function ModeHeader({
     <div
       className="relative overflow-hidden rounded-3xl border p-5"
       style={{
-        borderColor: "rgba(255,255,255,0.08)",
+        borderColor: GLASS_BORDER,
         background: `linear-gradient(160deg, ${profile.accent}12 0%, var(--glass-02) 60%)`,
       }}
     >
@@ -292,7 +293,7 @@ function ExamReadyBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader accent={ctx.profile.accent}>Today&apos;s Mission</CardHeader>
       <div className="mt-3.5 flex flex-col gap-3">
@@ -354,7 +355,7 @@ function GapCloserBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader
         accent={ctx.profile.accent}
@@ -422,7 +423,7 @@ function DiscoveryBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader accent={ctx.profile.accent}>Current Focus</CardHeader>
       <p className="mt-3.5 mb-4 text-[12px] text-muted-foreground/55">
@@ -455,7 +456,7 @@ function GuidedLearningBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader accent={ctx.profile.accent}>Today&apos;s Lesson</CardHeader>
       <div className="mt-3.5 flex flex-col gap-2">
@@ -522,7 +523,7 @@ function SpeedTrainingBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader accent={ctx.profile.accent}>Speed Training</CardHeader>
       <div className="mt-3.5 grid grid-cols-2 gap-2.5">
@@ -573,7 +574,7 @@ function PerformanceBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader accent={ctx.profile.accent}>Competitive Exam Mode</CardHeader>
       <div className="mt-3.5 flex items-center gap-5">
@@ -630,7 +631,7 @@ function BrainGymBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader accent={ctx.profile.accent}>Today&apos;s Mental Workout</CardHeader>
       <div className="mt-3.5 grid grid-cols-2 gap-2.5">
@@ -675,7 +676,7 @@ function StatsBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5 overflow-hidden"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader
         accent={ctx.profile.accent}
@@ -778,7 +779,7 @@ function TimeBudgetBlock({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <div className="flex items-center justify-between">
         <p
@@ -833,7 +834,7 @@ function TopicMasteryList({ ctx }: { ctx: VariantCtx }) {
   return (
     <div
       className="rounded-3xl border backdrop-blur-xl p-5"
-      style={{ borderColor: "rgba(255,255,255,0.08)" }}
+      style={{ borderColor: GLASS_BORDER }}
     >
       <CardHeader
         accent={ctx.profile.accent}
@@ -925,7 +926,7 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
       focusMode,
       dailyMinutes: dailyMinutes ?? 30,
     }),
-    accent: "#C8FF4D",
+    accent: LIME,
   };
 
   const daysRemaining = (() => {
@@ -940,7 +941,7 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
     return (
       <div
         className="rounded-3xl border border-white/[0.08] px-5 py-6"
-        style={{ background: "rgba(255,255,255,0.04)" }}
+        style={{ background: GLASS_BG }}
       >
         <div className="h-4 w-40 rounded-xl bg-white/[0.06] animate-pulse mb-4" />
         <div className="size-[120px] rounded-full bg-white/[0.06] animate-pulse mx-auto" />

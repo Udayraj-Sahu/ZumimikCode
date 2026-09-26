@@ -7,7 +7,7 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useFriends } from "@/hooks/queries/use-friends";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { GLASS_06, GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function FriendsPage() {
   usePageMeta("Friends — Exam Arena");
@@ -56,7 +56,7 @@ export default function FriendsPage() {
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground",
             tab !== "friends" && GLASS_BG && { background: GLASS_BG }
           )}
-          style={tab !== "friends" ? { background: GLASS_BG, borderColor: "rgba(255,255,255,0.06)" } : undefined}
+          style={tab !== "friends" ? { background: GLASS_BG, borderColor: GLASS_06 } : undefined}
         >
           Friends
         </button>
@@ -137,7 +137,7 @@ export default function FriendsPage() {
               <button
                 type="button"
                 className="flex items-center gap-1 rounded-xl px-3 py-2 text-micro font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
-                style={{ background: "rgba(255,255,255,0.04)" }}
+                style={{ background: GLASS_BG }}
               >
                 <Swords size={12} /> Duel
               </button>

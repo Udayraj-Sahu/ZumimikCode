@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { GLASS_05, GLASS_BORDER, LIME, VIOLET_PURPLE } from "@/lib/theme-tokens";
 import { Play, X, Clock, Sparkles, ChevronRight } from "lucide-react";
 import { useResumeStore } from "@/stores/resume-store";
 import { useTodayPlan } from "@/hooks/queries/use-adaptive";
@@ -35,7 +36,7 @@ function shade(hex: string, percent: number): string {
 export function ResumeProtocolCard({
   domain,
   className,
-  accent = "#A78BFA",
+  accent = VIOLET_PURPLE,
   showStartEntry = false,
   kind,
 }: {
@@ -92,7 +93,7 @@ export function ResumeProtocolCard({
           type="button"
           onClick={() => router.push(startHref)}
           className="group flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-[11px] font-bold uppercase tracking-widest text-[var(--bg)] transition-all hover:opacity-90 active:scale-[0.98]"
-          style={{ background: `linear-gradient(90deg, ${accent}, #C8FF4D)` }}
+          style={{ background: `linear-gradient(90deg, ${accent}, ${LIME})` }}
         >
           Start Practice <ChevronRight size={14} />
         </button>
@@ -102,7 +103,7 @@ export function ResumeProtocolCard({
 
   return (
     <div className={cn("mt-4 px-5", className)}>
-      <div className="relative h-full overflow-hidden rounded-3xl border backdrop-blur-xl" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+      <div className="relative h-full overflow-hidden rounded-3xl border backdrop-blur-xl" style={{ borderColor: GLASS_BORDER }}>
         <div className="absolute left-0 right-0 top-0 h-[3px]" style={{ background: `linear-gradient(90deg, ${accent}, ${accentSecondary})` }} />
 
           <div className="px-5 py-5">
@@ -120,11 +121,11 @@ export function ResumeProtocolCard({
             </p>
 
             <div className="mt-3.5 flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold text-foreground/75" style={{ background: "rgba(255,255,255,0.05)" }}>
+              <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold text-foreground/75" style={{ background: GLASS_05 }}>
                 <Play size={9} style={{ color: accent }} />
                 {Math.min(Math.max(0, visibleSnapshot.currentIndex) + 1, visibleSnapshot.questions.length)}/{visibleSnapshot.questions.length}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold font-mono text-foreground/75" style={{ background: "rgba(255,255,255,0.05)" }}>
+              <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold font-mono text-foreground/75" style={{ background: GLASS_05 }}>
                 <Clock size={9} style={{ color: accent }} />
                 {formatTime(visibleSnapshot.timeLeft)} left
               </span>
@@ -145,7 +146,7 @@ export function ResumeProtocolCard({
                 type="button"
                 onClick={continueHref}
                 className="flex-1 flex items-center justify-center gap-2 rounded-2xl py-3 text-[11px] font-bold uppercase tracking-widest text-[var(--bg)] transition-all hover:opacity-90 active:scale-[0.98]"
-                style={{ background: "#C8FF4D" }}
+                style={{ background: LIME }}
               >
                 <Play size={12} strokeWidth={2.5} /> Resume
               </button>

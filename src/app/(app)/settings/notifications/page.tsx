@@ -8,7 +8,7 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useNotifications } from "@/hooks/queries/use-notifications";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { NotificationItem } from "@/lib/types/notifications";
-import { GLASS_BG } from "@/lib/theme-tokens";
+import { BG, CTA_LIME, CTA_TO, GLASS_BG } from "@/lib/theme-tokens";
 
 const TYPE_ICON: Record<NotificationItem["type"], typeof Bell> = {
   sprint_reminder: Zap,
@@ -51,7 +51,7 @@ export default function NotificationsPage() {
             <button
               type="button"
               className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-micro font-bold uppercase tracking-wider outline-none transition-colors min-h-[44px] max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-2.5 whitespace-nowrap"
-              style={{ background: "linear-gradient(to right, #C7F252, #A8D43A)", color: "#0A0C0A" }}
+              style={{ background: `linear-gradient(to right, ${CTA_LIME}, ${CTA_TO})`, color: BG }}
             >
               <CheckCheck size={14} />
               Mark All Read

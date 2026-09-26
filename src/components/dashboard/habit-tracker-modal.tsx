@@ -28,7 +28,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { GLASS_BG, VIOLET, VIOLET_DIM, VIOLET_GLOW } from "@/lib/theme-tokens";
+import { AMBER_08, CTA_LIME, CYAN, CYAN_08, DEEP_BLACK_2, DEEP_BLACK_2_CC, DEEP_BLACK_2_EE, EMERALD, EMERALD_08, EMERALD_10, EMERALD_15, EMERALD_25, EMERALD_50, EMERALD_SOLID, GLASS_012, GLASS_025, GLASS_18, GLASS_40, GLASS_75, GLASS_BG, ROSE, VIOLET, VIOLET_DIM, VIOLET_GLOW, VIOLET_PURPLE, WHITE } from "@/lib/theme-tokens";
+import { useThemeStore } from "@/stores/theme-store";
 import { useHabitStore } from "@/stores/habit-store";
 import { Capacitor } from "@capacitor/core";
 import { LocalNotifications } from "@capacitor/local-notifications";
@@ -39,12 +40,12 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 const COLOR_OPTIONS = [
-  { color: "#C7F252", label: "Primary" },
-  { color: "#22D3EE", label: "Cyan" },
-  { color: "#A78BFA", label: "Violet" },
-  { color: "#10B981", label: "Amber" },
-  { color: "#FB7185", label: "Pink" },
-  { color: "#34D399", label: "Emerald" },
+  { color: CTA_LIME, label: "Primary" },
+  { color: CYAN, label: "Cyan" },
+  { color: VIOLET_PURPLE, label: "Violet" },
+  { color: EMERALD_SOLID, label: "Amber" },
+  { color: ROSE, label: "Pink" },
+  { color: EMERALD, label: "Emerald" },
 ];
 
 const ICON_OPTIONS = [
@@ -175,10 +176,11 @@ type Props = { onClose: () => void };
 export function HabitTrackerModal({ onClose }: Props) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const theme = useThemeStore((s) => s.theme);
   const [showAdd, setShowAdd] = useState(false);
   const [newName, setNewName] = useState("");
   const [newIcon, setNewIcon] = useState("Zap");
-  const [newColor, setNewColor] = useState("#C7F252");
+  const [newColor, setNewColor] = useState(CTA_LIME);
   const [editingReminder, setEditingReminder] = useState<string | null>(null);
   const [draftTime, setDraftTime] = useState("08:00");
   const [draftDays, setDraftDays] = useState<number[]>(allDays());
@@ -278,7 +280,7 @@ export function HabitTrackerModal({ onClose }: Props) {
   const handleAddHabit = useCallback(() => {
     if (!newName.trim()) return;
     addHabit(newName.trim(), newIcon, newColor);
-    setNewName(""); setNewIcon("Zap"); setNewColor("#C7F252"); setShowAdd(false);
+    setNewName(""); setNewIcon("Zap"); setNewColor(CTA_LIME); setShowAdd(false);
   }, [newName, newIcon, newColor, addHabit]);
 
   const handleToggleReminder = useCallback(async (habitId: string, current: string | undefined, habitName: string, days?: number[]) => {
@@ -316,15 +318,19 @@ export function HabitTrackerModal({ onClose }: Props) {
 
   const statCards = [
     { icon: Flame, label: "STREAK", value: `${stats.currentStreak}d`, color: VIOLET, bg: VIOLET_DIM },
-    { icon: Target, label: "DONE", value: `${stats.totalCompletions}`, color: "#22D3EE", bg: "rgba(34,211,238,0.08)" },
-    { icon: TrendingUp, label: "RATE", value: `${stats.completionRate}%`, color: "#34D399", bg: "rgba(52,211,153,0.08)" },
-    { icon: Trophy, label: "BEST", value: `${stats.bestStreak}d`, color: "#10B981", bg: "rgba(245,158,11,0.08)" },
+    { icon: Target, label: "DONE", value: `${stats.totalCompletions}`, color: CYAN, bg: CYAN_08 },
+    { icon: TrendingUp, label: "RATE", value: `${stats.completionRate}%`, color: EMERALD, bg: EMERALD_08 },
+    { icon: Trophy, label: "BEST", value: `${stats.bestStreak}d`, color: EMERALD_SOLID, bg: AMBER_08 },
   ];
 
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[200] flex items-end justify-center bg-black/70 backdrop-blur-md sm:items-center"
+      data-theme-scope
+      className={cn(
+        "fixed inset-0 z-[200] flex items-end justify-center bg-black/70 backdrop-blur-md sm:items-center",
+        theme === "light" && "light",
+      )}
       role="dialog"
       aria-modal="true"
       aria-labelledby="habit-tracker-title"
@@ -334,7 +340,7 @@ export function HabitTrackerModal({ onClose }: Props) {
         ref={contentRef}
         className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl"
         style={{
-          background: "linear-gradient(180deg, #111116 0%, #0d0d0d 30%)",
+          background: theme === "light" ? "var(--bg-2)" : `linear-gradient(180deg, ${DEEP_BLACK_2} 0%, ${DEEP_BLACK_2} 30%)`,
           boxShadow: "0 -8px 60px var(--emerald-12), 0 0 1px var(--glass-06)",
           border: "1px solid var(--glass-06)",
         }}
@@ -343,7 +349,7 @@ export function HabitTrackerModal({ onClose }: Props) {
         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[120px] rounded-full opacity-30" style={{ background: "radial-gradient(circle, var(--emerald-40) 0%, transparent 70%)" }} />
 
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4" style={{ background: "linear-gradient(180deg, #111116ee 0%, #111116cc 100%)", backdropFilter: "blur(20px)" }}>
+        <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4" style={{ background: `linear-gradient(180deg, ${DEEP_BLACK_2_EE} 0%, ${DEEP_BLACK_2_CC} 100%)`, backdropFilter: "blur(20px)" }}>
           <button
             type="button"
             onClick={handleClose}
@@ -370,7 +376,10 @@ export function HabitTrackerModal({ onClose }: Props) {
           {notifError && (
             <div
               role="alert"
-              className="flex items-start gap-2 rounded-xl border border-amber-400/30 bg-amber-400/10 p-3 text-[10.5px] font-medium leading-relaxed text-amber-200"
+              className={cn(
+                "flex items-start gap-2 rounded-xl border border-amber-400/30 bg-amber-400/10 p-3 text-[10.5px] font-medium leading-relaxed",
+                theme === "light" ? "text-amber-700" : "text-amber-200",
+              )}
             >
               <AlertTriangle size={13} className="mt-0.5 shrink-0" />
               <span>{notifError}</span>
@@ -381,7 +390,7 @@ export function HabitTrackerModal({ onClose }: Props) {
           <div className="flex items-center gap-5">
             <div className="relative shrink-0">
               <svg width="92" height="92" viewBox="0 0 92 92">
-                <circle cx="46" cy="46" r="40" fill="none" stroke="rgba(52,211,153,0.08)" strokeWidth="6" />
+                <circle cx="46" cy="46" r="40" fill="none" stroke={EMERALD_08} strokeWidth="6" />
                 <circle
                   cx="46" cy="46" r="40" fill="none" stroke={VIOLET} strokeWidth="6"
                   strokeLinecap="round"
@@ -435,14 +444,14 @@ export function HabitTrackerModal({ onClose }: Props) {
                 const pct = totalHabits > 0 ? count / totalHabits : 0;
                 const isToday = isCurrentMonth && day === todayDate.getDate();
                 const isFuture = isCurrentMonth && day > todayDate.getDate();
-                let bg = "rgba(255,255,255,0.025)";
-                let tc = "rgba(255,255,255,0.18)";
+                let bg = GLASS_025;
+                let tc = GLASS_18;
                 if (!isFuture && count > 0) {
-                  if (pct >= 1) { bg = "rgba(52,211,153,0.5)"; tc = "#fff"; }
-                  else if (pct >= 0.5) { bg = "rgba(52,211,153,0.25)"; tc = "rgba(255,255,255,0.75)"; }
-                  else { bg = "rgba(52,211,153,0.1)"; tc = "rgba(255,255,255,0.4)"; }
+                  if (pct >= 1) { bg = EMERALD_50; tc = WHITE; }
+                  else if (pct >= 0.5) { bg = EMERALD_25; tc = GLASS_75; }
+                  else { bg = EMERALD_10; tc = GLASS_40; }
                 }
-                if (isFuture) bg = "rgba(255,255,255,0.012)";
+                if (isFuture) bg = GLASS_012;
                 return (
                   <div
                     key={day}
@@ -467,7 +476,7 @@ export function HabitTrackerModal({ onClose }: Props) {
               </p>
               <div className="flex items-center gap-2">
                 <div className="h-1.5 w-16 rounded-full bg-white/[0.05] overflow-hidden">
-                  <div className="h-full rounded-full transition-all duration-500" style={{ width: `${todayPct}%`, background: `linear-gradient(90deg, ${VIOLET}, #10B981)` }} />
+                  <div className="h-full rounded-full transition-all duration-500" style={{ width: `${todayPct}%`, background: `linear-gradient(90deg, ${VIOLET}, ${EMERALD_SOLID})` }} />
                 </div>
                 <span className="text-micro font-bold" style={{ color: VIOLET }}>{todayPct}%</span>
               </div>
@@ -497,7 +506,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           h.todayCompleted ? "text-[var(--bg)]" : "border bg-white/[0.03]",
                         )}
                         style={h.todayCompleted
-                          ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }
+                          ? { background: `linear-gradient(135deg, ${VIOLET}, ${EMERALD_SOLID})`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }
                           : { borderColor: `${h.color}25` }}
                       >
                         {h.todayCompleted ? <Check size={15} strokeWidth={3} /> : <IconComp size={14} style={{ color: h.color }} className="opacity-50" />}
@@ -554,13 +563,13 @@ export function HabitTrackerModal({ onClose }: Props) {
                           </button>
                         </div>
 
-                        <div className="flex items-center justify-center gap-2 rounded-lg py-2 border border-white/[0.06] bg-black/20">
+                        <div className={cn("flex items-center justify-center gap-2 rounded-lg py-2 border", theme === "light" ? "border-border/40 bg-black/[0.04]" : "border-white/[0.06] bg-black/20")}>
                           <Clock size={13} style={{ color: VIOLET }} />
                           <input
                             type="time"
                             value={draftTime}
                             onChange={(e) => { if (e.target.value) setDraftTime(e.target.value); }}
-                            className="bg-transparent border-none text-[18px] font-bold tracking-wider text-foreground font-mono outline-none [color-scheme:dark] cursor-pointer text-center w-[110px] leading-none"
+                            className={cn("bg-transparent border-none text-[18px] font-bold tracking-wider text-foreground font-mono outline-none cursor-pointer text-center w-[110px] leading-none", theme === "light" ? "[color-scheme:light]" : "[color-scheme:dark]")}
                           />
                         </div>
 
@@ -593,7 +602,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                                   "flex h-8 flex-1 items-center justify-center rounded-lg text-[11px] font-bold transition-all",
                                   active ? "text-[var(--bg)]" : "bg-white/[0.05] text-muted-foreground/40 hover:bg-white/[0.08]",
                                 )}
-                                style={active ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 10px ${VIOLET_GLOW}` } : undefined}
+                                style={active ? { background: `linear-gradient(135deg, ${VIOLET}, ${EMERALD_SOLID})`, boxShadow: `0 0 10px ${VIOLET_GLOW}` } : undefined}
                               >
                                 {label}
                               </button>
@@ -609,7 +618,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           onClick={() => handleSetTime(h.id, draftTime, h.name, draftDays)}
                           disabled={draftDays.length === 0}
                           className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-micro font-bold uppercase tracking-widest text-[var(--bg)] transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed"
-                          style={{ background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }}
+                          style={{ background: `linear-gradient(135deg, ${VIOLET}, ${EMERALD_SOLID})`, boxShadow: `0 0 12px ${VIOLET_GLOW}` }}
                         >
                           <Bell size={11} /> Set reminder
                         </button>
@@ -638,7 +647,7 @@ export function HabitTrackerModal({ onClose }: Props) {
               <input
                 type="text" placeholder="Habit name..." value={newName} onChange={(e) => setNewName(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") handleAddHabit(); }} autoFocus
-                className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground/30 outline-none focus:border-[var(--emerald-30)] transition-colors"
+                className={cn("w-full rounded-xl border px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground/30 outline-none focus:border-[var(--emerald-30)] transition-colors", theme === "light" ? "border-border/50 bg-black/[0.03]" : "border-white/[0.08] bg-white/[0.04]")}
               />
               <div className="flex items-center gap-2">
                 <span className="text-micro text-muted-foreground/40 font-semibold shrink-0">ICON</span>
@@ -647,7 +656,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                     const IC = ICON_MAP[iconName] || Zap;
                     return (
                       <button key={iconName} type="button" onClick={() => setNewIcon(iconName)}
-                        className={cn("size-8 rounded-lg flex items-center justify-center transition-all", newIcon === iconName ? "bg-[var(--emerald-15)]" : "bg-white/[0.04] text-muted-foreground/40 hover:bg-white/[0.08]")}
+                        className={cn("size-8 rounded-lg flex items-center justify-center transition-all", newIcon === iconName ? "bg-[var(--emerald-15)]" : theme === "light" ? "bg-black/[0.04] text-muted-foreground/40 hover:bg-black/[0.08]" : "bg-white/[0.04] text-muted-foreground/40 hover:bg-white/[0.08]")}
                         style={newIcon === iconName ? { color: VIOLET } : undefined}
                       >
                         <IC size={14} />
@@ -661,7 +670,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                 <div className="flex gap-1.5">
                   {COLOR_OPTIONS.map((c) => (
                     <button key={c.color} type="button" onClick={() => setNewColor(c.color)}
-                      className={cn("size-6 rounded-full transition-all border-2", newColor === c.color ? "border-white scale-110" : "border-transparent hover:scale-105")}
+                      className={cn("size-6 rounded-full transition-all border-2", newColor === c.color ? (theme === "light" ? "border-foreground/70 scale-110" : "border-white scale-110") : "border-transparent hover:scale-105")}
                       style={{ background: c.color }}
                     />
                   ))}
@@ -669,7 +678,7 @@ export function HabitTrackerModal({ onClose }: Props) {
               </div>
               <button type="button" onClick={handleAddHabit} disabled={!newName.trim()}
                 className={cn("w-full rounded-xl py-2.5 text-[13px] font-semibold transition-all", newName.trim() ? "text-[var(--bg)]" : "bg-white/[0.06] text-muted-foreground/30 cursor-not-allowed")}
-                style={newName.trim() ? { background: `linear-gradient(135deg, ${VIOLET}, #10B981)`, boxShadow: `0 0 16px ${VIOLET_GLOW}` } : undefined}
+                style={newName.trim() ? { background: `linear-gradient(135deg, ${VIOLET}, ${EMERALD_SOLID})`, boxShadow: `0 0 16px ${VIOLET_GLOW}` } : undefined}
               >
                 Add Habit
               </button>
@@ -677,7 +686,7 @@ export function HabitTrackerModal({ onClose }: Props) {
           ) : (
             <button type="button" onClick={() => setShowAdd(true)}
               className="w-full flex items-center justify-center gap-2 rounded-2xl border border-dashed py-3.5 text-[13px] font-semibold transition-all hover:bg-[var(--emerald-04)]"
-              style={{ borderColor: "rgba(52,211,153,0.15)", color: `${VIOLET}80` }}
+              style={{ borderColor: EMERALD_15, color: `${VIOLET}80` }}
             >
               <Plus size={14} />
               Add Habit

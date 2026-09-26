@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { LIME_BRIGHT, LIME_BRIGHT_RGB } from "@/lib/theme-tokens";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -18,14 +19,14 @@ export default function NotFound() {
             style={{
               width: size,
               height: size,
-              borderColor: `rgba(200, 255, 90, ${0.3 - i * 0.08})`,
+              borderColor: `rgba(${LIME_BRIGHT_RGB}, ${0.3 - i * 0.08})`,
             }}
             animate={{ scale: [1, 1.12, 1], opacity: [0.3 - i * 0.08, 0.1, 0.3 - i * 0.08] }}
             transition={{ duration: 3, delay: i * 0.6, repeat: Infinity, ease: "easeInOut" }}
           />
         ))}
         <h1 className="font-display text-[clamp(100px,20vw,200px)] font-bold leading-none select-none"
-          style={{ color: "#C8FF5A", textShadow: "0 0 60px var(--lime-bright-30), 0 0 120px var(--lime-bright-10)" }}>
+          style={{ color: LIME_BRIGHT, textShadow: "0 0 60px var(--lime-bright-30), 0 0 120px var(--lime-bright-10)" }}>
           404
         </h1>
       </div>

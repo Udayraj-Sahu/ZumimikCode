@@ -1,3 +1,4 @@
+import { CYAN, EMERALD, LIME, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
 export type JourneyModeId =
   | "exam_ready"
   | "gap_closer"
@@ -36,7 +37,7 @@ export function resolveJourneyProfile(params: {
           mode: "guided_learning",
           title: "Teaching My Kid",
           subtitle: "Guided learning journey",
-          accent: "#FB7185",
+          accent: ROSE,
           headlinePrefix: "Kid mode",
         };
       case "speed":
@@ -44,7 +45,7 @@ export function resolveJourneyProfile(params: {
           mode: "speed",
           title: "Speed Training",
           subtitle: "Mental calculation drills",
-          accent: "#FBBF24",
+          accent: YELLOW,
           headlinePrefix: "Speed mode",
         };
       case "exam":
@@ -52,7 +53,7 @@ export function resolveJourneyProfile(params: {
           mode: "performance",
           title: "Competition Ready",
           subtitle: "Speed + accuracy under pressure",
-          accent: "#34D399",
+          accent: EMERALD,
           headlinePrefix: "Exam mode",
         };
       case "brain-gym":
@@ -60,7 +61,7 @@ export function resolveJourneyProfile(params: {
           mode: "brain_gym",
           title: "Brain Gym",
           subtitle: "Daily mental workout",
-          accent: "#22D3EE",
+          accent: CYAN,
           headlinePrefix: "Brain gym",
         };
       default:
@@ -68,7 +69,7 @@ export function resolveJourneyProfile(params: {
           mode: "speed",
           title: "Speed Math",
           subtitle: "Daily calculation practice",
-          accent: "#FBBF24",
+          accent: YELLOW,
           headlinePrefix: "Speed math",
         };
     }
@@ -80,7 +81,7 @@ export function resolveJourneyProfile(params: {
         mode: "exam_ready",
         title: "Exam Readiness",
         subtitle: "Get ready with a deadline",
-        accent: "#34D399",
+        accent: EMERALD,
         headlinePrefix: "Exam ready",
       };
     case "whenever":
@@ -88,7 +89,7 @@ export function resolveJourneyProfile(params: {
         mode: "gap_closer",
         title: "Preparation Gap",
         subtitle: "Close what you're missing",
-        accent: "#22D3EE",
+        accent: CYAN,
         headlinePrefix: "Gap closer",
       };
     case "not_sure":
@@ -96,7 +97,7 @@ export function resolveJourneyProfile(params: {
         mode: "discovery",
         title: "Discover Your Readiness",
         subtitle: "Build skills, figure it out",
-        accent: "#A78BFA",
+        accent: VIOLET_PURPLE,
         headlinePrefix: "Discovery",
       };
     default:
@@ -104,7 +105,7 @@ export function resolveJourneyProfile(params: {
         mode: "discovery",
         title: "Your Learning Path",
         subtitle: "Adaptive to your progress",
-        accent: "#C8FF4D",
+        accent: LIME,
         headlinePrefix: "Path",
       };
   }

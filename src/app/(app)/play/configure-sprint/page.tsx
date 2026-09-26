@@ -14,7 +14,7 @@ import { useResumeStore } from "@/stores/resume-store";
 import { getTemplatesByCategory } from "@/services/templates";
 import { getTemplateCategoriesForTopic } from "@/lib/topic-template-map";
 import type { SolveAlongTemplate } from "@/lib/types/template";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { GLASS_06, GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function ConfigureSprintPage() {
   usePageMeta("Configure Sprint — Exam Arena");
@@ -104,7 +104,7 @@ export default function ConfigureSprintPage() {
                       : "hover:border-white/[0.12] active:border-white/[0.12]",
                   )}
                   style={{
-                    background: active ? "rgba(255,255,255,0.06)" : GLASS_BG,
+                    background: active ? GLASS_06 : GLASS_BG,
                     borderColor: active ? undefined : GLASS_BORDER,
                   }}
                 >
@@ -155,7 +155,7 @@ export default function ConfigureSprintPage() {
                         : "text-muted-foreground hover:border-white/[0.12]",
                     )}
                     style={{
-                      background: active ? "rgba(255,255,255,0.06)" : GLASS_BG,
+                      background: active ? GLASS_06 : GLASS_BG,
                       borderColor: active ? undefined : GLASS_BORDER,
                     }}
                   >
@@ -202,7 +202,7 @@ export default function ConfigureSprintPage() {
                         : "text-muted-foreground hover:border-white/[0.12]",
                     )}
                     style={{
-                      background: active ? "rgba(255,255,255,0.06)" : GLASS_BG,
+                      background: active ? GLASS_06 : GLASS_BG,
                       borderColor: active ? undefined : GLASS_BORDER,
                     }}
                   >
@@ -273,7 +273,7 @@ export default function ConfigureSprintPage() {
                         router.push(`/learn/practice?templateId=${tpl.id}&returnTo=/play/configure-sprint&topic=${topic ?? ""}&difficulty=${difficulty.toLowerCase()}`)
                       }
                       className="mt-3 flex items-center justify-center gap-1.5 rounded-xl py-3 text-micro font-bold uppercase tracking-wider text-chart-3 outline-none transition-colors hover:bg-chart-3/20 active:bg-chart-3/30 focus-visible:ring-2 focus-visible:ring-ring min-h-[44px]"
-                      style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${GLASS_BORDER}` }}
+                      style={{ background: GLASS_BG, border: `1px solid ${GLASS_BORDER}` }}
                     >
                       <BookOpen size={12} />
                       Learn

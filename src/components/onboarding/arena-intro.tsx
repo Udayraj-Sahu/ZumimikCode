@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { BG_MOSS, FOREST, LIME, LIME_20, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
+import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
@@ -17,7 +19,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 
-const ACCENT = "#C8FF4D";
+const ACCENT = LIME;
 
 /* ── Using real dashboard data (mock service, backend drop-in) ── */
 
@@ -132,6 +134,8 @@ export function ArenaIntro({
   const overlayRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
 
+  const theme = useThemeStore((s) => s.theme);
+
   const { primary, speedLane, second } = useLanes();
   const { data } = useDashboardData(primary);
 
@@ -226,9 +230,11 @@ export function ArenaIntro({
   return createPortal(
     <div
       ref={overlayRef}
+      data-theme-scope
       className={cn(
         "fixed inset-0 z-[210] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
+        theme === "light" && "light",
       )}
       role="dialog"
       aria-modal="true"
@@ -237,7 +243,7 @@ export function ArenaIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
+          background: `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
         }}
       >
         {/* ambient glow + hairline */}
@@ -275,7 +281,7 @@ export function ArenaIntro({
             <span
               className="text-transparent"
               style={{
-                background: "linear-gradient(90deg, #C8FF4D, #e8ffb0)",
+                background: `linear-gradient(90deg, ${LIME}, ${LIME_TINT})`,
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
               }}
@@ -358,7 +364,7 @@ export function ArenaIntro({
                         className="h-full rounded-full"
                         style={{
                           width: `${Math.round(axis.value * 100)}%`,
-                          background: "linear-gradient(90deg, #C8FF4D33, #C8FF4D)",
+                          background: `linear-gradient(90deg, ${LIME_20}, ${LIME})`,
                         }}
                       />
                     </div>
@@ -430,7 +436,7 @@ export function ArenaIntro({
             onClick={() => exit(onClose)}
             className="flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
             style={{
-              background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+              background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
               boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
             }}
           >

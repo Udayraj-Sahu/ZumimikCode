@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { AMBER, AMBER_14, CTA_14, CTA_LIME, CYAN, CYAN_14, GLASS_025, GLASS_14, GLASS_BORDER, VIOLET_DEEP, VIOLET_DEEP_14 } from "@/lib/theme-tokens";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { BookOpen, ChevronDown, Layers, Lock } from "lucide-react";
@@ -11,10 +12,10 @@ const TYPE_META: Record<
   string,
   { color: string; softBg: string; label: string }
 > = {
-  subject: { color: "#C7F252", softBg: "rgba(199,242,82,0.14)", label: "Subject" },
-  topic: { color: "#22D3EE", softBg: "rgba(34,211,238,0.14)", label: "Topic" },
-  subtopic: { color: "#8B5CF6", softBg: "rgba(139,92,246,0.14)", label: "Subtopic" },
-  technique: { color: "#F59E0B", softBg: "rgba(245,158,11,0.14)", label: "Technique" },
+  subject: { color: CTA_LIME, softBg: CTA_14, label: "Subject" },
+  topic: { color: CYAN, softBg: CYAN_14, label: "Topic" },
+  subtopic: { color: VIOLET_DEEP, softBg: VIOLET_DEEP_14, label: "Subtopic" },
+  technique: { color: AMBER, softBg: AMBER_14, label: "Technique" },
 };
 
 export function MindMap({
@@ -84,8 +85,8 @@ export function MindMap({
       <div
         className="relative w-full overflow-x-auto rounded-[28px] border"
         style={{
-          borderColor: "rgba(255,255,255,0.08)",
-          background: "rgba(255,255,255,0.025)",
+          borderColor: GLASS_BORDER,
+          background: GLASS_025,
         }}
       >
         {isLoading ? (
@@ -195,7 +196,7 @@ function TreeChild({ children }: { children: React.ReactNode }) {
     <div className="relative pl-4">
       <span
         className="absolute left-0 top-0 h-[30px] w-4 border-b-2 rounded-bl-xl"
-        style={{ borderColor: "rgba(255,255,255,0.14)" }}
+        style={{ borderColor: GLASS_14 }}
       />
       {children}
     </div>

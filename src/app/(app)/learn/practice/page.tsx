@@ -32,7 +32,7 @@ import RendererRouter from "@/components/renderers/renderer-router";
 import type { Question } from "@/lib/types/sprint-session";
 import type { SolveAlongTemplate, RenderMode } from "@/lib/types/template";
 import { DOMAIN_LABELS } from "@/lib/types/template";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { AMBER_04, AMBER_20, CTA_04, CTA_06, CTA_12, CTA_20, CTA_30, GLASS_015, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-tokens";
 
 type PracticeType = "mcq" | "templates";
 type Phase = "config" | "active" | "done";
@@ -283,7 +283,7 @@ export default function PracticePage() {
                       )}
                       aria-label={`Select ${t.label}`}
                     >
-                      <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: active ? "rgba(199,242,82,0.12)" : GLASS_BG }}>
+                      <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: active ? CTA_12 : GLASS_BG }}>
                         <Icon size={20} className={active ? "text-[var(--cta-lime)]" : "text-muted-foreground/30"} />
                       </div>
                       <span className="text-[11px] font-semibold text-center leading-tight whitespace-nowrap">{t.label}</span>
@@ -486,7 +486,7 @@ export default function PracticePage() {
               type="button"
               onClick={() => router.push(returnTo)}
               className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--amber)] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
-              style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
+              style={{ borderColor: AMBER_20, background: AMBER_04 }}
             >
               Back to Sprint Setup
             </button>
@@ -548,7 +548,7 @@ export default function PracticePage() {
               type="button"
               onClick={() => router.push(returnTo)}
               className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--amber)] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
-              style={{ borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
+              style={{ borderColor: AMBER_20, background: AMBER_04 }}
             >
               Back to Sprint Setup
             </button>
@@ -770,7 +770,7 @@ export default function PracticePage() {
                     <Lightbulb size={12} /> Need a hint?
                   </button>
                 ) : (
-                  <div className="rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                  <div className="rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: CTA_20, background: CTA_04 }}>
                     <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
                       <Lightbulb size={12} /> Hint
                     </p>
@@ -787,13 +787,13 @@ export default function PracticePage() {
                 let labelClass = "bg-white/[0.04] text-muted-foreground/50";
                 if (revealed) {
                   if (isCorrect) {
-                    style = { borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.06)" };
+                    style = { borderColor: CTA_30, background: CTA_06 };
                     labelClass = "bg-[var(--cta-lime-10)] text-[var(--cta-lime)]";
                   } else if (isSelected) {
-                    style = { borderColor: "rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.06)" };
+                    style = { borderColor: RED_30, background: RED_06 };
                     labelClass = "bg-destructive/10 text-destructive";
                   } else {
-                    style = { borderColor: "rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.015)" };
+                    style = { borderColor: GLASS_BG, background: GLASS_015 };
                     labelClass = "bg-white/[0.02] text-muted-foreground/20";
                   }
                 }
@@ -823,7 +823,7 @@ export default function PracticePage() {
             {revealed && (
               <div className="mt-5 space-y-3">
                 {question.explanation ? (
-                  <div className="rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                  <div className="rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: CTA_20, background: CTA_04 }}>
                     <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-1.5">
                       <Lightbulb size={12} /> Why it&apos;s this
                     </p>

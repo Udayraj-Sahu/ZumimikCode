@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 import { Trophy, Puzzle, Brain, Zap, Clock, Flame, Gamepad2, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { AMBER, BLUE, CTA_LIME, GLASS_BG, GLASS_BORDER, PURPLE, SLATE_50, SLATE_DARK } from "@/lib/theme-tokens";
 
 const TABS = [
-  { id: "math", label: "Math", icon: Zap, color: "#F59E0B" },
-  { id: "puzzle", label: "Puzzle", icon: Puzzle, color: "#C7F252" },
-  { id: "memory", label: "Memory", icon: Brain, color: "#3B82F6" },
-  { id: "logic", label: "Logic", icon: Trophy, color: "#A855F7" },
+  { id: "math", label: "Math", icon: Zap, color: AMBER },
+  { id: "puzzle", label: "Puzzle", icon: Puzzle, color: CTA_LIME },
+  { id: "memory", label: "Memory", icon: Brain, color: BLUE },
+  { id: "logic", label: "Logic", icon: Trophy, color: PURPLE },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -34,7 +34,7 @@ const MATH_MODES: ModeCard[] = [
     category: "MATH",
     title: "SPRINT DUELS",
     desc: "Race to solve the most in 1 minute.",
-    color: "#F59E0B",
+    color: AMBER,
     icon: Clock,
     href: "/play/configure-sprint",
   },
@@ -43,7 +43,7 @@ const MATH_MODES: ModeCard[] = [
     category: "MATH",
     title: "FAST & FIRST DUELS",
     desc: "Be the first to answer each question.",
-    color: "#C7F252",
+    color: CTA_LIME,
     icon: Flame,
     badge: "2P",
     href: "/play/duel",
@@ -154,14 +154,14 @@ export default function PlayPage() {
               <div
                 className="h-9 w-9 rounded-xl flex items-center justify-center transition-all"
                 style={{
-                  background: isActive ? `${tab.color}18` : "rgba(255,255,255,0.04)",
+                  background: isActive ? `${tab.color}18` : GLASS_BG,
                 }}
               >
-                <Icon size={16} strokeWidth={2.2} style={{ color: isActive ? tab.color : "#6B7280" }} />
+                <Icon size={16} strokeWidth={2.2} style={{ color: isActive ? tab.color : SLATE_DARK }} />
               </div>
               <span
                 className="text-micro font-semibold tracking-[0.02em] whitespace-nowrap"
-                style={{ color: isActive ? tab.color : "rgba(107,114,128,0.5)" }}
+                style={{ color: isActive ? tab.color : SLATE_50 }}
               >
                 {tab.label}
               </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { GLASS_BORDER, LIME_BRIGHT, LIME_BRIGHT_15, LIME_BRIGHT_50, MUTED, WHITE } from "@/lib/theme-tokens";
 import { motion } from "motion/react";
 
 const NODES = [
@@ -51,8 +52,8 @@ export function SectionNav() {
                 height: 32,
                 background:
                   i <= active
-                    ? "linear-gradient(to bottom, #C8FF5A, var(--lime-bright-30))"
-                    : "rgba(255,255,255,0.08)",
+                    ? `linear-gradient(to bottom, ${LIME_BRIGHT}, var(--lime-bright-30))`
+                    : GLASS_BORDER,
               }}
               animate={{ opacity: 1 }}
             />
@@ -71,8 +72,8 @@ export function SectionNav() {
                 <motion.div
                   className="absolute inset-0 rounded-full"
                   style={{
-                    background: "rgba(200,255,90,0.15)",
-                    border: "1px solid rgba(200,255,90,0.5)",
+                    background: LIME_BRIGHT_15,
+                    border: `1px solid ${LIME_BRIGHT_50}`,
                   }}
                   layoutId="activeNode"
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -81,7 +82,7 @@ export function SectionNav() {
               <span
                 className="font-mono text-xs"
                 style={{
-                  color: i <= active ? "#C8FF5A" : "#8B8B8B",
+                  color: i <= active ? LIME_BRIGHT : MUTED,
                   transition: "color 0.3s",
                 }}
               >
@@ -92,7 +93,7 @@ export function SectionNav() {
               className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-xs tracking-wider whitespace-nowrap font-display"
               style={{
                 fontWeight: 500,
-                color: i === active ? "#C8FF5A" : "#ffffff",
+                color: i === active ? LIME_BRIGHT : WHITE,
               }}
             >
               {node.label}

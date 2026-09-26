@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { LIME_BRIGHT } from "@/lib/theme-tokens";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/providers/query-provider";
@@ -63,7 +64,7 @@ export const metadata: Metadata = {
     apple: "/favicon.svg",
   },
   other: {
-    "theme-color": "#C8FF5A",
+    "theme-color": LIME_BRIGHT,
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "default",
   },
@@ -79,7 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="overflow-x-hidden">
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("exam-arena-theme");if(t){var o=JSON.parse(t);if(o&&o.state&&o.state.theme==="light")document.documentElement.classList.add("light")}}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem("exam-arena-theme");if(t){var o=JSON.parse(t);if(o&&o.state&&o.state.theme==="light")document.documentElement.dataset.theme="light"}}catch(e){}})()`,
           }}
         />
         <style>{`html.loading #main-content{opacity:0}`}</style>

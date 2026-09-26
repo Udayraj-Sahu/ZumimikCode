@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { CYAN, EMERALD, GLASS_03, GLASS_06, GLASS_30, GLASS_BG, GREEN_SOLID, LIME, LIME_10, LIME_125, MUTED_GREEN, OVERLAY, PURPLE, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
 import {
@@ -26,6 +27,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useThemeStore } from "@/stores/theme-store";
 import { useOnboardingStore, examIdForGoal, goalForExam } from "@/stores/onboarding-store";
 import { VEDIC_USE_CASES, DRILLS, PLANS } from "@/lib/types/onboarding";
 import { FeatureIntro } from "@/components/onboarding/feature-intro";
@@ -38,26 +40,26 @@ import { PitchIntro } from "@/components/onboarding/pitch-intro";
 import { PlanIntro } from "@/components/onboarding/plan-intro";
 
 const PERSONA_OPTIONS = [
-  { label: "Student", icon: GraduationCap, color: "#34D399", desc: "Currently studying" },
+  { label: "Student", icon: GraduationCap, color: EMERALD, desc: "Currently studying" },
   {
     label: "Working Professional",
     icon: Briefcase,
-    color: "#22D3EE",
+    color: CYAN,
     desc: "Balancing work & prep",
   },
-  { label: "Job Seeker", icon: Search, color: "#A78BFA", desc: "Preparing for next role" },
-  { label: "Parent", icon: Heart, color: "#FB7185", desc: "Guiding a child" },
-  { label: "Educator", icon: BookOpen, color: "#FBBF24", desc: "Teaching & mentoring" },
-  { label: "Other", icon: Plus, color: "#8B9086", desc: "Something else" },
+  { label: "Job Seeker", icon: Search, color: VIOLET_PURPLE, desc: "Preparing for next role" },
+  { label: "Parent", icon: Heart, color: ROSE, desc: "Guiding a child" },
+  { label: "Educator", icon: BookOpen, color: YELLOW, desc: "Teaching & mentoring" },
+  { label: "Other", icon: Plus, color: MUTED_GREEN, desc: "Something else" },
 ];
 
 const GOAL_OPTIONS = [
-  { label: "Prepare for CAT", icon: Target, color: "#34D399", desc: "MBA entrance exam" },
-  { label: "Prepare for GMAT", icon: Calculator, color: "#22D3EE", desc: "Graduate management" },
-  { label: "Prepare for GRE", icon: BookOpen, color: "#A78BFA", desc: "Graduate record exam" },
-  { label: "Master speed math", icon: Zap, color: "#FBBF24", desc: "Calculation skills" },
-  { label: "Help with school stuff", icon: School, color: "#FB7185", desc: "Academic support" },
-  { label: "Just exploring", icon: Compass, color: "#8B9086", desc: "Seeing what's here" },
+  { label: "Prepare for CAT", icon: Target, color: EMERALD, desc: "MBA entrance exam" },
+  { label: "Prepare for GMAT", icon: Calculator, color: CYAN, desc: "Graduate management" },
+  { label: "Prepare for GRE", icon: BookOpen, color: VIOLET_PURPLE, desc: "Graduate record exam" },
+  { label: "Master speed math", icon: Zap, color: YELLOW, desc: "Calculation skills" },
+  { label: "Help with school stuff", icon: School, color: ROSE, desc: "Academic support" },
+  { label: "Just exploring", icon: Compass, color: MUTED_GREEN, desc: "Seeing what's here" },
 ];
 
 type TemporalWindowId = "this_year" | "whenever" | "not_sure";
@@ -73,17 +75,17 @@ const TEMPORAL_PANEL_OPTIONS: { id: TemporalWindowId; label: string }[] = [
 const TRIGGER_GROUPED = [
   {
     label: "Life Stage",
-    color: "#C8FF4D",
+    color: LIME,
     tags: ["Final Year Student", "Gap Year", "Career Switch", "Returning to Work"],
   },
   {
     label: "Mindset",
-    color: "#A855F7",
+    color: PURPLE,
     tags: ["Math Anxiety", "Confidence Boost", "Consistency", "Competition Drive"],
   },
   {
     label: "Parenting",
-    color: "#22C55E",
+    color: GREEN_SOLID,
     tags: ["Helping My Child", "Homeschool Support", "School Project"],
   },
 ];
@@ -160,6 +162,7 @@ type Props = { onClose: () => void; inline?: boolean };
 
 export function OnboardingModal({ onClose, inline }: Props) {
   const store = useOnboardingStore();
+  const theme = useThemeStore((s) => s.theme);
   const [step, setStep] = useState(store.firstName ? store.currentStep : 0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [completed, setCompleted] = useState(false);
@@ -429,7 +432,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
         <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${((step + 1) / totalSteps) * 100}%`, background: "#C8FF4D" }}
+            style={{ width: `${((step + 1) / totalSteps) * 100}%`, background: LIME }}
           />
         </div>
       </div>
@@ -522,7 +525,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                   ? "text-[var(--bg)]"
                   : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
               )}
-              style={canNext ? { background: "#C8FF4D" } : undefined}
+              style={canNext ? { background: LIME } : undefined}
             >
               {step === totalSteps - 1 ? <Sparkles size={16} /> : <ArrowRight size={16} />}
             </button>
@@ -666,7 +669,11 @@ export function OnboardingModal({ onClose, inline }: Props) {
       {createPortal(
         <div
           ref={overlayRef}
-          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm"
+          data-theme-scope
+          className={cn(
+            "fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
+            theme === "light" && "light",
+          )}
           role="dialog"
           aria-modal="true"
           onClick={handleClose}
@@ -674,7 +681,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
           <div
             ref={panelRef}
             className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl flex flex-col"
-            style={{ background: "rgba(14,17,13,0.98)" }}
+            style={{ background: OVERLAY }}
             onClick={(e) => e.stopPropagation()}
           >
             {panel}
@@ -710,7 +717,7 @@ function StepName({
       <div className="mb-6">
         <div
           className="size-11 rounded-2xl flex items-center justify-center mb-4"
-          style={{ background: "rgba(200,255,77,0.1)" }}
+          style={{ background: LIME_10 }}
         >
           <User size={20} className="text-[var(--lime-bright)]" />
         </div>
@@ -779,9 +786,9 @@ function StepSingleSelect({
             >
               <div
                 className="size-10 shrink-0 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: active ? "#C8FF4D20" : "rgba(255,255,255,0.04)" }}
+                style={{ backgroundColor: active ? LIME_125 : GLASS_BG }}
               >
-                <Icon size={16} style={{ color: active ? "#C8FF4D" : "rgba(255,255,255,0.3)" }} />
+                <Icon size={16} style={{ color: active ? LIME : GLASS_30 }} />
               </div>
               <div className="min-w-0 flex-1">
                 <p
@@ -890,9 +897,9 @@ function StepGoal({
               >
                 <div
                   className="size-10 shrink-0 rounded-xl flex items-center justify-center"
-                  style={{ backgroundColor: active ? "#C8FF4D20" : "rgba(255,255,255,0.04)" }}
+                  style={{ backgroundColor: active ? LIME_125 : GLASS_BG }}
                 >
-                  <Icon size={16} style={{ color: active ? "#C8FF4D" : "rgba(255,255,255,0.3)" }} />
+                  <Icon size={16} style={{ color: active ? LIME : GLASS_30 }} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p
@@ -1198,8 +1205,8 @@ function ScrollColumn({
           className="absolute left-1 right-1 h-10 rounded-xl border z-0 pointer-events-none"
           style={{
             top: PAD * ITEM_H,
-            background: "rgba(255,255,255,0.03)",
-            borderColor: "rgba(255,255,255,0.06)",
+            background: GLASS_03,
+            borderColor: GLASS_06,
           }}
         />
         <div
@@ -1376,7 +1383,7 @@ function CelebrationAvatar() {
             <div
               className="size-1.5 rounded-full"
               style={{
-                background: ["#A78BFA", "#22D3EE", "#A78BFA", "#22D3EE", "#A78BFA", "#22D3EE"][i],
+                background: [VIOLET_PURPLE, CYAN, VIOLET_PURPLE, CYAN, VIOLET_PURPLE, CYAN][i],
               }}
             />
           </div>

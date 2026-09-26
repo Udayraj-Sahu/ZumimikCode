@@ -8,6 +8,7 @@ import { LogOut, Zap, Flame, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useAuthStore } from "@/stores/auth-store";
+import { useThemeStore } from "@/stores/theme-store";
 import { resetAppState } from "@/lib/reset-app-state";
 import { Walkthrough } from "@/components/shell/walkthrough";
 import { RatePrompt } from "@/components/shell/rate-prompt";
@@ -20,6 +21,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
+  const theme = useThemeStore((s) => s.theme);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
@@ -77,7 +79,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const displayName = (user?.name ?? "Operative").toUpperCase();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div data-theme-scope suppressHydrationWarning className={cn("min-h-screen bg-background text-foreground", theme === "light" && "light")}>
       <aside
         ref={sidebarRef}
         className="fixed inset-y-0 left-0 z-50 hidden w-[250px] flex-col border-r border-chrome-border bg-chrome px-4 py-7 lg:flex"

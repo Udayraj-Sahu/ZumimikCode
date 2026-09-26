@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { AMBER, AMBER_DARK, AMBER_LIGHT, AMBER_LIGHT_12, BG_SOFT, BLACK_30, CTA_08, CTA_12, CTA_30, CTA_LIME, CYAN, CYAN_LIGHT, CYAN_LIGHT_12, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_03, GLASS_05, GLASS_06, GLASS_15, GLASS_30, GLASS_BG, GLASS_BORDER, GREEN_SOFT, GREEN_SOFT_12, LIME, LIME_DEEPER, ROSE_PINK, ROSE_PINK_12, SKY, SLATE, SLATE_DARKEST, VIOLET_DARK, VIOLET_DARK_12, VIOLET_PURPLE, VIOLET_PURPLE_2, VIOLET_PURPLE_2_12, YELLOW } from "@/lib/theme-tokens";
 import { PageContainer } from "@/components/ui/page-container";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { ExamDateModal } from "@/components/dashboard/exam-date-modal";
@@ -46,7 +46,7 @@ import { InviteCard } from "@/components/dashboard/invite-card";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { useResumeStore } from "@/stores/resume-store";
 
-const ACCENT = "#C7F252";
+const ACCENT = CTA_LIME;
 
 const FALLBACK_TOPICS = [
   { name: "Quantitative Aptitude", value: 92, color: "primary" as const },
@@ -85,13 +85,13 @@ const FALLBACK_RECENT = [
 ];
 
 const QUICK_ACCESS_ITEMS = [
-  { label: "Exam Prep", icon: Target, color: "#7C6CF0", bg: "rgba(124,108,240,0.12)", href: "/learn" },
-  { label: "Skill Build", icon: Zap, color: "#3DD6F5", bg: "rgba(61,214,245,0.12)", href: "/learn/mastery" },
-  { label: "Train Plan", icon: Calendar, color: "#B98CF0", bg: "rgba(185,140,240,0.12)", href: "/settings/planner" },
-  { label: "Clubs", icon: Users, color: "#F0A93D", bg: "rgba(240,169,61,0.12)", href: "/dashboard/clubs" },
-  { label: "Store", icon: ShoppingBag, color: "#F05C7A", bg: "rgba(240,92,122,0.12)", href: "/dashboard" },
-  { label: "Feed", icon: Rss, color: "#7DDB6A", bg: "rgba(125,219,106,0.12)", href: "/dashboard/feed" },
-  { label: "Family", icon: Home, color: "#F05C7A", bg: "rgba(240,92,122,0.12)", href: "/dashboard" },
+  { label: "Exam Prep", icon: Target, color: VIOLET_DARK, bg: VIOLET_DARK_12, href: "/learn" },
+  { label: "Skill Build", icon: Zap, color: CYAN_LIGHT, bg: CYAN_LIGHT_12, href: "/learn/mastery" },
+  { label: "Train Plan", icon: Calendar, color: VIOLET_PURPLE_2, bg: VIOLET_PURPLE_2_12, href: "/settings/planner" },
+  { label: "Clubs", icon: Users, color: AMBER_LIGHT, bg: AMBER_LIGHT_12, href: "/dashboard/clubs" },
+  { label: "Store", icon: ShoppingBag, color: ROSE_PINK, bg: ROSE_PINK_12, href: "/dashboard" },
+  { label: "Feed", icon: Rss, color: GREEN_SOFT, bg: GREEN_SOFT_12, href: "/dashboard/feed" },
+  { label: "Family", icon: Home, color: ROSE_PINK, bg: ROSE_PINK_12, href: "/dashboard" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -121,17 +121,17 @@ function RadarChart({ axes, values, size = 280 }: { axes: string[]; values: numb
       </defs>
       {rings.map((r, idx) => {
         const pts = axes.map((_, i) => { const p = pointFor(i, radius * r); return `${p.x},${p.y}`; }).join(" ");
-        return <polygon key={idx} points={pts} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={0.8} />;
+        return <polygon key={idx} points={pts} fill="none" style={{ stroke: GLASS_06, strokeWidth: 0.8 }} />;
       })}
       {axes.map((_, i) => {
         const p = pointFor(i, radius);
-        return <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.06)" strokeWidth={0.8} />;
+        return <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} style={{ stroke: GLASS_06, strokeWidth: 0.8 }} />;
       })}
       <polygon points={dataPath} fill="url(#radarFill)" stroke={ACCENT} strokeWidth={2} strokeLinejoin="round" />
-      {dataPoints.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={4} fill={ACCENT} stroke="rgba(0,0,0,0.3)" strokeWidth={1.5} />)}
+      {dataPoints.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r={4} fill={ACCENT} stroke={BLACK_30} strokeWidth={1.5} />)}
       {axes.map((label, i) => {
         const p = pointFor(i, radius + 26);
-        return <text key={label} x={p.x} y={p.y} fill="#9CA3AF" fontSize={11} fontWeight={700} letterSpacing={1} textAnchor="middle" dominantBaseline="middle">{label}</text>;
+        return <text key={label} x={p.x} y={p.y} fill={SLATE} fontSize={11} fontWeight={700} letterSpacing={1} textAnchor="middle" dominantBaseline="middle">{label}</text>;
       })}
     </svg>
   );
@@ -487,7 +487,7 @@ export default function DashboardPage() {
                 <>
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="size-11 rounded-full flex items-center justify-center text-[var(--bg)] font-black text-[16px] shrink-0 shadow-[0_0_18px_var(--cta-35)]" style={{ background: "linear-gradient(135deg, #C7F252, #8fca2a)" }}>
+                      <div className="size-11 rounded-full flex items-center justify-center text-[var(--bg)] font-black text-[16px] shrink-0 shadow-[0_0_18px_var(--cta-35)]" style={{ background: `linear-gradient(135deg, ${CTA_LIME}, ${LIME_DEEPER})` }}>
                         {(firstName?.[0] ?? "?").toUpperCase()}
                       </div>
                       <div className="min-w-0">
@@ -495,7 +495,7 @@ export default function DashboardPage() {
                         <p className="text-micro text-primary/60 font-medium mt-0.5">Great to have you, {firstName}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border border-primary/20 text-[9px] font-bold text-primary" style={{ background: "rgba(199,242,82,0.08)" }}>
+                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border border-primary/20 text-[9px] font-bold text-primary" style={{ background: CTA_08 }}>
                       <Sparkles size={9} />
                       100%
                     </div>
@@ -504,8 +504,8 @@ export default function DashboardPage() {
                   <div className="relative flex-1 flex flex-col items-center justify-center py-2 text-center">
                     <div className="relative size-[88px]">
                       <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
-                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
-                        <circle cx="32" cy="32" r="26" fill="none" stroke="#C7F252" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset="0" />
+                        <circle cx="32" cy="32" r="26" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke={CTA_LIME} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset="0" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <Sparkles size={17} className="text-primary" />
@@ -516,8 +516,8 @@ export default function DashboardPage() {
                     <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let&apos;s make it count.</p>
                     <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
                       {profileSteps.map((s) => (
-                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "rgba(199,242,82,0.3)", background: "rgba(199,242,82,0.08)" }}>
-                          <div className="size-1.5 rounded-full" style={{ background: "#C7F252" }} />
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: CTA_30, background: CTA_08 }}>
+                          <div className="size-1.5 rounded-full" style={{ background: CTA_LIME }} />
                           <span className="text-[8px] font-semibold text-foreground/70">{s.label}</span>
                         </div>
                       ))}
@@ -530,12 +530,12 @@ export default function DashboardPage() {
                 <>
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="size-8 rounded-xl flex items-center justify-center shadow-[0_0_14px_var(--cta-20)]" style={{ background: "rgba(199,242,82,0.12)" }}>
+                      <div className="size-8 rounded-xl flex items-center justify-center shadow-[0_0_14px_var(--cta-20)]" style={{ background: CTA_12 }}>
                         <Sparkles size={14} className="text-primary" />
                       </div>
                       <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
                     </div>
-                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: profileDone > 0 ? "rgba(199,242,82,0.08)" : "transparent", color: profileDone > 0 ? "#C7F252" : "rgba(255,255,255,0.3)" }}>
+                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? CTA_30 : GLASS_06, background: profileDone > 0 ? CTA_08 : "transparent", color: profileDone > 0 ? CTA_LIME : GLASS_30 }}>
                       {profileDone}/{profileTotal}
                     </div>
                   </div>
@@ -543,8 +543,8 @@ export default function DashboardPage() {
                   <div className="relative flex-1 flex flex-col items-center justify-center py-2 text-center">
                     <div className="relative size-[88px]">
                       <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
-                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
-                        <circle cx="32" cy="32" r="26" fill="none" stroke="#C7F252" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset={`${2 * Math.PI * 26 * (1 - profileDone / profileTotal)}`} className="transition-all duration-700" />
+                        <circle cx="32" cy="32" r="26" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke={CTA_LIME} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset={`${2 * Math.PI * 26 * (1 - profileDone / profileTotal)}`} className="transition-all duration-700" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <Sparkles size={17} className="text-primary" />
@@ -555,8 +555,8 @@ export default function DashboardPage() {
                     <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for — we&apos;ll tailor everything to you.</p>
                     <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
                       {profileSteps.map((s) => (
-                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? "rgba(199,242,82,0.3)" : "rgba(255,255,255,0.06)", background: s.done ? "rgba(199,242,82,0.08)" : "transparent" }}>
-                          <div className="size-1.5 rounded-full" style={{ background: s.done ? "#C7F252" : "rgba(255,255,255,0.15)" }} />
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? CTA_30 : GLASS_06, background: s.done ? CTA_08 : "transparent" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: s.done ? CTA_LIME : GLASS_15 }} />
                           <span className={cn("text-[8px] font-semibold", s.done ? "text-foreground/70" : "text-muted-foreground/50")}>{s.label}</span>
                         </div>
                       ))}
@@ -578,7 +578,7 @@ export default function DashboardPage() {
               <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-30), transparent)" }} />
               <div className="relative flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: CTA_12 }}>
                     <TrendingUp size={15} className="text-primary" />
                   </div>
                   <div className="flex flex-col">
@@ -597,10 +597,10 @@ export default function DashboardPage() {
               </div>
               <div className="grid grid-cols-2 gap-2.5 flex-1 content-center">
                 {[
-                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target, color: "#34D399", trend: "+4%" },
-                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen, color: "#22D3EE", trend: "+23" },
-                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award, color: "#A78BFA", trend: "Top 8%" },
-                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap, color: "#FBBF24", trend: "-2s" },
+                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target, color: EMERALD, trend: "+4%" },
+                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen, color: CYAN, trend: "+23" },
+                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award, color: VIOLET_PURPLE, trend: "Top 8%" },
+                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap, color: YELLOW, trend: "-2s" },
                 ].map((s) => (
                   <button
                     key={s.label}
@@ -633,7 +633,7 @@ export default function DashboardPage() {
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, var(--emerald-40), transparent)" }} />
               <div className="relative flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
+                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: EMERALD_12 }}>
                     <Flame size={15} className="text-[var(--emerald)]" />
                   </div>
                   <SectionLabel className="text-[var(--emerald)]">THIS WEEK</SectionLabel>
@@ -647,7 +647,7 @@ export default function DashboardPage() {
                 {streak.labels.map((day, i) => {
                   const done = streak.days[i];
                   return (
-                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_var(--emerald-30)]" : "")} style={{ background: done ? `linear-gradient(135deg, #34D399, #10B981)` : "rgba(255,255,255,0.03)", color: done ? "#0A0C08" : "#4B5563", borderColor: done ? "transparent" : "rgba(255,255,255,0.06)" }}>
+                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_var(--emerald-30)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${EMERALD}, ${EMERALD_SOLID})` : GLASS_03, color: done ? BG_SOFT : SLATE_DARKEST, borderColor: done ? "transparent" : GLASS_06 }}>
                       {day}
                     </div>
                   );
@@ -660,8 +660,8 @@ export default function DashboardPage() {
               <div className="relative mt-3 flex-1 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="68" height="68" viewBox="0 0 64 64">
-                    <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
-                    <circle cx="32" cy="32" r="27" fill="none" stroke="#34D399" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 27}`} strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`} transform="rotate(-90 32 32)" className="transition-all duration-700" />
+                    <circle cx="32" cy="32" r="27" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
+                    <circle cx="32" cy="32" r="27" fill="none" stroke={EMERALD} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 27}`} strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`} transform="rotate(-90 32 32)" className="transition-all duration-700" />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-[16px] font-bold text-foreground leading-none">{todayCompleted}</span>
@@ -670,7 +670,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex-1 min-w-0 space-y-3">
                   <div className="flex items-center gap-2">
-                    <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
+                    <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: EMERALD_12 }}>
                       <Flame size={13} className="text-[var(--emerald)]" />
                     </div>
                     <div className="flex-1">
@@ -679,7 +679,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: "rgba(52,211,153,0.12)" }}>
+                    <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: EMERALD_12 }}>
                       <Target size={13} className="text-[var(--emerald)]" />
                     </div>
                     <div className="flex-1">
@@ -688,7 +688,7 @@ export default function DashboardPage() {
                         <p className="text-micro font-bold text-[var(--emerald)]">{habitStats.completionRate}%</p>
                       </div>
                       <div className="mt-1.5 h-1 w-full rounded-full bg-white/[0.05] overflow-hidden">
-                        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${habitStats.completionRate}%`, background: "linear-gradient(90deg, #10B981, #34D399)" }} />
+                        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${habitStats.completionRate}%`, background: `linear-gradient(90deg, ${EMERALD_SOLID}, ${EMERALD})` }} />
                       </div>
                     </div>
                   </div>
@@ -698,8 +698,8 @@ export default function DashboardPage() {
                 {habits.slice(0, 3).map((h) => {
                   const done = todayLogs.includes(h.id);
                   return (
-                    <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: done ? `${h.color}30` : "rgba(255,255,255,0.06)", background: done ? `${h.color}10` : "transparent" }}>
-                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : "rgba(255,255,255,0.15)" }} />
+                    <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: done ? `${h.color}30` : GLASS_06, background: done ? `${h.color}10` : "transparent" }}>
+                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : GLASS_15 }} />
                       <span className={cn("text-[8px] font-medium truncate max-w-[50px]", done ? "text-foreground/70" : "text-muted-foreground/50")}>{h.name.split(" ")[0]}</span>
                     </div>
                   );
@@ -725,28 +725,28 @@ export default function DashboardPage() {
               <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--amber-30), transparent)" }} />
 
               <SlideActionCard
-                accent="#22D3EE"
+                accent={CYAN}
                 label="PRACTICE MODE"
                 icon={Play}
                 iconFill
                 title="Master with templates"
                 desc="Guided exercises · Build speed & accuracy"
                 cta="PRACTICE NOW"
-                ctaFrom="#22D3EE"
-                ctaTo="#06B6D4"
+                ctaFrom={CYAN}
+                ctaTo={SKY}
                 href="/learn/practice"
                 glowShadow="0 0 16px var(--cyan-30)"
               />
 
               <SlideActionCard
-                accent="#F59E0B"
+                accent={AMBER}
                 label="TECHNIQUE LIBRARY"
                 icon={BookOpen}
                 title="Learn a technique"
                 desc="Browse core methods · Master each approach"
                 cta="EXPLORE TECHNIQUES"
-                ctaFrom="#F59E0B"
-                ctaTo="#D97706"
+                ctaFrom={AMBER}
+                ctaTo={AMBER_DARK}
                 href="/learn/explorer"
                 glowShadow="0 0 16px var(--amber-30)"
               />
@@ -773,7 +773,7 @@ export default function DashboardPage() {
                     <div className="relative p-5 flex-1 flex flex-col justify-center">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                          <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: CTA_12 }}>
                             <GraduationCap size={15} className="text-primary" />
                           </div>
                           <SectionLabel>YOUR PROGRESS</SectionLabel>
@@ -786,10 +786,10 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-5 mt-2">
                         <div className="relative shrink-0">
                           <svg width="92" height="92" viewBox="0 0 92 92">
-                            <circle cx="46" cy="46" r="40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="7" />
+                            <circle cx="46" cy="46" r="40" fill="none" style={{ stroke: GLASS_06, strokeWidth: 7 }} />
                             <circle
                               cx="46" cy="46" r="40" fill="none"
-                              stroke={overallMastery >= 80 ? "#34D399" : overallMastery >= 60 ? "#22D3EE" : "#FBBF24"}
+                              stroke={overallMastery >= 80 ? EMERALD : overallMastery >= 60 ? CYAN : YELLOW}
                               strokeWidth="7" strokeLinecap="round"
                               strokeDasharray={`${2 * Math.PI * 40}`}
                               strokeDashoffset={`${2 * Math.PI * 40 * (1 - overallMastery / 100)}`}
@@ -824,7 +824,7 @@ export default function DashboardPage() {
                             className="w-full flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
                           >
                             <div className="flex items-center gap-2.5">
-                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: CTA_12 }}>
                                 <Calendar size={12} className="text-primary" />
                               </div>
                               <span className="text-micro font-semibold text-foreground">Exam {new Date(examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
@@ -838,7 +838,7 @@ export default function DashboardPage() {
                             className="w-full flex items-center justify-between rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-left transition-all hover:bg-primary/[0.08] active:scale-[0.98]"
                           >
                             <div className="flex items-center gap-2.5">
-                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(199,242,82,0.12)" }}>
+                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: CTA_12 }}>
                                 <Calendar size={12} className="text-primary" />
                               </div>
                               <div>
@@ -942,7 +942,7 @@ export default function DashboardPage() {
           </div>
         </div>
         {hasResume && (
-          <ResumeProtocolCard accent="#C8FF4D" className="mt-4 px-5 md:mt-0 md:px-0 md:min-w-0 md:h-full" />
+          <ResumeProtocolCard accent={LIME} className="mt-4 px-5 md:mt-0 md:px-0 md:min-w-0 md:h-full" />
         )}
       </div>
 

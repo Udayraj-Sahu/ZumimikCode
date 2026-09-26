@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { BLACK_06, CTA_LIME, CYAN, EMERALD_12, GLASS_05, GLASS_BORDER, LIME_DARK, RED_SOFT_12, SOLID_BLACK } from "@/lib/theme-tokens";
 import gsap from "gsap";
 import {
   ArrowRight,
@@ -23,7 +24,7 @@ import {
 } from "@/hooks/queries/use-pairing";
 import type { PairingStatus } from "@/lib/types/pairing";
 
-const ACCENT = "#C7F252";
+const ACCENT = CTA_LIME;
 const POLL_INTERVAL_MS = 2500;
 const SESSION_TTL_MS = 120_000;
 
@@ -55,7 +56,7 @@ function QrGrid({ token }: { token: string }) {
         <div
           key={i}
           className="aspect-square rounded-[2px]"
-          style={{ background: on ? "#111" : "rgba(0,0,0,0.06)" }}
+          style={{ background: on ? SOLID_BLACK : BLACK_06 }}
         />
       ))}
     </div>
@@ -192,8 +193,8 @@ export default function AuthPage() {
   return (
     <main id="auth-root" className="relative flex min-h-dvh items-center justify-center bg-background overflow-hidden px-6" style={{ opacity: 0 }}>
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full opacity-[0.07]" style={{ background: "radial-gradient(circle, #C7F252 0%, transparent 70%)" }} />
-        <div className="absolute bottom-0 left-1/4 h-[300px] w-[300px] rounded-full opacity-[0.04]" style={{ background: "radial-gradient(circle, #22D3EE 0%, transparent 70%)" }} />
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full opacity-[0.07]" style={{ background: `radial-gradient(circle, ${CTA_LIME} 0%, transparent 70%)` }} />
+        <div className="absolute bottom-0 left-1/4 h-[300px] w-[300px] rounded-full opacity-[0.04]" style={{ background: `radial-gradient(circle, ${CYAN} 0%, transparent 70%)` }} />
       </div>
 
       <div className="relative w-full max-w-md">
@@ -207,7 +208,7 @@ export default function AuthPage() {
           </div>
         </div>
 
-        <div className="rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, var(--glass-bg), var(--glass-01))" }}>
+        <div className="rounded-3xl border backdrop-blur-xl p-6" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(180deg, var(--glass-bg), var(--glass-01))" }}>
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-xl grid place-items-center" style={{ background: `${ACCENT}1A` }}>
               <MonitorSmartphone size={18} style={{ color: ACCENT }} />
@@ -226,14 +227,14 @@ export default function AuthPage() {
                 type="button"
                 onClick={() => boot.current?.()}
                 className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
-                style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
               >
                 <RefreshCw size={13} /> Retry
               </button>
             </div>
           ) : !showScannerHint && (status === "approved" || alreadyApproved) ? (
             <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
-              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(52,211,153,0.12)" }}>
+              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: EMERALD_12 }}>
                 <Check size={24} className="text-[var(--emerald)]" />
               </div>
               <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Linked successfully</p>
@@ -241,7 +242,7 @@ export default function AuthPage() {
             </div>
           ) : expired ? (
             <div className="mt-5 flex flex-col items-center justify-center py-6 text-center">
-              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(255,92,92,0.12)" }}>
+              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: RED_SOFT_12 }}>
                 <Timer size={24} className="text-[var(--red-soft)]" />
               </div>
               <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Code expired</p>
@@ -250,7 +251,7 @@ export default function AuthPage() {
                 type="button"
                 onClick={() => boot.current?.()}
                 className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
-                style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
               >
                 <RefreshCw size={13} /> Generate new code
               </button>
@@ -280,7 +281,7 @@ export default function AuthPage() {
                   const Icon = s.icon;
                   return (
                     <li key={i} className="flex items-center gap-3">
-                      <div className="grid size-7 place-items-center rounded-lg" style={{ background: "rgba(255,255,255,0.05)" }}>
+                      <div className="grid size-7 place-items-center rounded-lg" style={{ background: GLASS_05 }}>
                         <Icon size={13} className="text-foreground/60" />
                       </div>
                       <span className="flex-1 text-[12px] text-muted-foreground/70 font-medium">{s.text}</span>
@@ -308,7 +309,7 @@ export default function AuthPage() {
               type="button"
               onClick={() => boot.current?.()}
               className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95"
-              style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+              style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
             >
               <RefreshCw size={15} /> New code
             </button>

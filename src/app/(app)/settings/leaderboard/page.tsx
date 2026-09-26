@@ -9,7 +9,7 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useLeaderboard } from "@/hooks/queries/use-leaderboard";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { LeaderboardEntry } from "@/lib/types/dashboard";
-import { GLASS_BG } from "@/lib/theme-tokens";
+import { GLASS_06, GLASS_BG } from "@/lib/theme-tokens";
 
 const PERIODS = ["all", "week", "month"] as const;
 
@@ -113,7 +113,7 @@ export default function LeaderboardPage() {
                 : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
               period !== p && `backdrop-blur-xl`,
             )}
-            style={period !== p ? { background: GLASS_BG, borderColor: "rgba(255,255,255,0.06)" } : undefined}
+            style={period !== p ? { background: GLASS_BG, borderColor: GLASS_06 } : undefined}
           >
             {p}
           </button>

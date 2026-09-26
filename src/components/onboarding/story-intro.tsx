@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { BLACKGREEN, CYAN, CYAN_251, FUCHSIA, GLASS_06, GLASS_09, GLASS_12, LIME, LIME_067, LIME_133, LIME_40, LIME_LIGHT, SLATE_MUTED } from "@/lib/theme-tokens";
+import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import { MotionConfig, motion, type Variants } from "motion/react";
 import {
@@ -26,7 +28,7 @@ import type { StoryCommitment } from "@/lib/types/onboarding";
 import { DAILY_TIME_OPTIONS } from "@/lib/types/onboarding";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
-const ACCENT = "#C8FF4D";
+const ACCENT = LIME;
 
 type Tone = "lime" | "cyan" | "fuchsia";
 
@@ -43,9 +45,9 @@ const toneText: Record<Tone, string> = {
 };
 
 const toneHex: Record<Tone, string> = {
-  lime: "#C8FF4D",
-  cyan: "#22D3EE",
-  fuchsia: "#E879F9",
+  lime: LIME,
+  cyan: CYAN,
+  fuchsia: FUCHSIA,
 };
 
 const RECLAIM_MODULES: {
@@ -371,7 +373,7 @@ function DayButtons({
   onChange: (i: number) => void;
   tone: Tone;
 }) {
-  const onBg = tone === "lime" ? "#C8FF4D" : tone === "cyan" ? "#22D3EE" : "#E879F9";
+  const onBg = tone === "lime" ? LIME : tone === "cyan" ? CYAN : FUCHSIA;
   return (
     <div role="group" aria-label="Active days" className="flex gap-[4px]">
       {DAY_LABELS.map((d, i) => (
@@ -384,8 +386,8 @@ function DayButtons({
           className="size-[22px] rounded-[6px] border-0  text-[9.5px] font-bold leading-none transition-colors"
           style={
             days[i]
-              ? { background: onBg, color: "#051005", boxShadow: `0 0 12px ${onBg}66` }
-              : { background: "rgba(255,255,255,0.06)", color: "rgb(120 130 125)" }
+              ? { background: onBg, color: BLACKGREEN, boxShadow: `0 0 12px ${onBg}66` }
+              : { background: GLASS_06, color: SLATE_MUTED }
           }
         >
           {d}
@@ -421,7 +423,7 @@ function DayRail({ value, spanMin }: { value: StoryCommitment; spanMin: number }
       <div className="relative flex h-10 items-stretch gap-[3px]">
         {hours.map((ov, h) => {
           const sleeping = h < 6 || h >= 23;
-          const base = sleeping ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.12)";
+          const base = sleeping ? GLASS_06 : GLASS_12;
           const lit = ov > 0;
           return (
             <div
@@ -440,7 +442,7 @@ function DayRail({ value, spanMin }: { value: StoryCommitment; spanMin: number }
         <motion.span
           aria-hidden
           className="pointer-events-none absolute inset-y-0 z-10 w-[2px] rounded-full"
-          style={{ background: "linear-gradient(180deg, transparent, #C8FF4D, transparent)" }}
+          style={{ background: `linear-gradient(180deg, transparent, ${LIME}, transparent)` }}
           animate={{ left: ["12%", "88%"] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", repeatType: "reverse" }}
         />
@@ -484,7 +486,7 @@ function MiniRail({ window, tone }: { window: string; tone: Tone }) {
             key={h}
             className="flex-1 rounded-[2px]"
             style={{
-              background: ov > 0 ? hex : "rgba(255,255,255,0.09)",
+              background: ov > 0 ? hex : GLASS_09,
               opacity: ov > 0 ? 0.9 : 1,
               boxShadow: ov > 0 ? `0 0 6px ${hex}44` : undefined,
             }}
@@ -704,7 +706,7 @@ export function StoryCommitmentMatrix({
 
         <div className="relative flex items-center justify-between gap-2  text-[10px] leading-[1.4]">
           <span className="text-cyan-400">
-            <Dot color="#22D3EE" small /> +{weeklyHours.toFixed(2)} hrs/week converted
+            <Dot color={CYAN} small /> +{weeklyHours.toFixed(2)} hrs/week converted
           </span>
           <span className="text-muted-foreground/60">Compounding daily</span>
         </div>
@@ -721,7 +723,7 @@ export function StoryCommitmentMatrix({
             className="block h-full rounded-full"
             style={{
               width: `${shownPct}%`,
-              background: "linear-gradient(90deg, #22D3EE, #C8FF4D)",
+              background: `linear-gradient(90deg, ${CYAN}, ${LIME})`,
               boxShadow: "0 0 10px var(--lime-50)",
               transition: "width 300ms ease",
             }}
@@ -768,7 +770,7 @@ export function StoryCommitmentMatrix({
               className="flex-1 rounded-t-[3px]"
               style={{
                 height: `${16 + ((i * 3) % 9)}px`,
-                background: `linear-gradient(180deg, ${i === sprints - 1 ? "#C8FF4D" : "#C8FF4D66"}, ${i === sprints - 1 ? "#C8FF4D22" : "#C8FF4D11"})`,
+                background: `linear-gradient(180deg, ${i === sprints - 1 ? LIME : LIME_40}, ${i === sprints - 1 ? LIME_133 : LIME_067})`,
                 transition: "height 300ms ease",
               }}
             />
@@ -826,7 +828,7 @@ export function StoryCommitmentMatrix({
               "flex items-center gap-1.5 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.1em] text-cyan-400",
             )}
           >
-            <Dot color="#22D3EE" small pulse /> Live parser
+            <Dot color={CYAN} small pulse /> Live parser
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-2" aria-live="polite">
@@ -845,7 +847,7 @@ export function StoryCommitmentMatrix({
           {weekdayLabel(weeklyMin)} reclaimed
         </span>
         <p className="mt-2.5  flex items-center gap-1.5 text-[9.5px] leading-[1.3] text-cyan-400">
-          <Dot color="#22D3EE" small /> Reminder + trigger notifications primed
+          <Dot color={CYAN} small /> Reminder + trigger notifications primed
         </p>
       </Panel>
 
@@ -932,6 +934,7 @@ export function StoryIntro({
 }) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
+  const theme = useThemeStore((s) => s.theme);
 
   const [value, setValue] = useState<StoryCommitment>(() => {
     const stored = store.weekDays;
@@ -1007,9 +1010,11 @@ export function StoryIntro({
     <MotionConfig reducedMotion="user">
       <div
         ref={overlayRef}
+        data-theme-scope
         className={cn(
           "fixed inset-0 z-[70] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
+          theme === "light" && "light",
         )}
         role="dialog"
         aria-modal="true"
@@ -1025,7 +1030,7 @@ export function StoryIntro({
           <div
             aria-hidden
             className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 h-[300px] w-[440px] rounded-full opacity-15"
-            style={{ background: "radial-gradient(circle, #22D3EE40, transparent 70%)" }}
+            style={{ background: `radial-gradient(circle, ${CYAN_251}, transparent 70%)` }}
           />
           <div
             aria-hidden
@@ -1105,7 +1110,7 @@ export function StoryIntro({
               onClick={close}
               className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--bg)] transition-transform active:scale-[0.98]"
               style={{
-                background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+                background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                 boxShadow:
                   "0 10px 34px var(--lime-25), 0 1px 0 var(--glass-25) inset",
               }}

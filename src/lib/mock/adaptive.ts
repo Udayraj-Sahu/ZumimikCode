@@ -1,3 +1,4 @@
+import { CYAN, EMERALD, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
 export type AdaptiveTopic = {
   id: string;
   name: string;
@@ -5,7 +6,7 @@ export type AdaptiveTopic = {
   color: string;
 };
 
-const COLOR = ["#34D399", "#22D3EE", "#A78BFA", "#FBBF24", "#FB7185"];
+const COLOR = [EMERALD, CYAN, VIOLET_PURPLE, YELLOW, ROSE];
 
 export const ADAPTIVE_TOPICS_BY_DOMAIN: Record<string, AdaptiveTopic[]> = {
   gmat: [

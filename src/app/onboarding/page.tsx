@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { CYAN, LIME_BRIGHT, PURPLE, YELLOW } from "@/lib/theme-tokens";
 import gsap from "gsap";
 import { Flame, Globe, Smartphone, Zap, Target, Trophy, Swords } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
 
 const FEATURES = [
-  { icon: Zap, label: "Speed Drills", color: "#C8FF5A" },
-  { icon: Target, label: "Smart Sprints", color: "#22D3EE" },
-  { icon: Trophy, label: "Live Rankings", color: "#FBBF24" },
+  { icon: Zap, label: "Speed Drills", color: LIME_BRIGHT },
+  { icon: Target, label: "Smart Sprints", color: CYAN },
+  { icon: Trophy, label: "Live Rankings", color: YELLOW },
 ];
 
 export default function OnboardingPage() {
@@ -89,15 +90,15 @@ export default function OnboardingPage() {
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute top-[-20%] left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full opacity-[0.07]"
-          style={{ background: "radial-gradient(circle, #C8FF5A 0%, transparent 70%)" }}
+          style={{ background: `radial-gradient(circle, ${LIME_BRIGHT} 0%, transparent 70%)` }}
         />
         <div
           className="absolute bottom-0 left-1/4 h-[300px] w-[300px] rounded-full opacity-[0.04]"
-          style={{ background: "radial-gradient(circle, #22D3EE 0%, transparent 70%)" }}
+          style={{ background: `radial-gradient(circle, ${CYAN} 0%, transparent 70%)` }}
         />
         <div
           className="absolute bottom-0 right-1/4 h-[300px] w-[300px] rounded-full opacity-[0.04]"
-          style={{ background: "radial-gradient(circle, #A855F7 0%, transparent 70%)" }}
+          style={{ background: `radial-gradient(circle, ${PURPLE} 0%, transparent 70%)` }}
         />
       </div>
 

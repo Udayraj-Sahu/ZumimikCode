@@ -9,6 +9,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
+import { useThemeStore } from "@/stores/theme-store";
 
 const EXAMS = [
   { id: "cat", label: "CAT", icon: GraduationCap },
@@ -33,6 +34,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const canAddPrep = usePlanStore((s) => s.canAddPrep);
   const openPaywall = usePaywallStore((s) => s.openPaywall);
+  const theme = useThemeStore((s) => s.theme);
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const { data } = useDashboardData(selectedExam ?? undefined);
@@ -73,7 +75,8 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
     {createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm"
+      data-theme-scope
+      className={cn("fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm", theme === "light" && "light")}
       role="dialog"
       aria-modal="true"
       aria-labelledby="add-prep-title"

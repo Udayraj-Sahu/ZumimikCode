@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { GLASS_03, GLASS_35, GLASS_BG, LIME, LIME_125, OVERLAY } from "@/lib/theme-tokens";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
 import {
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore, goalForExam } from "@/stores/onboarding-store";
+import { useThemeStore } from "@/stores/theme-store";
 import { StoryCommitmentMatrix } from "@/components/onboarding/story-intro";
 import { applyStoryNotifications } from "@/lib/notifications/story-reminders";
 import { PlanSelector } from "@/components/onboarding/plan-intro";
@@ -44,7 +46,7 @@ const TEMPORAL_OPTIONS = [
   { label: "Not sure yet", desc: "Flexible, balanced approach", value: "not_sure" },
 ];
 
-const ACCENT = "#C8FF4D";
+const ACCENT = LIME;
 
 const STEP_ICONS = [GraduationCap, Target, Brain, ClipboardList];
 const STEP_LABELS = ["Exam", "When", "Story", "Plan"];
@@ -52,6 +54,7 @@ const TOTAL_STEPS = STEP_ICONS.length;
 
 export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   const store = useOnboardingStore();
+  const theme = useThemeStore((s) => s.theme);
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -194,7 +197,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
     return (
       <div
         className="mt-4 relative rounded-3xl border border-dashed border-white/[0.08] px-5 py-6 flex flex-col items-center gap-3 text-center"
-        style={{ background: "rgba(255,255,255,0.03)" }}
+        style={{ background: GLASS_03 }}
       >
         <span className="grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
           <Sparkles size={18} className="text-[var(--lime)]" />
@@ -221,7 +224,8 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   const mainOverlay = createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[200] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center"
+      data-theme-scope
+      className={cn("fixed inset-0 z-[200] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center", theme === "light" && "light")}
       role="dialog"
       aria-modal="true"
       aria-labelledby="adaptive-reprompt-title"
@@ -230,7 +234,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
       <div
         ref={panelRef}
         className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl flex flex-col"
-        style={{ background: "rgba(14,17,13,0.98)" }}
+        style={{ background: OVERLAY }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header with step icons */}
@@ -326,11 +330,11 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
                       >
                         <div
                           className="size-8 rounded-lg flex items-center justify-center shrink-0"
-                          style={{ background: active ? "#C8FF4D20" : "rgba(255,255,255,0.04)" }}
+                          style={{ background: active ? LIME_125 : GLASS_BG }}
                         >
                           <opt.icon
                             size={14}
-                            style={{ color: active ? ACCENT : "rgba(255,255,255,0.35)" }}
+                            style={{ color: active ? ACCENT : GLASS_35 }}
                           />
                         </div>
                         <span
@@ -579,7 +583,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
     return (
       <div
         className="mt-4 relative rounded-3xl border border-dashed border-white/[0.08] px-5 py-6 flex flex-col items-center gap-3 text-center"
-        style={{ background: "rgba(255,255,255,0.03)" }}
+        style={{ background: GLASS_03 }}
       >
         <span className="grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
           <Sparkles size={18} className="text-[var(--lime)]" />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AMBER, BLUE, DEEP_BLACK, GLASS_BORDER, LIME_BRIGHT, RED } from "@/lib/theme-tokens";
 import { motion } from "motion/react";
 import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 
@@ -22,10 +23,10 @@ const EDGES = [
 ];
 
 const TYPE_COLORS: Record<string, string> = {
-  strength: "#C8FF5A",
-  weak: "#EF4444",
-  goal: "#3B82F6",
-  prediction: "#F59E0B",
+  strength: LIME_BRIGHT,
+  weak: RED,
+  goal: BLUE,
+  prediction: AMBER,
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -80,7 +81,7 @@ export function ConstellationCoach() {
             <h2 className="mb-6 text-foreground font-display"
               style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.1 }}>
               Your mind,<br />
-              <span style={{ color: "#3B82F6" }}>mapped.</span>
+              <span style={{ color: BLUE }}>mapped.</span>
             </h2>
             <p className="mb-8 text-muted-foreground font-sans" style={{ fontSize: "clamp(0.9rem, 2.2vw, 1rem)", lineHeight: 1.7 }}>
               The Coach doesn&apos;t give you a study plan. It builds a live map of your
@@ -106,7 +107,7 @@ export function ConstellationCoach() {
           >
             <svg viewBox="0 0 100 100" className="w-full h-full" style={{ overflow: "visible" }}>
               {Array.from({ length: 80 }, (_, i) => (
-                <circle key={i} cx={(i % 10) * 11 + 5} cy={Math.floor(i / 10) * 11 + 5} r="0.2" fill="rgba(255,255,255,0.08)" />
+                <circle key={i} cx={(i % 10) * 11 + 5} cy={Math.floor(i / 10) * 11 + 5} r="0.2" fill={GLASS_BORDER} />
               ))}
               {EDGES.map(([a, b], i) => {
                 const sa = STARS[a];
@@ -114,7 +115,7 @@ export function ConstellationCoach() {
                 const isHighlighted = hoveredStar === a || hoveredStar === b;
                 return (
                   <motion.line key={i} x1={sa.x} y1={sa.y} x2={sb.x} y2={sb.y}
-                    stroke={isHighlighted ? "#3B82F6" : "rgba(255,255,255,0.08)"}
+                    stroke={isHighlighted ? BLUE : GLASS_BORDER}
                     strokeWidth={isHighlighted ? 0.5 : 0.25}
                     animate={{ opacity: [0.4, 0.7, 0.4] }}
                     transition={{ duration: 3 + i * 0.3, repeat: Infinity, delay: i * 0.2 }} />
@@ -139,7 +140,7 @@ export function ConstellationCoach() {
                     {isHovered && (
                       <g>
                         <rect x={star.x + 2} y={star.y - 6} width={star.label.length * 1.8 + 4} height={8} rx="1"
-                          fill="#0d0d0d" stroke={color} strokeWidth="0.3" strokeOpacity="0.5" />
+                          fill={DEEP_BLACK} stroke={color} strokeWidth="0.3" strokeOpacity="0.5" />
                         <text x={star.x + 4} y={star.y - 0.5} fontSize="3.5" fill={color} fontFamily="JetBrains Mono, monospace">
                           {star.label}
                         </text>

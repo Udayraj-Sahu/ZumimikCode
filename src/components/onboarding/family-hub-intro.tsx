@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef } from "react";
+import { BG_MOSS, FOREST, LIME, LIME_LIGHT, PANEL } from "@/lib/theme-tokens";
+import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
@@ -19,7 +21,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ACCENT = "#C8FF4D";
+const ACCENT = LIME;
 
 const SEATS: { id: string; label: string; desc: string; Icon: typeof Baby }[] = [
   { id: "little", label: "Little", desc: "Tactile base", Icon: Baby },
@@ -108,6 +110,7 @@ export function FamilyHubIntro({
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
+  const theme = useThemeStore((s) => s.theme);
 
   useLayoutEffect(() => {
     if (preloaded) return;
@@ -147,9 +150,11 @@ export function FamilyHubIntro({
   return createPortal(
     <div
       ref={overlayRef}
+      data-theme-scope
       className={cn(
         "fixed inset-0 z-[220] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
+        theme === "light" && "light",
       )}
       role="dialog"
       aria-modal="true"
@@ -159,7 +164,7 @@ export function FamilyHubIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
+          background: `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
         }}
       >
         <div
@@ -282,7 +287,7 @@ export function FamilyHubIntro({
               onClick={() => exit(onDone)}
               className="flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
               style={{
-                background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+                background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                 boxShadow:
                   "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
               }}

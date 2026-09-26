@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { BG_MOSS, FOREST, LIME, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
+import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import { MotionConfig, motion } from "motion/react";
 import { Check, CreditCard, Lock, QrCode, ShieldCheck, Smartphone } from "lucide-react";
@@ -10,7 +12,7 @@ import type { PlanId } from "@/lib/types/onboarding";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
-const ACCENT = "#C8FF4D";
+const ACCENT = LIME;
 const inr = (n: number) => `₹${new Intl.NumberFormat("en-IN").format(n)}`;
 
 const EXAM_QUALIFIER: Record<string, string> = {
@@ -288,6 +290,7 @@ export function PlanIntro({
 }) {
   const store = useOnboardingStore();
   const overlayRef = useRef<HTMLDivElement>(null);
+  const theme = useThemeStore((s) => s.theme);
 
   const [billing, setBilling] = useState<"annual" | "monthly">("annual");
   const [planId, setPlanId] = useState<PlanId>(store.planId ?? "dual-lane");
@@ -350,9 +353,11 @@ export function PlanIntro({
     <MotionConfig reducedMotion="user">
       <div
         ref={overlayRef}
+        data-theme-scope
         className={cn(
 "fixed inset-0 z-[70] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
+        theme === "light" && "light",
       )}
       role="dialog"
       aria-modal="true"
@@ -362,7 +367,7 @@ export function PlanIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: "radial-gradient(130% 90% at 50% 0%, #10140e 0%, #0a0b08 48%, #070907 100%)",
+          background: `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
         }}
       >
         <div
@@ -401,7 +406,7 @@ export function PlanIntro({
               <span
                 className="text-transparent"
                 style={{
-                  background: "linear-gradient(90deg, #C8FF4D, #e8ffb0)",
+                  background: `linear-gradient(90deg, ${LIME}, ${LIME_TINT})`,
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                 }}
@@ -744,7 +749,7 @@ export function PlanIntro({
               onClick={confirm}
               className="group relative flex w-full items-center justify-center gap-2 rounded-[18px] py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--bg)] transition active:scale-[0.98]"
               style={{
-                background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+                background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                 boxShadow:
                   "0 10px 30px var(--lime-25), 0 1px 0 var(--glass-25) inset",
               }}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { GLASS_02, GLASS_025, GLASS_06, GLASS_10, GLASS_30, LIME_BRIGHT, LIME_BRIGHT_06, LIME_BRIGHT_15, LIME_BRIGHT_18, LIME_BRIGHT_25, MUTED, NEAR_BLACK, WHITE } from "@/lib/theme-tokens";
 import { motion, useMotionValue, useTransform, animate } from "motion/react";
 
 const DISTANT_SIGNALS = [
@@ -109,19 +110,19 @@ export function HorizonScene() {
 
       <svg className="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
         {[-40, -20, -8, -2, 0, 2, 8, 20, 40].map((offset, i) => (
-          <line key={i} x1={50 + offset} y1={horizonYVal} x2={50 + offset * 10} y2={100} stroke="rgba(255,255,255,0.025)" strokeWidth="0.15" />
+          <line key={i} x1={50 + offset} y1={horizonYVal} x2={50 + offset * 10} y2={100} stroke={GLASS_025} strokeWidth="0.15" />
         ))}
         {[0.2, 0.5, 1, 2, 4, 8].map((dist, i) => {
           const y = horizonYVal + dist * (100 - horizonYVal) * 0.18;
-          return y < 100 ? <line key={i} x1={0} y1={y} x2={100} y2={y} stroke="rgba(255,255,255,0.02)" strokeWidth="0.12" /> : null;
+          return y < 100 ? <line key={i} x1={0} y1={y} x2={100} y2={y} stroke={GLASS_02} strokeWidth="0.12" /> : null;
         })}
-        <line x1={0} y1={horizonYVal} x2={100} y2={horizonYVal} stroke="rgba(200,255,90,0.18)" strokeWidth="0.12" />
-        <line x1={20} y1={horizonYVal} x2={80} y2={horizonYVal} stroke="rgba(200,255,90,0.06)" strokeWidth="0.6" />
+        <line x1={0} y1={horizonYVal} x2={100} y2={horizonYVal} stroke={LIME_BRIGHT_18} strokeWidth="0.12" />
+        <line x1={20} y1={horizonYVal} x2={80} y2={horizonYVal} stroke={LIME_BRIGHT_06} strokeWidth="0.6" />
         {PATH_NODES.map((node, i) => {
           if (i === PATH_NODES.length - 1) return null;
           const next = PATH_NODES[i + 1];
           const lit = progress > (i / (PATH_NODES.length - 1)) * 0.8;
-          return <line key={i} x1={node.x} y1={node.y} x2={next.x} y2={next.y} stroke={lit ? "rgba(200,255,90,0.25)" : "rgba(255,255,255,0.06)"} strokeWidth="0.18" strokeDasharray="0.8 0.4" />;
+          return <line key={i} x1={node.x} y1={node.y} x2={next.x} y2={next.y} stroke={lit ? LIME_BRIGHT_25 : GLASS_06} strokeWidth="0.18" strokeDasharray="0.8 0.4" />;
         })}
       </svg>
 
@@ -134,7 +135,7 @@ export function HorizonScene() {
           <motion.div key={sig.id} className="absolute" initial={{ opacity: 0 }} animate={{ opacity }}
             transition={{ delay: sig.delay, duration: 1.2 }}
             style={{ left: `${parallaxedX}%`, top: `${parallaxedY}%`, transform: "translate(-50%, -50%)", filter: `blur(${Math.max(0, (1 - progress) * 1.5)}px)` }}>
-            <span className="font-display" style={{ fontSize: `${scaledSize}px`, fontWeight: 800, color: "#ffffff", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{sig.label}</span>
+            <span className="font-display" style={{ fontSize: `${scaledSize}px`, fontWeight: 800, color: WHITE, letterSpacing: "0.08em", whiteSpace: "nowrap" }}>{sig.label}</span>
           </motion.div>
         );
       })}
@@ -149,17 +150,17 @@ export function HorizonScene() {
             onMouseLeave={() => setHoveredLandmark(null)}
             onClick={() => setHoveredLandmark(isHovered ? null : lm)}>
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 0.45 + (isHovered ? 0.55 : 0), y: 0 }} transition={{ delay: 0.8, duration: 1.4 }} style={{ cursor: "pointer", outline: "none", WebkitTapHighlightColor: "transparent" }}>
-              <span className="font-display" style={{ fontSize: "10px", fontWeight: 700, color: isHovered ? "#C8FF5A" : "#8B8B8B", letterSpacing: "0.18em", whiteSpace: "nowrap", transition: "color 0.3s ease", display: "block", textAlign: "center" }}>{lm.label}</span>
+              <span className="font-display" style={{ fontSize: "10px", fontWeight: 700, color: isHovered ? LIME_BRIGHT : MUTED, letterSpacing: "0.18em", whiteSpace: "nowrap", transition: "color 0.3s ease", display: "block", textAlign: "center" }}>{lm.label}</span>
               <div style={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
-                <div style={{ width: 3, height: 3, borderRadius: "50%", background: isHovered ? "#C8FF5A" : "rgba(255,255,255,0.3)", transition: "background 0.3s ease" }} />
+                <div style={{ width: 3, height: 3, borderRadius: "50%", background: isHovered ? LIME_BRIGHT : GLASS_30, transition: "background 0.3s ease" }} />
               </div>
             </motion.div>
             <motion.div animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 4 }} transition={{ duration: 0.25 }} style={{ pointerEvents: "none", position: "absolute", top: "100%", left: "50%", transform: "translateX(-50%)", marginTop: 10, width: 180 }}>
               <div style={{ borderTop: "1px solid var(--lime-bright-20)", paddingTop: 10 }}>
                 {[["SOLVED", lm.stats.solved.toLocaleString()], ["MASTERY", lm.stats.mastery], ["STRONG", lm.stats.strong], ["WEAK", lm.stats.weak], ["NEXT", lm.stats.upcoming]].map(([k, v]) => (
                   <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 5, gap: 8 }}>
-                    <span className="font-mono" style={{ fontSize: 9, fontWeight: 700, color: "#8B8B8B", letterSpacing: "0.12em", flexShrink: 0 }}>{k}</span>
-                    <span style={{ fontSize: 9, fontWeight: 600, color: "#ffffff", textAlign: "right" }}>{v}</span>
+                    <span className="font-mono" style={{ fontSize: 9, fontWeight: 700, color: MUTED, letterSpacing: "0.12em", flexShrink: 0 }}>{k}</span>
+                    <span style={{ fontSize: 9, fontWeight: 600, color: WHITE, textAlign: "right" }}>{v}</span>
                   </div>
                 ))}
               </div>
@@ -173,7 +174,7 @@ export function HorizonScene() {
         return (
           <motion.div key={m.id} className="absolute" initial={{ opacity: 0 }} animate={{ opacity: visible ? 0.55 : 0 }} transition={{ delay: i * 0.15 + 1.5, duration: 1 }}
             style={{ left: `${m.x + parallaxX * 2.5}%`, top: `${m.y + parallaxY * 1.5}%`, transform: "translate(-50%, -50%)" }}>
-            <span className="font-display" style={{ fontSize: `clamp(${m.size * 0.6}px, 3vw, ${m.size}px)`, fontWeight: 700, color: "#ffffff", letterSpacing: "0.1em", whiteSpace: "nowrap", opacity: 0.7 }}>{m.label}</span>
+            <span className="font-display" style={{ fontSize: `clamp(${m.size * 0.6}px, 3vw, ${m.size}px)`, fontWeight: 700, color: WHITE, letterSpacing: "0.1em", whiteSpace: "nowrap", opacity: 0.7 }}>{m.label}</span>
           </motion.div>
         );
       })}
@@ -184,7 +185,7 @@ export function HorizonScene() {
         return (
           <motion.div key={node.label} className="absolute" initial={{ opacity: 0 }} animate={{ opacity: lit ? 0.6 : 0.18 }} transition={{ delay: 0.5 + i * 0.1, duration: 0.8 }}
             style={{ left: `${node.x + parallaxX * 0.5}%`, top: `${nodeY}%`, transform: "translate(-50%, -50%)" }}>
-            <span className="font-display" style={{ fontSize: `${node.size}px`, fontWeight: 700, color: lit ? "#C8FF5A" : "#8B8B8B", letterSpacing: "0.14em", whiteSpace: "nowrap", transition: "color 0.6s ease" }}>{node.label}</span>
+            <span className="font-display" style={{ fontSize: `${node.size}px`, fontWeight: 700, color: lit ? LIME_BRIGHT : MUTED, letterSpacing: "0.14em", whiteSpace: "nowrap", transition: "color 0.6s ease" }}>{node.label}</span>
           </motion.div>
         );
       })}
@@ -193,7 +194,7 @@ export function HorizonScene() {
         <div className="absolute inset-0 flex items-start justify-center pointer-events-none pt-[clamp(8vh,12vh,18vh)]">
           <motion.div className="horizon-headline" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
             style={{ textAlign: "center", width: "90vw", maxWidth: 900, overflowWrap: "break-word", padding: "0 5vw" }}>
-            <h2 className="font-display" style={{ fontSize: "clamp(14px, 4vw, 72px)", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em", lineHeight: 1.15, margin: 0 }}>
+            <h2 className="font-display" style={{ fontSize: "clamp(14px, 4vw, 72px)", fontWeight: 800, color: WHITE, letterSpacing: "-0.01em", lineHeight: 1.15, margin: 0 }}>
               BECOME WHO YOU ARE CAPABLE OF BECOMING
             </h2>
           </motion.div>
@@ -204,19 +205,19 @@ export function HorizonScene() {
         <motion.div className="absolute horizon-cta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.8, duration: 1.2 }} style={{ bottom: "clamp(4%, 10%, 15%)", left: "50%", transform: "translateX(-50%)", textAlign: "center", width: "90vw", maxWidth: 500 }}>
           <button onClick={handleBegin}
             className="font-display uppercase hover:opacity-85 transition-opacity duration-200"
-            style={{ fontSize: 'clamp(12px, 2.5vw, 14px)', fontWeight: 800, letterSpacing: "0.22em", color: "#050505", background: "#C8FF5A", border: "none", padding: "clamp(14px, 2vw, 16px) clamp(28px, 5vw, 44px)", cursor: "pointer" }}>
+            style={{ fontSize: 'clamp(12px, 2.5vw, 14px)', fontWeight: 800, letterSpacing: "0.22em", color: NEAR_BLACK, background: LIME_BRIGHT, border: "none", padding: "clamp(14px, 2vw, 16px) clamp(28px, 5vw, 44px)", cursor: "pointer" }}>
             BEGIN THE JOURNEY
           </button>
-          <p className="font-display hidden sm:block" style={{ fontSize: 10, color: "#8B8B8B", letterSpacing: "0.14em", marginTop: 16 }}>MOVE YOUR CURSOR — THE HORIZON RESPONDS</p>
-          <p className="font-display sm:hidden" style={{ fontSize: 10, color: "#8B8B8B", letterSpacing: "0.14em", marginTop: 16 }}>SWIPE — THE HORIZON RESPONDS</p>
+          <p className="font-display hidden sm:block" style={{ fontSize: 10, color: MUTED, letterSpacing: "0.14em", marginTop: 16 }}>MOVE YOUR CURSOR — THE HORIZON RESPONDS</p>
+          <p className="font-display sm:hidden" style={{ fontSize: 10, color: MUTED, letterSpacing: "0.14em", marginTop: 16 }}>SWIPE — THE HORIZON RESPONDS</p>
         </motion.div>
       )}
 
       {started && !showFinal && (
         <motion.div className="absolute" style={{ bottom: "clamp(4%, 8%, 12%)", left: "50%", transform: "translateX(-50%)", textAlign: "center" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
-          <p className="font-display" style={{ fontSize: 10, color: "#8B8B8B", letterSpacing: "0.18em" }}>THE HORIZON APPROACHES</p>
-          <div style={{ marginTop: 10, width: 120, height: 1, background: "rgba(255,255,255,0.1)", margin: "10px auto 0" }}>
-            <motion.div style={{ height: 1, background: "#C8FF5A", width: `${progress * 100}%`, transition: "width 0.1s linear" }} />
+          <p className="font-display" style={{ fontSize: 10, color: MUTED, letterSpacing: "0.18em" }}>THE HORIZON APPROACHES</p>
+          <div style={{ marginTop: 10, width: 120, height: 1, background: GLASS_10, margin: "10px auto 0" }}>
+            <motion.div style={{ height: 1, background: LIME_BRIGHT, width: `${progress * 100}%`, transition: "width 0.1s linear" }} />
           </div>
         </motion.div>
       )}
@@ -226,19 +227,19 @@ export function HorizonScene() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 1.2 }} style={{ display: "flex", gap: "clamp(24px, 5vw, 80px)", marginBottom: "clamp(32px, 6vh, 72px)", flexWrap: "wrap", justifyContent: "center" }}>
             {["IIT", "AIIMS", "UPSC", "SELECTION"].map((label, i) => (
               <motion.span key={label} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + i * 0.15, duration: 0.8 }}
-                className="font-display" style={{ fontSize: "clamp(32px, 6vw, 80px)", fontWeight: 900, color: "#ffffff", letterSpacing: "-0.02em" }}>{label}</motion.span>
+                className="font-display" style={{ fontSize: "clamp(32px, 6vw, 80px)", fontWeight: 900, color: WHITE, letterSpacing: "-0.02em" }}>{label}</motion.span>
             ))}
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 1.4 }}>
-            <p className="font-display" style={{ fontSize: "clamp(22px, 4vw, 56px)", fontWeight: 800, color: "#C8FF5A", letterSpacing: "-0.01em", lineHeight: 1.1, margin: 0 }}>THE FUTURE HASN&apos;T MOVED.</p>
-            <p className="font-display" style={{ fontSize: "clamp(22px, 4vw, 56px)", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em", lineHeight: 1.1, margin: "4px 0 0" }}>YOU HAVE.</p>
+            <p className="font-display" style={{ fontSize: "clamp(22px, 4vw, 56px)", fontWeight: 800, color: LIME_BRIGHT, letterSpacing: "-0.01em", lineHeight: 1.1, margin: 0 }}>THE FUTURE HASN&apos;T MOVED.</p>
+            <p className="font-display" style={{ fontSize: "clamp(22px, 4vw, 56px)", fontWeight: 800, color: WHITE, letterSpacing: "-0.01em", lineHeight: 1.1, margin: "4px 0 0" }}>YOU HAVE.</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2, duration: 1 }} style={{ marginTop: "clamp(32px, 6vh, 64px)" }}>
-            <button className="font-display uppercase hover:opacity-85 active:opacity-70 transition-opacity duration-200" style={{ fontSize: 'clamp(12px, 2.5vw, 14px)', fontWeight: 800, letterSpacing: "0.22em", color: "#050505", background: "#C8FF5A", border: "none", padding: "clamp(14px, 2vw, 18px) clamp(28px, 5vw, 48px)", cursor: "pointer" }}>
+            <button className="font-display uppercase hover:opacity-85 active:opacity-70 transition-opacity duration-200" style={{ fontSize: 'clamp(12px, 2.5vw, 14px)', fontWeight: 800, letterSpacing: "0.22em", color: NEAR_BLACK, background: LIME_BRIGHT, border: "none", padding: "clamp(14px, 2vw, 18px) clamp(28px, 5vw, 48px)", cursor: "pointer" }}>
               BEGIN THE JOURNEY
             </button>
           </motion.div>
-          <motion.div className="absolute bottom-0 left-0 right-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1, duration: 2 }} style={{ height: 1, background: "rgba(200,255,90,0.15)" }} />
+          <motion.div className="absolute bottom-0 left-0 right-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1, duration: 2 }} style={{ height: 1, background: LIME_BRIGHT_15 }} />
         </motion.div>
       )}
 

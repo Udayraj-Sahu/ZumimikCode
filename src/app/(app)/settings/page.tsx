@@ -27,8 +27,11 @@ import {
   ChevronDown,
   Settings,
   Trash2,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useThemeStore } from "@/stores/theme-store";
 import { resetAppState } from "@/lib/reset-app-state";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
@@ -36,7 +39,7 @@ import { AddPrepModal } from "@/components/learn/add-prep-modal";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { cn } from "@/lib/utils";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { GLASS_BG, GLASS_BORDER, RED_SOFT_06, RED_SOFT_25 } from "@/lib/theme-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Reusable row item                                                   */
@@ -81,7 +84,7 @@ function HeadingTile({ icon, danger, onClick, label, heading }: { icon: React.Re
       aria-label={label}
       title={label}
       className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl border backdrop-blur-xl px-3 py-5 text-center transition-all hover:bg-white/[0.06] active:scale-[0.98]"
-      style={{ borderColor: danger ? "rgba(255,92,92,0.25)" : GLASS_BORDER, background: danger ? "rgba(255,92,92,0.06)" : GLASS_BG }}
+      style={{ borderColor: danger ? RED_SOFT_25 : GLASS_BORDER, background: danger ? RED_SOFT_06 : GLASS_BG }}
     >
       <span className={danger ? "text-[var(--red-soft)]" : "text-primary"}>
         {icon}
@@ -263,6 +266,9 @@ export default function SettingsPage() {
 
   const [showAddPrep, setShowAddPrep] = useState(false);
 
+  const theme = useThemeStore((s) => s.theme);
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
+
   const prepExams = useMemo(() => {
     const others = activePreps.filter((id) => id !== targetExam && id in DOMAIN_LABELS);
     const list = [...others];
@@ -338,7 +344,23 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        {/* Activity & Records + Account Settings */}
+        {/* Appearance */}
+          <div>
+            <SectionLabel>APPEARANCE</SectionLabel>
+            <div className="space-y-2.5 md:hidden max-[359px]:space-y-2">
+              <Row
+                icon={theme === "light" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                title="Theme"
+                subtitle={theme === "light" ? "Light mode — on" : "Dark mode — on"}
+                onClick={toggleTheme}
+              />
+            </div>
+            <div className="hidden md:grid md:items-stretch">
+              <HeadingTile icon={theme === "light" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />} heading={theme === "light" ? "Light Mode" : "Dark Mode"} onClick={toggleTheme} />
+            </div>
+          </div>
+
+          {/* Activity & Records + Account Settings */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:items-stretch max-[359px]:gap-3">
           <CollapsibleSection label="ACTIVITY & RECORDS" defaultOpen>
             <div className="space-y-2.5 md:hidden max-[359px]:space-y-2">

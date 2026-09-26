@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AMBER, LIME_BRIGHT, LIME_BRIGHT_04, RED, WHITE } from "@/lib/theme-tokens";
 import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 
 interface Insight {
@@ -19,10 +20,10 @@ const INSIGHTS: Insight[] = [
 ];
 
 function typeColor(t: Insight["type"]) {
-  if (t === "weak") return "#EF4444";
-  if (t === "strong") return "#C8FF5A";
-  if (t === "revision") return "#F59E0B";
-  return "#C8FF5A";
+  if (t === "weak") return RED;
+  if (t === "strong") return LIME_BRIGHT;
+  if (t === "revision") return AMBER;
+  return LIME_BRIGHT;
 }
 
 export function AIScanLine() {
@@ -64,18 +65,18 @@ export function AIScanLine() {
     <div ref={ref} style={{ position: "relative", width: "100%", height: "clamp(300px, 50vh, 500px)" }}>
       <div style={{
         position: "absolute", left: 0, right: 0, top: `${scanY}%`, height: "1px",
-        background: "linear-gradient(to right, transparent, #C8FF5A 20%, #C8FF5A 80%, transparent)",
+        background: `linear-gradient(to right, transparent, ${LIME_BRIGHT} 20%, ${LIME_BRIGHT} 80%, transparent)`,
         opacity: 0.6, transition: "top 0.03s linear", zIndex: 2
       }} />
       <div style={{
         position: "absolute", left: 0, right: 0, top: `${scanY}%`, height: "40px",
-        background: "linear-gradient(to bottom, rgba(200,255,90,0.04), transparent)",
+        background: `linear-gradient(to bottom, ${LIME_BRIGHT_04}, transparent)`,
         transform: "translateY(-20px)", transition: "top 0.03s linear", zIndex: 1
       }} />
 
       <div style={{ position: "absolute", top: 0, left: 0, display: "flex", alignItems: "center", gap: "10px", marginBottom: "32px" }}>
-        <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#C8FF5A" }} />
-        <span className="font-sans uppercase" style={{ fontSize: "11px", letterSpacing: "0.2em", color: "#C8FF5A" }}>Active Analysis</span>
+        <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: LIME_BRIGHT }} />
+        <span className="font-sans uppercase" style={{ fontSize: "11px", letterSpacing: "0.2em", color: LIME_BRIGHT }}>Active Analysis</span>
       </div>
 
       {INSIGHTS.map((ins, i) => (
@@ -94,7 +95,7 @@ export function AIScanLine() {
       <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.06 }} xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="aiDots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="1" fill="#ffffff" />
+            <circle cx="1" cy="1" r="1" fill={WHITE} />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#aiDots)" />

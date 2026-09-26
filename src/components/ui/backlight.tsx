@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { LIME_14 } from "@/lib/theme-tokens";
 import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +12,7 @@ interface BacklightProps {
   color?: string;
 }
 
-export default function Backlight({ children, className, blur = 20, color = "rgba(200,255,77,0.14)" }: BacklightProps) {
+export default function Backlight({ children, className, blur = 20, color = LIME_14 }: BacklightProps) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 

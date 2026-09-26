@@ -18,7 +18,7 @@ import TrustBadge from "@/components/ui/trust-badge";
 import ContentFeedback from "@/components/ui/content-feedback";
 import { ExamShell } from "@/components/exam/exam-shell";
 import { QuestionNavigator } from "@/components/exam/question-navigator";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { CTA_06, CTA_30, GLASS_02, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-tokens";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -401,16 +401,16 @@ function SprintContent() {
                 if (showFeedback) {
                   if (isSelected && isCorrect) {
                     variantClass = "border text-primary";
-                    variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
+                    variantStyles = { backgroundColor: CTA_06, borderColor: CTA_30 };
                   } else if (isSelected && !isCorrect) {
                     variantClass = "border text-destructive";
-                    variantStyles = { backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" };
+                    variantStyles = { backgroundColor: RED_06, borderColor: RED_30 };
                   } else if (isCorrect) {
                     variantClass = "border text-primary";
-                    variantStyles = { backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" };
+                    variantStyles = { backgroundColor: CTA_06, borderColor: CTA_30 };
                   } else {
                     variantClass = "border text-muted-foreground/40";
-                    variantStyles = { backgroundColor: "rgba(255,255,255,0.02)", borderColor: "rgba(255,255,255,0.04)" };
+                    variantStyles = { backgroundColor: GLASS_02, borderColor: GLASS_BG };
                   }
                 }
 
@@ -456,9 +456,9 @@ export default function SprintPage() {
   return (
     <Suspense fallback={
       <PageContainer className="animate-pulse">
-        <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
-        <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
-        <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: "rgba(255,255,255,0.04)" }} />
+        <div className="h-14 rounded-xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
+        <div className="h-48 rounded-3xl backdrop-blur-xl mb-4" style={{ backgroundColor: GLASS_BG }} />
+        <div className="h-12 rounded-xl backdrop-blur-xl" style={{ backgroundColor: GLASS_BG }} />
       </PageContainer>
     }>
       <SprintContent />

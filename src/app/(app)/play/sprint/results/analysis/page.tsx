@@ -7,7 +7,7 @@ import { ChevronLeft, Check, X, TrendingUp, Lightbulb, BookOpen } from "lucide-r
 import { useSprintStore } from "@/stores/sprint-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { SprintResult } from "@/lib/types/sprint-session";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { CTA_04, CTA_06, CTA_20, CTA_30, GLASS_BG, GLASS_BORDER, RED_04, RED_06, RED_30 } from "@/lib/theme-tokens";
 
 export default function AnalysisPage() {
   usePageMeta("Analysis — Exam Arena");
@@ -101,7 +101,7 @@ export default function AnalysisPage() {
             style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             {/* Question header */}
-            <div className="px-4 max-[359px]:px-3 py-3 border-b" style={{ backgroundColor: "rgba(239,68,68,0.04)", borderColor: "rgba(255,255,255,0.04)" }}>
+            <div className="px-4 max-[359px]:px-3 py-3 border-b" style={{ backgroundColor: RED_04, borderColor: GLASS_BG }}>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-wider">
                   <span className="grid size-5 place-items-center rounded bg-destructive/10 text-destructive">
@@ -120,7 +120,7 @@ export default function AnalysisPage() {
 
             {/* User vs correct answer */}
             <div className="grid grid-cols-2 gap-2 max-[359px]:gap-1.5 px-4 max-[359px]:px-3 pt-4">
-              <div className="rounded-xl border p-3 max-[359px]:p-2.5 text-center" style={{ backgroundColor: "rgba(239,68,68,0.06)", borderColor: "rgba(239,68,68,0.3)" }}>
+              <div className="rounded-xl border p-3 max-[359px]:p-2.5 text-center" style={{ backgroundColor: RED_06, borderColor: RED_30 }}>
                 <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
                   Your Answer
                 </p>
@@ -128,7 +128,7 @@ export default function AnalysisPage() {
                   {question.options[answer.selectedIndex] ?? "(unanswered)"}
                 </p>
               </div>
-              <div className="rounded-xl border p-3 max-[359px]:p-2.5 text-center" style={{ backgroundColor: "rgba(199,242,82,0.06)", borderColor: "rgba(199,242,82,0.3)" }}>
+              <div className="rounded-xl border p-3 max-[359px]:p-2.5 text-center" style={{ backgroundColor: CTA_06, borderColor: CTA_30 }}>
                 <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
                   Correct
                 </p>
@@ -141,7 +141,7 @@ export default function AnalysisPage() {
             {/* Explanation */}
             <div className="px-4 max-[359px]:px-3 py-4 max-[359px]:py-3.5">
               {question.explanation ? (
-                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "rgba(199,242,82,0.2)", background: "rgba(199,242,82,0.04)" }}>
+                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: CTA_20, background: CTA_04 }}>
                   <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-2">
                     <Lightbulb size={12} /> Why the answer is correct
                   </p>

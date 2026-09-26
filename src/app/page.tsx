@@ -1,6 +1,7 @@
 "use client";
 
 import { RankSignal } from "@/components/landing/rank-signal";
+import { LIME_BRIGHT } from "@/lib/theme-tokens";
 import { ExamPortals } from "@/components/landing/exam-portals";
 import { AchievementWall } from "@/components/landing/achievement-wall";
 import { ConstellationCoach } from "@/components/landing/constellation-coach";
@@ -18,11 +19,11 @@ export default function Home() {
           <polygon
             points="12,2 20,7 20,17 12,22 4,17 4,7"
             fill="none"
-            stroke="#C8FF5A"
+            stroke={LIME_BRIGHT}
             strokeWidth="1.5"
             opacity="0.6"
           />
-          <circle cx="12" cy="12" r="2" fill="#C8FF5A" opacity="0.4" />
+          <circle cx="12" cy="12" r="2" fill={LIME_BRIGHT} opacity="0.4" />
         </svg>
         <span className="font-display text-micro tracking-[0.3em] text-primary/60 font-semibold">
           EXAM ARENA

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef } from "react";
+import { BG_2, FOREST_2, LIME, LIME_LIGHT, LIME_MID_2, PANEL_2 } from "@/lib/theme-tokens";
+import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
@@ -17,7 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ACCENT = "#C8FF4D";
+const ACCENT = LIME;
 
 type Persona = "parent" | "student";
 
@@ -130,6 +132,7 @@ export function FamilyIntro({
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
+  const theme = useThemeStore((s) => s.theme);
 
   useLayoutEffect(() => {
     if (preloaded) return;
@@ -169,9 +172,11 @@ export function FamilyIntro({
   return createPortal(
     <div
       ref={overlayRef}
+      data-theme-scope
       className={cn(
         "fixed inset-0 z-[210] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
+        theme === "light" && "light",
       )}
       role="dialog"
       aria-modal="true"
@@ -181,7 +186,7 @@ export function FamilyIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: "radial-gradient(120% 90% at 50% 0%, #10150e 0%, #0a0c09 46%, #070906 100%)",
+          background: `radial-gradient(120% 90% at 50% 0%, ${PANEL_2} 0%, ${BG_2} 46%, ${FOREST_2} 100%)`,
         }}
       >
         <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[var(--lime-14)]" />
@@ -212,7 +217,7 @@ export function FamilyIntro({
               <span
                 className="text-transparent"
                 style={{
-                  background: "linear-gradient(90deg,#C8FF4D,#9be66a)",
+                  background: `linear-gradient(90deg,${LIME},${LIME_MID_2})`,
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                 }}
@@ -328,7 +333,7 @@ export function FamilyIntro({
               onClick={() => exit(onDone)}
               className="mt-4 flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
               style={{
-                background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+                background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                 boxShadow:
                   "0 10px 34px var(--lime-mid-28), 0 1px 0 var(--glass-25) inset",
               }}

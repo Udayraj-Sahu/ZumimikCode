@@ -11,7 +11,7 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useAchievements } from "@/hooks/queries/use-achievements";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { AchievementItem, AchievementTier, AchievementCategory } from "@/lib/types/achievements";
-import { GLASS_BG } from "@/lib/theme-tokens";
+import { AMBER, AMBER_15, BRONZE, BRONZE_15, CTA_15, CTA_LIME, GLASS_02, GLASS_03, GLASS_BG, SLATE_40, SLATE_60, SLATE_SOFT, SLATE_SOFT_15 } from "@/lib/theme-tokens";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Flame, Target, Zap, Swords, Medal, Trophy, LayoutGrid, Timer, Users,
@@ -26,10 +26,10 @@ const CATEGORIES: { id: AchievementCategory | "all"; label: string }[] = [
 ];
 
 const TIER_STYLES: Record<AchievementTier, { ring: string; ringTrack: string; label: string }> = {
-  bronze:   { ring: "#CD7F32", ringTrack: "rgba(205,127,50,0.15)", label: "Bronze" },
-  silver:   { ring: "#94A3B8", ringTrack: "rgba(148,163,184,0.15)", label: "Silver" },
-  gold:     { ring: "#F59E0B", ringTrack: "rgba(245,158,11,0.15)", label: "Gold" },
-  platinum: { ring: "#C7F252", ringTrack: "rgba(199,242,82,0.15)", label: "Platinum" },
+  bronze:   { ring: BRONZE, ringTrack: BRONZE_15, label: "Bronze" },
+  silver:   { ring: SLATE_SOFT, ringTrack: SLATE_SOFT_15, label: "Silver" },
+  gold:     { ring: AMBER, ringTrack: AMBER_15, label: "Gold" },
+  platinum: { ring: CTA_LIME, ringTrack: CTA_15, label: "Platinum" },
 };
 
 /* ------------------------------------------------------------------ */
@@ -105,7 +105,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
           : "border-dashed border-white/[0.08] opacity-60",
       )}
       style={{
-        backgroundColor: item.unlocked ? GLASS_BG : "rgba(255,255,255,0.02)",
+        backgroundColor: item.unlocked ? GLASS_BG : GLASS_02,
       }}
     >
       {isRecent && (
@@ -134,12 +134,12 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
           <div
             className="grid size-8 place-items-center rounded-lg"
             style={{
-              backgroundColor: item.unlocked ? `${tier.ring}18` : "rgba(255,255,255,0.04)",
+              backgroundColor: item.unlocked ? `${tier.ring}18` : GLASS_BG,
             }}
           >
             <Icon
               size={16}
-              style={{ color: item.unlocked ? tier.ring : "rgba(107,114,128,0.4)" }}
+              style={{ color: item.unlocked ? tier.ring : SLATE_40 }}
             />
           </div>
         </div>
@@ -148,7 +148,7 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
       {/* Label */}
       <p
         className="text-[12px] font-bold tracking-wide"
-        style={{ color: item.unlocked ? "var(--foreground)" : "rgba(107,114,128,0.6)" }}
+        style={{ color: item.unlocked ? "var(--foreground)" : SLATE_60 }}
       >
         {item.label}
       </p>
@@ -162,8 +162,8 @@ function AchievementCard({ item, index }: { item: AchievementItem; index: number
       <span
         className="mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
         style={{
-          color: item.unlocked ? tier.ring : "rgba(107,114,128,0.4)",
-          backgroundColor: item.unlocked ? `${tier.ring}12` : "rgba(255,255,255,0.03)",
+          color: item.unlocked ? tier.ring : SLATE_40,
+          backgroundColor: item.unlocked ? `${tier.ring}12` : GLASS_03,
         }}
       >
         {tier.label}

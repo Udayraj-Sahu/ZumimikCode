@@ -1,4 +1,5 @@
 import type { MockPaper } from "@/lib/types/mock-exam";
+import { CYAN, EMERALD, LIME, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
 
 function buildPaper(
   base: Omit<MockPaper, "totalQuestions" | "durationMinutes">,
@@ -23,7 +24,7 @@ const CAT_PAPERS: MockPaper[] = [
       { id: "qa", label: "QA", topic: "qa", questions: 22, minutes: 40 },
     ],
     difficulty: "Moderate",
-    accent: "#A78BFA",
+    accent: VIOLET_PURPLE,
   }),
   buildPaper({
     id: "cat-2024-slot2",
@@ -37,7 +38,7 @@ const CAT_PAPERS: MockPaper[] = [
       { id: "qa", label: "QA", topic: "qa", questions: 22, minutes: 40 },
     ],
     difficulty: "Moderate",
-    accent: "#34D399",
+    accent: EMERALD,
   }),
   buildPaper({
     id: "cat-section-quant",
@@ -47,7 +48,7 @@ const CAT_PAPERS: MockPaper[] = [
     description: "A timed Quant-only drill to sharpen your QA speed.",
     sections: [{ id: "qa", label: "QA", topic: "qa", questions: 20, minutes: 30 }],
     difficulty: "Advanced",
-    accent: "#FBBF24",
+    accent: YELLOW,
   }),
 ];
 
@@ -64,7 +65,7 @@ const GMAT_PAPERS: MockPaper[] = [
       { id: "di", label: "Data Insights", topic: "ds", questions: 20, minutes: 45 },
     ],
     difficulty: "Moderate",
-    accent: "#34D399",
+    accent: EMERALD,
   }),
   buildPaper({
     id: "gmat-quant-drill",
@@ -77,7 +78,7 @@ const GMAT_PAPERS: MockPaper[] = [
       { id: "ds", label: "Data Sufficiency", topic: "ds", questions: 10, minutes: 20 },
     ],
     difficulty: "Advanced",
-    accent: "#FBBF24",
+    accent: YELLOW,
   }),
 ];
 
@@ -95,7 +96,7 @@ const GRE_PAPERS: MockPaper[] = [
       { id: "v2", label: "Verbal 2", topic: "tc", questions: 20, minutes: 30 },
     ],
     difficulty: "Moderate",
-    accent: "#A78BFA",
+    accent: VIOLET_PURPLE,
   }),
 ];
 
@@ -112,7 +113,7 @@ const BANKING_PAPERS: MockPaper[] = [
       { id: "english", label: "English", topic: "english", questions: 20, minutes: 20 },
     ],
     difficulty: "Moderate",
-    accent: "#34D399",
+    accent: EMERALD,
   }),
 ];
 
@@ -130,7 +131,7 @@ const RANDOM_PAPERS: MockPaper[] = [
       { id: "eng", label: "English", topic: "english", questions: 5, minutes: 5 },
     ],
     difficulty: "Mixed",
-    accent: "#C8FF4D",
+    accent: LIME,
   }),
   buildPaper({
     id: "random-quick-1",
@@ -145,7 +146,7 @@ const RANDOM_PAPERS: MockPaper[] = [
       { id: "num", label: "Numerical", topic: "numerical", questions: 4, minutes: 6 },
     ],
     difficulty: "Mixed",
-    accent: "#22D3EE",
+    accent: CYAN,
   }),
 ];
 

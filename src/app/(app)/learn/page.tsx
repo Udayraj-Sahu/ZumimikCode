@@ -35,7 +35,7 @@ import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { BG, CYAN, EMERALD, GLASS_02, GLASS_45, GLASS_50, GLASS_55, GLASS_BG, GLASS_BORDER, LIME, LIME_MID, LIME_PALE_2, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
 
 const tabVariants: Variants = {
   initial: { opacity: 0, y: 8, scale: 0.995 },
@@ -79,7 +79,7 @@ const TOPIC_ICONS: Record<string, LucideIcon> = {
   "Computer Knowledge": Pentagon,
 };
 
-const TOPIC_COLORS = ["#34D399", "#22D3EE", "#A78BFA", "#FBBF24", "#FB7185"];
+const TOPIC_COLORS = [EMERALD, CYAN, VIOLET_PURPLE, YELLOW, ROSE];
 
 function getInsight(topics: { name: string; value: number }[]): string {
   if (topics.length === 0) return "Start a sprint to see your Sensei Insight.";
@@ -109,24 +109,24 @@ const MODES: {
     id: "explore",
     label: "Topic Explorer",
     Icon: Grid3x3,
-    color: "#34D399",
-    accent: "#34D399",
+    color: EMERALD,
+    accent: EMERALD,
     subtitle: "Browse topics and track your mastery",
   },
   {
     id: "adaptive",
     label: "Adaptive Learning",
     Icon: Brain,
-    color: "#A78BFA",
-    accent: "#A78BFA",
+    color: VIOLET_PURPLE,
+    accent: VIOLET_PURPLE,
     subtitle: "Sprints tuned to your skill level",
   },
   {
     id: "mock",
     label: "Mock",
     Icon: ClipboardList,
-    color: "#FBBF24",
-    accent: "#FBBF24",
+    color: YELLOW,
+    accent: YELLOW,
     subtitle: "Full-length, exam-style timed tests",
   },
 ];
@@ -181,7 +181,7 @@ function LearnPageContent() {
     return { accuracy: "91%", questions: "2,845", percentile: "78%ile", speed: "42s" };
   }, [prepExams.length]);
 
-  const adaptiveAccent = "#C8FF4D";
+  const adaptiveAccent = LIME;
 
   const todayLabel = useMemo(
     () =>
@@ -300,7 +300,7 @@ function LearnPageContent() {
                               "0 8px 18px var(--black-40), 0 2px 4px var(--black-30), inset 0 1px 0 var(--glass-35), inset 0 -2px 6px var(--black-35)",
                           }
                         : {
-                            background: "rgba(255,255,255,0.02)",
+                            background: GLASS_02,
                             boxShadow:
                               "inset 0 2px 4px var(--black-50), inset 0 -1px 1px var(--glass-bg)",
                           }
@@ -314,7 +314,7 @@ function LearnPageContent() {
                       <m.Icon
                         size={16}
                         strokeWidth={2.2}
-                        style={{ color: isActive ? "var(--accent)" : "rgba(255,255,255,0.45)" }}
+                        style={{ color: isActive ? "var(--accent)" : GLASS_45 }}
                       />
                     </motion.span>
                     <span
@@ -326,7 +326,7 @@ function LearnPageContent() {
                               textShadow: "0 1px 1px var(--black-60)",
                             }
                           : {
-                              color: "rgba(255,255,255,0.5)",
+                              color: GLASS_50,
                               textShadow: "0 1px 2px var(--black-80)",
                             }
                       }
@@ -507,7 +507,7 @@ function LearnPageContent() {
                 {/* Resume Protocol — above Sensei Insight */}
                 <ResumeProtocolCard
                   domain={activeDomain}
-                  accent="#34D399"
+                  accent={EMERALD}
                   kind="sprint"
                   className="mt-5 px-0"
                 />
@@ -600,8 +600,8 @@ function LearnPageContent() {
                   <div
                     className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     style={{
-                      borderColor: "rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.04)",
+                      borderColor: GLASS_BORDER,
+                      background: GLASS_BG,
                     }}
                   >
                     {prepExams.map((id) => {
@@ -619,7 +619,7 @@ function LearnPageContent() {
                             }
                           }}
                           className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 max-[359px]:px-2 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                          style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                          style={{ color: active ? BG : GLASS_55 }}
                         >
                           {active && (
                             <motion.div
@@ -627,7 +627,7 @@ function LearnPageContent() {
                               transition={{ type: "spring", stiffness: 400, damping: 32 }}
                               className="absolute inset-0 rounded-2xl"
                               style={{
-                                background: "linear-gradient(180deg, #d7ff7e, #a8e62e)",
+                                background: `linear-gradient(180deg, ${LIME_PALE_2}, ${LIME_MID})`,
                                 boxShadow: "0 6px 16px -4px var(--cta-40)",
                               }}
                             />
@@ -648,8 +648,8 @@ function LearnPageContent() {
                               <span
                                 className="relative text-[7px] font-black tracking-[0.14em] px-1.5 py-0.5 rounded-full"
                                 style={{
-                                  background: "rgba(255,255,255,0.08)",
-                                  color: "rgba(255,255,255,0.45)",
+                                  background: GLASS_BORDER,
+                                  color: GLASS_45,
                                 }}
                               >
                                 PRO
@@ -747,8 +747,8 @@ function LearnPageContent() {
                   <div
                     className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     style={{
-                      borderColor: "rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.04)",
+                      borderColor: GLASS_BORDER,
+                      background: GLASS_BG,
                     }}
                   >
                     {prepExams.map((id) => {
@@ -766,7 +766,7 @@ function LearnPageContent() {
                             }
                           }}
                           className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 max-[359px]:px-2 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                          style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                          style={{ color: active ? BG : GLASS_55 }}
                         >
                           {active && (
                             <motion.div
@@ -774,7 +774,7 @@ function LearnPageContent() {
                               transition={{ type: "spring", stiffness: 400, damping: 32 }}
                               className="absolute inset-0 rounded-2xl"
                               style={{
-                                background: "linear-gradient(180deg, #d7ff7e, #a8e62e)",
+                                background: `linear-gradient(180deg, ${LIME_PALE_2}, ${LIME_MID})`,
                                 boxShadow: "0 6px 16px -4px var(--cta-40)",
                               }}
                             />
@@ -795,8 +795,8 @@ function LearnPageContent() {
                               <span
                                 className="relative text-[7px] font-black tracking-[0.14em] px-1.5 py-0.5 rounded-full"
                                 style={{
-                                  background: "rgba(255,255,255,0.08)",
-                                  color: "rgba(255,255,255,0.45)",
+                                  background: GLASS_BORDER,
+                                  color: GLASS_45,
                                 }}
                               >
                                 PRO
@@ -816,13 +816,13 @@ function LearnPageContent() {
                 onToggle={() => setStatsCollapsed((v) => !v)}
                 hasPrep={prepExams.length > 0}
                 stats={mockStats}
-                color="#C8FF4D"
+                color={LIME}
               />
 
               {/* Mock resume — shows only when a mock is in progress */}
               <ResumeProtocolCard
                 domain={mockExamDomain}
-                accent="#C8FF4D"
+                accent={LIME}
                 kind="mock"
                 className="mt-4 px-0"
               />

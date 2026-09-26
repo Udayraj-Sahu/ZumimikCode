@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { BG_BLACK } from "@/lib/theme-tokens";
 import { usePathname } from "next/navigation";
 import type { DriveStep } from "driver.js";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -109,7 +110,7 @@ export function Walkthrough() {
         config: {
           animate: true,
           duration: 350,
-          overlayColor: "#040604",
+          overlayColor: BG_BLACK,
           overlayOpacity: 0.72,
           smoothScroll: true,
           allowScroll: false,

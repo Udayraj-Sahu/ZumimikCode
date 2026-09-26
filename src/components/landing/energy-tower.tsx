@@ -1,15 +1,16 @@
 "use client";
 
 import { useRef } from "react";
+import { BLUE, BLUE_LIGHT, LIME_BRIGHT, LIME_BRIGHT_03, MUTED, NEAR_WHITE_BLACK, WHITE } from "@/lib/theme-tokens";
 import { motion, useScroll, useTransform } from "motion/react";
 import { SectionHeading } from "@/components/landing/section-heading";
 
 const RANKS = [
-  { rank: "Aspirant", range: "Starting out", icon: "○", color: "#8B8B8B", count: "840K" },
-  { rank: "Challenger", range: "Top 40%", icon: "◇", color: "#3B82F6", count: "420K" },
-  { rank: "Warrior", range: "Top 20%", icon: "◈", color: "#60A5FA", count: "184K" },
-  { rank: "Elite", range: "Top 5%", icon: "◉", color: "#ffffff", count: "62K" },
-  { rank: "Legend", range: "Top 1%", icon: "✦", color: "#C8FF5A", count: "8.4K" },
+  { rank: "Aspirant", range: "Starting out", icon: "○", color: MUTED, count: "840K" },
+  { rank: "Challenger", range: "Top 40%", icon: "◇", color: BLUE, count: "420K" },
+  { rank: "Warrior", range: "Top 20%", icon: "◈", color: BLUE_LIGHT, count: "184K" },
+  { rank: "Elite", range: "Top 5%", icon: "◉", color: WHITE, count: "62K" },
+  { rank: "Legend", range: "Top 1%", icon: "✦", color: LIME_BRIGHT, count: "8.4K" },
 ];
 
 export function EnergyTower() {
@@ -29,7 +30,7 @@ export function EnergyTower() {
             <div className="absolute inset-x-0 top-0 bottom-0 rounded bg-secondary" />
             <motion.div className="absolute inset-x-0 bottom-0 rounded" style={{
               height: energyHeight,
-              background: "linear-gradient(to top, #C8FF5A, #3B82F6, #1a1a1a)",
+              background: `linear-gradient(to top, ${LIME_BRIGHT}, ${BLUE}, ${NEAR_WHITE_BLACK})`,
               boxShadow: "0 0 20px var(--lime-bright-40)"
             }} />
             {RANKS.map((_, i) => (
@@ -60,7 +61,7 @@ export function EnergyTower() {
                 </div>
                 {i === RANKS.length - 1 && (
                   <motion.div className="absolute inset-0 pointer-events-none rounded"
-                    style={{ background: "rgba(200,255,90,0.03)", border: "1px solid var(--lime-bright-20)" }}
+                    style={{ background: LIME_BRIGHT_03, border: "1px solid var(--lime-bright-20)" }}
                     animate={{ opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 2.5, repeat: Infinity }} />
                 )}

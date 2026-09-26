@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CYAN, CYAN_06, CYAN_14, CYAN_22, EMERALD, SKY } from "@/lib/theme-tokens";
 import { Copy, Share2, Check, Users2 } from "lucide-react";
 import { Capacitor } from "@capacitor/core";
 import { Share } from "@capacitor/share";
@@ -8,7 +9,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useReferralStore } from "@/stores/referral-store";
 import { cn } from "@/lib/utils";
 
-const ACCENT = "#22D3EE";
+const ACCENT = CYAN;
 
 export function InviteCard() {
   const firstName = useOnboardingStore((s) => s.firstName);
@@ -54,7 +55,7 @@ export function InviteCard() {
   return (
     <div
       className="relative overflow-hidden rounded-3xl border p-5 h-full"
-      style={{ borderColor: "rgba(34,211,238,0.14)", background: "linear-gradient(135deg, var(--cyan-05) 0%, var(--glass-02) 60%)" }}
+      style={{ borderColor: CYAN_14, background: "linear-gradient(135deg, var(--cyan-05) 0%, var(--glass-02) 60%)" }}
     >
       <div className="absolute -top-12 -right-12 size-32 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cyan-45), transparent 70%)" }} />
 
@@ -75,14 +76,14 @@ export function InviteCard() {
       </div>
 
       <div className="relative mt-4 flex items-center gap-2">
-        <div className="flex-1 rounded-xl border px-4 py-3 text-center" style={{ borderColor: "rgba(34,211,238,0.22)", background: "rgba(34,211,238,0.06)" }}>
+        <div className="flex-1 rounded-xl border px-4 py-3 text-center" style={{ borderColor: CYAN_22, background: CYAN_06 }}>
           <span className="text-[16px] font-extrabold tracking-[0.14em] text-foreground select-all">{code ?? "—"}</span>
         </div>
         <button
           type="button"
           onClick={handleCopy}
           className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
-          style={{ background: copied ? "#34D399" : `linear-gradient(90deg, ${ACCENT}, #06b6d4)` }}
+          style={{ background: copied ? EMERALD : `linear-gradient(90deg, ${ACCENT}, ${SKY})` }}
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
           {copied ? "Copied" : "Copy"}

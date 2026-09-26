@@ -1,5 +1,6 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
+import { CTA_LIME, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_BORDER, LIME_DARK, RED_SOFT_12 } from "@/lib/theme-tokens";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -92,7 +93,7 @@ export default function ScanToLoginPage() {
           </p>
         </div>
 
-        <div className="mt-6 rounded-3xl border backdrop-blur-xl p-6 max-[359px]:p-4" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(180deg, var(--glass-bg), var(--glass-01))" }}>
+        <div className="mt-6 rounded-3xl border backdrop-blur-xl p-6 max-[359px]:p-4" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(180deg, var(--glass-bg), var(--glass-01))" }}>
           {step === "code" && (
             <>
               <div className="flex items-center gap-3 max-[359px]:gap-2">
@@ -131,7 +132,7 @@ export default function ScanToLoginPage() {
                 onClick={handleScan}
                 disabled={dirty || isBusy}
                 className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
-                style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
               >
                 {scan.isPending ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
                 {scan.isPending ? "Checking code…" : "Continue"}
@@ -142,7 +143,7 @@ export default function ScanToLoginPage() {
           {step === "scanned" && (
             <>
               <div className="flex flex-col items-center py-4 text-center">
-                <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(52,211,153,0.12)" }}>
+                <div className="grid size-14 place-items-center rounded-2xl" style={{ background: EMERALD_12 }}>
                   <Loader2 size={24} className="animate-spin text-[var(--emerald)]" />
                 </div>
                 <p className="mt-3 text-[16px] font-bold text-foreground leading-tight">Code found</p>
@@ -175,7 +176,7 @@ export default function ScanToLoginPage() {
                 onClick={handleApprove}
                 disabled={isBusy}
                 className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
-                style={{ background: "linear-gradient(90deg, #34D399, #10B981)" }}
+                style={{ background: `linear-gradient(90deg, ${EMERALD}, ${EMERALD_SOLID})` }}
               >
                 {approve.isPending ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />}
                 {approve.isPending ? "Linking…" : "Confirm login"}
@@ -193,7 +194,7 @@ export default function ScanToLoginPage() {
 
           {step === "approved" && (
             <div className="flex flex-col items-center py-6 text-center">
-              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(52,211,153,0.12)" }}>
+              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: EMERALD_12 }}>
                 <Check size={24} className="text-[var(--emerald)]" />
               </div>
               <p className="mt-3 text-[16px] font-bold text-foreground leading-tight">Device linked</p>
@@ -204,7 +205,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={() => router.replace("/dashboard")}
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
-                style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
               >
                 Done <ArrowRight size={15} />
               </button>
@@ -213,7 +214,7 @@ export default function ScanToLoginPage() {
 
           {step === "error" && (
             <div className="flex flex-col items-center py-6 text-center">
-              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: "rgba(255,92,92,0.12)" }}>
+              <div className="grid size-14 place-items-center rounded-2xl" style={{ background: RED_SOFT_12 }}>
                 <AlertTriangle size={24} className="text-[var(--red-soft)]" />
               </div>
               <p className="mt-3 text-[15px] font-bold text-foreground leading-tight">Link failed</p>
@@ -222,7 +223,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleCancel}
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
-                style={{ background: "linear-gradient(90deg, #C7F252, #9fd42f)" }}
+                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
               >
                 Try again <ArrowRight size={15} />
               </button>

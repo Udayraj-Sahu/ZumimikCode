@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { GLASS_03, GLASS_06 } from "@/lib/theme-tokens";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { X, Calendar, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useThemeStore } from "@/stores/theme-store";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -36,6 +38,7 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
   const dialogRef = useRef<HTMLDivElement>(null);
 
   const [error, setError] = useState<string | null>(null);
+  const theme = useThemeStore((s) => s.theme);
 
   useEffect(() => {
     if (!open) return;
@@ -93,7 +96,8 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
   return createPortal(
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm"
+      data-theme-scope
+      className={cn("fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm", theme === "light" && "light")}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -226,7 +230,7 @@ function ScrollColumn({
         <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-card to-transparent z-10 pointer-events-none" />
         <div
           className="absolute left-1 right-1 h-10 rounded-xl border z-0 pointer-events-none"
-          style={{ top: PAD * ITEM_H, background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.06)" }}
+          style={{ top: PAD * ITEM_H, background: GLASS_03, borderColor: GLASS_06 }}
         />
         <div
           ref={containerRef}

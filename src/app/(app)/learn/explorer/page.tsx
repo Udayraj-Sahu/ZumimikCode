@@ -1,5 +1,6 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
+import { BG, CTA_35, CYAN, CYAN_14, CYAN_18, CYAN_85, GLASS_02, GLASS_03, GLASS_07, GLASS_50, GLASS_55, GLASS_BG, GLASS_BORDER, LIME_MID, LIME_PALE_2, VIOLET_DEEP, VIOLET_DEEP_14, VIOLET_DEEP_18, VIOLET_DEEP_85 } from "@/lib/theme-tokens";
 
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -134,7 +135,7 @@ function ExplorerContent() {
         </div>
 
         <div className="flex items-center justify-center pt-14 pb-10">
-          <div className="relative w-full max-w-sm rounded-3xl border border-white/[0.08] backdrop-blur-xl px-6 py-8 max-[359px]:p-4" style={{ background: "rgba(255,255,255,0.04)" }}>
+          <div className="relative w-full max-w-sm rounded-3xl border border-white/[0.08] backdrop-blur-xl px-6 py-8 max-[359px]:p-4" style={{ background: GLASS_BG }}>
             <div className="absolute -top-12 -right-12 size-40 rounded-full opacity-[0.07] pointer-events-none" style={{ background: "radial-gradient(circle, var(--primary), transparent 70%)" }} />
             <div className="flex flex-col items-center gap-4 text-center">
               <span className="relative grid size-14 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
@@ -193,7 +194,7 @@ function ExplorerContent() {
         <div ref={animateSection} data-section-index={0} className="relative mt-7">
           <div
             className="relative flex gap-1 p-1 overflow-x-auto rounded-3xl border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.04)" }}
+            style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
           >
             {prepExams.map((id) => {
               const active = activeDomain === id;
@@ -203,14 +204,14 @@ function ExplorerContent() {
                   type="button"
                   onClick={() => handleExamSwitch(id)}
                   className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 max-[359px]:px-2 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  style={{ color: active ? "#0A0C0A" : "rgba(255,255,255,0.55)" }}
+                  style={{ color: active ? BG : GLASS_55 }}
                 >
                   {active && (
                     <motion.div
                       layoutId="explorer-exam-slider"
                       transition={{ type: "spring", stiffness: 400, damping: 32 }}
                       className="absolute inset-0 rounded-2xl"
-                      style={{ background: "linear-gradient(180deg, #d7ff7e, #a8e62e)", boxShadow: "0 6px 16px -4px var(--cta-40)" }}
+                      style={{ background: `linear-gradient(180deg, ${LIME_PALE_2}, ${LIME_MID})`, boxShadow: "0 6px 16px -4px var(--cta-40)" }}
                     />
                   )}
                   <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 var(--glass-35)" : "none" }}>
@@ -251,16 +252,16 @@ function ExplorerContent() {
                   style={
                     active
                       ? {
-                          borderColor: "rgba(199,242,82,0.35)",
+                          borderColor: CTA_35,
                           background: "linear-gradient(180deg, var(--cta-18), var(--cta-05))",
                           color: "var(--primary)",
                           boxShadow:
                             "0 8px 18px var(--black-35), inset 0 1px 0 var(--glass-30), inset 0 -2px 6px var(--black-35)",
                         }
                       : {
-                          borderColor: "rgba(255,255,255,0.07)",
-                          background: "rgba(255,255,255,0.02)",
-                          color: "rgba(255,255,255,0.5)",
+                          borderColor: GLASS_07,
+                          background: GLASS_02,
+                          color: GLASS_50,
                           boxShadow: "inset 0 2px 4px var(--black-40)",
                         }
                   }
@@ -287,35 +288,35 @@ function ExplorerContent() {
         <div ref={animateSection} data-section-index={2} className="mt-6 grid grid-cols-2 gap-3 max-[359px]:gap-2">
           <div
             className="relative overflow-hidden rounded-2xl border backdrop-blur-xl px-4 py-4 max-[359px]:p-3"
-            style={{ borderColor: "rgba(34,211,238,0.18)", background: "rgba(255,255,255,0.03)" }}
+            style={{ borderColor: CYAN_18, background: GLASS_03 }}
           >
-            <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, #22D3EE, transparent 70%)" }} />
+            <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: `radial-gradient(circle, ${CYAN}, transparent 70%)` }} />
             <div className="relative flex items-center justify-between">
-              <span className="grid size-9 place-items-center rounded-xl" style={{ background: "rgba(34,211,238,0.14)" }}>
+              <span className="grid size-9 place-items-center rounded-xl" style={{ background: CYAN_14 }}>
                 <Layers size={15} className="text-[var(--cyan)]" />
               </span>
               <span className="text-[26px] font-black leading-none tracking-[-0.02em] text-[var(--cyan)]">
                 {conquest.topics}
               </span>
             </div>
-            <p className="relative mt-3 text-micro font-semibold tracking-[0.14em] uppercase" style={{ color: "rgba(34,211,238,0.85)" }}>
+            <p className="relative mt-3 text-micro font-semibold tracking-[0.14em] uppercase" style={{ color: CYAN_85 }}>
               Topics to conquer
             </p>
           </div>
           <div
             className="relative overflow-hidden rounded-2xl border backdrop-blur-xl px-4 py-4 max-[359px]:p-3"
-            style={{ borderColor: "rgba(139,92,246,0.18)", background: "rgba(255,255,255,0.03)" }}
+            style={{ borderColor: VIOLET_DEEP_18, background: GLASS_03 }}
           >
-            <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: "radial-gradient(circle, #8B5CF6, transparent 70%)" }} />
+            <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-[0.12]" style={{ background: `radial-gradient(circle, ${VIOLET_DEEP}, transparent 70%)` }} />
             <div className="relative flex items-center justify-between">
-              <span className="grid size-9 place-items-center rounded-xl" style={{ background: "rgba(139,92,246,0.14)" }}>
+              <span className="grid size-9 place-items-center rounded-xl" style={{ background: VIOLET_DEEP_14 }}>
                 <ClipboardList size={15} className="text-[var(--violet-deep)]" />
               </span>
               <span className="text-[26px] font-black leading-none tracking-[-0.02em] text-[var(--violet-deep)]">
                 {conquest.practiceSets}
               </span>
             </div>
-            <p className="relative mt-3 text-micro font-semibold tracking-[0.14em] uppercase" style={{ color: "rgba(139,92,246,0.85)" }}>
+            <p className="relative mt-3 text-micro font-semibold tracking-[0.14em] uppercase" style={{ color: VIOLET_DEEP_85 }}>
               Practice sets to conquer
             </p>
           </div>

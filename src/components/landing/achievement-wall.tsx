@@ -1,4 +1,5 @@
 import { WallRegion } from "@/components/landing/wall-region";
+import { AMBER, GLASS_05, LIME_BRIGHT, LIME_BRIGHT_40, RED } from "@/lib/theme-tokens";
 import { Achievement } from "@/components/landing/achievement";
 import { AIScanLine } from "@/components/landing/ai-scan-line";
 
@@ -12,24 +13,24 @@ const ACHIEVEMENTS = [
 ];
 
 const GAP_INSIGHTS = [
-  { color: "#EF4444", label: "Weak Topic Found", desc: "Chapters requiring immediate attention" },
-  { color: "#C8FF5A", label: "High Potential Chapter", desc: "Quick improvement opportunity identified" },
-  { color: "#F59E0B", label: "Revision Needed", desc: "Decay detected in covered chapters" },
-  { color: "#C8FF5A", label: "Rank Opportunity", desc: "High-weightage, low-competition zone" },
+  { color: RED, label: "Weak Topic Found", desc: "Chapters requiring immediate attention" },
+  { color: LIME_BRIGHT, label: "High Potential Chapter", desc: "Quick improvement opportunity identified" },
+  { color: AMBER, label: "Revision Needed", desc: "Decay detected in covered chapters" },
+  { color: LIME_BRIGHT, label: "Rank Opportunity", desc: "High-weightage, low-competition zone" },
 ];
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-4 text-muted-foreground font-sans"
       style={{ fontSize: "clamp(9px, 1.2vw, 11px)", letterSpacing: "0.25em", textTransform: "uppercase" }}>
-      <div className="w-6 h-px" style={{ background: "rgba(200,255,90,0.4)" }} />
+      <div className="w-6 h-px" style={{ background: LIME_BRIGHT_40 }} />
       {children}
     </div>
   );
 }
 
 function Divider() {
-  return <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.05)" }} />;
+  return <div className="w-full h-px" style={{ background: GLASS_05 }} />;
 }
 
 export function AchievementWall() {

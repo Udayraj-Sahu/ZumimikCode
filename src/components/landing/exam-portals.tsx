@@ -1,21 +1,22 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { AMBER, AMBER_30, BLUE, DEEP_BLACK, GLASS_30, LIME_BRIGHT, LIME_BRIGHT_30, MUTED, RED, RED_30, SOLID_BLACK, WHITE } from "@/lib/theme-tokens";
 import { motion, AnimatePresence } from "motion/react";
 import { SectionHeading } from "@/components/landing/section-heading";
 
 const LIVE_EXAMS = [
-  { id: "gmat", name: "GMAT", full: "Graduate Management Admission Test", difficulty: 91, students: "2.1M", topRank: "Priya Sharma — AIR 7", color: "#C8FF5A", glow: "rgba(200,255,90,0.3)", symbol: "⊕" },
-  { id: "cat", name: "CAT", full: "Common Admission Test", difficulty: 97, students: "900K", topRank: "Rohan Das — Rank 2", color: "#F59E0B", glow: "rgba(245,158,11,0.3)", symbol: "◎" },
-  { id: "gre", name: "GRE", full: "Graduate Record Examination", difficulty: 78, students: "3.4M", topRank: "Kavya Nair — Score 198", color: "#EF4444", glow: "rgba(239,68,68,0.3)", symbol: "◆" },
-  { id: "banking", name: "Banking", full: "IBPS / SBI / RBI", difficulty: 82, students: "1.8M", topRank: "Amit Singh — Score 312", color: "#ffffff", glow: "rgba(255,255,255,0.3)", symbol: "⬡" },
+  { id: "gmat", name: "GMAT", full: "Graduate Management Admission Test", difficulty: 91, students: "2.1M", topRank: "Priya Sharma — AIR 7", color: LIME_BRIGHT, glow: LIME_BRIGHT_30, symbol: "⊕" },
+  { id: "cat", name: "CAT", full: "Common Admission Test", difficulty: 97, students: "900K", topRank: "Rohan Das — Rank 2", color: AMBER, glow: AMBER_30, symbol: "◎" },
+  { id: "gre", name: "GRE", full: "Graduate Record Examination", difficulty: 78, students: "3.4M", topRank: "Kavya Nair — Score 198", color: RED, glow: RED_30, symbol: "◆" },
+  { id: "banking", name: "Banking", full: "IBPS / SBI / RBI", difficulty: 82, students: "1.8M", topRank: "Amit Singh — Score 312", color: WHITE, glow: GLASS_30, symbol: "⬡" },
 ];
 
 const COMING_EXAMS = [
-  { id: "jee", name: "JEE", full: "Joint Entrance Examination", color: "#3B82F6", glow: "rgba(200,255,90,0.3)", symbol: "∑" },
-  { id: "neet", name: "NEET", full: "National Eligibility cum Entrance Test", color: "#C8FF5A", glow: "rgba(200,255,90,0.3)", symbol: "⊕" },
-  { id: "upsc", name: "UPSC", full: "Union Public Service Commission", color: "#F59E0B", glow: "rgba(245,158,11,0.3)", symbol: "◎" },
-  { id: "ssc", name: "SSC", full: "Staff Selection Commission", color: "#EF4444", glow: "rgba(239,68,68,0.3)", symbol: "◆" },
+  { id: "jee", name: "JEE", full: "Joint Entrance Examination", color: BLUE, glow: LIME_BRIGHT_30, symbol: "∑" },
+  { id: "neet", name: "NEET", full: "National Eligibility cum Entrance Test", color: LIME_BRIGHT, glow: LIME_BRIGHT_30, symbol: "⊕" },
+  { id: "upsc", name: "UPSC", full: "Union Public Service Commission", color: AMBER, glow: AMBER_30, symbol: "◎" },
+  { id: "ssc", name: "SSC", full: "Staff Selection Commission", color: RED, glow: RED_30, symbol: "◆" },
 ];
 
 function LivePortal({ exam }: { exam: (typeof LIVE_EXAMS)[0] }) {
@@ -58,7 +59,7 @@ function LivePortal({ exam }: { exam: (typeof LIVE_EXAMS)[0] }) {
           </text>
         </svg>
         <p className="mt-3 tracking-widest font-display"
-          style={{ fontWeight: 700, fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)", color: hovered ? exam.color : "#ffffff", transition: "color 0.3s", letterSpacing: "0.12em" }}>
+          style={{ fontWeight: 700, fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)", color: hovered ? exam.color : WHITE, transition: "color 0.3s", letterSpacing: "0.12em" }}>
           {exam.name}
         </p>
         <AnimatePresence>
@@ -72,9 +73,9 @@ function LivePortal({ exam }: { exam: (typeof LIVE_EXAMS)[0] }) {
                 <p className="text-xs mb-3 text-muted-foreground font-sans">{exam.full}</p>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-mono" style={{ color: "#8B8B8B" }}>Difficulty</span>
+                    <span className="text-xs font-mono" style={{ color: MUTED }}>Difficulty</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-20 h-1 rounded-full" style={{ background: "#111111" }}>
+                      <div className="w-20 h-1 rounded-full" style={{ background: SOLID_BLACK }}>
                         <div className="h-1 rounded-full" style={{ width: `${exam.difficulty}%`, background: exam.color }} />
                       </div>
                       <span className="text-xs font-mono" style={{ color: exam.color }}>{exam.difficulty}</span>
@@ -88,7 +89,7 @@ function LivePortal({ exam }: { exam: (typeof LIVE_EXAMS)[0] }) {
                 </div>
               </div>
               <div className="w-2 h-2 mx-auto rotate-45"
-                style={{ background: "#0d0d0d", border: `1px solid ${exam.color}40`, borderTop: "none", borderLeft: "none", marginTop: -1 }} />
+                style={{ background: DEEP_BLACK, border: `1px solid ${exam.color}40`, borderTop: "none", borderLeft: "none", marginTop: -1 }} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -137,11 +138,11 @@ function Badge({ label }: { label: string }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
-      <div className="w-8 sm:w-12 h-px" style={{ background: "rgba(200,255,90,0.3)" }} />
+      <div className="w-8 sm:w-12 h-px" style={{ background: LIME_BRIGHT_30 }} />
       <span className="text-micro tracking-[0.25em] uppercase font-mono text-primary px-2">
         {label}
       </span>
-      <div className="w-8 sm:w-12 h-px" style={{ background: "rgba(200,255,90,0.3)" }} />
+      <div className="w-8 sm:w-12 h-px" style={{ background: LIME_BRIGHT_30 }} />
     </motion.div>
   );
 }

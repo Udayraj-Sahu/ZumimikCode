@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { CYAN_251, LIME } from "@/lib/theme-tokens";
+import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
   motion,
@@ -22,7 +24,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ACCENT = "#C8FF4D";
+const ACCENT = LIME;
 
 type Variant = "this_year" | "whenever" | "not_sure" | "vedic";
 
@@ -280,6 +282,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
   const copy = VARIANT_COPY[variant];
   const overlayRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  const theme = useThemeStore((s) => s.theme);
 
   useLayoutEffect(() => {
     if (preloaded) return;
@@ -321,9 +324,11 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
     <MotionConfig reducedMotion="user">
       <div
         ref={overlayRef}
+        data-theme-scope
         className={cn(
           "fixed inset-0 z-[210] flex flex-col items-center overflow-hidden md:justify-center md:bg-black/60 md:backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
+          theme === "light" && "light",
         )}
         aria-hidden={preloaded || undefined}
         role="dialog"
@@ -338,7 +343,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
         >
           <motion.div
             className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[440px] h-[320px] rounded-full"
-            style={{ background: "radial-gradient(circle, #22D3EE40, transparent 70%)" }}
+            style={{ background: `radial-gradient(circle, ${CYAN_251}, transparent 70%)` }}
             animate={{ opacity: [0.12, 0.22, 0.12] }}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
           />

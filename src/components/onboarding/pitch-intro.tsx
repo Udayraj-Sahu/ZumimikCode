@@ -1,14 +1,14 @@
 "use client";
 
 import { useCallback, useLayoutEffect, useRef } from "react";
+import { GLASS_BORDER, LIME, LIME_22, LIME_LIGHT } from "@/lib/theme-tokens";
+import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import { animate, stagger } from "animejs";
 import { useReducedMotion } from "motion/react";
 import { Brain, ChevronRight, Crosshair, Flame, Star, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Backlight from "@/components/ui/backlight";
-
-const LIME = "#C8FF4D";
 
 const RING_RADIUS = 44;
 const RING_CIRC = 2 * Math.PI * RING_RADIUS;
@@ -63,6 +63,7 @@ export function PitchIntro({
   const statRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const streakRef = useRef<HTMLSpanElement>(null);
   const reduceMotion = useReducedMotion();
+  const theme = useThemeStore((s) => s.theme);
 
   useLayoutEffect(() => {
     if (preloaded) return;
@@ -149,9 +150,11 @@ export function PitchIntro({
   return createPortal(
     <div
       ref={overlayRef}
+      data-theme-scope
       className={cn(
         "fixed inset-0 z-[210] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
+        theme === "light" && "light",
       )}
       role="dialog"
       aria-modal="true"
@@ -215,7 +218,7 @@ export function PitchIntro({
                       cy="52"
                       r={RING_RADIUS}
                       fill="none"
-                      stroke="rgba(255,255,255,0.08)"
+                      stroke={GLASS_BORDER}
                       strokeWidth="9"
                     />
                     <circle
@@ -364,12 +367,12 @@ export function PitchIntro({
 
           {/* CTA */}
           <div data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mt-5">
-            <Backlight color="rgba(200,255,77,0.22)">
+            <Backlight color={LIME_22}>
               <button
                 onClick={() => exit(onClose)}
                 className="w-full rounded-xl py-3.5  text-[12px] font-bold tracking-wider text-[var(--bg)] transition hover:brightness-110 active:scale-[0.98]"
                 style={{
-                  background: "linear-gradient(90deg, #C8FF4D, #B9F45C)",
+                  background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
                   boxShadow: "0 0 28px var(--lime-mid-35), 0 1px 0 var(--glass-25) inset",
                 }}
               >
