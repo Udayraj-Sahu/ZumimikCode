@@ -82,7 +82,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div data-theme-scope suppressHydrationWarning className={cn("min-h-screen bg-background text-foreground", theme === "light" && "light")}>
       <aside
         ref={sidebarRef}
-        className="fixed inset-y-0 left-0 z-50 hidden w-[250px] flex-col border-r border-chrome-border bg-chrome px-4 py-7 lg:flex"
+        className="fixed inset-y-0 left-0 z-[var(--z-nav)] hidden w-[250px] flex-col border-r border-chrome-border bg-chrome px-4 py-7 lg:flex"
       >
         {/* Logo */}
         <div className="mb-12 flex items-center gap-3 pl-1.5">
@@ -136,7 +136,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
             <div
               className={cn(
-                "absolute left-[calc(100%+14px)] top-0 z-50 w-[190px] rounded-[10px] border border-chrome-border bg-chrome-raised p-2 shadow-[0_12px_30px_var(--black-50)] transition-[opacity,transform,visibility] duration-150",
+                "absolute left-[calc(100%+14px)] top-0 z-[var(--z-nav)] w-[190px] rounded-[10px] border border-chrome-border bg-chrome-raised p-2 shadow-[0_12px_30px_var(--black-50)] transition-[opacity,transform,visibility] duration-150",
                 moreOpen ? "visible translate-x-0 opacity-100" : "invisible -translate-x-1.5 opacity-0",
               )}
             >

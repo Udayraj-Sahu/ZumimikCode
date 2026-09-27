@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GLASS_03, GLASS_35, GLASS_BG, LIME, LIME_125, OVERLAY } from "@/lib/theme-tokens";
-import { createPortal } from "react-dom";
 import gsap from "gsap";
 import {
   ChevronLeft,
@@ -20,7 +19,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useOnboardingStore, goalForExam } from "@/stores/onboarding-store";
-import { useThemeStore } from "@/stores/theme-store";
 import { StoryCommitmentMatrix } from "@/components/onboarding/story-intro";
 import { applyStoryNotifications } from "@/lib/notifications/story-reminders";
 import { PlanSelector } from "@/components/onboarding/plan-intro";
@@ -30,6 +28,7 @@ import { PitchIntro } from "@/components/onboarding/pitch-intro";
 import { FamilyIntro } from "@/components/onboarding/family-intro";
 import { FamilyHubIntro } from "@/components/onboarding/family-hub-intro";
 import { FeatureIntro } from "@/components/onboarding/feature-intro";
+import { Dialog } from "@/components/ui/dialog";
 import { VEDIC_USE_CASES } from "@/lib/types/onboarding";
 import type { PlanId, StoryCommitment, VedicUseCaseId } from "@/lib/types/onboarding";
 
@@ -54,7 +53,6 @@ const TOTAL_STEPS = STEP_ICONS.length;
 
 export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
   const store = useOnboardingStore();
-  const theme = useThemeStore((s) => s.theme);
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -221,22 +219,17 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
     );
   }
 
-  const mainOverlay = createPortal(
-    <div
-      ref={overlayRef}
-      data-theme-scope
-      className={cn("fixed inset-0 z-[200] flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center", theme === "light" && "light")}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="adaptive-reprompt-title"
-      onClick={handleClose}
+  const mainOverlay = (
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      overlayRef={overlayRef}
+      panelRef={panelRef}
+      ariaLabelledby="adaptive-reprompt-title"
+      className="max-h-[90vh] overflow-hidden border-white/[0.06] flex flex-col"
+      panelStyle={{ background: OVERLAY }}
     >
-      <div
-        ref={panelRef}
-        className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl flex flex-col"
-        style={{ background: OVERLAY }}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="flex min-h-0 flex-1 flex-col">
         {/* Header with step icons */}
         <div className="sticky top-0 z-10 px-5 pt-4 pb-4 bg-[var(--overlay)] shrink-0">
           <div className="flex items-center justify-between mb-3">
@@ -503,8 +496,7 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
           </div>
         </div>
       </div>
-    </div>,
-    document.body,
+    </Dialog>
   );
 
   const featureHookDone = () => {

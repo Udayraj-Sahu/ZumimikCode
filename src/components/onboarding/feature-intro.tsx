@@ -326,7 +326,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
         ref={overlayRef}
         data-theme-scope
         className={cn(
-          "fixed inset-0 z-[210] flex flex-col items-center overflow-hidden md:justify-center md:bg-black/60 md:backdrop-blur-sm",
+          "fixed inset-0 z-[var(--z-intro)] flex flex-col items-center overflow-hidden md:justify-center md:bg-black/60 md:backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
           theme === "light" && "light",
         )}

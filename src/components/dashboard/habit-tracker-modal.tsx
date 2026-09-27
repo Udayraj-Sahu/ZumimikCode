@@ -328,7 +328,7 @@ export function HabitTrackerModal({ onClose }: Props) {
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[200] flex items-end justify-center bg-black/70 backdrop-blur-md sm:items-center",
+        "fixed inset-0 z-[var(--z-intro)] flex items-end justify-center bg-black/70 backdrop-blur-md sm:items-center",
         theme === "light" && "light",
       )}
       role="dialog"

@@ -2,11 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { GLASS_03, GLASS_06 } from "@/lib/theme-tokens";
-import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { X, Calendar, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useThemeStore } from "@/stores/theme-store";
+import { Dialog } from "@/components/ui/dialog";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -38,7 +37,6 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
   const dialogRef = useRef<HTMLDivElement>(null);
 
   const [error, setError] = useState<string | null>(null);
-  const theme = useThemeStore((s) => s.theme);
 
   useEffect(() => {
     if (!open) return;
@@ -93,21 +91,15 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
     onClose();
   };
 
-  return createPortal(
-    <div
-      ref={overlayRef}
-      data-theme-scope
-      className={cn("fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm", theme === "light" && "light")}
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Set exam date"
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      overlayRef={overlayRef}
+      panelRef={dialogRef}
+      ariaLabel="Set exam date"
     >
-      <div
-        ref={dialogRef}
-        className="w-full max-w-md bg-card rounded-t-3xl sm:rounded-3xl border border-border/60 shadow-2xl overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="overflow-hidden">
         <div className="sticky top-0 bg-card/95 backdrop-blur-sm px-5 pt-5 pb-3 border-b border-border/40 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Calendar size={15} className="text-primary" />
@@ -181,8 +173,7 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
           </button>
         </div>
       </div>
-    </div>,
-    document.body,
+    </Dialog>
   );
 }
 

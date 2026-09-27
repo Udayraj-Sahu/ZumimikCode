@@ -671,7 +671,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
           ref={overlayRef}
           data-theme-scope
           className={cn(
-            "fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
+            "fixed inset-0 z-[var(--z-dialog)] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
             theme === "light" && "light",
           )}
           role="dialog"

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { Star, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRateStore } from "@/stores/rate-store";
+import { Dialog } from "@/components/ui/dialog";
 
 export function RatePrompt() {
   const { sprintCount, dismissed, neverShowAgain, dismiss, neverShow } = useRateStore();
@@ -17,7 +18,8 @@ export function RatePrompt() {
   const show = sprintCount >= 3 && !dismissed && !neverShowAgain;
 
   useEffect(() => {
-    if (show && overlayRef.current && dialogRef.current) {
+    if (!show) return;
+    if (overlayRef.current && dialogRef.current) {
       gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" });
       gsap.fromTo(dialogRef.current, { opacity: 0, scale: 0.95, y: 8 }, { opacity: 1, scale: 1, y: 0, duration: 0.25, ease: "power2.out" });
     }
@@ -45,13 +47,15 @@ export function RatePrompt() {
   if (submitted) return null;
 
   return (
-    <div
-      ref={overlayRef}
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
-      onClick={handleLater}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="rate-title"
+    <Dialog
+      open
+      onClose={handleLater}
+      placement="center"
+      overlayRef={overlayRef}
+      panelRef={dialogRef}
+      overlayClassName="bg-black/50"
+      className="max-w-sm p-6"
+      ariaLabelledby="rate-title"
     >
       <div
         ref={dialogRef}
@@ -125,6 +129,6 @@ export function RatePrompt() {
           </div>
         </div>
       </div>
-    </div>
+    </Dialog>
   );
 }

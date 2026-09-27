@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
 import gsap from "gsap";
 import { X, GraduationCap, Calculator, BookOpen, Landmark, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -9,7 +8,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
-import { useThemeStore } from "@/stores/theme-store";
+import { Dialog } from "@/components/ui/dialog";
 
 const EXAMS = [
   { id: "cat", label: "CAT", icon: GraduationCap },
@@ -34,7 +33,6 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const canAddPrep = usePlanStore((s) => s.canAddPrep);
   const openPaywall = usePaywallStore((s) => s.openPaywall);
-  const theme = useThemeStore((s) => s.theme);
   const overlayRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const { data } = useDashboardData(selectedExam ?? undefined);
@@ -71,23 +69,14 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
   };
 
   return (
-    <>
-    {createPortal(
-    <div
-      ref={overlayRef}
-      data-theme-scope
-      className={cn("fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm", theme === "light" && "light")}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="add-prep-title"
-      onClick={handleClose}
+    <Dialog
+      open
+      onClose={handleClose}
+      overlayRef={overlayRef}
+      panelRef={dialogRef}
+      ariaLabelledby="add-prep-title"
     >
-      <div
-        ref={dialogRef}
-        className="w-full max-w-md max-h-[85vh] overflow-y-auto bg-card rounded-t-3xl sm:rounded-3xl border border-border/60 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="sticky top-0 bg-card/95 backdrop-blur-sm px-5 pt-5 pb-3 border-b border-border/40 flex items-center justify-between">
+      <div className="sticky top-0 bg-card/95 backdrop-blur-sm px-5 pt-5 pb-3 border-b border-border/40 flex items-center justify-between">
           <h2 id="add-prep-title" className="text-fluid-base font-bold text-foreground">
             {selectedExam ? "Topic Mastery" : "Add Prep"}
           </h2>
@@ -234,10 +223,6 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
             </button>
           )}
         </div>
-      </div>
-    </div>,
-    document.body,
-    )}
-  </>
+    </Dialog>
   );
 }
