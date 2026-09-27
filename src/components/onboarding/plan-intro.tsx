@@ -168,7 +168,7 @@ export function PlanSelector({
             )}
           >
             {p.badge && selected && (
-              <span className="absolute -top-2 right-3 rounded-full bg-[var(--lime)] px-2 py-0.5 text-[8px] font-bold tracking-[0.14em] text-[var(--on-accent)]">
+              <span className="absolute -top-2 right-3 rounded-full bg-[var(--lime-solid)] px-2 py-0.5 text-[8px] font-bold tracking-[0.14em] text-[var(--on-accent)]">
                 {p.badge}
               </span>
             )}
@@ -178,7 +178,7 @@ export function PlanSelector({
                 className={cn(
                   "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border-2 transition-colors",
                   selected
-                    ? "border-[var(--lime)] bg-[var(--lime)] shadow-[0_0_10px_var(--lime-40)]"
+                    ? "border-[var(--lime-solid)] bg-[var(--lime-solid)] shadow-[0_0_10px_var(--lime-40)]"
                     : "border-white/20 bg-transparent",
                 )}
               >
@@ -423,7 +423,7 @@ export function PlanIntro({
 
           {/* billing switch */}
           <FadeUp delay={140} className="mt-6">
-            <div className="grid grid-cols-2 gap-1 rounded-2xl border border-white/[0.08] bg-black/40 p-1">
+            <div className="keep-white grid grid-cols-2 gap-1 rounded-2xl border border-white/[0.08] bg-black/40 p-1">
               {(["annual", "monthly"] as const).map((b) => {
                 const active = billing === b;
                 const off =
@@ -452,7 +452,7 @@ export function PlanIntro({
                         {b.toUpperCase()}
                       </span>
                       {off > 0 && (
-                        <span className="rounded bg-[var(--lime)] px-1 py-px text-[8px] font-bold text-[var(--on-accent)]">
+                        <span className="rounded bg-[var(--lime-solid)] px-1 py-px text-[8px] font-bold text-[var(--on-accent)]">
                           -{off}%
                         </span>
                       )}
@@ -648,7 +648,7 @@ export function PlanIntro({
                 <div className="relative flex items-center justify-between gap-2 px-4 py-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="rounded bg-[var(--lime)] px-1 py-px text-[7px] font-black tracking-[0.18em] text-[var(--on-accent)]">
+                      <span className="rounded bg-[var(--lime-solid)] px-1 py-px text-[7px] font-black tracking-[0.18em] text-[var(--on-accent)]">
                         VIP WINTER
                       </span>
                       <span className="text-[11px] font-bold tracking-[0.14em] text-[var(--lime)]">
@@ -706,7 +706,7 @@ export function PlanIntro({
 
           {/* receipt */}
           <FadeUp delay={380} className="mt-4">
-            <div className="space-y-1.5 rounded-[20px] border border-dashed border-white/15 bg-black/40 p-3.5 text-[12px]">
+            <div className="keep-white space-y-1.5 rounded-[20px] border border-dashed border-white/15 bg-black/40 p-3.5 text-[12px]">
               <div className="flex justify-between text-muted-foreground/70">
                 <span>
                   Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} ·{" "}

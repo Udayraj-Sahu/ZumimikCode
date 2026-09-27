@@ -329,7 +329,7 @@ function Stepper({
     <div
       role="group"
       aria-label={label}
-      className="flex flex-none items-center gap-[6px] rounded-full border border-white/[0.08] bg-black/40 p-[4px]"
+      className="keep-white flex flex-none items-center gap-[6px] rounded-full border border-white/[0.08] bg-black/40 p-[4px]"
     >
       <button
         type="button"
@@ -565,7 +565,7 @@ function ReclaimModule({
             className={cn(
               "grid size-5 shrink-0 place-items-center rounded-full border transition-all",
               active
-                ? "bg-[var(--lime)] text-[var(--on-accent)] shadow-[0_0_12px_var(--lime-50)]"
+                ? "bg-[var(--lime-solid)] text-[var(--on-accent)] shadow-[0_0_12px_var(--lime-50)]"
                 : "border-white/[0.12] bg-white/[0.03] text-[var(--lime-50)]",
             )}
           >

@@ -120,7 +120,7 @@ export default function LinkedDevicesPage() {
                     className={cn(
                       "flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-[11px] font-bold transition-all active:scale-95 max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-2 whitespace-nowrap",
                       isConfirming
-                        ? "bg-[var(--red-soft)] text-[var(--on-accent)]"
+                        ? "bg-[var(--red-soft-solid)] text-[var(--on-accent)]"
                         : "border border-white/[0.07] bg-white/[0.04] text-[var(--red-soft)]",
                     )}
                   >

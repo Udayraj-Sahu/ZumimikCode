@@ -531,7 +531,7 @@ export default function PracticePage() {
               onClick={() =>
                 router.push(`/play/sprint?topic=${sprintTopic}&length=5&difficulty=${sprintDifficulty}`)
               }
-              className="flex items-center justify-center gap-2 rounded-3xl bg-[var(--amber)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap keep-white"
+              className="flex items-center justify-center gap-2 rounded-3xl bg-[var(--amber-solid)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-white outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap keep-white"
             >
               <Zap size={16} /> Start 5-Question Sprint
             </button>

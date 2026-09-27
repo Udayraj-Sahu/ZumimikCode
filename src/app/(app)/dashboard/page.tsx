@@ -166,7 +166,7 @@ function SlottedDigit({ value, delay = 0 }: { value: number; delay?: number }) {
   }, []);
   return (
     <span
-      className="relative inline-block overflow-hidden rounded-[0.12em] min-w-[0.68em] bg-black/30"
+      className="keep-white relative inline-block overflow-hidden rounded-[0.12em] min-w-[0.68em] bg-black/30"
       style={{ height: "1em" }}
     >
       <span
@@ -179,7 +179,7 @@ function SlottedDigit({ value, delay = 0 }: { value: number; delay?: number }) {
         {items.map((d, j) => (
           <span
             key={j}
-            className="flex w-full items-center justify-center"
+            className="flex w-full items-center justify-center text-white"
             style={{
               height: "1em",
               textShadow: "0 1px 0 var(--glass-22), 0 -1px 1px var(--black-50)",
@@ -563,7 +563,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--cta-lime)] to-[var(--lime-dark)] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_20px_var(--cta-35)] active:scale-95">
+                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--cta-lime-solid)] to-[var(--lime-dark)] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_20px_var(--cta-35)] active:scale-95">
                     CONTINUE SETUP
                     <ChevronRight size={14} className="mt-px" />
                   </button>
@@ -707,7 +707,7 @@ export default function DashboardPage() {
                 {habits.length > 3 && <span className="text-[8px] text-muted-foreground/50 font-medium">+{habits.length - 3}</span>}
               </div>
               <div className="relative mt-3 flex items-center justify-between">
-                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[var(--emerald)] to-[var(--emerald-solid)] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_16px_var(--emerald-30)] active:scale-95">
+                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_16px_var(--emerald-30)] active:scale-95">
                   VIEW HABITS
                 </button>
                 <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60 font-normal">

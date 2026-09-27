@@ -246,7 +246,7 @@ function SubscriptionCard() {
             <X className="h-3.5 w-3.5 shrink-0" /> Unlimited sprints
           </li>
         </ul>
-        <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-primary to-[var(--lime-mid)] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-primary-foreground shadow-[0_0_20px_var(--cta-25)] transition-all hover:shadow-[0_0_30px_var(--cta-35)] active:scale-[0.98] max-[359px]:py-3 whitespace-nowrap">
+        <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] shadow-[0_0_20px_var(--cta-25)] transition-all hover:shadow-[0_0_30px_var(--cta-35)] active:scale-[0.98] max-[359px]:py-3 whitespace-nowrap">
           Upgrade to Pro — $9.99/mo
         </button>
       </div>

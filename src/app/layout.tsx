@@ -78,11 +78,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning
       >
       <body className="overflow-x-hidden">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("exam-arena-theme");if(t){var o=JSON.parse(t);if(o&&o.state&&o.state.theme==="light")document.documentElement.dataset.theme="light"}}catch(e){}})()`,
-          }}
-        />
         <style>{`html.loading #main-content{opacity:0}`}</style>
         <div className="bg-background min-h-screen pb-0 overflow-x-clip" id="main-content">
           <a

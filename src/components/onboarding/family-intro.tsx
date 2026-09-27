@@ -264,7 +264,7 @@ export function FamilyIntro({
                       >
                         {c.eyebrow}
                       </span>
-                      <span className="rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[7px] font-bold tracking-wider text-muted-foreground">
+                      <span className="keep-white rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[7px] font-bold tracking-wider text-muted-foreground">
                         {c.who}
                       </span>
                     </div>
@@ -312,7 +312,7 @@ export function FamilyIntro({
             </div>
           </FadeUp>
 
-          <div className="mt-3 flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3">
+          <div className="keep-white mt-3 flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3">
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--lime-10)] text-[var(--lime)]">
               <HeartHandshake size={15} />
             </span>

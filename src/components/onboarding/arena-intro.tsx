@@ -326,7 +326,7 @@ export function ArenaIntro({
           {lanes.map(({ id, title, desc, Icon, tone }) => (
             <div
               key={id}
-              className="flex items-center gap-3 rounded-[20px] border border-white/[0.08] bg-black/25 p-3.5"
+              className="keep-white flex items-center gap-3 rounded-[20px] border border-white/[0.08] bg-black/25 p-3.5"
             >
               <span
                 className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl border", tone)}

@@ -234,7 +234,7 @@ function BranchNode({
           !unavailable && "hover:scale-[1.02] active:scale-95",
           unavailable && "opacity-45 cursor-not-allowed",
           depth === 0
-            ? "border-transparent bg-gradient-to-r from-[var(--cta-lime)] to-[var(--lime-mid)] text-[var(--on-accent)] shadow-[0_12px_40px_-14px_var(--primary)]"
+            ? "border-transparent bg-gradient-to-r from-[var(--cta-lime-solid)] to-[var(--lime-mid)] text-[var(--on-accent)] shadow-[0_12px_40px_-14px_var(--primary)]"
             : "bg-white/[0.05]",
           isFocus ? "ring-2 ring-primary ring-offset-1 ring-offset-transparent" : "",
         )}

@@ -219,7 +219,7 @@ export function FamilyHubIntro({
                 {SEATS.map(({ id, label, desc, Icon }) => (
                   <div
                     key={id}
-                    className="rounded-xl border border-white/[0.06] bg-black/30 px-2 py-2.5 text-center"
+                    className="keep-white rounded-xl border border-white/[0.06] bg-black/30 px-2 py-2.5 text-center"
                   >
                     <Icon size={14} className="mx-auto text-[var(--lime)]" />
                     <div className="mt-1.5 text-[10px] font-bold text-foreground">{label}</div>

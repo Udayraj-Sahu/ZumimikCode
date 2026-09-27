@@ -8,7 +8,7 @@ export default function GlobalError({
   console.error("[global-error]", error);
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className="bg-background text-foreground">
         <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground px-6 text-center">
           <h1 className="text-6xl font-bold text-destructive font-display">ERROR</h1>

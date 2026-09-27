@@ -806,8 +806,8 @@ function StepSingleSelect({
                 )}
               </div>
               {active && (
-                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--lime)]">
-                  <Check size={8} className="text-[var(--on-accent)]" strokeWidth={3} />
+<div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--lime-solid)]">
+ <Check size={8} className="text-[var(--on-accent)]" strokeWidth={3} />
                 </div>
               )}
             </button>
@@ -1062,7 +1062,7 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                     className={cn(
                       "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[10px] font-bold transition-all active:scale-95",
                       active
-                        ? "text-[var(--on-accent)] bg-[var(--lime)]"
+                        ? "text-[var(--on-accent)] bg-[var(--lime-solid)]"
                         : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
                     )}
                   >

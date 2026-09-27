@@ -430,7 +430,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                     <motion.div
                       key={label}
                       variants={cardVariants}
-                      className="flex flex-col-reverse justify-end gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-3"
+                      className="keep-white flex flex-col-reverse justify-end gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-3"
                     >
                       <dt className=" text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">
                         {label}
@@ -453,7 +453,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                 e.stopPropagation();
                 exit(onDone);
               }}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-[var(--lime-mid)] py-3 text-[11px] font-bold uppercase tracking-wider text-[var(--bg)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] py-3 text-[11px] font-bold uppercase tracking-wider text-[var(--on-accent)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
             >
               Enter Exam Arena{" "}
               <motion.span

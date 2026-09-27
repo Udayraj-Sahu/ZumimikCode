@@ -97,7 +97,7 @@ function SectionTitle({ marker, title, tag }: { marker: string; title: string; t
         </span>
         <h2 className="text-[10px] font-black tracking-[0.18em] text-foreground">{title}</h2>
       </div>
-      <span className="shrink-0 rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]">
+      <span className="keep-white shrink-0 rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]">
         {tag}
       </span>
     </div>
@@ -190,7 +190,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                             {p.title}
                           </h3>
                           {selected && (
-                            <span className="rounded bg-[var(--lime)] px-1.5 py-px text-[7px] font-bold tracking-wider text-[var(--on-accent)]">
+                            <span className="rounded bg-[var(--lime-solid)] px-1.5 py-px text-[7px] font-bold tracking-wider text-[var(--on-accent)]">
                               HOLDING THIS SEAT
                             </span>
                           )}
@@ -273,7 +273,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                     className={cn(
                       "flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[8px] font-bold tracking-wider",
                       added
-                        ? "border-[var(--lime)] bg-[var(--lime)] text-[var(--on-accent)]"
+                        ? "border-[var(--lime-solid)] bg-[var(--lime-solid)] text-[var(--on-accent)]"
                         : "border-white/20 text-muted-foreground/70",
                     )}
                   >

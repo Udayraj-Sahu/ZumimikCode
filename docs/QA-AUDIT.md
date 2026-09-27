@@ -26,22 +26,22 @@ Routing map used throughout:
 ## 1. 📊 Design System & Visual Consistency
 
 ### Global
-- [~] One source of truth for colors/tokens — `:root` CSS vars in `globals.css` + tailwind `colors` in `tailwind.config.ts`; **JS-side glass/violet tokens centralized** in `src/lib/theme-tokens.ts` (`GLASS_BG`, `GLASS_BORDER`, `VIOLET`, `VIOLET_DIM`, `VIOLET_GLOW`) — replaced 27 files' duplicated local glass/border constants; system-wide hex-usage sweep pending (landing + per-screen accent palettes to Phase 6 follow-up)
+- [~] One source of truth for colors/tokens — `:root` CSS vars in `globals.css` + tailwind `colors` in `tailwind.config.ts`; **JS-side glass/violet tokens centralized** in `src/lib/theme-tokens.ts` (`GLASS_BG`, `GLASS_BORDER`, `VIOLET`, `VIOLET_DIM`, `VIOLET_GLOW`) — replaced 27 files' duplicated local glass/border constants; **all `GLASS_*` JS tokens are now `var(--glass-*)` references** (incl. `GLASS_BORDER`, `GLASS_02`, `GLASS_025`, `GLASS_06`) so they flip in light mode automatically; the generated `.light` block omits `--glass-02/025/06`, so those are added in the hand-written `.light` override (`globals.css` ~481-484) as black-alpha values; system-wide hex-usage sweep pending (landing + per-screen accent palettes to Phase 6 follow-up)
 - [x] Light theme **scoped to app shell** — `.light` flips `[data-theme-scope]` subtrees only (AppShell root + app-internal modal portals: exam-date, add-prep, paywall, adaptive-reprompt, onboarding-modal, habit-tracker-modal, and all 8 onboarding intro overlays arena/feature/story/plan/pitch/seat-builder/family/family-hub). Landing page + landing components + auth/onboarding login page stay **dark always** (zero landing edits per user directive). Toggle: Settings → APPEARANCE.
 - [x] Dark theme completely implemented
-- [~] Theme switching — persisted via `theme-store` (`exam-arena-theme` in localStorage); 5 SVG-attr tokens (`GLASS_BORDER`, `GLASS_025`, `GLASS_02`, `GLASS_06`, `DEEP_BLACK`) are excluded from the flip-set (kept literal) because landing components use them as raw SVG presentation attrs which can't resolve `var()` — accepted tradeoff: these tokens keep dark values inside app pages in light mode (nearly-invisible white-alpha borders/strokes; DEEP_BLACK surfaces stay dark). Habit-tracker-modal uses theme-aware inline panel bg (replaced literal DEEP_BLACK gradient with `var(--bg-2)` when light) for legibility.
+- [~] Theme switching — persisted via `theme-store` (`exam-arena-theme` in localStorage); **white-alpha utilities flip automatically in light mode** because `tailwind.config.ts` maps `white: "rgb(var(--color-white-rgb) / <alpha-value>)"` and `.light` sets `--color-white-rgb: 0 0 0` (confirmed in compiled CSS). Keep-dark console chrome chips (`bg-black/XX` panels with `border-white/·`, e.g. paywall HUD cards, onboarding billing switch/receipt, arena/story/seat/feature/family intro chips) re-assert white via the `.light .keep-white` class (globals.css ~780) so their white borders/icons stay visible in light; same for the dashboard `RollingNumber` odometer rail. `DEEP_BLACK` stays literal — it's a solid surface color, not an alpha glass.
 
 ### Theme edge cases
-- [ ] Text readable (dark mode)
-- [ ] Disabled elements distinguishable (dark mode)
-- [ ] Placeholder contrast sufficient (dark mode)
-- [ ] Borders don't disappear in dark mode
+- [x] Text readable (dark mode) — tokens flip via `.light`; residual keep-dark chrome uses `.keep-white` to preserve white-alpha borders/labels (paywall HUD, onboarding chips, dashboard odometer rail)
+- [x] Disabled elements distinguishable (dark mode) — disabled controls rely on `disabled:opacity-*` (theme-agnostic) + `text-muted-foreground`; all exam controls on scoped pages flip correctly
+- [ ] Placeholder contrast sufficient (dark mode) — `placeholder:text-muted-foreground` used; spot-check pending
+- [x] Borders don't disappear in dark mode — all `border-white/·`/`bg-white/·` utilities flip via `--color-white-rgb` in light; `GLASS_BORDER`, `GLASS_02/025/06` converted to var refs (see Global section); keep-dark console chips re-assert white via `.keep-white`
 - [ ] Shadows work in dark mode
 - [ ] Images/logos don't become invisible
 - [ ] SVG icons inherit theme correctly
 - [ ] Charts adapt to theme (dark)
 - [ ] Loading skeletons adapt to theme (dark)
-- [ ] Empty states adapt to theme (dark)
+- [x] Empty states adapt to theme (dark) — all empty-state messages use `text-muted-foreground`/`text-muted-foreground/60` (flip via token); empty-state containers use `GLASS_BG`/`bg-white/[0.06]`/`border-white/[0.06]` (var refs / flip via `--color-white-rgb`); verified on settings history/leaderboard/achievements, sprint results, sprint config, linked-devices
 - [~] No hardcoded colors outside design tokens — most duplicated glass/lime/violet constants centralized in `theme-tokens.ts`; raw hex sweep (`rg` of hex/rgb in `.ts/.tsx`) still pending for per-screen accents (landing components historically raw-styled)
 - [~] Primary/secondary/accent/neutral usage defined — tokens exist; usage audit pending
 - [ ] Typography scale consistent (Space Grotesk / Inter / JetBrains Mono via `next/font`)
@@ -446,4 +446,4 @@ Stores (14): `src/stores/*` (auth, theme[dropped], network, onboarding, settings
 7. **No route-level loading/error boundaries** — only `AppEntry` splash + `not-found`; per-route `loading.tsx`/`error.tsx` absent. (Phases 16/17.)
 8. **No reduced-motion handling** — GSAP entrances (app-shell, dashboard page) ignore `prefers-reduced-motion`. (Phase 20/21.)
 
-> Note: Phase 1 (light theme) now ships as a scoped app-shell opt-in (Settings → APPEARANCE); landing/onboarding/auth remain permanently dark per user directive. The 5 tokens excluded from the flip-set (GLASS_BORDER, GLASS_025, GLASS_02, GLASS_06, DEEP_BLACK) stay literal because landing components use them as SVG presentation attrs (see Global/Theme switching above).
+> Note: Phase 1 (light theme) ships as a scoped app-shell opt-in (Settings → APPEARANCE); landing/onboarding/auth remain permanently dark per user directive. All `GLASS_*` JS tokens are now `var(--glass-*)` refs (incl. `GLASS_BORDER`, `GLASS_02/025/06`) so they flip in light mode; landing SVG-attr usage resolves to dark `:root` values (landing never flips), so no literal tokens remain. `DEEP_BLACK` stays literal — solid surface, not glass. Dead `.light .dark-scene` block (~289 lines) and the html `data-theme` pre-hydration script removed (both unreferenced); `error.tsx`/`not-found.tsx` use only flip-safe tokens and need no scoping. The `.light` scope uses `[data-theme-scope]` + `.keep-white` (globals.css ~489-492) to re-assert white-alpha on keep-dark chrome (image covers, fixed CTAs, console chips).

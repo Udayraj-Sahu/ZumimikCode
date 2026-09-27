@@ -297,7 +297,7 @@ export function PaywallModal() {
                       <div
                         key={id}
                         className={cn(
-                          "relative overflow-hidden rounded-xl border bg-black/40 p-3",
+                          "keep-white relative overflow-hidden rounded-xl border bg-black/40 p-3",
                           warn ? "border-amber-400/25" : "border-white/10",
                         )}
                       >
@@ -331,7 +331,7 @@ export function PaywallModal() {
                   </section>
 
                   {/* throttle bar */}
-                  <section className="rounded-xl border border-white/10 bg-black/40 p-3">
+                  <section className="keep-white rounded-xl border border-white/10 bg-black/40 p-3">
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-[8px] font-bold tracking-[0.2em] text-muted-foreground/70">
                         LOOP THROTTLE
@@ -369,7 +369,7 @@ export function PaywallModal() {
                       {PREP_TELEMETRY.map(({ id, title, desc, Icon, tile, badge }) => (
                         <li
                           key={id}
-                          className="flex gap-3 rounded-xl border border-white/10 bg-black/40 p-3"
+                          className="keep-white flex gap-3 rounded-xl border border-white/10 bg-black/40 p-3"
                         >
                           <span
                             className={cn(
@@ -449,7 +449,7 @@ export function PaywallModal() {
                                         {o.title}
                                       </h3>
                                       {o.badge && (
-                                        <span className="rounded bg-[var(--lime)] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[var(--on-accent)]">
+                                        <span className="rounded bg-[var(--lime-solid)] px-1.5 py-px font-mono text-[7px] font-bold tracking-wider text-[var(--on-accent)]">
                                           {o.badge}
                                         </span>
                                       )}

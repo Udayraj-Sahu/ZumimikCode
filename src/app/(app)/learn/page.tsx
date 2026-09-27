@@ -401,7 +401,7 @@ function LearnPageContent() {
                           className={cn(
                             "text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all",
                             activeDomain === id
-                              ? "bg-gradient-to-r from-primary to-[var(--lime-mid)] text-primary-foreground shadow-[0_0_12px_var(--cta-25)]"
+                              ? "bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] text-[var(--on-accent)] shadow-[0_0_12px_var(--cta-25)]"
                               : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
                           )}
                         >
@@ -845,7 +845,7 @@ function LearnPageContent() {
                           className={cn(
                             "shrink-0 rounded-full px-3.5 py-1.5 max-[359px]:px-3 whitespace-nowrap text-[11px] font-semibold transition-all",
                             mockSection === sec
-                              ? "bg-gradient-to-r from-primary to-[var(--lime-mid)] text-[var(--bg)]"
+                              ? "bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] text-[var(--on-accent)]"
                               : "border border-white/[0.07] text-muted-foreground/60 hover:bg-white/[0.05]",
                           )}
                         >
