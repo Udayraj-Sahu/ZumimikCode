@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { submitContentFeedback } from "@/services/content-pipeline";
+import { toast } from "@/stores/toast-store";
 
 interface ContentFeedbackProps {
   questionId: string;
@@ -22,6 +23,7 @@ export default function ContentFeedback({ questionId, className }: ContentFeedba
       await submitContentFeedback({ questionId, feedbackType });
     } catch {
       setSubmitted(null);
+      toast.error("Couldn't save your feedback", "Check your connection and try again.");
     } finally {
       setSending(false);
     }

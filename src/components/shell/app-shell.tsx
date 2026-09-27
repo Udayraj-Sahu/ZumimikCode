@@ -12,6 +12,7 @@ import { useThemeStore } from "@/stores/theme-store";
 import { resetAppState } from "@/lib/reset-app-state";
 import { Walkthrough } from "@/components/shell/walkthrough";
 import { RatePrompt } from "@/components/shell/rate-prompt";
+import { Toaster } from "@/components/ui/toaster";
 
 const SIDEBAR_HREFS = new Set(["/dashboard", "/learn", "/play", "/settings"]);
 
@@ -245,6 +246,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </nav>
       <Walkthrough />
       <RatePrompt />
+      <Toaster />
     </div>
   );
 }
