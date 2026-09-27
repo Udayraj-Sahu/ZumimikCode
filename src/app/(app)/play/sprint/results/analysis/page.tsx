@@ -7,7 +7,9 @@ import { ChevronLeft, Check, X, TrendingUp, Lightbulb, BookOpen } from "lucide-r
 import { useSprintStore } from "@/stores/sprint-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { SprintResult } from "@/lib/types/sprint-session";
-import { CTA_04, CTA_06, CTA_20, CTA_30, GLASS_BG, GLASS_BORDER, RED_04, RED_06, RED_30 } from "@/lib/theme-tokens";
+import { CTA_04, CTA_06, CTA_20, CTA_30, GLASS_BG, RED_04, RED_06, RED_30 } from "@/lib/theme-tokens";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
 
 export default function AnalysisPage() {
   usePageMeta("Analysis — Exam Arena");
@@ -35,13 +37,12 @@ export default function AnalysisPage() {
     return (
       <PageContainer className="text-center">
         <p className="text-[13px] text-muted-foreground">No sprint data found.</p>
-        <button
-          type="button"
+        <Button
           onClick={() => router.push("/play/configure-sprint")}
-          className="mt-4 rounded-xl bg-cta text-[var(--on-accent)] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 px-6"
         >
           Start a Sprint
-        </button>
+        </Button>
       </PageContainer>
     );
   }
@@ -57,21 +58,21 @@ export default function AnalysisPage() {
           No wrong answers to analyze.
         </p>
         <div className="mt-6 flex flex-col gap-3 md:flex-row md:gap-3 max-[359px]:gap-2">
-          <button
-            type="button"
+          <Button
+            size="lg"
             onClick={() => router.push("/play/sprint/results")}
-            className="md:flex-1 rounded-3xl bg-cta text-[var(--on-accent)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+            className="md:flex-1 hover:scale-[1.01] max-[359px]:py-3.5"
           >
             Back to Results
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="glass"
+            size="lg"
             onClick={() => router.push("/dashboard")}
-            className="md:flex-1 rounded-3xl border backdrop-blur-xl py-4 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
-            style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+            className="md:flex-1 text-[12px] active:bg-white/[0.06] max-[359px]:py-3.5"
           >
             Dashboard
-          </button>
+          </Button>
         </div>
       </PageContainer>
     );
@@ -95,10 +96,9 @@ export default function AnalysisPage() {
       {/* Wrong answers list */}
       <div className="grid gap-5 max-[359px]:gap-4 md:grid-cols-2 md:items-start">
         {wrongAnswers.map(({ answer, question, wrongIndex }) => (
-          <div
+          <GlassCard
             key={question.id}
-            className="rounded-3xl border backdrop-blur-xl overflow-hidden"
-            style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+            className="overflow-hidden"
           >
             {/* Question header */}
             <div className="px-4 max-[359px]:px-3 py-3 border-b" style={{ backgroundColor: RED_04, borderColor: GLASS_BG }}>
@@ -156,28 +156,28 @@ export default function AnalysisPage() {
                 </div>
               )}
             </div>
-          </div>
+          </GlassCard>
         ))}
       </div>
 
       {/* Bottom navigation */}
       <div className="mt-8 flex flex-col gap-3 md:flex-row md:gap-3 max-[359px]:gap-2">
-        <button
-          type="button"
+        <Button
+          variant="glass"
+          size="lg"
           onClick={() => router.push("/play/sprint/results")}
-          className="md:flex-1 flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
-          style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+          className="md:flex-1 text-[12px] active:bg-white/[0.06] max-[359px]:py-3.5"
         >
           <ChevronLeft size={16} /> Back to Results
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="glass"
+          size="lg"
           onClick={() => router.push("/dashboard")}
-          className="md:flex-1 flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
-          style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+          className="md:flex-1 text-[12px] active:bg-white/[0.06] max-[359px]:py-3.5"
         >
           Dashboard
-        </button>
+        </Button>
       </div>
       </div>
     </PageContainer>

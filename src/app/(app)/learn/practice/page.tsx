@@ -1,5 +1,7 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
 import { ExamShell } from "@/components/exam/exam-shell";
 import { QuestionNavigator } from "@/components/exam/question-navigator";
 
@@ -32,7 +34,7 @@ import RendererRouter from "@/components/renderers/renderer-router";
 import type { Question } from "@/lib/types/sprint-session";
 import type { SolveAlongTemplate, RenderMode } from "@/lib/types/template";
 import { DOMAIN_LABELS } from "@/lib/types/template";
-import { AMBER_04, AMBER_20, CTA_04, CTA_06, CTA_12, CTA_20, CTA_30, GLASS_015, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-tokens";
+import { CTA_04, CTA_06, CTA_12, CTA_20, CTA_30, GLASS_015, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-tokens";
 
 type PracticeType = "mcq" | "templates";
 type Phase = "config" | "active" | "done";
@@ -319,14 +321,15 @@ export default function PracticePage() {
             </div>
 
             <div ref={animateSection} data-section-index="3" className="mt-8">
-              <button
-                type="button"
+              <Button
+                fullWidth
+                size="lg"
                 disabled={!topic}
                 onClick={startPractice}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="tracking-[0.14em] hover:scale-[1.01] active:scale-[0.99]"
               >
                 <BookOpen size={16} /> Start Practice
-              </button>
+              </Button>
             </div>
           </>
         )}
@@ -427,15 +430,16 @@ export default function PracticePage() {
             </div>
 
             <div ref={animateSection} data-section-index="3" className="mt-8">
-              <button
-                type="button"
+              <Button
+                fullWidth
+                size="lg"
                 disabled={loadingTemplates}
                 onClick={() => startTemplatePractice()}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed"
+                className="tracking-[0.14em] hover:scale-[1.01] active:scale-[0.99]"
               >
                 <BrainCircuit size={16} />
                 {loadingTemplates ? "Loading..." : `Start ${domainLabel} ${renderMode === "quick" ? "Quick" : renderMode === "guided" ? "Guided" : "Solve-Along"}`}
-              </button>
+              </Button>
             </div>
           </>
         )}
@@ -463,42 +467,45 @@ export default function PracticePage() {
         </div>
 
         <div className="grid grid-cols-2 gap-3 mb-5 max-[359px]:gap-2 max-[359px]:mb-4">
-          <div className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+          <GlassCard className="p-4 max-[359px]:p-3 text-center">
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Correct</p>
             <p className="mt-1 text-[22px] font-bold text-foreground">{completed.correct}/{completed.total}</p>
-          </div>
-          <div className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 text-center" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+          </GlassCard>
+          <GlassCard className="p-4 max-[359px]:p-3 text-center">
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40">Accuracy</p>
             <p className="mt-1 text-[22px] font-bold text-primary">{accuracy}%</p>
-          </div>
+          </GlassCard>
         </div>
 
         <div className="flex flex-col gap-3 max-[359px]:gap-2">
-          <button
-            type="button"
+          <Button
+            fullWidth
+            size="lg"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+            className="tracking-[0.14em] max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99]"
           >
             Practice Again <ChevronRight size={16} />
-          </button>
+          </Button>
           {returnTo !== "/dashboard" && returnTo && (
-            <button
-              type="button"
+            <Button
+              fullWidth
+              variant="glass"
+              size="lg"
               onClick={() => router.push(returnTo)}
-              className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--amber)] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
-              style={{ borderColor: AMBER_20, background: AMBER_04 }}
+              className="tracking-[0.14em] text-[var(--amber)] border-[var(--amber-20)] bg-[var(--amber-04)] hover:bg-white/[0.04] max-[359px]:py-3.5"
             >
               Back to Sprint Setup
-            </button>
+            </Button>
           )}
-          <button
-            type="button"
+          <Button
+            fullWidth
+            variant="glass"
+            size="lg"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
-            style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+            className="tracking-[0.14em] max-[359px]:py-3.5"
           >
             Dashboard
-          </button>
+          </Button>
         </div>
       </PageContainer>
     );
@@ -536,31 +543,34 @@ export default function PracticePage() {
               <Zap size={16} /> Start 5-Question Sprint
             </button>
           )}
-          <button
-            type="button"
+          <Button
+            fullWidth
+            size="lg"
             onClick={() => { setPhase("config"); useTemplateStore.getState().reset(); }}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+            className="tracking-[0.14em] max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99]"
           >
             Practice Another <ChevronRight size={16} />
-          </button>
+          </Button>
           {returnTo !== "/dashboard" && returnTo && (
-            <button
-              type="button"
+            <Button
+              fullWidth
+              variant="glass"
+              size="lg"
               onClick={() => router.push(returnTo)}
-              className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--amber)] outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
-              style={{ borderColor: AMBER_20, background: AMBER_04 }}
+              className="tracking-[0.14em] text-[var(--amber)] border-[var(--amber-20)] bg-[var(--amber-04)] hover:bg-white/[0.04] max-[359px]:py-3.5"
             >
               Back to Sprint Setup
-            </button>
+            </Button>
           )}
-          <button
-            type="button"
+          <Button
+            fullWidth
+            variant="glass"
+            size="lg"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.04] whitespace-nowrap"
-            style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+            className="tracking-[0.14em] max-[359px]:py-3.5"
           >
             Dashboard
-          </button>
+          </Button>
         </div>
       </PageContainer>
     );
@@ -611,26 +621,26 @@ export default function PracticePage() {
         {(stepProgress.isCorrect !== null || stepProgress.allRevealed || renderMode === "quick") && (
           <div className="mt-6 flex gap-3 max-[359px]:gap-1.5">
             {storeCurrentIndex > 0 && (
-              <button
-                type="button"
+              <Button
+                variant="glass"
+                size="lg"
                 onClick={() => {
                   useTemplateStore.getState().prevTemplate();
                   stepProgress.reset();
                 }}
-                className="flex items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl px-5 py-4 max-[359px]:px-3 max-[359px]:py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-foreground outline-none transition-colors hover:bg-white/[0.06] whitespace-nowrap"
-                style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                className="max-[359px]:px-3 max-[359px]:py-3.5 text-[11px] tracking-[0.14em]"
               >
                 <ChevronLeft size={14} /> Previous
-              </button>
+              </Button>
             )}
-            <button
-              type="button"
+            <Button
+              size="lg"
               onClick={handleTemplateNext}
-              className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+              className="flex-1 tracking-[0.14em] max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99]"
             >
               {storeCurrentIndex >= storeTemplates.length - 1 ? "See Results" : "Next"}{" "}
               <ChevronRight size={16} />
-            </button>
+            </Button>
           </div>
         )}
       </PageContainer>
@@ -723,13 +733,14 @@ export default function PracticePage() {
         footer={
           revealed ? (
             <div className="flex flex-col items-center">
-              <button
-                type="button"
+              <Button
+                fullWidth
+                size="lg"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-[0.14em] text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] whitespace-nowrap"
+                className="tracking-[0.14em] max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99]"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
-              </button>
+              </Button>
             </div>
           ) : (
             <div className="flex justify-center gap-1.5 md:hidden">
@@ -831,9 +842,9 @@ export default function PracticePage() {
                   </div>
                 ) : (
                   question.hint && (
-                    <div className="rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+                    <GlassCard radius="2xl" className="p-4 max-[359px]:p-3">
                       <p className="text-[12px] text-muted-foreground/60 leading-relaxed">{question.hint}</p>
-                    </div>
+                    </GlassCard>
                   )
                 )}
               </div>

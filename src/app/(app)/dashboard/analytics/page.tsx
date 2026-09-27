@@ -5,7 +5,9 @@ import { useAnalyticsData } from "@/hooks/queries/use-analytics";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { PageContainer } from "@/components/ui/page-container";
-import { GLASS_BG } from "@/lib/theme-tokens";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
+
 
 export default function AnalyticsPage() {
   usePageMeta("Analytics — Exam Arena");
@@ -24,13 +26,13 @@ export default function AnalyticsPage() {
     return (
       <div className="min-h-screen px-5 pt-6 pb-4 flex flex-col items-center justify-center gap-4 max-[359px]:px-4">
         <p className="text-[13px] text-muted-foreground">Failed to load analytics.</p>
-        <button
-          type="button"
+        <Button
+          size="sm"
           onClick={() => window.location.reload()}
-          className="rounded-xl bg-cta text-[var(--on-accent)] px-5 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:px-4"
+          className="rounded-xl px-5 py-2.5 hover:scale-[1.02] max-[359px]:px-4"
         >
           Retry
-        </button>
+        </Button>
       </div>
     );
   }
@@ -59,25 +61,21 @@ export default function AnalyticsPage() {
               { label: "BEST STREAK", value: `${stats.bestStreak}d` },
               { label: "ARENA RANK", value: `#${stats.arenaRank}` },
             ].map((s, i) => (
-              <div
-                key={i}
-                className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3"
-                style={{ background: GLASS_BG }}
-              >
+              <GlassCard key={i} className="p-4 max-[359px]:p-3" style={{ border: "1px solid var(--glass-06)" }}>
                 <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-1.5">
                   {s.label}
                 </p>
                 <p className="text-[20px] font-bold tracking-tight text-primary leading-none">
                   {s.value}
                 </p>
-              </div>
+              </GlassCard>
             ))}
           </div>
 
-          <div
+          <GlassCard
             ref={animateSection} data-section-index={1}
-            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 max-[359px]:p-4"
-            style={{ background: GLASS_BG }}
+            className="p-5 max-[359px]:p-4"
+            style={{ border: "1px solid var(--glass-06)" }}
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-[13px] font-bold tracking-[0.08em] text-foreground">
@@ -117,12 +115,12 @@ export default function AnalyticsPage() {
                 </span>
               ))}
             </div>
-          </div>
+          </GlassCard>
 
-          <div
+          <GlassCard
             ref={animateSection} data-section-index={2}
-            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-5 max-[359px]:p-4"
-            style={{ background: GLASS_BG }}
+            className="p-5 max-[359px]:p-4"
+            style={{ border: "1px solid var(--glass-06)" }}
           >
             <h2 className="text-[13px] font-bold tracking-[0.08em] text-foreground mb-3">
               RECENT ACTIVITY
@@ -143,7 +141,7 @@ export default function AnalyticsPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </GlassCard>
         </div>
         </div>
       </PageContainer>

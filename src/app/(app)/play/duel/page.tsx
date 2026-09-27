@@ -16,6 +16,7 @@ import { DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
 import type { DuelOpponent, DuelResult } from "@/lib/types/duel";
 import type { Question } from "@/lib/types/sprint-session";
 import { GLASS_BG } from "@/lib/theme-tokens";
+import { Button } from "@/components/ui/button";
 
 type Phase = "config" | "active" | "done";
 
@@ -195,13 +196,14 @@ export default function DuelPage() {
         </div>
 
         <div ref={animateSection} data-section-index="2" className="mt-8 max-[359px]:mt-5">
-          <button
-            type="button"
+          <Button
+            fullWidth
+            size="lg"
             onClick={startDuel}
-            className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            className="max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99]"
           >
             <Swords size={16} /> Start Duel
-          </button>
+          </Button>
         </div>
       </PageContainer>
     );
@@ -250,21 +252,23 @@ export default function DuelPage() {
         </div>
 
         <div className="mt-6 flex flex-col gap-3 max-[359px]:gap-2">
-          <button
-            type="button"
+          <Button
+            fullWidth
+            size="lg"
             onClick={startDuel}
-            className="flex items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+            className="max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99]"
           >
             <Swords size={16} /> Rematch
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            fullWidth
+            variant="glass"
+            size="lg"
             onClick={() => router.push("/dashboard")}
-            className="rounded-3xl border border-white/[0.06] backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
-            style={{ backgroundColor: GLASS_BG }}
+            className="text-[12px] max-[359px]:py-3.5 active:bg-white/[0.08]"
           >
             Dashboard
-          </button>
+          </Button>
         </div>
       </PageContainer>
     );
@@ -357,13 +361,14 @@ export default function DuelPage() {
 
           {revealed && (
             <div className="mt-5 max-[359px]:mt-4">
-              <button
-                type="button"
+              <Button
+                fullWidth
+                size="lg"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring"
+                className="max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99]"
               >
                 {currentIndex >= session.questions.length - 1 ? "See Results" : "Next"} <ChevronRight size={16} />
-              </button>
+              </Button>
             </div>
           )}
         </div>

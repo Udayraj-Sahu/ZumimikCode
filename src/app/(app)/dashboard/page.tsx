@@ -30,6 +30,8 @@ import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { AMBER, AMBER_DARK, AMBER_LIGHT, AMBER_LIGHT_12, BG_SOFT, BLACK_30, CTA_08, CTA_12, CTA_30, CTA_LIME, CYAN, CYAN_LIGHT, CYAN_LIGHT_12, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_03, GLASS_05, GLASS_06, GLASS_15, GLASS_30, GLASS_BG, GLASS_BORDER, GREEN_SOFT, GREEN_SOFT_12, LIME, LIME_DEEPER, ROSE_PINK, ROSE_PINK_12, SKY, SLATE, SLATE_DARKEST, VIOLET_DARK, VIOLET_DARK_12, VIOLET_PURPLE, VIOLET_PURPLE_2, VIOLET_PURPLE_2_12, YELLOW } from "@/lib/theme-tokens";
 import { PageContainer } from "@/components/ui/page-container";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { ExamDateModal } from "@/components/dashboard/exam-date-modal";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -410,13 +412,12 @@ export default function DashboardPage() {
           <p className="text-[13px] font-semibold text-destructive">Failed to load your dashboard.</p>
           <p className="mt-2 text-[12px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
           <div className="mt-6 flex justify-center gap-3">
-            <button
-              type="button"
+            <Button
               onClick={() => refetch()}
-              className="rounded-xl bg-cta text-[var(--on-accent)] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+              className="hover:scale-[1.02]"
             >
               Retry
-            </button>
+            </Button>
           </div>
         </div>
       </PageContainer>
@@ -906,7 +907,7 @@ export default function DashboardPage() {
           hasResume && "md:grid md:grid-cols-2 md:items-stretch md:gap-5"
         )}
       >
-        <div className="h-full rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+        <GlassCard className="h-full p-5 max-[359px]:p-4">
           <SectionLabel>QUICK ACCESS</SectionLabel>
           <div
             className={cn(
@@ -940,7 +941,7 @@ export default function DashboardPage() {
               <span className="text-micro font-medium text-muted-foreground text-center leading-tight tracking-[0.01em]">Coming Soon</span>
             </div>
           </div>
-        </div>
+        </GlassCard>
         {hasResume && (
           <ResumeProtocolCard accent={LIME} className="mt-4 px-5 md:mt-0 md:px-0 md:min-w-0 md:h-full" />
         )}
@@ -950,7 +951,7 @@ export default function DashboardPage() {
       <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 mt-6">
         {/* Topic Mastery */}
         <div ref={animateSection} data-section-index={6}>
-          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+          <GlassCard className="p-5 h-full">
             <div className="flex items-center justify-between mb-5">
               <SectionHeading>Topic mastery</SectionHeading>
               <button
@@ -981,12 +982,12 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </GlassCard>
         </div>
 
         {/* Recent Activity */}
         <div ref={animateSection} data-section-index={7} className="mt-4 md:mt-0">
-          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+          <GlassCard className="p-5 h-full">
             <SectionHeading className="mb-4">Recent activity</SectionHeading>
             <div className="flex flex-col">
               {recent.map((a, i) => (
@@ -1005,7 +1006,7 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </GlassCard>
         </div>
       </div>
 
@@ -1013,7 +1014,7 @@ export default function DashboardPage() {
       <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 mt-4">
         {/* Cognitive Radar */}
         <div ref={animateSection} data-section-index={8}>
-          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+          <GlassCard className="p-5 h-full">
             <SectionHeading className="mb-2">Cognitive radar</SectionHeading>
             <RadarChart axes={radarLabels} values={radarValues} />
             <div className="flex flex-col gap-2.5 mt-3">
@@ -1032,12 +1033,12 @@ export default function DashboardPage() {
                 <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">89%</span>
               </div>
             </div>
-          </div>
+          </GlassCard>
         </div>
 
         {/* Upcoming */}
         <div ref={animateSection} data-section-index={9} className="mt-4 md:mt-0">
-          <div className="rounded-3xl border backdrop-blur-xl p-5 h-full" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+          <GlassCard className="p-5 h-full">
             <SectionHeading className="mb-4">Upcoming</SectionHeading>
             <div className="flex flex-col gap-2.5">
               {upcoming.map((u) => (
@@ -1062,14 +1063,14 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </GlassCard>
         </div>
       </div>
 
       {/* Leaderboard + Invite Friends & Referral */}
       <div className="mt-4 mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
       <div ref={animateSection} data-section-index={10}>
-        <div className="h-full rounded-3xl border backdrop-blur-xl p-5" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+        <GlassCard className="h-full p-5">
           <SectionHeading className="mb-4">Leaderboard</SectionHeading>
           <div className="flex flex-col">
             {leaderboard.map((l, i) => (
@@ -1096,7 +1097,7 @@ export default function DashboardPage() {
               </div>
             ))}
           </div>
-        </div>
+        </GlassCard>
       </div>
 
       <div ref={animateSection} data-section-index={11}>

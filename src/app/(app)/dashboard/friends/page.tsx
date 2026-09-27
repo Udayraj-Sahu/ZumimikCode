@@ -7,6 +7,8 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useFriends } from "@/hooks/queries/use-friends";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
 import { GLASS_06, GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function FriendsPage() {
@@ -36,12 +38,12 @@ export default function FriendsPage() {
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">Friends</h1>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Compete and stay motivated together</p>
         <div className="mt-3 flex justify-center">
-          <button
-            type="button"
-            className="flex items-center gap-1.5 rounded-xl bg-cta text-[var(--on-accent)] px-3 py-2.5 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] max-[359px]:px-2.5 max-[359px]:py-2 whitespace-nowrap"
+          <Button
+            size="sm"
+            className="rounded-xl px-3 py-2.5 min-h-[44px] hover:scale-[1.05] active:scale-[0.95] max-[359px]:px-2.5 max-[359px]:py-2"
           >
             <UserPlus size={14} /> Add
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -98,9 +100,9 @@ export default function FriendsPage() {
         )}
 
         {error && (
-          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl max-[359px]:p-4" style={{ background: GLASS_BG, borderColor: GLASS_BORDER }}>
+          <GlassCard className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center max-[359px]:p-4">
             <p className="text-[12px] font-semibold text-destructive">Failed to load friends</p>
-          </div>
+          </GlassCard>
         )}
 
         <div ref={listRef} className="flex flex-col gap-3 max-[359px]:gap-1.5">
@@ -112,11 +114,10 @@ export default function FriendsPage() {
             </div>
           )}
           {tab === "friends" && data?.friends.map((f) => (
-            <div
+            <GlassCard
               key={f.id}
               data-friend-item
-              className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4 max-[359px]:gap-2"
-              style={{ background: GLASS_BG }}
+              className="flex items-center gap-3 p-3 sm:p-4 max-[359px]:gap-2"
             >
               <div className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-[12px] font-black text-primary">
                 {f.initials}
@@ -141,7 +142,7 @@ export default function FriendsPage() {
               >
                 <Swords size={12} /> Duel
               </button>
-            </div>
+            </GlassCard>
           ))}
 
           {tab === "activity" && (!data || data.activity.length === 0) && (
@@ -155,11 +156,10 @@ export default function FriendsPage() {
             const friend = data.friends.find((f) => f.id === a.friendId);
             const Icon = a.type === "sprint" ? Zap : a.type === "duel" ? Swords : Award;
             return (
-              <div
+              <GlassCard
                 key={a.id}
                 data-friend-item
-                className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4 max-[359px]:gap-2"
-                style={{ background: GLASS_BG }}
+                className="flex items-center gap-3 p-3 sm:p-4 max-[359px]:gap-2"
               >
                 <div className="grid size-9 shrink-0 place-items-center rounded-full bg-white/[0.06]">
                   <Icon size={14} className="text-muted-foreground/60" />
@@ -170,7 +170,7 @@ export default function FriendsPage() {
                   </p>
                   <p className="text-micro text-muted-foreground/50 mt-0.5">{a.time}</p>
                 </div>
-              </div>
+              </GlassCard>
             );
           })}
 
@@ -182,11 +182,10 @@ export default function FriendsPage() {
               </div>
             ) : (
               data?.requests.map((f) => (
-                <div
+                <GlassCard
                   key={f.id}
                   data-friend-item
-                  className="flex items-center gap-3 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3 sm:p-4 max-[359px]:gap-2"
-                  style={{ background: GLASS_BG }}
+                  className="flex items-center gap-3 p-3 sm:p-4 max-[359px]:gap-2"
                 >
                   <div className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-[12px] font-black text-primary">
                     {f.initials}
@@ -212,7 +211,7 @@ export default function FriendsPage() {
               <X size={14} />
             </button>
                   </div>
-                </div>
+                </GlassCard>
               ))
             )
           )}

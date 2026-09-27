@@ -4,6 +4,7 @@ import { Zap, Trophy, Target, Star, Flame, Shield, Swords, Medal, User } from "l
 import { useProfileData } from "@/hooks/queries/use-profile";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
+import { Button } from "@/components/ui/button";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Flame, Zap, Medal, Star, Shield, Swords,
@@ -19,13 +20,12 @@ export default function ProfilePage() {
         {error ? (
           <div className="text-center">
             <p className="text-[13px] text-destructive">{error instanceof Error ? error.message : "Something went wrong"}</p>
-            <button
-              type="button"
+            <Button
               onClick={() => location.reload()}
-              className="mt-4 rounded-xl bg-cta px-6 py-3 text-[12px] font-bold uppercase tracking-wider text-[var(--on-accent)]"
+              className="mt-4 px-6 uppercase tracking-wider"
             >
               Retry
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />

@@ -533,6 +533,15 @@
   }
 }
 
+@layer components {
+  /* Glass surface for Button variant="glass". Declared in <components> so
+     utilities-layer hover/active background classes still win the cascade. */
+  .btn-glass {
+    border-color: var(--glass-border);
+    background-color: var(--glass-bg);
+  }
+}
+
 /*
  * Desktop font upscale (web only).
  * Applies at >=1024px (the app's desktop tier, same as --page-padding 40px).

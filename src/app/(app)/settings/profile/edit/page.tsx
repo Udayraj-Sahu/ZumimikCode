@@ -9,6 +9,7 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useProfileData } from "@/hooks/queries/use-profile";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useAuthStore } from "@/stores/auth-store";
+import { Button } from "@/components/ui/button";
 
 export default function EditProfilePage() {
   usePageMeta("Edit Profile — Exam Arena");
@@ -126,15 +127,16 @@ export default function EditProfilePage() {
           </div>
         )}
 
-        <button
-          type="button"
+        <Button
+          fullWidth
+          size="lg"
           onClick={handleSave}
           disabled={saved}
           className={cn(
-            "mt-8 flex w-full items-center justify-center gap-2 rounded-3xl py-4 text-[13px] font-bold uppercase tracking-widest outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring max-[359px]:py-3 whitespace-nowrap",
+            "mt-8 max-[359px]:py-3",
             saved
-              ? "bg-primary/30 text-primary/60 cursor-not-allowed"
-              : "bg-cta text-[var(--on-accent)] hover:opacity-90 active:scale-[0.98]",
+              ? "bg-primary/30 text-primary/60 disabled:opacity-100"
+              : "hover:opacity-90",
           )}
         >
           {saved ? (
@@ -144,7 +146,7 @@ export default function EditProfilePage() {
           ) : (
             "Save Changes"
           )}
-        </button>
+        </Button>
       </div>
       </div>
     </PageContainer>

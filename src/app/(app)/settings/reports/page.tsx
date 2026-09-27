@@ -8,6 +8,7 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useReports } from "@/hooks/queries/use-reports";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { GLASS_BG } from "@/lib/theme-tokens";
+import { Button } from "@/components/ui/button";
 
 function formatTime(s: number): string {
   const h = Math.floor(s / 3600);
@@ -48,12 +49,12 @@ export default function ReportsPage() {
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Detailed performance analytics</p>
         <div className="mt-3 flex justify-center">
-          <button
-            type="button"
-            className="flex items-center gap-1.5 rounded-full bg-cta text-[var(--on-accent)] px-4 py-2 text-micro font-bold uppercase tracking-wider outline-none transition-transform hover:scale-[1.05] active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-1.5 whitespace-nowrap"
+          <Button
+            size="sm"
+            className="max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-1.5 hover:scale-[1.05] active:scale-[0.95]"
           >
             <Download size={14} /> Export
-          </button>
+          </Button>
         </div>
       </div>
 

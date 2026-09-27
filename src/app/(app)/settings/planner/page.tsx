@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePlanner } from "@/hooks/queries/use-planner";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { GLASS_BG } from "@/lib/theme-tokens";
+import { GlassCard } from "@/components/ui/glass-card";
 
 export default function PlannerPage() {
   usePageMeta("Study Planner — Exam Arena");
@@ -42,42 +43,42 @@ export default function PlannerPage() {
         )}
 
         {error && (
-          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-6 text-center backdrop-blur-xl" style={{ background: GLASS_BG, borderColor: GLASS_BORDER }}>
+          <GlassCard className="p-6 text-center border-destructive/30 bg-destructive/5">
             <p className="text-[12px] font-semibold text-destructive">Failed to load planner data</p>
-          </div>
+          </GlassCard>
         )}
 
         {data && (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 max-[359px]:gap-2 md:items-stretch">
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
+              <GlassCard className="p-4 max-[359px]:p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <Flame size={14} className="text-primary" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">STREAK</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.weekStreak}d</p>
-              </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
+              </GlassCard>
+              <GlassCard className="p-4 max-[359px]:p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <Target size={14} className="text-chart-2" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">PLANNED</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.totalPlanned}</p>
-              </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
+              </GlassCard>
+              <GlassCard className="p-4 max-[359px]:p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <Zap size={14} className="text-chart-3" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">DONE</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.totalCompleted}</p>
-              </div>
-              <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 max-[359px]:p-3" style={{ background: GLASS_BG }}>
+              </GlassCard>
+              <GlassCard className="p-4 max-[359px]:p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <TrendingUp size={14} className="text-chart-4" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">RATE</p>
                 </div>
                 <p className="text-[20px] font-bold text-foreground">{data.stats.completionRate}%</p>
-              </div>
+              </GlassCard>
             </div>
 
             <p className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">This Week</p>

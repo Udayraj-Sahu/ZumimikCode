@@ -16,6 +16,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { Question } from "@/lib/types/sprint-session";
 import TrustBadge from "@/components/ui/trust-badge";
 import ContentFeedback from "@/components/ui/content-feedback";
+import { Button } from "@/components/ui/button";
 import { ExamShell } from "@/components/exam/exam-shell";
 import { QuestionNavigator } from "@/components/exam/question-navigator";
 import { CTA_06, CTA_30, GLASS_02, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-tokens";
@@ -253,13 +254,12 @@ function SprintContent() {
     return (
       <PageContainer className="text-center">
         <p className="text-[13px] text-muted-foreground">No sprint configuration found.</p>
-        <button
-          type="button"
+        <Button
           onClick={() => router.push("/play/configure-sprint")}
-          className="mt-4 rounded-xl bg-cta text-[var(--on-accent)] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 px-6"
         >
           Configure Sprint
-        </button>
+        </Button>
       </PageContainer>
     );
   }
@@ -270,21 +270,17 @@ function SprintContent() {
         <p className="text-[13px] font-semibold text-destructive">Failed to load sprint questions.</p>
         <p className="mt-2 text-[12px] text-muted-foreground/60">{error instanceof Error ? error.message : "Something went wrong"}</p>
         <div className="mt-6 flex justify-center gap-3">
-          <button
-            type="button"
+          <Button
+            variant="glass"
             onClick={() => router.push("/play/configure-sprint")}
-            className="rounded-xl border backdrop-blur-xl px-5 py-3 text-[12px] font-bold text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring"
-            style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
           >
             Back
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
             onClick={() => router.refresh()}
-            className="rounded-xl bg-cta text-[var(--on-accent)] px-5 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Retry
-          </button>
+          </Button>
         </div>
       </PageContainer>
     );
@@ -351,13 +347,14 @@ function SprintContent() {
         footer={
           showFeedback ? (
             <div ref={feedbackRef} className="flex flex-col items-center">
-              <button
-                type="button"
+              <Button
+                fullWidth
+                size="lg"
                 onClick={handleNext}
-                className="flex w-full items-center justify-center gap-2 rounded-3xl bg-cta text-[var(--on-accent)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+                className="max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99]"
               >
                 {isLast ? "See Results" : "Next"} <ChevronRight size={16} />
-              </button>
+              </Button>
             </div>
           ) : (
             <div className="flex justify-center gap-1.5 md:hidden">

@@ -40,6 +40,7 @@ import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { cn } from "@/lib/utils";
 import { GLASS_BG, GLASS_BORDER, RED_SOFT_06, RED_SOFT_25 } from "@/lib/theme-tokens";
+import { GlassCard } from "@/components/ui/glass-card";
 
 /* ------------------------------------------------------------------ */
 /*  Reusable row item                                                   */
@@ -186,14 +187,14 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
 /* ------------------------------------------------------------------ */
 function StatCard({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return (
-    <div className="flex-1 rounded-2xl border backdrop-blur-xl px-4 py-4 max-[359px]:p-3" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+    <GlassCard radius="2xl" className="flex-1 px-4 py-4 max-[359px]:p-3">
       <div className="flex items-center justify-between text-primary">
         {icon}
         <span className="text-[17px] font-bold tracking-[-0.02em] text-foreground">{value}</span>
       </div>
       <p className="mt-2.5 text-micro font-semibold tracking-[0.14em] text-muted-foreground/60 uppercase whitespace-nowrap">{label}</p>
       <div className="mt-2 h-[2px] w-full rounded-full bg-white/[0.04]" />
-    </div>
+    </GlassCard>
   );
 }
 
@@ -315,7 +316,7 @@ export default function SettingsPage() {
                 <p className="text-[12px] text-muted-foreground/60 font-normal">No active preps yet</p>
               </div>
             ) : (
-              <div className="flex-1 rounded-2xl border backdrop-blur-xl p-4 max-[359px]:p-3" style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}>
+              <GlassCard radius="2xl" className="flex-1 p-4 max-[359px]:p-3">
                 <div className="flex flex-wrap gap-2 max-[359px]:gap-1.5">
                   {prepExams.map((id) => (
                     <span
@@ -332,7 +333,7 @@ export default function SettingsPage() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </GlassCard>
             )}
             <button
               type="button"

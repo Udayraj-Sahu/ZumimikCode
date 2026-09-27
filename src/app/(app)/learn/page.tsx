@@ -1,5 +1,6 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
+import { GlassCard } from "@/components/ui/glass-card";
 
 import { useState, useRef, useLayoutEffect, useMemo, useEffect, Suspense } from "react";
 import { motion, AnimatePresence, type Variants } from "motion/react";
@@ -29,6 +30,7 @@ import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { useMockPapers } from "@/hooks/queries/use-mock-exam";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { AddPrepModal } from "@/components/learn/add-prep-modal";
+import { Button } from "@/components/ui/button";
 import { AdaptiveReprompt } from "@/components/adaptive/adaptive-reprompt";
 import { AdaptiveDashboard } from "@/components/adaptive/adaptive-dashboard";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
@@ -375,9 +377,8 @@ function LearnPageContent() {
                 </button>
 
                 {/* Exam Tabs */}
-                <div
-                  className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3 mt-5"
-                  style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                <GlassCard
+                  className="p-4 max-[359px]:p-3 mt-5"
                 >
                   <p className="text-micro font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase mb-2">
                     EXAM PREP
@@ -410,7 +411,7 @@ function LearnPageContent() {
                       ))}
                     </div>
                   )}
-                </div>
+                </GlassCard>
 
                 {/* Topic Cards */}
                 {prepExams.length > 0 && (
@@ -480,13 +481,12 @@ function LearnPageContent() {
                         style={{ background: GLASS_BG }}
                       >
                         <p className="text-[13px] font-semibold text-destructive">Could not load topics.</p>
-                        <button
-                          type="button"
+                        <Button
                           onClick={() => refetchDashboard()}
-                          className="mt-4 rounded-xl bg-cta text-[var(--on-accent)] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                          className="mt-4 px-5 py-2.5 hover:scale-[1.02]"
                         >
                           Retry
-                        </button>
+                        </Button>
                       </div>
                     )}
 
@@ -551,15 +551,16 @@ function LearnPageContent() {
                     </span>
                   </div>
                 ) : (
-                  <button
-                    type="button"
+                  <Button
+                    fullWidth
+                    variant="glass"
+                    size="lg"
                     onClick={() => router.push("/learn/explorer")}
-                    className="w-full mt-5 rounded-3xl border backdrop-blur-xl py-4 flex items-center justify-center gap-2 text-[13px] font-semibold text-foreground/70 transition-all hover:bg-white/[0.06] active:scale-[0.98]"
-                    style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                    className="mt-5 text-[13px] font-semibold text-foreground/70 tracking-normal"
                   >
                     EXPLORE TECHNIQUES
                     <ArrowRight size={14} />
-                  </button>
+                  </Button>
                 )}
               </>
             </motion.div>
@@ -886,10 +887,9 @@ function LearnPageContent() {
                         mockSection === "all" || p.sections.some((s) => s.label === mockSection),
                     )
                     .map((paper) => (
-                      <div
+                      <GlassCard
                         key={paper.id}
-                        className="group rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4 transition-all hover:bg-white/[0.05]"
-                        style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+                        className="group p-5 max-[359px]:p-4 transition-all hover:bg-white/[0.05]"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
@@ -944,7 +944,7 @@ function LearnPageContent() {
                             <Play size={12} strokeWidth={2.5} /> Take Test
                           </button>
                         </div>
-                      </div>
+                      </GlassCard>
                     ))}
 
                 {mockError && (
@@ -953,13 +953,12 @@ function LearnPageContent() {
                     style={{ background: GLASS_BG }}
                   >
                     <p className="text-[13px] font-semibold text-destructive">Could not load mock papers.</p>
-                    <button
-                      type="button"
+                    <Button
                       onClick={() => refetchPapers()}
-                      className="mt-4 rounded-xl bg-cta text-[var(--on-accent)] px-5 py-2.5 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                      className="mt-4 px-5 py-2.5 hover:scale-[1.02]"
                     >
                       Retry
-                    </button>
+                    </Button>
                   </div>
                 )}
 
@@ -1035,9 +1034,8 @@ function YourStatsCard({
   color: string;
 }) {
   return (
-    <div
-      className="relative rounded-3xl border backdrop-blur-xl mt-5 overflow-hidden"
-      style={{ borderColor: GLASS_BORDER, background: GLASS_BG }}
+    <GlassCard
+      className="relative mt-5 overflow-hidden"
     >
       <div
         className="absolute -top-10 -right-10 size-32 rounded-full opacity-[0.07] pointer-events-none"
@@ -1090,6 +1088,6 @@ function YourStatsCard({
           </div>
         </div>
       </div>
-    </div>
+    </GlassCard>
   );
 }

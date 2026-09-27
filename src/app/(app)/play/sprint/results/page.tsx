@@ -16,6 +16,8 @@ import { recordAdaptiveSession } from "@/services/adaptive";
 import type { SessionOutcome } from "@/lib/types/adaptive";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
 import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { Button } from "@/components/ui/button";
+import { GlassCard } from "@/components/ui/glass-card";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -101,13 +103,12 @@ function SprintResultsContent() {
     return (
       <PageContainer className="text-center">
         <p className="text-[13px] text-muted-foreground">No sprint results found.</p>
-        <button
-          type="button"
+        <Button
           onClick={() => router.push("/play/configure-sprint")}
-          className="mt-4 rounded-xl bg-cta text-[var(--on-accent)] px-6 py-3 text-[12px] font-bold outline-none transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+          className="mt-4 px-6"
         >
           Start a Sprint
-        </button>
+        </Button>
       </PageContainer>
     );
   }
@@ -130,7 +131,7 @@ function SprintResultsContent() {
 
       {/* Score row — 4 stat cards */}
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-[359px]:gap-2">
-        <div className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3.5 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
+        <GlassCard className="p-4 max-[359px]:p-3.5 text-center">
           <p className="text-micro font-bold uppercase tracking-wider text-primary">Accuracy</p>
           <p className={cn(
             "mt-1 text-[20px] font-black",
@@ -141,26 +142,26 @@ function SprintResultsContent() {
           <p className="text-micro text-muted-foreground/40 mt-0.5">
             {result.accuracy >= 80 ? "Excellent" : result.accuracy >= 50 ? "Good" : "Needs work"}
           </p>
-        </div>
-        <div className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3.5 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
+        </GlassCard>
+        <GlassCard className="p-4 max-[359px]:p-3.5 text-center">
           <p className="text-micro font-bold uppercase tracking-wider text-chart-2">XP Earned</p>
           <p className="mt-1 text-[20px] font-black text-chart-2">+{result.xpEarned}</p>
           <p className="text-micro text-muted-foreground/40 mt-0.5">points</p>
-        </div>
-        <div className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3.5 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
+        </GlassCard>
+        <GlassCard className="p-4 max-[359px]:p-3.5 text-center">
           <p className="text-micro font-bold uppercase tracking-wider text-foreground/60">Time</p>
           <p className="mt-1 text-[20px] font-black text-foreground/80">
             {formatTime(Math.round(result.totalTimeSpent))}
           </p>
           <p className="text-micro text-muted-foreground/40 mt-0.5">total</p>
-        </div>
-        <div className="rounded-3xl border backdrop-blur-xl p-4 max-[359px]:p-3.5 text-center" style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}>
+        </GlassCard>
+        <GlassCard className="p-4 max-[359px]:p-3.5 text-center">
           <p className="text-micro font-bold uppercase tracking-wider text-chart-3">Correct</p>
           <p className="mt-1 text-[20px] font-black text-chart-3">{result.score}/{result.total}</p>
           <p className="text-micro text-muted-foreground/40 mt-0.5">
             {result.score === result.total ? "Perfect!" : `${Math.round(result.score / result.total * 100)}%`}
           </p>
-        </div>
+        </GlassCard>
       </div>
 
       {/* Progress bar */}
@@ -187,21 +188,21 @@ function SprintResultsContent() {
 
       {/* CTA buttons */}
       <div className="mt-6 flex flex-col sm:flex-row gap-3 max-[359px]:gap-2">
-        <button
-          type="button"
+        <Button
           onClick={handleAnalysis}
-          className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-cta text-[var(--on-accent)] py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+          size="lg"
+          className="flex-1 hover:scale-[1.01] active:scale-[0.99] max-[359px]:py-3.5"
         >
           <BarChart3 size={16} /> Analysis
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="glass"
+          size="lg"
           onClick={() => router.push("/dashboard")}
-          className="flex flex-1 items-center justify-center gap-2 rounded-3xl border backdrop-blur-xl py-4 max-[359px]:py-3.5 text-[12px] font-bold uppercase tracking-widest text-foreground outline-none transition-colors hover:bg-white/[0.06] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
-          style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+          className="flex-1 text-[12px] active:bg-white/[0.06] max-[359px]:py-3.5"
         >
           Dashboard
-        </button>
+        </Button>
       </div>
       </div>
     </PageContainer>

@@ -15,6 +15,7 @@ import { getTemplatesByCategory } from "@/services/templates";
 import { getTemplateCategoriesForTopic } from "@/lib/topic-template-map";
 import type { SolveAlongTemplate } from "@/lib/types/template";
 import { GLASS_06, GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { Button } from "@/components/ui/button";
 
 export default function ConfigureSprintPage() {
   usePageMeta("Configure Sprint — Exam Arena");
@@ -286,8 +287,9 @@ export default function ConfigureSprintPage() {
         )}
 
         <div ref={animateSection} data-section-index={4} className="mt-6 sm:mt-8 max-[359px]:mt-5">
-          <button
-            type="button"
+          <Button
+            fullWidth
+            size="lg"
             onClick={() => {
               if (!topic) return;
               useSprintStore.getState().reset();
@@ -296,8 +298,8 @@ export default function ConfigureSprintPage() {
             }}
             disabled={!topic}
             className={cn(
-              "group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-3xl bg-cta py-4 max-[359px]:py-3.5 text-[13px] font-bold uppercase tracking-widest text-[var(--on-accent)] outline-none transition-transform hover:scale-[1.01] active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-ring sm:text-[16px] whitespace-nowrap",
-              !topic && "opacity-40 cursor-not-allowed hover:scale-100",
+              "group relative overflow-hidden max-[359px]:py-3.5 hover:scale-[1.01] active:scale-[0.99] sm:text-[16px]",
+              !topic && "disabled:opacity-40 hover:scale-100",
             )}
           >
             <span className="absolute inset-0 translate-y-full bg-gradient-to-r from-primary/0 via-white/10 to-primary/0 transition-transform duration-500 group-hover:translate-y-0" />
@@ -305,7 +307,7 @@ export default function ConfigureSprintPage() {
               {topic ? "Start Sprint" : "Select a Topic"}
               <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
-          </button>
+          </Button>
         </div>
         </div>
       </PageContainer>

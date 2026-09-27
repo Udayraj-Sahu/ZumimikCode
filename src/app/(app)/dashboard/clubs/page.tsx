@@ -6,9 +6,11 @@ import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Button } from "@/components/ui/button";
 import { MOCK_CLUBS, CLUB_FILTERS, type ClubFilter } from "@/lib/mock/clubs";
 import type { Club } from "@/lib/types/clubs";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+
 
 type Tab = "find" | "yours";
 
@@ -100,13 +102,13 @@ export default function ClubsPage() {
         </div>
       </div>
 
-      <button
-        type="button"
+      <Button
         aria-label="Create club"
-        className="fixed right-5 bottom-20 z-40 grid size-14 place-items-center rounded-full bg-cta text-[var(--on-accent)] shadow-lg shadow-primary/30 outline-none transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring max-[359px]:right-4"
+        size="icon"
+        className="fixed right-5 bottom-20 z-40 size-14 rounded-full shadow-lg shadow-primary/30 transition-all hover:scale-105 active:scale-95 max-[359px]:right-4"
       >
         <Plus size={22} strokeWidth={2.5} />
-      </button>
+      </Button>
       </div>
     </PageContainer>
   );
@@ -116,11 +118,10 @@ function ClubCard({ club }: { club: Club }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div
+    <GlassCard
       ref={cardRef}
       data-club-item
-      className="flex items-center gap-3.5 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-2.5 max-[359px]:p-3"
-      style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+      className="flex items-center gap-3.5 p-4 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-2.5 max-[359px]:p-3"
     >
       <img
         src={club.coverUrl}
@@ -153,6 +154,6 @@ function ClubCard({ club }: { club: Club }) {
       <div className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-[11px] font-black text-primary">
         {club.moderator.initials}
       </div>
-    </div>
+    </GlassCard>
   );
 }

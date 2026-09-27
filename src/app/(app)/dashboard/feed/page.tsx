@@ -6,8 +6,10 @@ import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { PageContainer } from "@/components/ui/page-container";
+import { GlassCard } from "@/components/ui/glass-card";
+import { GLASS_BG } from "@/lib/theme-tokens";
 import { FEED_HERO, FEED_CATEGORIES, FEED_STORIES, FEED_VIDEOS } from "@/lib/mock/feed";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+
 
 export default function FeedPage() {
   usePageMeta("Feed — Exam Arena");
@@ -88,11 +90,10 @@ export default function FeedPage() {
           <h2 className="text-[13px] font-bold text-foreground mb-3">Study Tips</h2>
           <div ref={scrollRef} className="flex flex-col gap-3 md:grid md:grid-cols-2 md:items-stretch md:gap-5 max-[359px]:gap-1.5">
             {FEED_STORIES.map((story) => (
-              <div
+              <GlassCard
                 key={story.id}
                 data-feed-story
-                className="flex items-center gap-3.5 rounded-3xl border border-white/[0.06] backdrop-blur-xl p-3.5 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-2.5 max-[359px]:p-3"
-                style={{ backgroundColor: GLASS_BG, borderColor: GLASS_BORDER }}
+                className="flex items-center gap-3.5 p-3.5 outline-none transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring max-[359px]:gap-2.5 max-[359px]:p-3"
               >
                 <img
                   src={story.thumbnailUrl}
@@ -113,9 +114,9 @@ export default function FeedPage() {
                     <span className="text-micro text-muted-foreground/40 font-semibold whitespace-nowrap">
                       {story.readTime}
                     </span>
-                  </div>
                 </div>
-              </div>
+                </div>
+              </GlassCard>
             ))}
           </div>
         </div>
