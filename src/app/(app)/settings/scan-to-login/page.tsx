@@ -116,7 +116,7 @@ export default function ScanToLoginPage() {
                   autoCapitalize="characters"
                   autoCorrect="off"
                   spellCheck={false}
-                  className="mt-2 w-full rounded-2xl border border-white/[0.08] bg-white/[0.04] px-4 py-4 text-center text-[22px] font-extrabold tracking-[0.3em] text-foreground placeholder:text-foreground/20 outline-none transition-colors focus:border-primary/40 max-[359px]:px-3 max-[359px]:py-3"
+                  className="mt-2 w-full rounded-2xl border border-white/[0.08] bg-white/[0.04] px-4 py-4 text-center text-[22px] font-extrabold tracking-[0.3em] text-foreground placeholder:text-muted-foreground outline-none transition-colors focus:border-primary/40 max-[359px]:px-3 max-[359px]:py-3"
                 />
               </div>
 

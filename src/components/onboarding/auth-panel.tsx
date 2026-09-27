@@ -282,7 +282,7 @@ export function AuthPanel({ onAuthSuccess, onPauseAutoSlide, onResumeAutoSlide }
               onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
               placeholder="9876543210"
               aria-label="Phone number"
-              className="flex-1 rounded-xl border border-border/60 bg-card px-4 py-3 text-fluid-base text-foreground outline-none placeholder:text-muted-foreground/30 focus:border-primary focus:ring-1 focus:ring-primary"
+              className="flex-1 rounded-xl border border-border/60 bg-card px-4 py-3 text-fluid-base text-foreground outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
               autoFocus
             />
           </div>

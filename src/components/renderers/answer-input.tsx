@@ -86,7 +86,7 @@ export default function AnswerInput({
             placeholder="Type your answer..."
             aria-label="Your answer"
             className={cn(
-              "flex-1 rounded-2xl border border-border/60 bg-card px-5 py-4 text-fluid-base font-bold text-foreground outline-none transition-all placeholder:text-muted-foreground/30 focus:border-primary focus:shadow-[0_0_0_1px_var(--primary)]",
+              "flex-1 rounded-2xl border border-border/60 bg-card px-5 py-4 text-fluid-base font-bold text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:shadow-[0_0_0_1px_var(--primary)]",
               disabled && "opacity-40 cursor-not-allowed",
             )}
           />

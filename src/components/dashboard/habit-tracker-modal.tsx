@@ -647,7 +647,7 @@ export function HabitTrackerModal({ onClose }: Props) {
               <input
                 type="text" placeholder="Habit name..." value={newName} onChange={(e) => setNewName(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") handleAddHabit(); }} autoFocus
-                className={cn("w-full rounded-xl border px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground/30 outline-none focus:border-[var(--emerald-30)] transition-colors", theme === "light" ? "border-border/50 bg-black/[0.03]" : "border-white/[0.08] bg-white/[0.04]")}
+                className={cn("w-full rounded-xl border px-4 py-3 text-[13px] text-foreground placeholder:text-muted-foreground outline-none focus:border-[var(--emerald-30)] transition-colors", theme === "light" ? "border-border/50 bg-black/[0.03]" : "border-white/[0.08] bg-white/[0.04]")}
               />
               <div className="flex items-center gap-2">
                 <span className="text-micro text-muted-foreground/40 font-semibold shrink-0">ICON</span>

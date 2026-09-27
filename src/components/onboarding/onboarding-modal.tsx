@@ -736,7 +736,7 @@ function StepName({
           if (e.key === "Enter" && value.trim().length > 0) onNext();
         }}
         placeholder="Type your name..."
-        className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground/25 outline-none focus:border-[var(--lime-bright-30)] focus:ring-1 focus:ring-[var(--lime-bright-20)] transition-all"
+        className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground outline-none focus:border-[var(--lime-bright-30)] focus:ring-1 focus:ring-[var(--lime-bright-20)] transition-all"
         autoFocus
       />
       {value.trim().length > 0 && (
