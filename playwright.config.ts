@@ -20,7 +20,7 @@ export default defineConfig({
     { name: "mobile-chrome", use: { ...devices["Pixel 7"] } },
   ],
   webServer: {
-    command: `npx serve out -l ${PORT} --no-clipboard`,
+    command: `node tests/e2e/static-server.cjs`,
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

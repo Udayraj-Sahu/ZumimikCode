@@ -308,4 +308,32 @@ Automated coverage: `src/lib/security.test.ts` (vitest + static scans). All 15 c
 - [x] **Android back button** - `enableOnBackInvokedCallback="true"` (predictive back) with `singleTask` launch mode.
 - [x] **Storage perms (as applicable)** - no CAMERA/STORAGE permissions declared - correct, since uploads use the Android Storage Access Framework picker (no runtime permission needed).
 - [x] **Notification permissions** - `POST_NOTIFICATIONS` declared for (currently dark-mode-frozen) notification feature.
-- Device tier / gaps: **deep links** - no intent-filter for `com.examarena.app`; **external links / status & navigation bars / keyboard overlap / backgrounding / resume / killed-and-reopened / file picker / camera (N/A)** - require an on-device QA pass. Splash/status bar theming uses Capacitor defaults (no plugin config in `capacitor.config.ts`).
+- Device tier / gaps: **deep links** - no intent-filter for `com.examarena.app`; **external links / status & navigation bars / keyboard overlap / backgrounding / resume / killed-and-reopened / file picker / camera (N/A)** - require an on-device QA pass. Splash/status bar theming uses Capacitor defaults (no plugin config in `capacitor.config.ts`).## Responsive & breakpoints
+
+Matrix: 11 primary screens x [320,360,375,390,414,768,1024,1280,1440,1920] + secondary screens x
+[320,375,768,1024,1280,1920], Chromium + mobile-Chrome projects. Auto-verified by
+`tests/e2e/responsive.spec.ts` (serves static `out/` via `tests/e2e/static-server.cjs`).
+
+- [x] **Nav mode at breakpoints** - floating pill nav <= 1024px, fixed sidebar (250px) >= 1025px
+  with matching `main` margin-left; pill hidden on exam flows (`/play/sprint`, `/learn/mock/run`,
+  `/learn/practice` prefixes); main keeps >= 80px bottom padding while the pill is visible.
+  Note: nav boundary moved from `lg`(1024) to `min-[1025px]` so the tablet APK keeps the floating
+  pill (product decision).
+- [x] **Nothing clipped / everything reachable** - content inside an `overflow-x:auto` rail is
+  scroll-reachable (carousels); no `position:fixed` element partially outside the viewport;
+  decorative `pointer-events:none` shapes and inline-SVG geometry excluded (not user-facing).
+- [x] **Controls fit viewport** - every a/button/input/select/textarea within the viewport at each
+  tested width, except the one explicit finding below.
+- [x] **Text is not clipped** - no unwrapped/overflowing run-of-text at any tested width.
+- [x] **No document-level horizontal scroll** - `scrollWidth <= innerWidth` on every screen/width.
+- [x] **Tables** - every data table either fits its section or lives in a scrollable stub.
+- (~) **Technique chip row at 320px** - `/learn/technique/quant-comparison` renders a non-scrolling
+  `flex gap-2` chip row (row scrollWidth 319px vs 288px available) whose last 52px round badge
+  sticks ~15px past the right edge at width 320 (button partially clipped, no scroll to reach it).
+  Repeats in both projects at 320px only. Open: allow the row to wrap or shorten the chips.
+- (~) **Landing hero decorative badge at 320px** - `/` hero's absolutely-centered floating badge
+  (non-interactive `pointer-events:none` band) extends to ~436px at width 320 (~116px of visual
+  crop, clipped by the hero section). Landing is dark-mode frozen; left for the device-tier pass.
+- Device tier (manual QA gate): true zoom 80/125/150/200%, on-device keyboard overlap, on-device
+  safe-area notches, APK floating-nav behavior, and re-checking the two `(~)` findings at 320px on
+  a real small device.

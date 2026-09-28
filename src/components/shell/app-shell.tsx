@@ -83,7 +83,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div data-theme-scope suppressHydrationWarning className={cn("min-h-screen bg-background text-foreground", theme === "light" && "light")}>
       <aside
         ref={sidebarRef}
-        className="fixed inset-y-0 left-0 z-[var(--z-nav)] hidden w-[250px] flex-col border-r border-chrome-border bg-chrome px-4 py-7 lg:flex"
+        className="fixed inset-y-0 left-0 z-[var(--z-nav)] hidden w-[250px] flex-col border-r border-chrome-border bg-chrome px-4 py-7 min-[1025px]:flex"
       >
         {/* Logo */}
         <div className="mb-12 flex items-center gap-3 pl-1.5">
@@ -200,8 +200,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <main className={cn(
-        "lg:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pt-[max(0px,env(safe-area-inset-top))] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
-        isExamFlow ? "pb-0" : "pb-[max(calc(var(--bottom-nav-height)+2rem),env(safe-area-inset-bottom))] lg:pb-0",
+        "min-[1025px]:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pt-[max(0px,env(safe-area-inset-top))] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
+        isExamFlow ? "pb-0" : "pb-[max(calc(var(--bottom-nav-height)+2rem),env(safe-area-inset-bottom))] min-[1025px]:pb-0",
       )}>
         <div key={pathname} ref={pageRef}>
           {children}
@@ -214,8 +214,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         data-tour-mobile-nav
         aria-label="Primary mobile"
         className={cn(
-          "fixed inset-x-0 bottom-[calc(1rem+max(0px,env(safe-area-inset-bottom)))] z-40 flex justify-center px-5",
-          isExamFlow ? "hidden" : "lg:hidden",
+          "fixed inset-x-0 bottom-[calc(1rem+max(0px,env(safe-area-inset-bottom)))] z-40 justify-center px-5",
+          isExamFlow ? "hidden" : "flex min-[1025px]:hidden",
           "pointer-events-none",
         )}
       >
