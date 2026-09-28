@@ -153,7 +153,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
   return (
     <div className="relative flex flex-col items-center pt-2 pb-1 text-center">
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-25) 0%, transparent 70%)" }} />
-      <div className="relative mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
+      <div className="relative mb-4 inline-flex items-center gap-2 pill px-4 py-1.5">
           <Settings size={12} className="text-primary" />
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
         </div>

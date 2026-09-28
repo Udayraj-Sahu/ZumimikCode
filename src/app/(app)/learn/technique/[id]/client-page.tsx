@@ -52,7 +52,7 @@ export function ClientTechniquePage() {
     <PageContainer className="pb-6">
       <div className="mx-auto w-full md:max-w-3xl">
       <div ref={headerRef} className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-2">
+        <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-2">
           <Lightbulb size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">TECHNIQUE</span>
         </div>

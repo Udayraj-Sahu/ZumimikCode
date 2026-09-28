@@ -211,7 +211,7 @@ function ModeHeader({
           </span>
         </div>
         {daysRemaining !== null && (
-          <div className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/[0.07] px-3 py-1.5">
+          <div className="pill inline-flex shrink-0 items-center gap-1.5 px-3 py-1.5">
             <CalendarDays size={11} style={{ color: profile.accent }} />
             <span className="text-[10px] font-bold" style={{ color: profile.accent }}>
               {daysRemaining} days left
@@ -399,7 +399,7 @@ function GapCloserBlock({ ctx }: { ctx: VariantCtx }) {
             {gaps.map((t) => (
               <span
                 key={t.id}
-                className="rounded-full border border-white/[0.07] px-3 py-1 text-[10px] font-bold text-muted-foreground/70"
+                className="pill px-3 py-1 text-[10px] font-bold text-muted-foreground/70"
                 style={{ background: `${t.color}12` }}
               >
                 {t.name} · {t.mastery}%

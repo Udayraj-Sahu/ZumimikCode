@@ -14,6 +14,7 @@ export function CapacitorInit() {
         const { Capacitor } = await import("@capacitor/core");
         if (!Capacitor.isNativePlatform()) return;
         setPlatform(Capacitor.getPlatform() as "android" | "ios");
+        document.documentElement.dataset.nativePlatform = Capacitor.getPlatform();
 
         // Track SPA navigation depth for back button
         const origPush = history.pushState.bind(history);

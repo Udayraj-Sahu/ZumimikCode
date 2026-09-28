@@ -83,7 +83,7 @@ export default function AnalysisPage() {
       <div className="mx-auto w-full md:max-w-3xl">
       {/* Centered pill badge */}
       <div className="flex flex-col items-center gap-2 mb-6 max-[359px]:mb-4 max-[359px]:gap-1.5">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-5 py-2 max-[359px]:px-4">
+        <div className="inline-flex items-center gap-2 pill px-5 py-2 max-[359px]:px-4">
           <TrendingUp size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
         </div>

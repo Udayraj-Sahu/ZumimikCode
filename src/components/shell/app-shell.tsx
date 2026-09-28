@@ -200,7 +200,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <main className={cn(
-        "min-[1025px]:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pt-[max(0px,env(safe-area-inset-top))] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
+        "min-[1025px]:ml-[250px] h-dvh overflow-y-auto overflow-x-hidden pt-[var(--sat)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
         isExamFlow ? "pb-0" : "pb-[max(calc(var(--bottom-nav-height)+2rem),env(safe-area-inset-bottom))] min-[1025px]:pb-0",
       )}>
         <div key={pathname} ref={pageRef}>

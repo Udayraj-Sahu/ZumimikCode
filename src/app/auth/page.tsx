@@ -266,7 +266,7 @@ export default function AuthPage() {
               </div>
 
               <div className="mt-4 flex items-center justify-center gap-2">
-                <button type="button" onClick={handleCopy} disabled={!code} className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-[11px] font-bold text-foreground/70 transition-all hover:bg-white/[0.07] active:scale-95 disabled:opacity-50">
+                <button type="button" onClick={handleCopy} disabled={!code} className="pill flex items-center gap-1.5 px-4 py-2 text-[11px] font-bold text-foreground/70 transition-all hover:bg-[var(--glass-07)] active:scale-95 disabled:opacity-50">
                   {copied ? <Check size={13} className="text-[var(--emerald)]" /> : <Copy size={13} />}
                   {copied ? "Code copied" : code ? `Code: ${code}` : "Generating code…"}
                 </button>

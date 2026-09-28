@@ -240,7 +240,7 @@ function LearnPageContent() {
       <div className="mx-auto w-full md:max-w-3xl">
       {/* Page header — matches app pattern */}
       <header className="mb-5">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 max-[359px]:px-3">
+        <div className="inline-flex items-center gap-2 pill px-4 py-1.5 max-[359px]:px-3">
           <BookOpen size={12} className="text-primary" />
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LEARN</span>
         </div>
@@ -577,7 +577,7 @@ function LearnPageContent() {
             >
               {/* Toolbar — pill + gated ADD PREP */}
               <div className="flex items-center justify-between gap-3 max-[359px]:gap-1.5">
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 max-[359px]:px-3 backdrop-blur-sm">
+                <div className="inline-flex items-center gap-2 pill px-4 py-1.5 max-[359px]:px-3">
                   <CalendarDays size={12} style={{ color: adaptiveAccent }} />
                   <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground/70 whitespace-nowrap">
                     {todayLabel}

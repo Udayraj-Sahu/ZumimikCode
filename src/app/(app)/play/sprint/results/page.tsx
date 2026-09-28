@@ -119,7 +119,7 @@ function SprintResultsContent() {
       {/* Header */}
       <div ref={resultRef}>
         <div className="flex justify-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-5 py-2 max-[359px]:px-4">
+          <div className="inline-flex items-center gap-2 pill px-5 py-2 max-[359px]:px-4">
             <BarChart3 size={10} className="text-primary" />
             <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</span>
           </div>

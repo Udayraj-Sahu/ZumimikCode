@@ -55,6 +55,8 @@
   --content-max-width: 64rem;
   --header-height: 56px;
   --bottom-nav-height: 64px;
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
@@ -69,6 +71,11 @@
   --z-intro: 200;
   --z-splash: 9999;
 
+}
+
+/* Android WebView often reports env(safe-area-inset-*) as 0; floor it to clear the status bar */
+:root[data-native-platform="android"] {
+  --sat: max(env(safe-area-inset-top, 0px), 24px);
 }
 
 /* Design palette (single source of truth; mirrors src/lib/theme-tokens.ts) */
@@ -548,6 +555,32 @@
   .btn-glass {
     border-color: var(--glass-border);
     background-color: var(--glass-bg);
+  }
+
+  /* Pill badge (page headers, stat pills, chips).
+     Declared in <components> so utilities-layer hover/active classes still win.
+     Theme-aware by construction: border/bg come from the --glass tokens, which
+     flip in .light, instead of raw white alphas that vanished on light surfaces. */
+  .pill {
+    border-radius: 9999px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--glass-border);
+    background-color: var(--glass-05);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  /* Light mode only: give the pill a lit sheen so it reads as a raised,
+     polished chip on the white surface. Dark mode is untouched. */
+  .light .pill {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 60%);
+    background-color: var(--glass-05);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 0 0 1px var(--cta-12),
+      0 1px 2px rgba(15, 23, 42, 0.06),
+      0 8px 22px -10px var(--cta-45);
   }
 }
 

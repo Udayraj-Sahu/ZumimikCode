@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CYAN, CYAN_06, CYAN_14, CYAN_22, EMERALD, SKY } from "@/lib/theme-tokens";
-import { Copy, Share2, Check, Users2 } from "lucide-react";
+import { EMERALD, CTA_LIME, LIME_DEEPER } from "@/lib/theme-tokens";
+import { GlassCard } from "@/components/ui/glass-card";
+import { Share2, KeyRound, QrCode, Copy, Check } from "lucide-react";
 import { Capacitor } from "@capacitor/core";
 import { Share } from "@capacitor/share";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useReferralStore } from "@/stores/referral-store";
-import { cn } from "@/lib/utils";
 
-const ACCENT = CYAN;
+const REWARD_XP = 50;
 
 export function InviteCard() {
   const firstName = useOnboardingStore((s) => s.firstName);
@@ -21,6 +21,7 @@ export function InviteCard() {
   }, [firstName, ensureCode]);
 
   const shareText = `Join me on Exam Arena — use my invite code ${code} to get started.`;
+  const earnedXp = friendsJoined * REWARD_XP;
 
   const handleCopy = async () => {
     if (!code) return;
@@ -53,55 +54,104 @@ export function InviteCard() {
   };
 
   return (
-    <div
-      className="relative overflow-hidden rounded-3xl border p-5 h-full"
-      style={{ borderColor: CYAN_14, background: "linear-gradient(135deg, var(--cyan-05) 0%, var(--glass-02) 60%)" }}
-    >
-      <div className="absolute -top-12 -right-12 size-32 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cyan-45), transparent 70%)" }} />
-
-      <div className="relative flex flex-wrap items-center gap-x-3 gap-y-2">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl" style={{ background: `${ACCENT}1A`, boxShadow: `inset 0 0 0 1px ${ACCENT}22` }}>
-            <Users2 size={16} style={{ color: ACCENT }} />
-          </div>
-          <div>
-            <p className="text-[15px] font-bold tracking-[-0.02em] text-foreground leading-tight">Invite friends</p>
-            <p className="text-[10.5px] text-muted-foreground/45 font-normal leading-tight">Share your code, earn bonus XP</p>
-          </div>
+    <GlassCard className="h-full p-5">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--glass-border)] bg-[var(--glass-05)] text-primary">
+          <Share2 size={17} />
         </div>
-        <div className="ml-auto flex items-center gap-1.5 text-micro text-muted-foreground/60 font-medium">
-          <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1">{invitesSent} invites</span>
-          <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1">{friendsJoined} joined</span>
+
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <span
+            className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--emerald)]"
+            style={{ boxShadow: "0 0 8px var(--emerald-50)" }}
+          />
+          <h3 className="truncate text-[15px] font-semibold tracking-[-0.02em] text-foreground">
+            Invite friends &amp; family
+          </h3>
+        </div>
+
+        <span className="shrink-0 rounded-full bg-[var(--emerald-10)] px-3 py-1.5 font-mono text-[11px] font-bold tracking-wide text-[var(--emerald)] ring-1 ring-[var(--emerald-20)]">
+          +{REWARD_XP} XP
+        </span>
+      </div>
+
+      {/* Invite code panel */}
+      <div className="mt-4 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-02)] p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <KeyRound size={15} className="text-primary" />
+            <span className="font-mono text-[11px] font-bold uppercase tracking-[0.12em]">
+              Invite Code
+            </span>
+          </div>
+          <span className="rounded-md bg-[var(--emerald-10)] px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--emerald)]">
+            Active
+          </span>
+        </div>
+
+        <div className="mt-3 flex items-center gap-3">
+          <div className="flex h-12 min-w-0 flex-1 items-center justify-between rounded-full border border-[var(--glass-border)] bg-[var(--glass-05)] px-4">
+            <span className="truncate select-all font-mono text-[13px] font-bold tracking-wider text-foreground">
+              {code ?? "——————"}
+            </span>
+            <QrCode size={17} className="shrink-0 text-muted-foreground" />
+          </div>
+
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="flex h-12 items-center gap-2 rounded-full border border-[var(--glass-border)] bg-[var(--glass-05)] px-5 font-mono text-[12px] font-bold uppercase tracking-wider text-foreground transition-all hover:bg-[var(--glass-07)] active:scale-95"
+          >
+            {copied ? <Check size={15} style={{ color: EMERALD }} /> : <Copy size={15} className="text-primary" />}
+            <span style={copied ? { color: EMERALD } : undefined}>{copied ? "Done" : "Copy"}</span>
+          </button>
         </div>
       </div>
 
-      <div className="relative mt-4 flex items-center gap-2">
-        <div className="flex-1 rounded-xl border px-4 py-3 text-center" style={{ borderColor: CYAN_22, background: CYAN_06 }}>
-          <span className="text-[16px] font-extrabold tracking-[0.14em] text-foreground select-all">{code ?? "—"}</span>
-        </div>
-        <button
-          type="button"
-          onClick={handleCopy}
-          className="flex items-center gap-1.5 rounded-xl px-4 py-3 text-[11px] font-bold text-[var(--on-accent)] transition-all active:scale-95"
-          style={{ background: copied ? EMERALD : `linear-gradient(90deg, ${ACCENT}, ${SKY})` }}
-        >
-          {copied ? <Check size={14} /> : <Copy size={14} />}
-          {copied ? "Copied" : "Copy"}
-        </button>
+      {/* Stats */}
+      <div className="mt-4 grid grid-cols-3 gap-2">
+        <Stat label="Invites" value={`${invitesSent}`} valueClass="text-foreground" />
+        <Stat label="Joined" value={`${friendsJoined}`} valueClass="text-[var(--emerald)]" />
+        <Stat label="Earned" value={`${earnedXp} XP`} valueClass="text-primary" />
       </div>
 
+      {/* CTA */}
       <button
         type="button"
         onClick={handleShare}
-        className="relative mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.04] py-3 text-[11px] font-bold text-foreground/80 transition-all hover:bg-white/[0.07] active:scale-[0.98]"
+        className="mt-4 flex h-12 w-full items-center justify-center gap-2.5 rounded-full font-mono text-[13px] font-bold uppercase tracking-wide text-[var(--on-accent)] transition-all active:scale-[0.98]"
+        style={{
+          background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DEEPER})`,
+          boxShadow: "0 0 24px var(--cta-30)",
+        }}
       >
-        <Share2 size={14} className="text-[var(--cyan)]" />
+        <Share2 size={18} />
         Share invite link
       </button>
 
-      <p className="relative mt-3 text-micro text-muted-foreground/60 font-normal">
-        Your friend gets a head start with 50 bonus XP when they sign up.
+      <p className="mt-3 px-1 text-center font-mono text-[11px] leading-relaxed text-muted-foreground">
+        Your friend gets a head start with {REWARD_XP} bonus XP when they sign up.
       </p>
+    </GlassCard>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  valueClass,
+}: {
+  label: string;
+  value: string;
+  valueClass: string;
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-02)] px-1 py-3.5">
+      <span className="font-mono text-[9.5px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+        {label}
+      </span>
+      <span className={`mt-1.5 font-mono text-[12px] font-bold uppercase ${valueClass}`}>{value}</span>
     </div>
   );
 }

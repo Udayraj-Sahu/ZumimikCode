@@ -88,7 +88,7 @@ export function ResumeProtocolCard({
   if (!visibleSnapshot) {
     if (!showStartEntry) return null;
     return (
-      <div className={cn("mt-4 px-5", className)}>
+      <div className={cn("mt-4", className)}>
         <button
           type="button"
           onClick={() => router.push(startHref)}
@@ -102,7 +102,7 @@ export function ResumeProtocolCard({
   }
 
   return (
-    <div className={cn("mt-4 px-5", className)}>
+    <div className={cn("mt-4", className)}>
       <div className="relative h-full overflow-hidden rounded-3xl border backdrop-blur-xl" style={{ borderColor: GLASS_BORDER }}>
         <div className="absolute left-0 right-0 top-0 h-[3px]" style={{ background: `linear-gradient(90deg, ${accent}, ${accentSecondary})` }} />
 

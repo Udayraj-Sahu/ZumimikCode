@@ -449,7 +449,7 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative pt-8 pb-2 text-center max-[359px]:pt-5">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 mb-4">
+        <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-4">
           <Sparkles size={12} className="text-primary" />
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
         </div>
@@ -459,11 +459,11 @@ export default function DashboardPage() {
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
         <div data-tour-streak className="mt-5 flex items-center justify-center gap-3">
-          <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-md px-4 py-2.5">
+          <div className="flex items-center gap-2 pill px-4 py-2.5">
             <Flame size={15} className="text-[var(--orange)]" strokeWidth={2.5} />
             <span className="text-[13px] font-semibold tracking-[-0.01em] text-[var(--orange)]">{streak.current} Day</span>
           </div>
-          <div className="flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-md px-4 py-2.5">
+          <div className="flex items-center gap-2 pill px-4 py-2.5">
             <Zap size={15} className="text-primary" strokeWidth={2.5} />
             <span className="text-[13px] font-semibold tracking-[-0.01em] text-primary">{streak.xp.toLocaleString()} XP</span>
           </div>
@@ -590,7 +590,7 @@ export default function DashboardPage() {
                 <button
                   type="button"
                   onClick={() => router.push("/dashboard/analytics")}
-                  className="flex items-center gap-1 rounded-full border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-micro font-bold text-foreground/50 transition-all hover:bg-white/[0.06] hover:text-foreground/80 active:scale-95"
+                  className="pill flex items-center gap-1 px-3 py-1.5 text-micro font-bold text-foreground/50 transition-all hover:bg-[var(--glass-07)] hover:text-foreground/80 active:scale-95"
                 >
                   Details
                   <ArrowUpRight size={10} />
@@ -943,7 +943,7 @@ export default function DashboardPage() {
           </div>
         </GlassCard>
         {hasResume && (
-          <ResumeProtocolCard accent={LIME} className="mt-4 px-5 md:mt-0 md:px-0 md:min-w-0 md:h-full" />
+          <ResumeProtocolCard accent={LIME} className="md:mt-0 md:min-w-0 md:h-full" />
         )}
       </div>
 
