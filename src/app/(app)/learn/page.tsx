@@ -284,29 +284,12 @@ function LearnPageContent() {
                 >
                   {/* Top light bevel — only on the raised active key */}
                   <div
-                    className="absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
-                    style={{
-                      opacity: isActive ? 1 : 0,
-                      background:
-                        "linear-gradient(90deg, transparent, var(--glass-70), transparent)",
-                    }}
+                    className="tab-key-bevel absolute inset-x-1.5 top-0 h-px rounded-full transition-opacity duration-500 ease-out pointer-events-none"
+                    style={{ opacity: isActive ? 1 : 0 }}
                   />
                   <div
-                    className={`flex flex-col items-center justify-center gap-1.5 py-4 rounded-2xl transition-all duration-500 ease-out ${isActive ? "font-semibold" : "font-medium"}`}
-                    style={
-                      isActive
-                        ? {
-                            background:
-                              "linear-gradient(180deg, var(--cta-18), var(--cta-05))",
-                            boxShadow:
-                              "0 8px 18px var(--black-40), 0 2px 4px var(--black-30), inset 0 1px 0 var(--glass-35), inset 0 -2px 6px var(--black-35)",
-                          }
-                        : {
-                            background: GLASS_02,
-                            boxShadow:
-                              "inset 0 2px 4px var(--black-50), inset 0 -1px 1px var(--glass-bg)",
-                          }
-                    }
+                    className={`tab-key flex flex-col items-center justify-center gap-1.5 py-4 rounded-2xl transition-all duration-500 ease-out ${isActive ? "font-semibold" : "font-medium"}`}
+                    data-active={isActive ? "true" : undefined}
                   >
                     <motion.span
                       animate={{ scale: isActive ? 1.05 : 1 }}
@@ -316,35 +299,21 @@ function LearnPageContent() {
                       <m.Icon
                         size={16}
                         strokeWidth={2.2}
-                        style={{ color: isActive ? "var(--accent)" : GLASS_45 }}
+                        className="tab-key-icon"
+                        data-active={isActive ? "true" : undefined}
                       />
                     </motion.span>
                     <span
-                      className="relative z-10 text-[11px] leading-none tracking-[0.02em] transition-colors duration-500 ease-out whitespace-nowrap"
-                      style={
-                        isActive
-                          ? {
-                              color: "var(--accent)",
-                              textShadow: "0 1px 1px var(--black-60)",
-                            }
-                          : {
-                              color: GLASS_50,
-                              textShadow: "0 1px 2px var(--black-80)",
-                            }
-                      }
+                      className="tab-key-label relative z-10 text-[11px] leading-none tracking-[0.02em] transition-colors duration-500 ease-out whitespace-nowrap"
+                      data-active={isActive ? "true" : undefined}
                     >
                       {m.label}
                     </span>
                   </div>
                   {/* Bottom drop shadow for the raised key */}
                   <div
-                    className="absolute -bottom-2 left-2 right-2 h-3 rounded-full transition-opacity duration-500 ease-out pointer-events-none"
-                    style={{
-                      opacity: isActive ? 1 : 0,
-                      background:
-                        "radial-gradient(ellipse at center, var(--black-50), transparent 70%)",
-                      filter: "blur(4px)",
-                    }}
+                    className="tab-key-drop absolute -bottom-2 left-2 right-2 h-3 rounded-full transition-opacity duration-500 ease-out pointer-events-none"
+                    style={{ opacity: isActive ? 1 : 0, filter: "blur(4px)" }}
                   />
                 </motion.button>
               );
@@ -403,7 +372,7 @@ function LearnPageContent() {
                             "text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all",
                             activeDomain === id
                               ? "bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] text-[var(--on-accent)] shadow-[0_0_12px_var(--cta-25)]"
-                              : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
+                              : "pill bg-[var(--glass-05)] text-muted-foreground",
                           )}
                         >
                           {DOMAIN_LABELS[id]}

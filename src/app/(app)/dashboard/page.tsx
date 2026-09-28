@@ -454,7 +454,8 @@ export default function DashboardPage() {
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2]">
-          Welcome back, <span className="bg-gradient-to-r from-primary via-[var(--lime-pale)] to-primary bg-clip-text text-transparent">{displayName}</span>
+          <span className="italic">Welcome back,</span>{" "}
+          <span className="bg-gradient-to-r from-primary via-[var(--lime-pale)] to-primary bg-clip-text text-transparent">{displayName}</span>
         </h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
@@ -922,7 +923,7 @@ export default function DashboardPage() {
                 key={q.label}
                 type="button"
                 onClick={() => router.push(q.href)}
-                className="group flex flex-col items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] py-4 transition-all hover:bg-white/[0.07] active:scale-95"
+                className="tile-shine group flex flex-col items-center gap-3 rounded-2xl border border-[var(--glass-07)] py-4 outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <div className="relative">
                   <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-md" style={{ background: q.color }} />
@@ -934,8 +935,8 @@ export default function DashboardPage() {
               </button>
               );
             })}
-            <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-white/[0.06] bg-transparent py-4 opacity-35">
-              <div className="h-11 w-11 rounded-full flex items-center justify-center border border-dashed border-white/10">
+            <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-[var(--glass-07)] bg-transparent py-4 opacity-35">
+              <div className="h-11 w-11 rounded-full flex items-center justify-center border border-dashed border-[var(--glass-10)]">
                 <Plus size={15} className="text-muted-foreground" />
               </div>
               <span className="text-micro font-medium text-muted-foreground text-center leading-tight tracking-[0.01em]">Coming Soon</span>

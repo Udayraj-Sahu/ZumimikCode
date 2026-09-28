@@ -144,18 +144,12 @@ export default function PlayPage() {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "flex flex-col items-center gap-2 py-3 rounded-2xl transition-all max-[359px]:py-2.5 max-[359px]:gap-1.5",
-                isActive
-                  ? "border border-white/[0.08] bg-white/[0.06] backdrop-blur-xl shadow-lg"
-                  : "border border-transparent bg-white/[0.02]"
-              )}
+              className="tab-tile flex flex-col items-center gap-2 py-3 rounded-2xl transition-all max-[359px]:py-2.5 max-[359px]:gap-1.5"
+              data-active={isActive ? "true" : undefined}
             >
               <div
-                className="h-9 w-9 rounded-xl flex items-center justify-center transition-all"
-                style={{
-                  background: isActive ? `${tab.color}18` : GLASS_BG,
-                }}
+                className="tab-tile-chip h-9 w-9 rounded-xl flex items-center justify-center transition-all"
+                style={isActive ? { background: `${tab.color}18` } : undefined}
               >
                 <Icon size={16} strokeWidth={2.2} style={{ color: isActive ? tab.color : SLATE_DARK }} />
               </div>

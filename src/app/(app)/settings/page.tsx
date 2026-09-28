@@ -324,8 +324,8 @@ export default function SettingsPage() {
                       className={cn(
                         "text-[11px] font-semibold rounded-full px-3.5 py-1.5 transition-all max-[359px]:px-3 whitespace-nowrap",
                         id === targetExam
-                          ? "bg-primary/10 text-primary border border-primary/20"
-                          : "bg-white/[0.04] text-foreground/80 border border-white/[0.06]",
+                          ? "pill-sheen bg-primary/10 text-primary border border-primary/20"
+                          : "pill bg-[var(--glass-05)] text-foreground/80",
                       )}
                     >
                       {DOMAIN_LABELS[id]}

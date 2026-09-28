@@ -557,31 +557,263 @@
     background-color: var(--glass-bg);
   }
 
-  /* Pill badge (page headers, stat pills, chips).
-     Declared in <components> so utilities-layer hover/active classes still win.
-     Theme-aware by construction: border/bg come from the --glass tokens, which
-     flip in .light, instead of raw white alphas that vanished on light surfaces. */
-  .pill {
-    border-radius: 9999px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: var(--glass-border);
-    background-color: var(--glass-05);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-  }
+  /* Pill/tile surfaces are declared unlayered below so their border and
+     background states win over the layered Tailwind utilities. */
+}
 
-  /* Light mode only: give the pill a lit sheen so it reads as a raised,
-     polished chip on the white surface. Dark mode is untouched. */
-  .light .pill {
-    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 60%);
-    background-color: var(--glass-05);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.95),
-      inset 0 0 0 1px var(--cta-12),
-      0 1px 2px rgba(15, 23, 42, 0.06),
-      0 8px 22px -10px var(--cta-45);
-  }
+/*
+ * Pill badges + inner tiles.
+ * Unlayered on purpose: layered Tailwind utilities (border-[...], bg-[...]) are
+ * emitted after @layer components, so a layered hover rule would lose to them.
+ * These must win to control border/background on hover and press.
+ * Interactivity covers hover (pointer devices) and :active/:focus-visible (touch
+ * devices, incl. the Android WebView, where :hover never fires).
+ * All colours come from tokens that flip in .light, so both themes are covered.
+ */
+.pill {
+  border-radius: 9999px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--glass-border);
+  background-color: var(--glass-05);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* Light mode only: a lit sheen so the pill reads as a raised, polished chip.
+   Declared unlayered so it also wins over utility box-shadows. */
+.light .pill,
+.light .pill-sheen {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 60%);
+  background-color: var(--glass-05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 0 1px var(--cta-12),
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 8px 22px -10px var(--cta-45);
+}
+
+/* Shine-only variant for pills that already carry their own accent colours
+   (selected/active states). Adds the light-mode sheen without touching the
+   background or border those states set. */
+.light .pill-sheen {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0) 60%);
+}
+
+.pill:hover,
+.pill:focus-visible {
+  border-color: var(--cta-25);
+  background-color: var(--glass-07);
+}
+
+.light .pill:hover,
+.light .pill:focus-visible {
+  border-color: var(--cta-35);
+  background-color: var(--glass-05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 0 0 1px var(--cta-20),
+    0 1px 2px rgba(15, 23, 42, 0.07),
+    0 10px 26px -10px var(--cta-45);
+}
+
+/* Inner tiles (e.g. Quick Access buttons): a softer version of the .pill
+   treatment so pills stay the brightest surfaces on the page. */
+.tile-shine {
+  background-color: var(--glass-03);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 4px 12px -10px var(--cta-30);
+  transition-property: transform, box-shadow, background-color, border-color;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-duration: 260ms;
+}
+
+.light .tile-shine {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0) 70%);
+  background-color: var(--glass-03);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 1px 1px rgba(15, 23, 42, 0.04),
+    0 4px 12px -8px var(--cta-30);
+}
+
+/* Hover / keyboard focus: the tile lifts off the card, so it pops out.
+   Neutral shadow only — no coloured halo, the lift does the work. */
+.tile-shine:hover,
+.tile-shine:focus-visible {
+  transform: translateY(-4px) scale(1.025);
+  border-color: var(--cta-35);
+  background-color: var(--glass-07);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 14px 26px -14px rgba(0, 0, 0, 0.7);
+}
+
+.light .tile-shine:hover,
+.light .tile-shine:focus-visible {
+  transform: translateY(-4px) scale(1.025);
+  border-color: var(--cta-40);
+  background-color: var(--glass-05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    0 1px 2px rgba(15, 23, 42, 0.08),
+    0 16px 30px -14px rgba(15, 23, 42, 0.28);
+}
+
+/* Touch/press: :hover never fires on touch, so pressing gives a dip.
+   Declared after the hover rule so a mouse-down on a hovered tile dips. */
+.tile-shine:active {
+  transform: scale(0.97);
+  border-color: var(--cta-35);
+  background-color: var(--glass-07);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 4px 10px -8px rgba(0, 0, 0, 0.6);
+}
+
+.light .tile-shine:active {
+  border-color: var(--cta-40);
+  background-color: var(--glass-05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(15, 23, 42, 0.07),
+    0 6px 16px -12px rgba(15, 23, 42, 0.22);
+}
+
+/*
+ * Learn tab switcher (the 3D push keys: Topic Explorer / Adaptive Learning / Mock).
+ * The base rules are the existing dark-mode values verbatim. Light mode only gets
+ * overrides, because the effect is carved out of black inset shadows and white
+ * glass tokens, which read as smudges on a white surface. Dark mode is untouched.
+ */
+.tab-key {
+  background: var(--glass-02);
+  box-shadow:
+    inset 0 2px 4px var(--black-50),
+    inset 0 -1px 1px var(--glass-bg);
+}
+
+.tab-key[data-active="true"] {
+  background: linear-gradient(180deg, var(--cta-18), var(--cta-05));
+  box-shadow:
+    0 8px 18px var(--black-40),
+    0 2px 4px var(--black-30),
+    inset 0 1px 0 var(--glass-35),
+    inset 0 -2px 6px var(--black-35);
+}
+
+.tab-key-icon {
+  color: var(--glass-45);
+}
+
+.tab-key-icon[data-active="true"] {
+  color: var(--accent);
+}
+
+.tab-key-label {
+  color: var(--glass-50);
+  text-shadow: 0 1px 2px var(--black-80);
+}
+
+.tab-key-label[data-active="true"] {
+  color: var(--accent);
+  text-shadow: 0 1px 1px var(--black-60);
+}
+
+.tab-key-bevel {
+  background: linear-gradient(90deg, transparent, var(--glass-70), transparent);
+}
+
+.tab-key-drop {
+  background: radial-gradient(ellipse at center, var(--black-50), transparent 70%);
+}
+
+/* Light mode: flatten the carved-black look into a soft raised card. */
+.light .tab-key {
+  background: var(--glass-02);
+  box-shadow:
+    inset 0 1px 2px rgba(15, 23, 42, 0.05),
+    0 1px 1px rgba(15, 23, 42, 0.03);
+}
+
+.light .tab-key[data-active="true"] {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, var(--cta-06) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 6px 16px -8px var(--cta-45);
+}
+
+.light .tab-key-icon {
+  color: var(--muted-foreground);
+}
+
+.light .tab-key-label {
+  color: var(--muted-foreground);
+  text-shadow: none;
+}
+
+.light .tab-key-label[data-active="true"] {
+  color: var(--accent);
+  text-shadow: none;
+}
+
+.light .tab-key-bevel {
+  background: linear-gradient(90deg, transparent, var(--cta-35), transparent);
+}
+
+.light .tab-key-drop {
+  background: radial-gradient(ellipse at center, rgba(15, 23, 42, 0.10), transparent 70%);
+}
+
+/*
+ * Play tab switcher (Duels / Sprints / Arena / ...).
+ * Dark values mirror the previous inline styles. Light mode gets the sheen so the
+ * active tab reads as a raised chip instead of a faint white-on-white block.
+ */
+.tab-tile {
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  background: var(--glass-02);
+}
+
+.tab-tile[data-active="true"] {
+  border-color: var(--glass-10);
+  background: var(--glass-07);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.tab-tile-chip {
+  background: var(--glass-bg);
+}
+
+.light .tab-tile {
+  border-color: var(--glass-07);
+  background: var(--glass-02);
+}
+
+.light .tab-tile[data-active="true"] {
+  border-color: var(--cta-25);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, var(--glass-05) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 8px 22px -8px var(--cta-45);
+}
+
+.light .tab-tile:hover,
+.light .tab-tile:focus-visible {
+  border-color: var(--cta-35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    0 1px 2px rgba(15, 23, 42, 0.07),
+    0 10px 26px -10px var(--cta-45);
 }
 
 /*
