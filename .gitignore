@@ -9,3 +9,4 @@ public/sw.js
 tsconfig.tsbuildinfo
 playwright-report/
 test-results/
+app-debug.apk
