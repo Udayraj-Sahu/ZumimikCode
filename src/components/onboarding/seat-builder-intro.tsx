@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { BG_MOSS, FOREST, LIME, LIME_LIGHT, LIME_MID_2, PANEL } from "@/lib/theme-tokens";
+import { LIME, LIME_LIGHT, LIME_MID_2 } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
@@ -97,7 +97,7 @@ function SectionTitle({ marker, title, tag }: { marker: string; title: string; t
         </span>
         <h2 className="text-[10px] font-black tracking-[0.18em] text-foreground">{title}</h2>
       </div>
-      <span className="keep-white shrink-0 rounded-full border border-white/10 bg-black/30 px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]">
+      <span className="shrink-0 rounded-full border border-white/[0.07] bg-white/[0.02] px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]">
         {tag}
       </span>
     </div>
@@ -153,10 +153,10 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 aria-checked={selected}
                 onClick={() => setPrimaryId(p.id)}
                 className={cn(
-                  "relative w-full overflow-hidden rounded-2xl border p-3.5 text-left transition",
+                  "relative w-full overflow-hidden rounded-[16px] border p-3.5 text-left transition",
                   selected
                     ? "border-[var(--lime-50)] bg-[var(--lime-05)]"
-                    : "border-white/[0.07] bg-black/25 hover:border-white/25",
+                    : "border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16]",
                 )}
               >
                 {selected && (
@@ -235,10 +235,10 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 aria-pressed={added}
                 onClick={() => toggleSeat(s.id)}
                 className={cn(
-                  "w-full rounded-2xl border p-3.5 text-left transition",
+                  "w-full rounded-[16px] border p-3.5 text-left transition",
                   added
                     ? "border-[var(--lime-40)] bg-[var(--lime-04)]"
-                    : "border-white/[0.07] bg-black/25 hover:border-white/25",
+                    : "border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16]",
                 )}
               >
                 <div className="flex items-start justify-between gap-2">
@@ -248,7 +248,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                         "grid h-9 w-9 shrink-0 place-items-center rounded-xl border",
                         added
                           ? "border-[var(--lime-30)] bg-[var(--lime-10)] text-[var(--lime)]"
-                          : "border-white/10 bg-white/[0.03] text-white/60",
+                          : "border-white/[0.07] bg-white/[0.02] text-white/60",
                       )}
                     >
                       <s.Icon size={16} />
@@ -432,7 +432,7 @@ export function SeatBuilderIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
+          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
         }}
       >
         <div

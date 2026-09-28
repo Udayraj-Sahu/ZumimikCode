@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { BG_MOSS, FOREST, LIME, LIME_LIGHT, PANEL } from "@/lib/theme-tokens";
+import { LIME, LIME_LIGHT } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
@@ -164,7 +164,7 @@ export function FamilyHubIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
+          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
         }}
       >
         <div
@@ -206,7 +206,7 @@ export function FamilyHubIntro({
 
         <div className="mt-6">
           <FadeUp delay={200}>
-            <div className="rounded-[18px] border border-dashed border-white/15 bg-white/[0.02] p-3.5">
+            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-3.5">
               <div className="mb-3 flex items-center justify-between">
                 <span className="text-[9px] font-bold tracking-[0.2em] text-white/70">
                   OPEN SEATS
@@ -219,7 +219,7 @@ export function FamilyHubIntro({
                 {SEATS.map(({ id, label, desc, Icon }) => (
                   <div
                     key={id}
-                    className="keep-white rounded-xl border border-white/[0.06] bg-black/30 px-2 py-2.5 text-center"
+                    className="rounded-xl border border-white/[0.07] bg-white/[0.02] px-2 py-2.5 text-center"
                   >
                     <Icon size={14} className="mx-auto text-[var(--lime)]" />
                     <div className="mt-1.5 text-[10px] font-bold text-foreground">{label}</div>
@@ -233,7 +233,7 @@ export function FamilyHubIntro({
 
         <div className="mt-4">
           <FadeUp delay={280}>
-            <div className="rounded-[18px] border border-white/[0.08] bg-white/[0.03] p-3.5">
+            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-3.5">
               <div className="mb-3 flex items-center gap-1.5">
                 <Home size={12} className="text-[var(--lime)]" />
                 <span className="text-[9px] font-bold tracking-[0.2em] text-white/70">
@@ -261,11 +261,11 @@ export function FamilyHubIntro({
 
         <div className="mt-4">
           <FadeUp delay={360}>
-            <div className="rounded-[18px] border border-[var(--lime-20)] bg-[var(--lime-04)] p-4">
+            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-4">
               <ul className="space-y-2.5">
                 {SAVINGS.map(({ Icon, title, text }) => (
                   <li key={title} className="flex items-center gap-3">
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[var(--lime-25)] bg-black/30 text-[var(--lime)]">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[var(--lime-25)] bg-[var(--lime-10)] text-[var(--lime)]">
                       <Icon size={14} />
                     </span>
                     <div className="min-w-0">

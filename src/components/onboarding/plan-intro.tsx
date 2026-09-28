@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { BG_MOSS, FOREST, LIME, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
+import { LIME, LIME_LIGHT, LIME_TINT } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import { MotionConfig, motion } from "motion/react";
@@ -161,10 +161,10 @@ export function PlanSelector({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 + idx * 0.05, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "relative w-full rounded-[20px] border p-3.5 text-left transition",
+              "relative w-full rounded-[16px] border p-3.5 text-left transition",
               selected
                 ? "border-[var(--lime-55)] bg-[var(--lime-06)] shadow-[0_0_24px_var(--lime-12)]"
-                : "border-white/[0.07] bg-black/25 hover:border-white/[0.16]",
+                : "border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16]",
             )}
           >
             {p.badge && selected && (
@@ -367,7 +367,7 @@ export function PlanIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
+          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
         }}
       >
         <div
@@ -423,7 +423,7 @@ export function PlanIntro({
 
           {/* billing switch */}
           <FadeUp delay={140} className="mt-6">
-            <div className="keep-white grid grid-cols-2 gap-1 rounded-2xl border border-white/[0.08] bg-black/40 p-1">
+            <div className="grid grid-cols-2 gap-1 rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-1">
               {(["annual", "monthly"] as const).map((b) => {
                 const active = billing === b;
                 const off =
@@ -690,7 +690,7 @@ export function PlanIntro({
                       "flex h-14 flex-col items-center justify-center gap-1 rounded-[18px] border text-[10px] font-medium transition",
                       active
                         ? "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)] shadow-[0_0_16px_var(--lime-12)]"
-                        : "border-white/[0.08] bg-black/25 text-white/60 hover:border-white/[0.16]",
+                        : "border-white/[0.07] bg-white/[0.02] text-white/60 hover:border-white/[0.16]",
                     )}
                   >
                     {active && (
@@ -706,7 +706,7 @@ export function PlanIntro({
 
           {/* receipt */}
           <FadeUp delay={380} className="mt-4">
-            <div className="keep-white space-y-1.5 rounded-[20px] border border-dashed border-white/15 bg-black/40 p-3.5 text-[12px]">
+            <div className="space-y-1.5 rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3.5 py-3 text-[12px]">
               <div className="flex justify-between text-white/70">
                 <span>
                   Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} ·{" "}

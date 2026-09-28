@@ -122,7 +122,7 @@ function SystemCarousel() {
 
   return (
     <div
-      className="relative mt-3 h-[300px]"
+      className="relative mt-3 h-[240px]"
       role="group"
       aria-roledescription="carousel"
       aria-label="Core systems"
@@ -196,7 +196,7 @@ function SystemCarousel() {
 }
 
 const FACTS: { value: string; label: string; valueClass: string }[] = [
-  { value: "5", label: "Exam tracks", valueClass: "text-[var(--lime)]" },
+  { value: "5", label: "Exam tracks", valueClass: "text-[#C8FF4D]" },
   { value: "2", label: "Free mock papers", valueClass: "text-cyan-400" },
   { value: "Daily", label: "Drill routine", valueClass: "text-fuchsia-400" },
 ];
@@ -355,7 +355,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
           />
 
           <div className="relative mx-auto flex h-full w-full max-w-[360px] flex-col md:min-h-0 md:max-w-none md:flex-1">
-            <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4">
+            <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4">
             {/* Protocol pill */}
             <div className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-3">
               <motion.div
@@ -373,7 +373,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
 
             <motion.div variants={containerVariants} initial="hidden" animate="show">
               {/* Hero */}
-              <motion.section variants={itemVariants} className="mt-6">
+              <motion.section variants={itemVariants} className="mt-5">
                 <h1
                   id="feature-hook-title"
                   className="text-[clamp(1.15rem,5.3vw,1.4rem)] font-bold uppercase leading-[1.08] tracking-[-0.035em]"
@@ -389,14 +389,14 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                     {copy.headline.accent}
                   </motion.span>
                 </h1>
-                <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">{copy.sub}</p>
+                <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">{copy.sub}</p>
               </motion.section>
 
               {/* Core systems */}
               <motion.section
                 variants={itemVariants}
                 aria-labelledby="core-heading"
-                className="mt-7"
+                className="mt-5"
               >
                 <h2
                   id="core-heading"
@@ -411,7 +411,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               <motion.section
                 variants={itemVariants}
                 aria-labelledby="facts-heading"
-                className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+                className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4"
               >
                 <h2
                   id="facts-heading"
@@ -432,7 +432,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                       variants={cardVariants}
                       className="keep-white flex flex-col-reverse justify-end gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-3"
                     >
-                      <dt className=" text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">
+                      <dt className=" text-[9px] uppercase leading-3 tracking-wider text-white/60">
                         {label}
                       </dt>
                       <CountValue value={value} className={valueClass} />
@@ -446,7 +446,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
             </motion.div>
           </div>
 
-          <footer className="shrink-0 px-5 py-4">
+          <footer className="shrink-0 px-5 py-3.5">
             <button
               type="button"
               onClick={(e) => {

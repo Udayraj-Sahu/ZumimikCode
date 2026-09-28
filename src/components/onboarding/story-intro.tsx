@@ -34,20 +34,26 @@ type Tone = "lime" | "cyan" | "fuchsia";
 
 const toneChip: Record<Tone, string> = {
   lime: "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)]",
-  cyan: "border-cyan-400/50 bg-cyan-400/10 text-cyan-400",
-  fuchsia: "border-fuchsia-400/50 bg-fuchsia-400/10 text-fuchsia-400",
+  cyan: "border-cyan-400/50 bg-cyan-400/10 text-[var(--cyan)]",
+  fuchsia: "border-fuchsia-400/50 bg-fuchsia-400/10 text-[var(--fuchsia)]",
 };
 
 const toneText: Record<Tone, string> = {
   lime: "text-[var(--lime)]",
-  cyan: "text-cyan-400",
-  fuchsia: "text-fuchsia-400",
+  cyan: "text-[var(--cyan)]",
+  fuchsia: "text-[var(--fuchsia)]",
 };
 
 const toneHex: Record<Tone, string> = {
   lime: LIME,
   cyan: CYAN,
   fuchsia: FUCHSIA,
+};
+
+const toneDark: Record<Tone, string> = {
+  lime: "#4D7C0F",
+  cyan: "#0E7490",
+  fuchsia: "#A21CAF",
 };
 
 const RECLAIM_MODULES: {
@@ -182,11 +188,12 @@ function Panel({
   ariaLabel?: string;
 }) {
   const hex = toneHex[tone];
+  const line = useThemeStore((s) => s.theme) === "light" ? toneDark[tone] : `${hex}55`;
   return (
     <section
       aria-label={ariaLabel}
-      className={cn("relative overflow-hidden rounded-2xl border bg-black/25 p-4", className)}
-      style={{ borderColor: `${hex}22` }}
+      className={cn("relative overflow-hidden rounded-[16px] border bg-white/[0.02] p-4", className)}
+      style={{ borderColor: line }}
     >
       {/* top hairline + scan flicker */}
       <span
@@ -239,7 +246,7 @@ function SectionHead({
       {right && (
         <p
           className={cn(
-            "text-[10px] font-semibold uppercase tracking-[0.18em] text-cyan-400",
+            "text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--cyan)]",
             rightClass,
           )}
         >
@@ -329,7 +336,7 @@ function Stepper({
     <div
       role="group"
       aria-label={label}
-      className="keep-white flex flex-none items-center gap-[6px] rounded-full border border-white/[0.08] bg-black/40 p-[4px]"
+      className="flex flex-none items-center gap-[6px] rounded-full border border-white/[0.07] bg-white/[0.02] p-[4px]"
     >
       <button
         type="button"
@@ -705,7 +712,7 @@ export function StoryCommitmentMatrix({
         <DayRail value={value} spanMin={mins} />
 
         <div className="relative flex items-center justify-between gap-2  text-[10px] leading-[1.4]">
-          <span className="text-cyan-400">
+          <span className="text-[var(--cyan)]">
             <Dot color={CYAN} small /> +{weeklyHours.toFixed(2)} hrs/week converted
           </span>
           <span className="text-white/60">Compounding daily</span>
@@ -825,14 +832,14 @@ export function StoryCommitmentMatrix({
           </span>
           <span
             className={cn(
-              "flex items-center gap-1.5 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.1em] text-cyan-400",
+              "flex items-center gap-1.5 whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.1em] text-[var(--cyan)]",
             )}
           >
             <Dot color={CYAN} small pulse /> Live parser
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-2" aria-live="polite">
-          <span className="rounded-md border border-cyan-400/50 bg-cyan-400/10 px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-cyan-400">
+          <span className="rounded-md border border-cyan-400/50 bg-cyan-400/10 px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-[var(--cyan)]">
             {sprints} {sprints === 1 ? "Stack" : "Stacks"} configured
           </span>
           <span className=" text-[11px] font-medium text-white/60">=</span>
@@ -846,7 +853,7 @@ export function StoryCommitmentMatrix({
         <span className="mt-2 inline-block rounded-md border border-[var(--lime-40)] bg-[var(--lime-08)] px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-[var(--lime)]">
           {weekdayLabel(weeklyMin)} reclaimed
         </span>
-        <p className="mt-2.5  flex items-center gap-1.5 text-[9.5px] leading-[1.3] text-cyan-400">
+        <p className="mt-2.5  flex items-center gap-1.5 text-[9.5px] leading-[1.3] text-[var(--cyan)]">
           <Dot color={CYAN} small /> Reminder + trigger notifications primed
         </p>
       </Panel>
@@ -869,7 +876,7 @@ export function StoryCommitmentMatrix({
               )}
             >
               Trigger Decoder
-              <span className="rounded bg-fuchsia-400/15 px-1.5 py-0.5  text-[8px] font-bold uppercase tracking-[0.08em] text-fuchsia-300">
+              <span className="rounded bg-fuchsia-400/15 px-1.5 py-0.5  text-[8px] font-bold uppercase tracking-[0.08em] text-[var(--fuchsia)]">
                 Live sync
               </span>
             </h3>
@@ -883,7 +890,7 @@ export function StoryCommitmentMatrix({
                   className={cn(
                     "rounded-md border px-2 py-1  text-[8.5px] font-bold uppercase tracking-[0.05em] transition-colors",
                     value.triggerType === tr
-                      ? "border-fuchsia-400/55 bg-fuchsia-400/15 text-fuchsia-300"
+                      ? "border-fuchsia-400/55 bg-fuchsia-400/15 text-[var(--fuchsia)]"
                       : "border-white/[0.08] text-white/70",
                   )}
                 >

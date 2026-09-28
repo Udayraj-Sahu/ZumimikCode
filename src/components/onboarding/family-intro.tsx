@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { BG_2, FOREST_2, LIME, LIME_LIGHT, LIME_MID_2, PANEL_2 } from "@/lib/theme-tokens";
+import { LIME, LIME_LIGHT, LIME_MID_2 } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
@@ -186,7 +186,7 @@ export function FamilyIntro({
       <div
         className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
         style={{
-          background: `radial-gradient(120% 90% at 50% 0%, ${PANEL_2} 0%, ${BG_2} 46%, ${FOREST_2} 100%)`,
+          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
         }}
       >
         <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[var(--lime-14)]" />

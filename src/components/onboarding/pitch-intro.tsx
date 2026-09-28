@@ -207,7 +207,7 @@ export function PitchIntro({
 
           {/* progress hero */}
           <div data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mt-5">
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <div className="relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-4">
               <div className="pointer-events-none absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[var(--lime-10)] blur-3xl" />
               <div className="relative flex items-center gap-5">
                 {/* ring */}
@@ -272,7 +272,7 @@ export function PitchIntro({
             style={reduceMotion ? undefined : { opacity: 0 }}
             className="mt-3 grid grid-cols-2 gap-3"
           >
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5">
+            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5">
               <div className=" text-[8px] tracking-[0.2em] text-white/45">SAVED THIS WEEK</div>
               <div className="mt-1 flex items-baseline gap-1">
                 <span
@@ -287,7 +287,7 @@ export function PitchIntro({
                 <span className=" text-[12px] font-bold text-[var(--lime)]">HRS</span>
               </div>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2.5">
+            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5">
               <div className=" text-[8px] tracking-[0.2em] text-white/45">AVG SPEED / Q</div>
               <div className="mt-1 flex items-baseline gap-1">
                 <span
@@ -312,14 +312,14 @@ export function PitchIntro({
                 key={id}
                 data-stage
                 style={reduceMotion ? undefined : { opacity: 0 }}
-                className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] p-3"
+                className="group relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-3"
               >
                 <div
                   className={`pointer-events-none absolute inset-y-0 left-0 w-px bg-gradient-to-b ${bar}`}
                 />
                 <div className="flex items-start gap-3">
                   <span
-                    className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/10 bg-black/30 ${accent}`}
+                    className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/[0.07] bg-white/[0.04] ${accent}`}
                   >
                     <Icon size={15} />
                   </span>
