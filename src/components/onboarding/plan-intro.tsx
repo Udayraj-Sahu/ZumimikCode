@@ -192,7 +192,7 @@ export function PlanSelector({
                       <span
                         className={cn(
                           "text-[13px] font-bold",
-                          selected ? "text-foreground" : "text-foreground/80",
+                          selected ? "text-foreground" : "text-white/80",
                         )}
                       >
                         {p.name}
@@ -203,13 +203,13 @@ export function PlanSelector({
                         </span>
                       )}
                     </div>
-                    <div className="mt-0.5 text-[11px] leading-snug text-muted-foreground/55">
+                    <div className="mt-0.5 text-[11px] leading-snug text-white/55">
                       {p.desc}
                     </div>
                   </div>
                   <div className="shrink-0 text-right text-[13px] font-bold text-[var(--lime)]">
                     {inr(shown)}
-                    <span className="text-[10px] font-normal text-muted-foreground/45">
+                    <span className="text-[10px] font-normal text-white/45">
                       /{unit}
                     </span>
                   </div>
@@ -218,7 +218,7 @@ export function PlanSelector({
                 {tracks && selected && (
                   <div className="mt-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[9px] tracking-[0.14em] text-muted-foreground/50">
+                      <span className="text-[9px] tracking-[0.14em] text-white/50">
                         UNLOCKED TRACKS:
                       </span>
                       <span className="text-[9px] font-bold text-cyan-400">
@@ -230,7 +230,7 @@ export function PlanSelector({
                         t.startsWith("+") ? (
                           <span
                             key={t}
-                            className="rounded border border-dashed border-white/15 px-2 py-1 text-[10px] text-muted-foreground/50"
+                            className="rounded border border-dashed border-white/15 px-2 py-1 text-[10px] text-white/50"
                           >
                             {t}
                           </span>
@@ -252,7 +252,7 @@ export function PlanSelector({
                     {p.features.map((f) => (
                       <li
                         key={f}
-                        className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground/50"
+                        className="flex items-center gap-2 text-[11px] font-medium text-white/50"
                       >
                         <span className="grid size-4 shrink-0 place-items-center rounded-full bg-[var(--lime-12)] text-[var(--lime)]">
                           <Check size={9} strokeWidth={3.5} />
@@ -414,7 +414,7 @@ export function PlanIntro({
                 pace.
               </span>
             </h1>
-            <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-muted-foreground/80">
+            <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-white/80">
               One pass, tuned to your exam —{" "}
               <span className="font-semibold text-foreground">{laneLabel(lane)}</span>. Upgrade
               lanes any time from Settings.
@@ -446,7 +446,7 @@ export function PlanIntro({
                       <span
                         className={cn(
                           "text-[10px] font-bold tracking-widest",
-                          active ? "text-foreground" : "text-muted-foreground/70",
+                          active ? "text-foreground" : "text-white/70",
                         )}
                       >
                         {b.toUpperCase()}
@@ -457,7 +457,7 @@ export function PlanIntro({
                         </span>
                       )}
                     </div>
-                    <div className="mt-0.5 text-[11px] text-muted-foreground/60">
+                    <div className="mt-0.5 text-[11px] text-white/60">
                       {inr(PLANS[0].billing[b])}/{b === "annual" ? "yr" : "mo"}
                     </div>
                   </button>
@@ -561,7 +561,7 @@ export function PlanIntro({
                           >
                             {inr(price)}
                           </motion.span>
-                          <span className="text-[11px] font-medium text-muted-foreground/60">
+                          <span className="text-[11px] font-medium text-white/60">
                             /{unit}
                           </span>
                           {pct > 0 && billing === "annual" && (
@@ -574,7 +574,7 @@ export function PlanIntro({
                         <p
                           className={cn(
                             "mt-1 text-[11px] leading-snug",
-                            sel ? "text-muted-foreground/70" : "text-muted-foreground/40",
+                            sel ? "text-white/70" : "text-white/40",
                           )}
                         >
                           {p.id === "dual-lane"
@@ -620,12 +620,12 @@ export function PlanIntro({
                   <div
                     className={cn(
                       "text-[8px] font-bold tracking-widest",
-                      active ? "text-[var(--lime)]" : "text-muted-foreground/60",
+                      active ? "text-[var(--lime)]" : "text-white/60",
                     )}
                   >
                     {p.name.toUpperCase()}
                   </div>
-                  <div className="text-[10px] font-bold text-muted-foreground/70">
+                  <div className="text-[10px] font-bold text-white/70">
                     {p.billing[billing] ? inr(p.billing[billing]) : "FREE"}
                     <span className="text-[8px] font-normal">
                       /{billing === "annual" ? "Yr" : "Mo"}
@@ -655,7 +655,7 @@ export function PlanIntro({
                         {COUPON.code}
                       </span>
                     </div>
-                    <div className="mt-1 text-[10px] text-muted-foreground/60">{COUPON.note}</div>
+                    <div className="mt-1 text-[10px] text-white/60">{COUPON.note}</div>
                   </div>
                   <div className="shrink-0 text-right">
                     <div className="text-[9px] tracking-[0.14em] text-[var(--lime-80)]">CASHBACK</div>
@@ -677,7 +677,7 @@ export function PlanIntro({
 
           {/* payment modes */}
           <FadeUp delay={320} className="mt-5">
-            <p className="mb-2 text-[9px] tracking-[0.2em] text-muted-foreground/60">PAY WITH</p>
+            <p className="mb-2 text-[9px] tracking-[0.2em] text-white/60">PAY WITH</p>
             <div className="grid grid-cols-3 gap-2">
               {PAY_MODES.map(({ id, label, Icon }) => {
                 const active = pay === id;
@@ -690,7 +690,7 @@ export function PlanIntro({
                       "flex h-14 flex-col items-center justify-center gap-1 rounded-[18px] border text-[10px] font-medium transition",
                       active
                         ? "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)] shadow-[0_0_16px_var(--lime-12)]"
-                        : "border-white/[0.08] bg-black/25 text-muted-foreground/60 hover:border-white/[0.16]",
+                        : "border-white/[0.08] bg-black/25 text-white/60 hover:border-white/[0.16]",
                     )}
                   >
                     {active && (
@@ -707,7 +707,7 @@ export function PlanIntro({
           {/* receipt */}
           <FadeUp delay={380} className="mt-4">
             <div className="keep-white space-y-1.5 rounded-[20px] border border-dashed border-white/15 bg-black/40 p-3.5 text-[12px]">
-              <div className="flex justify-between text-muted-foreground/70">
+              <div className="flex justify-between text-white/70">
                 <span>
                   Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} ·{" "}
                   {billing === "annual" ? "Annual" : "Monthly"})
@@ -721,7 +721,7 @@ export function PlanIntro({
                 </div>
               )}
               <div className="flex items-end justify-between border-t border-dashed border-white/10 pt-2">
-                <span className="text-[13px] font-bold text-muted-foreground/80">
+                <span className="text-[13px] font-bold text-white/80">
                   Total Due Today
                 </span>
                 <span>
@@ -734,7 +734,7 @@ export function PlanIntro({
                   >
                     {inr(total)}
                   </motion.span>
-                  <span className="ml-1 text-[10px] font-bold text-muted-foreground/60">
+                  <span className="ml-1 text-[10px] font-bold text-white/60">
                     /{unit}
                   </span>
                 </span>
@@ -765,12 +765,12 @@ export function PlanIntro({
 
             <button
               onClick={fadeOut}
-              className="mx-auto mt-3 block text-[10px] text-muted-foreground/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
+              className="mx-auto mt-3 block text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
             >
               Skip for now
             </button>
 
-            <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[10px] text-muted-foreground/45">
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[10px] text-white/45">
               <ShieldCheck size={12} />
               Adaptive engine calibrated • Change anytime in Settings
             </p>

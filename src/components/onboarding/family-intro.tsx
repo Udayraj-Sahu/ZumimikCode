@@ -200,7 +200,7 @@ export function FamilyIntro({
           </span>
           <div className="ml-2.5">
             <div className="text-[15px] font-bold tracking-[0.2em] text-foreground">FAMILY HUB</div>
-            <div className="text-center text-[9px] font-medium tracking-wider text-muted-foreground/70">
+            <div className="text-center text-[9px] font-medium tracking-wider text-white/70">
               ONE APP FOR EVERYONE
             </div>
           </div>
@@ -228,7 +228,7 @@ export function FamilyIntro({
           </FadeUp>
 
           <FadeUp delay={140}>
-            <p className="mx-auto mt-3 max-w-[320px] text-center text-[12.5px] leading-relaxed text-muted-foreground/80">
+            <p className="mx-auto mt-3 max-w-[320px] text-center text-[12.5px] leading-relaxed text-white/80">
               One calm routine grows with every age — from tactile drills for the little ones to a
               99+ %ile engine for the older preps.
             </p>
@@ -271,7 +271,7 @@ export function FamilyIntro({
                     <blockquote className="mt-2.5 text-[13px] font-semibold leading-snug text-foreground">
                       {`\u201C${c.quote}\u201D`}
                     </blockquote>
-                    <p className="mt-1.5 text-[9.5px] leading-snug text-muted-foreground/70">
+                    <p className="mt-1.5 text-[9.5px] leading-snug text-white/70">
                       {c.sub}
                     </p>
                   </div>
@@ -291,7 +291,7 @@ export function FamilyIntro({
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-[8px] font-bold tracking-[0.14em] text-muted-foreground/70">
+                      <span className="text-[8px] font-bold tracking-[0.14em] text-white/70">
                         {g.time}
                       </span>
                       {i === 0 && (
@@ -303,7 +303,7 @@ export function FamilyIntro({
                     <div className="text-[12px] font-bold leading-snug text-foreground">
                       {g.title}
                     </div>
-                    <div className="mt-0.5 text-[9.5px] leading-snug text-muted-foreground/70">
+                    <div className="mt-0.5 text-[9.5px] leading-snug text-white/70">
                       {g.desc}
                     </div>
                   </div>
@@ -320,7 +320,7 @@ export function FamilyIntro({
               {PEACEOF_MIND.map(({ label, Icon }) => (
                 <span
                   key={label}
-                  className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-muted-foreground/75"
+                  className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider text-white/75"
                 >
                   <Icon size={11} /> {label}
                 </span>
@@ -345,7 +345,7 @@ export function FamilyIntro({
 
           <button
             onClick={() => exit(onClose)}
-            className="mx-auto mt-3 flex items-center gap-1.5 text-[10px] text-muted-foreground/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
+            className="mx-auto mt-3 flex items-center gap-1.5 text-[10px] text-white/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
           >
             <Moon size={11} /> Skip for now
           </button>

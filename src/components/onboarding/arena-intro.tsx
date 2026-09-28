@@ -289,7 +289,7 @@ export function ArenaIntro({
               live.
             </span>
           </h1>
-          <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-muted-foreground/80">
+          <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-white/80">
             Your training is checkpointed to{" "}
             <span className="font-semibold text-foreground">{label(primary)}</span>
             {speedLane ? <span className="text-cyan-300">, plus a Vedic speed lane</span> : ""}.
@@ -308,14 +308,14 @@ export function ArenaIntro({
                     <span ref={value} />
                     {suffix}
                   </div>
-                  <div className="mt-0.5 text-[8.5px] uppercase tracking-[0.14em] text-muted-foreground/70">
+                  <div className="mt-0.5 text-[8.5px] uppercase tracking-[0.14em] text-white/70">
                     {l}
                   </div>
                 </div>
               ))}
             </div>
           </Panel>
-          <p className="mt-2 flex items-center justify-center gap-1.5 text-[8.5px] font-bold tracking-[0.18em] text-muted-foreground/60">
+          <p className="mt-2 flex items-center justify-center gap-1.5 text-[8.5px] font-bold tracking-[0.18em] text-white/60">
             <Flame size={10} className="text-[var(--lime)]" />
             {lanes.length} LANE{lanes.length > 1 ? "S" : ""} ACTIVE • LIVE TELEMETRY
           </p>
@@ -335,7 +335,7 @@ export function ArenaIntro({
               </span>
               <div className="min-w-0 flex-1">
                 <div className="text-[12px] font-bold leading-snug text-foreground">{title}</div>
-                <div className="mt-0.5 text-[10px] leading-snug text-muted-foreground/70">
+                <div className="mt-0.5 text-[10px] leading-snug text-white/70">
                   {desc}
                 </div>
               </div>
@@ -356,7 +356,7 @@ export function ArenaIntro({
               <div className="grid grid-cols-2 gap-x-5 gap-y-2.5">
                 {radar.map((axis) => (
                   <div key={axis.label} className="flex items-center gap-2">
-                    <span className="w-[54px] text-[9.5px] text-muted-foreground/70">
+                    <span className="w-[54px] text-[9.5px] text-white/70">
                       {axis.label}
                     </span>
                     <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
@@ -385,7 +385,7 @@ export function ArenaIntro({
               <ul className="space-y-2">
                 {topics.slice(0, 4).map((tp) => (
                   <li key={tp.name} className="flex items-center gap-2">
-                    <span className="flex-1 truncate text-[9.5px] text-muted-foreground/80">
+                    <span className="flex-1 truncate text-[9.5px] text-white/80">
                       {tp.name}
                     </span>
                     <div className="h-1 w-16 overflow-hidden rounded-full bg-white/[0.06]">
@@ -411,7 +411,7 @@ export function ArenaIntro({
         {upcoming.length > 0 && (
           <FadeUp delay={440} className="mt-4">
             <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-muted-foreground/70">
+              <div className="flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-white/70">
                 <Calendar size={11} /> UP NEXT
               </div>
               {upcoming.slice(0, 2).map((ev) => (
@@ -419,8 +419,8 @@ export function ArenaIntro({
                   key={ev.title}
                   className="flex items-center justify-between rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5"
                 >
-                  <span className="flex-1 truncate text-[11px] text-foreground/90">{ev.title}</span>
-                  <span className="mr-2 text-[9.5px] text-muted-foreground/70">{ev.time}</span>
+                  <span className="flex-1 truncate text-[11px] text-white/90">{ev.title}</span>
+                  <span className="mr-2 text-[9.5px] text-white/70">{ev.time}</span>
                   <span className="rounded border border-[var(--lime-40)] bg-[var(--lime-10)] px-1.5 py-0.5 text-[8px] font-bold text-[var(--lime)]">
                     {ev.tag}
                   </span>
@@ -445,7 +445,7 @@ export function ArenaIntro({
           </button>
           <button
             onClick={() => exit(onClose)}
-            className="mx-auto mt-3 block text-[10px] text-muted-foreground/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
+            className="mx-auto mt-3 block text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
           >
             Continue to dashboard
           </button>

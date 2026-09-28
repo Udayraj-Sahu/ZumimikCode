@@ -346,7 +346,7 @@ function Stepper({
         )}
       >
         <span className="text-[11px]">{value}</span>
-        <i className="text-[8px] font-medium not-italic text-muted-foreground/60">{unit}</i>
+        <i className="text-[8px] font-medium not-italic text-white/60">{unit}</i>
       </span>
       <button
         type="button"
@@ -464,7 +464,7 @@ function DayRail({ value, spanMin }: { value: StoryCommitment; spanMin: number }
           <Dot color={hex} small />
           {value.reclaimSlot || "Reclaim Slot"} · {to12h(from)} · {minutes} MIN
         </span>
-        <span className=" text-[8.5px] tracking-[0.14em] text-muted-foreground/50">decompiled</span>
+        <span className=" text-[8.5px] tracking-[0.14em] text-white/50">decompiled</span>
       </div>
     </div>
   );
@@ -559,7 +559,7 @@ function ReclaimModule({
           </span>
           <div className="min-w-0 flex-1">
             <h3 className={cn("text-[13px] font-semibold leading-tight text-foreground")}>{id}</h3>
-            <p className="mt-0.5 text-[9px] font-medium text-muted-foreground/60">{sub}</p>
+            <p className="mt-0.5 text-[9px] font-medium text-white/60">{sub}</p>
           </div>
           <span
             className={cn(
@@ -576,7 +576,7 @@ function ReclaimModule({
         <div className="mt-3 rounded-lg border border-white/[0.06] bg-white/[0.03] p-2.5">
           <span
             className={cn(
-              "inline-flex items-center font-medium text-[9px] uppercase tracking-[0.12em] text-muted-foreground/60",
+              "inline-flex items-center font-medium text-[9px] uppercase tracking-[0.12em] text-white/60",
             )}
           >
             Window:
@@ -607,7 +607,7 @@ function ReclaimModule({
         <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/[0.06] pt-3">
           <span
             className={cn(
-              "inline-flex flex-none items-center font-medium text-[9px] uppercase tracking-[0.12em] text-muted-foreground/60",
+              "inline-flex flex-none items-center font-medium text-[9px] uppercase tracking-[0.12em] text-white/60",
             )}
           >
             Cadence:
@@ -696,7 +696,7 @@ export function StoryCommitmentMatrix({
           >
             +{shownHours}
           </b>
-          <span className={cn("text-[11px] font-semibold tracking-[0.1em] text-foreground/80")}>
+          <span className={cn("text-[11px] font-semibold tracking-[0.1em] text-white/80")}>
             HOURS / YEAR
           </span>
         </p>
@@ -708,7 +708,7 @@ export function StoryCommitmentMatrix({
           <span className="text-cyan-400">
             <Dot color={CYAN} small /> +{weeklyHours.toFixed(2)} hrs/week converted
           </span>
-          <span className="text-muted-foreground/60">Compounding daily</span>
+          <span className="text-white/60">Compounding daily</span>
         </div>
 
         <div
@@ -780,7 +780,7 @@ export function StoryCommitmentMatrix({
         <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/[0.06] pt-3">
           <span
             className={cn(
-              "inline-flex flex-none items-center text-[9px] font-medium uppercase tracking-[0.12em] text-muted-foreground/60",
+              "inline-flex flex-none items-center text-[9px] font-medium uppercase tracking-[0.12em] text-white/60",
             )}
           >
             Remind at:
@@ -835,12 +835,12 @@ export function StoryCommitmentMatrix({
           <span className="rounded-md border border-cyan-400/50 bg-cyan-400/10 px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-cyan-400">
             {sprints} {sprints === 1 ? "Stack" : "Stacks"} configured
           </span>
-          <span className=" text-[11px] font-medium text-muted-foreground/60">=</span>
+          <span className=" text-[11px] font-medium text-white/60">=</span>
           <span className="rounded-md border border-[var(--lime-40)] bg-[var(--lime-10)] px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-[var(--lime)]">
             {mins} min/day
           </span>
         </div>
-        <p className="mt-2.5 text-[10px] leading-[1.4] font-medium text-muted-foreground/80">
+        <p className="mt-2.5 text-[10px] leading-[1.4] font-medium text-white/80">
           daily practice compounded across {daysActive} day{daysActive === 1 ? "" : "s"} a week
         </p>
         <span className="mt-2 inline-block rounded-md border border-[var(--lime-40)] bg-[var(--lime-08)] px-2.5 py-1.5  text-[10px] font-bold tracking-[0.03em] text-[var(--lime)]">
@@ -884,7 +884,7 @@ export function StoryCommitmentMatrix({
                     "rounded-md border px-2 py-1  text-[8.5px] font-bold uppercase tracking-[0.05em] transition-colors",
                     value.triggerType === tr
                       ? "border-fuchsia-400/55 bg-fuchsia-400/15 text-fuchsia-300"
-                      : "border-white/[0.08] text-muted-foreground/70",
+                      : "border-white/[0.08] text-white/70",
                   )}
                 >
                   {tr}
@@ -896,7 +896,7 @@ export function StoryCommitmentMatrix({
         <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/[0.06] pt-3">
           <span
             className={cn(
-              "inline-flex flex-none items-center text-[9px] font-medium uppercase tracking-[0.12em] text-muted-foreground/60",
+              "inline-flex flex-none items-center text-[9px] font-medium uppercase tracking-[0.12em] text-white/60",
             )}
           >
             Trigger at:
@@ -1067,7 +1067,7 @@ export function StoryIntro({
             >
               <motion.p
                 variants={itemVariants}
-                className="mb-4 mt-3 text-center text-[12px] font-medium text-muted-foreground/50"
+                className="mb-4 mt-3 text-center text-[12px] font-medium text-white/50"
               >
                 Shape the plan around the life you already live.
               </motion.p>
@@ -1084,7 +1084,7 @@ export function StoryIntro({
           <button
             type="button"
             onClick={close}
-            className="absolute right-[14px] top-[14px] z-10 text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground/50 transition-colors hover:text-foreground/70 active:scale-95"
+            className="absolute right-[14px] top-[14px] z-10 text-[10px] font-bold uppercase tracking-[0.14em] text-white/50 transition-colors hover:text-white/70 active:scale-95"
           >
             Skip
           </button>
@@ -1120,7 +1120,7 @@ export function StoryIntro({
                 Start configuring
               </span>
             </button>
-            <p className="mt-2.5 text-center text-[10px] font-medium text-muted-foreground/35">
+            <p className="mt-2.5 text-center text-[10px] font-medium text-white/35">
               You can adjust all of this anytime in Settings.
             </p>
           </motion.div>

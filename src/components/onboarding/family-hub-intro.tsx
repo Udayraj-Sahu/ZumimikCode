@@ -197,7 +197,7 @@ export function FamilyHubIntro({
           </FadeUp>
 
           <FadeUp delay={130}>
-            <p className="mx-auto mt-3 max-w-[320px] text-center text-[12.5px] leading-relaxed text-muted-foreground/80">
+            <p className="mx-auto mt-3 max-w-[320px] text-center text-[12.5px] leading-relaxed text-white/80">
               Give everyone their own lane on a single subscription — and watch one household streak
               grow on a shared wall.
             </p>
@@ -208,7 +208,7 @@ export function FamilyHubIntro({
           <FadeUp delay={200}>
             <div className="rounded-[18px] border border-dashed border-white/15 bg-white/[0.02] p-3.5">
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-[9px] font-bold tracking-[0.2em] text-muted-foreground/70">
+                <span className="text-[9px] font-bold tracking-[0.2em] text-white/70">
                   OPEN SEATS
                 </span>
                 <span className="rounded-full border border-[var(--lime-25)] bg-[var(--lime-10)] px-2 py-px text-[8px] font-bold text-[var(--lime)]">
@@ -223,7 +223,7 @@ export function FamilyHubIntro({
                   >
                     <Icon size={14} className="mx-auto text-[var(--lime)]" />
                     <div className="mt-1.5 text-[10px] font-bold text-foreground">{label}</div>
-                    <div className="text-[8.5px] leading-snug text-muted-foreground/60">{desc}</div>
+                    <div className="text-[8.5px] leading-snug text-white/60">{desc}</div>
                   </div>
                 ))}
               </div>
@@ -236,7 +236,7 @@ export function FamilyHubIntro({
             <div className="rounded-[18px] border border-white/[0.08] bg-white/[0.03] p-3.5">
               <div className="mb-3 flex items-center gap-1.5">
                 <Home size={12} className="text-[var(--lime)]" />
-                <span className="text-[9px] font-bold tracking-[0.2em] text-muted-foreground/70">
+                <span className="text-[9px] font-bold tracking-[0.2em] text-white/70">
                   SHARED FAMILY WALL
                 </span>
               </div>
@@ -248,7 +248,7 @@ export function FamilyHubIntro({
                     </span>
                     <div className="min-w-0">
                       <div className="text-[11px] font-bold text-foreground">{title}</div>
-                      <div className="mt-0.5 text-[10px] leading-snug text-muted-foreground/70">
+                      <div className="mt-0.5 text-[10px] leading-snug text-white/70">
                         {desc}
                       </div>
                     </div>
@@ -270,7 +270,7 @@ export function FamilyHubIntro({
                     </span>
                     <div className="min-w-0">
                       <div className="text-[11px] font-bold text-foreground">{title}</div>
-                      <div className="mt-0.5 text-[10px] leading-snug text-muted-foreground/75">
+                      <div className="mt-0.5 text-[10px] leading-snug text-white/75">
                         {text}
                       </div>
                     </div>
@@ -299,7 +299,7 @@ export function FamilyHubIntro({
 
           <button
             onClick={() => exit(onClose)}
-            className="mx-auto mt-3 block text-[10px] text-muted-foreground/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
+            className="mx-auto mt-3 block text-[10px] text-white/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
           >
             Skip for now
           </button>

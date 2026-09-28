@@ -151,11 +151,11 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 /* ------------------------------------------------------------------ */
 function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initials: string; badge: string; onEdit: () => void }) {
   return (
-    <div className="relative flex flex-col items-center pt-6 pb-1 text-center">
+    <div className="relative flex flex-col items-center pt-2 pb-1 text-center">
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-25) 0%, transparent 70%)" }} />
-      <div className="relative mb-3 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5 max-[359px]:gap-1.5 max-[359px]:px-3">
+      <div className="relative mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] backdrop-blur-sm px-4 py-1.5">
           <Settings size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
+          <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
         </div>
       <div className="relative">
         <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 backdrop-blur-sm">
@@ -285,7 +285,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <PageContainer>
+    <PageContainer className="pt-1">
       <div className="mx-auto w-full md:max-w-3xl">
       {/* Ambient glow */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-20) 0%, transparent 70%)" }} />
@@ -380,7 +380,7 @@ export default function SettingsPage() {
 
           <CollapsibleSection label="ACCOUNT SETTINGS" defaultOpen>
             <div className="space-y-2.5 md:hidden max-[359px]:space-y-2">
-              <Row icon={<User className="h-5 w-5" />} title="Personal Details" subtitle="Name, email, phone" onClick={() => router.push("/settings/profile/edit")} />
+              <Row icon={<User className="h-5 w-5" />} title="Personal Details" subtitle="Name, email, phone" onClick={() => router.push("/settings/profile")} />
               <Row icon={<Bell className="h-5 w-5" />} title="Notification Preferences" subtitle="Push & reminders" onClick={() => router.push("/settings/notifications")} />
               <Row icon={<Calendar className="h-5 w-5" />} title="Class Calendar" subtitle="Schedule & planning" onClick={() => router.push("/settings/planner")} />
               <Row icon={<Phone className="h-5 w-5" />} title="Call Reminder" subtitle="Coming soon" />

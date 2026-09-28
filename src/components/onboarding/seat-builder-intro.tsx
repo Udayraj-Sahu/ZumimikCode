@@ -184,7 +184,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                         <div className="flex flex-wrap items-center gap-1.5">
                           <Crown
                             size={13}
-                            className={cn(selected ? "text-[var(--lime)]" : "text-muted-foreground/50")}
+                            className={cn(selected ? "text-[var(--lime)]" : "text-white/50")}
                           />
                           <h3 className="text-[12px] font-bold uppercase tracking-wide text-foreground">
                             {p.title}
@@ -195,20 +195,20 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                             </span>
                           )}
                         </div>
-                        <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">
+                        <p className="mt-1 text-[10px] leading-snug text-white/60">
                           {p.desc}
                         </p>
                       </div>
                       <div className="shrink-0 text-right text-[14px] font-bold text-[var(--lime)]">
                         {inr(p.price)}
-                        <span className="text-[9px] font-normal text-muted-foreground/50">
+                        <span className="text-[9px] font-normal text-white/50">
                           {" "}
                           /yr
                         </span>
                       </div>
                     </div>
                     <div className="mt-2.5 flex items-center justify-between">
-                      <span className="flex items-center gap-1 text-[9px] text-muted-foreground/50">
+                      <span className="flex items-center gap-1 text-[9px] text-white/50">
                         <Clock size={10} /> {p.time}
                       </span>
                       <span className="text-[8px] font-bold tracking-wider text-[var(--lime)]">
@@ -248,7 +248,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                         "grid h-9 w-9 shrink-0 place-items-center rounded-xl border",
                         added
                           ? "border-[var(--lime-30)] bg-[var(--lime-10)] text-[var(--lime)]"
-                          : "border-white/10 bg-white/[0.03] text-muted-foreground/60",
+                          : "border-white/10 bg-white/[0.03] text-white/60",
                       )}
                     >
                       <s.Icon size={16} />
@@ -264,7 +264,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                           </span>
                         )}
                       </div>
-                      <p className="mt-1 text-[10px] leading-snug text-muted-foreground/60">
+                      <p className="mt-1 text-[10px] leading-snug text-white/60">
                         {s.desc}
                       </p>
                     </div>
@@ -274,7 +274,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                       "flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-[8px] font-bold tracking-wider",
                       added
                         ? "border-[var(--lime-solid)] bg-[var(--lime-solid)] text-[var(--on-accent)]"
-                        : "border-white/20 text-muted-foreground/70",
+                        : "border-white/20 text-white/70",
                     )}
                   >
                     {added ? <Check size={10} /> : <Plus size={10} />}
@@ -285,19 +285,19 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                   <span
                     className={cn(
                       "text-[8px] font-bold tracking-wider",
-                      added ? "text-[var(--lime)]" : "text-muted-foreground/50",
+                      added ? "text-[var(--lime)]" : "text-white/50",
                     )}
                   >
                     {s.tag}
                   </span>
                   <div className="text-right">
-                    <span className="mr-1.5 text-[10px] text-muted-foreground/50 line-through">
+                    <span className="mr-1.5 text-[10px] text-white/50 line-through">
                       {inr(s.list)}
                     </span>
                     <span className="text-[14px] font-bold text-[var(--lime)]">
                       {inr(stackPrice(s.list))}
                     </span>
-                    <span className="text-[9px] text-muted-foreground/50"> /yr</span>
+                    <span className="text-[9px] text-white/50"> /yr</span>
                   </div>
                 </div>
               </button>
@@ -328,7 +328,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
             <div className="text-[14px] font-black leading-none text-[var(--lime)]">
               {inr(monthly)}/mo
             </div>
-            <div className="mt-0.5 text-[6px] tracking-widest text-muted-foreground/50">
+            <div className="mt-0.5 text-[6px] tracking-widest text-white/50">
               EFFECTIVE
             </div>
           </div>
@@ -340,12 +340,12 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
               key={l.label}
               className="flex items-center justify-between gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-2.5 py-2 text-[10px]"
             >
-              <span className="text-muted-foreground/80">{l.label}</span>
+              <span className="text-white/80">{l.label}</span>
               <span className="shrink-0 font-bold text-foreground">{inr(l.amount)}</span>
             </li>
           ))}
           <li className="flex items-center justify-between gap-2 rounded-lg border border-[var(--lime-30)] bg-[var(--lime-06)] px-2.5 py-2 text-[10px]">
-            <span className="text-muted-foreground/80">
+            <span className="text-white/80">
               Vs 1-on-1 Private Tutors ({inr(PRIVATE_TUTOR_ANNUAL)}/yr)
             </span>
             <span className="shrink-0 text-[9px] font-bold text-[var(--lime)]">SAVE {savePct}%</span>
@@ -353,7 +353,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
         </ul>
       </section>
 
-      <p className="flex items-center justify-center gap-1.5 text-center text-[7px] tracking-wider text-muted-foreground/50">
+      <p className="flex items-center justify-center gap-1.5 text-center text-[7px] tracking-wider text-white/50">
         <ShieldCheck size={10} />
         100% COPPA & DPDP COMPLIANT • ZERO ADS • CANCEL ANYTIME
       </p>
@@ -475,7 +475,7 @@ export function SeatBuilderIntro({
               enough.
             </span>
           </h1>
-          <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-muted-foreground/80">
+          <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-white/80">
             Head of the table picks the primary lane, then pull up chairs for everyone else — each
             extra seat gets the stack on the spot.
           </p>
@@ -499,7 +499,7 @@ export function SeatBuilderIntro({
 
         <button
           onClick={exit}
-          className="mx-auto block text-center text-[10px] text-muted-foreground/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
+          className="mx-auto block text-center text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
         >
           Reserve later
         </button>

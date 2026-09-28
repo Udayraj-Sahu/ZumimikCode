@@ -113,7 +113,7 @@ function SystemCarousel() {
                 {tag}
               </span>
             </div>
-            <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground/80">{body}</p>
+            <p className="mt-3 text-[12px] leading-relaxed text-white/80">{body}</p>
           </li>
         ))}
       </ul>
@@ -168,7 +168,7 @@ function SystemCarousel() {
                 {tag}
               </span>
             </div>
-            <p className="mt-3 text-[12px] leading-relaxed text-muted-foreground/80">{body}</p>
+            <p className="mt-3 text-[12px] leading-relaxed text-white/80">{body}</p>
           </motion.button>
         );
       })}
@@ -182,11 +182,11 @@ function SystemCarousel() {
             className="flex items-center gap-1.5 text-muted-foreground"
           >
             <ChevronUp size={11} className="text-[var(--lime-70)]" />
-            <span className=" text-[9px] uppercase tracking-[0.18em] text-muted-foreground/70">
+            <span className=" text-[9px] uppercase tracking-[0.18em] text-white/70">
               Swipe up for more details
             </span>
           </motion.div>
-          <span className=" text-[9px] text-muted-foreground/50">
+          <span className=" text-[9px] text-white/50">
             {active + 1} / {SYSTEMS.length}
           </span>
         </div>
@@ -439,7 +439,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                     </motion.div>
                   ))}
                 </motion.dl>
-                <p className=" mt-3 text-[9px] uppercase tracking-wider text-muted-foreground/60">
+                <p className=" mt-3 text-[9px] uppercase tracking-wider text-white/60">
                   CAT · GMAT · GRE · Banking · Vedic Math
                 </p>
               </motion.section>

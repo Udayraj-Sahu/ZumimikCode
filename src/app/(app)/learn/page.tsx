@@ -620,7 +620,7 @@ function LearnPageContent() {
                             }
                           }}
                           className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 max-[359px]:px-2 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                          style={{ color: active ? BG : GLASS_55 }}
+                          style={{ color: active ? "var(--on-accent)" : GLASS_55 }}
                         >
                           {active && (
                             <motion.div
@@ -642,7 +642,7 @@ function LearnPageContent() {
                             {isPrimary ? (
                               <GraduationCap size={14} className="relative" />
                             ) : (
-                              <Lock size={12} className="relative text-muted-foreground/50" />
+                              <Lock size={12} className="relative text-white/50" />
                             )}
                             <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
                             {!isPrimary && (
@@ -767,7 +767,7 @@ function LearnPageContent() {
                             }
                           }}
                           className="relative flex-1 flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-3 max-[359px]:px-2 text-[11px] font-bold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                          style={{ color: active ? BG : GLASS_55 }}
+                          style={{ color: active ? "var(--on-accent)" : GLASS_55 }}
                         >
                           {active && (
                             <motion.div
@@ -789,7 +789,7 @@ function LearnPageContent() {
                             {isPrimary ? (
                               <GraduationCap size={14} className="relative" />
                             ) : (
-                              <Lock size={12} className="relative text-muted-foreground/50" />
+                              <Lock size={12} className="relative text-white/50" />
                             )}
                             <span className="relative">{DOMAIN_LABELS[id] ?? id}</span>
                             {!isPrimary && (

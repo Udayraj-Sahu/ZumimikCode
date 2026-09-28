@@ -15,7 +15,7 @@ export function ExamShell({ header, footer, navigator, className, children }: Ex
   return (
     <div className={cn("flex flex-1 flex-col", className)}>
       {header ? (
-        <header className="sticky top-0 z-20 -mx-[var(--page-padding)] border-b border-white/[0.06] bg-background/85 px-[var(--page-padding)] pt-3 backdrop-blur-xl">
+        <header className="sticky top-0 z-20 -mx-[var(--page-padding)] bg-background/85 px-[var(--page-padding)] pt-3 backdrop-blur-xl">
           {header}
         </header>
       ) : null}

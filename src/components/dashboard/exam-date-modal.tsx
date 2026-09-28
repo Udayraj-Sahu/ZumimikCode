@@ -108,14 +108,14 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
           <button
             type="button"
             onClick={onClose}
-            className="grid size-11 place-items-center rounded-lg text-muted-foreground/50 hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-11 place-items-center rounded-lg text-white/50 hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <X size={16} />
           </button>
         </div>
 
         <div className="p-5">
-          <p className="text-fluid-xs text-muted-foreground/60 mb-4 text-center">
+          <p className="text-fluid-xs text-white/60 mb-4 text-center">
             Select your target exam date to unlock the countdown
           </p>
 
@@ -160,7 +160,7 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex-1 rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-white/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Cancel
           </button>
@@ -213,7 +213,7 @@ function ScrollColumn({
 
   return (
     <div className="flex-1 flex flex-col">
-      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-muted-foreground/55 pt-2 pb-1">
+      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-white/55 pt-2 pb-1">
         {label}
       </p>
       <div className="relative" style={{ height: ITEM_H * VISIBLE }}>
@@ -243,7 +243,7 @@ function ScrollColumn({
                 }}
                 className={cn(
                   "w-full flex items-center justify-center snap-center transition-all duration-200",
-                  isActive ? "text-foreground font-bold text-[15px]" : "text-muted-foreground/30 text-[13px] font-medium",
+                  isActive ? "text-foreground font-bold text-[15px]" : "text-white/30 text-[13px] font-medium",
                 )}
                 style={{ height: ITEM_H }}
               >

@@ -391,7 +391,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
           <button
             type="button"
             onClick={handleClose}
-            className="grid size-8 place-items-center rounded-lg text-muted-foreground/50 hover:text-foreground/80 transition-colors active:scale-95"
+            className="grid size-8 place-items-center rounded-lg text-white/50 hover:text-white/80 transition-colors active:scale-95"
           >
             <X size={16} />
           </button>
@@ -419,7 +419,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                       size={isActive ? 14 : 10}
                       className={cn(
                         "transition-colors duration-300",
-                        isActive ? "text-[var(--lime)]" : "text-muted-foreground/40",
+                        isActive ? "text-[var(--lime)]" : "text-white/40",
                       )}
                     />
                   )}
@@ -507,7 +507,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
               <button
                 type="button"
                 onClick={goPrev}
-                className="flex items-center gap-1 text-[11px] font-bold text-foreground/40 outline-none transition-colors hover:text-foreground/70 active:scale-[0.98]"
+                className="flex items-center gap-1 text-[11px] font-bold text-white/40 outline-none transition-colors hover:text-white/70 active:scale-[0.98]"
               >
                 <ChevronLeft size={14} />
                 Back
@@ -523,7 +523,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                 "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
                 canNext
                   ? "text-[var(--on-accent)]"
-                  : "bg-white/[0.06] text-muted-foreground/20 cursor-not-allowed",
+                  : "bg-white/[0.06] text-white/20 cursor-not-allowed",
               )}
               style={canNext ? { background: LIME } : undefined}
             >
@@ -724,7 +724,7 @@ function StepName({
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           What&apos;s your first name?
         </h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+        <p className="text-[13px] text-white/50 mt-1.5 font-medium">
           So we can personalise your experience
         </p>
       </div>
@@ -740,8 +740,8 @@ function StepName({
         autoFocus
       />
       {value.trim().length > 0 && (
-        <p className="mt-3 text-[12px] text-muted-foreground/60 font-medium">
-          Hey <span className="text-foreground/70 font-bold">{value.trim()}</span>, nice to meet
+        <p className="mt-3 text-[12px] text-white/60 font-medium">
+          Hey <span className="text-white/70 font-bold">{value.trim()}</span>, nice to meet
           you!
         </p>
       )}
@@ -766,7 +766,7 @@ function StepSingleSelect({
     <div className="flex flex-col">
       <div className="mb-5">
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">{title}</h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">{subtitle}</p>
+        <p className="text-[13px] text-white/50 mt-1.5 font-medium">{subtitle}</p>
       </div>
       <div className="flex flex-col gap-2">
         {options.map((opt) => {
@@ -794,13 +794,13 @@ function StepSingleSelect({
                 <p
                   className={cn(
                     "text-[12px] font-bold leading-tight truncate",
-                    active ? "text-foreground" : "text-foreground/60",
+                    active ? "text-foreground" : "text-white/60",
                   )}
                 >
                   {opt.label}
                 </p>
                 {opt.desc && (
-                  <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium truncate">
+                  <p className="text-micro text-white/60 mt-0.5 font-medium truncate">
                     {opt.desc}
                   </p>
                 )}
@@ -873,7 +873,7 @@ function StepGoal({
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           What brings you here?
         </h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+        <p className="text-[13px] text-white/50 mt-1.5 font-medium">
           We&apos;ll tailor content to your goal
         </p>
       </div>
@@ -905,13 +905,13 @@ function StepGoal({
                   <p
                     className={cn(
                       "text-[12px] font-bold leading-tight truncate",
-                      active ? "text-foreground" : "text-foreground/60",
+                      active ? "text-foreground" : "text-white/60",
                     )}
                   >
                     {opt.label}
                   </p>
                   {opt.desc && (
-                    <p className="text-micro text-muted-foreground/60 mt-0.5 font-medium truncate">
+                    <p className="text-micro text-white/60 mt-0.5 font-medium truncate">
                       {opt.desc}
                     </p>
                   )}
@@ -978,7 +978,7 @@ function GoalPanel({ title, children }: { title: string; children: React.ReactNo
     >
       <div className="flex items-center gap-2 mb-3">
         <span className="w-1.5 h-1.5 rounded-sm bg-[var(--lime)]" />
-        <p className="text-[9px] font-bold tracking-[0.14em] text-muted-foreground/55 uppercase">
+        <p className="text-[9px] font-bold tracking-[0.14em] text-white/55 uppercase">
           {title}
         </p>
       </div>
@@ -1016,13 +1016,13 @@ function GoalRadioRow({
         <span
           className={cn(
             "block text-[13px] font-semibold leading-tight",
-            active ? "text-foreground" : "text-foreground/60",
+            active ? "text-foreground" : "text-white/60",
           )}
         >
           {label}
         </span>
         {sub && (
-          <span className="block text-micro text-muted-foreground/55 mt-0.5 font-medium">
+          <span className="block text-micro text-white/55 mt-0.5 font-medium">
             {sub}
           </span>
         )}
@@ -1038,14 +1038,14 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           Which describe you right now?
         </h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1 font-medium">Pick all that apply</p>
+        <p className="text-[13px] text-white/50 mt-1 font-medium">Pick all that apply</p>
       </div>
       <div className="flex flex-col gap-4">
         {TRIGGER_GROUPED.map((group) => (
           <div key={group.label}>
             <div className="flex items-center gap-2 mb-2.5">
               <div className="w-1 h-3 rounded-full" style={{ backgroundColor: group.color }} />
-              <p className="text-[9px] font-bold tracking-[0.14em] text-muted-foreground/55 uppercase">
+              <p className="text-[9px] font-bold tracking-[0.14em] text-white/55 uppercase">
                 {group.label}
               </p>
             </div>
@@ -1063,7 +1063,7 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                       "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[10px] font-bold transition-all active:scale-95",
                       active
                         ? "text-[var(--on-accent)] bg-[var(--lime-solid)]"
-                        : "bg-white/[0.04] text-muted-foreground/50 border border-white/[0.06] hover:bg-white/[0.07]",
+                        : "bg-white/[0.04] text-white/50 border border-white/[0.06] hover:bg-white/[0.07]",
                     )}
                   >
                     {active && <Check size={8} strokeWidth={3} />}
@@ -1102,12 +1102,12 @@ function StepDetails({
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           Personal Details
         </h2>
-        <p className="text-[13px] text-muted-foreground/50 mt-1.5 font-medium">
+        <p className="text-[13px] text-white/50 mt-1.5 font-medium">
           Help us personalise your journey
         </p>
       </div>
 
-      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-2.5 uppercase">
+      <p className="text-micro font-bold tracking-[0.14em] text-white/60 mb-2.5 uppercase">
         Gender
       </p>
       <div className="flex gap-2.5 mb-6">
@@ -1120,7 +1120,7 @@ function StepDetails({
               "flex-1 flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-[13px] font-bold transition-all active:scale-[0.98]",
               sex === s
                 ? "border-[var(--red-soft-30)] bg-[var(--red-soft-10)] text-[var(--red-soft)]"
-                : "border-white/[0.06] bg-white/[0.03] text-foreground/60 hover:bg-white/[0.05]",
+                : "border-white/[0.06] bg-white/[0.03] text-white/60 hover:bg-white/[0.05]",
             )}
           >
             {s}
@@ -1128,7 +1128,7 @@ function StepDetails({
         ))}
       </div>
 
-      <p className="text-micro font-bold tracking-[0.14em] text-muted-foreground/60 mb-3 uppercase">
+      <p className="text-micro font-bold tracking-[0.14em] text-white/60 mb-3 uppercase">
         Date of Birth
       </p>
       <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
@@ -1195,7 +1195,7 @@ function ScrollColumn({
 
   return (
     <div className="flex-1 flex flex-col">
-      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-muted-foreground/50 pt-2 pb-1">
+      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-white/50 pt-2 pb-1">
         {label}
       </p>
       <div className="relative" style={{ height: ITEM_H * VISIBLE }}>
@@ -1231,7 +1231,7 @@ function ScrollColumn({
                   "w-full flex items-center justify-center snap-center transition-all duration-200",
                   isActive
                     ? "text-foreground font-bold text-[15px]"
-                    : "text-muted-foreground/30 text-[13px] font-medium",
+                    : "text-white/30 text-[13px] font-medium",
                 )}
                 style={{ height: ITEM_H }}
               >
@@ -1293,7 +1293,7 @@ function CompletionScreen() {
         <h2 className="mt-4 text-[24px] font-black tracking-[-0.03em] text-foreground">
           You&apos;re all set, <span className="text-[var(--lime)]">{name}</span>!
         </h2>
-        <p className="mt-1.5 text-[12px] text-muted-foreground/40 font-medium">
+        <p className="mt-1.5 text-[12px] text-white/40 font-medium">
           Let&apos;s start your fight
         </p>
       </div>
@@ -1314,10 +1314,10 @@ function CompletionScreen() {
             { l: "GOAL", v: store.goal || "Master math" },
           ].map((item) => (
             <div key={item.l} className="flex flex-col items-center gap-1">
-              <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">
+              <span className="text-[8px] font-bold tracking-[0.16em] text-white/50 uppercase">
                 {item.l}
               </span>
-              <span className="text-[13px] font-bold text-foreground/70">{item.v}</span>
+              <span className="text-[13px] font-bold text-white/70">{item.v}</span>
             </div>
           ))}
         </div>
@@ -1325,15 +1325,15 @@ function CompletionScreen() {
           <div className="relative mt-4 flex items-center justify-around gap-2 border-t border-white/[0.05] pt-4">
             {badges.map((item) => (
               <div key={item!.l} className="flex flex-col items-center gap-1">
-                <span className="text-[8px] font-bold tracking-[0.16em] text-muted-foreground/50 uppercase">
+                <span className="text-[8px] font-bold tracking-[0.16em] text-white/50 uppercase">
                   {item!.l}
                 </span>
-                <span className="text-[12px] font-bold text-foreground/70">{item!.v}</span>
+                <span className="text-[12px] font-bold text-white/70">{item!.v}</span>
               </div>
             ))}
           </div>
         ) : (
-          <p className="relative mt-4 border-t border-white/[0.05] pt-4 text-[11px] text-muted-foreground/45 font-medium">
+          <p className="relative mt-4 border-t border-white/[0.05] pt-4 text-[11px] text-white/45 font-medium">
             We&apos;ll now customise your daily plan &amp; story
           </p>
         )}

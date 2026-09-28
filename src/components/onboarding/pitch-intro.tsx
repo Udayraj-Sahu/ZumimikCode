@@ -253,7 +253,7 @@ export function PitchIntro({
                       <span ref={streakRef}>0</span>-day streak
                     </span>
                   </div>
-                  <p className="mt-2 text-[13px] font-semibold leading-snug text-muted-foreground/80">
+                  <p className="mt-2 text-[13px] font-semibold leading-snug text-white/80">
                     You&apos;re <span className="text-white">89% better</span> at avoiding wasteful
                     scrolling than last week.
                   </p>
@@ -324,10 +324,10 @@ export function PitchIntro({
                     <Icon size={15} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[13px] font-semibold leading-snug text-muted-foreground/80">
+                    <p className="text-[13px] font-semibold leading-snug text-white/80">
                       {lead} <span className="text-white">{punch}</span>
                     </p>
-                    <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground/55">
+                    <p className="mt-0.5 text-[11px] leading-snug text-white/55">
                       {sub}
                     </p>
                   </div>
@@ -344,7 +344,7 @@ export function PitchIntro({
           <p
             data-stage
             style={reduceMotion ? undefined : { opacity: 0 }}
-            className="mx-auto mt-5 max-w-[330px] text-center text-[10px] italic leading-relaxed text-muted-foreground/55"
+            className="mx-auto mt-5 max-w-[330px] text-center text-[10px] italic leading-relaxed text-white/55"
           >
             {FINE_PRINT}
           </p>
@@ -360,7 +360,7 @@ export function PitchIntro({
                 <Star key={i} size={13} className="fill-[var(--lime)] text-[var(--lime)]" />
               ))}
             </div>
-            <span className=" text-[9px] tracking-[0.2em] text-muted-foreground/60">
+            <span className=" text-[9px] tracking-[0.2em] text-white/60">
               USER RATING {RATING}/5
             </span>
           </div>
@@ -381,7 +381,7 @@ export function PitchIntro({
             </Backlight>
             <button
               onClick={() => exit(onClose)}
-              className="mx-auto mt-2.5 block text-[10px] text-muted-foreground/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
+              className="mx-auto mt-2.5 block text-[10px] text-white/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
             >
               Skip for now
             </button>
