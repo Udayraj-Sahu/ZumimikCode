@@ -174,7 +174,7 @@ export function FamilyIntro({
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
+        "fixed inset-0 z-[var(--z-intro)] overflow-x-hidden overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}

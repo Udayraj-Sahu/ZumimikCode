@@ -1033,7 +1033,7 @@ function GoalRadioRow({
           {label}
         </span>
         {sub && (
-          <span className={cn("block text-micro mt-0.5 font-medium", theme === "light" ? "text-black/55" : "text-white/55")}>
+          <span className={cn("block text-[10px] mt-0.5 font-medium", theme === "light" ? "text-black/55" : "text-white/55")}>
             {sub}
           </span>
         )}
