@@ -152,7 +152,7 @@ export function PitchIntro({
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
+        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}
@@ -162,7 +162,7 @@ export function PitchIntro({
       aria-labelledby="pitch-hook-title"
     >
       <div
-        className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
+        className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
         style={{
           background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
         }}
@@ -176,7 +176,7 @@ export function PitchIntro({
           }}
         />
 
-        <div className="relative mx-auto w-full max-w-[400px] px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-8 md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
+        <div className="relative mx-auto w-full max-w-[400px] px-5 pt-[max(2rem,env(safe-area-inset-top))] pb-8 sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
           <section ref={pitchRef}>
           {/* badge */}
           <div
@@ -207,7 +207,14 @@ export function PitchIntro({
 
           {/* progress hero */}
           <div data-stage style={reduceMotion ? undefined : { opacity: 0 }} className="mt-5">
-            <div className="relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-4">
+            <div
+              className={cn(
+                "relative overflow-hidden p-4",
+                theme === "light"
+                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  : "rounded-2xl border border-white/10 bg-white/[0.03]",
+              )}
+            >
               <div className="pointer-events-none absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-[var(--lime-10)] blur-3xl" />
               <div className="relative flex items-center gap-5">
                 {/* ring */}
@@ -272,7 +279,7 @@ export function PitchIntro({
             style={reduceMotion ? undefined : { opacity: 0 }}
             className="mt-3 grid grid-cols-2 gap-3"
           >
-            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5">
+            <div className={cn("px-3 py-2.5", theme === "light" ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]" : "rounded-xl border border-white/10 bg-white/[0.02]")}>
               <div className=" text-[8px] tracking-[0.2em] text-white/45">SAVED THIS WEEK</div>
               <div className="mt-1 flex items-baseline gap-1">
                 <span
@@ -287,7 +294,7 @@ export function PitchIntro({
                 <span className=" text-[12px] font-bold text-[var(--lime)]">HRS</span>
               </div>
             </div>
-            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5">
+            <div className={cn("px-3 py-2.5", theme === "light" ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]" : "rounded-xl border border-white/10 bg-white/[0.02]")}>
               <div className=" text-[8px] tracking-[0.2em] text-white/45">AVG SPEED / Q</div>
               <div className="mt-1 flex items-baseline gap-1">
                 <span
@@ -312,14 +319,19 @@ export function PitchIntro({
                 key={id}
                 data-stage
                 style={reduceMotion ? undefined : { opacity: 0 }}
-                className="group relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-3"
+                className={cn(
+                "group relative overflow-hidden p-3",
+                theme === "light"
+                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  : "rounded-xl border border-white/10 bg-white/[0.02]",
+              )}
               >
                 <div
                   className={`pointer-events-none absolute inset-y-0 left-0 w-px bg-gradient-to-b ${bar}`}
                 />
                 <div className="flex items-start gap-3">
                   <span
-                    className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/[0.07] bg-white/[0.04] ${accent}`}
+                    className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border ${theme === "light" ? "border-white/[0.07] bg-white/[0.04]" : "border-white/10 bg-black/30"} ${accent}`}
                   >
                     <Icon size={15} />
                   </span>

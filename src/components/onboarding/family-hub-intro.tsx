@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { LIME, LIME_LIGHT } from "@/lib/theme-tokens";
+import { BG_MOSS, FOREST, LIME, LIME_LIGHT, PANEL } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
@@ -152,7 +152,7 @@ export function FamilyHubIntro({
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
+        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}
@@ -162,9 +162,12 @@ export function FamilyHubIntro({
       aria-labelledby="family-hub-hook-title"
     >
       <div
-        className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
+        className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
         style={{
-          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
+          background:
+            theme === "light"
+              ? "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)"
+              : `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
         }}
       >
         <div
@@ -183,7 +186,7 @@ export function FamilyHubIntro({
           }}
         />
 
-        <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
+        <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
         <div className="mt-4">
           <FadeUp delay={60}>
             <h1
@@ -206,7 +209,14 @@ export function FamilyHubIntro({
 
         <div className="mt-6">
           <FadeUp delay={200}>
-            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-3.5">
+            <div
+              className={cn(
+                "p-3.5",
+                theme === "light"
+                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  : "rounded-[18px] border border-dashed border-white/15 bg-white/[0.02]",
+              )}
+            >
               <div className="mb-3 flex items-center justify-between">
                 <span className="text-[9px] font-bold tracking-[0.2em] text-white/70">
                   OPEN SEATS
@@ -219,7 +229,12 @@ export function FamilyHubIntro({
                 {SEATS.map(({ id, label, desc, Icon }) => (
                   <div
                     key={id}
-                    className="rounded-xl border border-white/[0.07] bg-white/[0.02] px-2 py-2.5 text-center"
+                    className={cn(
+                      "rounded-xl border px-2 py-2.5 text-center",
+                      theme === "light"
+                        ? "border-white/[0.07] bg-white/[0.02]"
+                        : "keep-white border-white/[0.06] bg-black/30",
+                    )}
                   >
                     <Icon size={14} className="mx-auto text-[var(--lime)]" />
                     <div className="mt-1.5 text-[10px] font-bold text-foreground">{label}</div>
@@ -233,7 +248,14 @@ export function FamilyHubIntro({
 
         <div className="mt-4">
           <FadeUp delay={280}>
-            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-3.5">
+            <div
+              className={cn(
+                "p-3.5",
+                theme === "light"
+                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  : "rounded-[18px] border border-white/[0.08] bg-white/[0.03]",
+              )}
+            >
               <div className="mb-3 flex items-center gap-1.5">
                 <Home size={12} className="text-[var(--lime)]" />
                 <span className="text-[9px] font-bold tracking-[0.2em] text-white/70">
@@ -261,11 +283,23 @@ export function FamilyHubIntro({
 
         <div className="mt-4">
           <FadeUp delay={360}>
-            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-4">
+            <div
+              className={cn(
+                "p-4",
+                theme === "light"
+                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  : "rounded-[18px] border border-[var(--lime-20)] bg-[var(--lime-04)]",
+              )}
+            >
               <ul className="space-y-2.5">
                 {SAVINGS.map(({ Icon, title, text }) => (
                   <li key={title} className="flex items-center gap-3">
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[var(--lime-25)] bg-[var(--lime-10)] text-[var(--lime)]">
+                    <span
+                      className={cn(
+                        "grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[var(--lime-25)] text-[var(--lime)]",
+                        theme === "light" ? "bg-[var(--lime-10)]" : "bg-black/30",
+                      )}
+                    >
                       <Icon size={14} />
                     </span>
                     <div className="min-w-0">

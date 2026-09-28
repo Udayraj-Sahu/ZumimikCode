@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { LIME, LIME_LIGHT, LIME_TINT } from "@/lib/theme-tokens";
+import { BG_MOSS, FOREST, LIME, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import { MotionConfig, motion } from "motion/react";
@@ -132,6 +132,7 @@ export function PlanSelector({
   lane: string;
   billing?: "annual" | "monthly";
 }) {
+  const theme = useThemeStore((s) => s.theme);
   const store = useOnboardingStore();
   const second = (store.activePreps.find((p) => p !== lane) ??
     (lane && lane !== "gmat" ? "gmat" : "cat")) as string;
@@ -161,10 +162,12 @@ export function PlanSelector({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 + idx * 0.05, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             className={cn(
-              "relative w-full rounded-[16px] border p-3.5 text-left transition",
+              "relative w-full border p-3.5 text-left transition",
+              theme === "light" ? "rounded-[16px]" : "rounded-[20px]",
               selected
                 ? "border-[var(--lime-55)] bg-[var(--lime-06)] shadow-[0_0_24px_var(--lime-12)]"
-                : "border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16]",
+                : "border-white/[0.07] hover:border-white/[0.16]",
+              !selected && (theme === "light" ? "bg-white/[0.02]" : "bg-black/25"),
             )}
           >
             {p.badge && selected && (
@@ -355,7 +358,7 @@ export function PlanIntro({
         ref={overlayRef}
         data-theme-scope
         className={cn(
-"fixed inset-0 z-[var(--z-intro)] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
+"fixed inset-0 z-[var(--z-intro)] overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}
@@ -365,9 +368,12 @@ export function PlanIntro({
       aria-labelledby="plan-hook-title"
     >
       <div
-        className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
+        className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
         style={{
-          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
+          background:
+            theme === "light"
+              ? "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)"
+              : `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
         }}
       >
         <div
@@ -382,7 +388,7 @@ export function PlanIntro({
           }}
         />
 
-        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
+        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
           {/* centered brand */}
           <FadeUp className="flex justify-center">
             <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-4 py-1.5">
@@ -423,7 +429,14 @@ export function PlanIntro({
 
           {/* billing switch */}
           <FadeUp delay={140} className="mt-6">
-            <div className="grid grid-cols-2 gap-1 rounded-[16px] border border-white/[0.07] bg-white/[0.02] p-1">
+            <div
+              className={cn(
+                "grid grid-cols-2 gap-1 p-1",
+                theme === "light"
+                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  : "keep-white rounded-2xl border border-white/[0.08] bg-black/40",
+              )}
+            >
               {(["annual", "monthly"] as const).map((b) => {
                 const active = billing === b;
                 const off =
@@ -690,7 +703,8 @@ export function PlanIntro({
                       "flex h-14 flex-col items-center justify-center gap-1 rounded-[18px] border text-[10px] font-medium transition",
                       active
                         ? "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)] shadow-[0_0_16px_var(--lime-12)]"
-                        : "border-white/[0.07] bg-white/[0.02] text-white/60 hover:border-white/[0.16]",
+                        : "border-white/[0.07] text-white/60 hover:border-white/[0.16]",
+                      !active && (theme === "light" ? "bg-white/[0.02]" : "bg-black/25"),
                     )}
                   >
                     {active && (
@@ -706,7 +720,14 @@ export function PlanIntro({
 
           {/* receipt */}
           <FadeUp delay={380} className="mt-4">
-            <div className="space-y-1.5 rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3.5 py-3 text-[12px]">
+            <div
+              className={cn(
+                "space-y-1.5 text-[12px]",
+                theme === "light"
+                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3.5 py-3"
+                  : "keep-white rounded-[20px] border border-dashed border-white/15 bg-black/40 p-3.5",
+              )}
+            >
               <div className="flex justify-between text-white/70">
                 <span>
                   Subtotal ({plan.lanes} {plan.lanes === 1 ? "Lane" : "Lanes"} ·{" "}

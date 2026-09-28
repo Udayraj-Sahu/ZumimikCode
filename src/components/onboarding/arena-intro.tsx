@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
-import { LIME, LIME_20, LIME_LIGHT, LIME_TINT } from "@/lib/theme-tokens";
+import { BG_MOSS, FOREST, LIME, LIME_20, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
@@ -101,6 +101,39 @@ function FadeUp({
     <div ref={ref} className={className}>
       {children}
     </div>
+  );
+}
+
+function Panel({
+  light,
+  className,
+  children,
+}: {
+  light?: boolean;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section
+      className={cn(
+        "relative overflow-hidden",
+        light
+          ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+          : "rounded-[20px] border border-white/[0.08] bg-black/25",
+        className,
+      )}
+    >
+      {light || (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
+          }}
+        />
+      )}
+      {children}
+    </section>
   );
 }
 
@@ -212,7 +245,7 @@ export function ArenaIntro({
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
+        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}
@@ -221,9 +254,12 @@ export function ArenaIntro({
       aria-labelledby="arena-hook-title"
     >
       <div
-        className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
+        className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
         style={{
-          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
+          background:
+            theme === "light"
+              ? "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)"
+              : `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
         }}
       >
         {/* ambient glow + hairline */}
@@ -239,7 +275,7 @@ export function ArenaIntro({
           }}
         />
 
-        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
+        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
           {/* centered brand */}
         <FadeUp className="flex justify-center">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-4 py-1.5">
@@ -252,7 +288,7 @@ export function ArenaIntro({
         </FadeUp>
 
         {/* hero */}
-        <FadeUp delay={80} className="mt-4 text-center">
+        <FadeUp delay={80} className={cn("text-center", theme === "light" ? "mt-4" : "mt-5")}>
           <h1
             id="arena-hook-title"
             className="text-[36px] font-extrabold uppercase leading-[0.98] tracking-tight text-foreground"
@@ -278,8 +314,8 @@ export function ArenaIntro({
         </FadeUp>
 
         {/* live stat tiles */}
-        <FadeUp delay={160} className="mt-5">
-          <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-3">
+        <FadeUp delay={160} className={theme === "light" ? "mt-5" : "mt-6"}>
+          <Panel light={theme === "light"} className={theme === "light" ? "p-3" : "p-2.5"}>
             <div className="grid grid-cols-4 divide-x divide-white/[0.06]">
               {statCells.map(({ label: l, value, suffix, Icon }) => (
                 <div key={l} className="px-2 first:pl-1">
@@ -294,7 +330,7 @@ export function ArenaIntro({
                 </div>
               ))}
             </div>
-          </div>
+          </Panel>
           <p className="mt-2 flex items-center justify-center gap-1.5 text-[8.5px] font-bold tracking-[0.18em] text-white/60">
             <Flame size={10} className="text-[var(--lime)]" />
             {lanes.length} LANE{lanes.length > 1 ? "S" : ""} ACTIVE • LIVE TELEMETRY
@@ -306,7 +342,12 @@ export function ArenaIntro({
           {lanes.map(({ id, title, desc, Icon, tone }) => (
             <div
               key={id}
-              className="flex items-center gap-3 rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5"
+              className={cn(
+                "flex items-center gap-3",
+                theme === "light"
+                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5"
+                  : "keep-white rounded-[20px] border border-white/[0.08] bg-black/25 p-3.5",
+              )}
             >
               <span
                 className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl border", tone)}
@@ -329,7 +370,7 @@ export function ArenaIntro({
         {/* skill radar */}
         {radar.length > 0 && (
           <FadeUp delay={320} className="mt-4">
-            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-3">
+            <Panel light={theme === "light"} className={theme === "light" ? "p-3" : "p-3.5"}>
               <div className="mb-2.5 flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-[var(--lime)]">
                 <Radar size={11} /> SKILL RADAR
               </div>
@@ -351,14 +392,14 @@ export function ArenaIntro({
                   </div>
                 ))}
               </div>
-            </div>
+            </Panel>
           </FadeUp>
         )}
 
         {/* domain mastery */}
         {topics.length > 0 && (
           <FadeUp delay={380} className="mt-4">
-            <div className="rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-3">
+            <Panel light={theme === "light"} className={theme === "light" ? "p-3" : "p-3.5"}>
               <div className="mb-2.5 text-[9px] font-bold tracking-[0.2em] text-[var(--lime)]">
                 {label(primary).toUpperCase()} MASTERY MAP
               </div>
@@ -383,7 +424,7 @@ export function ArenaIntro({
                   </li>
                 ))}
               </ul>
-            </div>
+            </Panel>
           </FadeUp>
         )}
 
@@ -414,7 +455,10 @@ export function ArenaIntro({
         <FadeUp delay={500} className="mt-6">
           <button
             onClick={() => exit(onClose)}
-            className="flex w-full items-center justify-center gap-2 rounded-[18px] py-3.5 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
+            className={cn(
+              "flex w-full items-center justify-center gap-2 rounded-[18px] text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]",
+              theme === "light" ? "py-3.5" : "py-4",
+            )}
             style={{
               background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
               boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
@@ -425,7 +469,10 @@ export function ArenaIntro({
           </button>
           <button
             onClick={() => exit(onClose)}
-            className="mx-auto mt-2.5 block text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
+            className={cn(
+              "mx-auto block text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline",
+              theme === "light" ? "mt-2.5" : "mt-3",
+            )}
           >
             Continue to dashboard
           </button>

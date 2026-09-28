@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { LIME, LIME_LIGHT, LIME_MID_2 } from "@/lib/theme-tokens";
+import { BG_MOSS, FOREST, LIME, LIME_LIGHT, LIME_MID_2, PANEL } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
@@ -89,6 +89,7 @@ const STACK: {
 ];
 
 function SectionTitle({ marker, title, tag }: { marker: string; title: string; tag: string }) {
+  const theme = useThemeStore((s) => s.theme);
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
@@ -97,7 +98,14 @@ function SectionTitle({ marker, title, tag }: { marker: string; title: string; t
         </span>
         <h2 className="text-[10px] font-black tracking-[0.18em] text-foreground">{title}</h2>
       </div>
-      <span className="shrink-0 rounded-full border border-white/[0.07] bg-white/[0.02] px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]">
+      <span
+        className={cn(
+          "shrink-0 rounded-full border px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]",
+          theme === "light"
+            ? "border-white/[0.07] bg-white/[0.02]"
+            : "keep-white border-white/10 bg-black/30",
+        )}
+      >
         {tag}
       </span>
     </div>
@@ -107,6 +115,7 @@ function SectionTitle({ marker, title, tag }: { marker: string; title: string; t
 /* ── presentational selector (used inside AdaptiveReprompt plan step) ── */
 
 export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: number) => void }) {
+  const theme = useThemeStore((s) => s.theme);
   const [primaryId, setPrimaryId] = useState<"exam" | "oversight">("exam");
   const [stacked, setStacked] = useState<string[]>(["kid1"]);
 
@@ -153,10 +162,13 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 aria-checked={selected}
                 onClick={() => setPrimaryId(p.id)}
                 className={cn(
-                  "relative w-full overflow-hidden rounded-[16px] border p-3.5 text-left transition",
+                  "relative w-full overflow-hidden border p-3.5 text-left transition",
+                  theme === "light" ? "rounded-[16px]" : "rounded-2xl",
                   selected
                     ? "border-[var(--lime-50)] bg-[var(--lime-05)]"
-                    : "border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16]",
+                    : "border-white/[0.07] hover:border-white/[0.16]",
+                  !selected &&
+                    (theme === "light" ? "bg-white/[0.02]" : "bg-black/25 hover:border-white/25"),
                 )}
               >
                 {selected && (
@@ -235,10 +247,12 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                 aria-pressed={added}
                 onClick={() => toggleSeat(s.id)}
                 className={cn(
-                  "w-full rounded-[16px] border p-3.5 text-left transition",
+                  "w-full border p-3.5 text-left transition",
+                  theme === "light" ? "rounded-[16px]" : "rounded-2xl",
                   added
                     ? "border-[var(--lime-40)] bg-[var(--lime-04)]"
-                    : "border-white/[0.07] bg-white/[0.02] hover:border-white/[0.16]",
+                    : "border-white/[0.07] hover:border-white/[0.16]",
+                  !added && (theme === "light" ? "bg-white/[0.02]" : "bg-black/25 hover:border-white/25"),
                 )}
               >
                 <div className="flex items-start justify-between gap-2">
@@ -248,7 +262,11 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                         "grid h-9 w-9 shrink-0 place-items-center rounded-xl border",
                         added
                           ? "border-[var(--lime-30)] bg-[var(--lime-10)] text-[var(--lime)]"
-                          : "border-white/[0.07] bg-white/[0.02] text-white/60",
+                          : "text-white/60",
+                        !added &&
+                          (theme === "light"
+                            ? "border-white/[0.07] bg-white/[0.02]"
+                            : "border-white/10 bg-white/[0.03]"),
                       )}
                     >
                       <s.Icon size={16} />
@@ -420,7 +438,7 @@ export function SeatBuilderIntro({
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
+        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}
@@ -430,9 +448,12 @@ export function SeatBuilderIntro({
       aria-labelledby="seat-builder-hook-title"
     >
       <div
-        className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
+        className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
         style={{
-          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
+          background:
+            theme === "light"
+              ? "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)"
+              : `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
         }}
       >
         <div
@@ -455,7 +476,7 @@ export function SeatBuilderIntro({
           }}
         />
 
-        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
+        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(1.5rem,env(safe-area-inset-top))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
         <section className="mt-8 text-center">
           <h1
             id="seat-builder-hook-title"

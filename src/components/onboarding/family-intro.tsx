@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { LIME, LIME_LIGHT, LIME_MID_2 } from "@/lib/theme-tokens";
+import { BG_2, FOREST_2, LIME, LIME_LIGHT, LIME_MID_2, PANEL_2 } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
@@ -174,7 +174,7 @@ export function FamilyIntro({
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
+        "fixed inset-0 z-[var(--z-intro)] overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}
@@ -184,16 +184,19 @@ export function FamilyIntro({
       aria-labelledby="family-hook-title"
     >
       <div
-        className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
+        className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
         style={{
-          background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
+          background:
+            theme === "light"
+              ? "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)"
+              : `radial-gradient(120% 90% at 50% 0%, ${PANEL_2} 0%, ${BG_2} 46%, ${FOREST_2} 100%)`,
         }}
       >
         <GlowBall className="left-1/2 top-[-70px] h-56 w-56 -translate-x-1/2 bg-[var(--lime-14)]" />
         <GlowBall className="right-[-60px] top-[38%] h-52 w-52 bg-emerald-400/[0.10]" />
         <GlowBall className="bottom-[12%] left-[-70px] h-52 w-52 bg-[var(--lime-08)]" />
 
-        <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1rem,env(safe-area-inset-top))] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto max-[359px]:px-4">
+        <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1rem,env(safe-area-inset-top))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
         <header className="flex items-center justify-center">
           <span className="grid h-8 w-8 place-items-center rounded-xl border border-[var(--lime-25)] bg-[var(--lime-08)]">
             <Sparkles size={15} className="text-[var(--lime)]" />

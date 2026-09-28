@@ -85,6 +85,7 @@ function centeredDist(index: number, active: number, count: number) {
 }
 
 function SystemCarousel() {
+  const theme = useThemeStore((s) => s.theme);
   const [active, setActive] = useState(0);
   const reduceMotion = useReducedMotion();
 
@@ -122,7 +123,7 @@ function SystemCarousel() {
 
   return (
     <div
-      className="relative mt-3 h-[240px]"
+      className={cn("relative mt-3", theme === "light" ? "h-[240px]" : "h-[300px]")}
       role="group"
       aria-roledescription="carousel"
       aria-label="Core systems"
@@ -326,7 +327,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
         ref={overlayRef}
         data-theme-scope
         className={cn(
-          "fixed inset-0 z-[var(--z-intro)] flex flex-col items-center overflow-hidden md:justify-center md:bg-black/60 md:backdrop-blur-sm",
+          "fixed inset-0 z-[var(--z-intro)] flex flex-col items-center overflow-hidden sm:justify-center sm:bg-black/60 sm:backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
           theme === "light" && "light",
         )}
@@ -336,7 +337,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
         aria-labelledby="feature-hook-title"
       >
         <div
-          className="relative flex h-full w-full flex-col overflow-hidden md:h-auto md:min-h-0 md:max-w-md md:max-h-[90vh] md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
+          className="relative flex h-full w-full flex-col overflow-hidden sm:h-auto sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
           style={{
             background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
           }}
@@ -354,8 +355,8 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
             }}
           />
 
-          <div className="relative mx-auto flex h-full w-full max-w-[360px] flex-col md:min-h-0 md:max-w-none md:flex-1">
-            <div className="flex-1 min-h-0 overflow-y-auto px-5 pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4">
+          <div className="relative mx-auto flex h-full w-full max-w-[360px] flex-col sm:min-h-0 sm:max-w-none sm:flex-1">
+            <div className={cn("flex-1 min-h-0 overflow-y-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4", theme === "light" ? "pb-5" : "pb-6")}>
             {/* Protocol pill */}
             <div className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-3">
               <motion.div
@@ -373,7 +374,10 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
 
             <motion.div variants={containerVariants} initial="hidden" animate="show">
               {/* Hero */}
-              <motion.section variants={itemVariants} className="mt-5">
+              <motion.section
+                variants={itemVariants}
+                className={theme === "light" ? "mt-5" : "mt-6"}
+              >
                 <h1
                   id="feature-hook-title"
                   className="text-[clamp(1.15rem,5.3vw,1.4rem)] font-bold uppercase leading-[1.08] tracking-[-0.035em]"
@@ -389,14 +393,21 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                     {copy.headline.accent}
                   </motion.span>
                 </h1>
-                <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">{copy.sub}</p>
+                <p
+                  className={cn(
+                    "text-[13px] leading-relaxed text-muted-foreground",
+                    theme === "light" ? "mt-2.5" : "mt-3",
+                  )}
+                >
+                  {copy.sub}
+                </p>
               </motion.section>
 
               {/* Core systems */}
               <motion.section
                 variants={itemVariants}
                 aria-labelledby="core-heading"
-                className="mt-5"
+                className={theme === "light" ? "mt-5" : "mt-7"}
               >
                 <h2
                   id="core-heading"
@@ -411,7 +422,10 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               <motion.section
                 variants={itemVariants}
                 aria-labelledby="facts-heading"
-                className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+                className={cn(
+                  "rounded-2xl border border-white/10 bg-white/[0.03] p-4",
+                  theme === "light" ? "mt-5" : "mt-6",
+                )}
               >
                 <h2
                   id="facts-heading"
@@ -432,7 +446,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                       variants={cardVariants}
                       className="keep-white flex flex-col-reverse justify-end gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-3"
                     >
-                      <dt className=" text-[9px] uppercase leading-3 tracking-wider text-white/60">
+                      <dt className={cn(" text-[9px] uppercase leading-3 tracking-wider", theme === "light" ? "text-white/60" : "text-muted-foreground")}>
                         {label}
                       </dt>
                       <CountValue value={value} className={valueClass} />
@@ -446,7 +460,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
             </motion.div>
           </div>
 
-          <footer className="shrink-0 px-5 py-3.5">
+          <footer className={cn("shrink-0 px-5", theme === "light" ? "py-3.5" : "py-4")}>
             <button
               type="button"
               onClick={(e) => {

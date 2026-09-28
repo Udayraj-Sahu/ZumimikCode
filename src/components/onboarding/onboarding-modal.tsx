@@ -391,7 +391,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
           <button
             type="button"
             onClick={handleClose}
-            className="grid size-8 place-items-center rounded-lg text-white/50 hover:text-white/80 transition-colors active:scale-95"
+            className={cn("grid size-8 place-items-center rounded-lg transition-colors active:scale-95", theme === "light" ? "text-black/50 hover:text-black/80" : "text-white/50 hover:text-white/80")}
           >
             <X size={16} />
           </button>
@@ -409,7 +409,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                       ? "size-8 bg-[var(--lime-15)] ring-2 ring-[var(--lime-40)]"
                       : isDone
                         ? "size-6 bg-[var(--lime-10)]"
-                        : "size-6 bg-white/[0.05]",
+                        : theme === "light" ? "size-6 bg-black/[0.05]" : "size-6 bg-white/[0.05]",
                   )}
                 >
                   {isDone ? (
@@ -419,7 +419,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                       size={isActive ? 14 : 10}
                       className={cn(
                         "transition-colors duration-300",
-                        isActive ? "text-[var(--lime)]" : "text-white/40",
+                        isActive ? "text-[var(--lime)]" : theme === "light" ? "text-black/40" : "text-white/40",
                       )}
                     />
                   )}
@@ -429,7 +429,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
           </div>
         </div>
         {/* Progress bar */}
-        <div className="h-1 w-full rounded-full bg-white/[0.06] overflow-hidden">
+        <div className={cn("h-1 w-full rounded-full overflow-hidden", theme === "light" ? "bg-black/[0.06]" : "bg-white/[0.06]")}>
           <div
             className="h-full rounded-full transition-all duration-500 ease-out"
             style={{ width: `${((step + 1) / totalSteps) * 100}%`, background: LIME }}
@@ -507,7 +507,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
               <button
                 type="button"
                 onClick={goPrev}
-                className="flex items-center gap-1 text-[11px] font-bold text-white/40 outline-none transition-colors hover:text-white/70 active:scale-[0.98]"
+                className={cn("flex items-center gap-1 text-[11px] font-bold outline-none transition-colors active:scale-[0.98]", theme === "light" ? "text-black/40 hover:text-black/70" : "text-white/40 hover:text-white/70")}
               >
                 <ChevronLeft size={14} />
                 Back
@@ -523,7 +523,9 @@ export function OnboardingModal({ onClose, inline }: Props) {
                 "size-10 rounded-full flex items-center justify-center transition-all active:scale-90",
                 canNext
                   ? "text-[var(--on-accent)]"
-                  : "bg-white/[0.06] text-white/20 cursor-not-allowed",
+                  : theme === "light"
+                    ? "bg-black/[0.06] text-black/20 cursor-not-allowed"
+                    : "bg-white/[0.06] text-white/20 cursor-not-allowed",
               )}
               style={canNext ? { background: LIME } : undefined}
             >
@@ -680,8 +682,8 @@ export function OnboardingModal({ onClose, inline }: Props) {
         >
           <div
             ref={panelRef}
-            className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] shadow-2xl flex flex-col"
-            style={{ background: OVERLAY }}
+            className="w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl border border-white/[0.06] text-foreground shadow-2xl flex flex-col"
+            style={{ background: OVERLAY, borderColor: theme === "light" ? "rgba(0,0,0,0.06)" : undefined }}
             onClick={(e) => e.stopPropagation()}
           >
             {panel}
@@ -712,6 +714,7 @@ function StepName({
   onChange: (v: string) => void;
   onNext: () => void;
 }) {
+  const theme = useThemeStore((s) => s.theme);
   return (
     <div className="flex flex-col">
       <div className="mb-6">
@@ -724,7 +727,7 @@ function StepName({
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           What&apos;s your first name?
         </h2>
-        <p className="text-[13px] text-white/50 mt-1.5 font-medium">
+        <p className={cn("text-[13px] mt-1.5 font-medium", theme === "light" ? "text-black/50" : "text-white/50")}>
           So we can personalise your experience
         </p>
       </div>
@@ -736,12 +739,12 @@ function StepName({
           if (e.key === "Enter" && value.trim().length > 0) onNext();
         }}
         placeholder="Type your name..."
-        className="w-full rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground outline-none focus:border-[var(--lime-bright-30)] focus:ring-1 focus:ring-[var(--lime-bright-20)] transition-all"
+        className={cn("w-full rounded-2xl border px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground outline-none focus:border-[var(--lime-bright-30)] focus:ring-1 focus:ring-[var(--lime-bright-20)] transition-all", theme === "light" ? "border-black/[0.06] bg-black/[0.03]" : "border-white/[0.06] bg-white/[0.03]")}
         autoFocus
       />
       {value.trim().length > 0 && (
-        <p className="mt-3 text-[12px] text-white/60 font-medium">
-          Hey <span className="text-white/70 font-bold">{value.trim()}</span>, nice to meet
+        <p className={cn("mt-3 text-[12px] font-medium", theme === "light" ? "text-black/60" : "text-white/60")}>
+          Hey <span className={cn("font-bold", theme === "light" ? "text-black/70" : "text-white/70")}>{value.trim()}</span>, nice to meet
           you!
         </p>
       )}
@@ -762,11 +765,12 @@ function StepSingleSelect({
   value: string | null;
   onSelect: (v: string) => void;
 }) {
+  const theme = useThemeStore((s) => s.theme);
   return (
     <div className="flex flex-col">
       <div className="mb-5">
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">{title}</h2>
-        <p className="text-[13px] text-white/50 mt-1.5 font-medium">{subtitle}</p>
+        <p className={cn("text-[13px] mt-1.5 font-medium", theme === "light" ? "text-black/50" : "text-white/50")}>{subtitle}</p>
       </div>
       <div className="flex flex-col gap-2">
         {options.map((opt) => {
@@ -781,7 +785,9 @@ function StepSingleSelect({
                 "relative flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
                 active
                   ? "border-[var(--lime-30)] bg-[var(--lime-06)]"
-                  : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+                  : theme === "light"
+                    ? "border-black/[0.05] bg-black/[0.02] hover:bg-black/[0.04]"
+                    : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
               )}
             >
               <div
@@ -794,20 +800,20 @@ function StepSingleSelect({
                 <p
                   className={cn(
                     "text-[12px] font-bold leading-tight truncate",
-                    active ? "text-foreground" : "text-white/60",
+                    active ? "text-foreground" : theme === "light" ? "text-black/60" : "text-white/60",
                   )}
                 >
                   {opt.label}
                 </p>
-                {opt.desc && (
-                  <p className="text-micro text-white/60 mt-0.5 font-medium truncate">
+{opt.desc && (
+                  <p className={cn("text-[11px] mt-0.5 font-medium truncate", theme === "light" ? "text-black/60" : "text-white/60")}>
                     {opt.desc}
                   </p>
                 )}
               </div>
               {active && (
-<div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--lime-solid)]">
- <Check size={8} className="text-[var(--on-accent)]" strokeWidth={3} />
+                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--lime-solid)]">
+                  <Check size={8} className="text-[var(--on-accent)]" strokeWidth={3} />
                 </div>
               )}
             </button>
@@ -833,6 +839,7 @@ function StepGoal({
   onTemporal: (v: TemporalWindowId | null) => void;
   onVedicUseCase: (v: string | null) => void;
 }) {
+  const theme = useThemeStore((s) => s.theme);
   const handleGoalClick = (label: string) => {
     if (value === label) {
       onSelect(null);
@@ -873,7 +880,7 @@ function StepGoal({
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           What brings you here?
         </h2>
-        <p className="text-[13px] text-white/50 mt-1.5 font-medium">
+        <p className={cn("text-[13px] mt-1.5 font-medium", theme === "light" ? "text-black/50" : "text-white/50")}>
           We&apos;ll tailor content to your goal
         </p>
       </div>
@@ -892,7 +899,9 @@ function StepGoal({
                   "relative w-full flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
                   active
                     ? "border-[var(--lime-30)] bg-[var(--lime-06)]"
-                    : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
+                    : theme === "light"
+                      ? "border-black/[0.05] bg-black/[0.02] hover:bg-black/[0.04]"
+                      : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
                 )}
               >
                 <div
@@ -905,13 +914,13 @@ function StepGoal({
                   <p
                     className={cn(
                       "text-[12px] font-bold leading-tight truncate",
-                      active ? "text-foreground" : "text-white/60",
+                      active ? "text-foreground" : theme === "light" ? "text-black/60" : "text-white/60",
                     )}
                   >
                     {opt.label}
                   </p>
                   {opt.desc && (
-                    <p className="text-micro text-white/60 mt-0.5 font-medium truncate">
+                    <p className={cn("text-[10px] mt-0.5 font-medium truncate", theme === "light" ? "text-black/60" : "text-white/60")}>
                       {opt.desc}
                     </p>
                   )}
@@ -958,6 +967,7 @@ function StepGoal({
 }
 
 function GoalPanel({ title, children }: { title: string; children: React.ReactNode }) {
+  const theme = useThemeStore((s) => s.theme);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -974,11 +984,11 @@ function GoalPanel({ title, children }: { title: string; children: React.ReactNo
     <div
       ref={ref}
       data-panel
-      className="mt-2.5 w-full rounded-2xl border border-white/[0.06] bg-white/[0.02] px-4 py-4"
+      className={cn("mt-2.5 w-full rounded-2xl border px-4 py-4", theme === "light" ? "border-black/[0.06] bg-black/[0.02]" : "border-white/[0.06] bg-white/[0.02]")}
     >
       <div className="flex items-center gap-2 mb-3">
         <span className="w-1.5 h-1.5 rounded-sm bg-[var(--lime)]" />
-        <p className="text-[9px] font-bold tracking-[0.14em] text-white/55 uppercase">
+        <p className={cn("text-[9px] font-bold tracking-[0.14em] uppercase", theme === "light" ? "text-black/55" : "text-white/55")}>
           {title}
         </p>
       </div>
@@ -998,16 +1008,17 @@ function GoalRadioRow({
   sub?: string;
   onClick: () => void;
 }) {
+  const theme = useThemeStore((s) => s.theme);
   return (
     <button
       type="button"
       onClick={onClick}
-      className="w-full flex items-center gap-3 rounded-xl px-2 py-3 text-left transition-colors hover:bg-white/[0.03]"
+      className={cn("w-full flex items-center gap-3 rounded-xl px-2 py-3 text-left transition-colors", theme === "light" ? "hover:bg-black/[0.03]" : "hover:bg-white/[0.03]")}
     >
       <span
         className={cn(
           "size-4 rounded-full border flex items-center justify-center shrink-0",
-          active ? "border-[var(--lime)]" : "border-white/[0.18]",
+          active ? "border-[var(--lime)]" : theme === "light" ? "border-black/[0.18]" : "border-white/[0.18]",
         )}
       >
         {active && <span className="size-2 rounded-full bg-[var(--lime)]" />}
@@ -1016,13 +1027,13 @@ function GoalRadioRow({
         <span
           className={cn(
             "block text-[13px] font-semibold leading-tight",
-            active ? "text-foreground" : "text-white/60",
+            active ? "text-foreground" : theme === "light" ? "text-black/60" : "text-white/60",
           )}
         >
           {label}
         </span>
         {sub && (
-          <span className="block text-micro text-white/55 mt-0.5 font-medium">
+          <span className={cn("block text-micro mt-0.5 font-medium", theme === "light" ? "text-black/55" : "text-white/55")}>
             {sub}
           </span>
         )}
@@ -1032,20 +1043,21 @@ function GoalRadioRow({
 }
 
 function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
+  const theme = useThemeStore((s) => s.theme);
   return (
     <div className="flex flex-col">
       <div className="mb-4">
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           Which describe you right now?
         </h2>
-        <p className="text-[13px] text-white/50 mt-1 font-medium">Pick all that apply</p>
+        <p className={cn("text-[13px] mt-1 font-medium", theme === "light" ? "text-black/50" : "text-white/50")}>Pick all that apply</p>
       </div>
       <div className="flex flex-col gap-4">
         {TRIGGER_GROUPED.map((group) => (
           <div key={group.label}>
             <div className="flex items-center gap-2 mb-2.5">
               <div className="w-1 h-3 rounded-full" style={{ backgroundColor: group.color }} />
-              <p className="text-[9px] font-bold tracking-[0.14em] text-white/55 uppercase">
+              <p className={cn("text-[9px] font-bold tracking-[0.14em] uppercase", theme === "light" ? "text-black/55" : "text-white/55")}>
                 {group.label}
               </p>
             </div>
@@ -1063,7 +1075,9 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                       "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[10px] font-bold transition-all active:scale-95",
                       active
                         ? "text-[var(--on-accent)] bg-[var(--lime-solid)]"
-                        : "bg-white/[0.04] text-white/50 border border-white/[0.06] hover:bg-white/[0.07]",
+                        : theme === "light"
+                          ? "bg-black/[0.04] text-black/50 border border-black/[0.06] hover:bg-black/[0.07]"
+                          : "bg-white/[0.04] text-white/50 border border-white/[0.06] hover:bg-white/[0.07]",
                     )}
                   >
                     {active && <Check size={8} strokeWidth={3} />}
@@ -1096,18 +1110,19 @@ function StepDetails({
     },
   ) => void;
 }) {
+  const theme = useThemeStore((s) => s.theme);
   return (
     <div className="flex flex-col">
       <div className="mb-5">
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           Personal Details
         </h2>
-        <p className="text-[13px] text-white/50 mt-1.5 font-medium">
+        <p className={cn("text-[13px] mt-1.5 font-medium", theme === "light" ? "text-black/50" : "text-white/50")}>
           Help us personalise your journey
         </p>
       </div>
 
-      <p className="text-micro font-bold tracking-[0.14em] text-white/60 mb-2.5 uppercase">
+      <p className={cn("text-micro font-bold tracking-[0.14em] mb-2.5 uppercase", theme === "light" ? "text-black/60" : "text-white/60")}>
         Gender
       </p>
       <div className="flex gap-2.5 mb-6">
@@ -1120,7 +1135,9 @@ function StepDetails({
               "flex-1 flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-[13px] font-bold transition-all active:scale-[0.98]",
               sex === s
                 ? "border-[var(--red-soft-30)] bg-[var(--red-soft-10)] text-[var(--red-soft)]"
-                : "border-white/[0.06] bg-white/[0.03] text-white/60 hover:bg-white/[0.05]",
+                : theme === "light"
+                  ? "border-black/[0.06] bg-black/[0.03] text-black/60 hover:bg-black/[0.05]"
+                  : "border-white/[0.06] bg-white/[0.03] text-white/60 hover:bg-white/[0.05]",
             )}
           >
             {s}
@@ -1128,10 +1145,10 @@ function StepDetails({
         ))}
       </div>
 
-      <p className="text-micro font-bold tracking-[0.14em] text-white/60 mb-3 uppercase">
+      <p className={cn("text-micro font-bold tracking-[0.14em] mb-3 uppercase", theme === "light" ? "text-black/60" : "text-white/60")}>
         Date of Birth
       </p>
-      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+      <div className={cn("rounded-2xl border overflow-hidden", theme === "light" ? "border-black/[0.06] bg-black/[0.02]" : "border-white/[0.06] bg-white/[0.02]")}>
         <div className="flex">
           <ScrollColumn
             items={DAYS.map((d) => ({ value: String(d), label: String(d) }))}
@@ -1139,14 +1156,14 @@ function StepDetails({
             onSelect={(v) => onDobChange((prev) => ({ ...prev, day: Number(v) }))}
             label="DD"
           />
-          <div className="w-px bg-white/[0.06] my-3" />
+          <div className={cn("w-px my-3", theme === "light" ? "bg-black/[0.06]" : "bg-white/[0.06]")} />
           <ScrollColumn
             items={MONTHS.map((m) => ({ value: m, label: m.slice(0, 3) }))}
             selected={dob.month}
             onSelect={(v) => onDobChange((prev) => normalizeDob({ ...prev, month: v }))}
             label="MM"
           />
-          <div className="w-px bg-white/[0.06] my-3" />
+          <div className={cn("w-px my-3", theme === "light" ? "bg-black/[0.06]" : "bg-white/[0.06]")} />
           <ScrollColumn
             items={birthYears().map((y) => ({ value: String(y), label: String(y) }))}
             selected={String(dob.year)}
@@ -1170,6 +1187,7 @@ function ScrollColumn({
   onSelect: (value: string) => void;
   label: string;
 }) {
+  const theme = useThemeStore((s) => s.theme);
   const containerRef = useRef<HTMLDivElement>(null);
   const ITEM_H = 36;
   const VISIBLE = 3;
@@ -1195,7 +1213,7 @@ function ScrollColumn({
 
   return (
     <div className="flex-1 flex flex-col">
-      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-white/50 pt-2 pb-1">
+      <p className={cn("text-center text-[9px] font-bold tracking-[0.14em] pt-2 pb-1", theme === "light" ? "text-black/50" : "text-white/50")}>
         {label}
       </p>
       <div className="relative" style={{ height: ITEM_H * VISIBLE }}>
@@ -1231,7 +1249,7 @@ function ScrollColumn({
                   "w-full flex items-center justify-center snap-center transition-all duration-200",
                   isActive
                     ? "text-foreground font-bold text-[15px]"
-                    : "text-white/30 text-[13px] font-medium",
+                    : theme === "light" ? "text-black/30 text-[13px] font-medium" : "text-white/30 text-[13px] font-medium",
                 )}
                 style={{ height: ITEM_H }}
               >
@@ -1247,6 +1265,7 @@ function ScrollColumn({
 }
 
 function CompletionScreen() {
+  const theme = useThemeStore((s) => s.theme);
   const store = useOnboardingStore();
   const boxRef = useRef<HTMLDivElement>(null);
 
@@ -1293,14 +1312,14 @@ function CompletionScreen() {
         <h2 className="mt-4 text-[24px] font-black tracking-[-0.03em] text-foreground">
           You&apos;re all set, <span className="text-[var(--lime)]">{name}</span>!
         </h2>
-        <p className="mt-1.5 text-[12px] text-white/40 font-medium">
+        <p className={cn("mt-1.5 text-[12px] font-medium", theme === "light" ? "text-black/40" : "text-white/40")}>
           Let&apos;s start your fight
         </p>
       </div>
 
       <div
         ref={boxRef}
-        className="relative overflow-hidden rounded-2xl border border-white/[0.05] px-4 py-5 mt-8"
+        className={cn("relative overflow-hidden rounded-2xl border px-4 py-5 mt-8", theme === "light" ? "border-black/[0.05]" : "border-white/[0.05]")}
       >
         <div
           className="absolute top-0 left-0 right-0 h-px"
@@ -1314,26 +1333,26 @@ function CompletionScreen() {
             { l: "GOAL", v: store.goal || "Master math" },
           ].map((item) => (
             <div key={item.l} className="flex flex-col items-center gap-1">
-              <span className="text-[8px] font-bold tracking-[0.16em] text-white/50 uppercase">
-                {item.l}
-              </span>
-              <span className="text-[13px] font-bold text-white/70">{item.v}</span>
+<span className={cn("text-[8px] font-bold tracking-[0.16em] uppercase", theme === "light" ? "text-black/50" : "text-white/50")}>
+                  {item.l}
+                </span>
+              <span className={cn("text-[13px] font-bold", theme === "light" ? "text-black/70" : "text-white/70")}>{item.v}</span>
             </div>
           ))}
         </div>
         {badges.length > 0 ? (
-          <div className="relative mt-4 flex items-center justify-around gap-2 border-t border-white/[0.05] pt-4">
+          <div className={cn("relative mt-4 flex items-center justify-around gap-2 border-t pt-4", theme === "light" ? "border-black/[0.05]" : "border-white/[0.05]")}>
             {badges.map((item) => (
               <div key={item!.l} className="flex flex-col items-center gap-1">
-                <span className="text-[8px] font-bold tracking-[0.16em] text-white/50 uppercase">
+                <span className={cn("text-[8px] font-bold tracking-[0.16em] uppercase", theme === "light" ? "text-black/50" : "text-white/50")}>
                   {item!.l}
                 </span>
-                <span className="text-[12px] font-bold text-white/70">{item!.v}</span>
+                <span className={cn("text-[12px] font-bold", theme === "light" ? "text-black/70" : "text-white/70")}>{item!.v}</span>
               </div>
             ))}
           </div>
         ) : (
-          <p className="relative mt-4 border-t border-white/[0.05] pt-4 text-[11px] text-white/45 font-medium">
+          <p className={cn("relative mt-4 border-t pt-4 text-[11px] font-medium", theme === "light" ? "border-black/[0.05] text-black/45" : "border-white/[0.05] text-white/45")}>
             We&apos;ll now customise your daily plan &amp; story
           </p>
         )}

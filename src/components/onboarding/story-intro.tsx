@@ -188,11 +188,16 @@ function Panel({
   ariaLabel?: string;
 }) {
   const hex = toneHex[tone];
-  const line = useThemeStore((s) => s.theme) === "light" ? toneDark[tone] : `${hex}55`;
+  const theme = useThemeStore((s) => s.theme);
+  const line = theme === "light" ? toneDark[tone] : `${hex}22`;
   return (
     <section
       aria-label={ariaLabel}
-      className={cn("relative overflow-hidden rounded-[16px] border bg-white/[0.02] p-4", className)}
+      className={cn(
+        "relative overflow-hidden border p-4",
+        theme === "light" ? "rounded-[16px] bg-white/[0.02]" : "rounded-2xl bg-black/25",
+        className,
+      )}
       style={{ borderColor: line }}
     >
       {/* top hairline + scan flicker */}
@@ -332,11 +337,17 @@ function Stepper({
   tone: Tone;
 }) {
   const idx = Math.max(0, options.indexOf(value));
+  const theme = useThemeStore((s) => s.theme);
   return (
     <div
       role="group"
       aria-label={label}
-      className="flex flex-none items-center gap-[6px] rounded-full border border-white/[0.07] bg-white/[0.02] p-[4px]"
+      className={cn(
+        "flex flex-none items-center gap-[6px] rounded-full border p-[4px]",
+        theme === "light"
+          ? "border-white/[0.07] bg-white/[0.02]"
+          : "keep-white border-white/[0.08] bg-black/40",
+      )}
     >
       <button
         type="button"
@@ -1019,7 +1030,7 @@ export function StoryIntro({
         ref={overlayRef}
         data-theme-scope
         className={cn(
-          "fixed inset-0 z-[var(--z-intro)] overflow-y-auto md:flex md:items-center md:justify-center md:overflow-hidden md:bg-black/60 md:backdrop-blur-sm",
+          "fixed inset-0 z-[var(--z-intro)] overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
           preloaded && "invisible pointer-events-none",
           theme === "light" && "light",
         )}
@@ -1028,7 +1039,7 @@ export function StoryIntro({
         aria-hidden={preloaded || undefined}
       >
         <div
-          className="relative w-full min-h-full md:min-h-0 md:max-w-md md:max-h-[90vh] md:flex md:flex-col md:overflow-hidden md:rounded-3xl md:border md:border-white/[0.06] md:shadow-2xl"
+          className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
           style={{
             background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
           }}
@@ -1047,7 +1058,7 @@ export function StoryIntro({
             }}
           />
 
-          <div className="relative mx-auto w-full max-w-[430px] px-[14px] pb-[24px] md:min-h-0 md:max-w-none md:flex-1 md:overflow-y-auto md:px-6 max-[359px]:px-3">
+          <div className="relative mx-auto w-full max-w-[430px] px-[14px] pb-[24px] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto sm:px-6 max-[359px]:px-3">
             <div className="relative flex flex-col">
             {/* Protocol pill */}
             <motion.div
