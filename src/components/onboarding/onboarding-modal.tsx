@@ -163,6 +163,7 @@ type Props = { onClose: () => void; inline?: boolean };
 export function OnboardingModal({ onClose, inline }: Props) {
   const store = useOnboardingStore();
   const theme = useThemeStore((s) => s.theme);
+  const accent = useThemeStore((s) => s.accent);
   const [step, setStep] = useState(store.firstName ? store.currentStep : 0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [completed, setCompleted] = useState(false);
@@ -669,15 +670,17 @@ export function OnboardingModal({ onClose, inline }: Props) {
   return (
     <>
       {createPortal(
-        <div
-          ref={overlayRef}
-          data-theme-scope
-          className={cn(
-            "fixed inset-0 z-[var(--z-dialog)] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
-            theme === "light" && "light",
-          )}
-          role="dialog"
-          aria-modal="true"
+          <div
+            ref={overlayRef}
+            data-theme-scope
+            data-accent={accent}
+            suppressHydrationWarning
+            className={cn(
+              "fixed inset-0 z-[var(--z-dialog)] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm",
+              theme === "light" && "light",
+            )}
+            role="dialog"
+            aria-modal="true"
           onClick={handleClose}
         >
           <div
@@ -794,7 +797,7 @@ function StepSingleSelect({
                 className="size-10 shrink-0 rounded-xl flex items-center justify-center"
                 style={{ backgroundColor: active ? "var(--primary)" : GLASS_BG }}
               >
-                <Icon size={16} style={{ color: active ? "var(--primary)" : GLASS_30 }} />
+                <Icon size={16} style={{ color: active ? "var(--primary-foreground)" : GLASS_30 }} />
               </div>
               <div className="min-w-0 flex-1">
                 <p
@@ -908,7 +911,7 @@ function StepGoal({
                   className="size-10 shrink-0 rounded-xl flex items-center justify-center"
                   style={{ backgroundColor: active ? "var(--primary)" : GLASS_BG }}
                 >
-                  <Icon size={16} style={{ color: active ? "var(--primary)" : GLASS_30 }} />
+                  <Icon size={16} style={{ color: active ? "var(--primary-foreground)" : GLASS_30 }} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p

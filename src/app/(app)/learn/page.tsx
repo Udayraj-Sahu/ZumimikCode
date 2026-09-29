@@ -598,7 +598,7 @@ function LearnPageContent() {
                               transition={{ type: "spring", stiffness: 400, damping: 32 }}
                               className="absolute inset-0 rounded-2xl"
                               style={{
-                                background: "linear-gradient(180deg, var(--accent-40), var(--accent-25))",
+                                background: "linear-gradient(180deg, var(--cta-from), var(--cta-to))",
                                 boxShadow: "0 6px 16px -4px var(--accent-40)",
                               }}
                             />
@@ -745,7 +745,7 @@ function LearnPageContent() {
                               transition={{ type: "spring", stiffness: 400, damping: 32 }}
                               className="absolute inset-0 rounded-2xl"
                               style={{
-                                background: "linear-gradient(180deg, var(--accent-40), var(--accent-25))",
+                                background: "linear-gradient(180deg, var(--cta-from), var(--cta-to))",
                                 boxShadow: "0 6px 16px -4px var(--accent-40)",
                               }}
                             />

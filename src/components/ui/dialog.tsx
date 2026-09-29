@@ -44,6 +44,7 @@ export function Dialog({
   panelRef: externalPanelRef,
 }: DialogProps) {
   const theme = useThemeStore((s) => s.theme);
+  const accent = useThemeStore((s) => s.accent);
   const innerPanelRef = useRef<HTMLDivElement>(null);
   const panelRef = externalPanelRef ?? innerPanelRef;
   const prevFocusRef = useRef<HTMLElement | null>(null);
@@ -94,10 +95,12 @@ export function Dialog({
 
   return createPortal(
     <div
-      ref={overlayRef}
-      data-theme-scope
-      className={cn(
-        "fixed inset-0 z-[var(--z-dialog)] flex justify-center bg-black/60 backdrop-blur-sm",
+        ref={overlayRef}
+        data-theme-scope
+        data-accent={accent}
+        suppressHydrationWarning
+        className={cn(
+          "fixed inset-0 z-[var(--z-dialog)] flex justify-center bg-black/60 backdrop-blur-sm",
         placement === "center" ? "items-center p-4" : "items-end sm:items-center",
         theme === "light" && "light",
         overlayClassName,

@@ -177,6 +177,37 @@ describe("DOM application", () => {
     expect(el.getAttribute("data-accent")).toBe("emerald");
   });
 
+  it("scopes a portal that mounts later with no rehydrate call", async () => {
+    useThemeStore.getState().setAccent("emerald");
+    useThemeStore.getState().setTheme("light");
+
+    // The onboarding/duel/paywall portals render after hydration. Nothing
+    // re-runs the sweep for them, so without the MutationObserver this scope
+    // stays bare: the `.light[data-accent="<id>"]` block never matches and
+    // --primary falls back to the dark :root accent on a light surface.
+    const el = mountScope("portal");
+
+    // MutationObserver callbacks are microtask-queued.
+    await Promise.resolve();
+
+    expect(el.getAttribute("data-accent")).toBe("emerald");
+    expect(el.classList.contains("light")).toBe(true);
+  });
+
+  it("scopes a nested scope inside a portal that mounts later", async () => {
+    useThemeStore.getState().setAccent("violet");
+
+    const wrapper = document.createElement("div");
+    const inner = document.createElement("div");
+    inner.setAttribute("data-theme-scope", "");
+    wrapper.appendChild(inner);
+    document.body.appendChild(wrapper);
+
+    await Promise.resolve();
+
+    expect(inner.getAttribute("data-accent")).toBe("violet");
+  });
+
   it("does not touch the landing page, which is outside any themed scope", () => {
     const landing = document.createElement("div");
     landing.setAttribute("data-testid", "landing");

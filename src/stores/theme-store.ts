@@ -102,3 +102,40 @@ useThemeStore.subscribe((state, prev) => {
     applyThemeToScopes(state.theme, state.accent);
   }
 });
+
+/**
+ * Portals (dialogs, onboarding, paywall, habit tracker) mount *after*
+ * hydration, so the one-shot sweep above never sees them. Without this,
+ * `data-accent` is missing on those subtrees, the `.light[data-accent="<id>"]`
+ * token block never matches, and `--primary` silently falls back to the dark
+ * `:root` accent -- i.e. dark-mode accent text on a light surface.
+ *
+ * Observing is strictly a safety net: call sites that bind `data-accent`
+ * directly (app-shell, dialog, onboarding-modal) are already correct, and
+ * re-applying the same class/attribute is a no-op for them.
+ */
+if (typeof document !== "undefined") {
+  const observer = new MutationObserver((mutations) => {
+    const { theme, accent } = useThemeStore.getState();
+    for (const mutation of mutations) {
+      for (const node of mutation.addedNodes) {
+        if (!(node instanceof HTMLElement)) continue;
+        if (node.matches("[data-theme-scope]")) {
+          node.classList.toggle("light", theme === "light");
+          node.setAttribute("data-accent", accent);
+        }
+        node
+          .querySelectorAll<HTMLElement>("[data-theme-scope]")
+          .forEach((el) => {
+            el.classList.toggle("light", theme === "light");
+            el.setAttribute("data-accent", accent);
+          });
+      }
+    }
+  });
+
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+  });
+}
