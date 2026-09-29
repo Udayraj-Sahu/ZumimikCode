@@ -19,7 +19,7 @@ import ContentFeedback from "@/components/ui/content-feedback";
 import { Button } from "@/components/ui/button";
 import { ExamShell } from "@/components/exam/exam-shell";
 import { QuestionNavigator } from "@/components/exam/question-navigator";
-import { CTA_06, CTA_30, GLASS_02, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-tokens";
+import { GLASS_02, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-tokens";
 
 function formatTime(s: number): string {
   const m = Math.floor(s / 60);
@@ -398,13 +398,13 @@ function SprintContent() {
                 if (showFeedback) {
                   if (isSelected && isCorrect) {
                     variantClass = "border text-primary";
-                    variantStyles = { backgroundColor: CTA_06, borderColor: CTA_30 };
+                    variantStyles = { backgroundColor: "var(--accent-06)", borderColor: "var(--accent-30)" };
                   } else if (isSelected && !isCorrect) {
                     variantClass = "border text-destructive";
                     variantStyles = { backgroundColor: RED_06, borderColor: RED_30 };
                   } else if (isCorrect) {
                     variantClass = "border text-primary";
-                    variantStyles = { backgroundColor: CTA_06, borderColor: CTA_30 };
+                    variantStyles = { backgroundColor: "var(--accent-06)", borderColor: "var(--accent-30)" };
                   } else {
                     variantClass = "border text-muted-foreground/40";
                     variantStyles = { backgroundColor: GLASS_02, borderColor: GLASS_BG };

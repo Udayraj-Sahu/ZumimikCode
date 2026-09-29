@@ -7,7 +7,7 @@ import { ChevronLeft, Check, X, TrendingUp, Lightbulb, BookOpen } from "lucide-r
 import { useSprintStore } from "@/stores/sprint-store";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { SprintResult } from "@/lib/types/sprint-session";
-import { CTA_04, CTA_06, CTA_20, CTA_30, GLASS_BG, RED_04, RED_06, RED_30 } from "@/lib/theme-tokens";
+import { GLASS_BG, RED_04, RED_06, RED_30 } from "@/lib/theme-tokens";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 
@@ -128,7 +128,7 @@ export default function AnalysisPage() {
                   {question.options[answer.selectedIndex] ?? "(unanswered)"}
                 </p>
               </div>
-              <div className="rounded-xl border p-3 max-[359px]:p-2.5 text-center" style={{ backgroundColor: CTA_06, borderColor: CTA_30 }}>
+              <div className="rounded-xl border p-3 max-[359px]:p-2.5 text-center" style={{ backgroundColor: "var(--accent-06)", borderColor: "var(--accent-30)" }}>
                 <p className="text-micro font-bold uppercase tracking-wider text-muted-foreground/50">
                   Correct
                 </p>
@@ -141,7 +141,7 @@ export default function AnalysisPage() {
             {/* Explanation */}
             <div className="px-4 max-[359px]:px-3 py-4 max-[359px]:py-3.5">
               {question.explanation ? (
-                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: CTA_20, background: CTA_04 }}>
+                <div className="rounded-2xl border backdrop-blur-xl p-4" style={{ borderColor: "var(--accent-20)", background: "var(--accent-04)" }}>
                   <p className="flex items-center gap-1.5 text-micro font-bold uppercase tracking-[0.18em] text-primary/80 mb-2">
                     <Lightbulb size={12} /> Why the answer is correct
                   </p>

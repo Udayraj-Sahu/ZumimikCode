@@ -37,7 +37,8 @@ import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
-import { BG, CYAN, EMERALD, GLASS_02, GLASS_45, GLASS_50, GLASS_55, GLASS_BG, GLASS_BORDER, LIME, LIME_MID, LIME_PALE_2, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
+import { BG, CYAN, EMERALD, GLASS_02, GLASS_45, GLASS_50, GLASS_55, GLASS_BG, GLASS_BORDER, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
+import { useAccentHex } from "@/hooks/use-accent-hex";
 
 const tabVariants: Variants = {
   initial: { opacity: 0, y: 8, scale: 0.995 },
@@ -183,7 +184,7 @@ function LearnPageContent() {
     return { accuracy: "91%", questions: "2,845", percentile: "78%ile", speed: "42s" };
   }, [prepExams.length]);
 
-  const adaptiveAccent = LIME;
+  const adaptiveAccent = useAccentHex();
 
   const todayLabel = useMemo(
     () =>
@@ -597,7 +598,7 @@ function LearnPageContent() {
                               transition={{ type: "spring", stiffness: 400, damping: 32 }}
                               className="absolute inset-0 rounded-2xl"
                               style={{
-                                background: `linear-gradient(180deg, ${LIME_PALE_2}, ${LIME_MID})`,
+                                background: "linear-gradient(180deg, var(--accent-40), var(--accent-25))",
                                 boxShadow: "0 6px 16px -4px var(--accent-40)",
                               }}
                             />
@@ -744,7 +745,7 @@ function LearnPageContent() {
                               transition={{ type: "spring", stiffness: 400, damping: 32 }}
                               className="absolute inset-0 rounded-2xl"
                               style={{
-                                background: `linear-gradient(180deg, ${LIME_PALE_2}, ${LIME_MID})`,
+                                background: "linear-gradient(180deg, var(--accent-40), var(--accent-25))",
                                 boxShadow: "0 6px 16px -4px var(--accent-40)",
                               }}
                             />
@@ -786,13 +787,13 @@ function LearnPageContent() {
                 onToggle={() => setStatsCollapsed((v) => !v)}
                 hasPrep={prepExams.length > 0}
                 stats={mockStats}
-                color={LIME}
+                color="var(--primary)"
               />
 
               {/* Mock resume — shows only when a mock is in progress */}
               <ResumeProtocolCard
                 domain={mockExamDomain}
-                accent={LIME}
+                accent={adaptiveAccent}
                 kind="mock"
                 className="mt-4 px-0"
               />

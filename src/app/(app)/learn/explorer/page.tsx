@@ -184,7 +184,7 @@ function ExplorerContent() {
           <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">EXPLORER</span>
         </div>
         <h1 className="text-[24px] font-bold tracking-[-0.02em] text-foreground leading-tight">
-          Explore <span className="bg-gradient-to-r from-primary via-[var(--lime-pale)] to-primary bg-clip-text text-transparent">{label}</span>
+          Explore <span className="bg-gradient-to-r from-primary via-[var(--accent-soft)] to-primary bg-clip-text text-transparent">{label}</span>
         </h1>
         <p className="mt-1.5 text-[12px] text-muted-foreground/45 font-normal">Tap nodes to branch out and explore your study map.</p>
       </div>

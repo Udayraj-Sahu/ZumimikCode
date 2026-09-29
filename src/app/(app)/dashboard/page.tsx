@@ -28,7 +28,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
-import { AMBER, AMBER_DARK, AMBER_LIGHT, AMBER_LIGHT_12, BG_SOFT, BLACK_30, CYAN, CYAN_LIGHT, CYAN_LIGHT_12, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_03, GLASS_05, GLASS_06, GLASS_15, GLASS_30, GLASS_BG, GLASS_BORDER, GREEN_SOFT, GREEN_SOFT_12, LIME, ROSE_PINK, ROSE_PINK_12, SKY, SLATE, SLATE_DARKEST, VIOLET_DARK, VIOLET_DARK_12, VIOLET_PURPLE, VIOLET_PURPLE_2, VIOLET_PURPLE_2_12, YELLOW } from "@/lib/theme-tokens";
+import { AMBER, AMBER_DARK, AMBER_LIGHT, AMBER_LIGHT_12, BG_SOFT, BLACK_30, CYAN, CYAN_LIGHT, CYAN_LIGHT_12, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_03, GLASS_05, GLASS_06, GLASS_15, GLASS_30, GLASS_BG, GLASS_BORDER, GREEN_SOFT, GREEN_SOFT_12, ROSE_PINK, ROSE_PINK_12, SKY, SLATE, SLATE_DARKEST, VIOLET_DARK, VIOLET_DARK_12, VIOLET_PURPLE, VIOLET_PURPLE_2, VIOLET_PURPLE_2_12, YELLOW } from "@/lib/theme-tokens";
+import { useAccentHex } from "@/hooks/use-accent-hex";
 import { PageContainer } from "@/components/ui/page-container";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
@@ -211,6 +212,7 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
 export default function DashboardPage() {
   usePageMeta("Dashboard — Exam Arena");
   const router = useRouter();
+  const accentHex = useAccentHex();
   const firstName = useOnboardingStore((s) => s.firstName);
   const persona = useOnboardingStore((s) => s.persona);
   const goal = useOnboardingStore((s) => s.goal);
@@ -401,7 +403,7 @@ export default function DashboardPage() {
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2]">
           <span>Welcome back,</span>{" "}
-          <span className="italic bg-gradient-to-r from-primary via-[var(--lime-pale)] to-primary bg-clip-text text-transparent">{displayName}</span>
+          <span className="italic bg-gradient-to-r from-primary via-[var(--accent-soft)] to-primary bg-clip-text text-transparent">{displayName}</span>
         </h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
@@ -756,10 +758,10 @@ export default function DashboardPage() {
                           <p className="text-[12px] text-foreground/80 font-normal leading-snug mt-1">
                             You&apos;ve covered <span className="font-bold text-foreground">{masteredCount} of {topics.length || 1}</span> topics expected for {DOMAIN_LABELS[targetExam] || targetExam}.
                           </p>
-                          <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-[var(--emerald-10)] border border-[var(--emerald-20)] px-2.5 py-1">
-                            <span className="size-1.5 rounded-full bg-[var(--emerald)]" />
-                            <span className="text-[9px] font-bold text-[var(--emerald)]">On track</span>
-                          </div>
+                           <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-[var(--accent-10)] border border-[var(--accent-20)] px-2.5 py-1">
+                             <span className="size-1.5 rounded-full bg-[var(--primary)]" />
+                             <span className="text-[9px] font-bold text-[var(--primary)]">On track</span>
+                           </div>
                         </div>
                       </div>
 
@@ -890,7 +892,7 @@ export default function DashboardPage() {
           </div>
         </GlassCard>
         {hasResume && (
-          <ResumeProtocolCard accent={LIME} className="md:mt-0 md:min-w-0 md:h-full" />
+          <ResumeProtocolCard accent={accentHex} className="md:mt-0 md:min-w-0 md:h-full" />
         )}
       </div>
 

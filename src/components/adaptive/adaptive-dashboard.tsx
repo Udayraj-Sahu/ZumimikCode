@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { CYAN, EMERALD, GLASS_BG, GLASS_BORDER, LIME, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
+import { CYAN, EMERALD, GLASS_BG, GLASS_BORDER, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
+import { useAccentHex } from "@/hooks/use-accent-hex";
 import { useState } from "react";
 import {
   Grid3x3,
@@ -900,6 +901,7 @@ function TopicMasteryList({ ctx }: { ctx: VariantCtx }) {
 
 export function AdaptiveDashboard({ domain }: { domain: string }) {
   const router = useRouter();
+  const accent = useAccentHex();
   const [isNative] = useState(() => {
     if (typeof window === "undefined") return false;
     try {
@@ -926,7 +928,7 @@ export function AdaptiveDashboard({ domain }: { domain: string }) {
       focusMode,
       dailyMinutes: dailyMinutes ?? 30,
     }),
-    accent: LIME,
+    accent,
   };
 
   const daysRemaining = (() => {

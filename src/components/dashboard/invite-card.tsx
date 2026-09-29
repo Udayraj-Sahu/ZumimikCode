@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EMERALD } from "@/lib/theme-tokens";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Share2, KeyRound, QrCode, Copy, Check } from "lucide-react";
 import { Capacitor } from "@capacitor/core";
@@ -63,15 +62,15 @@ export function InviteCard() {
 
         <div className="flex min-w-0 flex-1 items-center gap-2">
           <span
-            className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--emerald)]"
-            style={{ boxShadow: "0 0 8px var(--emerald-50)" }}
+            className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--primary)]"
+            style={{ boxShadow: "0 0 8px var(--accent-50)" }}
           />
           <h3 className="truncate text-[15px] font-semibold tracking-[-0.02em] text-foreground">
             Invite friends &amp; family
           </h3>
         </div>
 
-        <span className="shrink-0 rounded-full bg-[var(--emerald-10)] px-3 py-1.5 font-mono text-[11px] font-bold tracking-wide text-[var(--emerald)] ring-1 ring-[var(--emerald-20)]">
+        <span className="shrink-0 rounded-full bg-[var(--accent-10)] px-3 py-1.5 font-mono text-[11px] font-bold tracking-wide text-[var(--primary)] ring-1 ring-[var(--accent-20)]">
           +{REWARD_XP} XP
         </span>
       </div>
@@ -85,7 +84,7 @@ export function InviteCard() {
               Invite Code
             </span>
           </div>
-          <span className="rounded-md bg-[var(--emerald-10)] px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--emerald)]">
+          <span className="rounded-md bg-[var(--accent-10)] px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[var(--primary)]">
             Active
           </span>
         </div>
@@ -103,8 +102,8 @@ export function InviteCard() {
             onClick={handleCopy}
             className="flex h-12 items-center gap-2 rounded-full border border-[var(--glass-border)] bg-[var(--glass-05)] px-5 font-mono text-[12px] font-bold uppercase tracking-wider text-foreground transition-all hover:bg-[var(--glass-07)] active:scale-95"
           >
-            {copied ? <Check size={15} style={{ color: EMERALD }} /> : <Copy size={15} className="text-primary" />}
-            <span style={copied ? { color: EMERALD } : undefined}>{copied ? "Done" : "Copy"}</span>
+            {copied ? <Check size={15} className="text-primary" /> : <Copy size={15} className="text-primary" />}
+            <span>{copied ? "Done" : "Copy"}</span>
           </button>
         </div>
       </div>
@@ -112,7 +111,7 @@ export function InviteCard() {
       {/* Stats */}
       <div className="mt-4 grid grid-cols-3 gap-2">
         <Stat label="Invites" value={`${invitesSent}`} valueClass="text-foreground" />
-        <Stat label="Joined" value={`${friendsJoined}`} valueClass="text-[var(--emerald)]" />
+        <Stat label="Joined" value={`${friendsJoined}`} valueClass="text-[var(--primary)]" />
         <Stat label="Earned" value={`${earnedXp} XP`} valueClass="text-primary" />
       </div>
 

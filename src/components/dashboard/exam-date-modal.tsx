@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { GLASS_03, GLASS_06 } from "@/lib/theme-tokens";
 import gsap from "gsap";
 import { X, Calendar, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -108,18 +107,18 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
           <button
             type="button"
             onClick={onClose}
-            className="grid size-11 place-items-center rounded-lg text-white/50 hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-11 place-items-center rounded-lg text-muted-foreground hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <X size={16} />
           </button>
         </div>
 
         <div className="p-5">
-          <p className="text-fluid-xs text-white/60 mb-4 text-center">
+          <p className="text-fluid-xs text-muted-foreground mb-4 text-center">
             Select your target exam date to unlock the countdown
           </p>
 
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+          <div className="rounded-2xl border border-border/40 bg-background overflow-hidden">
             <div className="flex">
               <ScrollColumn
                 items={days.map((d) => ({ value: d, label: d }))}
@@ -127,14 +126,14 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
                 onSelect={(v) => { setSelected((s) => ({ ...s, day: v })); setError(null); }}
                 label="DD"
               />
-              <div className="w-px bg-white/[0.06] my-3" />
+              <div className="w-px bg-border my-3" />
               <ScrollColumn
                 items={MONTHS.map((m) => ({ value: m, label: m.slice(0, 3) }))}
                 selected={selected.month}
                 onSelect={(v) => { setSelected((s) => ({ ...s, month: v })); setError(null); }}
                 label="MM"
               />
-              <div className="w-px bg-white/[0.06] my-3" />
+              <div className="w-px bg-border my-3" />
               <ScrollColumn
                 items={years.map((y) => ({ value: y, label: y }))}
                 selected={selected.year}
@@ -160,14 +159,14 @@ export function ExamDateModal({ open, initialValue, onConfirm, onClose }: Props)
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-white/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex-1 rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleConfirm}
-            className="flex-1 rounded-2xl bg-primary py-3.5 text-fluid-sm font-bold text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex-1 rounded-2xl bg-cta py-3.5 text-fluid-sm font-bold text-[var(--on-accent)] outline-none transition-all hover:shadow-[0_0_18px_var(--accent-30)] hover:opacity-95 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
           >
             Set date
           </button>
@@ -213,7 +212,7 @@ function ScrollColumn({
 
   return (
     <div className="flex-1 flex flex-col">
-      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-white/55 pt-2 pb-1">
+      <p className="text-center text-[9px] font-bold tracking-[0.14em] text-muted-foreground/70 pt-2 pb-1">
         {label}
       </p>
       <div className="relative" style={{ height: ITEM_H * VISIBLE }}>
@@ -221,7 +220,7 @@ function ScrollColumn({
         <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-card to-transparent z-10 pointer-events-none" />
         <div
           className="absolute left-1 right-1 h-10 rounded-xl border z-0 pointer-events-none"
-          style={{ top: PAD * ITEM_H, background: GLASS_03, borderColor: GLASS_06 }}
+          style={{ top: PAD * ITEM_H, background: "var(--accent-08)", borderColor: "var(--accent-25)" }}
         />
         <div
           ref={containerRef}
@@ -243,7 +242,7 @@ function ScrollColumn({
                 }}
                 className={cn(
                   "w-full flex items-center justify-center snap-center transition-all duration-200",
-                  isActive ? "text-foreground font-bold text-[15px]" : "text-white/30 text-[13px] font-medium",
+                  isActive ? "text-primary font-bold text-[15px]" : "text-muted-foreground/50 text-[13px] font-medium",
                 )}
                 style={{ height: ITEM_H }}
               >
