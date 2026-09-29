@@ -83,7 +83,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
           <button
             type="button"
             onClick={handleClose}
-            className="grid size-8 place-items-center rounded-lg text-white/50 hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="grid size-8 place-items-center rounded-lg text-muted-foreground hover:text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <X size={16} />
           </button>
@@ -92,7 +92,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
         <div className="p-5">
           {!selectedExam ? (
             <div className="flex flex-col gap-2.5">
-              <p className="text-fluid-xs text-white/60 mb-1">
+              <p className="text-fluid-xs text-muted-foreground mb-1">
                 Choose an exam or subject to see your progress
               </p>
               {orderedExams.map((exam) => {
@@ -122,7 +122,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
                     )}
                   >
                     <span className="grid size-10 place-items-center rounded-xl border border-border/40 bg-muted/50">
-                      <Icon size={18} className="text-white/70" />
+                      <Icon size={18} className="text-muted-foreground" />
                     </span>
                     <span className="flex-1 text-left">
                       <span className="block text-fluid-sm font-bold text-foreground">
@@ -149,12 +149,12 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
             <div className="flex flex-col gap-3">
               {topics.length === 0 ? (
                 <div className="flex flex-col items-center py-8 text-center">
-                  <p className="text-fluid-sm text-white/60">No topic data available yet.</p>
-                  <p className="text-fluid-xs text-white/40 mt-1">Complete a sprint to see mastery levels.</p>
+                  <p className="text-fluid-sm text-muted-foreground">No topic data available yet.</p>
+                  <p className="text-fluid-xs text-muted-foreground/70 mt-1">Complete a sprint to see mastery levels.</p>
                 </div>
               ) : (
                 <>
-                  <p className="text-fluid-xs text-white/60 mb-1">
+                  <p className="text-fluid-xs text-muted-foreground mb-1">
                     Here&apos;s where you stand:
                   </p>
                   {topics.map((topic) => {
@@ -182,7 +182,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
                               }}
                             />
                           </div>
-                          <span className="text-fluid-xs font-mono text-white/60 w-8 text-right">
+                          <span className="text-fluid-xs font-mono text-muted-foreground w-8 text-right">
                             {topic.value}%
                           </span>
                         </div>
@@ -201,7 +201,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
               <button
                 type="button"
                 onClick={() => setSelectedExam(null)}
-                className="flex-1 rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-white/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex-1 rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Back
               </button>
@@ -217,7 +217,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
             <button
               type="button"
               onClick={handleClose}
-              className="w-full rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-white/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+              className="w-full rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
             >
               Cancel
             </button>
