@@ -457,7 +457,7 @@ export default function DashboardPage() {
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2]">
           <span>Welcome back,</span>{" "}
-          <span className="italic bg-gradient-to-r from-primary via-[var(--accent-soft)] to-primary bg-clip-text text-transparent">{displayName}</span>
+          <span className="italic text-primary">{displayName}</span>
         </h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
