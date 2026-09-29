@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
-import { AMBER, AMBER_DARK, AMBER_LIGHT, AMBER_LIGHT_12, BG_SOFT, BLACK_30, CTA_08, CTA_12, CTA_30, CTA_LIME, CYAN, CYAN_LIGHT, CYAN_LIGHT_12, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_03, GLASS_05, GLASS_06, GLASS_15, GLASS_30, GLASS_BG, GLASS_BORDER, GREEN_SOFT, GREEN_SOFT_12, LIME, LIME_DEEPER, ROSE_PINK, ROSE_PINK_12, SKY, SLATE, SLATE_DARKEST, VIOLET_DARK, VIOLET_DARK_12, VIOLET_PURPLE, VIOLET_PURPLE_2, VIOLET_PURPLE_2_12, YELLOW } from "@/lib/theme-tokens";
+import { AMBER, AMBER_DARK, AMBER_LIGHT, AMBER_LIGHT_12, BG_SOFT, BLACK_30, CYAN, CYAN_LIGHT, CYAN_LIGHT_12, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_03, GLASS_05, GLASS_06, GLASS_15, GLASS_30, GLASS_BG, GLASS_BORDER, GREEN_SOFT, GREEN_SOFT_12, LIME, ROSE_PINK, ROSE_PINK_12, SKY, SLATE, SLATE_DARKEST, VIOLET_DARK, VIOLET_DARK_12, VIOLET_PURPLE, VIOLET_PURPLE_2, VIOLET_PURPLE_2_12, YELLOW } from "@/lib/theme-tokens";
 import { PageContainer } from "@/components/ui/page-container";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,7 @@ import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { NumberTicker } from "@/registry/magicui/number-ticker";
 import { useResumeStore } from "@/stores/resume-store";
 
-const ACCENT = CTA_LIME;
+const ACCENT = "var(--primary)";
 
 const FALLBACK_TOPICS = [
   { name: "Quantitative Aptitude", value: 92, color: "primary" as const },
@@ -391,7 +391,7 @@ export default function DashboardPage() {
       <div className="mx-auto w-full md:max-w-3xl">
 
       {/* Ambient glow behind header */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, var(--cta-25) 0%, transparent 70%)" }} />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, var(--accent-25) 0%, transparent 70%)" }} />
 
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative pt-8 pb-2 text-center max-[359px]:pt-5">
@@ -427,15 +427,15 @@ export default function DashboardPage() {
         >
           {/* Slide 1: Profile status — teaser or complete card */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, var(--cta-06) 0%, var(--glass-02) 55%, var(--cta-03) 100%)" }}>
-              <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-35), transparent)" }} />
-              <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-40), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, var(--accent-06) 0%, var(--glass-02) 55%, var(--accent-04) 100%)" }}>
+              <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-40), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-40), transparent)" }} />
 
               {profileComplete ? (
                 <>
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="size-11 rounded-full flex items-center justify-center text-[var(--on-accent)] font-black text-[16px] shrink-0 shadow-[0_0_18px_var(--cta-35)]" style={{ background: `linear-gradient(135deg, ${CTA_LIME}, ${LIME_DEEPER})` }}>
+                      <div className="size-11 rounded-full flex items-center justify-center text-[var(--on-accent)] font-black text-[16px] shrink-0 shadow-[0_0_18px_var(--accent-40)]" style={{ background: `linear-gradient(135deg, var(--cta-from), var(--cta-to))` }}>
                         {(firstName?.[0] ?? "?").toUpperCase()}
                       </div>
                       <div className="min-w-0">
@@ -443,7 +443,7 @@ export default function DashboardPage() {
                         <p className="text-micro text-primary/60 font-medium mt-0.5">Great to have you, {firstName}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border border-primary/20 text-[9px] font-bold text-primary" style={{ background: CTA_08 }}>
+                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border border-primary/20 text-[9px] font-bold text-primary" style={{ background: "var(--accent-08)" }}>
                       <Sparkles size={9} />
                       100%
                     </div>
@@ -453,7 +453,7 @@ export default function DashboardPage() {
                     <div className="relative size-[88px]">
                       <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
                         <circle cx="32" cy="32" r="26" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
-                        <circle cx="32" cy="32" r="26" fill="none" stroke={CTA_LIME} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset="0" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="var(--primary)" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset="0" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <Sparkles size={17} className="text-primary" />
@@ -464,8 +464,8 @@ export default function DashboardPage() {
                     <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let&apos;s make it count.</p>
                     <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
                       {profileSteps.map((s) => (
-                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: CTA_30, background: CTA_08 }}>
-                          <div className="size-1.5 rounded-full" style={{ background: CTA_LIME }} />
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "var(--accent-30)", background: "var(--accent-08)" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: "var(--primary)" }} />
                           <span className="text-[8px] font-semibold text-foreground/70">{s.label}</span>
                         </div>
                       ))}
@@ -478,12 +478,12 @@ export default function DashboardPage() {
                 <>
                   <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="size-8 rounded-xl flex items-center justify-center shadow-[0_0_14px_var(--cta-20)]" style={{ background: CTA_12 }}>
+                      <div className="size-8 rounded-xl flex items-center justify-center shadow-[0_0_14px_var(--accent-20)]" style={{ background: "var(--accent-12)" }}>
                         <Sparkles size={14} className="text-primary" />
                       </div>
                       <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
                     </div>
-                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? CTA_30 : GLASS_06, background: profileDone > 0 ? CTA_08 : "transparent", color: profileDone > 0 ? CTA_LIME : GLASS_30 }}>
+                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? "var(--accent-30)" : GLASS_06, background: profileDone > 0 ? "var(--accent-08)" : "transparent", color: profileDone > 0 ? "var(--primary)" : GLASS_30 }}>
                       {profileDone}/{profileTotal}
                     </div>
                   </div>
@@ -492,7 +492,7 @@ export default function DashboardPage() {
                     <div className="relative size-[88px]">
                       <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
                         <circle cx="32" cy="32" r="26" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
-                        <circle cx="32" cy="32" r="26" fill="none" stroke={CTA_LIME} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset={`${2 * Math.PI * 26 * (1 - profileDone / profileTotal)}`} className="transition-all duration-700" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="var(--primary)" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset={`${2 * Math.PI * 26 * (1 - profileDone / profileTotal)}`} className="transition-all duration-700" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <Sparkles size={17} className="text-primary" />
@@ -503,15 +503,15 @@ export default function DashboardPage() {
                     <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for — we&apos;ll tailor everything to you.</p>
                     <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
                       {profileSteps.map((s) => (
-                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? CTA_30 : GLASS_06, background: s.done ? CTA_08 : "transparent" }}>
-                          <div className="size-1.5 rounded-full" style={{ background: s.done ? CTA_LIME : GLASS_15 }} />
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? "var(--accent-30)" : GLASS_06, background: s.done ? "var(--accent-08)" : "transparent" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: s.done ? "var(--primary)" : GLASS_15 }} />
                           <span className={cn("text-[8px] font-semibold", s.done ? "text-foreground/70" : "text-muted-foreground/50")}>{s.label}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--cta-lime-solid)] to-[var(--lime-dark)] px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_20px_var(--cta-35)] active:scale-95">
+                  <button type="button" onClick={() => setOnboardingOpen(true)} data-tour-continue-setup className="relative flex items-center justify-center gap-2 rounded-full bg-cta px-5 py-3 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_20px_var(--accent-40)] active:scale-95">
                     CONTINUE SETUP
                     <ChevronRight size={14} className="mt-px" />
                   </button>
@@ -522,11 +522,11 @@ export default function DashboardPage() {
 
           {/* Slide 2: Your Stats */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 1 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, var(--cta-05) 0%, var(--glass-02) 45%, var(--glass-02) 100%)" }}>
-              <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-30), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, var(--accent-04) 0%, var(--glass-02) 45%, var(--glass-02) 100%)" }}>
+              <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-30), transparent)" }} />
               <div className="relative flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: CTA_12 }}>
+                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "var(--accent-12)" }}>
                     <TrendingUp size={15} className="text-primary" />
                   </div>
                   <div className="flex flex-col">
@@ -703,9 +703,9 @@ export default function DashboardPage() {
 
           {/* Slide 5: Exam Prep Readiness */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--cta-08) 0%, var(--cyan-05) 50%, var(--glass-02) 100%)" }}>
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-30), transparent)" }} />
-              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cta-40), transparent)" }} />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--accent-08) 0%, var(--cyan-05) 50%, var(--glass-02) 100%)" }}>
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-30), transparent)" }} />
+              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-40), transparent)" }} />
 
               {(() => {
                 const masteredCount = topics.filter((t) => t.value >= 80).length;
@@ -721,7 +721,7 @@ export default function DashboardPage() {
                     <div className="relative p-5 flex-1 flex flex-col justify-center">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: CTA_12 }}>
+                          <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: "var(--accent-12)" }}>
                             <GraduationCap size={15} className="text-primary" />
                           </div>
                           <SectionLabel>YOUR PROGRESS</SectionLabel>
@@ -772,7 +772,7 @@ export default function DashboardPage() {
                             className="w-full flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-left transition-all hover:bg-white/[0.06] active:scale-[0.98]"
                           >
                             <div className="flex items-center gap-2.5">
-                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: CTA_12 }}>
+                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: "var(--accent-12)" }}>
                                 <Calendar size={12} className="text-primary" />
                               </div>
                               <span className="text-micro font-semibold text-foreground">Exam {new Date(examDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
@@ -786,7 +786,7 @@ export default function DashboardPage() {
                             className="w-full flex items-center justify-between rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-left transition-all hover:bg-primary/[0.08] active:scale-[0.98]"
                           >
                             <div className="flex items-center gap-2.5">
-                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: CTA_12 }}>
+                              <div className="size-7 rounded-lg flex items-center justify-center" style={{ background: "var(--accent-12)" }}>
                                 <Calendar size={12} className="text-primary" />
                               </div>
                               <div>
@@ -802,7 +802,7 @@ export default function DashboardPage() {
 
                     {/* Countdown section */}
                     <div className="relative flex-1 flex flex-col items-center justify-center px-5 py-5 text-center border-t border-white/[0.06]">
-                      <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, var(--cta-18), transparent 60%)" }} />
+                      <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, var(--accent-20), transparent 60%)" }} />
                       {examDate ? (
                         <>
                           <p className="relative flex items-baseline justify-center text-[26px] font-black not-italic tracking-tighter leading-none text-white">
@@ -921,8 +921,8 @@ export default function DashboardPage() {
                       className="h-full rounded-full transition-all duration-700"
                       style={{
                         width: `${t.value}%`,
-                        background: `linear-gradient(90deg, ${ACCENT}77, ${ACCENT})`,
-                        boxShadow: `0 0 10px ${ACCENT}40`,
+                        background: "linear-gradient(90deg, var(--accent-50), var(--primary))",
+                        boxShadow: "0 0 10px var(--accent-25)",
                       }}
                     />
                   </div>

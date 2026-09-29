@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { GLASS_05, GLASS_BORDER, LIME, VIOLET_PURPLE } from "@/lib/theme-tokens";
+import { GLASS_05, GLASS_BORDER, VIOLET_PURPLE } from "@/lib/theme-tokens";
 import { Play, X, Clock, Sparkles, ChevronRight } from "lucide-react";
 import { useResumeStore } from "@/stores/resume-store";
 import { useTodayPlan } from "@/hooks/queries/use-adaptive";
@@ -93,7 +93,7 @@ export function ResumeProtocolCard({
           type="button"
           onClick={() => router.push(startHref)}
           className="group flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-[11px] font-bold uppercase tracking-widest text-[var(--on-accent)] transition-all hover:opacity-90 active:scale-[0.98]"
-          style={{ background: `linear-gradient(90deg, ${accent}, ${LIME})` }}
+          style={{ background: `linear-gradient(90deg, ${accent}, var(--cta-to))` }}
         >
           Start Practice <ChevronRight size={14} />
         </button>
@@ -146,7 +146,7 @@ export function ResumeProtocolCard({
                 type="button"
                 onClick={continueHref}
                 className="flex-1 flex items-center justify-center gap-2 rounded-2xl py-3 text-[11px] font-bold uppercase tracking-widest text-[var(--on-accent)] transition-all hover:opacity-90 active:scale-[0.98]"
-                style={{ background: LIME }}
+                style={{ background: `linear-gradient(90deg, ${accent}, var(--cta-to))` }}
               >
                 <Play size={12} strokeWidth={2.5} /> Resume
               </button>

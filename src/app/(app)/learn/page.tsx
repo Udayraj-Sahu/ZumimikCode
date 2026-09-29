@@ -371,7 +371,7 @@ function LearnPageContent() {
                           className={cn(
                             "text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all",
                             activeDomain === id
-                              ? "bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] text-[var(--on-accent)] shadow-[0_0_12px_var(--cta-25)]"
+                              ? "bg-cta text-[var(--on-accent)] shadow-[0_0_12px_var(--accent-25)]"
                               : "pill bg-[var(--glass-05)] text-muted-foreground",
                           )}
                         >
@@ -598,7 +598,7 @@ function LearnPageContent() {
                               className="absolute inset-0 rounded-2xl"
                               style={{
                                 background: `linear-gradient(180deg, ${LIME_PALE_2}, ${LIME_MID})`,
-                                boxShadow: "0 6px 16px -4px var(--cta-40)",
+                                boxShadow: "0 6px 16px -4px var(--accent-40)",
                               }}
                             />
                           )}
@@ -689,7 +689,7 @@ function LearnPageContent() {
                     {prepExams.length === 0 && justExploring
                       ? "Random Test"
                       : DOMAIN_LABELS[primaryExam] || "Mock"}{" "}
-                    <span className="bg-gradient-to-r from-primary to-[var(--lime-pale)] bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-primary to-[var(--cta-to)] bg-clip-text text-transparent">
                       {prepExams.length === 0 && justExploring ? "Prep" : "Papers"}
                     </span>
                   </h2>
@@ -745,7 +745,7 @@ function LearnPageContent() {
                               className="absolute inset-0 rounded-2xl"
                               style={{
                                 background: `linear-gradient(180deg, ${LIME_PALE_2}, ${LIME_MID})`,
-                                boxShadow: "0 6px 16px -4px var(--cta-40)",
+                                boxShadow: "0 6px 16px -4px var(--accent-40)",
                               }}
                             />
                           )}
@@ -815,7 +815,7 @@ function LearnPageContent() {
                           className={cn(
                             "shrink-0 rounded-full px-3.5 py-1.5 max-[359px]:px-3 whitespace-nowrap text-[11px] font-semibold transition-all",
                             mockSection === sec
-                              ? "bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] text-[var(--on-accent)]"
+                              ? "bg-cta text-[var(--on-accent)]"
                               : "border border-white/[0.07] text-muted-foreground/60 hover:bg-white/[0.05]",
                           )}
                         >
@@ -908,7 +908,7 @@ function LearnPageContent() {
                                 `/learn/mock/run?paper=${paper.id}&domain=${mockExamDomain}`,
                               );
                             }}
-                            className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[var(--lime-mid)] px-4 py-2 max-[359px]:px-3 whitespace-nowrap text-[11px] font-bold uppercase tracking-wider text-[var(--bg)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                            className="shrink-0 inline-flex items-center gap-1.5 rounded-xl bg-cta px-4 py-2 max-[359px]:px-3 whitespace-nowrap text-[11px] font-bold uppercase tracking-wider text-[var(--bg)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
                           >
                             <Play size={12} strokeWidth={2.5} /> Take Test
                           </button>

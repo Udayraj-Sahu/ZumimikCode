@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { CYAN, EMERALD, GLASS_03, GLASS_06, GLASS_30, GLASS_BG, GREEN_SOLID, LIME, LIME_10, LIME_125, MUTED_GREEN, OVERLAY, PURPLE, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
+import { CYAN, EMERALD, GLASS_03, GLASS_06, GLASS_30, GLASS_BG, GREEN_SOLID, MUTED_GREEN, OVERLAY, PURPLE, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
 import { createPortal } from "react-dom";
 import gsap from "gsap";
 import {
@@ -75,7 +75,7 @@ const TEMPORAL_PANEL_OPTIONS: { id: TemporalWindowId; label: string }[] = [
 const TRIGGER_GROUPED = [
   {
     label: "Life Stage",
-    color: LIME,
+    color: "var(--primary)",
     tags: ["Final Year Student", "Gap Year", "Career Switch", "Returning to Work"],
   },
   {
@@ -406,20 +406,20 @@ export function OnboardingModal({ onClose, inline }: Props) {
                   className={cn(
                     "flex items-center justify-center rounded-full transition-all duration-300",
                     isActive
-                      ? "size-8 bg-[var(--lime-15)] ring-2 ring-[var(--lime-40)]"
+                      ? "size-8 bg-[var(--accent-15)] ring-2 ring-[var(--accent-40)]"
                       : isDone
-                        ? "size-6 bg-[var(--lime-10)]"
+                        ? "size-6 bg-[var(--accent-10)]"
                         : theme === "light" ? "size-6 bg-black/[0.05]" : "size-6 bg-white/[0.05]",
                   )}
                 >
                   {isDone ? (
-                    <Check size={10} className="text-[var(--lime)]" />
+                    <Check size={10} className="text-[var(--primary)]" />
                   ) : (
                     <StepIcon
                       size={isActive ? 14 : 10}
                       className={cn(
                         "transition-colors duration-300",
-                        isActive ? "text-[var(--lime)]" : theme === "light" ? "text-black/40" : "text-white/40",
+                        isActive ? "text-[var(--primary)]" : theme === "light" ? "text-black/40" : "text-white/40",
                       )}
                     />
                   )}
@@ -432,7 +432,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
         <div className={cn("h-1 w-full rounded-full overflow-hidden", theme === "light" ? "bg-black/[0.06]" : "bg-white/[0.06]")}>
           <div
             className="h-full rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${((step + 1) / totalSteps) * 100}%`, background: LIME }}
+            style={{ width: `${((step + 1) / totalSteps) * 100}%`, background: "var(--primary)" }}
           />
         </div>
       </div>
@@ -527,7 +527,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
                     ? "bg-black/[0.06] text-black/20 cursor-not-allowed"
                     : "bg-white/[0.06] text-white/20 cursor-not-allowed",
               )}
-              style={canNext ? { background: LIME } : undefined}
+              style={canNext ? { background: "var(--cta-from)" } : undefined}
             >
               {step === totalSteps - 1 ? <Sparkles size={16} /> : <ArrowRight size={16} />}
             </button>
@@ -720,9 +720,9 @@ function StepName({
       <div className="mb-6">
         <div
           className="size-11 rounded-2xl flex items-center justify-center mb-4"
-          style={{ background: LIME_10 }}
+          style={{ background: "var(--accent-10)" }}
         >
-          <User size={20} className="text-[var(--lime-bright)]" />
+          <User size={20} className="text-[var(--primary)]" />
         </div>
         <h2 className="text-[20px] font-black tracking-[-0.03em] text-foreground">
           What&apos;s your first name?
@@ -739,7 +739,7 @@ function StepName({
           if (e.key === "Enter" && value.trim().length > 0) onNext();
         }}
         placeholder="Type your name..."
-        className={cn("w-full rounded-2xl border px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground outline-none focus:border-[var(--lime-bright-30)] focus:ring-1 focus:ring-[var(--lime-bright-20)] transition-all", theme === "light" ? "border-black/[0.06] bg-black/[0.03]" : "border-white/[0.06] bg-white/[0.03]")}
+        className={cn("w-full rounded-2xl border px-4 py-4 text-[15px] font-medium text-foreground placeholder:text-muted-foreground outline-none focus:border-[var(--accent-30)] focus:ring-1 focus:ring-[var(--accent-20)] transition-all", theme === "light" ? "border-black/[0.06] bg-black/[0.03]" : "border-white/[0.06] bg-white/[0.03]")}
         autoFocus
       />
       {value.trim().length > 0 && (
@@ -784,7 +784,7 @@ function StepSingleSelect({
               className={cn(
                 "relative flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
                 active
-                  ? "border-[var(--lime-30)] bg-[var(--lime-06)]"
+                  ? "border-[var(--accent-30)] bg-[var(--accent-06)]"
                   : theme === "light"
                     ? "border-black/[0.05] bg-black/[0.02] hover:bg-black/[0.04]"
                     : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
@@ -792,9 +792,9 @@ function StepSingleSelect({
             >
               <div
                 className="size-10 shrink-0 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: active ? LIME_125 : GLASS_BG }}
+                style={{ backgroundColor: active ? "var(--primary)" : GLASS_BG }}
               >
-                <Icon size={16} style={{ color: active ? LIME : GLASS_30 }} />
+                <Icon size={16} style={{ color: active ? "var(--primary)" : GLASS_30 }} />
               </div>
               <div className="min-w-0 flex-1">
                 <p
@@ -812,7 +812,7 @@ function StepSingleSelect({
                 )}
               </div>
               {active && (
-                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--lime-solid)]">
+                <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--primary)]">
                   <Check size={8} className="text-[var(--on-accent)]" strokeWidth={3} />
                 </div>
               )}
@@ -898,7 +898,7 @@ function StepGoal({
                 className={cn(
                   "relative w-full flex items-center gap-3.5 rounded-2xl border px-4 py-3.5 text-left transition-all active:scale-[0.97]",
                   active
-                    ? "border-[var(--lime-30)] bg-[var(--lime-06)]"
+                    ? "border-[var(--accent-30)] bg-[var(--accent-06)]"
                     : theme === "light"
                       ? "border-black/[0.05] bg-black/[0.02] hover:bg-black/[0.04]"
                       : "border-white/[0.05] bg-white/[0.02] hover:bg-white/[0.04]",
@@ -906,9 +906,9 @@ function StepGoal({
               >
                 <div
                   className="size-10 shrink-0 rounded-xl flex items-center justify-center"
-                  style={{ backgroundColor: active ? LIME_125 : GLASS_BG }}
+                  style={{ backgroundColor: active ? "var(--primary)" : GLASS_BG }}
                 >
-                  <Icon size={16} style={{ color: active ? LIME : GLASS_30 }} />
+                  <Icon size={16} style={{ color: active ? "var(--primary)" : GLASS_30 }} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p
@@ -926,7 +926,7 @@ function StepGoal({
                   )}
                 </div>
                 {active && (
-                  <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--lime)]">
+                  <div className="absolute top-2 right-2 size-4 rounded-full flex items-center justify-center bg-[var(--primary)]">
                     <Check size={8} className="text-[var(--on-accent)]" strokeWidth={3} />
                   </div>
                 )}
@@ -987,7 +987,7 @@ function GoalPanel({ title, children }: { title: string; children: React.ReactNo
       className={cn("mt-2.5 w-full rounded-2xl border px-4 py-4", theme === "light" ? "border-black/[0.06] bg-black/[0.02]" : "border-white/[0.06] bg-white/[0.02]")}
     >
       <div className="flex items-center gap-2 mb-3">
-        <span className="w-1.5 h-1.5 rounded-sm bg-[var(--lime)]" />
+        <span className="w-1.5 h-1.5 rounded-sm bg-[var(--primary)]" />
         <p className={cn("text-[9px] font-bold tracking-[0.14em] uppercase", theme === "light" ? "text-black/55" : "text-white/55")}>
           {title}
         </p>
@@ -1018,10 +1018,10 @@ function GoalRadioRow({
       <span
         className={cn(
           "size-4 rounded-full border flex items-center justify-center shrink-0",
-          active ? "border-[var(--lime)]" : theme === "light" ? "border-black/[0.18]" : "border-white/[0.18]",
+          active ? "border-[var(--primary)]" : theme === "light" ? "border-black/[0.18]" : "border-white/[0.18]",
         )}
       >
-        {active && <span className="size-2 rounded-full bg-[var(--lime)]" />}
+        {active && <span className="size-2 rounded-full bg-[var(--primary)]" />}
       </span>
       <span className="min-w-0 flex-1">
         <span
@@ -1074,7 +1074,7 @@ function StepTriggers({ value, onChange }: { value: string[]; onChange: (v: stri
                     className={cn(
                       "flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[10px] font-bold transition-all active:scale-95",
                       active
-                        ? "text-[var(--on-accent)] bg-[var(--lime-solid)]"
+                        ? "text-[var(--on-accent)] bg-[var(--primary)]"
                         : theme === "light"
                           ? "bg-black/[0.04] text-black/50 border border-black/[0.06] hover:bg-black/[0.07]"
                           : "bg-white/[0.04] text-white/50 border border-white/[0.06] hover:bg-white/[0.07]",
@@ -1303,14 +1303,14 @@ function CompletionScreen() {
           />
           <CelebrationAvatar />
         </div>
-        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--lime-20)] bg-[var(--lime-08)] px-4 py-1.5">
-          <Sparkles size={12} className="text-[var(--lime)]" />
-          <span className="text-micro font-bold tracking-[0.14em] uppercase text-[var(--lime)]">
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--accent-20)] bg-[var(--accent-08)] px-4 py-1.5">
+          <Sparkles size={12} className="text-[var(--primary)]" />
+          <span className="text-micro font-bold tracking-[0.14em] uppercase text-[var(--primary)]">
             Profile complete
           </span>
         </div>
         <h2 className="mt-4 text-[24px] font-black tracking-[-0.03em] text-foreground">
-          You&apos;re all set, <span className="text-[var(--lime)]">{name}</span>!
+          You&apos;re all set, <span className="text-[var(--primary)]">{name}</span>!
         </h2>
         <p className={cn("mt-1.5 text-[12px] font-medium", theme === "light" ? "text-black/40" : "text-white/40")}>
           Let&apos;s start your fight

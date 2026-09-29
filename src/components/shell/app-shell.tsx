@@ -23,6 +23,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const theme = useThemeStore((s) => s.theme);
+  const accent = useThemeStore((s) => s.accent);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLElement>(null);
@@ -80,7 +81,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const displayName = (user?.name ?? "Operative").toUpperCase();
 
   return (
-    <div data-theme-scope suppressHydrationWarning className={cn("min-h-screen bg-background text-foreground", theme === "light" && "light")}>
+    <div data-theme-scope data-accent={accent} suppressHydrationWarning className={cn("min-h-screen bg-background text-foreground", theme === "light" && "light")}>
       <aside
         ref={sidebarRef}
         className="fixed inset-y-0 left-0 z-[var(--z-nav)] hidden w-[250px] flex-col border-r border-chrome-border bg-chrome px-4 py-7 min-[1025px]:flex"

@@ -1,13 +1,18 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { safeLocalStorage } from "@/lib/browser";
+import { DEFAULT_ACCENT, isAccentId, type AccentId } from "@/lib/theme-tokens";
 
 export type Theme = "dark" | "light";
 
 type ThemeState = {
+  /** Light/dark mode axis. Independent of `accent`. */
   theme: Theme;
+  /** User-selectable brand hue. Independent of `theme`. */
+  accent: AccentId;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
+  setAccent: (accent: AccentId) => void;
   reset: () => void;
 };
 
@@ -15,11 +20,14 @@ const STORAGE_KEY = "exam-arena-theme";
 
 // `.light` is scoped to app-shell subtrees ([data-theme-scope]) so the landing
 // page and onboarding/auth surfaces never flip. Everything outside those
-// subtrees permanently resolves :root (dark) values.
-function applyThemeClass(theme: Theme) {
+// subtrees permanently resolves :root (dark) values. The same loop carries
+// `data-accent`, which is what globals.css keys its [data-accent="<id>"] token
+// blocks off, so portaled dialogs follow the user's accent too.
+function applyThemeToScopes(theme: Theme, accent: AccentId) {
   if (typeof document === "undefined") return;
   document.querySelectorAll<HTMLElement>("[data-theme-scope]").forEach((el) => {
     el.classList.toggle("light", theme === "light");
+    el.setAttribute("data-accent", accent);
   });
 }
 
@@ -28,7 +36,7 @@ function readInitialTheme(): Theme {
   try {
     const raw = safeLocalStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as { state: { theme: Theme } };
+      const parsed = JSON.parse(raw) as { state?: { theme?: unknown } };
       if (parsed?.state?.theme === "light") return "light";
     }
   } catch {
@@ -37,24 +45,60 @@ function readInitialTheme(): Theme {
   return "dark";
 }
 
+// Legacy payloads predate the accent axis, so they carry no `accent` key at all.
+// Read it here (rather than in `migrate`) so the very first client render already
+// has the right value and we never flash the default hue.
+function readInitialAccent(): AccentId {
+  if (typeof document === "undefined") return DEFAULT_ACCENT;
+  try {
+    const raw = safeLocalStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as { state?: { accent?: unknown } };
+      if (isAccentId(parsed?.state?.accent)) return parsed.state.accent;
+    }
+  } catch {
+    /* ignore */
+  }
+  return DEFAULT_ACCENT;
+}
+
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
       theme: readInitialTheme(),
+      accent: readInitialAccent(),
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set({ theme: get().theme === "dark" ? "light" : "dark" }),
-      reset: () => set({ theme: "dark" }),
+      setAccent: (accent) => set({ accent }),
+      reset: () => set({ theme: "dark", accent: DEFAULT_ACCENT }),
     }),
     {
       name: STORAGE_KEY,
       storage: createJSONStorage(() => safeLocalStorage),
+      // `merge` rather than `migrate`: zustand only calls `migrate` when the
+      // persisted version differs from ours, so a same-version payload carrying a
+      // stale or hand-edited accent would skip validation entirely. `merge` runs on
+      // every hydration, which is what makes the guards below actually bite.
+      // Each field is sanitized independently so one bad value never discards the
+      // other axis, and a legacy payload with no `accent` key keeps the default.
+      merge: (persisted, current) => {
+        const incoming = (persisted ?? {}) as Partial<ThemeState>;
+        return {
+          ...current,
+          ...incoming,
+          theme: incoming.theme === "light" ? "light" : "dark",
+          accent: isAccentId(incoming.accent) ? incoming.accent : DEFAULT_ACCENT,
+        };
+      },
       onRehydrateStorage: () => (state) => {
-        if (state) applyThemeClass(state.theme);
+        if (state) applyThemeToScopes(state.theme, state.accent);
       },
     },
   ),
 );
 
 useThemeStore.subscribe((state, prev) => {
-  if (state.theme !== prev.theme) applyThemeClass(state.theme);
+  if (state.theme !== prev.theme || state.accent !== prev.accent) {
+    applyThemeToScopes(state.theme, state.accent);
+  }
 });

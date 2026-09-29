@@ -168,7 +168,10 @@ function habitData() {
 }
 
 function themeData() {
-  return { theme: useThemeStore.getState().theme };
+  const s = useThemeStore.getState();
+  // accent is included so the existing reset assertions below also prove the
+  // accent axis is restored, not just the mode.
+  return { theme: s.theme, accent: s.accent };
 }
 
 function networkData() {
@@ -269,7 +272,7 @@ describe("state management edge cases", () => {
     expect(referralData()).toEqual(BASELINE.referral);
     expect(onboardingData()).toEqual(BASELINE.onboarding);
     expect(habitData()).toEqual(BASELINE.habit);
-    expect(themeData()).toEqual({ theme: "dark" });
+    expect(themeData()).toEqual({ theme: "dark", accent: "lime" });
     expect(networkData()).toEqual(BASELINE.network);
     expect(paywallData()).toEqual(BASELINE.paywall);
     expect(toastData()).toEqual({ toasts: [] });
@@ -377,6 +380,7 @@ describe("state management edge cases", () => {
     expect(habitData()).toEqual(BASELINE.habit);
 
     useThemeStore.getState().setTheme("light");
+    useThemeStore.getState().setAccent("violet");
     useThemeStore.getState().reset();
     expect(themeData()).toEqual(BASELINE.theme);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { BLACK_06, CTA_LIME, CYAN, EMERALD_12, GLASS_05, GLASS_BORDER, LIME_DARK, RED_SOFT_12, SOLID_BLACK } from "@/lib/theme-tokens";
+import { BLACK_06, CYAN, EMERALD_12, GLASS_05, GLASS_BORDER, RED_SOFT_12, SOLID_BLACK } from "@/lib/theme-tokens";
 import gsap from "gsap";
 import {
   ArrowRight,
@@ -24,7 +24,7 @@ import {
 } from "@/hooks/queries/use-pairing";
 import type { PairingStatus } from "@/lib/types/pairing";
 
-const ACCENT = CTA_LIME;
+const ACCENT = "var(--primary)";
 const POLL_INTERVAL_MS = 2500;
 const SESSION_TTL_MS = 120_000;
 
@@ -193,7 +193,7 @@ export default function AuthPage() {
   return (
     <main id="auth-root" className="relative flex min-h-dvh items-center justify-center bg-background overflow-hidden px-6" style={{ opacity: 0 }}>
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full opacity-[0.07]" style={{ background: `radial-gradient(circle, ${CTA_LIME} 0%, transparent 70%)` }} />
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full opacity-[0.07]" style={{ background: `radial-gradient(circle, var(--primary) 0%, transparent 70%)` }} />
         <div className="absolute bottom-0 left-1/4 h-[300px] w-[300px] rounded-full opacity-[0.04]" style={{ background: `radial-gradient(circle, ${CYAN} 0%, transparent 70%)` }} />
       </div>
 
@@ -227,7 +227,7 @@ export default function AuthPage() {
                 type="button"
                 onClick={() => boot.current?.()}
                 className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
-                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
+                style={{ background: `linear-gradient(90deg, var(--cta-from), var(--cta-to))` }}
               >
                 <RefreshCw size={13} /> Retry
               </button>
@@ -251,7 +251,7 @@ export default function AuthPage() {
                 type="button"
                 onClick={() => boot.current?.()}
                 className="mt-4 flex items-center gap-2 rounded-xl px-4 py-2.5 text-[11px] font-bold text-[var(--bg)] transition-all active:scale-95"
-                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
+                style={{ background: `linear-gradient(90deg, var(--cta-from), var(--cta-to))` }}
               >
                 <RefreshCw size={13} /> Generate new code
               </button>
@@ -261,7 +261,7 @@ export default function AuthPage() {
               <div className="mt-5 flex justify-center">
                 <div className="relative">
                   <QrGrid token={code || "PENDING"} />
-                  <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "0 0 30px var(--cta-25) inset" }} />
+                  <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "0 0 30px var(--accent-25) inset" }} />
                 </div>
               </div>
 
@@ -309,7 +309,7 @@ export default function AuthPage() {
               type="button"
               onClick={() => boot.current?.()}
               className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--bg)] transition-all active:scale-95"
-              style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
+              style={{ background: `linear-gradient(90deg, var(--cta-from), var(--cta-to))` }}
             >
               <RefreshCw size={15} /> New code
             </button>

@@ -1,6 +1,6 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
-import { CTA_LIME, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_BORDER, LIME_DARK, RED_SOFT_12 } from "@/lib/theme-tokens";
+import { EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_BORDER, RED_SOFT_12 } from "@/lib/theme-tokens";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -132,7 +132,7 @@ export default function ScanToLoginPage() {
                 onClick={handleScan}
                 disabled={dirty || isBusy}
                 className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all active:scale-95 disabled:opacity-40 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
-                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
+                style={{ background: `linear-gradient(90deg, var(--cta-from), var(--cta-to))` }}
               >
                 {scan.isPending ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
                 {scan.isPending ? "Checking code…" : "Continue"}
@@ -205,7 +205,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={() => router.replace("/dashboard")}
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
-                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
+                style={{ background: `linear-gradient(90deg, var(--cta-from), var(--cta-to))` }}
               >
                 Done <ArrowRight size={15} />
               </button>
@@ -223,7 +223,7 @@ export default function ScanToLoginPage() {
                 type="button"
                 onClick={handleCancel}
                 className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[12px] font-bold tracking-[0.02em] text-[var(--on-accent)] transition-all active:scale-95 max-[359px]:gap-1.5 max-[359px]:py-3 whitespace-nowrap"
-                style={{ background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DARK})` }}
+                style={{ background: `linear-gradient(90deg, var(--cta-from), var(--cta-to))` }}
               >
                 Try again <ArrowRight size={15} />
               </button>

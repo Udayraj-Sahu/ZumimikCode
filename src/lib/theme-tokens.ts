@@ -1,7 +1,9 @@
-// AUTO-GENERATED from palette-map.json (single source of truth).
-// globals.css :root emits the same palette as CSS custom properties; regenerate both together.
+// Single source of truth for the design palette.
+// globals.css mirrors these values as CSS custom properties. `accent-themes.test.ts`
+// asserts the two stay in sync — if you edit an accent here, update the matching
+// [data-accent="<id>"] block in globals.css or the test fails.
 // Colors are strictly value-preserving (dark-mode values are never changed).
-// Flip-set tokens (light theme) resolve to var(--<css-name>) so they respond to .light / .dark-scene.
+// Flip-set tokens (light theme) resolve to var(--<css-name>) so they respond to .light.
 
 export const LIME = "#C8FF4D";
 export const LIME_BRIGHT = "#C8FF5A";
@@ -257,3 +259,413 @@ export const SLATE_MUTED = "rgb(120 130 125)";
 export const VIOLET = EMERALD;
 export const VIOLET_DIM = EMERALD_10;
 export const VIOLET_GLOW = EMERALD_30;
+
+/* ------------------------------------------------------------------ */
+/*  Accent themes (user-selectable brand hue)                           */
+/* ------------------------------------------------------------------ */
+/**
+ * Each accent resolves to one of two token sets, selected by the active mode:
+ *
+ *  - `dark`  — bright, saturated hues for near-black surfaces.
+ *  - `light` — darkened hues so accent *text* stays legible on near-white panels.
+ *
+ * Design rules enforced by `accent-themes.test.ts`:
+ *  1. `primary` is the fill for solid primary surfaces; `primaryForeground` sits on it.
+ *  2. `onAccent` sits on `ctaFrom`/`ctaTo` (the CTA gradient) and on accent fills.
+ *  3. Light-mode hues are the *text* variants and must clear 4.5:1 on white cards.
+ *  4. `lime` in dark mode is byte-identical to the historical values so the
+ *     default theme is visually unchanged.
+ *
+ * The `--lime-*` / `--cta-*` alpha scales above are intentionally NOT part of this
+ * system: they stay lime so glass/tint surfaces keep their current weight.
+ */
+export type AccentId =
+  | "lime"
+  | "emerald"
+  | "cyan"
+  | "violet"
+  | "amber"
+  | "red"
+  | "orange"
+  | "blue";
+
+export type AccentTokenSet = {
+  /** Solid primary surface fill (buttons, logo tile, selected chips). */
+  primary: string;
+  /** Text/icon color placed on top of `primary`. */
+  primaryForeground: string;
+  /** Focus ring + focus-visible outline color. */
+  ring: string;
+  /** Accent text/icon color (links, labels, icons) for the active mode. */
+  accentForeground: string;
+  /** Tinted surface for accent backgrounds (low alpha). */
+  accentSoft: string;
+  /** Very low-alpha accent wash for decorative backdrops. */
+  accentMuted: string;
+  /** Accent border color for outlined accent controls. */
+  accentBorder: string;
+  /** Text/icon color placed on `ctaFrom`/`ctaTo` gradient fills. */
+  onAccent: string;
+  /** CTA gradient start stop. */
+  ctaFrom: string;
+  /** CTA gradient end stop. */
+  ctaTo: string;
+  /** Primary data-series color for charts. */
+  chart1: string;
+  /**
+   * Accent tint ramp, derived from `primary` at the listed alpha percentages and
+   * emitted as `--accent-04` … `--accent-50`. Replaces the legacy
+   * `--emerald-*` ramp so components that tinted themselves with emerald now
+   * follow the user's accent.
+   */
+} & { [K in AccentAlphaStep as `alpha${K}`]: string };
+
+/**
+ * Alpha percentages for the accent tint ramp, zero-padded so they match the
+ * legacy `--emerald-XX` custom property names they replace.
+ */
+export const ACCENT_ALPHA_STEPS = [
+  "04",
+  "06",
+  "08",
+  "10",
+  "12",
+  "15",
+  "20",
+  "25",
+  "30",
+  "40",
+  "50",
+] as const;
+
+export type AccentAlphaStep = (typeof ACCENT_ALPHA_STEPS)[number];
+
+const HEX_RGB: Record<string, [number, number, number]> = {};
+
+/** Build one `rgba()` tint of a solid accent hex. */
+function withAlpha(hex: string, step: AccentAlphaStep): string {
+  const key = hex.toUpperCase();
+  let rgb = HEX_RGB[key];
+  if (!rgb) {
+    const h = key.replace("#", "");
+    rgb = [
+      parseInt(h.slice(0, 2), 16),
+      parseInt(h.slice(2, 4), 16),
+      parseInt(h.slice(4, 6), 16),
+    ];
+    HEX_RGB[key] = rgb;
+  }
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${Number(step) / 100})`;
+}
+
+/** The full alpha ramp for a solid accent color, keyed to match `AccentTokenSet`. */
+function alphaRamp(
+  hex: string,
+): { [K in AccentAlphaStep as `alpha${K}`]: string } {
+  return Object.fromEntries(
+    ACCENT_ALPHA_STEPS.map((step) => [`alpha${step}`, withAlpha(hex, step)]),
+  ) as { [K in AccentAlphaStep as `alpha${K}`]: string };
+}
+
+export type AccentTheme = {
+  /** Human-readable label for the settings selector. */
+  label: string;
+  /** Swatch preview color, drawn from the dark token set. */
+  swatch: string;
+  dark: AccentTokenSet;
+  light: AccentTokenSet;
+};
+
+export const ACCENT_IDS: AccentId[] = [
+  "lime",
+  "emerald",
+  "cyan",
+  "violet",
+  "amber",
+  "red",
+  "orange",
+  "blue",
+];
+
+export const DEFAULT_ACCENT: AccentId = "lime";
+
+export function isAccentId(value: unknown): value is AccentId {
+  return typeof value === "string" && (ACCENT_IDS as string[]).includes(value);
+}
+
+export const accentThemes: Record<AccentId, AccentTheme> = {
+  lime: {
+    label: "Lime",
+    swatch: "#C8FF5A",
+    dark: {
+      primary: "#C8FF5A",
+      ...alphaRamp("#C8FF5A"),
+      primaryForeground: "#050505",
+      ring: "#C8FF5A",
+      accentForeground: "#C8FF5A",
+      accentSoft: "rgba(200, 255, 90, 0.12)",
+      accentMuted: "rgba(200, 255, 90, 0.05)",
+      accentBorder: "rgba(200, 255, 90, 0.28)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#C7F252",
+      ctaTo: "#A8D43A",
+      chart1: "#C8FF5A",
+    },
+    light: {
+      primary: "#4D7C0F",
+      ...alphaRamp("#4D7C0F"),
+      primaryForeground: "#FFFFFF",
+      ring: "#4D7C0F",
+      accentForeground: "#4D7C0F",
+      accentSoft: "rgba(77, 124, 15, 0.10)",
+      accentMuted: "rgba(77, 124, 15, 0.05)",
+      accentBorder: "rgba(77, 124, 15, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#C7F252",
+      ctaTo: "#A8D43A",
+      chart1: "#4D7C0F",
+    },
+  },
+  emerald: {
+    label: "Emerald",
+    swatch: "#34D399",
+    dark: {
+      primary: "#34D399",
+      ...alphaRamp("#34D399"),
+      primaryForeground: "#050505",
+      ring: "#34D399",
+      accentForeground: "#34D399",
+      accentSoft: "rgba(52, 211, 153, 0.12)",
+      accentMuted: "rgba(52, 211, 153, 0.05)",
+      accentBorder: "rgba(52, 211, 153, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#10B981",
+      ctaTo: "#059669",
+      chart1: "#34D399",
+    },
+    light: {
+      primary: "#047857",
+      ...alphaRamp("#047857"),
+      primaryForeground: "#FFFFFF",
+      ring: "#047857",
+      accentForeground: "#047857",
+      accentSoft: "rgba(4, 120, 87, 0.10)",
+      accentMuted: "rgba(4, 120, 87, 0.05)",
+      accentBorder: "rgba(4, 120, 87, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#10B981",
+      ctaTo: "#059669",
+      chart1: "#047857",
+    },
+  },
+  cyan: {
+    label: "Cyan",
+    swatch: "#22D3EE",
+    dark: {
+      primary: "#22D3EE",
+      ...alphaRamp("#22D3EE"),
+      primaryForeground: "#050505",
+      ring: "#22D3EE",
+      accentForeground: "#22D3EE",
+      accentSoft: "rgba(34, 211, 238, 0.12)",
+      accentMuted: "rgba(34, 211, 238, 0.05)",
+      accentBorder: "rgba(34, 211, 238, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#06B6D4",
+      ctaTo: "#0891B2",
+      chart1: "#22D3EE",
+    },
+    light: {
+      primary: "#0E7490",
+      ...alphaRamp("#0E7490"),
+      primaryForeground: "#FFFFFF",
+      ring: "#0E7490",
+      accentForeground: "#0E7490",
+      accentSoft: "rgba(14, 116, 144, 0.10)",
+      accentMuted: "rgba(14, 116, 144, 0.05)",
+      accentBorder: "rgba(14, 116, 144, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#06B6D4",
+      ctaTo: "#0891B2",
+      chart1: "#0E7490",
+    },
+  },
+  violet: {
+    label: "Violet",
+    swatch: "#A78BFA",
+    dark: {
+      primary: "#A78BFA",
+      ...alphaRamp("#A78BFA"),
+      primaryForeground: "#050505",
+      ring: "#A78BFA",
+      accentForeground: "#A78BFA",
+      accentSoft: "rgba(167, 139, 250, 0.12)",
+      accentMuted: "rgba(167, 139, 250, 0.05)",
+      accentBorder: "rgba(167, 139, 250, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#8B5CF6",
+      ctaTo: "#7C6CF0",
+      chart1: "#A78BFA",
+    },
+    light: {
+      primary: "#6D28D9",
+      ...alphaRamp("#6D28D9"),
+      primaryForeground: "#FFFFFF",
+      ring: "#6D28D9",
+      accentForeground: "#6D28D9",
+      accentSoft: "rgba(109, 40, 217, 0.10)",
+      accentMuted: "rgba(109, 40, 217, 0.05)",
+      accentBorder: "rgba(109, 40, 217, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#8B5CF6",
+      ctaTo: "#7C6CF0",
+      chart1: "#6D28D9",
+    },
+  },
+  amber: {
+    label: "Amber",
+    swatch: "#FBBF24",
+    dark: {
+      primary: "#FBBF24",
+      ...alphaRamp("#FBBF24"),
+      primaryForeground: "#050505",
+      ring: "#FBBF24",
+      accentForeground: "#FBBF24",
+      accentSoft: "rgba(251, 191, 36, 0.12)",
+      accentMuted: "rgba(251, 191, 36, 0.05)",
+      accentBorder: "rgba(251, 191, 36, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#F59E0B",
+      ctaTo: "#D97706",
+      chart1: "#FBBF24",
+    },
+    light: {
+      primary: "#B45309",
+      ...alphaRamp("#B45309"),
+      primaryForeground: "#FFFFFF",
+      ring: "#B45309",
+      accentForeground: "#B45309",
+      accentSoft: "rgba(180, 83, 9, 0.10)",
+      accentMuted: "rgba(180, 83, 9, 0.05)",
+      accentBorder: "rgba(180, 83, 9, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#F59E0B",
+      ctaTo: "#D97706",
+      chart1: "#B45309",
+    },
+  },
+  red: {
+    label: "Red",
+    swatch: "#FB7185",
+    dark: {
+      primary: "#FB7185",
+      ...alphaRamp("#FB7185"),
+      primaryForeground: "#050505",
+      ring: "#FB7185",
+      accentForeground: "#FB7185",
+      accentSoft: "rgba(251, 113, 133, 0.12)",
+      accentMuted: "rgba(251, 113, 133, 0.05)",
+      accentBorder: "rgba(251, 113, 133, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#EF4444",
+      ctaTo: "#E5484D",
+      chart1: "#FB7185",
+    },
+    light: {
+      primary: "#B91C1C",
+      ...alphaRamp("#B91C1C"),
+      primaryForeground: "#FFFFFF",
+      ring: "#B91C1C",
+      accentForeground: "#B91C1C",
+      accentSoft: "rgba(185, 28, 28, 0.10)",
+      accentMuted: "rgba(185, 28, 28, 0.05)",
+      accentBorder: "rgba(185, 28, 28, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#EF4444",
+      ctaTo: "#E5484D",
+      chart1: "#B91C1C",
+    },
+  },
+  orange: {
+    label: "Orange",
+    swatch: "#FF8A4C",
+    dark: {
+      primary: "#FF8A4C",
+      ...alphaRamp("#FF8A4C"),
+      primaryForeground: "#050505",
+      ring: "#FF8A4C",
+      accentForeground: "#FF8A4C",
+      accentSoft: "rgba(255, 138, 76, 0.12)",
+      accentMuted: "rgba(255, 138, 76, 0.05)",
+      accentBorder: "rgba(255, 138, 76, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#FF6B35",
+      ctaTo: "#EA580C",
+      chart1: "#FF8A4C",
+    },
+    light: {
+      primary: "#C2410C",
+      ...alphaRamp("#C2410C"),
+      primaryForeground: "#FFFFFF",
+      ring: "#C2410C",
+      accentForeground: "#C2410C",
+      accentSoft: "rgba(194, 65, 12, 0.10)",
+      accentMuted: "rgba(194, 65, 12, 0.05)",
+      accentBorder: "rgba(194, 65, 12, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#FF6B35",
+      ctaTo: "#EA580C",
+      chart1: "#C2410C",
+    },
+  },
+  blue: {
+    label: "Blue",
+    swatch: "#60A5FA",
+    dark: {
+      primary: "#60A5FA",
+      ...alphaRamp("#60A5FA"),
+      primaryForeground: "#050505",
+      ring: "#60A5FA",
+      accentForeground: "#60A5FA",
+      accentSoft: "rgba(96, 165, 250, 0.12)",
+      accentMuted: "rgba(96, 165, 250, 0.05)",
+      accentBorder: "rgba(96, 165, 250, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#3B82F6",
+      ctaTo: "#2F79EE",
+      chart1: "#60A5FA",
+    },
+    light: {
+      primary: "#1D4ED8",
+      ...alphaRamp("#1D4ED8"),
+      primaryForeground: "#FFFFFF",
+      ring: "#1D4ED8",
+      accentForeground: "#1D4ED8",
+      accentSoft: "rgba(29, 78, 216, 0.10)",
+      accentMuted: "rgba(29, 78, 216, 0.05)",
+      accentBorder: "rgba(29, 78, 216, 0.30)",
+      onAccent: "#0A0C0A",
+      ctaFrom: "#3B82F6",
+      ctaTo: "#2F79EE",
+      chart1: "#1D4ED8",
+    },
+  },
+};
+
+/** CSS custom property name emitted for a given token key. */
+export const ACCENT_CSS_VARS: Record<keyof AccentTokenSet, string> = {
+  primary: "--primary",
+  primaryForeground: "--primary-foreground",
+  ring: "--ring",
+  accentForeground: "--accent-foreground",
+  accentSoft: "--accent-soft",
+  accentMuted: "--accent-muted",
+  accentBorder: "--accent-border",
+  onAccent: "--on-accent",
+  ctaFrom: "--cta-from",
+  ctaTo: "--cta-to",
+  chart1: "--chart-1",
+  ...(Object.fromEntries(
+    ACCENT_ALPHA_STEPS.map((step) => [`alpha${step}`, `--accent-${step}`]),
+  ) as Record<`alpha${AccentAlphaStep}`, string>),
+};

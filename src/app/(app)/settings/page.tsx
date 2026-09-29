@@ -39,7 +39,7 @@ import { AddPrepModal } from "@/components/learn/add-prep-modal";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { cn } from "@/lib/utils";
-import { GLASS_BG, GLASS_BORDER, RED_SOFT_06, RED_SOFT_25 } from "@/lib/theme-tokens";
+import { GLASS_BG, GLASS_BORDER, RED_SOFT_06, RED_SOFT_25, accentThemes, ACCENT_IDS } from "@/lib/theme-tokens";
 import { GlassCard } from "@/components/ui/glass-card";
 
 /* ------------------------------------------------------------------ */
@@ -152,7 +152,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initials: string; badge: string; onEdit: () => void }) {
   return (
     <div className="relative flex flex-col items-center pt-2 pb-1 text-center">
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-25) 0%, transparent 70%)" }} />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[200px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--accent-25) 0%, transparent 70%)" }} />
       <div className="relative mb-4 inline-flex items-center gap-2 pill px-4 py-1.5">
           <Settings size={12} className="text-primary" />
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">SETTINGS</span>
@@ -161,7 +161,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 backdrop-blur-sm">
           <span className="text-lg font-bold tracking-[-0.02em] text-primary">{initials}</span>
         </div>
-        <button type="button" className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_0_12px_var(--cta-30)]">
+        <button type="button" className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_0_12px_var(--accent-30)]">
           <Pencil className="h-2.5 w-2.5" />
         </button>
       </div>
@@ -219,8 +219,8 @@ function SubscriptionCard() {
   return (
     <div>
       <SectionLabel>SUBSCRIPTION</SectionLabel>
-      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, var(--cta-04) 0%, var(--glass-03) 100%)" }}>
-        <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-30), transparent)" }} />
+      <div className="relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 max-[359px]:p-4" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(135deg, var(--accent-04) 0%, var(--glass-03) 100%)" }}>
+        <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--accent-30), transparent)" }} />
         <div className="relative flex items-start justify-between">
           <div className="flex items-center gap-3 max-[359px]:gap-2">
             <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -247,7 +247,7 @@ function SubscriptionCard() {
             <X className="h-3.5 w-3.5 shrink-0" /> Unlimited sprints
           </li>
         </ul>
-        <button type="button" className="relative mt-5 w-full rounded-full bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] shadow-[0_0_20px_var(--cta-25)] transition-all hover:shadow-[0_0_30px_var(--cta-35)] active:scale-[0.98] max-[359px]:py-3 whitespace-nowrap">
+        <button type="button" className="relative mt-5 w-full rounded-full bg-cta py-3.5 text-[13px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] shadow-[0_0_20px_var(--accent-25)] transition-all hover:shadow-[0_0_30px_var(--accent-40)] active:scale-[0.98] max-[359px]:py-3 whitespace-nowrap">
           Upgrade to Pro — $9.99/mo
         </button>
       </div>
@@ -267,8 +267,10 @@ export default function SettingsPage() {
 
   const [showAddPrep, setShowAddPrep] = useState(false);
 
-  const theme = useThemeStore((s) => s.theme);
-  const toggleTheme = useThemeStore((s) => s.toggleTheme);
+const theme = useThemeStore((s) => s.theme);
+const accent = useThemeStore((s) => s.accent);
+const setAccent = useThemeStore((s) => s.setAccent);
+const toggleTheme = useThemeStore((s) => s.toggleTheme);
 
   const prepExams = useMemo(() => {
     const others = activePreps.filter((id) => id !== targetExam && id in DOMAIN_LABELS);
@@ -288,7 +290,7 @@ export default function SettingsPage() {
     <PageContainer className="pt-1">
       <div className="mx-auto w-full md:max-w-3xl">
       {/* Ambient glow */}
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--cta-20) 0%, transparent 70%)" }} />
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-15" style={{ background: "radial-gradient(circle, var(--accent-20) 0%, transparent 70%)" }} />
 
       {/* Profile summary */}
       <ProfileHeader
@@ -358,6 +360,55 @@ export default function SettingsPage() {
             </div>
             <div className="hidden md:grid md:items-stretch">
               <HeadingTile icon={theme === "light" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />} heading={theme === "light" ? "Light Mode" : "Dark Mode"} onClick={toggleTheme} />
+            </div>
+            <div className="mt-3">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                Accent colour
+              </p>
+              <div
+                role="group"
+                aria-label="Accent colour"
+                className="flex flex-wrap gap-2"
+              >
+                {ACCENT_IDS.map((id) => {
+                  const option = accentThemes[id];
+                  const selected = accent === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setAccent(id)}
+                      aria-label={option.label}
+                      aria-pressed={selected}
+                      title={option.label}
+                      className={cn(
+                        "flex min-h-11 min-w-11 items-center justify-center rounded-full border-2 transition-all active:scale-[0.94] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                        selected
+                          ? "border-primary shadow-[0_0_0_3px_var(--accent-soft)]"
+                          : "border-border/60 hover:border-primary/50",
+                      )}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="flex h-6 w-6 items-center justify-center rounded-full"
+                        style={{ background: option.swatch }}
+                      >
+                        {selected && (
+                          <Check
+                            size={14}
+                            strokeWidth={3}
+                            className="text-[#0A0C0A]"
+                          />
+                        )}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                Changes buttons, links, progress and highlights. Status colours
+                stay fixed.
+              </p>
             </div>
           </div>
 

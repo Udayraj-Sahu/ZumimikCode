@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EMERALD, CTA_LIME, LIME_DEEPER } from "@/lib/theme-tokens";
+import { EMERALD } from "@/lib/theme-tokens";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Share2, KeyRound, QrCode, Copy, Check } from "lucide-react";
 import { Capacitor } from "@capacitor/core";
@@ -122,8 +122,8 @@ export function InviteCard() {
         onClick={handleShare}
         className="mt-4 flex h-12 w-full items-center justify-center gap-2.5 rounded-full font-mono text-[13px] font-bold uppercase tracking-wide text-[var(--on-accent)] transition-all active:scale-[0.98]"
         style={{
-          background: `linear-gradient(90deg, ${CTA_LIME}, ${LIME_DEEPER})`,
-          boxShadow: "0 0 24px var(--cta-30)",
+          background: `linear-gradient(90deg, var(--cta-from), var(--cta-to))`,
+          boxShadow: "0 0 24px var(--accent-30)",
         }}
       >
         <Share2 size={18} />

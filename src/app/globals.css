@@ -49,6 +49,17 @@
   --chrome-avatar: #8a6a5a;
   --cta-from: #C7F252;
   --cta-to: #A8D43A;
+  /* Accent axis. These are the lime (default) values so any surface that never
+     receives a [data-accent] attribute still resolves the brand hue. The
+     [data-accent="<id>"] blocks near the end of this file override them.
+     Mirrored from accentThemes.lime.dark in src/lib/theme-tokens.ts. */
+  --accent-soft: rgba(200, 255, 90, 0.12);
+  --accent-muted: rgba(200, 255, 90, 0.05);
+  --accent-border: rgba(200, 255, 90, 0.28);
+  /* Neutral hover surface. Distinct from --accent-foreground, which is the
+     accent-colored text/icon token. Kept mode-aware so light mode does not
+     tint its hover surfaces green. */
+  --surface-hover: #1a1a1a;
 
   /* Responsive foundation tokens */
   --page-padding: 16px;
@@ -206,6 +217,7 @@
   --cta-30: rgba(199,242,82,0.3);
   --cta-35: rgba(199,242,82,0.35);
   --cta-40: rgba(199,242,82,0.4);
+  --cta-45: rgba(199,242,82,0.45);
   --cta-80: rgba(199,242,82,0.8);
   --lime-10: rgba(200,255,77,0.1);
   --lime-12: rgba(200,255,77,0.12);
@@ -363,32 +375,49 @@
   --card-foreground: #0A0A0A;
   --popover: #FFFFFF;
   --popover-foreground: #0A0A0A;
-  --primary: #1A8C3A;
+  /* Accent tokens: lime (default) so a .light scope with no [data-accent]
+     still resolves the brand hue. Overridden per-accent by the
+     .light[data-accent="<id>"] blocks below. These are the *text* variants,
+     darkened so accent text stays legible on near-white panels.
+     Previously this block forced #1A8C3A (a green that collided with the
+     success palette) regardless of the user's accent choice. */
+  --primary: #4D7C0F;
   --primary-foreground: #FFFFFF;
   --secondary: #F0F0F0;
   --secondary-foreground: #0A0A0A;
   --muted: #E5E5E5;
   --muted-foreground: #6B6B6B;
-  --accent: #E8F5E9;
-  --accent-foreground: #1A8C3A;
+  /* Neutral hover surface (was green-tinted #E8F5E9, which fought every
+     non-green accent). The accent-colored text token is --accent-foreground. */
+  --accent: #EFEFEF;
+  --surface-hover: #EFEFEF;
+  --accent-foreground: #4D7C0F;
+  --accent-soft: rgba(77, 124, 15, 0.10);
+  --accent-muted: rgba(77, 124, 15, 0.05);
+  --accent-border: rgba(77, 124, 15, 0.30);
   --destructive: #DC2626;
   --destructive-foreground: #FFFFFF;
   --border: rgba(0, 0, 0, 0.1);
   --input: rgba(0, 0, 0, 0.12);
-  --ring: #1A8C3A;
-  --chart-1: #1A8C3A;
+  --ring: #4D7C0F;
+  /* CTA fills stay bright in both modes and always pair with dark text, so
+     these are deliberately not darkened. See the light-accent note below. */
+  --on-accent: #0A0C0A;
+  --cta-from: #C7F252;
+  --cta-to: #A8D43A;
+  --chart-1: #4D7C0F;
   --chart-2: #3B82F6;
   --chart-3: #F59E0B;
   --chart-4: #8B5CF6;
   --chart-5: #DC2626;
   --sidebar: #FFFFFF;
   --sidebar-foreground: #0A0A0A;
-  --sidebar-primary: #1A8C3A;
+  --sidebar-primary: #4D7C0F;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #E8F5E9;
-  --sidebar-accent-foreground: #1A8C3A;
+  --sidebar-accent: #EFEFEF;
+  --sidebar-accent-foreground: #4D7C0F;
   --sidebar-border: rgba(0, 0, 0, 0.08);
-  --sidebar-ring: #1A8C3A;
+  --sidebar-ring: #4D7C0F;
   --surface: #F5F5F5;
 }
 
@@ -502,6 +531,499 @@
 
 /* ==== END LIGHT THEME ==== */
 
+/* ==== ACCENT THEMES ==== */
+/* User-selectable brand hue, independent of the light/dark axis.
+ *
+ * These blocks are the runtime half of `accentThemes` in src/lib/theme-tokens.ts.
+ * `src/lib/accent-themes.test.ts` asserts the values below match that config
+ * exactly, so edit both together or the test fails.
+ *
+ * How an accent reaches the UI:
+ *   - `useThemeStore` sets `data-accent="<id>"` on every [data-theme-scope] root
+ *     (app shell, dialogs, paywall, onboarding, habit tracker) and React binds it
+ *     on the app-shell wrapper.
+ *   - `[data-accent="<id>"]` supplies the dark set; `.light[data-accent="<id>"]`
+ *     supplies the light set, and wins on specificity.
+ *   - Scopes that never receive the attribute (landing page, pre-hydration paint)
+ *     fall back to the lime values declared on `:root` and `.light` above.
+ *
+ * Only the semantic layer is re-hued. The `--lime-*` / `--cta-*` alpha scales
+ * stay lime on purpose so glass and tint surfaces keep their current weight
+ * regardless of accent, and status colors (emerald/red/amber) keep their meaning.
+ *
+ * Light-mode sets are the *text* variants: darkened so accent text clears 4.5:1
+ * on near-white panels. `onAccent` / `ctaFrom` / `ctaTo` are fill-only and stay
+ * bright in both modes because CTA fills always pair with dark text.
+ */
+
+[data-accent="lime"] {
+  --primary: #C8FF5A;
+  --primary-foreground: #050505;
+  --ring: #C8FF5A;
+  --accent-foreground: #C8FF5A;
+  --accent-soft: rgba(200, 255, 90, 0.12);
+  --accent-muted: rgba(200, 255, 90, 0.05);
+  --accent-border: rgba(200, 255, 90, 0.28);
+  --on-accent: #0A0C0A;
+  --cta-from: #C7F252;
+  --cta-to: #A8D43A;
+  --chart-1: #C8FF5A;
+  --accent-04: rgba(200, 255, 90, 0.04);
+  --accent-06: rgba(200, 255, 90, 0.06);
+  --accent-08: rgba(200, 255, 90, 0.08);
+  --accent-10: rgba(200, 255, 90, 0.1);
+  --accent-12: rgba(200, 255, 90, 0.12);
+  --accent-15: rgba(200, 255, 90, 0.15);
+  --accent-20: rgba(200, 255, 90, 0.2);
+  --accent-25: rgba(200, 255, 90, 0.25);
+  --accent-30: rgba(200, 255, 90, 0.3);
+  --accent-40: rgba(200, 255, 90, 0.4);
+  --accent-50: rgba(200, 255, 90, 0.5);
+  --sidebar-primary: #C8FF5A;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent-foreground: #C8FF5A;
+  --sidebar-ring: #C8FF5A;
+}
+
+[data-accent="emerald"] {
+  --primary: #34D399;
+  --primary-foreground: #050505;
+  --ring: #34D399;
+  --accent-foreground: #34D399;
+  --accent-soft: rgba(52, 211, 153, 0.12);
+  --accent-muted: rgba(52, 211, 153, 0.05);
+  --accent-border: rgba(52, 211, 153, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #10B981;
+  --cta-to: #059669;
+  --chart-1: #34D399;
+  --accent-04: rgba(52, 211, 153, 0.04);
+  --accent-06: rgba(52, 211, 153, 0.06);
+  --accent-08: rgba(52, 211, 153, 0.08);
+  --accent-10: rgba(52, 211, 153, 0.1);
+  --accent-12: rgba(52, 211, 153, 0.12);
+  --accent-15: rgba(52, 211, 153, 0.15);
+  --accent-20: rgba(52, 211, 153, 0.2);
+  --accent-25: rgba(52, 211, 153, 0.25);
+  --accent-30: rgba(52, 211, 153, 0.3);
+  --accent-40: rgba(52, 211, 153, 0.4);
+  --accent-50: rgba(52, 211, 153, 0.5);
+  --sidebar-primary: #34D399;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent-foreground: #34D399;
+  --sidebar-ring: #34D399;
+}
+
+[data-accent="cyan"] {
+  --primary: #22D3EE;
+  --primary-foreground: #050505;
+  --ring: #22D3EE;
+  --accent-foreground: #22D3EE;
+  --accent-soft: rgba(34, 211, 238, 0.12);
+  --accent-muted: rgba(34, 211, 238, 0.05);
+  --accent-border: rgba(34, 211, 238, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #06B6D4;
+  --cta-to: #0891B2;
+  --chart-1: #22D3EE;
+  --accent-04: rgba(34, 211, 238, 0.04);
+  --accent-06: rgba(34, 211, 238, 0.06);
+  --accent-08: rgba(34, 211, 238, 0.08);
+  --accent-10: rgba(34, 211, 238, 0.1);
+  --accent-12: rgba(34, 211, 238, 0.12);
+  --accent-15: rgba(34, 211, 238, 0.15);
+  --accent-20: rgba(34, 211, 238, 0.2);
+  --accent-25: rgba(34, 211, 238, 0.25);
+  --accent-30: rgba(34, 211, 238, 0.3);
+  --accent-40: rgba(34, 211, 238, 0.4);
+  --accent-50: rgba(34, 211, 238, 0.5);
+  --sidebar-primary: #22D3EE;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent-foreground: #22D3EE;
+  --sidebar-ring: #22D3EE;
+}
+
+[data-accent="violet"] {
+  --primary: #A78BFA;
+  --primary-foreground: #050505;
+  --ring: #A78BFA;
+  --accent-foreground: #A78BFA;
+  --accent-soft: rgba(167, 139, 250, 0.12);
+  --accent-muted: rgba(167, 139, 250, 0.05);
+  --accent-border: rgba(167, 139, 250, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #8B5CF6;
+  --cta-to: #7C6CF0;
+  --chart-1: #A78BFA;
+  --accent-04: rgba(167, 139, 250, 0.04);
+  --accent-06: rgba(167, 139, 250, 0.06);
+  --accent-08: rgba(167, 139, 250, 0.08);
+  --accent-10: rgba(167, 139, 250, 0.1);
+  --accent-12: rgba(167, 139, 250, 0.12);
+  --accent-15: rgba(167, 139, 250, 0.15);
+  --accent-20: rgba(167, 139, 250, 0.2);
+  --accent-25: rgba(167, 139, 250, 0.25);
+  --accent-30: rgba(167, 139, 250, 0.3);
+  --accent-40: rgba(167, 139, 250, 0.4);
+  --accent-50: rgba(167, 139, 250, 0.5);
+  --sidebar-primary: #A78BFA;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent-foreground: #A78BFA;
+  --sidebar-ring: #A78BFA;
+}
+
+[data-accent="amber"] {
+  --primary: #FBBF24;
+  --primary-foreground: #050505;
+  --ring: #FBBF24;
+  --accent-foreground: #FBBF24;
+  --accent-soft: rgba(251, 191, 36, 0.12);
+  --accent-muted: rgba(251, 191, 36, 0.05);
+  --accent-border: rgba(251, 191, 36, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #F59E0B;
+  --cta-to: #D97706;
+  --chart-1: #FBBF24;
+  --accent-04: rgba(251, 191, 36, 0.04);
+  --accent-06: rgba(251, 191, 36, 0.06);
+  --accent-08: rgba(251, 191, 36, 0.08);
+  --accent-10: rgba(251, 191, 36, 0.1);
+  --accent-12: rgba(251, 191, 36, 0.12);
+  --accent-15: rgba(251, 191, 36, 0.15);
+  --accent-20: rgba(251, 191, 36, 0.2);
+  --accent-25: rgba(251, 191, 36, 0.25);
+  --accent-30: rgba(251, 191, 36, 0.3);
+  --accent-40: rgba(251, 191, 36, 0.4);
+  --accent-50: rgba(251, 191, 36, 0.5);
+  --sidebar-primary: #FBBF24;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent-foreground: #FBBF24;
+  --sidebar-ring: #FBBF24;
+}
+
+[data-accent="red"] {
+  --primary: #FB7185;
+  --primary-foreground: #050505;
+  --ring: #FB7185;
+  --accent-foreground: #FB7185;
+  --accent-soft: rgba(251, 113, 133, 0.12);
+  --accent-muted: rgba(251, 113, 133, 0.05);
+  --accent-border: rgba(251, 113, 133, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #EF4444;
+  --cta-to: #E5484D;
+  --chart-1: #FB7185;
+  --accent-04: rgba(251, 113, 133, 0.04);
+  --accent-06: rgba(251, 113, 133, 0.06);
+  --accent-08: rgba(251, 113, 133, 0.08);
+  --accent-10: rgba(251, 113, 133, 0.1);
+  --accent-12: rgba(251, 113, 133, 0.12);
+  --accent-15: rgba(251, 113, 133, 0.15);
+  --accent-20: rgba(251, 113, 133, 0.2);
+  --accent-25: rgba(251, 113, 133, 0.25);
+  --accent-30: rgba(251, 113, 133, 0.3);
+  --accent-40: rgba(251, 113, 133, 0.4);
+  --accent-50: rgba(251, 113, 133, 0.5);
+  --sidebar-primary: #FB7185;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent-foreground: #FB7185;
+  --sidebar-ring: #FB7185;
+}
+
+[data-accent="orange"] {
+  --primary: #FF8A4C;
+  --primary-foreground: #050505;
+  --ring: #FF8A4C;
+  --accent-foreground: #FF8A4C;
+  --accent-soft: rgba(255, 138, 76, 0.12);
+  --accent-muted: rgba(255, 138, 76, 0.05);
+  --accent-border: rgba(255, 138, 76, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #FF6B35;
+  --cta-to: #EA580C;
+  --chart-1: #FF8A4C;
+  --accent-04: rgba(255, 138, 76, 0.04);
+  --accent-06: rgba(255, 138, 76, 0.06);
+  --accent-08: rgba(255, 138, 76, 0.08);
+  --accent-10: rgba(255, 138, 76, 0.1);
+  --accent-12: rgba(255, 138, 76, 0.12);
+  --accent-15: rgba(255, 138, 76, 0.15);
+  --accent-20: rgba(255, 138, 76, 0.2);
+  --accent-25: rgba(255, 138, 76, 0.25);
+  --accent-30: rgba(255, 138, 76, 0.3);
+  --accent-40: rgba(255, 138, 76, 0.4);
+  --accent-50: rgba(255, 138, 76, 0.5);
+  --sidebar-primary: #FF8A4C;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent-foreground: #FF8A4C;
+  --sidebar-ring: #FF8A4C;
+}
+
+[data-accent="blue"] {
+  --primary: #60A5FA;
+  --primary-foreground: #050505;
+  --ring: #60A5FA;
+  --accent-foreground: #60A5FA;
+  --accent-soft: rgba(96, 165, 250, 0.12);
+  --accent-muted: rgba(96, 165, 250, 0.05);
+  --accent-border: rgba(96, 165, 250, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #3B82F6;
+  --cta-to: #2F79EE;
+  --chart-1: #60A5FA;
+  --accent-04: rgba(96, 165, 250, 0.04);
+  --accent-06: rgba(96, 165, 250, 0.06);
+  --accent-08: rgba(96, 165, 250, 0.08);
+  --accent-10: rgba(96, 165, 250, 0.1);
+  --accent-12: rgba(96, 165, 250, 0.12);
+  --accent-15: rgba(96, 165, 250, 0.15);
+  --accent-20: rgba(96, 165, 250, 0.2);
+  --accent-25: rgba(96, 165, 250, 0.25);
+  --accent-30: rgba(96, 165, 250, 0.3);
+  --accent-40: rgba(96, 165, 250, 0.4);
+  --accent-50: rgba(96, 165, 250, 0.5);
+  --sidebar-primary: #60A5FA;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent-foreground: #60A5FA;
+  --sidebar-ring: #60A5FA;
+}
+
+/* ---- Light-mode accent sets (darkened for legibility on near-white) ---- */
+
+.light[data-accent="lime"] {
+  --primary: #4D7C0F;
+  --primary-foreground: #FFFFFF;
+  --ring: #4D7C0F;
+  --accent-foreground: #4D7C0F;
+  --accent-soft: rgba(77, 124, 15, 0.10);
+  --accent-muted: rgba(77, 124, 15, 0.05);
+  --accent-border: rgba(77, 124, 15, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #C7F252;
+  --cta-to: #A8D43A;
+  --chart-1: #4D7C0F;
+  --accent-04: rgba(77, 124, 15, 0.04);
+  --accent-06: rgba(77, 124, 15, 0.06);
+  --accent-08: rgba(77, 124, 15, 0.08);
+  --accent-10: rgba(77, 124, 15, 0.1);
+  --accent-12: rgba(77, 124, 15, 0.12);
+  --accent-15: rgba(77, 124, 15, 0.15);
+  --accent-20: rgba(77, 124, 15, 0.2);
+  --accent-25: rgba(77, 124, 15, 0.25);
+  --accent-30: rgba(77, 124, 15, 0.3);
+  --accent-40: rgba(77, 124, 15, 0.4);
+  --accent-50: rgba(77, 124, 15, 0.5);
+  --sidebar-primary: #4D7C0F;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #4D7C0F;
+  --sidebar-ring: #4D7C0F;
+}
+
+.light[data-accent="emerald"] {
+  --primary: #047857;
+  --primary-foreground: #FFFFFF;
+  --ring: #047857;
+  --accent-foreground: #047857;
+  --accent-soft: rgba(4, 120, 87, 0.10);
+  --accent-muted: rgba(4, 120, 87, 0.05);
+  --accent-border: rgba(4, 120, 87, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #10B981;
+  --cta-to: #059669;
+  --chart-1: #047857;
+  --accent-04: rgba(4, 120, 87, 0.04);
+  --accent-06: rgba(4, 120, 87, 0.06);
+  --accent-08: rgba(4, 120, 87, 0.08);
+  --accent-10: rgba(4, 120, 87, 0.1);
+  --accent-12: rgba(4, 120, 87, 0.12);
+  --accent-15: rgba(4, 120, 87, 0.15);
+  --accent-20: rgba(4, 120, 87, 0.2);
+  --accent-25: rgba(4, 120, 87, 0.25);
+  --accent-30: rgba(4, 120, 87, 0.3);
+  --accent-40: rgba(4, 120, 87, 0.4);
+  --accent-50: rgba(4, 120, 87, 0.5);
+  --sidebar-primary: #047857;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #047857;
+  --sidebar-ring: #047857;
+}
+
+.light[data-accent="cyan"] {
+  --primary: #0E7490;
+  --primary-foreground: #FFFFFF;
+  --ring: #0E7490;
+  --accent-foreground: #0E7490;
+  --accent-soft: rgba(14, 116, 144, 0.10);
+  --accent-muted: rgba(14, 116, 144, 0.05);
+  --accent-border: rgba(14, 116, 144, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #06B6D4;
+  --cta-to: #0891B2;
+  --chart-1: #0E7490;
+  --accent-04: rgba(14, 116, 144, 0.04);
+  --accent-06: rgba(14, 116, 144, 0.06);
+  --accent-08: rgba(14, 116, 144, 0.08);
+  --accent-10: rgba(14, 116, 144, 0.1);
+  --accent-12: rgba(14, 116, 144, 0.12);
+  --accent-15: rgba(14, 116, 144, 0.15);
+  --accent-20: rgba(14, 116, 144, 0.2);
+  --accent-25: rgba(14, 116, 144, 0.25);
+  --accent-30: rgba(14, 116, 144, 0.3);
+  --accent-40: rgba(14, 116, 144, 0.4);
+  --accent-50: rgba(14, 116, 144, 0.5);
+  --sidebar-primary: #0E7490;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #0E7490;
+  --sidebar-ring: #0E7490;
+}
+
+.light[data-accent="violet"] {
+  --primary: #6D28D9;
+  --primary-foreground: #FFFFFF;
+  --ring: #6D28D9;
+  --accent-foreground: #6D28D9;
+  --accent-soft: rgba(109, 40, 217, 0.10);
+  --accent-muted: rgba(109, 40, 217, 0.05);
+  --accent-border: rgba(109, 40, 217, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #8B5CF6;
+  --cta-to: #7C6CF0;
+  --chart-1: #6D28D9;
+  --accent-04: rgba(109, 40, 217, 0.04);
+  --accent-06: rgba(109, 40, 217, 0.06);
+  --accent-08: rgba(109, 40, 217, 0.08);
+  --accent-10: rgba(109, 40, 217, 0.1);
+  --accent-12: rgba(109, 40, 217, 0.12);
+  --accent-15: rgba(109, 40, 217, 0.15);
+  --accent-20: rgba(109, 40, 217, 0.2);
+  --accent-25: rgba(109, 40, 217, 0.25);
+  --accent-30: rgba(109, 40, 217, 0.3);
+  --accent-40: rgba(109, 40, 217, 0.4);
+  --accent-50: rgba(109, 40, 217, 0.5);
+  --sidebar-primary: #6D28D9;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #6D28D9;
+  --sidebar-ring: #6D28D9;
+}
+
+.light[data-accent="amber"] {
+  --primary: #B45309;
+  --primary-foreground: #FFFFFF;
+  --ring: #B45309;
+  --accent-foreground: #B45309;
+  --accent-soft: rgba(180, 83, 9, 0.10);
+  --accent-muted: rgba(180, 83, 9, 0.05);
+  --accent-border: rgba(180, 83, 9, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #F59E0B;
+  --cta-to: #D97706;
+  --chart-1: #B45309;
+  --accent-04: rgba(180, 83, 9, 0.04);
+  --accent-06: rgba(180, 83, 9, 0.06);
+  --accent-08: rgba(180, 83, 9, 0.08);
+  --accent-10: rgba(180, 83, 9, 0.1);
+  --accent-12: rgba(180, 83, 9, 0.12);
+  --accent-15: rgba(180, 83, 9, 0.15);
+  --accent-20: rgba(180, 83, 9, 0.2);
+  --accent-25: rgba(180, 83, 9, 0.25);
+  --accent-30: rgba(180, 83, 9, 0.3);
+  --accent-40: rgba(180, 83, 9, 0.4);
+  --accent-50: rgba(180, 83, 9, 0.5);
+  --sidebar-primary: #B45309;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #B45309;
+  --sidebar-ring: #B45309;
+}
+
+.light[data-accent="red"] {
+  --primary: #B91C1C;
+  --primary-foreground: #FFFFFF;
+  --ring: #B91C1C;
+  --accent-foreground: #B91C1C;
+  --accent-soft: rgba(185, 28, 28, 0.10);
+  --accent-muted: rgba(185, 28, 28, 0.05);
+  --accent-border: rgba(185, 28, 28, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #EF4444;
+  --cta-to: #E5484D;
+  --chart-1: #B91C1C;
+  --accent-04: rgba(185, 28, 28, 0.04);
+  --accent-06: rgba(185, 28, 28, 0.06);
+  --accent-08: rgba(185, 28, 28, 0.08);
+  --accent-10: rgba(185, 28, 28, 0.1);
+  --accent-12: rgba(185, 28, 28, 0.12);
+  --accent-15: rgba(185, 28, 28, 0.15);
+  --accent-20: rgba(185, 28, 28, 0.2);
+  --accent-25: rgba(185, 28, 28, 0.25);
+  --accent-30: rgba(185, 28, 28, 0.3);
+  --accent-40: rgba(185, 28, 28, 0.4);
+  --accent-50: rgba(185, 28, 28, 0.5);
+  --sidebar-primary: #B91C1C;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #B91C1C;
+  --sidebar-ring: #B91C1C;
+}
+
+.light[data-accent="orange"] {
+  --primary: #C2410C;
+  --primary-foreground: #FFFFFF;
+  --ring: #C2410C;
+  --accent-foreground: #C2410C;
+  --accent-soft: rgba(194, 65, 12, 0.10);
+  --accent-muted: rgba(194, 65, 12, 0.05);
+  --accent-border: rgba(194, 65, 12, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #FF6B35;
+  --cta-to: #EA580C;
+  --chart-1: #C2410C;
+  --accent-04: rgba(194, 65, 12, 0.04);
+  --accent-06: rgba(194, 65, 12, 0.06);
+  --accent-08: rgba(194, 65, 12, 0.08);
+  --accent-10: rgba(194, 65, 12, 0.1);
+  --accent-12: rgba(194, 65, 12, 0.12);
+  --accent-15: rgba(194, 65, 12, 0.15);
+  --accent-20: rgba(194, 65, 12, 0.2);
+  --accent-25: rgba(194, 65, 12, 0.25);
+  --accent-30: rgba(194, 65, 12, 0.3);
+  --accent-40: rgba(194, 65, 12, 0.4);
+  --accent-50: rgba(194, 65, 12, 0.5);
+  --sidebar-primary: #C2410C;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #C2410C;
+  --sidebar-ring: #C2410C;
+}
+
+.light[data-accent="blue"] {
+  --primary: #1D4ED8;
+  --primary-foreground: #FFFFFF;
+  --ring: #1D4ED8;
+  --accent-foreground: #1D4ED8;
+  --accent-soft: rgba(29, 78, 216, 0.10);
+  --accent-muted: rgba(29, 78, 216, 0.05);
+  --accent-border: rgba(29, 78, 216, 0.30);
+  --on-accent: #0A0C0A;
+  --cta-from: #3B82F6;
+  --cta-to: #2F79EE;
+  --chart-1: #1D4ED8;
+  --accent-04: rgba(29, 78, 216, 0.04);
+  --accent-06: rgba(29, 78, 216, 0.06);
+  --accent-08: rgba(29, 78, 216, 0.08);
+  --accent-10: rgba(29, 78, 216, 0.1);
+  --accent-12: rgba(29, 78, 216, 0.12);
+  --accent-15: rgba(29, 78, 216, 0.15);
+  --accent-20: rgba(29, 78, 216, 0.2);
+  --accent-25: rgba(29, 78, 216, 0.25);
+  --accent-30: rgba(29, 78, 216, 0.3);
+  --accent-40: rgba(29, 78, 216, 0.4);
+  --accent-50: rgba(29, 78, 216, 0.5);
+  --sidebar-primary: #1D4ED8;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #1D4ED8;
+  --sidebar-ring: #1D4ED8;
+}
+
+/* ==== END ACCENT THEMES ==== */
+
 /* Re-assert white-alpha utilities on surfaces that stay white-on-dark even in light mode (image covers, fixed-colored CTAs, avatars). */
 .light .keep-white {
   --color-white-rgb: 255 255 255;
@@ -581,9 +1103,14 @@
 }
 
 /* Light mode only: a lit sheen so the pill reads as a raised, polished chip.
-   Declared unlayered so it also wins over utility box-shadows. */
-.light .pill,
-.light .pill-sheen {
+   Declared unlayered so it also wins over utility box-shadows.
+
+   `.pill-sheen` is deliberately NOT in this selector list. It is only ever
+   applied alongside a caller's own accent background (e.g. `bg-primary/10`),
+   and this rule's `background-color` would win over that utility at equal
+   specificity, flattening the selected state. Its sheen is defined separately
+   below, background-free as documented. */
+.light .pill {
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0) 60%);
   background-color: var(--glass-05);
   box-shadow:
@@ -594,8 +1121,8 @@
 }
 
 /* Shine-only variant for pills that already carry their own accent colours
-   (selected/active states). Adds the light-mode sheen without touching the
-   background or border those states set. */
+   (selected/active states). Sets only the gradient so the caller's
+   background-color and border survive. */
 .light .pill-sheen {
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0) 60%);
 }

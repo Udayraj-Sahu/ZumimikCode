@@ -1,6 +1,6 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
-import { BG, CTA_35, CYAN, CYAN_14, CYAN_18, CYAN_85, GLASS_02, GLASS_03, GLASS_07, GLASS_50, GLASS_55, GLASS_BG, GLASS_BORDER, LIME_MID, LIME_PALE_2, VIOLET_DEEP, VIOLET_DEEP_14, VIOLET_DEEP_18, VIOLET_DEEP_85 } from "@/lib/theme-tokens";
+import { BG, CTA_35, CYAN, CYAN_14, CYAN_18, CYAN_85, GLASS_02, GLASS_03, GLASS_07, GLASS_50, GLASS_55, GLASS_BG, GLASS_BORDER, VIOLET_DEEP, VIOLET_DEEP_14, VIOLET_DEEP_18, VIOLET_DEEP_85 } from "@/lib/theme-tokens";
 
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -211,7 +211,7 @@ function ExplorerContent() {
                       layoutId="explorer-exam-slider"
                       transition={{ type: "spring", stiffness: 400, damping: 32 }}
                       className="absolute inset-0 rounded-2xl"
-                      style={{ background: `linear-gradient(180deg, ${LIME_PALE_2}, ${LIME_MID})`, boxShadow: "0 6px 16px -4px var(--cta-40)" }}
+                      style={{ background: `linear-gradient(180deg, var(--cta-from), var(--cta-to))`, boxShadow: "0 6px 16px -4px var(--accent-40)" }}
                     />
                   )}
                   <span className="relative flex items-center gap-2 transition-colors duration-300" style={{ textShadow: active ? "0 1px 0 var(--glass-35)" : "none" }}>
@@ -253,7 +253,7 @@ function ExplorerContent() {
                     active
                       ? {
                           borderColor: CTA_35,
-                          background: "linear-gradient(180deg, var(--cta-18), var(--cta-05))",
+                          background: "linear-gradient(180deg, var(--accent-20), var(--accent-04))",
                           color: "var(--primary)",
                           boxShadow:
                             "0 8px 18px var(--black-35), inset 0 1px 0 var(--glass-30), inset 0 -2px 6px var(--black-35)",

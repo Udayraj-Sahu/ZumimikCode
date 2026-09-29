@@ -208,7 +208,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
               <button
                 type="button"
                 onClick={handleConfirm}
-                className="flex-1 rounded-2xl bg-primary py-3.5 text-fluid-sm font-bold text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex-1 rounded-2xl bg-cta py-3.5 text-fluid-sm font-bold text-[var(--on-accent)] outline-none transition-all hover:shadow-[0_0_18px_var(--accent-30)] hover:opacity-95 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Confirm
               </button>
