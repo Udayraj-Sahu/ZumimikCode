@@ -1083,6 +1083,36 @@
      background states win over the layered Tailwind utilities. */
 }
 
+@layer utilities {
+  /* Seamless horizontal loop for the pitch track marquee. The track renders
+     its children twice, so translating exactly -50% lands on a pixel-identical
+     copy and the loop has no visible seam. */
+  .animate-marquee {
+    animation: marquee-scroll 26s linear infinite;
+  }
+
+  .animate-marquee-paused,
+  .animate-marquee:hover,
+  .animate-marquee:focus-within {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
+  }
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
 /*
  * Pill badges + inner tiles.
  * Unlayered on purpose: layered Tailwind utilities (border-[...], bg-[...]) are
