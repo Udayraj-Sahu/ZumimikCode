@@ -46,6 +46,7 @@ import { PitchIntro } from "@/components/onboarding/pitch-intro";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 import { InviteCard } from "@/components/dashboard/invite-card";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
+import { NumberTicker } from "@/registry/magicui/number-ticker";
 import { useResumeStore } from "@/stores/resume-store";
 
 const ACCENT = CTA_LIME;
@@ -155,61 +156,6 @@ function SectionLabel({ children, className, style }: { children: React.ReactNod
     <p className={cn("text-[10px] font-semibold tracking-[0.18em] text-muted-foreground/40 uppercase", className)} style={style}>
       {children}
     </p>
-  );
-}
-
-function SlottedDigit({ value, delay = 0 }: { value: number; delay?: number }) {
-  const items = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, value];
-  const target = items.length - 1;
-  const [rolled, setRolled] = useState(false);
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setRolled(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
-  return (
-    <span
-      className="keep-white relative inline-block overflow-hidden rounded-[0.12em] min-w-[0.68em] bg-black/30"
-      style={{ height: "1em" }}
-    >
-      <span
-        className="absolute left-0 right-0 flex flex-col items-center will-change-transform"
-        style={{
-          transform: rolled ? `translate3d(0, -${target}em, 0)` : "translate3d(0, 0, 0)",
-          transition: rolled ? `transform 0.9s cubic-bezier(0.65, 0, 0.35, 1) ${delay}s` : "none",
-        }}
-      >
-        {items.map((d, j) => (
-          <span
-            key={j}
-            className="flex w-full items-center justify-center text-white"
-            style={{
-              height: "1em",
-              textShadow: "0 1px 0 var(--glass-22), 0 -1px 1px var(--black-50)",
-            }}
-          >
-            {d}
-          </span>
-        ))}
-      </span>
-      <span
-        className="pointer-events-none absolute inset-0 rounded-[0.12em]"
-        style={{ boxShadow: "inset 0 0.09em 0.16em var(--black-55), inset 0 -0.05em 0.1em var(--glass-18)" }}
-      />
-    </span>
-  );
-}
-
-function RollingNumber({ value, className }: { value: string; className?: string }) {
-  return (
-    <span className={cn("inline-flex", className)} aria-hidden>
-      {value.split("").map((ch, i) =>
-        /\d/.test(ch) ? (
-          <SlottedDigit key={`${value}-${i}`} value={Number(ch)} delay={i * 0.06} />
-        ) : (
-          <span key={`${value}-${i}`}>{ch}</span>
-        )
-      )}
-    </span>
   );
 }
 
@@ -454,8 +400,8 @@ export default function DashboardPage() {
           <span className="text-[11px] font-semibold tracking-[0.22em] text-primary/80">EXAM ARENA</span>
         </div>
         <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2]">
-          <span className="italic">Welcome back,</span>{" "}
-          <span className="bg-gradient-to-r from-primary via-[var(--lime-pale)] to-primary bg-clip-text text-transparent">{displayName}</span>
+          <span>Welcome back,</span>{" "}
+          <span className="italic bg-gradient-to-r from-primary via-[var(--lime-pale)] to-primary bg-clip-text text-transparent">{displayName}</span>
         </h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
 
@@ -860,11 +806,11 @@ export default function DashboardPage() {
                       {examDate ? (
                         <>
                           <p className="relative flex items-baseline justify-center text-[26px] font-black not-italic tracking-tighter leading-none text-white">
-                            <RollingNumber value={daysLeft.toLocaleString()} />
+                            <NumberTicker value={daysLeft} active={carouselIndex === 4} delay={0.1} duration={1.2} startValue={0} aria-label={`${daysLeft} days`} />
                             <span className="text-[11px] font-bold not-italic tracking-[0.18em] ml-1.5 text-primary/70">DAYS</span>
                           </p>
                           <p className="relative text-[58px] font-black not-italic tracking-tighter leading-none text-white mt-1.5">
-                            <RollingNumber value={hoursLeft.toLocaleString()} />
+                            <NumberTicker value={hoursLeft} active={carouselIndex === 4} delay={0.25} duration={1.4} startValue={0} aria-label={`${hoursLeft} hours`} />
                             <span className="text-[22px] font-bold not-italic align-top ml-1.5 text-primary">HR</span>
                           </p>
                           <p className="relative text-micro font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
