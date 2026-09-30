@@ -4,7 +4,7 @@ import { PageContainer } from "@/components/ui/page-container";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import { Swords, Check, X, ChevronRight, Clock, User, Zap, AlertTriangle } from "lucide-react";
+import { Swords, Check, X, ChevronRight, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useDuelSetup } from "@/hooks/queries/use-duel";
@@ -25,7 +25,7 @@ export default function DuelPage() {
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);
-  const { data: setup, isLoading: setupLoading, error: setupError } = useDuelSetup(targetExam);
+  const { data: setup, error: setupError } = useDuelSetup(targetExam);
   const [topic, setTopic] = useState("addition");
   const [opponent, setOpponent] = useState<DuelOpponent>(DUEL_OPPONENTS[0]);
   const [phase, setPhase] = useState<Phase>("config");
@@ -35,9 +35,8 @@ export default function DuelPage() {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [revealed, setRevealed] = useState(false);
   const [opponentProgress, setOpponentProgress] = useState(0);
-  const [opponentDone, setOpponentDone] = useState(false);
+  const [, setOpponentDone] = useState(false);
   const [result, setResult] = useState<DuelResult | null>(null);
-  const [countdown, setCountdown] = useState<number | null>(null);
 
   const questionRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -111,10 +110,6 @@ export default function DuelPage() {
 
   const question: Question | null = session?.questions[currentIndex] ?? null;
   const progress = session ? ((currentIndex + (revealed ? 1 : 0)) / session.questions.length) * 100 : 0;
-  const yourCorrect = Object.values(answers).filter((a) => {
-    if (!session) return false;
-    return session.questions.find((q) => answers[q.id] !== undefined)?.correctIndex === a;
-  }).length;
 
   if (phase === "config") {
     return (

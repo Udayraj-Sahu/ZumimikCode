@@ -12,7 +12,6 @@ import type { PlanId } from "@/lib/types/onboarding";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
-const ACCENT = LIME;
 const inr = (n: number) => `₹${new Intl.NumberFormat("en-IN").format(n)}`;
 
 const EXAM_QUALIFIER: Record<string, string> = {

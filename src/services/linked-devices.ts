@@ -1,12 +1,9 @@
 import { LINKED_DEVICES } from "@/lib/mock/linked-devices";
 import type { LinkedDevice } from "@/lib/types/linked-devices";
 import { apiGet, apiPost } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getLinkedDevices(): Promise<LinkedDevice[]> {
   if (IS_MOCK) {

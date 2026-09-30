@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { GLASS_02, GLASS_025, GLASS_06, GLASS_10, GLASS_30, LIME_BRIGHT, LIME_BRIGHT_06, LIME_BRIGHT_15, LIME_BRIGHT_18, LIME_BRIGHT_25, MUTED, NEAR_BLACK, WHITE } from "@/lib/theme-tokens";
-import { motion, useMotionValue, useTransform, animate } from "motion/react";
+import { motion, useMotionValue, animate } from "motion/react";
 
 const DISTANT_SIGNALS = [
   { id: "iit", label: "IIT", x: 15, baseY: 43, size: 11, delay: 0.4 },
@@ -50,7 +50,6 @@ export function HorizonScene() {
   const [started, setStarted] = useState(false);
 
   const progressMv = useMotionValue(0);
-  const horizonY = useTransform(progressMv, [0, 1], [46, 72]);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {

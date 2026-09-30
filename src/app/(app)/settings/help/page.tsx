@@ -78,7 +78,7 @@ export default function HelpPage() {
   usePageMeta("Help & About — Exam Arena");
   const { data, isLoading, error } = useHelpData();
   const sectionsRef = useRef<HTMLDivElement>(null);
-  const { headerRef, animateSection, staggerIn } = useEntranceAnimations();
+  const { headerRef, staggerIn } = useEntranceAnimations();
 
   useEffect(() => {
     if (sectionsRef.current && data) {

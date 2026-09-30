@@ -571,34 +571,6 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
     );
   }
 
-  if (!open) {
-    return (
-      <div
-        className="mt-4 relative rounded-3xl border border-dashed border-white/[0.08] px-5 py-6 flex flex-col items-center gap-3 text-center"
-        style={{ background: GLASS_03 }}
-      >
-        <span className="grid size-12 place-items-center rounded-2xl bg-white/[0.05] border border-white/[0.06]">
-          <Sparkles size={18} className="text-[var(--lime)]" />
-        </span>
-        <p className="text-[13px] font-semibold text-foreground/80">Finish your adaptive setup</p>
-        <p className="text-[11px] text-muted-foreground/45 max-w-[240px]">
-          Answer a few quick questions to unlock your adaptive plan.
-        </p>
-        <button
-          type="button"
-          onClick={() => {
-            setStep(0);
-            setOpen(true);
-          }}
-          className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[var(--lime-solid)] px-5 py-2.5 text-[11px] font-bold tracking-wider text-[var(--on-accent)] transition-all hover:opacity-90 active:scale-95"
-        >
-          Set up adaptive
-          <ArrowRight size={12} strokeWidth={2.5} />
-        </button>
-      </div>
-    );
-  }
-
   return featureHookVariant ? (
     <FeatureIntro
       variant={featureHookVariant}

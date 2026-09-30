@@ -1,12 +1,9 @@
 import { ANALYTICS_STATS, WEEKLY_DATA, RECENT_ACTIVITY } from "@/lib/mock/analytics";
 import type { AnalyticsStats, WeeklyDatum, RecentActivityItem } from "@/lib/types/analytics";
 import { apiGet } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getAnalyticsStats(): Promise<AnalyticsStats> {
   if (IS_MOCK) {

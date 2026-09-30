@@ -92,7 +92,7 @@ export default function MasteryPage() {
 
         {topics.length > 0 && (
           <div ref={gridRef} className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
-            {topics.map((t, i) => (
+            {topics.map((t) => (
               <div
                 key={t.name}
                 data-mastery-bar

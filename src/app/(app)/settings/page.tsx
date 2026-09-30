@@ -20,7 +20,6 @@ import {
   Zap,
   Pencil,
   Shield,
-  MapPin,
   CreditCard,
   Check,
   X,
@@ -138,13 +137,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <h3 className="text-[17px] font-semibold tracking-[-0.02em] text-foreground/90">
-      {children}
-    </h3>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /*  Profile header                                                      */

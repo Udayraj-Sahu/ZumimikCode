@@ -5,7 +5,6 @@ import {
   LineChart,
   User,
   Settings,
-  LayoutGrid,
   Trophy,
   Award,
   Bell,
@@ -16,10 +15,6 @@ import {
   Swords,
   Users,
   FileText,
-  GraduationCap,
-  Gamepad2,
-  Sparkles,
-  Target,
 } from "lucide-react";
 
 export const NAV_ITEMS: NavItem[] = [

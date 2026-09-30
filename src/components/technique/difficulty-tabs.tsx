@@ -197,7 +197,6 @@ function LevelContent({ level, techniqueName }: { level: DifficultyLevel; techni
 
 function PracticeQuestionCard({
   question,
-  techniqueName,
 }: {
   question: TechniquePracticeQuestion;
   techniqueName: string;

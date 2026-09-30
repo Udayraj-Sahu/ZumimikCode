@@ -20,7 +20,7 @@ function RankMedal({ rank }: { rank: number }) {
   return null;
 }
 
-function LeaderboardRow({ entry, index }: { entry: LeaderboardEntry; index: number }) {
+function LeaderboardRow({ entry }: { entry: LeaderboardEntry; index: number }) {
   return (
     <div
       data-leaderboard-row

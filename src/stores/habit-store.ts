@@ -149,7 +149,6 @@ export const useHabitStore = create<HabitState>()(
         }
         const thirtyAgo = subtractDays(today, 30);
         const recentLogs = logs.filter((l) => l.date >= dateStr(thirtyAgo));
-        const uniqueDays = new Set(recentLogs.map((l) => l.date)).size;
         const totalHabits = get().habits.length;
         const expectedMax = totalHabits * 30;
         const completionRate = expectedMax > 0 ? Math.round((recentLogs.length / expectedMax) * 100) : 0;

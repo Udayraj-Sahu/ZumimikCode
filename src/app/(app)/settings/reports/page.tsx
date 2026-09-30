@@ -2,7 +2,7 @@
 import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useRef, useEffect } from "react";
-import { FileText, Download, Zap, Target, TrendingUp, Clock, Award } from "lucide-react";
+import { FileText, Download, Zap, Target, Clock, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useReports } from "@/hooks/queries/use-reports";

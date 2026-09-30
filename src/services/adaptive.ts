@@ -1,12 +1,9 @@
 import { useAdaptiveStore } from "@/stores/adaptive-store";
 import type { AdaptiveDomainState, SessionOutcome } from "@/lib/types/adaptive";
 import { apiGet, apiPost } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getAdaptiveState(domain: string): Promise<AdaptiveDomainState> {
   if (IS_MOCK) {

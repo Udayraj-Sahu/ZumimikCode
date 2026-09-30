@@ -18,7 +18,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 
-const ACCENT = LIME;
 const inr = (n: number) => `₹${new Intl.NumberFormat("en-IN").format(n)}`;
 
 /* ── pricing rules (matches app/seat-builder reference) ── */

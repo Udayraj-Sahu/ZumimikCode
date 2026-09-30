@@ -17,7 +17,6 @@ import {
   Home,
   Plus,
   ArrowUpRight,
-  Radio,
   Flame,
   BookOpen,
   Sparkles,
@@ -367,7 +366,6 @@ export default function DashboardPage() {
     const thirtyAgo = new Date(today);
     thirtyAgo.setDate(thirtyAgo.getDate() - 30);
     const recentCompletions = completedLogs.filter((l) => l.date >= thirtyAgo.toISOString().split("T")[0]);
-    const uniqueDays = new Set(recentCompletions.map((l) => l.date)).size;
     const expectedMax = habitCount * 30;
     const completionRate = expectedMax > 0 ? Math.min(100, Math.round((recentCompletions.length / expectedMax) * 100)) : 0;
     return { currentStreak: current, bestStreak, totalCompletions: completedLogs.length, completionRate };

@@ -40,7 +40,7 @@ export default function ShapeCanvasRenderer(props: RendererProps) {
   const renderShape = () => {
     switch (shape) {
       case "triangle": {
-        const [a = 5, b = 4, c = 3] = dimensions;
+        const [a = 5, b = 4] = dimensions;
         const h = (2 * (a || 1)) / (b || 1);
         return (
           <polygon

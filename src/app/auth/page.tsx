@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { BLACK_06, CYAN, EMERALD_12, GLASS_05, GLASS_BORDER, RED_SOFT_12, SOLID_BLACK } from "@/lib/theme-tokens";
 import gsap from "gsap";
 import {
-  ArrowRight,
   Check,
   Copy,
   Lock,
@@ -26,7 +25,6 @@ import type { PairingStatus } from "@/lib/types/pairing";
 
 const ACCENT = "var(--primary)";
 const POLL_INTERVAL_MS = 2500;
-const SESSION_TTL_MS = 120_000;
 
 function hash8(v: string): number {
   let h = 2166136261;
@@ -84,7 +82,7 @@ export default function AuthPage() {
   const [code, setCode] = useState<string>("");
   const [status, setStatus] = useState<PairingStatus>("pending");
   const [expiresAt, setExpiresAt] = useState<string>("");
-  const [now, setNow] = useState(Date.now());
+  const [, setNow] = useState(Date.now());
   const [copied, setCopied] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const [alreadyApproved, setAlreadyApproved] = useState(false);

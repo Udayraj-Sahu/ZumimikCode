@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect, useRef, ReactNode } from "react";
+import { useCallback, useMemo, useEffect, useRef, ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import type { SolveAlongTemplate, RenderMode } from "@/lib/types/template";

@@ -15,7 +15,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import { recordAdaptiveSession } from "@/services/adaptive";
 import type { SessionOutcome } from "@/lib/types/adaptive";
 import type { SprintResult, Question } from "@/lib/types/sprint-session";
-import { GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
+import { GLASS_BG } from "@/lib/theme-tokens";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 

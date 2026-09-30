@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef } from "react";
 import { GLASS_BORDER, LIME, LIME_22, LIME_LIGHT } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";

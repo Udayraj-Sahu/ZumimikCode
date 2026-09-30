@@ -17,7 +17,6 @@ import {
   Minus,
   Plus,
   Sandwich,
-  Search,
   Sigma,
   Sparkles,
   Square,

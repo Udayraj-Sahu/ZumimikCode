@@ -1,12 +1,9 @@
 import { PROFILE_DATA, PROFILE_STATS, ACHIEVEMENTS } from "@/lib/mock/profile";
 import type { ProfileData, ProfileStat, Achievement } from "@/lib/types/profile";
 import { apiGet } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getProfile(): Promise<ProfileData> {
   if (IS_MOCK) {

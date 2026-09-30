@@ -15,11 +15,9 @@ import {
   Sparkles,
   Users,
   WifiOff,
-  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ACCENT = LIME;
 
 type Persona = "parent" | "student";
 

@@ -1,12 +1,9 @@
 import type { SolveAlongTemplate, TemplateSession } from "@/lib/types/template";
 import { SAMPLE_TEMPLATES, getTemplatesByDomain as mockGetByDomain, getCategoriesForDomain as mockGetCategories, generateFallbackTemplates } from "@/lib/mock/templates";
 import { apiGet, apiPost } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getTemplate(id: string): Promise<SolveAlongTemplate | null> {
   if (IS_MOCK) {

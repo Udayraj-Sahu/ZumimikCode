@@ -86,7 +86,7 @@ function ShimmerOverlay() {
 /* ------------------------------------------------------------------ */
 /*  Achievement Card                                                    */
 /* ------------------------------------------------------------------ */
-function AchievementCard({ item, index }: { item: AchievementItem; index: number }) {
+function AchievementCard({ item }: { item: AchievementItem; index: number }) {
   const Icon = ICON_MAP[item.icon] ?? Flame;
   const tier = TIER_STYLES[item.tier];
   const isRecent = useMemo(() => {

@@ -2,9 +2,8 @@
 import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import { Clock, Zap, Award, ChevronRight, Check, X, Filter, ArrowUpDown } from "lucide-react";
+import { Clock, Award, ChevronRight, Filter, ArrowUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useHistory } from "@/hooks/queries/use-history";
@@ -33,7 +32,7 @@ function formatDate(iso: string): string {
 }
 
 function HistoryRow({
-  entry, index, onSelect,
+  entry, onSelect,
 }: {
   entry: HistoryEntry; index: number; onSelect: (e: HistoryEntry) => void;
 }) {
@@ -76,7 +75,6 @@ function HistoryRow({
 
 export default function HistoryPage() {
   usePageMeta("Sprint History — Exam Arena");
-  const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const domain = targetExam;
   const TOPICS_FILTER_HISTORY = getTopicFilters(domain);

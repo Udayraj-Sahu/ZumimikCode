@@ -45,7 +45,6 @@ export function MindMap({
   };
 
   const centerNode: TopicNode | null = focus ?? root;
-  const children = centerNode?.children ?? [];
 
   useEffect(() => {
     setPath([]);

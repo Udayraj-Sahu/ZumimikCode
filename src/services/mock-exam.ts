@@ -3,12 +3,9 @@ import { buildPaperSession } from "@/lib/mock/sprint-session";
 import type { MockPaper } from "@/lib/types/mock-exam";
 import type { SprintSession } from "@/lib/types/sprint-session";
 import { apiGet } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getMockPapers(domain?: string): Promise<MockPaper[]> {
   if (IS_MOCK) {

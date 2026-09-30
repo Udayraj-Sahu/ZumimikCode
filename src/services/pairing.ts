@@ -7,10 +7,7 @@ import {
   mockScanSession,
   mockApproveSession,
 } from "@/lib/mock/pairing";
-
-function delay(ms: number) {
-  return new Promise((r) => setTimeout(r, ms));
-}
+import { delay } from "@/lib/mock/delay";
 
 export async function createPairingSession(): Promise<PairingSession> {
   if (IS_MOCK) {

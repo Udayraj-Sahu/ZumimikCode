@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ACCENT = LIME;
 
 const SEATS: { id: string; label: string; desc: string; Icon: typeof Baby }[] = [
   { id: "little", label: "Little", desc: "Tactile base", Icon: Baby },

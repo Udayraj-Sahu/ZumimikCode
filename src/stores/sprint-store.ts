@@ -87,7 +87,7 @@ export const useSprintStore = create<SprintState>((set, get) => ({
     })),
 
   jumpTo: (index) =>
-    set((state) => ({
+    set(() => ({
       currentIndex: Math.max(0, index),
       questionStartTime: Date.now(),
     })),

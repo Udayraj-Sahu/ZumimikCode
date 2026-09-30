@@ -61,7 +61,7 @@ export default function PracticePage() {
   const [loadedTemplates, setLoadedTemplates] = useState<SolveAlongTemplate[]>([]);
   const [rendererPhase, setRendererPhase] = useState<"idle" | "active" | "done">("idle");
   const [rendererCorrect, setRendererCorrect] = useState(0);
-  const [rendererTotal, setRendererTotal] = useState(0);
+  const [, setRendererTotal] = useState(0);
 
   const { data: session, isLoading, error: sessionError } = usePracticeSession(topic, 10, difficulty, targetExam);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -203,16 +203,6 @@ export default function PracticePage() {
       useTemplateStore.getState().nextTemplate();
       stepProgress.reset();
     }
-  };
-
-  const handleTemplateCorrect = () => {
-    setRendererCorrect((c) => c + 1);
-    feedback.correct();
-    stepProgress.handleCorrect();
-  };
-
-  const handleTemplateWrong = () => {
-    stepProgress.handleWrong();
   };
 
   const question: Question | null = session?.questions[currentIndex] ?? null;

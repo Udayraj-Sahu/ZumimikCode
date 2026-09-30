@@ -1,12 +1,9 @@
 import { getDuelTopics as mockGetDuelTopics, DUEL_OPPONENTS, generateDuelResult } from "@/lib/mock/duel";
 import type { DuelTopic, DuelOpponent, DuelResult } from "@/lib/types/duel";
 import { apiGet } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getDuelTopics(domain?: string): Promise<DuelTopic[]> {
   if (IS_MOCK) {

@@ -1,12 +1,9 @@
 import type { Technique } from "@/lib/types/technique";
 import { getTechniqueById as mockGetById, getTechniquesBySubject as mockGetBySubject, getAllTechniques as mockGetAll } from "@/lib/mock/techniques";
 import { apiGet } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getTechnique(id: string): Promise<Technique | null> {
   if (IS_MOCK) {

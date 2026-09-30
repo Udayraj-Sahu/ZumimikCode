@@ -1,12 +1,9 @@
 import { PLANNER_DAYS, PLANNER_STATS } from "@/lib/mock/planner";
 import type { PlannerDay, PlannerStats } from "@/lib/types/planner";
 import { apiGet } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getPlannerDays(): Promise<PlannerDay[]> {
   if (IS_MOCK) {

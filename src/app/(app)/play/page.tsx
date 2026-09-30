@@ -4,7 +4,6 @@ import { PageContainer } from "@/components/ui/page-container";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trophy, Puzzle, Brain, Zap, Clock, Flame, Gamepad2, type LucideIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { AMBER, BLUE, CTA_LIME, GLASS_BG, GLASS_BORDER, PURPLE, SLATE_50, SLATE_DARK } from "@/lib/theme-tokens";
 

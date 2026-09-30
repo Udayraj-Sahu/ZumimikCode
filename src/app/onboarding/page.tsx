@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { CYAN, LIME_BRIGHT, PURPLE, YELLOW } from "@/lib/theme-tokens";
 import gsap from "gsap";
-import { Flame, Globe, Smartphone, Zap, Target, Trophy, Swords } from "lucide-react";
+import { Globe, Smartphone, Zap, Target, Trophy, Swords } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
 import { useRouter } from "next/navigation";
 

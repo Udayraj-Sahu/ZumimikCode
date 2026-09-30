@@ -16,7 +16,6 @@ const HOUR = 3_600_000;
 
 const SETTINGS_KEY = "exam-arena-settings";
 const AUTH_KEY = "exam-arena-auth";
-const DAYS10 = 10 * DAY;
 
 const FEEDBACK: ContentFeedbackRequest = {
   questionId: "q1",

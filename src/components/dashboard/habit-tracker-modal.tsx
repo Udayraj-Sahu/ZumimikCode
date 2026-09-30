@@ -283,7 +283,7 @@ export function HabitTrackerModal({ onClose }: Props) {
     setNewName(""); setNewIcon("Zap"); setNewColor("var(--primary)"); setShowAdd(false);
   }, [newName, newIcon, newColor, addHabit]);
 
-  const handleToggleReminder = useCallback(async (habitId: string, current: string | undefined, habitName: string, days?: number[]) => {
+  const handleToggleReminder = useCallback(async (habitId: string, current: string | undefined, _habitName: string, days?: number[]) => {
     if (current) { setReminder(habitId, undefined); await cancelReminder(habitId); setEditingReminder(null); return; }
     setNotifError(null);
     if (!notifsEnabled) {

@@ -2,7 +2,7 @@
 import { PageContainer } from "@/components/ui/page-container";
 
 import { useState, useRef, useEffect } from "react";
-import { Bell, BellDot, Zap, Award, Swords, Info, CheckCheck } from "lucide-react";
+import { Bell, Zap, Award, Swords, Info, CheckCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useNotifications } from "@/hooks/queries/use-notifications";

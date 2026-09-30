@@ -1,12 +1,9 @@
 import { FAQ_ITEMS } from "@/lib/mock/help";
 import type { FaqItem } from "@/lib/types/help";
 import { apiGet } from "./api";
+import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 export async function getFaqItems(): Promise<FaqItem[]> {
   if (IS_MOCK) {

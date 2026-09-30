@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import gsap from "gsap";
-import { Globe, Smartphone, ArrowRight, Check, Loader2, AlertCircle, RefreshCw } from "lucide-react";
+import { Globe, Smartphone, ArrowRight, Loader2, AlertCircle, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isFirebaseConfigured, getFirebaseAuth, getFirebaseGoogleProvider } from "@/lib/firebase/client";
 
