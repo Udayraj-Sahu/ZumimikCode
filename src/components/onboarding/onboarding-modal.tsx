@@ -387,7 +387,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const panel = (
     <div className="flex-1 min-h-0 flex flex-col">
       {/* Header with 5 step icons */}
-      <div className="sticky top-0 z-10 px-5 pt-4 pb-4 bg-[var(--overlay)]">
+      <div className="sticky top-0 z-10 px-5 pb-4 pt-[max(1rem,var(--sat))] bg-[var(--overlay)]">
         <div className="flex items-center justify-between mb-3">
           <button
             type="button"
@@ -443,7 +443,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
         data-onboard-scroll
         className={cn(
           "flex-1 min-h-0 px-5",
-          completed ? "overflow-hidden" : "overflow-y-auto pt-4 pb-6 scroll-smooth",
+          completed ? "overflow-hidden" : "overflow-y-auto pt-4 pb-[max(1.5rem,var(--sab))] scroll-smooth",
         )}
         style={{ scrollbarWidth: "none" }}
       >

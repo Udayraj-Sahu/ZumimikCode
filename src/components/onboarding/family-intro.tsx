@@ -196,7 +196,7 @@ export function FamilyIntro({
         <GlowBall className="right-[-60px] top-[38%] h-52 w-52 bg-emerald-400/[0.10]" />
         <GlowBall className="bottom-[12%] left-[-70px] h-52 w-52 bg-[var(--lime-08)]" />
 
-        <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-8 pt-[max(1rem,env(safe-area-inset-top))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
+        <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-[max(2rem,var(--sab))] pt-[max(1rem,var(--sat))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
         <header className="flex items-center justify-center">
           <span className="grid h-8 w-8 place-items-center rounded-xl border border-[var(--lime-25)] bg-[var(--lime-08)]">
             <Sparkles size={15} className="text-[var(--lime)]" />

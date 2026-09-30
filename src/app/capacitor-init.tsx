@@ -51,7 +51,36 @@ export function CapacitorInit() {
           }
         });
 
+        // System-bar icon appearance follows the app theme. Android has no other
+        // source of truth for it: on an edge-to-edge window the OS default is
+        // light (white) icons, which is right for dark mode and wrong for light
+        // mode. Mirrored here rather than inside the components that toggle the
+        // theme, so it covers every entry point -- settings, onboarding, a
+        // preloaded intro -- without any of them having to know it exists.
+        const { applySystemBars } = await import("@/lib/native/system-bars");
+        const { useThemeStore } = await import("@/stores/theme-store");
+
+        const syncSystemBars = () => {
+          void applySystemBars(useThemeStore.getState().theme);
+        };
+
+        // Covers the very first frame after the splash, where native still has
+        // the launch-theme default.
+        syncSystemBars();
+
+        const unsubTheme = useThemeStore.subscribe((state, prev) => {
+          if (state.theme === prev.theme) return;
+          syncSystemBars();
+        });
+
+        // Android re-asserts its own bar appearance when the activity resumes,
+        // so re-apply after the app comes back to the foreground.
+        await App.addListener("appStateChange", ({ isActive }) => {
+          if (isActive) syncSystemBars();
+        });
+
         cleanupRef.current = () => {
+          unsubTheme();
           history.pushState = origPush;
           history.replaceState = origReplace;
           window.removeEventListener("popstate", onPopState);

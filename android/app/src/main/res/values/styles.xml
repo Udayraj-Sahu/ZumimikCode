@@ -13,6 +13,16 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <!--
+            System-bar icon appearance is owned by the web theme state
+            (SystemBarsPlugin), not by this theme. This is only the value that
+            applies for the few frames between the splash handing off and the
+            first call from JS, and it must match the app's default theme
+            (dark) so there is no white-icon-on-light flash at launch.
+            windowLightNavigationBar is deliberately absent: it is API 27+ and
+            its platform default already matches this dark default.
+        -->
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
 

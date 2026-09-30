@@ -388,7 +388,7 @@ export function PlanIntro({
           }}
         />
 
-        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-8 pt-[max(2rem,env(safe-area-inset-top))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
+        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-[max(2rem,var(--sab))] pt-[max(2rem,var(--sat))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
           {/* centered brand */}
           <FadeUp className="flex justify-center">
             <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-4 py-1.5">

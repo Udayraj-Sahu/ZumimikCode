@@ -170,7 +170,7 @@ export function PitchIntro({
         <div className="pointer-events-none absolute bottom-10 right-4 h-56 w-56 rounded-full bg-[var(--lime-08)] blur-[90px]" />
 
         {/* stock video: compact bordered banner */}
-        <div className="relative shrink-0 px-4 pt-3 pb-0">
+        <div className="relative shrink-0 px-4 pt-[max(0.75rem,var(--sat))] pb-0">
           <div className="relative overflow-hidden rounded-2xl border border-white/10">
             <StockVideoAd
               src="/media/stock-ad.mp4"
@@ -182,7 +182,7 @@ export function PitchIntro({
           </div>
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-[400px] min-h-0 flex-1 flex-col justify-center overflow-hidden px-5 pb-[max(3px,env(safe-area-inset-bottom))] pt-0 sm:max-w-none max-[359px]:px-4">
+        <div className="relative mx-auto flex w-full max-w-[400px] min-h-0 flex-1 flex-col justify-center overflow-hidden px-5 pb-[max(3px,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4">
           <section ref={pitchRef}>
           {/* headline */}
           <div
