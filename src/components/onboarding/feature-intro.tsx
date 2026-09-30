@@ -22,7 +22,6 @@ import {
 } from "motion/react";
 import {
   BrainCircuit,
-  ChevronUp,
   Clock,
   Crosshair,
   Timer,

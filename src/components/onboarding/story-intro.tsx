@@ -4,26 +4,36 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { BLACKGREEN, CYAN, CYAN_251, FUCHSIA, GLASS_06, GLASS_09, GLASS_12, LIME, LIME_067, LIME_133, LIME_40, LIME_LIGHT, SLATE_MUTED } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
-import { MotionConfig, motion, type Variants } from "motion/react";
+import { MotionConfig, motion, AnimatePresence, useReducedMotion, type Variants } from "motion/react";
+import { SPECTRUM_BARS, useVoiceSpectrum } from "@/hooks/use-voice-spectrum";
 import {
   AlertTriangle,
   Brain,
-  Check,
   Footprints,
   Hourglass,
   Layers,
   Lock,
+  Mic,
   Minus,
   Plus,
   Sandwich,
+  Search,
   Sigma,
   Sparkles,
+  Square,
   Timer,
   TrainFront,
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { applyStoryNotifications } from "@/lib/notifications/story-reminders";
+import { parseCommitmentSpeech, VOICE_EXAMPLE } from "@/lib/story/commitment-speech";
+import type { VoiceSession } from "@/lib/native/speech";
+import {
+  RECLAIM_MODULES as RECLAIM_META,
+  DAY_LABELS as STORY_DAY_LABELS,
+  TRIGGER_TYPES as STORY_TRIGGER_TYPES,
+} from "@/lib/story/story-options";
 import type { StoryCommitment } from "@/lib/types/onboarding";
 import { DAILY_TIME_OPTIONS } from "@/lib/types/onboarding";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -56,27 +66,17 @@ const toneDark: Record<Tone, string> = {
   fuchsia: "#A21CAF",
 };
 
-const RECLAIM_MODULES: {
-  id: string;
-  icon: typeof TrainFront;
-  tone: Tone;
-  slotMin: number;
-  sub: string;
-}[] = [
-  {
-    id: "Subway Commute",
-    icon: TrainFront,
-    tone: "lime",
-    slotMin: 10,
-    sub: "Morning & return leg",
-  },
-  { id: "Lunch Break", icon: Sandwich, tone: "cyan", slotMin: 15, sub: "Midday refuel" },
-  { id: "Evening Walk", icon: Footprints, tone: "fuchsia", slotMin: 20, sub: "Cool-down laps" },
-];
+const RECLAIM_ICONS: Record<string, typeof TrainFront> = {
+  "Subway Commute": TrainFront,
+  "Lunch Break": Sandwich,
+  "Evening Walk": Footprints,
+};
 
-const TRIGGER_TYPES = ["Deep Focus Sprint", "Recall Drill", "Mock Test"];
+const RECLAIM_MODULES = RECLAIM_META.map((m) => ({ ...m, icon: RECLAIM_ICONS[m.id] }));
 
-const DAY_LABELS = ["M", "T", "W", "T", "F", "S", "S"];
+const DAY_LABELS = STORY_DAY_LABELS;
+
+const TRIGGER_TYPES = STORY_TRIGGER_TYPES;
 
 const YEARLY_GOAL_HOURS = 350;
 
@@ -517,140 +517,410 @@ function MiniRail({ window, tone }: { window: string; tone: Tone }) {
 
 /* ── Reclaim module card ── */
 
-function ReclaimModule({
-  id,
-  icon: Icon,
-  tone,
-  slotMin,
-  sub,
-  active,
+/* One card for all three presets. The tags pick which slot is active; the
+   controls below them always edit that slot, so the section is one card tall
+   instead of three and the per-preset config is never edited out of sight. */
+function ReclaimPanel({
   value,
   onChange,
 }: {
-  id: string;
-  icon: typeof TrainFront;
-  tone: Tone;
-  slotMin: number;
-  sub: string;
-  active: boolean;
   value: StoryCommitment;
   onChange: (patch: Partial<StoryCommitment>) => void;
 }) {
-  const win = parseWindow(value.reclaimConfigs?.[id]?.window ?? value.reclaimWindow);
-  const days = safeDays(value.reclaimConfigs?.[id]?.days ?? value.weekDays);
+  const activeIdx = Math.max(
+    0,
+    RECLAIM_MODULES.findIndex((m) => m.id === value.reclaimSlot),
+  );
+  const active = RECLAIM_MODULES[activeIdx];
+  const Icon = active.icon;
+  const tone = active.tone;
+  const activeWindow = value.reclaimConfigs?.[active.id]?.window ?? value.reclaimWindow;
+  const win = parseWindow(activeWindow);
+  const days = safeDays(value.reclaimConfigs?.[active.id]?.days ?? value.weekDays);
   const cadence = cadenceLabel(days);
-  const hex = toneHex[tone];
 
   const patchModule = (window: string, nextDays: boolean[]) =>
     onChange({
       reclaimConfigs: {
         ...(value.reclaimConfigs ?? {}),
-        [id]: { window, days: nextDays },
+        [active.id]: { window, days: nextDays },
       },
     });
 
   return (
-    <Panel
-      tone={tone}
-      ariaLabel={id}
-      className={cn(
-        "cursor-pointer p-3.5 transition-all duration-200",
-        active ? "opacity-100" : "opacity-60 hover:opacity-90",
-      )}
-    >
-      <div
-        role="button"
-        tabIndex={0}
-        aria-pressed={active}
-        onClick={() => onChange({ reclaimSlot: id })}
-        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onChange({ reclaimSlot: id })}
-        className="focus:outline-none"
-      >
-        <div className="flex items-center gap-3">
-          <span
-            className={cn(
-              "grid size-9 shrink-0 place-items-center rounded-full border",
-              toneChip[tone],
-            )}
-          >
-            <Icon className="size-4" strokeWidth={2} />
-          </span>
-          <div className="min-w-0 flex-1">
-            <h3 className={cn("text-[13px] font-semibold leading-tight text-foreground")}>{id}</h3>
-            <p className="mt-0.5 text-[9px] font-medium text-white/60">{sub}</p>
-          </div>
-          <span
-            className={cn(
-              "grid size-5 shrink-0 place-items-center rounded-full border transition-all",
-              active
-                ? "bg-[var(--lime-solid)] text-[var(--on-accent)] shadow-[0_0_12px_var(--lime-50)]"
-                : "border-white/[0.12] bg-white/[0.03] text-[var(--lime-50)]",
-            )}
-          >
-            {active && <Check size={10} strokeWidth={3.5} />}
-          </span>
+    <Panel tone={tone} ariaLabel="Dead-time presets" className="p-3.5">
+      <div className="flex items-center gap-3">
+        <span
+          className={cn(
+            "grid size-9 shrink-0 place-items-center rounded-full border",
+            toneChip[tone],
+          )}
+        >
+          <Icon className="size-4" strokeWidth={2} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <h3 className={cn("text-[13px] font-semibold leading-tight text-foreground")}>
+            {active.id}
+          </h3>
+          <p className="mt-0.5 text-[9px] font-medium text-white/60">{active.sub}</p>
         </div>
+        <span className={cn("whitespace-nowrap text-[10px] font-bold", toneText[tone])}>
+          {active.slotMin} MIN
+        </span>
+      </div>
 
-        <div className="mt-3 rounded-lg border border-white/[0.06] bg-white/[0.03] p-2.5">
-          <span
-            className={cn(
-              "inline-flex items-center font-medium text-[9px] uppercase tracking-[0.12em] text-white/60",
-            )}
-          >
-            Window:
-          </span>
-          <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-[6px]">
-            <Sel
-              label={`${id} window start`}
-              value={win.from}
-              onChange={(v) => patchModule(clampWindow(v, win.to || "00:00"), days)}
-              flex
-            />
-            <Sel
-              label={`${id} window end`}
-              value={win.to}
-              onChange={(v) => patchModule(clampWindow(win.from || "00:00", v), days)}
-              flex
-            />
-          </div>
-        </div>
+      <div role="radiogroup" aria-label="Reclaim slot" className="mt-3 flex flex-wrap gap-2">
+        {RECLAIM_MODULES.map(({ id: tagId, icon: TagIcon, tone: tagTone }) => {
+          const on = tagId === active.id;
+          return (
+            <button
+              key={tagId}
+              type="button"
+              role="radio"
+              aria-checked={on}
+              onClick={() => onChange({ reclaimSlot: tagId })}
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-[10px] font-bold tracking-[0.03em] transition-colors",
+                on ? toneChip[tagTone] : "border-white/[0.10] bg-white/[0.03] text-white/55",
+              )}
+            >
+              <TagIcon className="size-3 shrink-0" strokeWidth={2.2} />
+              {tagId}
+            </button>
+          );
+        })}
+      </div>
 
-        <div className="mt-3">
-          <MiniRail
-            window={value.reclaimConfigs?.[id]?.window ?? value.reclaimWindow}
-            tone={tone}
+      <div className="mt-3 rounded-lg border border-white/[0.06] bg-white/[0.03] p-2.5">
+        <span
+          className={cn(
+            "inline-flex items-center font-medium text-[9px] uppercase tracking-[0.12em] text-white/60",
+          )}
+        >
+          Window:
+        </span>
+        <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-[6px]">
+          <Sel
+            label={`${active.id} window start`}
+            value={win.from}
+            onChange={(v) => patchModule(clampWindow(v, win.to || "00:00"), days)}
+            flex
           />
-        </div>
-
-        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/[0.06] pt-3">
-          <span
-            className={cn(
-              "inline-flex flex-none items-center font-medium text-[9px] uppercase tracking-[0.12em] text-white/60",
-            )}
-          >
-            Cadence:
-          </span>
-          <DayButtons
-            days={days}
-            onChange={(i) =>
-              patchModule(
-                value.reclaimConfigs?.[id]?.window ?? value.reclaimWindow,
-                days.map((v, j) => (j === i ? !v : v)),
-              )
-            }
-            tone={tone}
+          <Sel
+            label={`${active.id} window end`}
+            value={win.to}
+            onChange={(v) => patchModule(clampWindow(win.from || "00:00", v), days)}
+            flex
           />
-          <span
-            className={cn(
-              "ml-auto whitespace-nowrap text-right  text-[10px] font-bold",
-              toneText[tone],
-            )}
-          >
-            {cadence}
-          </span>
         </div>
       </div>
+
+      <div className="mt-3">
+        <MiniRail window={activeWindow} tone={tone} />
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/[0.06] pt-3">
+        <span
+          className={cn(
+            "inline-flex flex-none items-center font-medium text-[9px] uppercase tracking-[0.12em] text-white/60",
+          )}
+        >
+          Cadence:
+        </span>
+        <DayButtons
+          days={days}
+          onChange={(i) =>
+            patchModule(
+              activeWindow,
+              days.map((v, j) => (j === i ? !v : v)),
+            )
+          }
+          tone={tone}
+        />
+        <span
+          className={cn(
+            "ml-auto whitespace-nowrap text-right text-[10px] font-bold",
+            toneText[tone],
+          )}
+        >
+          {cadence}
+        </span>
+      </div>
     </Panel>
+  );
+}
+
+/* ── Voice commitment ── */
+
+/**
+ * Decorative stand-in for when there is no usable microphone signal — a denied
+ * permission, no Web Audio, or the Android WebView where the speech recogniser
+ * already owns the mic. One continuous crest sampled into thin bars, each on the
+ * same keyframes at a negative delay so the crest travels left to right instead
+ * of every bar pulsing together. Frozen under reduced motion.
+ */
+const WAVE_BARS = 28;
+const WAVE_FRAMES = ["10%", "26%", "54%", "18%", "78%", "34%", "12%"];
+
+function DecorativeWave({ active }: { active: boolean }) {
+  const still = useReducedMotion();
+  const live = active && !still;
+  return (
+    <span aria-hidden className="absolute inset-0 flex items-end justify-center gap-[2px] px-3">
+      {Array.from({ length: WAVE_BARS }, (_, i) => (
+        <motion.span
+          key={i}
+          className="flex-1 origin-bottom rounded-full bg-[var(--primary)]"
+          initial={{ scaleY: 0.08 }}
+          animate={live ? { scaleY: WAVE_FRAMES } : { scaleY: 0.08 }}
+          transition={
+            live
+              ? { duration: 1.15, repeat: Infinity, ease: "easeInOut", delay: -(i * 0.028) }
+              : { duration: 0.25 }
+          }
+        />
+      ))}
+    </span>
+  );
+}
+
+/**
+ * The Siri-style spectrum that grows out of the bottom edge of the bar.
+ *
+ * Absolutely positioned and behind the row's own content, so it is visually
+ * attached to the search bar without ever participating in layout. Bars are
+ * full-height and moved only by `scaleY` from a bottom origin, which keeps the
+ * whole thing on the compositor.
+ */
+function VoiceSpectrum({ active }: { active: boolean }) {
+  const still = useReducedMotion();
+  const { hostRef, status } = useVoiceSpectrum(active && !still);
+
+  if (status === "unavailable") return <DecorativeWave active={active} />;
+
+  return (
+    <span
+      ref={hostRef}
+      aria-hidden
+      className="absolute inset-0 flex items-end gap-[2px] px-3 transition-opacity duration-300"
+      style={{ opacity: active ? 1 : 0 }}
+    >
+      {Array.from({ length: SPECTRUM_BARS }, (_, i) => (
+        <span
+          key={i}
+          className="flex-1 origin-bottom rounded-full bg-[var(--primary)] will-change-transform"
+          style={{ transform: "scaleY(0.02)" }}
+        />
+      ))}
+    </span>
+  );
+}
+
+/**
+ * Dictates the whole commitment in one sentence instead of working six
+ * controls. Idle it is only a mic; tapping opens a listening overlay, so the
+ * input never takes space away from the form it fills.
+ *
+ * The recogniser is only offered when the platform reports a usable one, so on
+ * a device without a mic the control disappears rather than sitting there
+ * broken.
+ */
+function VoiceCommitmentBar({
+  value,
+  onChange,
+}: {
+  value: StoryCommitment;
+  onChange: (patch: Partial<StoryCommitment>) => void;
+}) {
+  const [supported, setSupported] = useState<boolean | null>(null);
+  const [open, setOpen] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [labels, setLabels] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [speaking, setSpeaking] = useState(false);
+  const sessionRef = useRef<VoiceSession | null>(null);
+  const cancelledRef = useRef(false);
+  const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const still = useReducedMotion();
+
+  useEffect(() => {
+    let alive = true;
+    void import("@/lib/native/speech")
+      .then((m) => m.isVoiceSupported())
+      .then((ok) => {
+        if (alive) setSupported(ok);
+      })
+      .catch(() => {
+        if (alive) setSupported(false);
+      });
+    return () => {
+      alive = false;
+      cancelledRef.current = true;
+      if (settleTimer.current) clearTimeout(settleTimer.current);
+      void sessionRef.current?.stop();
+    };
+  }, []);
+
+  const clearTimer = () => {
+    if (settleTimer.current) clearTimeout(settleTimer.current);
+    settleTimer.current = null;
+  };
+
+  const settle = (text: string) => {
+    const { patch, labels: found } = parseCommitmentSpeech(text, value);
+    if (found.length === 0) {
+      setLabels([]);
+      setError(`Didn't catch a time, a day or a slot in "${text.trim()}".`);
+      return;
+    }
+    onChange(patch);
+    setTranscript(text);
+    setLabels(found);
+    setError(null);
+    // Hold the result up long enough to read before the overlay collapses.
+    clearTimer();
+    settleTimer.current = setTimeout(() => {
+      setOpen(false);
+      setTranscript("");
+      setLabels([]);
+    }, 1900);
+  };
+
+  const start = async () => {
+    clearTimer();
+    cancelledRef.current = false;
+    setError(null);
+    setTranscript("");
+    setLabels([]);
+    setSpeaking(false);
+    setOpen(true);
+
+    const { startVoiceCapture } = await import("@/lib/native/speech");
+    const session = await startVoiceCapture({
+      // The first partial is the earliest signal that the user has actually
+      // started talking, which is what wakes the spectrum up.
+      onPartial: (text) => {
+        setSpeaking(true);
+        setTranscript(text);
+      },
+      onFinal: (text) => {
+        sessionRef.current = null;
+        setSpeaking(false);
+        if (cancelledRef.current) return;
+        if (text) settle(text);
+        else setError("Didn't hear anything. Try again.");
+      },
+      onError: (text) => {
+        sessionRef.current = null;
+        setSpeaking(false);
+        if (cancelledRef.current) return;
+        setError(text);
+      },
+    });
+    if (session) sessionRef.current = session;
+  };
+
+  const stop = async () => {
+    const session = sessionRef.current;
+    if (!session) return;
+    await session.stop();
+  };
+
+  if (supported === false) return null;
+
+  const listening = open && !error;
+
+  return (
+    <div className="mt-4 flex flex-col items-center gap-2.5">
+      {/* The mic stretches into the bar it becomes, so the control never moves
+          anywhere — layout FLIPs the same element rather than swapping one
+          component for another. */}
+      <motion.div
+        layout
+        transition={{ type: "spring", stiffness: 340, damping: 32 }}
+        className={cn(
+          "relative flex items-center overflow-hidden bg-black transition-colors duration-300",
+          open ? "h-14 w-full max-w-[22rem] rounded-full" : "h-14 w-14 rounded-full",
+        )}
+>
+        {/* Behind the row's own content and out of flow, so the crest is attached
+            to the bar's bottom edge without ever shifting the layout. */}
+        <VoiceSpectrum active={speaking} />
+
+        <motion.button
+          layout
+          type="button"
+          onClick={listening ? stop : start}
+          aria-label={listening ? "Stop listening" : "Dictate your routine"}
+          whileTap={still ? undefined : { scale: 0.93 }}
+          transition={{ type: "spring", stiffness: 420, damping: 22 }}
+          className={cn(
+            "relative z-10 grid flex-none place-items-center rounded-full text-white",
+            open ? "ml-1.5 size-11" : "size-14",
+          )}
+        >
+          {listening ? (
+            <Square className="relative size-3.5" strokeWidth={3} />
+          ) : (
+            <Mic className="relative size-5" strokeWidth={2.2} />
+          )}
+        </motion.button>
+
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              key="voice-text"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-10 flex min-w-0 flex-1 items-center gap-3 py-2 pl-1 pr-4"
+            >
+              <span
+                aria-live="polite"
+                className={cn(
+                  "min-w-0 flex-1 truncate text-[12px] leading-tight font-medium",
+                  transcript ? "text-white/90" : "text-white/35",
+                )}
+              >
+{error ? error : speaking ? transcript : null}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      <AnimatePresence initial={false}>
+        {labels.length > 0 && (
+          <motion.div
+            key="voice-labels"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            className="flex w-full max-w-[22rem] flex-wrap items-center justify-center gap-2"
+          >
+            {labels.map((label) => (
+              <motion.span
+                key={label}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 380, damping: 22 }}
+                className="rounded-md border border-[var(--lime-40)] bg-[var(--lime-10)] px-2.5 py-1.5 text-[10px] font-bold tracking-[0.03em] text-[var(--lime)]"
+              >
+                {label}
+              </motion.span>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!open && (
+        <p className="max-w-[17rem] text-center text-[10px] leading-[1.45] font-medium text-white/45">
+          Tap and say it instead — <span className="text-white/60">{VOICE_EXAMPLE}</span>
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -814,21 +1084,7 @@ export function StoryCommitmentMatrix({
 
       {/* Reclaim modules */}
       <SectionHead right="Where it hides" icon={<Layers size={12} />} title="Dead-time presets" />
-      <div className="mt-3 flex flex-col gap-2.5">
-        {RECLAIM_MODULES.map((m) => (
-          <ReclaimModule
-            key={m.id}
-            id={m.id}
-            icon={m.icon}
-            tone={m.tone}
-            slotMin={m.slotMin}
-            sub={m.sub}
-            active={value.reclaimSlot === m.id}
-            value={value}
-            onChange={onChange}
-          />
-        ))}
-      </div>
+      <ReclaimPanel value={value} onChange={onChange} />
 
       {/* Dynamic formula */}
       <Panel tone="cyan" ariaLabel="Dynamic practice formula" className="mt-6">
@@ -927,6 +1183,8 @@ export function StoryCommitmentMatrix({
           />
         </div>
       </Panel>
+
+      <VoiceCommitmentBar value={value} onChange={onChange} />
     </div>
   );
 }
