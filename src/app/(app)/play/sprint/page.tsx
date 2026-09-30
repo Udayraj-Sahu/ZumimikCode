@@ -378,7 +378,6 @@ function SprintContent() {
               answered={answeredFlags}
               onSelect={handleJump}
               progress={progress}
-              currentQuestionText={question?.text ?? null}
             />
           ) : undefined
         }

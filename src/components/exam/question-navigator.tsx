@@ -13,7 +13,6 @@ interface QuestionNavigatorProps {
   answered: boolean[];
   onSelect: (index: number) => void;
   progress?: number;
-  currentQuestionText?: string | null;
 }
 
 export function QuestionNavigator({
@@ -22,7 +21,6 @@ export function QuestionNavigator({
   answered,
   onSelect,
   progress,
-  currentQuestionText,
 }: QuestionNavigatorProps) {
   const pct = Math.max(
     0,
@@ -60,25 +58,6 @@ export function QuestionNavigator({
           style={{ width: `${pct}%` }}
         />
       </div>
-
-      {currentQuestionText ? (
-        <div className="mt-3 overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02] p-3">
-          <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.14em] text-primary/80">
-            Current
-          </p>
-          <p
-            className="text-[11px] font-semibold leading-snug text-foreground/80"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-            }}
-          >
-            {currentQuestionText}
-          </p>
-        </div>
-      ) : null}
 
       {pageCount > 1 ? (
         <div className="mt-3 flex items-center justify-between gap-2">
