@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { CYAN_251, LIME } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
@@ -23,6 +30,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import HabitCard from "@/components/onboarding/habit-card";
 
 const ACCENT = LIME;
 
@@ -123,7 +131,7 @@ function SystemCarousel() {
 
   return (
     <div
-      className={cn("relative mt-3", theme === "light" ? "h-[240px]" : "h-[300px]")}
+      className={cn("relative mt-3", theme === "light" ? "h-[170px]" : "h-[180px]")}
       role="group"
       aria-roledescription="carousel"
       aria-label="Core systems"
@@ -173,33 +181,14 @@ function SystemCarousel() {
           </motion.button>
         );
       })}
-
-      {/* swipe hint */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-2 z-50 flex justify-center">
-        <div className="flex items-center gap-2">
-          <motion.div
-            animate={reduceMotion ? {} : { y: [0, -5, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-            className="flex items-center gap-1.5 text-muted-foreground"
-          >
-            <ChevronUp size={11} className="text-[var(--lime-70)]" />
-            <span className=" text-[9px] uppercase tracking-[0.18em] text-white/70">
-              Swipe up for more details
-            </span>
-          </motion.div>
-          <span className=" text-[9px] text-white/50">
-            {active + 1} / {SYSTEMS.length}
-          </span>
-        </div>
-      </div>
     </div>
   );
 }
 
 const FACTS: { value: string; label: string; valueClass: string }[] = [
-  { value: "5", label: "Exam tracks", valueClass: "text-[#C8FF4D]" },
-  { value: "2", label: "Free mock papers", valueClass: "text-cyan-400" },
-  { value: "Daily", label: "Drill routine", valueClass: "text-fuchsia-400" },
+  { value: "Live", label: "Accuracy tracker", valueClass: "text-[#C8FF4D]" },
+  { value: "Auto", label: "Adaptive difficulty", valueClass: "text-cyan-400" },
+  { value: "Daily", label: "Weak-topic review", valueClass: "text-fuchsia-400" },
 ];
 
 const VARIANT_COPY: Record<
@@ -270,6 +259,126 @@ function CountValue({ value, className }: { value: string; className?: string })
   if (!isNumber)
     return <dd className={cn("text-lg font-bold leading-none", className)}>{value}</dd>;
   return <motion.dd className={cn("text-lg font-bold leading-none", className)}>{text}</motion.dd>;
+}
+
+function IncludedFactsCard() {
+  const theme = useThemeStore((s) => s.theme);
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <motion.dl
+        className="grid grid-cols-3 gap-2"
+        variants={{
+          hidden: {},
+          show: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
+        }}
+      >
+        {FACTS.map(({ value, label, valueClass }) => (
+          <motion.div
+            key={label}
+            variants={cardVariants}
+            className="keep-white flex flex-col-reverse justify-end gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-3"
+          >
+            <dt
+              className={cn(
+                " text-[9px] uppercase leading-3 tracking-wider",
+                theme === "light" ? "text-white/60" : "text-muted-foreground",
+              )}
+            >
+              {label}
+            </dt>
+            <CountValue value={value} className={valueClass} />
+          </motion.div>
+        ))}
+      </motion.dl>
+      <p className=" mt-3 text-[9px] uppercase tracking-wider text-white/60">
+        Accuracy tracked per topic · Missed questions resurface · Harder sets as you improve
+      </p>
+    </div>
+  );
+}
+
+function IncludedCarousel() {
+  const theme = useThemeStore((s) => s.theme);
+  const [active, setActive] = useState(0);
+  const reduceMotion = useReducedMotion();
+  const dragStartX = useRef<number | null>(null);
+
+  const cards = [
+    { key: "habit", node: <HabitCard bare compact />, label: "Automatic Habit Tracker" },
+    { key: "facts", node: <IncludedFactsCard />, label: "What is included summary" },
+  ];
+
+  const swipe = useCallback(
+    (deltaX: number) => {
+      if (Math.abs(deltaX) < 40) return;
+      setActive((a) => (a + (deltaX < 0 ? 1 : cards.length - 1)) % cards.length);
+    },
+    [],
+  );
+
+  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    dragStartX.current = e.clientX;
+  };
+
+  const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const start = dragStartX.current;
+    dragStartX.current = null;
+    if (start == null) return;
+    swipe(e.clientX - start);
+  };
+
+  const transition = reduceMotion
+    ? { duration: 0.18 }
+    : { type: "spring" as const, stiffness: 205, damping: 33 };
+
+  return (
+    <div
+      className={cn(
+        "relative mt-2.5 [touch-action:pan-y]",
+        theme === "light" ? "h-[230px]" : "h-[240px]",
+      )}
+      role="group"
+      aria-roledescription="carousel"
+      aria-label="What is included"
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onPointerCancel={() => {
+        dragStartX.current = null;
+      }}
+    >
+      {cards.map((card, i) => {
+        const isCenter = i === active;
+        return (
+          <motion.div
+            key={card.key}
+            animate={{ x: "-50%", y: "-50%", opacity: isCenter ? 1 : 0, zIndex: isCenter ? 40 : 30 }}
+            transition={transition}
+            aria-current={isCenter ? "true" : undefined}
+            aria-hidden={!isCenter}
+            aria-label={card.label}
+            className="absolute inset-x-0 left-1/2 top-1/2 w-[92%] text-left"
+          >
+            {card.node}
+          </motion.div>
+        );
+      })}
+
+      {/* dots */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-2 z-50 flex justify-center">
+        <div className="flex items-center gap-1.5">
+          {cards.map((card, i) => (
+            <span
+              key={card.key}
+              className={cn(
+                "h-1 rounded-full transition-all duration-300",
+                i === active ? "w-4 bg-[var(--lime-70)]" : "w-1.5 bg-white/25",
+              )}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 type Props = {
@@ -358,7 +467,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
           <div className="relative mx-auto flex h-full w-full max-w-[360px] flex-col sm:min-h-0 sm:max-w-none sm:flex-1">
             <div className={cn("flex-1 min-h-0 overflow-y-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4", theme === "light" ? "pb-5" : "pb-6")}>
             {/* Protocol pill */}
-            <div className="flex justify-center pt-[max(1rem,env(safe-area-inset-top))] pb-3">
+            <div className="flex justify-center pt-[max(1rem,var(--sat))] pb-3">
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -422,10 +531,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               <motion.section
                 variants={itemVariants}
                 aria-labelledby="facts-heading"
-                className={cn(
-                  "rounded-2xl border border-white/10 bg-white/[0.03] p-4",
-                  theme === "light" ? "mt-5" : "mt-6",
-                )}
+                className={theme === "light" ? "mt-3" : "mt-4"}
               >
                 <h2
                   id="facts-heading"
@@ -433,34 +539,12 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                 >
                   What is included
                 </h2>
-                <motion.dl
-                  className="mt-3 grid grid-cols-3 gap-2"
-                  variants={{
-                    hidden: {},
-                    show: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
-                  }}
-                >
-                  {FACTS.map(({ value, label, valueClass }) => (
-                    <motion.div
-                      key={label}
-                      variants={cardVariants}
-                      className="keep-white flex flex-col-reverse justify-end gap-1 rounded-lg border border-white/10 bg-black/60 px-3 py-3"
-                    >
-                      <dt className={cn(" text-[9px] uppercase leading-3 tracking-wider", theme === "light" ? "text-white/60" : "text-muted-foreground")}>
-                        {label}
-                      </dt>
-                      <CountValue value={value} className={valueClass} />
-                    </motion.div>
-                  ))}
-                </motion.dl>
-                <p className=" mt-3 text-[9px] uppercase tracking-wider text-white/60">
-                  CAT · GMAT · GRE · Banking · Vedic Math
-                </p>
+                <IncludedCarousel />
               </motion.section>
             </motion.div>
           </div>
 
-          <footer className={cn("shrink-0 px-5", theme === "light" ? "py-3.5" : "py-4")}>
+          <footer className={cn("shrink-0 px-5 pb-[max(1rem,var(--sab))]", theme === "light" ? "pt-3.5" : "pt-4")}>
             <button
               type="button"
               onClick={(e) => {
