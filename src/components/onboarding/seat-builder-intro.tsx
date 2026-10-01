@@ -387,9 +387,12 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
 
 export function SeatBuilderIntro({
   onClose,
+  onSkip,
   preloaded = false,
 }: {
   onClose: () => void;
+  /** "Skip for now": dismiss the whole intro with no goal recorded. */
+  onSkip?: () => void;
   preloaded?: boolean;
 }) {
   const store = useOnboardingStore();
@@ -418,11 +421,11 @@ export function SeatBuilderIntro({
   onCloseRef.current = onClose;
   const closingRef = useRef(false);
 
-  const exit = useCallback(() => {
+  const exit = useCallback((after?: () => void) => {
     if (closingRef.current) return;
     closingRef.current = true;
     const el = overlayRef.current;
-    const done = () => onCloseRef.current();
+    const done = () => (after ? after() : onCloseRef.current());
     if (!el) return done();
     el.animate([{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }], {
       duration: 280,
@@ -523,10 +526,10 @@ export function SeatBuilderIntro({
         </button>
 
         <button
-          onClick={exit}
+          onClick={() => (onSkip ? exit(onSkip) : exit())}
           className="mx-auto block text-center text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
         >
-          Reserve later
+          Skip for now
         </button>
         </div>
       </div>

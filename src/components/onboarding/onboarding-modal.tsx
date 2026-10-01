@@ -621,6 +621,7 @@ useEffect(() => {
     showSeatBuilder || preloadSeatBuilder ? (
       <SeatBuilderIntro
         preloaded={!showSeatBuilder}
+        onSkip={handleSkipIntro}
         onClose={() => {
           setShowSeatBuilder(false);
           store.setPlanHookSeen(true);
