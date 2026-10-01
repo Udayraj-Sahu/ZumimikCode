@@ -5,7 +5,7 @@ import { BG_MOSS, FOREST, LIME, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import { MotionConfig, motion } from "motion/react";
-import { Check, CreditCard, Lock, QrCode, ShieldCheck, Smartphone } from "lucide-react";
+import { Check, CreditCard, Lock, QrCode, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PLANS } from "@/lib/types/onboarding";
 import type { PlanId } from "@/lib/types/onboarding";
@@ -285,9 +285,12 @@ const COUPON = { code: "VIP_EARLYBIRD", amount: 100, note: "Early Adopter Neural
 
 export function PlanIntro({
   onClose,
+  onSkip,
   preloaded = false,
 }: {
   onClose: () => void;
+  /** "Skip for now": dismiss the whole intro with no goal recorded. */
+  onSkip?: () => void;
   preloaded?: boolean;
 }) {
   const store = useOnboardingStore();
@@ -332,10 +335,10 @@ export function PlanIntro({
   onCloseRef.current = onClose;
   const closingRef = useRef(false);
 
-  const fadeOut = useCallback(() => {
+  const fadeOut = useCallback((after?: () => void) => {
     if (closingRef.current) return;
     closingRef.current = true;
-    const done = () => onCloseRef.current();
+    const done = () => (after ? after() : onCloseRef.current());
     const el = overlayRef.current;
     if (!el) return done();
     el.animate([{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }], {
@@ -784,16 +787,11 @@ export function PlanIntro({
             </button>
 
             <button
-              onClick={fadeOut}
+              onClick={() => (onSkip ? fadeOut(onSkip) : fadeOut())}
               className="mx-auto mt-3 block text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
             >
-              Skip for now
+Skip for now
             </button>
-
-            <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[10px] text-white/45">
-              <ShieldCheck size={12} />
-              Adaptive engine calibrated • Change anytime in Settings
-            </p>
           </FadeUp>
         </div>
       </div>

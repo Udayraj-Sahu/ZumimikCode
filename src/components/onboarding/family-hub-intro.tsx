@@ -101,10 +101,13 @@ function FadeUp({
 export function FamilyHubIntro({
   onDone,
   onClose,
+  onSkip,
   preloaded = false,
 }: {
   onDone: () => void;
   onClose: () => void;
+  /** "Skip for now": dismiss the whole intro with no goal recorded. */
+  onSkip?: () => void;
   preloaded?: boolean;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -331,7 +334,7 @@ export function FamilyHubIntro({
           </FadeUp>
 
           <button
-            onClick={() => exit(onClose)}
+            onClick={() => exit(onSkip ?? onClose)}
             className="mx-auto mt-3 block text-[10px] text-white/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
           >
             Skip for now

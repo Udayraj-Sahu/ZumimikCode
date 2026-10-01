@@ -139,9 +139,12 @@ function Panel({
 
 export function ArenaIntro({
   onClose,
+  onSkip,
   preloaded = false,
 }: {
   onClose: () => void;
+  /** "Skip for now": dismiss the whole intro with no goal recorded. */
+  onSkip?: () => void;
   preloaded?: boolean;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -473,13 +476,13 @@ export function ArenaIntro({
             <ArrowRight size={14} />
           </button>
           <button
-            onClick={() => exit(onClose)}
+            onClick={() => exit(onSkip ?? onClose)}
             className={cn(
               "mx-auto block text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline",
               theme === "light" ? "mt-2.5" : "mt-3",
             )}
           >
-            Continue to dashboard
+            Skip for now
           </button>
         </FadeUp>
         </div>

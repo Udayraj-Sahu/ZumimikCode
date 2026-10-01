@@ -122,10 +122,13 @@ function GlowBall({ className }: { className: string }) {
 export function FamilyIntro({
   onDone,
   onClose,
+  onSkip,
   preloaded = false,
 }: {
   onDone: () => void;
   onClose: () => void;
+  /** "Skip for now": dismiss the whole intro with no goal recorded. */
+  onSkip?: () => void;
   preloaded?: boolean;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -345,7 +348,7 @@ export function FamilyIntro({
           </FadeUp>
 
           <button
-            onClick={() => exit(onClose)}
+            onClick={() => exit(onSkip ?? onClose)}
             className="mx-auto mt-3 flex items-center gap-1.5 text-[10px] text-white/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
           >
             <Moon size={11} /> Skip for now

@@ -50,9 +50,12 @@ const FINE_PRINT =
 
 export function PitchIntro({
   onClose,
+  onSkip,
   preloaded = false,
 }: {
   onClose: () => void;
+  /** "Skip for now": dismiss the whole intro with no goal recorded. */
+  onSkip?: () => void;
   preloaded?: boolean;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -379,7 +382,7 @@ export function PitchIntro({
               </button>
             </Backlight>
             <button
-              onClick={() => exit(onClose)}
+              onClick={() => exit(onSkip ?? onClose)}
               className="mx-auto mt-1.5 block text-[11px] leading-none text-white/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
             >
               Skip for now

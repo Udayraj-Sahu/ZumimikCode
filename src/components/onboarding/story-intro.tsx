@@ -1203,9 +1203,12 @@ const itemVariants: Variants = {
 
 export function StoryIntro({
   onClose,
+  onSkip,
   preloaded = false,
 }: {
   onClose: () => void;
+  /** "Skip for now": dismiss the whole intro with no goal recorded. */
+  onSkip?: () => void;
   preloaded?: boolean;
 }) {
   const store = useOnboardingStore();
@@ -1246,8 +1249,8 @@ export function StoryIntro({
   const closingRef = useRef(false);
   const [notifError, setNotifError] = useState<string | null>(null);
 
-  const animateOut = useCallback(() => {
-    const done = () => onCloseRef.current();
+  const animateOut = useCallback((after?: () => void) => {
+    const done = () => (after ? after() : onCloseRef.current());
     const el = overlayRef.current;
     if (!el) return done();
     el.animate([{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }], {
@@ -1257,7 +1260,7 @@ export function StoryIntro({
     }).addEventListener("finish", done, { once: true });
   }, []);
 
-  const close = useCallback(() => {
+  const close = useCallback((after?: () => void) => {
     if (closingRef.current) return;
     closingRef.current = true;
     store.setDailyMinutes(value.dailyMinutes);
@@ -1278,7 +1281,7 @@ export function StoryIntro({
         closingRef.current = false;
         return;
       }
-      animateOut();
+      animateOut(after);
     });
   }, [value, store, animateOut]);
 
@@ -1357,14 +1360,6 @@ export function StoryIntro({
             </motion.div>
           </div>
 
-          <button
-            type="button"
-            onClick={close}
-            className="absolute right-[14px] top-[14px] z-10 text-[10px] font-bold uppercase tracking-[0.14em] text-white/50 transition-colors hover:text-white/70 active:scale-95"
-          >
-            Skip
-          </button>
-
           {notifError && (
             <div
               role="alert"
@@ -1383,7 +1378,7 @@ export function StoryIntro({
           >
             <button
               type="button"
-              onClick={close}
+              onClick={() => close()}
               className="group relative flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-[var(--on-accent)] transition-transform active:scale-[0.98]"
               style={{
                 background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
@@ -1396,9 +1391,13 @@ export function StoryIntro({
                 Start configuring
               </span>
             </button>
-            <p className="mt-2.5 text-center text-[10px] font-medium text-white/35">
-              You can adjust all of this anytime in Settings.
-            </p>
+            <button
+              type="button"
+              onClick={() => (onSkip ? close(onSkip) : close())}
+              className="mx-auto mt-2.5 block text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline"
+            >
+              Skip for now
+            </button>
           </motion.div>
           </div>
         </div>

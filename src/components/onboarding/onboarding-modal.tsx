@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useThemeStore } from "@/stores/theme-store";
-import { useOnboardingStore, examIdForGoal, goalForExam } from "@/stores/onboarding-store";
+import { useOnboardingStore, examIdForGoal } from "@/stores/onboarding-store";
 import { VEDIC_USE_CASES, DRILLS, PLANS } from "@/lib/types/onboarding";
 import { FeatureIntro } from "@/components/onboarding/feature-intro";
 import { FamilyIntro } from "@/components/onboarding/family-intro";
@@ -175,10 +175,10 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
   const [localFirstName, setLocalFirstName] = useState(store.firstName);
   const [localPersona, setLocalPersona] = useState<string | null>(store.persona);
-  const [localGoal, setLocalGoal] = useState<string | null>(
-    store.goal ?? goalForExam(store.targetExam),
-  );
-  const [localTemporal, setLocalTemporal] = useState<TemporalWindowId | null>(store.temporalWindow);
+  // Start blank on every entry: re-opening onboarding must not re-surface the
+  // previous run's goal/temporal answers as already selected.
+  const [localGoal, setLocalGoal] = useState<string | null>(null);
+  const [localTemporal, setLocalTemporal] = useState<TemporalWindowId | null>(null);
   const [localTriggers, setLocalTriggers] = useState<string[]>(store.triggers);
   const [localSex, setLocalSex] = useState<string | null>(store.sex);
   const [localDob, setLocalDob] = useState(store.dob);
@@ -227,7 +227,15 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const stepLabels = resolvedSteps.map((id) => STEP_LABEL_BY_ID[id]);
   const stepIcons = resolvedSteps.map((id) => STEP_ICON_BY_ID[id]);
 
-  useEffect(() => {
+  // "Were we already onboarded before this modal opened?" Re-entry must show the
+// form again, never the completion screen.
+const openedAlreadyOnboarded = useRef(store.isOnboarded);
+// Set by handleSkipIntro: an early skip is not a completion.
+const skippedRef = useRef(false);
+
+useEffect(() => {
+    if (openedAlreadyOnboarded.current) return;
+    if (skippedRef.current) return;
     if (store.isOnboarded) {
       setCompleted(true);
     }
@@ -261,9 +269,13 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const persistPartial = () => {
     store.setFirstName(localFirstName);
     store.setPersona(localPersona);
-    store.setGoal(localGoal);
-    store.setTargetExam(resolvedExamId());
-    if (isExam) store.setTemporalWindow(localTemporal);
+    // Local state intentionally starts blank, so only write goal-shaped values
+    // the user actually chose this run. Clearing is owned by handleSkipIntro.
+    if (localGoal) {
+      store.setGoal(localGoal);
+      store.setTargetExam(resolvedExamId());
+    }
+    if (isExam && localTemporal) store.setTemporalWindow(localTemporal);
     if (isVedic) store.setVedicUseCase(localVedicUseCase as any);
     store.setSex(localSex);
     store.setDob(localDob);
@@ -538,6 +550,39 @@ export function OnboardingModal({ onClose, inline }: Props) {
     </div>
   );
 
+  /**
+   * "Skip for now" on any intro card. Records no goal and closes out
+   * onboarding, so the user reaches the dashboard instead of being pushed
+   * into the mandatory `goal` step. With `goal` left null the Learn page
+   * falls through to AdaptiveReprompt, which asks for it later.
+   *
+   * Deliberately does not set `completed`: the "You're all set" screen is
+   * reserved for finishing every step, never for an early skip.
+   */
+  const handleSkipIntro = () => {
+    skippedRef.current = true;
+    setFeatureHookVariant(null);
+    setShowFamily(false);
+    setShowFamilyHub(false);
+    setShowSeatBuilder(false);
+    setShowPitch(false);
+    setShowPlan(false);
+    setShowStory(false);
+    setShowArena(false);
+    store.setGoal(null);
+    store.setTemporalWindow(null);
+    store.setVedicUseCase(null);
+    store.setTargetExam("");
+    store.setAdaptiveConfigured(false);
+    store.setJustExploring(false);
+    store.setStoryHookSeen(true);
+    store.setPlanHookSeen(true);
+    store.setPitchHookSeen(true);
+    store.setArenaHookSeen(true);
+    store.finishOnboarding();
+    onClose();
+  };
+
   const featureHookDone = () => {
     const variant = featureHookVariant;
     setFeatureHookVariant(null);
@@ -560,6 +605,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     showFamilyHub || preloadFamilyHub ? (
       <FamilyHubIntro
         preloaded={!showFamilyHub}
+        onSkip={handleSkipIntro}
         onDone={() => {
           setShowFamilyHub(false);
           setShowSeatBuilder(true);
@@ -587,6 +633,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     showStory || preloadStory ? (
       <StoryIntro
         preloaded={!showStory}
+        onSkip={handleSkipIntro}
         onClose={() => {
           setShowStory(false);
           store.setStoryHookSeen(true);
@@ -597,6 +644,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
 
   const familyIntro = showFamily ? (
     <FamilyIntro
+      onSkip={handleSkipIntro}
       onDone={() => {
         setShowFamily(false);
         setShowFamilyHub(true);
@@ -612,6 +660,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     showArena || preloadArena ? (
       <ArenaIntro
         preloaded={!showArena}
+        onSkip={handleSkipIntro}
         onClose={() => {
           setShowArena(false);
           store.setArenaHookSeen(true);
@@ -624,6 +673,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     showPitch || preloadPitch ? (
       <PitchIntro
         preloaded={!showPitch}
+        onSkip={handleSkipIntro}
         onClose={() => {
           setShowPitch(false);
           store.setPitchHookSeen(true);
@@ -636,6 +686,7 @@ export function OnboardingModal({ onClose, inline }: Props) {
     showPlan || preloadPlan ? (
       <PlanIntro
         preloaded={!showPlan}
+        onSkip={handleSkipIntro}
         onClose={() => {
           setShowPlan(false);
           store.setPlanHookSeen(true);
