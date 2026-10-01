@@ -212,7 +212,7 @@ export function FamilyHubIntro({
               className={cn(
                 "p-3.5",
                 theme === "light"
-                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
                   : "rounded-[18px] border border-dashed border-white/15 bg-white/[0.02]",
               )}
             >
@@ -231,7 +231,7 @@ export function FamilyHubIntro({
                     className={cn(
                       "rounded-xl border px-2 py-2.5 text-center",
                       theme === "light"
-                        ? "border-white/[0.07] bg-white/[0.02]"
+                        ? "border-black/[0.10] bg-black/[0.04]"
                         : "keep-white border-white/[0.06] bg-black/30",
                     )}
                   >
@@ -251,7 +251,7 @@ export function FamilyHubIntro({
               className={cn(
                 "p-3.5",
                 theme === "light"
-                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
                   : "rounded-[18px] border border-white/[0.08] bg-white/[0.03]",
               )}
             >
@@ -264,7 +264,7 @@ export function FamilyHubIntro({
               <ul className="space-y-2.5">
                 {WALL.map(({ Icon, title, desc }) => (
                   <li key={title} className="flex items-start gap-3">
-                    <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-[var(--lime)]">
+                    <span className={cn("mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border text-[var(--lime)]", theme === "light" ? "border-black/[0.10] bg-black/[0.04]" : "keep-white border-white/[0.08] bg-white/[0.03]")}>
                       <Icon size={13} />
                     </span>
                     <div className="min-w-0">
@@ -286,7 +286,7 @@ export function FamilyHubIntro({
               className={cn(
                 "p-4",
                 theme === "light"
-                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
                   : "rounded-[18px] border border-[var(--lime-20)] bg-[var(--lime-04)]",
               )}
             >

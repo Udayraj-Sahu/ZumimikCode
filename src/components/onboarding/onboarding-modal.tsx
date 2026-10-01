@@ -987,7 +987,7 @@ function GoalPanel({ title, children }: { title: string; children: React.ReactNo
     <div
       ref={ref}
       data-panel
-      className={cn("mt-2.5 w-full rounded-2xl border px-4 py-4", theme === "light" ? "border-black/[0.06] bg-black/[0.02]" : "border-white/[0.06] bg-white/[0.02]")}
+      className={cn("mt-2.5 w-full rounded-2xl border px-4 py-4", theme === "light" ? "border-black/[0.10] bg-black/[0.04]" : "border-white/[0.06] bg-white/[0.02]")}
     >
       <div className="flex items-center gap-2 mb-3">
         <span className="w-1.5 h-1.5 rounded-sm bg-[var(--primary)]" />
@@ -1151,7 +1151,7 @@ function StepDetails({
       <p className={cn("text-micro font-bold tracking-[0.14em] mb-3 uppercase", theme === "light" ? "text-black/60" : "text-white/60")}>
         Date of Birth
       </p>
-      <div className={cn("rounded-2xl border overflow-hidden", theme === "light" ? "border-black/[0.06] bg-black/[0.02]" : "border-white/[0.06] bg-white/[0.02]")}>
+      <div className={cn("rounded-2xl border overflow-hidden", theme === "light" ? "border-black/[0.10] bg-black/[0.04]" : "border-white/[0.06] bg-white/[0.02]")}>
         <div className="flex">
           <ScrollColumn
             items={DAYS.map((d) => ({ value: String(d), label: String(d) }))}

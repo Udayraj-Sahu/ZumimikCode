@@ -201,7 +201,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
               <button
                 type="button"
                 onClick={() => setSelectedExam(null)}
-                className="flex-1 rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex-1 rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-foreground outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Back
               </button>
@@ -217,7 +217,7 @@ export function AddPrepModal({ onClose, gated = true }: Props) {
             <button
               type="button"
               onClick={handleClose}
-              className="w-full rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-foreground/80 outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
+              className="w-full rounded-2xl border border-border/60 bg-background py-3.5 text-fluid-sm font-bold text-foreground outline-none transition-all hover:bg-accent/40 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring"
             >
               Cancel
             </button>

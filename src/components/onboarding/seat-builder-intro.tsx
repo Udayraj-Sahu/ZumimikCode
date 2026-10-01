@@ -101,7 +101,7 @@ function SectionTitle({ marker, title, tag }: { marker: string; title: string; t
         className={cn(
           "shrink-0 rounded-full border px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]",
           theme === "light"
-            ? "border-white/[0.07] bg-white/[0.02]"
+            ? "border-black/[0.10] bg-black/[0.04]"
             : "keep-white border-white/10 bg-black/30",
         )}
       >
@@ -264,7 +264,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                           : "text-white/60",
                         !added &&
                           (theme === "light"
-                            ? "border-white/[0.07] bg-white/[0.02]"
+                            ? "border-black/[0.10] bg-black/[0.04]"
                             : "border-white/10 bg-white/[0.03]"),
                       )}
                     >
@@ -355,7 +355,12 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
           {lines.map((l) => (
             <li
               key={l.label}
-              className="flex items-center justify-between gap-2 rounded-lg border border-white/[0.07] bg-white/[0.02] px-2.5 py-2 text-[10px]"
+              className={cn(
+                "flex items-center justify-between gap-2 rounded-lg border px-2.5 py-2 text-[10px]",
+                theme === "light"
+                  ? "border-black/[0.10] bg-black/[0.04]"
+                  : "keep-white border-white/[0.07] bg-white/[0.02]",
+              )}
             >
               <span className="text-white/80">{l.label}</span>
               <span className="shrink-0 font-bold text-foreground">{inr(l.amount)}</span>

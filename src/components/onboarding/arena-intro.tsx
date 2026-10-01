@@ -118,7 +118,7 @@ function Panel({
       className={cn(
         "relative overflow-hidden",
         light
-          ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+          ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
           : "rounded-[20px] border border-white/[0.08] bg-black/25",
         className,
       )}
@@ -345,7 +345,7 @@ export function ArenaIntro({
               className={cn(
                 "flex items-center gap-3",
                 theme === "light"
-                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5"
+                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04] px-3 py-2.5"
                   : "keep-white rounded-[20px] border border-white/[0.08] bg-black/25 p-3.5",
               )}
             >
@@ -438,7 +438,12 @@ export function ArenaIntro({
               {upcoming.slice(0, 2).map((ev) => (
                 <div
                   key={ev.title}
-                  className="flex items-center justify-between rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3 py-2.5"
+                  className={cn(
+                    "flex items-center justify-between rounded-[16px] border px-3 py-2.5",
+                    theme === "light"
+                      ? "border-black/[0.10] bg-black/[0.04]"
+                      : "keep-white border-white/[0.07] bg-white/[0.02]",
+                  )}
                 >
                   <span className="flex-1 truncate text-[11px] text-white/90">{ev.title}</span>
                   <span className="mr-2 text-[9.5px] text-white/70">{ev.time}</span>

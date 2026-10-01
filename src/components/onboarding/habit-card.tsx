@@ -24,10 +24,10 @@ export default function HabitCard({
   const offset = circumference * (1 - progress);
 
   const shell = bare
-    ? "relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0b0b0c] p-4 text-white"
+    ? "relative w-full overflow-hidden rounded-2xl border border-white/10 keep-white bg-[#0b0b0c] p-4 text-white"
     : compact
-      ? "relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#0b0b0c] p-5 text-white shadow-[0_0_40px_rgba(74,222,128,0.06)]"
-      : "relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#0b0b0c] p-6 text-white shadow-[0_0_40px_rgba(74,222,128,0.06)]";
+      ? "relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 keep-white bg-[#0b0b0c] p-5 text-white shadow-[0_0_40px_rgba(74,222,128,0.06)]"
+      : "relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 keep-white bg-[#0b0b0c] p-6 text-white shadow-[0_0_40px_rgba(74,222,128,0.06)]";
 
   return (
     <div className={shell}>

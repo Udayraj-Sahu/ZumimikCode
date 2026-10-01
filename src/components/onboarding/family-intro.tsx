@@ -284,7 +284,7 @@ export function FamilyIntro({
 
         <div className="mt-auto">
           <FadeUp delay={380}>
-            <div className="rounded-[20px] border border-white/[0.07] bg-white/[0.03] p-1.5">
+            <div className={cn("rounded-[20px] border p-1.5", theme === "light" ? "border-black/[0.10] bg-black/[0.04]" : "keep-white border-white/[0.07] bg-white/[0.03]")}>
               {GROWTH.map((g, i) => (
                 <div key={g.id} className="flex items-center gap-3 rounded-[14px] px-3 py-2.5">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[var(--lime-20)] bg-[var(--lime-07)] text-[var(--lime)]">

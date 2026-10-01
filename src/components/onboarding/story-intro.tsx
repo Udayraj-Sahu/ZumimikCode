@@ -194,7 +194,7 @@ function Panel({
       aria-label={ariaLabel}
       className={cn(
         "relative overflow-hidden border p-4",
-        theme === "light" ? "rounded-[16px] bg-white/[0.02]" : "rounded-2xl bg-black/25",
+        theme === "light" ? "rounded-[16px] bg-black/[0.04]" : "rounded-2xl bg-black/25",
         className,
       )}
       style={{ borderColor: line }}
@@ -344,7 +344,7 @@ function Stepper({
       className={cn(
         "flex flex-none items-center gap-[6px] rounded-full border p-[4px]",
         theme === "light"
-          ? "border-white/[0.07] bg-white/[0.02]"
+          ? "border-black/[0.10] bg-black/[0.04]"
           : "keep-white border-white/[0.08] bg-black/40",
       )}
     >
@@ -526,6 +526,7 @@ function ReclaimPanel({
   value: StoryCommitment;
   onChange: (patch: Partial<StoryCommitment>) => void;
 }) {
+  const theme = useThemeStore((s) => s.theme);
   const activeIdx = Math.max(
     0,
     RECLAIM_MODULES.findIndex((m) => m.id === value.reclaimSlot),
@@ -590,7 +591,7 @@ function ReclaimPanel({
         })}
       </div>
 
-      <div className="mt-3 rounded-lg border border-white/[0.06] bg-white/[0.03] p-2.5">
+      <div className={cn("mt-3 rounded-lg border p-2.5", theme === "light" ? "border-black/[0.10] bg-black/[0.04]" : "keep-white border-white/[0.06] bg-white/[0.03]")}>
         <span
           className={cn(
             "inline-flex items-center font-medium text-[9px] uppercase tracking-[0.12em] text-white/60",
@@ -1324,7 +1325,7 @@ export function StoryIntro({
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="flex justify-center pt-[max(1rem,var(--sat))]"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
+              <div className={cn("inline-flex items-center gap-2 rounded-full border px-4 py-1.5 backdrop-blur-sm", theme === "light" ? "border-black/[0.10] bg-black/[0.04]" : "keep-white border-white/[0.06] bg-white/[0.04]")}>
                 <Sparkles size={12} className="text-[var(--lime)]" />
                 <span
                   className={cn("text-[11px] font-semibold tracking-[0.22em] text-[var(--lime-85)]")}

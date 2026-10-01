@@ -223,7 +223,7 @@ export function PaywallModal() {
 
       <div
         className={cn(
-          "relative w-full max-w-[400px] overflow-hidden bg-[var(--bg-blue)] border border-white/[0.06]",
+          "relative w-full max-w-md overflow-hidden bg-[var(--bg-blue)] border border-white/[0.06]",
           isNative
             ? "rounded-t-[24px] border-b-0 shadow-[0_-12px_60px_var(--black-60)]"
             : "rounded-[24px] shadow-[0_12px_60px_var(--black-60)]",

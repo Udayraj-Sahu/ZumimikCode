@@ -166,7 +166,7 @@ export function PlanSelector({
               selected
                 ? "border-[var(--lime-55)] bg-[var(--lime-06)] shadow-[0_0_24px_var(--lime-12)]"
                 : "border-white/[0.07] hover:border-white/[0.16]",
-              !selected && (theme === "light" ? "bg-white/[0.02]" : "bg-black/25"),
+              !selected && (theme === "light" ? "bg-black/[0.04]" : "bg-black/25"),
             )}
           >
             {p.badge && selected && (
@@ -432,7 +432,7 @@ export function PlanIntro({
               className={cn(
                 "grid grid-cols-2 gap-1 p-1",
                 theme === "light"
-                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
                   : "keep-white rounded-2xl border border-white/[0.08] bg-black/40",
               )}
             >
@@ -703,7 +703,7 @@ export function PlanIntro({
                       active
                         ? "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)] shadow-[0_0_16px_var(--lime-12)]"
                         : "border-white/[0.07] text-white/60 hover:border-white/[0.16]",
-                      !active && (theme === "light" ? "bg-white/[0.02]" : "bg-black/25"),
+                      !active && (theme === "light" ? "bg-black/[0.04]" : "bg-black/25"),
                     )}
                   >
                     {active && (
@@ -723,7 +723,7 @@ export function PlanIntro({
               className={cn(
                 "space-y-1.5 text-[12px]",
                 theme === "light"
-                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02] px-3.5 py-3"
+                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04] px-3.5 py-3"
                   : "keep-white rounded-[20px] border border-dashed border-white/15 bg-black/40 p-3.5",
               )}
             >

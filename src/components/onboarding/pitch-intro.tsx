@@ -207,7 +207,7 @@ export function PitchIntro({
               className={cn(
                 "relative overflow-hidden p-3",
                 theme === "light"
-                  ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
                   : "rounded-2xl border border-white/10 bg-white/[0.03]",
               )}
             >
@@ -275,7 +275,7 @@ export function PitchIntro({
             style={reduceMotion ? undefined : { opacity: 0 }}
             className="mt-2.5 grid grid-cols-2 gap-2.5"
           >
-            <div className={cn("px-3 py-2.5", theme === "light" ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]" : "rounded-xl border border-white/10 bg-white/[0.02]")}>
+            <div className={cn("px-3 py-2.5", theme === "light" ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]" : "rounded-xl border border-white/10 bg-white/[0.02]")}>
               <div className=" text-[9px] tracking-[0.2em] text-white/45">SAVED THIS WEEK</div>
               <div className="mt-1 flex items-baseline gap-1">
                 <span
@@ -290,7 +290,7 @@ export function PitchIntro({
                 <span className=" text-[12px] font-bold text-[var(--lime)]">HRS</span>
               </div>
             </div>
-            <div className={cn("px-3 py-2.5", theme === "light" ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]" : "rounded-xl border border-white/10 bg-white/[0.02]")}>
+            <div className={cn("px-3 py-2.5", theme === "light" ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]" : "rounded-xl border border-white/10 bg-white/[0.02]")}>
               <div className=" text-[9px] tracking-[0.2em] text-white/45">AVG SPEED / Q</div>
               <div className="mt-1 flex items-baseline gap-1">
                 <span
@@ -328,7 +328,7 @@ export function PitchIntro({
                   className={cn(
                     "group relative w-[268px] shrink-0 overflow-hidden p-2.5",
                     theme === "light"
-                      ? "rounded-[16px] border border-white/[0.07] bg-white/[0.02]"
+                      ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
                       : "rounded-xl border border-white/10 bg-white/[0.02]",
                   )}
                 >
