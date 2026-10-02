@@ -23,6 +23,7 @@ const inr = (n: number) => `₹${new Intl.NumberFormat("en-IN").format(n)}`;
 /* ── pricing rules (matches app/seat-builder reference) ── */
 
 const STACK_DISCOUNT_PCT = 30;
+const SEAT_DRAFT_STEP = "2";
 const stackPrice = (list: number) => Math.round((list * (100 - STACK_DISCOUNT_PCT)) / 100);
 const PRIVATE_TUTOR_ANNUAL = 48000;
 
@@ -111,12 +112,195 @@ function SectionTitle({ marker, title, tag }: { marker: string; title: string; t
   );
 }
 
+/* ── child details bottom sheet ── */
+
+type ChildDraft = { name: string; age: string };
+
+const MIN_AGE = 3;
+const MAX_AGE = 18;
+
+function ChildSeatSheet({
+  seatTitle,
+  onCancel,
+  onSave,
+}: {
+  seatTitle: string;
+  onCancel: () => void;
+  onSave: (draft: ChildDraft) => void;
+}) {
+  const theme = useThemeStore((s) => s.theme);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [draft, setDraft] = useState<ChildDraft>({ name: "", age: "" });
+  const [touched, setTouched] = useState(false);
+
+  useLayoutEffect(() => {
+    if (panelRef.current) {
+      panelRef.current.animate(
+        [{ transform: "translateY(100%)" }, { transform: "translateY(0%)" }],
+        { duration: 300, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+      );
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onCancel]);
+
+  const nameError = touched && !draft.name.trim() ? "Enter a name" : null;
+  const ageNum = Number(draft.age);
+  const ageError =
+    touched && !draft.age
+      ? "Enter an age"
+      : touched && (!Number.isInteger(ageNum) || ageNum < MIN_AGE || ageNum > MAX_AGE)
+        ? `Age must be ${MIN_AGE}–${MAX_AGE}`
+        : null;
+  const valid = Boolean(draft.name.trim()) && draft.age !== "" && ageNum >= MIN_AGE && ageNum <= MAX_AGE;
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setTouched(true);
+    if (!valid) return;
+    onSave({ name: draft.name.trim(), age: draft.age });
+  };
+
+  const field = theme === "light"
+    ? "rounded-xl border border-black/[0.10] bg-black/[0.04]"
+    : "rounded-xl border border-white/[0.08] bg-black/30";
+
+  return (
+    <div
+      data-theme-scope
+      className={cn(
+        "fixed inset-0 z-[calc(var(--z-intro)+1)] flex items-end justify-center bg-black/70 backdrop-blur-sm sm:items-center",
+        theme === "light" && "light",
+      )}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="child-seat-title"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onCancel();
+      }}
+    >
+      <div
+        ref={panelRef}
+        className={cn(
+          "relative w-full max-w-sm rounded-t-3xl border p-5 pb-[max(1.25rem,var(--sab))] sm:rounded-3xl",
+          theme === "light" ? "border-black/[0.10] bg-[var(--bg-2)]" : "border-white/[0.08] bg-[var(--overlay-solid)]",
+        )}
+      >
+        <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-current opacity-20" />
+
+        <div className="flex items-center gap-2">
+          <span className="grid size-6 shrink-0 place-items-center rounded-full border border-[var(--lime-35)] bg-[var(--lime-10)] text-[10px] font-black text-[var(--lime)]">
+            {SEAT_DRAFT_STEP}
+          </span>
+          <h2
+            id="child-seat-title"
+            className="text-[13px] font-black uppercase tracking-[0.16em] text-foreground"
+          >
+            PULL UP A CHAIR
+          </h2>
+        </div>
+        <p className="mt-1.5 text-[11px] leading-snug text-white/70">{seatTitle}</p>
+
+        <form onSubmit={submit} className="mt-4 space-y-3" noValidate>
+          <div>
+            <label htmlFor="child-seat-name" className="text-[8px] font-bold uppercase tracking-[0.16em] text-white/60">
+              NAME
+            </label>
+            <input
+              id="child-seat-name"
+              value={draft.name}
+              onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+              onBlur={() => setTouched(true)}
+              maxLength={40}
+              autoComplete="off"
+              placeholder="Who is this seat for?"
+              aria-invalid={Boolean(nameError)}
+              aria-describedby={nameError ? "child-seat-name-err" : undefined}
+              className={cn(
+                "mt-1.5 w-full px-3 py-2.5 text-[12px] text-foreground outline-none transition focus:border-[var(--lime-45)]",
+                field,
+                nameError && "border-red-400/60",
+              )}
+            />
+            {nameError && (
+              <p id="child-seat-name-err" role="alert" className="mt-1 text-[10px] text-red-400">
+                {nameError}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="child-seat-age" className="text-[8px] font-bold uppercase tracking-[0.16em] text-white/60">
+              AGE
+            </label>
+            <input
+              id="child-seat-age"
+              value={draft.age}
+              onChange={(e) =>
+                setDraft((d) => ({ ...d, age: e.target.value.replace(/[^0-9]/g, "").slice(0, 2) }))
+              }
+              onBlur={() => setTouched(true)}
+              inputMode="numeric"
+              pattern="[0-9]*"
+              placeholder={`${MIN_AGE}–${MAX_AGE}`}
+              aria-invalid={Boolean(ageError)}
+              aria-describedby={ageError ? "child-seat-age-err" : undefined}
+              className={cn(
+                "mt-1.5 w-full px-3 py-2.5 text-[12px] text-foreground outline-none transition focus:border-[var(--lime-45)]",
+                field,
+                ageError && "border-red-400/60",
+              )}
+            />
+            {ageError && (
+              <p id="child-seat-age-err" role="alert" className="mt-1 text-[10px] text-red-400">
+                {ageError}
+              </p>
+            )}
+          </div>
+
+          <div className="flex gap-2 pt-1">
+            <button
+              type="button"
+              onClick={onCancel}
+              className={cn(
+                "flex-1 rounded-xl border py-3 text-[10px] font-bold uppercase tracking-[0.12em] transition",
+                theme === "light"
+                  ? "border-black/[0.10] bg-black/[0.04] text-foreground"
+                  : "border-white/10 bg-black/30 text-white/75",
+              )}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl py-3 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
+              style={{
+                background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
+                boxShadow: "0 6px 20px var(--lime-mid-25)",
+              }}
+            >
+              <Check size={12} />
+              Seat them
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 /* ── presentational selector (used inside AdaptiveReprompt plan step) ── */
 
 export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: number) => void }) {
   const theme = useThemeStore((s) => s.theme);
   const [primaryId, setPrimaryId] = useState<"exam" | "oversight">("exam");
   const [stacked, setStacked] = useState<string[]>(["kid1"]);
+  /** Seat awaiting child details, plus the draft captured from the sheet. */
+  const [draftSeat, setDraftSeat] = useState<{ id: string; title: string } | null>(null);
+  const [children, setChildren] = useState<Record<string, ChildDraft>>({});
 
   const toggleSeat = (id: string) =>
     setStacked((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
@@ -240,11 +424,20 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
         <div className="mt-3 space-y-2.5">
           {STACK.map((s) => {
             const added = stacked.includes(s.id);
+            const child = children[s.id];
+            /** Adding asks for the child's name and age first; removing is instant. */
+            const onSeatClick = () => {
+              if (added) {
+                toggleSeat(s.id);
+                return;
+              }
+              setDraftSeat({ id: s.id, title: s.title });
+            };
             return (
               <button
                 key={s.id}
                 aria-pressed={added}
-                onClick={() => toggleSeat(s.id)}
+                onClick={onSeatClick}
                 className={cn(
                   "w-full border p-3.5 text-left transition",
                   theme === "light" ? "rounded-[16px]" : "rounded-2xl",
@@ -273,7 +466,7 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-1.5">
                         <h3 className="text-[12px] font-bold uppercase leading-snug tracking-wide text-foreground">
-                          {s.title}
+                          {child ? `${child.name}, ${child.age}` : s.title}
                         </h3>
                         {s.badge && (
                           <span className="rounded border border-fuchsia-400/40 bg-fuchsia-400/15 px-1.5 py-px text-[7px] font-bold tracking-wider text-fuchsia-300">
@@ -379,6 +572,18 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
         <ShieldCheck size={10} />
         100% COPPA & DPDP COMPLIANT • ZERO ADS • CANCEL ANYTIME
       </p>
+
+      {draftSeat && (
+        <ChildSeatSheet
+          seatTitle={draftSeat.title}
+          onCancel={() => setDraftSeat(null)}
+          onSave={(draft) => {
+            setChildren((c) => ({ ...c, [draftSeat.id]: draft }));
+            setStacked((cur) => (cur.includes(draftSeat.id) ? cur : [...cur, draftSeat.id]));
+            setDraftSeat(null);
+          }}
+        />
+      )}
     </div>
   );
 }
