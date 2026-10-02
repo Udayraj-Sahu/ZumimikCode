@@ -7,8 +7,6 @@ import { createPortal } from "react-dom";
 import {
   ArrowRight,
   Baby,
-  ChevronLeft,
-  ChevronRight,
   Clock,
   Flame,
   GraduationCap,
@@ -374,21 +372,24 @@ export function FamilyHubIntro({
                     className="flex w-full shrink-0 snap-start snap-always flex-col overflow-hidden"
                   >
                     <div className={cn("flex min-h-0 flex-1 flex-col rounded-[18px] border p-2.5", tone.card)}>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-black text-[var(--lime)]">{card.num}</span>
-                        <span className="text-[7.5px] font-bold uppercase tracking-[0.14em] text-foreground">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-black leading-none text-[var(--lime)]">
+                          {card.num}
+                        </span>
+                        <span className="min-w-0 flex-1 truncate text-[8px] font-bold uppercase tracking-[0.16em] text-foreground">
                           {card.tag}
                         </span>
-                        <span className="ml-auto text-[var(--lime)]">
-                          <Icon size={13} />
+                        <span className="grid size-6 shrink-0 place-items-center rounded-lg border border-[var(--lime-25)] bg-[var(--lime-08)] text-[var(--lime)]">
+                          <Icon size={12} />
                         </span>
                       </div>
-                      <h2 className="mt-1 text-[13.5px] font-bold uppercase leading-[1.1] tracking-[-0.02em] text-foreground">
+
+                      <h2 className="mt-3 text-[14px] font-bold uppercase leading-[1.15] tracking-[-0.01em] text-foreground">
                         {card.title}
                       </h2>
-                      <p className={cn("mt-0.5 text-[9.5px] leading-snug", tone.soft)}>{card.sub}</p>
+                      <p className={cn("mt-1.5 text-[10px] leading-snug", tone.soft)}>{card.sub}</p>
 
-                      <div className="mt-2.5 flex min-h-0 flex-1 flex-col justify-center gap-2">
+                      <div className="mt-4 flex min-h-0 flex-1 flex-col justify-center gap-2">
                         {card.render(tone)}
                       </div>
                     </div>
@@ -398,48 +399,20 @@ export function FamilyHubIntro({
             </div>
 
             {/* nav */}
-            <nav className="mt-2 flex shrink-0 items-center justify-between gap-3">
-              <button
-                type="button"
-                onClick={() => goTo(active - 1)}
-                disabled={active === 0}
-                aria-label="Previous card"
-                className={cn(
-                  "grid size-8 place-items-center rounded-[10px] border transition disabled:cursor-default disabled:opacity-30",
-                  tone.rest,
-                )}
-              >
-                <ChevronLeft size={15} />
-              </button>
-
-              <div className="flex items-center gap-2">
-                {CARDS.map((c, i) => (
-                  <button
-                    key={c.id}
-                    type="button"
-                    onClick={() => goTo(i)}
-                    aria-label={`Go to card ${i + 1} of ${TOTAL}: ${c.tag}`}
-                    aria-current={i === active ? "true" : undefined}
-                    className={cn(
-                      "size-1.5 rounded-full transition",
-                      i === active ? "bg-[var(--lime)]" : tone.dot,
-                    )}
-                  />
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => goTo(active + 1)}
-                disabled={active === TOTAL - 1}
-                aria-label="Next card"
-                className={cn(
-                  "grid size-8 place-items-center rounded-[10px] border transition disabled:cursor-default disabled:opacity-30",
-                  tone.rest,
-                )}
-              >
-                <ChevronRight size={15} />
-              </button>
+            <nav className="mt-2.5 flex shrink-0 items-center justify-center gap-2">
+              {CARDS.map((c, i) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to card ${i + 1} of ${TOTAL}: ${c.tag}`}
+                  aria-current={i === active ? "true" : undefined}
+                  className={cn(
+                    "h-1.5 rounded-full transition-all",
+                    i === active ? "w-5 bg-[var(--lime)]" : "w-1.5 bg-white/25",
+                  )}
+                />
+              ))}
             </nav>
           </section>
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
-import { BG_MOSS, FOREST, LIME, LIME_20, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { BG_MOSS, FOREST, GLASS_BORDER, LIME, LIME_20, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
@@ -15,11 +15,16 @@ import {
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import StockVideoAd from "@/components/ads/stock-video-ad";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 
 const ACCENT = LIME;
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ── Using real dashboard data (mock service, backend drop-in) ── */
 
@@ -40,101 +45,31 @@ function useLanes() {
   };
 }
 
-/* ── Tween for the hero counters ── */
+type Tone = {
+  card: string;
+  panel: string;
+  inset: string;
+  soft: string;
+  faint: string;
+  rest: string;
+  dot: string;
+};
 
-function useCountUp(target: number, ms = 900) {
-  const ref = useRef({ target: 0, node: null as HTMLSpanElement | null });
-  const setNode = useCallback((node: HTMLSpanElement | null) => {
-    if (!node || ref.current.node === node) return;
-    ref.current.node = node;
-    node.textContent = "0";
-  }, []);
-
-  useEffect(() => {
-    ref.current.target = target;
-    const node = ref.current.node;
-    if (!node) return;
-    const start = performance.now();
-    let raf = 0;
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / ms);
-      const eased = 1 - Math.pow(1 - t, 3);
-      node.textContent = String(Math.round(ref.current.target * eased));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target, ms]);
-
-  return setNode;
-}
-
-/* ── Enter + exit choreography ── */
-
-function FadeUp({
-  delay = 0,
-  className,
-  children,
-}: {
-  delay?: number;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    el.animate(
-      [
-        { opacity: 0, transform: "translateY(14px)" },
-        { opacity: 1, transform: "translateY(0)" },
-      ],
-      {
-        duration: 550,
-        delay,
-        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-        fill: "backwards",
-      },
-    );
-  }, [delay]);
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
-  );
-}
-
-function Panel({
-  light,
-  className,
-  children,
-}: {
-  light?: boolean;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section
-      className={cn(
-        "relative overflow-hidden",
-        light
-          ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
-          : "rounded-[20px] border border-white/[0.08] bg-black/25",
-        className,
-      )}
-    >
-      {light || (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{
-            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
-          }}
-        />
-      )}
-      {children}
-    </section>
-  );
+/** Theme-aware class sets — no raw colour literals in the markup. */
+function useArenaTone(): Tone {
+  const theme = useThemeStore((s) => s.theme);
+  const light = theme === "light";
+  return {
+    card: light ? "border-black/[0.10] bg-black/[0.04]" : "border-white/[0.08] bg-black/25",
+    panel: light ? "border-black/[0.10] bg-black/[0.04]" : "border-white/[0.07] bg-white/[0.02]",
+    inset: light
+      ? "border-black/[0.10] bg-black/[0.03]"
+      : "border-[var(--lime-20)] bg-[var(--lime-04)]",
+    soft: light ? "text-black/70" : "text-white/70",
+    faint: light ? "text-black/60" : "text-white/60",
+    rest: light ? "border-black/[0.10] bg-black/[0.04]" : "border-white/10 bg-black/30",
+    dot: light ? "bg-black/10" : "bg-white/10",
+  };
 }
 
 export function ArenaIntro({
@@ -148,21 +83,272 @@ export function ArenaIntro({
   preloaded?: boolean;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
 
   const theme = useThemeStore((s) => s.theme);
+  const tone = useArenaTone();
+  const [active, setActive] = useState(0);
 
   const { primary, speedLane, second } = useLanes();
   const { data } = useDashboardData(primary);
 
-  const setAcc = useCountUp(data?.stats.accuracy ?? 0);
-  const setQuestions = useCountUp(data?.stats.questions ?? 0);
-  const setPercentile = useCountUp(data?.stats.percentile ?? 0);
-  const setSpeed = useCountUp(data?.stats.speed ?? 0);
-
   const radar = data?.radarAxes ?? [];
   const upcoming = data?.upcoming ?? [];
   const topics = data?.topics ?? [];
+
+  const label = (id: string) => DOMAIN_LABELS[id] ?? id.toUpperCase();
+
+  /* Every lane lives inside a single card, so this is one flat list. */
+  const lanes: {
+    id: string;
+    title: string;
+    desc: string;
+    Icon: typeof Zap;
+    tone: string;
+  }[] = [];
+
+  if (primary) {
+    lanes.push({
+      id: primary,
+      title: `Lane 01 · ${label(primary)} Quant`,
+      desc: "Full syllabus, predictive percentile, timed drills",
+      Icon: TrendingUp,
+      tone: "text-[var(--lime)] border-[var(--lime-40)] bg-[var(--lime-10)]",
+    });
+  }
+  if (speedLane) {
+    lanes.push({
+      id: "vedic",
+      title: "Lane 02 · Vedic Speed Math",
+      desc: "Mental arithmetic bursts and reflex sprints",
+      Icon: Zap,
+      tone: "text-cyan-300 border-cyan-400/40 bg-cyan-400/10",
+    });
+  }
+  if (second) {
+    lanes.push({
+      id: second,
+      title: `Lane 03 · ${label(second)}`,
+      desc: "Parallel prep lane synced to the same arena clock",
+      Icon: Swords,
+      tone: "text-fuchsia-300 border-fuchsia-400/40 bg-fuchsia-400/10",
+    });
+  }
+
+  /** Slides: lanes, skill radar, mastery map, up next. Empty ones are skipped. */
+  const slides = [
+    ...(lanes.length > 0
+      ? [
+          {
+            id: "lanes",
+            num: "01",
+            tag: "ACTIVE LANES",
+            title: `${lanes.length} lane${lanes.length > 1 ? "s" : ""} running now`,
+            sub: "Every lane shares one arena clock and one checkpoint.",
+            Icon: Flame,
+            body: (
+              <div className="flex flex-1 flex-col gap-2.5">
+                <ul className="flex flex-1 flex-col justify-center gap-2">
+                  {lanes.map(({ id, title, desc, Icon }) => (
+                    <li
+                      key={id}
+                      className={cn("flex items-center gap-3 rounded-xl border px-3 py-2.5", tone.panel)}
+                    >
+                      <span className={cn("grid size-9 shrink-0 place-items-center rounded-xl border", lanes.find((l) => l.id === id)?.tone)}>
+                        <Icon size={16} />
+                      </span>
+                      <div className="min-w-0">
+                        <div className="text-[11.5px] font-bold leading-tight text-foreground">
+                          {title}
+                        </div>
+                        <div className={cn("mt-0.5 text-[10px] leading-snug", tone.soft)}>{desc}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+
+                <ul className="flex shrink-0 flex-wrap items-center justify-center gap-1.5">
+                  {[
+                    `${lanes.length} ${lanes.length === 1 ? "lane" : "lanes"}`,
+                    "1 shared clock",
+                    "1 checkpoint",
+                  ].map((chip) => (
+                    <li
+                      key={chip}
+                      className={cn(
+                        "rounded-full border px-2 py-1 text-[8.5px] font-bold uppercase tracking-[0.1em]",
+                        tone.panel,
+                        tone.faint,
+                      )}
+                    >
+                      {chip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ),
+          },
+        ]
+      : []),
+    ...(radar.length > 0
+      ? [
+          {
+            id: "radar",
+            num: "02",
+            tag: "SKILL RADAR",
+            title: "Where you stand",
+            sub: "Live read on every skill the arena tracks.",
+            Icon: Radar,
+            body: (
+              <ul className="flex flex-1 flex-col gap-1.5">
+                {radar.map((axis) => (
+                  <li
+                    key={axis.label}
+                    className={cn(
+                      "flex min-h-0 flex-1 items-center gap-2 rounded-xl border px-3 py-1.5",
+                      tone.panel,
+                    )}
+                  >
+                    <span className={cn("w-[58px] shrink-0 truncate text-[10px]", tone.soft)}>
+                      {axis.label}
+                    </span>
+                    <div className={cn("h-1.5 flex-1 overflow-hidden rounded-full", tone.rest)}>
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${Math.round(axis.value * 100)}%`,
+                          background: `linear-gradient(90deg, ${LIME_20}, ${LIME})`,
+                        }}
+                      />
+                    </div>
+                    <span className="w-8 shrink-0 text-right text-[10px] font-bold tabular-nums text-[var(--lime)]">
+                      {Math.round(axis.value * 100)}%
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ),
+          },
+        ]
+      : []),
+    ...(topics.length > 0
+      ? [
+          {
+            id: "mastery",
+            num: "03",
+            tag: `${label(primary).toUpperCase()} MASTERY MAP`,
+            title: "Syllabus, mapped",
+            sub: "Topic-by-topic coverage pulled from the arena.",
+            Icon: Crosshair,
+            body: (
+              <ul className="flex flex-1 flex-col gap-1.5">
+                {topics.map((tp) => (
+                  <li
+                    key={tp.name}
+                    className={cn(
+                      "flex min-h-0 flex-1 items-center gap-2 rounded-xl border px-3 py-1.5",
+                      tone.panel,
+                    )}
+                  >
+                    <span className={cn("min-w-0 flex-1 truncate text-[10.5px]", tone.soft)}>
+                      {tp.name}
+                    </span>
+                    <div className={cn("h-1.5 w-20 shrink-0 overflow-hidden rounded-full", tone.rest)}>
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${tp.value}%`,
+                          background: `linear-gradient(90deg, ${ACCENT}33, ${ACCENT})`,
+                        }}
+                      />
+                    </div>
+                    <span className="w-8 shrink-0 text-right text-[10px] font-bold tabular-nums text-[var(--lime)]">
+                      {tp.value}%
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ),
+          },
+        ]
+      : []),
+    ...(upcoming.length > 0
+      ? [
+          {
+            id: "next",
+            num: "04",
+            tag: "UP NEXT",
+            title: "What's queued",
+            sub: "The next two sessions already scheduled for you.",
+            Icon: Calendar,
+            body: (
+              <ul className="flex flex-1 flex-col gap-1.5">
+                {upcoming.map((ev) => (
+                  <li
+                    key={ev.title}
+                    className={cn(
+                      "flex min-h-0 flex-1 items-center gap-2 rounded-xl border px-3 py-1.5",
+                      tone.panel,
+                    )}
+                  >
+                    <span className={cn("min-w-0 flex-1 truncate text-[11px] text-foreground")}>
+                      {ev.title}
+                    </span>
+                    <span className={cn("shrink-0 text-[10px]", tone.soft)}>{ev.time}</span>
+                    <span className="shrink-0 rounded border border-[var(--lime-40)] bg-[var(--lime-10)] px-1.5 py-0.5 text-[8px] font-bold text-[var(--lime)]">
+                      {ev.tag}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ),
+          },
+        ]
+      : []),
+  ];
+
+  const TOTAL = slides.length;
+
+  const goTo = useCallback(
+    (index: number) => {
+      const clamped = Math.max(0, Math.min(TOTAL - 1, index));
+      setActive(clamped);
+      const track = trackRef.current;
+      const slide = track?.children[clamped] as HTMLElement | undefined;
+      if (!track || !slide) return;
+      const behavior: ScrollBehavior = prefersReducedMotion() ? "auto" : "smooth";
+      track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior });
+    },
+    [TOTAL],
+  );
+
+  /** Keeps dots in sync when the user swipes by hand. */
+  const onTrackScroll = useCallback(() => {
+    const track = trackRef.current;
+    const slide = track?.firstElementChild as HTMLElement | null;
+    if (!track || !slide || slide.offsetWidth === 0) return;
+    const index = Math.round(
+      (track.scrollLeft + track.offsetLeft - slide.offsetLeft) / slide.offsetWidth,
+    );
+    setActive((prev) => (prev === index ? prev : Math.max(0, Math.min(TOTAL - 1, index))));
+  }, [TOTAL]);
+
+  useEffect(() => {
+    if (preloaded) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goTo(active + 1);
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goTo(active - 1);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active, goTo, preloaded]);
 
   useLayoutEffect(() => {
     if (preloaded) return;
@@ -185,306 +371,177 @@ export function ArenaIntro({
     if (closingRef.current) return;
     closingRef.current = true;
     const el = overlayRef.current;
-    const done = () => cb();
-    if (!el) return done();
+    if (!el) return cb();
     el.animate([{ transform: "translateX(0%)" }, { transform: "translateX(-100%)" }], {
       duration: 280,
       easing: "cubic-bezier(0.55, 0, 0.55, 0.2)",
       fill: "forwards",
-    }).addEventListener("finish", done, { once: true });
+    }).addEventListener("finish", cb, { once: true });
   }, []);
-
-  const label = (id: string) => DOMAIN_LABELS[id] ?? id.toUpperCase();
-
-  const lanes: {
-    id: string;
-    title: string;
-    desc: string;
-    Icon: typeof Zap;
-    tone: string;
-    badge: string;
-  }[] = [];
-
-  if (primary) {
-    lanes.push({
-      id: primary,
-      title: `Lane 01 · ${label(primary)} Quant`,
-      desc: "Full syllabus, predictive percentile, timed drills",
-      Icon: TrendingUp,
-      tone: "text-[var(--lime)] border-[var(--lime-40)] bg-[var(--lime-10)]",
-      badge: "LIVE",
-    });
-  }
-  if (speedLane) {
-    lanes.push({
-      id: "vedic",
-      title: "Lane 02 · Vedic Speed Math",
-      desc: "Mental arithmetic bursts and reflex sprints",
-      Icon: Zap,
-      tone: "text-cyan-300 border-cyan-400/40 bg-cyan-400/10",
-      badge: "LIVE",
-    });
-  }
-  if (second) {
-    lanes.push({
-      id: second,
-      title: `Lane 03 · ${label(second)}`,
-      desc: "Parallel prep lane synced to the same arena clock",
-      Icon: Swords,
-      tone: "text-fuchsia-300 border-fuchsia-400/40 bg-fuchsia-400/10",
-      badge: "LIVE",
-    });
-  }
-
-  const statCells = [
-    { label: "Accuracy", value: setAcc, suffix: "%", Icon: Crosshair },
-    { label: "Questions", value: setQuestions, suffix: "", Icon: Radar },
-    { label: "Percentile", value: setPercentile, suffix: "", Icon: TrendingUp },
-    { label: "Speed Index", value: setSpeed, suffix: "", Icon: Zap },
-  ];
 
   return createPortal(
     <div
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[var(--z-intro)] overflow-x-hidden overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
+        "fixed inset-0 z-[var(--z-intro)] flex overflow-hidden flex-col sm:items-center sm:justify-center sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}
       role="dialog"
       aria-modal="true"
+      aria-hidden={preloaded || undefined}
       aria-labelledby="arena-hook-title"
     >
       <div
-        className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
+        className="relative flex h-full w-full shrink-0 flex-col sm:h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl"
         style={{
+          borderColor: GLASS_BORDER,
           background:
             theme === "light"
               ? "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)"
               : `radial-gradient(130% 90% at 50% 0%, ${PANEL} 0%, ${BG_MOSS} 48%, ${FOREST} 100%)`,
         }}
       >
-        {/* ambient glow + hairline */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[-90px] h-56 w-56 -translate-x-1/2 rounded-full bg-[var(--lime-12)] blur-[95px]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          className="pointer-events-none absolute inset-0 opacity-[0.5]"
           style={{
-            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
+            backgroundImage: "radial-gradient(var(--glass-045) 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
           }}
         />
 
-        <div className="relative mx-auto w-full max-w-[400px] px-5 pb-[max(2rem,var(--sab))] pt-[max(2rem,var(--sat))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
-          {/* centered brand */}
-        <FadeUp className="flex justify-center">
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-4 py-1.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--lime)] opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--lime)]" />
-            </span>
-            <span className="text-[11px] font-bold tracking-[0.22em] text-[var(--lime)]">ARENA</span>
-          </div>
-        </FadeUp>
+        {/* stock video: top half, edge to edge */}
+        <div className="relative shrink-0">
+          <StockVideoAd
+            src="/media/stock-ad.mp4"
+            poster="/media/stock-ad-poster.webp"
+            alt="Sponsor message"
+            className="h-[clamp(140px,42vh,320px)] w-full"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
+        </div>
 
-        {/* hero */}
-        <FadeUp delay={80} className={cn("text-center", theme === "light" ? "mt-4" : "mt-5")}>
-          <h1
-            id="arena-hook-title"
-            className="text-[36px] font-extrabold uppercase leading-[0.98] tracking-tight text-foreground"
+        <div className="relative mx-auto flex w-full max-w-[400px] min-h-0 flex-1 flex-col px-5 pb-[max(0.5rem,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4">
+          {/* brand + hero */}
+          <div className="shrink-0 pt-2 text-center">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-3.5 py-1">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--lime)] opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--lime)]" />
+              </span>
+              <span className="text-[10px] font-bold tracking-[0.22em] text-[var(--lime)]">ARENA</span>
+            </div>
+            <h1
+              id="arena-hook-title"
+              className="mt-2 text-[clamp(21px,6vw,28px)] font-extrabold uppercase leading-[1.02] tracking-tight text-foreground"
+            >
+              The arena is{" "}
+              <span
+                className="text-transparent"
+                style={{
+                  background: `linear-gradient(90deg, ${LIME}, ${LIME_TINT})`,
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                }}
+              >
+                live.
+              </span>
+            </h1>
+          </div>
+
+          {/* carousel: bottom half */}
+          <section
+            aria-roledescription="carousel"
+            aria-label="Arena overview"
+            className="mt-3 flex min-h-0 flex-1 flex-col"
           >
-            The arena is{" "}
-            <span
-              className="text-transparent"
+            <div
+              ref={trackRef}
+              onScroll={onTrackScroll}
+              className="flex min-h-0 flex-1 snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {slides.map((card, i) => {
+                const Icon = card.Icon;
+                return (
+                  <article
+                    key={card.id}
+                    aria-label={`${i + 1} of ${TOTAL}: ${card.tag}`}
+                    aria-hidden={i !== active ? "true" : undefined}
+                    className="flex w-full shrink-0 snap-start snap-always flex-col overflow-hidden"
+                  >
+                    <div
+                      className={cn(
+                        "flex min-h-0 flex-1 flex-col rounded-[18px] border p-2.5",
+                        tone.card,
+                      )}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-black leading-none text-[var(--lime)]">
+                          {card.num}
+                        </span>
+                        <span className="min-w-0 flex-1 truncate text-[8px] font-bold uppercase tracking-[0.16em] text-foreground">
+                          {card.tag}
+                        </span>
+                        <span className="grid size-6 shrink-0 place-items-center rounded-lg border border-[var(--lime-25)] bg-[var(--lime-08)] text-[var(--lime)]">
+                          <Icon size={12} />
+                        </span>
+                      </div>
+
+                      <h2 className="mt-3 text-[14px] font-bold uppercase leading-[1.15] tracking-[-0.01em] text-foreground">
+                        {card.title}
+                      </h2>
+                      <p className={cn("mt-1.5 text-[10px] leading-snug", tone.soft)}>{card.sub}</p>
+
+                      <div className="mt-4 flex min-h-0 flex-1 flex-col">{card.body}</div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+
+            {/* dots */}
+            <nav className="mt-2.5 flex shrink-0 items-center justify-center gap-2">
+              {slides.map((c, i) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to slide ${i + 1} of ${TOTAL}: ${c.tag}`}
+                  aria-current={i === active ? "true" : undefined}
+                  className={cn(
+                    "h-1.5 rounded-full transition-all",
+                    i === active ? "w-5 bg-[var(--lime)]" : "w-1.5 bg-white/25",
+                  )}
+                />
+              ))}
+            </nav>
+          </section>
+
+          {/* fixed CTA */}
+          <footer className="mt-2.5 shrink-0">
+            <button
+              onClick={() => exit(onClose)}
+              className="flex w-full items-center justify-center gap-2 rounded-[16px] py-3.5 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
               style={{
-                background: `linear-gradient(90deg, ${LIME}, ${LIME_TINT})`,
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
+                background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
+                boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
               }}
             >
-              live.
-            </span>
-          </h1>
-          <p className="mx-auto mt-3 max-w-[320px] text-[12.5px] leading-relaxed text-white/80">
-            Your training is checkpointed to{" "}
-            <span className="font-semibold text-foreground">{label(primary)}</span>
-            {speedLane ? <span className="text-cyan-300">, plus a Vedic speed lane</span> : ""}.
-            Everything below is pulled straight from your arena — not a demo.
-          </p>
-        </FadeUp>
-
-        {/* live stat tiles */}
-        <FadeUp delay={160} className={theme === "light" ? "mt-5" : "mt-6"}>
-          <Panel light={theme === "light"} className={theme === "light" ? "p-3" : "p-2.5"}>
-            <div className="grid grid-cols-4 divide-x divide-white/[0.06]">
-              {statCells.map(({ label: l, value, suffix, Icon }) => (
-                <div key={l} className="px-2 first:pl-1">
-                  <Icon size={12} className="text-[var(--lime)]" />
-                  <div className="mt-2 text-[17px] font-bold text-foreground tabular-nums">
-                    <span ref={value} />
-                    {suffix}
-                  </div>
-                  <div className="mt-0.5 text-[8.5px] uppercase tracking-[0.14em] text-white/70">
-                    {l}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Panel>
-          <p className="mt-2 flex items-center justify-center gap-1.5 text-[8.5px] font-bold tracking-[0.18em] text-white/60">
-            <Flame size={10} className="text-[var(--lime)]" />
-            {lanes.length} LANE{lanes.length > 1 ? "S" : ""} ACTIVE • LIVE TELEMETRY
-          </p>
-        </FadeUp>
-
-        {/* live lanes */}
-        <FadeUp delay={240} className="mt-4 space-y-2.5">
-          {lanes.map(({ id, title, desc, Icon, tone }) => (
-            <div
-              key={id}
+              ENTER {lanes.length > 1 ? "MULTI-LANE" : "YOUR"} ARENA
+              <ArrowRight size={14} />
+            </button>
+            <button
+              onClick={() => exit(onSkip ?? onClose)}
               className={cn(
-                "flex items-center gap-3",
-                theme === "light"
-                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04] px-3 py-2.5"
-                  : "keep-white rounded-[20px] border border-white/[0.08] bg-black/25 p-3.5",
+                "mx-auto mt-2 block text-[10px] underline-offset-2 transition-colors hover:text-muted-foreground hover:underline",
+                tone.faint,
               )}
             >
-              <span
-                className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl border", tone)}
-              >
-                <Icon size={16} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-[12px] font-bold leading-snug text-foreground">{title}</div>
-                <div className="mt-0.5 text-[10px] leading-snug text-white/70">
-                  {desc}
-                </div>
-              </div>
-              <span className="shrink-0 rounded-full border border-[var(--lime-40)] bg-[var(--lime-10)] px-2 py-0.5 text-[8px] font-bold tracking-wider text-[var(--lime)]">
-                LIVE
-              </span>
-            </div>
-          ))}
-        </FadeUp>
-
-        {/* skill radar */}
-        {radar.length > 0 && (
-          <FadeUp delay={320} className="mt-4">
-            <Panel light={theme === "light"} className={theme === "light" ? "p-3" : "p-3.5"}>
-              <div className="mb-2.5 flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-[var(--lime)]">
-                <Radar size={11} /> SKILL RADAR
-              </div>
-              <div className="grid grid-cols-2 gap-x-5 gap-y-2.5">
-                {radar.map((axis) => (
-                  <div key={axis.label} className="flex items-center gap-2">
-                    <span className="w-[54px] text-[9.5px] text-white/70">
-                      {axis.label}
-                    </span>
-                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${Math.round(axis.value * 100)}%`,
-                          background: `linear-gradient(90deg, ${LIME_20}, ${LIME})`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Panel>
-          </FadeUp>
-        )}
-
-        {/* domain mastery */}
-        {topics.length > 0 && (
-          <FadeUp delay={380} className="mt-4">
-            <Panel light={theme === "light"} className={theme === "light" ? "p-3" : "p-3.5"}>
-              <div className="mb-2.5 text-[9px] font-bold tracking-[0.2em] text-[var(--lime)]">
-                {label(primary).toUpperCase()} MASTERY MAP
-              </div>
-              <ul className="space-y-2">
-                {topics.slice(0, 4).map((tp) => (
-                  <li key={tp.name} className="flex items-center gap-2">
-                    <span className="flex-1 truncate text-[9.5px] text-white/80">
-                      {tp.name}
-                    </span>
-                    <div className="h-1 w-16 overflow-hidden rounded-full bg-white/[0.06]">
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${tp.value}%`,
-                          background: `linear-gradient(90deg, ${ACCENT}33, ${ACCENT})`,
-                        }}
-                      />
-                    </div>
-                    <span className="w-7 text-right text-[9px] text-[var(--lime)] tabular-nums">
-                      {tp.value}%
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Panel>
-          </FadeUp>
-        )}
-
-        {/* up next */}
-        {upcoming.length > 0 && (
-          <FadeUp delay={440} className="mt-4">
-            <div className="space-y-1.5">
-              <div className="flex items-center gap-1.5 text-[9px] font-bold tracking-[0.2em] text-white/70">
-                <Calendar size={11} /> UP NEXT
-              </div>
-              {upcoming.slice(0, 2).map((ev) => (
-                <div
-                  key={ev.title}
-                  className={cn(
-                    "flex items-center justify-between rounded-[16px] border px-3 py-2.5",
-                    theme === "light"
-                      ? "border-black/[0.10] bg-black/[0.04]"
-                      : "keep-white border-white/[0.07] bg-white/[0.02]",
-                  )}
-                >
-                  <span className="flex-1 truncate text-[11px] text-white/90">{ev.title}</span>
-                  <span className="mr-2 text-[9.5px] text-white/70">{ev.time}</span>
-                  <span className="rounded border border-[var(--lime-40)] bg-[var(--lime-10)] px-1.5 py-0.5 text-[8px] font-bold text-[var(--lime)]">
-                    {ev.tag}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </FadeUp>
-        )}
-
-        {/* CTA */}
-        <FadeUp delay={500} className="mt-6">
-          <button
-            onClick={() => exit(onClose)}
-            className={cn(
-              "flex w-full items-center justify-center gap-2 rounded-[18px] text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]",
-              theme === "light" ? "py-3.5" : "py-4",
-            )}
-            style={{
-              background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
-              boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
-            }}
-          >
-            ENTER {lanes.length > 1 ? "MULTI-LANE" : "YOUR"} ARENA
-            <ArrowRight size={14} />
-          </button>
-          <button
-            onClick={() => exit(onSkip ?? onClose)}
-            className={cn(
-              "mx-auto block text-[10px] text-white/50 underline-offset-2 transition-colors hover:text-muted-foreground hover:underline",
-              theme === "light" ? "mt-2.5" : "mt-3",
-            )}
-          >
-            Skip for now
-          </button>
-        </FadeUp>
+              Skip for now
+            </button>
+          </footer>
         </div>
       </div>
     </div>,

@@ -13,8 +13,6 @@ import {
   Calculator,
   Check,
   CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
   FileText,
   Flame,
   Flower2,
@@ -694,50 +692,22 @@ export function FamilyIntro({
               ))}
             </div>
 
-            <nav className="flex shrink-0 items-center justify-between py-2.5" aria-label="Slides">
-              <button
-                type="button"
-                onClick={() => goTo(active - 1)}
-                disabled={active === 0}
-                aria-label="Previous slide"
-                className={cn(
-                  "grid size-8 place-items-center rounded-[10px] border transition disabled:cursor-default disabled:opacity-30",
-                  tone.rest,
-                )}
-              >
-                <ChevronLeft size={15} />
-              </button>
-
-              <div className="flex items-center gap-2">
-                {SLIDES.map((s, i) => (
-                  <button
-                    key={s.num}
-                    type="button"
-                    onClick={() => goTo(i)}
-                    aria-label={`Go to slide ${i + 1} of ${TOTAL}: ${s.label}`}
-                    aria-current={i === active ? "true" : undefined}
-                    className={cn(
-                      "h-2 rounded-full transition-all duration-200",
-                      i === active
-                        ? "w-6 bg-[var(--lime)] shadow-[0_0_10px_var(--lime-mid-25)]"
-                        : cn("w-2", tone.dot),
-                    )}
-                  />
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => goTo(active + 1)}
-                disabled={active === TOTAL - 1}
-                aria-label="Next slide"
-                className={cn(
-                  "grid size-8 place-items-center rounded-[10px] border transition disabled:cursor-default disabled:opacity-30",
-                  tone.rest,
-                )}
-              >
-                <ChevronRight size={15} />
-              </button>
+            <nav className="flex shrink-0 items-center justify-center py-2.5" aria-label="Slides">
+              {SLIDES.map((s, i) => (
+                <button
+                  key={s.num}
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to slide ${i + 1} of ${TOTAL}: ${s.label}`}
+                  aria-current={i === active ? "true" : undefined}
+                  className={cn(
+                    "mx-1 h-2 rounded-full transition-all duration-200",
+                    i === active
+                      ? "w-6 bg-[var(--lime)] shadow-[0_0_10px_var(--lime-mid-25)]"
+                      : cn("w-2", tone.dot),
+                  )}
+                />
+              ))}
             </nav>
           </section>
 
