@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { BG_MOSS, FOREST, LIME, LIME_LIGHT, PANEL } from "@/lib/theme-tokens";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { BG_MOSS, FOREST, GLASS_BORDER, LIME, LIME_LIGHT, PANEL } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
   Baby,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Flame,
   GraduationCap,
@@ -20,7 +22,11 @@ import {
   User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import StockVideoAd from "@/components/ads/stock-video-ad";
 
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const SEATS: { id: string; label: string; desc: string; Icon: typeof Baby }[] = [
   { id: "little", label: "Little", desc: "Tactile base", Icon: Baby },
@@ -67,35 +73,145 @@ const SAVINGS: { Icon: typeof PiggyBank; title: string; text: string }[] = [
   },
 ];
 
-function FadeUp({
-  children,
-  delay = 0,
-  className,
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
+/** The three pitch cards, shown one per slide. */
+const CARDS = [
+  {
+    id: "seats",
+    num: "01",
+    tag: "OPEN SEATS",
+    title: "A lane for everyone",
+    sub: "Six seat types, one subscription. Add anyone in the house.",
+    Icon: Baby,
+    render: (tone: HubTone) => (
+      <div className="grid flex-1 grid-cols-3 gap-2">
+        {SEATS.map(({ id, label, desc, Icon }) => (
+          <div
+            key={id}
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 rounded-xl border px-1.5 py-2 text-center",
+              tone.panel,
+            )}
+          >
+            <span
+              className={cn(
+                "grid size-8 place-items-center rounded-lg border border-[var(--lime-25)] text-[var(--lime)]",
+                tone.iconBg,
+              )}
+            >
+              <Icon size={15} />
+            </span>
+            <div className="text-[10.5px] font-bold leading-none text-foreground">{label}</div>
+            <div className={cn("text-[8.5px] leading-tight", tone.faint)}>{desc}</div>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    id: "wall",
+    num: "02",
+    tag: "SHARED FAMILY WALL",
+    title: "The whole house moves together",
+    sub: "One streak, one board, one set of wins — visible to everyone.",
+    Icon: Home,
+    render: (tone: HubTone) => (
+      <ul className="flex flex-1 flex-col justify-center gap-2">
+        {WALL.map(({ Icon, title, desc }) => (
+          <li
+            key={title}
+            className={cn(
+              "flex flex-1 items-center gap-3 rounded-xl border px-3 py-2",
+              tone.panel,
+            )}
+          >
+            <span
+              className={cn(
+                "grid size-9 shrink-0 place-items-center rounded-xl border border-[var(--lime-25)] text-[var(--lime)]",
+                tone.iconBg,
+              )}
+            >
+              <Icon size={16} />
+            </span>
+            <div className="min-w-0">
+              <div className="text-[12px] font-bold leading-tight text-foreground">{title}</div>
+              <div className={cn("mt-0.5 text-[10px] leading-snug", tone.soft)}>{desc}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ),
+  },
+  {
+    id: "savings",
+    num: "03",
+    tag: "HOUSEHOLD VALUE",
+    title: "One bill, less per seat",
+    sub: "Stack seats and the household cost drops for everyone.",
+    Icon: PiggyBank,
+    render: (tone: HubTone) => (
+      <ul className="flex flex-1 flex-col justify-center gap-2">
+        {SAVINGS.map(({ Icon, title, text }) => (
+          <li
+            key={title}
+            className={cn(
+              "flex flex-1 items-center gap-3 rounded-xl border px-3 py-2",
+              tone.insetRow,
+            )}
+          >
+            <span
+              className={cn(
+                "grid size-9 shrink-0 place-items-center rounded-xl border border-[var(--lime-25)] text-[var(--lime)]",
+                tone.iconBg,
+              )}
+            >
+              <Icon size={16} />
+            </span>
+            <div className="min-w-0">
+              <div className="text-[12px] font-bold leading-tight text-foreground">{title}</div>
+              <div className={cn("mt-0.5 text-[10px] leading-snug", tone.soft)}>{text}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ),
+  },
+] as const;
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const anim = el.animate(
-      [
-        { opacity: 0, transform: "translateY(12px)" },
-        { opacity: 1, transform: "translateY(0)" },
-      ],
-      { duration: 480, delay, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" },
-    );
-    return () => anim.cancel();
-  }, [delay]);
+const TOTAL = CARDS.length;
 
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
-  );
+type HubTone = {
+  card: string;
+  panel: string;
+  inset: string;
+  insetRow: string;
+  soft: string;
+  faint: string;
+  iconBg: string;
+  rest: string;
+  pillMuted: string;
+  dot: string;
+};
+
+/** Theme-aware class sets — no raw colour literals in the markup. */
+function useHubTone(): HubTone {
+  const theme = useThemeStore((s) => s.theme);
+  const light = theme === "light";
+  return {
+    card: light ? "border-black/[0.10] bg-black/[0.04]" : "border-white/10 bg-white/[0.03]",
+    panel: light ? "border-black/[0.10] bg-black/[0.04]" : "border-white/[0.08] bg-white/[0.03]",
+    inset: light
+      ? "border-black/[0.10] bg-black/[0.03]"
+      : "border-[var(--lime-20)] bg-[var(--lime-04)]",
+    insetRow: light
+      ? "border-[var(--lime-25)] bg-[var(--lime-10)]"
+      : "border-[var(--lime-20)] bg-[var(--lime-04)]",
+    soft: light ? "text-black/70" : "text-white/70",
+    faint: light ? "text-black/60" : "text-white/60",
+    iconBg: light ? "bg-[var(--lime-10)]" : "bg-black/30",
+    rest: light ? "border-black/[0.10] bg-black/[0.04]" : "border-white/10 bg-white/[0.03]",
+    pillMuted: light ? "border-black/[0.10] bg-black/[0.04]" : "border-white/[0.08] bg-white/[0.03]",
+    dot: light ? "bg-black/10" : "bg-white/10",
+  };
 }
 
 export function FamilyHubIntro({
@@ -111,8 +227,46 @@ export function FamilyHubIntro({
   preloaded?: boolean;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
   const theme = useThemeStore((s) => s.theme);
+  const tone = useHubTone();
+  const [active, setActive] = useState(0);
+
+  const goTo = useCallback((index: number) => {
+    const clamped = Math.max(0, Math.min(TOTAL - 1, index));
+    setActive(clamped);
+    const track = trackRef.current;
+    const slide = track?.children[clamped] as HTMLElement | undefined;
+    if (!track || !slide) return;
+    const behavior: ScrollBehavior = prefersReducedMotion() ? "auto" : "smooth";
+    track.scrollTo({ left: slide.offsetLeft - track.offsetLeft, behavior });
+  }, []);
+
+  /** Keeps dots in sync when the user swipes by hand. */
+  const onTrackScroll = useCallback(() => {
+    const track = trackRef.current;
+    const slide = track?.firstElementChild as HTMLElement | null;
+    if (!track || !slide || slide.offsetWidth === 0) return;
+    const index = Math.round((track.scrollLeft + track.offsetLeft - slide.offsetLeft) / slide.offsetWidth);
+    setActive((prev) => (prev === index ? prev : Math.max(0, Math.min(TOTAL - 1, index))));
+  }, []);
+
+  useEffect(() => {
+    if (preloaded) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goTo(active + 1);
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goTo(active - 1);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active, goTo, preloaded]);
 
   useLayoutEffect(() => {
     if (preloaded) return;
@@ -131,7 +285,7 @@ export function FamilyHubIntro({
     };
   }, [preloaded]);
 
-  const exit = (cb: () => void) => {
+  const exit = useCallback((cb: () => void) => {
     if (closingRef.current) return;
     closingRef.current = true;
     const el = overlayRef.current;
@@ -140,21 +294,15 @@ export function FamilyHubIntro({
       duration: 280,
       easing: "cubic-bezier(0.55, 0, 0.55, 0.2)",
       fill: "forwards",
-    }).addEventListener(
-      "finish",
-      () => {
-        setTimeout(cb, 60);
-      },
-      { once: true },
-    );
-  };
+    }).addEventListener("finish", cb, { once: true });
+  }, []);
 
   return createPortal(
     <div
       ref={overlayRef}
       data-theme-scope
       className={cn(
-        "fixed inset-0 z-[var(--z-intro)] overflow-x-hidden overflow-y-auto sm:flex sm:items-center sm:justify-center sm:overflow-hidden sm:bg-black/60 sm:backdrop-blur-sm",
+        "fixed inset-0 z-[var(--z-intro)] flex overflow-hidden flex-col sm:items-center sm:justify-center sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
         theme === "light" && "light",
       )}
@@ -164,8 +312,9 @@ export function FamilyHubIntro({
       aria-labelledby="family-hub-hook-title"
     >
       <div
-        className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
+        className="relative flex h-full w-full shrink-0 flex-col sm:h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl"
         style={{
+          borderColor: GLASS_BORDER,
           background:
             theme === "light"
               ? "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)"
@@ -180,167 +329,145 @@ export function FamilyHubIntro({
             backgroundSize: "26px 26px",
           }}
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{
-            background: "linear-gradient(90deg, transparent, var(--lime-40), transparent)",
-          }}
-        />
 
-        <div className="relative mx-auto flex min-h-full w-full max-w-[400px] flex-col px-5 pb-[max(2rem,var(--sab))] pt-[max(1.5rem,var(--sat))] sm:min-h-0 sm:max-w-none sm:flex-1 sm:overflow-y-auto max-[359px]:px-4">
-        <div className="mt-4">
-          <FadeUp delay={60}>
+        {/* stock video: top half, edge to edge */}
+        <div className="relative shrink-0">
+          <StockVideoAd
+            src="/media/stock-ad.mp4"
+            poster="/media/stock-ad-poster.webp"
+            alt="Sponsor message"
+            className="h-[clamp(140px,42vh,320px)] w-full"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
+        </div>
+
+        <div className="relative mx-auto flex w-full max-w-[400px] min-h-0 flex-1 flex-col px-5 pb-[max(0.5rem,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4">
+          {/* headline */}
+          <div className="-mt-1 shrink-0 pt-2 text-center">
             <h1
               id="family-hub-hook-title"
-              className="text-center text-[32px] font-extrabold uppercase leading-[0.98] tracking-tight text-foreground"
+              className="text-[clamp(21px,6vw,28px)] font-extrabold uppercase leading-[1.02] tracking-tight text-foreground"
             >
               Whole house.
-              <br />
-              <span className="text-[var(--lime)]">One plan.</span>
+              <span className="block text-[var(--lime)]">One plan.</span>
             </h1>
-          </FadeUp>
+          </div>
 
-          <FadeUp delay={130}>
-            <p className="mx-auto mt-3 max-w-[320px] text-center text-[12.5px] leading-relaxed text-white/80">
-              Give everyone their own lane on a single subscription — and watch one household streak
-              grow on a shared wall.
-            </p>
-          </FadeUp>
-        </div>
-
-        <div className="mt-6">
-          <FadeUp delay={200}>
+          {/* carousel: bottom half */}
+          <section
+            aria-roledescription="carousel"
+            aria-label="Household pitch"
+            className="mt-3 flex min-h-0 flex-1 flex-col"
+          >
             <div
-              className={cn(
-                "p-3.5",
-                theme === "light"
-                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
-                  : "rounded-[18px] border border-dashed border-white/15 bg-white/[0.02]",
-              )}
+              ref={trackRef}
+              onScroll={onTrackScroll}
+              className="flex min-h-0 flex-1 snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
-              <div className="mb-3 flex items-center justify-between">
-                <span className="text-[9px] font-bold tracking-[0.2em] text-white/70">
-                  OPEN SEATS
-                </span>
-                <span className="rounded-full border border-[var(--lime-25)] bg-[var(--lime-10)] px-2 py-px text-[8px] font-bold text-[var(--lime)]">
-                  ADD ON PASS
-                </span>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {SEATS.map(({ id, label, desc, Icon }) => (
-                  <div
-                    key={id}
-                    className={cn(
-                      "rounded-xl border px-2 py-2.5 text-center",
-                      theme === "light"
-                        ? "border-black/[0.10] bg-black/[0.04]"
-                        : "keep-white border-white/[0.06] bg-black/30",
-                    )}
+              {CARDS.map((card, i) => {
+                const Icon = card.Icon;
+                return (
+                  <article
+                    key={card.id}
+                    aria-label={`${i + 1} of ${TOTAL}: ${card.tag}`}
+                    aria-hidden={i !== active ? "true" : undefined}
+                    className="flex w-full shrink-0 snap-start snap-always flex-col overflow-hidden"
                   >
-                    <Icon size={14} className="mx-auto text-[var(--lime)]" />
-                    <div className="mt-1.5 text-[10px] font-bold text-foreground">{label}</div>
-                    <div className="text-[8.5px] leading-snug text-white/60">{desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </FadeUp>
-        </div>
+                    <div className={cn("flex min-h-0 flex-1 flex-col rounded-[18px] border p-2.5", tone.card)}>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-black text-[var(--lime)]">{card.num}</span>
+                        <span className="text-[7.5px] font-bold uppercase tracking-[0.14em] text-foreground">
+                          {card.tag}
+                        </span>
+                        <span className="ml-auto text-[var(--lime)]">
+                          <Icon size={13} />
+                        </span>
+                      </div>
+                      <h2 className="mt-1 text-[13.5px] font-bold uppercase leading-[1.1] tracking-[-0.02em] text-foreground">
+                        {card.title}
+                      </h2>
+                      <p className={cn("mt-0.5 text-[9.5px] leading-snug", tone.soft)}>{card.sub}</p>
 
-        <div className="mt-4">
-          <FadeUp delay={280}>
-            <div
-              className={cn(
-                "p-3.5",
-                theme === "light"
-                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
-                  : "rounded-[18px] border border-white/[0.08] bg-white/[0.03]",
-              )}
-            >
-              <div className="mb-3 flex items-center gap-1.5">
-                <Home size={12} className="text-[var(--lime)]" />
-                <span className="text-[9px] font-bold tracking-[0.2em] text-white/70">
-                  SHARED FAMILY WALL
-                </span>
-              </div>
-              <ul className="space-y-2.5">
-                {WALL.map(({ Icon, title, desc }) => (
-                  <li key={title} className="flex items-start gap-3">
-                    <span className={cn("mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg border text-[var(--lime)]", theme === "light" ? "border-black/[0.10] bg-black/[0.04]" : "keep-white border-white/[0.08] bg-white/[0.03]")}>
-                      <Icon size={13} />
-                    </span>
-                    <div className="min-w-0">
-                      <div className="text-[11px] font-bold text-foreground">{title}</div>
-                      <div className="mt-0.5 text-[10px] leading-snug text-white/70">
-                        {desc}
+                      <div className="mt-2.5 flex min-h-0 flex-1 flex-col justify-center gap-2">
+                        {card.render(tone)}
                       </div>
                     </div>
-                  </li>
-                ))}
-              </ul>
+                  </article>
+                );
+              })}
             </div>
-          </FadeUp>
-        </div>
 
-        <div className="mt-4">
-          <FadeUp delay={360}>
-            <div
-              className={cn(
-                "p-4",
-                theme === "light"
-                  ? "rounded-[16px] border border-black/[0.10] bg-black/[0.04]"
-                  : "rounded-[18px] border border-[var(--lime-20)] bg-[var(--lime-04)]",
-              )}
-            >
-              <ul className="space-y-2.5">
-                {SAVINGS.map(({ Icon, title, text }) => (
-                  <li key={title} className="flex items-center gap-3">
-                    <span
-                      className={cn(
-                        "grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-[var(--lime-25)] text-[var(--lime)]",
-                        theme === "light" ? "bg-[var(--lime-10)]" : "bg-black/30",
-                      )}
-                    >
-                      <Icon size={14} />
-                    </span>
-                    <div className="min-w-0">
-                      <div className="text-[11px] font-bold text-foreground">{title}</div>
-                      <div className="mt-0.5 text-[10px] leading-snug text-white/75">
-                        {text}
-                      </div>
-                    </div>
-                  </li>
+            {/* nav */}
+            <nav className="mt-2 flex shrink-0 items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => goTo(active - 1)}
+                disabled={active === 0}
+                aria-label="Previous card"
+                className={cn(
+                  "grid size-8 place-items-center rounded-[10px] border transition disabled:cursor-default disabled:opacity-30",
+                  tone.rest,
+                )}
+              >
+                <ChevronLeft size={15} />
+              </button>
+
+              <div className="flex items-center gap-2">
+                {CARDS.map((c, i) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => goTo(i)}
+                    aria-label={`Go to card ${i + 1} of ${TOTAL}: ${c.tag}`}
+                    aria-current={i === active ? "true" : undefined}
+                    className={cn(
+                      "size-1.5 rounded-full transition",
+                      i === active ? "bg-[var(--lime)]" : tone.dot,
+                    )}
+                  />
                 ))}
-              </ul>
-            </div>
-          </FadeUp>
-        </div>
+              </div>
 
-        <div className="mt-auto pt-6">
-          <FadeUp delay={440}>
+              <button
+                type="button"
+                onClick={() => goTo(active + 1)}
+                disabled={active === TOTAL - 1}
+                aria-label="Next card"
+                className={cn(
+                  "grid size-8 place-items-center rounded-[10px] border transition disabled:cursor-default disabled:opacity-30",
+                  tone.rest,
+                )}
+              >
+                <ChevronRight size={15} />
+              </button>
+            </nav>
+          </section>
+
+          {/* fixed CTA */}
+          <footer className="mt-2.5 shrink-0">
             <button
               onClick={() => exit(onDone)}
-              className="flex w-full items-center justify-center gap-2 rounded-[16px] py-4 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
+              className="flex w-full items-center justify-center gap-2 rounded-[16px] py-3.5 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
               style={{
                 background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
-                boxShadow:
-                  "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
+                boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
               }}
             >
               CONFIGURE HOUSEHOLD SEATS
               <ArrowRight size={14} />
             </button>
-          </FadeUp>
 
-          <button
-            onClick={() => exit(onSkip ?? onClose)}
-            className="mx-auto mt-3 block text-[10px] text-white/60 underline-offset-2 hover:text-muted-foreground hover:underline transition-colors"
-          >
-            Skip for now
-          </button>
+            <button
+              onClick={() => exit(onSkip ?? onClose)}
+              className={cn(
+                "mx-auto mt-2 block text-[10px] underline-offset-2 transition-colors hover:text-muted-foreground hover:underline",
+                tone.faint,
+              )}
+            >
+              Skip for now
+            </button>
+          </footer>
         </div>
-      </div>
       </div>
     </div>,
     document.body,

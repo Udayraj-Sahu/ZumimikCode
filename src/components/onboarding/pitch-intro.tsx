@@ -172,17 +172,15 @@ export function PitchIntro({
         <div className="pointer-events-none absolute left-6 top-[52vh] h-48 w-48 rounded-full bg-fuchsia-500/10 blur-[90px]" />
         <div className="pointer-events-none absolute bottom-10 right-4 h-56 w-56 rounded-full bg-[var(--lime-08)] blur-[90px]" />
 
-        {/* stock video: compact bordered banner */}
-        <div className="relative shrink-0 px-4 pt-[max(0.75rem,var(--sat))] pb-0">
-          <div className="relative overflow-hidden rounded-2xl border border-white/10">
-            <StockVideoAd
-              src="/media/stock-ad.mp4"
-              poster="/media/stock-ad-poster.webp"
-              alt="Sponsor message"
-              className="h-[clamp(120px,25vh,220px)] w-full"
-            />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
-          </div>
+        {/* stock video: edge to edge, no border or radius */}
+        <div className="relative shrink-0">
+          <StockVideoAd
+            src="/media/stock-ad.mp4"
+            poster="/media/stock-ad-poster.webp"
+            alt="Sponsor message"
+            className="h-[clamp(160px,34vh,280px)] w-full"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
         </div>
 
         <div className="relative mx-auto flex w-full max-w-[400px] min-h-0 flex-1 flex-col justify-center overflow-hidden px-5 pb-[max(3px,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4">
