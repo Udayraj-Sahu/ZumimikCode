@@ -630,11 +630,11 @@ export default function DashboardPage() {
 
           {/* Slide 3: This Week + Daily Habits */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-4 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, var(--emerald-30), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, var(--emerald-40), transparent)" }} />
-              <div className="relative flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2.5">
+              <div className="relative flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
                   <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: EMERALD_12 }}>
                     <Flame size={15} className="text-[var(--emerald)]" />
                   </div>
@@ -645,7 +645,7 @@ export default function DashboardPage() {
                   {streak.current} day
                 </div>
               </div>
-              <div className="relative flex items-center justify-between gap-1.5 mb-3">
+              <div className="relative flex items-center justify-center gap-2 mt-2 mb-3">
                 {streak.labels.map((day, i) => {
                   const done = streak.days[i];
                   return (
@@ -656,10 +656,10 @@ export default function DashboardPage() {
                 })}
               </div>
               <div className="relative h-px w-full bg-white/[0.05]" />
-              <SectionLabel className="text-[var(--emerald)] mt-3.5">DAILY HABITS</SectionLabel>
+              <SectionLabel className="text-[var(--emerald)] mt-2.5">DAILY HABITS</SectionLabel>
               <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
               <p className="relative mt-0.5 text-[11px] text-muted-foreground/60 font-normal">Daily check-ins · Streaks · Stay accountable</p>
-              <div className="relative mt-3 flex-1 flex items-center gap-4">
+              <div className="relative mt-2 flex-1 flex items-center gap-4">
                 <div className="relative shrink-0">
                   <svg width="68" height="68" viewBox="0 0 64 64">
                     <circle cx="32" cy="32" r="27" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
@@ -670,7 +670,7 @@ export default function DashboardPage() {
                     <span className="text-[7.5px] text-muted-foreground/55 font-semibold mt-0.5">/ {habitCount}</span>
                   </div>
                 </div>
-                <div className="flex-1 min-w-0 space-y-3">
+                <div className="flex-1 min-w-0 space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: EMERALD_12 }}>
                       <Flame size={13} className="text-[var(--emerald)]" />
@@ -696,7 +696,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
-              <div className="relative mt-3 flex items-center gap-1.5 flex-wrap">
+              <div className="relative mt-2 mb-3 flex items-center gap-1.5 flex-wrap">
                 {habits.slice(0, 3).map((h) => {
                   const done = todayLogs.includes(h.id);
                   return (
@@ -707,15 +707,17 @@ export default function DashboardPage() {
                   );
                 })}
                 {habits.length > 3 && <span className="text-[8px] text-muted-foreground/50 font-medium">+{habits.length - 3}</span>}
+                {habitCount - todayCompleted > 0 && (
+                  <span className="ml-auto flex items-center gap-1 text-[9px] font-bold text-muted-foreground/70">
+                    <Clock size={10} />
+                    {habitCount - todayCompleted} left today
+                  </span>
+                )}
               </div>
-              <div className="relative mt-3 flex items-center justify-between">
-                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex items-center gap-2 rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_16px_var(--emerald-30)] active:scale-95">
+              <div className="relative mt-2 flex items-center gap-3">
+                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_16px_var(--emerald-30)] active:scale-95">
                   VIEW HABITS
                 </button>
-                <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/60 font-normal">
-                  <Clock size={11} />
-                  {habitCount - todayCompleted > 0 ? `${habitCount - todayCompleted} left today` : "All done!"}
-                </div>
               </div>
             </div>
           </div>
