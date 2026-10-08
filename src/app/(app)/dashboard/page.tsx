@@ -630,96 +630,95 @@ export default function DashboardPage() {
 
           {/* Slide 3: This Week + Daily Habits */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-4 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, var(--emerald-30), transparent)" }} />
-              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, var(--emerald-40), transparent)" }} />
-              <div className="relative flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: EMERALD_12 }}>
-                    <Flame size={15} className="text-[var(--emerald)]" />
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
+                <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, var(--emerald-30), transparent)" }} />
+                <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, var(--emerald-40), transparent)" }} />
+
+                <header className="relative flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="size-10 rounded-xl flex items-center justify-center" style={{ background: EMERALD_12 }}>
+                      <Flame size={18} className="text-[var(--emerald)]" />
+                    </div>
+                    <SectionLabel className="text-[var(--emerald)]">THIS WEEK</SectionLabel>
                   </div>
-                  <SectionLabel className="text-[var(--emerald)]">THIS WEEK</SectionLabel>
-                </div>
-                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--emerald)]">
-                  <Flame size={11} />
-                  {streak.current} day
-                </div>
-              </div>
-              <div className="relative flex items-center justify-center gap-2 mt-2 mb-3">
-                {streak.labels.map((day, i) => {
-                  const done = streak.days[i];
-                  return (
-                    <div key={i} className={cn("h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold border transition-all", done ? "shadow-[0_0_10px_var(--emerald-30)]" : "")} style={{ background: done ? `linear-gradient(135deg, ${EMERALD}, ${EMERALD_SOLID})` : GLASS_03, color: done ? BG_SOFT : SLATE_DARKEST, borderColor: done ? "transparent" : GLASS_06 }}>
-                      {day}
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="relative h-px w-full bg-white/[0.05]" />
-              <SectionLabel className="text-[var(--emerald)] mt-2.5">DAILY HABITS</SectionLabel>
-              <h2 className="relative mt-1.5 text-[20px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-              <p className="relative mt-0.5 text-[11px] text-muted-foreground/60 font-normal">Daily check-ins · Streaks · Stay accountable</p>
-              <div className="relative mt-2 flex-1 flex items-center gap-4">
-                <div className="relative shrink-0">
-                  <svg width="68" height="68" viewBox="0 0 64 64">
-                    <circle cx="32" cy="32" r="27" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
-                    <circle cx="32" cy="32" r="27" fill="none" stroke={EMERALD} strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 27}`} strokeDashoffset={`${2 * Math.PI * 27 * (1 - (habitCount > 0 ? todayCompleted / habitCount : 0))}`} transform="rotate(-90 32 32)" className="transition-all duration-700" />
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-[16px] font-bold text-foreground leading-none">{todayCompleted}</span>
-                    <span className="text-[7.5px] text-muted-foreground/55 font-semibold mt-0.5">/ {habitCount}</span>
-                  </div>
-                </div>
-                <div className="flex-1 min-w-0 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: EMERALD_12 }}>
-                      <Flame size={13} className="text-[var(--emerald)]" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-[11px] font-bold text-foreground/80 leading-none">{habitStats.currentStreak} day streak</p>
-                      <p className="text-[9px] text-muted-foreground/60 mt-1">Best {habitStats.bestStreak} days</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="size-7 shrink-0 rounded-lg flex items-center justify-center" style={{ background: EMERALD_12 }}>
-                      <Target size={13} className="text-[var(--emerald)]" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <p className="text-[11px] font-bold text-foreground/80 leading-none">Completion</p>
-                        <p className="text-micro font-bold text-[var(--emerald)]">{habitStats.completionRate}%</p>
-                      </div>
-                      <div className="mt-1.5 h-1 w-full rounded-full bg-white/[0.05] overflow-hidden">
-                        <div className="h-full rounded-full transition-all duration-700" style={{ width: `${habitStats.completionRate}%`, background: `linear-gradient(90deg, ${EMERALD_SOLID}, ${EMERALD})` }} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="relative mt-2 mb-3 flex items-center gap-1.5 flex-wrap">
-                {habits.slice(0, 3).map((h) => {
-                  const done = todayLogs.includes(h.id);
-                  return (
-                    <div key={h.id} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: done ? `${h.color}30` : GLASS_06, background: done ? `${h.color}10` : "transparent" }}>
-                      <div className="size-1.5 rounded-full" style={{ background: done ? h.color : GLASS_15 }} />
-                      <span className={cn("text-[8px] font-medium truncate max-w-[50px]", done ? "text-foreground/70" : "text-muted-foreground/50")}>{h.name.split(" ")[0]}</span>
-                    </div>
-                  );
-                })}
-                {habits.length > 3 && <span className="text-[8px] text-muted-foreground/50 font-medium">+{habits.length - 3}</span>}
-                {habitCount - todayCompleted > 0 && (
-                  <span className="ml-auto flex items-center gap-1 text-[9px] font-bold text-muted-foreground/70">
-                    <Clock size={10} />
-                    {habitCount - todayCompleted} left today
+                  <span className="flex items-center gap-1 text-[13px] font-semibold text-[var(--emerald)]">
+                    <Flame size={13} />
+                    {streak.days.filter(Boolean).length} day
                   </span>
-                )}
-              </div>
-              <div className="relative mt-2 flex items-center gap-3">
-                <button type="button" onClick={() => setHabitModalOpen(true)} className="flex flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] px-5 py-2.5 text-[12px] font-semibold tracking-[-0.01em] text-[var(--on-accent)] transition-all hover:shadow-[0_0_16px_var(--emerald-30)] active:scale-95">
+                </header>
+
+                <div className="relative mt-4 flex items-center justify-between pb-4 border-b border-white/[0.06]">
+                  {streak.labels.map((day, i) => {
+                    const done = streak.days[i];
+                    return (
+                      <span key={i} className={cn("size-7 rounded-full flex items-center justify-center font-mono text-[10px] font-semibold border transition-all", done ? "text-[#05150d] shadow-[0_0_12px_var(--emerald-45)]" : "text-[#4d5552]")} style={{ background: done ? `linear-gradient(135deg, ${EMERALD}, ${EMERALD_SOLID})` : GLASS_03, borderColor: done ? "transparent" : GLASS_06 }}>
+                        {day}
+                      </span>
+                    );
+                  })}
+                </div>
+
+                <div className="relative mt-4">
+                  <SectionLabel className="text-[var(--emerald)]">DAILY HABITS</SectionLabel>
+                  <h2 className="relative mt-2 text-[24px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
+                  <p className="relative mt-2 text-[12px] text-muted-foreground/60 font-normal leading-snug">Daily check-ins · Streaks · Stay accountable</p>
+                </div>
+
+                <div className="relative mt-5 flex-1 flex items-center gap-4">
+                  <div className="relative shrink-0 size-[76px] rounded-full flex flex-col items-center justify-center" style={{ background: "rgba(255,255,255,0.03)", boxShadow: `inset 0 0 0 5px ${GLASS_05}` }}>
+                    <b className="text-[20px] font-bold text-foreground leading-none">{todayCompleted}</b>
+                    <small className="text-[9px] text-muted-foreground/55 font-semibold mt-1">/ {habitCount}</small>
+                  </div>
+                  <div className="flex-1 min-w-0 flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="size-9 shrink-0 rounded-[10px] flex items-center justify-center text-[var(--emerald)]" style={{ background: "rgba(255,255,255,0.05)" }}>
+                        <Flame size={16} />
+                      </div>
+                      <div className="flex-1">
+                        <strong className="block text-[12px] font-bold text-foreground leading-tight">{habitStats.currentStreak} day streak</strong>
+                        <span className="block mt-0.5 text-[10px] text-muted-foreground/60">Best {habitStats.bestStreak} days</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="size-9 shrink-0 rounded-[10px] flex items-center justify-center text-[var(--emerald)]" style={{ background: "rgba(255,255,255,0.05)" }}>
+                        <Target size={16} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-baseline justify-between">
+                          <strong className="text-[12px] font-bold text-foreground leading-tight">Completion</strong>
+                          <span className="text-[12px] font-bold text-[var(--emerald)]">{habitStats.completionRate}%</span>
+                        </div>
+                        <div className="mt-1.5 h-1 w-full rounded-full bg-white/[0.08] overflow-hidden">
+                          <div className="h-full rounded-full transition-all duration-700" style={{ width: `${habitStats.completionRate}%`, background: `linear-gradient(90deg, ${EMERALD_SOLID}, ${EMERALD})` }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative mt-5 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {habits.slice(0, 3).map((h) => (
+                      <span key={h.id} className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-medium text-foreground/80 border" style={{ borderColor: GLASS_06, background: GLASS_03 }}>
+                        <i className="size-[4px] rounded-full" style={{ background: GLASS_15 }} />
+                        {h.name.split(" ")[0]}
+                      </span>
+                    ))}
+                    {habits.length > 3 && <span className="text-[9px] font-semibold text-foreground/80">+{habits.length - 3}</span>}
+                  </div>
+                  {habitCount - todayCompleted > 0 && (
+                    <span className="flex items-center gap-1 text-[9px] font-semibold text-muted-foreground/70 whitespace-nowrap">
+                      <Clock size={10} />
+                      {habitCount - todayCompleted} left today
+                    </span>
+                  )}
+                </div>
+
+                <button type="button" onClick={() => setHabitModalOpen(true)} className="group relative mt-4 flex h-[52px] w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] text-[13px] font-semibold tracking-[0.06em] text-[var(--on-accent)] shadow-[0_8px_24px_var(--emerald-30)] transition-all duration-200 hover:shadow-[0_10px_34px_var(--emerald-40)] hover:brightness-105 active:scale-[0.97]">
                   VIEW HABITS
+                  <ArrowUpRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
               </div>
-            </div>
           </div>
 
           {/* Slide 4: Practice + Technique */}
