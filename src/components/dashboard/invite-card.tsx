@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { GlassCard } from "@/components/ui/glass-card";
-import { Share2, KeyRound, QrCode, Copy, Check } from "lucide-react";
+import { Dialog } from "@/components/ui/dialog";
+import { QRCodeSVG } from "qrcode.react";
+import { Share2, KeyRound, QrCode, Copy, Check, X } from "lucide-react";
 import { Capacitor } from "@capacitor/core";
 import { Share } from "@capacitor/share";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -14,12 +16,19 @@ export function InviteCard() {
   const firstName = useOnboardingStore((s) => s.firstName);
   const { code, invitesSent, friendsJoined, ensureCode, markInvited } = useReferralStore();
   const [copied, setCopied] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
+  const [origin, setOrigin] = useState("");
 
   useEffect(() => {
     ensureCode(firstName);
   }, [firstName, ensureCode]);
 
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
+
   const shareText = `Join me on Exam Arena — use my invite code ${code} to get started.`;
+  const inviteLink = code ? `${origin || ""}/?ref=${code}` : "";
   const earnedXp = friendsJoined * REWARD_XP;
 
   const handleCopy = async () => {
@@ -94,7 +103,14 @@ export function InviteCard() {
             <span className="truncate select-all font-mono text-[13px] font-bold tracking-wider text-foreground">
               {code ?? "——————"}
             </span>
-            <QrCode size={17} className="shrink-0 text-muted-foreground" />
+            <button
+              type="button"
+              onClick={() => setQrOpen(true)}
+              aria-label="Show invite QR code"
+              className="shrink-0 rounded-full p-1.5 text-muted-foreground transition-all hover:bg-[var(--glass-07)] hover:text-primary active:scale-90"
+            >
+              <QrCode size={17} />
+            </button>
           </div>
 
           <button
@@ -132,6 +148,60 @@ export function InviteCard() {
       <p className="mt-3 px-1 text-center font-mono text-[11px] leading-relaxed text-muted-foreground">
         Your friend gets a head start with {REWARD_XP} bonus XP when they sign up.
       </p>
+
+      {/* QR popup */}
+      <Dialog
+        open={qrOpen}
+        onClose={() => setQrOpen(false)}
+        placement="center"
+        className="max-w-[330px] border-[var(--glass-border)] bg-[var(--glass-02)]"
+        ariaLabel="Invite QR code"
+      >
+        <div className="p-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <QrCode size={15} className="text-primary" />
+              <span className="font-mono text-[11px] font-bold uppercase tracking-[0.12em]">
+                Scan to invite
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setQrOpen(false)}
+              aria-label="Close QR code"
+              className="rounded-full p-1.5 text-muted-foreground transition-all hover:bg-[var(--glass-07)] hover:text-foreground active:scale-90"
+            >
+              <X size={15} />
+            </button>
+          </div>
+
+          <div className="mt-4 flex justify-center">
+            <div className="rounded-2xl bg-white p-3" style={{ boxShadow: "0 0 30px var(--accent-15)" }}>
+              {inviteLink && (
+                <QRCodeSVG value={inviteLink} size={196} level="M" marginSize={0} />
+              )}
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <span className="select-all font-mono text-[15px] font-bold tracking-[0.18em] text-foreground">
+              {code ?? "——————"}
+            </span>
+            <button
+              type="button"
+              onClick={handleCopy}
+              aria-label="Copy invite code"
+              className="rounded-full p-1.5 text-muted-foreground transition-all hover:bg-[var(--glass-07)] hover:text-primary active:scale-90"
+            >
+              {copied ? <Check size={15} className="text-primary" /> : <Copy size={15} />}
+            </button>
+          </div>
+
+          <p className="mt-3 text-center font-mono text-[10.5px] leading-relaxed text-muted-foreground">
+            Point your friend&apos;s camera at the code — or share the {REWARD_XP} XP invite.
+          </p>
+        </div>
+      </Dialog>
     </GlassCard>
   );
 }

@@ -1,14 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { BG_MOSS, FOREST, GLASS_BORDER, LIME, LIME_20, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
   Calendar,
-  Crosshair,
   Flame,
+  Play,
   Radar,
   Swords,
   TrendingUp,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import StockVideoAd from "@/components/ads/stock-video-ad";
+import { ClearanceTiers } from "@/components/paywall/clearance-tiers";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
@@ -89,13 +91,13 @@ export function ArenaIntro({
   const theme = useThemeStore((s) => s.theme);
   const tone = useArenaTone();
   const [active, setActive] = useState(0);
+  const [tier, setTier] = useState("dual-lane");
 
   const { primary, speedLane, second } = useLanes();
   const { data } = useDashboardData(primary);
 
   const radar = data?.radarAxes ?? [];
   const upcoming = data?.upcoming ?? [];
-  const topics = data?.topics ?? [];
 
   const label = (id: string) => DOMAIN_LABELS[id] ?? id.toUpperCase();
 
@@ -136,8 +138,17 @@ export function ArenaIntro({
     });
   }
 
-  /** Slides: lanes, skill radar, mastery map, up next. Empty ones are skipped. */
-  const slides = [
+  /** Slides: lanes, skill radar, sponsor reel (video only), up next. Empty ones are skipped. */
+  const slides: {
+    id: string;
+    num: string;
+    tag: string;
+    title: string;
+    sub: string;
+    Icon: typeof Zap;
+    bare?: boolean;
+    body: ReactNode;
+  }[] = [
     ...(lanes.length > 0
       ? [
           {
@@ -232,47 +243,25 @@ export function ArenaIntro({
           },
         ]
       : []),
-    ...(topics.length > 0
-      ? [
-          {
-            id: "mastery",
-            num: "03",
-            tag: `${label(primary).toUpperCase()} MASTERY MAP`,
-            title: "Syllabus, mapped",
-            sub: "Topic-by-topic coverage pulled from the arena.",
-            Icon: Crosshair,
-            body: (
-              <ul className="flex flex-1 flex-col gap-1.5">
-                {topics.map((tp) => (
-                  <li
-                    key={tp.name}
-                    className={cn(
-                      "flex min-h-0 flex-1 items-center gap-2 rounded-xl border px-3 py-1.5",
-                      tone.panel,
-                    )}
-                  >
-                    <span className={cn("min-w-0 flex-1 truncate text-[10.5px]", tone.soft)}>
-                      {tp.name}
-                    </span>
-                    <div className={cn("h-1.5 w-20 shrink-0 overflow-hidden rounded-full", tone.rest)}>
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${tp.value}%`,
-                          background: `linear-gradient(90deg, ${ACCENT}33, ${ACCENT})`,
-                        }}
-                      />
-                    </div>
-                    <span className="w-8 shrink-0 text-right text-[10px] font-bold tabular-nums text-[var(--lime)]">
-                      {tp.value}%
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ),
-          },
-        ]
-      : []),
+    {
+      id: "sponsor",
+      num: "03",
+      tag: "SPONSOR REEL",
+      title: "",
+      sub: "",
+      Icon: Play,
+      bare: true,
+      body: (
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-[var(--glass-border)]">
+          <StockVideoAd
+            src="/media/stock-ad.mp4"
+            poster="/media/stock-ad-poster.webp"
+            alt="Sponsor message"
+            className="h-full w-full min-h-[160px]"
+          />
+        </div>
+      ),
+    },
     ...(upcoming.length > 0
       ? [
           {
@@ -412,50 +401,39 @@ export function ArenaIntro({
           }}
         />
 
-        {/* stock video: top half, edge to edge */}
-        <div className="relative shrink-0">
-          <StockVideoAd
-            src="/media/stock-ad.mp4"
-            poster="/media/stock-ad-poster.webp"
-            alt="Sponsor message"
-            className="h-[clamp(140px,42vh,320px)] w-full"
-          />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/30 to-transparent" />
+        {/* brand + hero */}
+        <div className="relative shrink-0 px-5 pt-3 text-center">
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-3.5 py-1">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--lime)] opacity-60" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-[var(--lime)]" />
+            </span>
+            <span className="text-[10px] font-bold tracking-[0.22em] text-[var(--lime)]">ARENA</span>
+          </div>
+          <h1
+            id="arena-hook-title"
+            className="mt-2 text-[clamp(21px,6vw,28px)] font-extrabold uppercase leading-[1.02] tracking-tight text-foreground"
+          >
+            The arena is{" "}
+            <span
+              className="text-transparent"
+              style={{
+                background: `linear-gradient(90deg, ${LIME}, ${LIME_TINT})`,
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+              }}
+            >
+              live.
+            </span>
+          </h1>
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-[400px] min-h-0 flex-1 flex-col px-5 pb-[max(0.5rem,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4">
-          {/* brand + hero */}
-          <div className="shrink-0 pt-2 text-center">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-3.5 py-1">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--lime)] opacity-60" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--lime)]" />
-              </span>
-              <span className="text-[10px] font-bold tracking-[0.22em] text-[var(--lime)]">ARENA</span>
-            </div>
-            <h1
-              id="arena-hook-title"
-              className="mt-2 text-[clamp(21px,6vw,28px)] font-extrabold uppercase leading-[1.02] tracking-tight text-foreground"
-            >
-              The arena is{" "}
-              <span
-                className="text-transparent"
-                style={{
-                  background: `linear-gradient(90deg, ${LIME}, ${LIME_TINT})`,
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                }}
-              >
-                live.
-              </span>
-            </h1>
-          </div>
-
-          {/* carousel: bottom half */}
+        {/* carousel: fills remaining space, video + CTA below */}
+        <div className="relative flex min-h-0 flex-1 flex-col px-5 pt-3">
           <section
             aria-roledescription="carousel"
             aria-label="Arena overview"
-            className="mt-3 flex min-h-0 flex-1 flex-col"
+            className="flex min-h-0 flex-1 flex-col"
           >
             <div
               ref={trackRef}
@@ -477,24 +455,34 @@ export function ArenaIntro({
                         tone.card,
                       )}
                     >
-                      <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-black leading-none text-[var(--lime)]">
-                          {card.num}
-                        </span>
-                        <span className="min-w-0 flex-1 truncate text-[8px] font-bold uppercase tracking-[0.16em] text-foreground">
-                          {card.tag}
-                        </span>
-                        <span className="grid size-6 shrink-0 place-items-center rounded-lg border border-[var(--lime-25)] bg-[var(--lime-08)] text-[var(--lime)]">
-                          <Icon size={12} />
-                        </span>
+                      {!card.bare && (
+                        <>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] font-black leading-none text-[var(--lime)]">
+                              {card.num}
+                            </span>
+                            <span className="min-w-0 flex-1 truncate text-[8px] font-bold uppercase tracking-[0.16em] text-foreground">
+                              {card.tag}
+                            </span>
+                            <span className="grid size-6 shrink-0 place-items-center rounded-lg border border-[var(--lime-25)] bg-[var(--lime-08)] text-[var(--lime)]">
+                              <Icon size={12} />
+                            </span>
+                          </div>
+
+                          {card.title && (
+                            <h2 className="mt-3 text-[14px] font-bold uppercase leading-[1.15] tracking-[-0.01em] text-foreground">
+                              {card.title}
+                            </h2>
+                          )}
+                          {card.sub && (
+                            <p className={cn("mt-1.5 text-[10px] leading-snug", tone.soft)}>{card.sub}</p>
+                          )}
+                        </>
+                      )}
+
+                      <div className={cn("flex min-h-0 flex-1 flex-col", card.bare ? "" : "mt-4")}>
+                        {card.body}
                       </div>
-
-                      <h2 className="mt-3 text-[14px] font-bold uppercase leading-[1.15] tracking-[-0.01em] text-foreground">
-                        {card.title}
-                      </h2>
-                      <p className={cn("mt-1.5 text-[10px] leading-snug", tone.soft)}>{card.sub}</p>
-
-                      <div className="mt-4 flex min-h-0 flex-1 flex-col">{card.body}</div>
                     </div>
                   </article>
                 );
@@ -518,6 +506,13 @@ export function ArenaIntro({
               ))}
             </nav>
           </section>
+        </div>
+
+        <div className="relative mx-auto flex w-full max-w-[400px] shrink-0 flex-col px-5 pb-[max(0.5rem,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4">
+          {/* clearance tiers: replaces the stock video, mirrors the paywall */}
+          <div className="mt-3 shrink-0">
+            <ClearanceTiers value={tier} onChange={setTier} />
+          </div>
 
           {/* fixed CTA */}
           <footer className="mt-2.5 shrink-0">
