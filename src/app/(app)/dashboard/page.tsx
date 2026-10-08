@@ -630,11 +630,11 @@ export default function DashboardPage() {
 
           {/* Slide 3: This Week + Daily Habits */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-5 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-4 sm:p-4 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, var(--emerald-30), transparent)" }} />
                 <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, var(--emerald-40), transparent)" }} />
 
-                <header className="relative flex items-center justify-between">
+                <header className="relative shrink-0 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="size-10 rounded-xl flex items-center justify-center" style={{ background: EMERALD_12 }}>
                       <Flame size={18} className="text-[var(--emerald)]" />
@@ -647,7 +647,7 @@ export default function DashboardPage() {
                   </span>
                 </header>
 
-                <div className="relative mt-4 flex items-center justify-between pb-4 border-b border-white/[0.06]">
+                <div className="relative shrink-0 mt-4 sm:mt-3 flex items-center justify-between pb-4 sm:pb-3 border-b border-white/[0.06]">
                   {streak.labels.map((day, i) => {
                     const done = streak.days[i];
                     return (
@@ -658,20 +658,20 @@ export default function DashboardPage() {
                   })}
                 </div>
 
-                <div className="relative mt-4">
+                <div className="relative shrink-0 mt-4 sm:mt-2">
                   <SectionLabel className="text-[var(--emerald)]">DAILY HABITS</SectionLabel>
-                  <h2 className="relative mt-2 text-[24px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
-                  <p className="relative mt-2 text-[12px] text-muted-foreground/60 font-normal leading-snug">Daily check-ins · Streaks · Stay accountable</p>
+                  <h2 className="relative mt-2 sm:mt-1.5 text-[24px] sm:text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">Build consistency</h2>
+                  <p className="relative mt-2 sm:mt-1.5 text-[12px] text-muted-foreground/60 font-normal leading-snug sm:hidden">Daily check-ins · Streaks · Stay accountable</p>
                 </div>
 
-                <div className="relative mt-5 flex-1 flex items-center gap-4">
-                  <div className="relative shrink-0 size-[76px] rounded-full flex flex-col items-center justify-center" style={{ background: "rgba(255,255,255,0.03)", boxShadow: `inset 0 0 0 5px ${GLASS_05}` }}>
-                    <b className="text-[20px] font-bold text-foreground leading-none">{todayCompleted}</b>
+                <div className="relative mt-4 sm:mt-2 flex-1 min-h-0 flex items-center gap-4">
+                  <div className="relative shrink-0 size-[76px] sm:size-[56px] rounded-full flex flex-col items-center justify-center" style={{ background: "rgba(255,255,255,0.03)", boxShadow: `inset 0 0 0 5px ${GLASS_05}` }}>
+                    <b className="text-[20px] sm:text-[16px] font-bold text-foreground leading-none">{todayCompleted}</b>
                     <small className="text-[9px] text-muted-foreground/55 font-semibold mt-1">/ {habitCount}</small>
                   </div>
-                  <div className="flex-1 min-w-0 flex flex-col gap-3">
+                  <div className="flex-1 min-w-0 flex flex-col gap-3 sm:gap-2">
                     <div className="flex items-center gap-3">
-                      <div className="size-9 shrink-0 rounded-[10px] flex items-center justify-center text-[var(--emerald)]" style={{ background: "rgba(255,255,255,0.05)" }}>
+                      <div className="size-9 sm:size-8 shrink-0 rounded-[10px] flex items-center justify-center text-[var(--emerald)]" style={{ background: "rgba(255,255,255,0.05)" }}>
                         <Flame size={16} />
                       </div>
                       <div className="flex-1">
@@ -680,7 +680,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="size-9 shrink-0 rounded-[10px] flex items-center justify-center text-[var(--emerald)]" style={{ background: "rgba(255,255,255,0.05)" }}>
+                      <div className="size-9 sm:size-8 shrink-0 rounded-[10px] flex items-center justify-center text-[var(--emerald)]" style={{ background: "rgba(255,255,255,0.05)" }}>
                         <Target size={16} />
                       </div>
                       <div className="flex-1">
@@ -696,7 +696,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                <div className="relative mt-5 flex items-center justify-between gap-2">
+                <div className="relative shrink-0 mt-4 sm:mt-3 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {habits.slice(0, 3).map((h) => (
                       <span key={h.id} className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-medium text-foreground/80 border" style={{ borderColor: GLASS_06, background: GLASS_03 }}>
@@ -714,7 +714,7 @@ export default function DashboardPage() {
                   )}
                 </div>
 
-                <button type="button" onClick={() => setHabitModalOpen(true)} className="group relative mt-4 flex h-[52px] w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] text-[13px] font-semibold tracking-[0.06em] text-[var(--on-accent)] shadow-[0_8px_24px_var(--emerald-30)] transition-all duration-200 hover:shadow-[0_10px_34px_var(--emerald-40)] hover:brightness-105 active:scale-[0.97]">
+                <button type="button" onClick={() => setHabitModalOpen(true)} className="group relative mt-4 sm:mt-3 shrink-0 flex h-[52px] w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] text-[13px] font-semibold tracking-[0.06em] text-[var(--on-accent)] shadow-[0_8px_24px_var(--emerald-30)] transition-all duration-200 hover:shadow-[0_10px_34px_var(--emerald-40)] hover:brightness-105 active:scale-[0.97]">
                   VIEW HABITS
                   <ArrowUpRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
