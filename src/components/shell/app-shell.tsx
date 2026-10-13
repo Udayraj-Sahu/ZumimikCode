@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useAuthStore } from "@/stores/auth-store";
 import { useThemeStore } from "@/stores/theme-store";
+import { useSidebarStore } from "@/stores/sidebar-store";
 import { resetAppState } from "@/lib/reset-app-state";
 import { Walkthrough } from "@/components/shell/walkthrough";
 import { RatePrompt } from "@/components/shell/rate-prompt";
@@ -22,6 +23,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const user = useAuthStore((s) => s.user);
   const theme = useThemeStore((s) => s.theme);
   const accent = useThemeStore((s) => s.accent);
+  const setSidebarExpanded = useSidebarStore((s) => s.setExpanded);
   const sidebarRef = useRef<HTMLElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
 
@@ -55,6 +57,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     [],
   );
 
+  useEffect(() => {
+    setSidebarExpanded(false);
+  }, [pathname, setSidebarExpanded]);
+
   const visibleItems = MOBILE_NAV;
   const isExamFlow = EXAM_ROUTES.some((route) => pathname.startsWith(route));
   const avatarInitial = user?.name?.[0]?.toUpperCase() ?? "U";
@@ -64,6 +70,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div data-theme-scope data-accent={accent} suppressHydrationWarning className={cn("min-h-screen bg-background text-foreground", theme === "light" && "light")}>
       <aside
         ref={sidebarRef}
+        onMouseEnter={() => setSidebarExpanded(true)}
+        onMouseLeave={() => setSidebarExpanded(false)}
         className="group fixed inset-y-0 left-0 z-[var(--z-nav)] hidden w-[84px] flex-col border-r border-chrome-border bg-chrome px-4 py-7 transition-[width] duration-300 ease-out hover:w-[250px] min-[1025px]:flex"
       >
         {/* Logo */}
