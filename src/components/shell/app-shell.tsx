@@ -153,7 +153,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         data-tour-mobile-nav
         aria-label="Primary mobile"
         className={cn(
-          "fixed inset-x-0 bottom-[calc(1rem+max(0px,env(safe-area-inset-bottom)))] z-40 justify-center px-5",
+          "fixed inset-x-0 top-0 z-40 h-[100dvh] items-end justify-center px-5 pb-[calc(1rem+max(0px,env(safe-area-inset-bottom)))]",
           isExamFlow ? "hidden" : "flex min-[1025px]:hidden",
           "pointer-events-none",
         )}
