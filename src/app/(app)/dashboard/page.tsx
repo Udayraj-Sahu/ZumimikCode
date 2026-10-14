@@ -481,68 +481,68 @@ export default function DashboardPage() {
         >
           {/* Slide 1: Profile status — teaser or complete card */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col pt-3 px-6 pb-6 h-full" style={{ background: "linear-gradient(135deg, var(--accent-06) 0%, var(--glass-02) 55%, var(--accent-04) 100%)" }}>
+            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col p-6 h-full" style={{ background: "linear-gradient(135deg, var(--accent-06) 0%, var(--glass-02) 55%, var(--accent-04) 100%)" }}>
               <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-40), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-40), transparent)" }} />
 
               {profileComplete ? (
                 <>
-                  <header className="relative flex items-center justify-between py-3 border-b border-white/[0.06]">
-                    <div className="flex items-center gap-2.5">
-                      <div className="size-8 rounded-full flex items-center justify-center text-[var(--on-accent)] font-black text-[12px] shrink-0 shadow-[0_0_14px_var(--accent-40)]" style={{ background: `linear-gradient(135deg, var(--cta-from), var(--cta-to))` }}>
+                  <div className="relative flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="size-11 rounded-full flex items-center justify-center text-[var(--on-accent)] font-black text-[16px] shrink-0 shadow-[0_0_18px_var(--accent-40)]" style={{ background: `linear-gradient(135deg, var(--cta-from), var(--cta-to))` }}>
                         {(firstName?.[0] ?? "?").toUpperCase()}
                       </div>
-                      <p className="text-[13px] font-medium text-foreground">Profile complete</p>
+                      <div className="min-w-0">
+                        <p className="text-[13.5px] font-bold tracking-[-0.02em] text-foreground leading-tight">Profile complete</p>
+                        <p className="text-micro text-primary/60 font-medium mt-0.5">Great to have you, {firstName}</p>
+                      </div>
                     </div>
                     <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border border-primary/20 text-[9px] font-bold text-primary" style={{ background: "var(--accent-08)" }}>
                       <Sparkles size={9} />
                       100%
                     </div>
-                  </header>
+                  </div>
 
-                  <div className="relative flex flex-1 flex-col items-center justify-center py-2 text-center">
-                    <div className="relative size-[92px]">
-                      <svg width="92" height="92" viewBox="0 0 64 64" className="-rotate-90">
+                  <div className="relative flex-1 flex flex-col items-center justify-center py-2 text-center">
+                    <div className="relative size-[88px]">
+                      <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
                         <circle cx="32" cy="32" r="26" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
                         <circle cx="32" cy="32" r="26" fill="none" stroke="var(--primary)" strokeWidth="5" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 26}`} strokeDashoffset="0" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <Sparkles size={17} className="text-primary" />
-                        <span className="mt-0.5 text-[9px] font-black text-foreground/80">100%</span>
+                        <span className="mt-0.5 text-[8px] font-bold text-primary tracking-wide">ALL SET</span>
                       </div>
                     </div>
-                    <h2 className="mt-5 text-[24px] font-bold tracking-[-0.02em] text-foreground leading-tight">You&apos;re all set,</h2>
-                    <p className="mt-2 text-[12px] text-muted-foreground/55 font-normal leading-relaxed max-w-[250px]">Your prep is tailored to your goal — let&apos;s make it count.</p>
-                    <div className="mt-[22px] flex flex-wrap items-center justify-center gap-2">
+                    <h2 className="mt-3 text-[22px] font-bold tracking-[-0.03em] text-foreground leading-tight">You&apos;re all set, {firstName}</h2>
+                    <p className="mt-1 text-[11px] text-muted-foreground/40 font-normal leading-relaxed max-w-[230px]">Your prep is tailored to your goal — let&apos;s make it count.</p>
+                    <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
                       {profileSteps.map((s) => (
-                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 text-[9px] text-foreground border" style={{ borderColor: "rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.05)" }}>
-                          <i className="size-[4px] rounded-full bg-[var(--primary)] shrink-0" style={{ boxShadow: "0 0 5px var(--primary)" }} />
-                          {s.label}
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border" style={{ borderColor: "var(--accent-30)", background: "var(--accent-08)" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: "var(--primary)" }} />
+                          <span className="text-[8px] font-semibold text-foreground/70">{s.label}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <footer className="relative flex items-center justify-between pt-3 pb-0 font-mono text-[9px] tracking-[0.1em] border-t border-white/[0.06]">
-                    <span className="text-muted-foreground/50">PROFILE READY</span>
-                    <span className="text-primary">STREAKS UNLOCKED</span>
-                  </footer>
+                  <p className="relative text-center text-[9.5px] text-muted-foreground/60 font-semibold tracking-[0.14em]">PROFILE READY • STREAKS UNLOCKED</p>
                 </>
               ) : (
                 <>
-                  <header className="relative flex items-center justify-between py-3 border-b border-white/[0.06]">
+                  <div className="relative flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <div className="size-8 rounded-full flex items-center justify-center shrink-0 shadow-[0_0_14px_var(--accent-40)]" style={{ background: `linear-gradient(135deg, var(--cta-from), var(--cta-to))` }}>
-                        <Sparkles size={14} className="text-[var(--on-accent)]" />
+                      <div className="size-8 rounded-xl flex items-center justify-center shadow-[0_0_14px_var(--accent-20)]" style={{ background: "var(--accent-12)" }}>
+                        <Sparkles size={14} className="text-primary" />
                       </div>
-                      <p className="text-[13px] font-medium text-foreground">Profile setup</p>
+                      <SectionLabel className="text-primary">PROFILE SETUP</SectionLabel>
                     </div>
-                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? "var(--accent-30)" : "rgba(255,255,255,0.07)", background: profileDone > 0 ? "var(--accent-08)" : "transparent", color: profileDone > 0 ? "var(--primary)" : GLASS_30 }}>
+                    <div className="flex items-center gap-1 rounded-full px-2.5 py-1 border text-[9px] font-bold transition-colors" style={{ borderColor: profileDone > 0 ? "var(--accent-30)" : GLASS_06, background: profileDone > 0 ? "var(--accent-08)" : "transparent", color: profileDone > 0 ? "var(--primary)" : GLASS_30 }}>
                       {profileDone}/{profileTotal}
                     </div>
-                  </header>
+                  </div>
 
-                  <div className="relative flex flex-1 flex-col items-center justify-center py-2 text-center">
+                  <div className="relative flex-1 flex flex-col items-center justify-center py-2 text-center">
                     <div className="relative size-[88px]">
                       <svg width="88" height="88" viewBox="0 0 64 64" className="-rotate-90">
                         <circle cx="32" cy="32" r="26" fill="none" style={{ stroke: GLASS_05, strokeWidth: 5 }} />
@@ -553,13 +553,13 @@ export default function DashboardPage() {
                         <span className="mt-0.5 text-[9px] font-black text-foreground/80">{profileDone}/{profileTotal}</span>
                       </div>
                     </div>
-                    <h2 className="mt-5 text-[24px] font-bold tracking-[-0.02em] text-foreground leading-tight">Finish your profile</h2>
-                    <p className="mt-2 text-[12px] text-muted-foreground/55 font-normal leading-relaxed max-w-[250px]">Tell us who you are and what you&apos;re aiming for — we&apos;ll tailor everything to you.</p>
-                    <div className="mt-[22px] flex flex-wrap items-center justify-center gap-2">
+                    <h2 className="mt-3 text-[23px] font-black tracking-[-0.03em] text-foreground leading-tight">Finish your profile</h2>
+                    <p className="mt-1.5 text-[11.5px] text-muted-foreground/45 font-normal leading-relaxed max-w-[230px]">Tell us who you are and what you&apos;re aiming for — we&apos;ll tailor everything to you.</p>
+                    <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5">
                       {profileSteps.map((s) => (
-                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 text-[9px] border transition-colors" style={{ borderColor: s.done ? "var(--accent-30)" : "rgba(255,255,255,0.07)", background: s.done ? "var(--accent-08)" : "rgba(255,255,255,0.05)" }}>
-                          <i className="size-[4px] rounded-full shrink-0" style={{ background: s.done ? "var(--primary)" : "var(--accent-30)", boxShadow: s.done ? "0 0 5px var(--primary)" : "none" }} />
-                          <span className={cn(s.done ? "text-foreground" : "text-muted-foreground/60")}>{s.label}</span>
+                        <div key={s.label} className="flex items-center gap-1 rounded-full px-2 py-1 border transition-colors" style={{ borderColor: s.done ? "var(--accent-30)" : GLASS_06, background: s.done ? "var(--accent-08)" : "transparent" }}>
+                          <div className="size-1.5 rounded-full" style={{ background: s.done ? "var(--primary)" : GLASS_15 }} />
+                          <span className={cn("text-[8px] font-semibold", s.done ? "text-foreground/70" : "text-muted-foreground/50")}>{s.label}</span>
                         </div>
                       ))}
                     </div>
