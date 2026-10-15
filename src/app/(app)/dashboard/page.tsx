@@ -34,6 +34,7 @@ import { ACCENT_IDS, accentThemes } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { PageContainer } from "@/components/ui/page-container";
 import { GlassCard } from "@/components/ui/glass-card";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useDashboardData } from "@/hooks/queries/use-dashboard";
 import { ExamDateModal } from "@/components/dashboard/exam-date-modal";
@@ -421,7 +422,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <PageContainer className="max-w-none pt-0 pb-6 overflow-x-hidden min-[1025px]:pl-[253px]">
+    <PageContainer className="max-w-none pt-0 pb-6 overflow-x-hidden min-[1025px]:pl-[166px] min-[1025px]:pr-[64px]">
       <div className="w-full">
 
       {/* Ambient glow behind header */}
@@ -462,6 +463,9 @@ export default function DashboardPage() {
               style={{ x: orbitX, y: orbitY, opacity: orbitOpacity, background: nextAccent.swatch }}
             />
           </button>
+          <div className="flex shrink-0">
+            <ThemeToggle />
+          </div>
         </div>
         <h1 className="mt-5 text-center text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2] md:hidden">
           <span>Welcome back,</span>{" "}
