@@ -428,7 +428,7 @@ export default function DashboardPage() {
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, var(--accent-25) 0%, transparent 70%)" }} />
 
       {/* Header */}
-      <div ref={animateSection} data-section-index={0} className="relative pt-6 pb-2 text-center min-[1025px]:pt-8 max-[359px]:pt-5">
+      <div ref={animateSection} data-section-index={0} className="relative pt-6 pb-2 text-left min-[1025px]:pt-8 max-[359px]:pt-5">
         <div className="relative mb-3 flex items-center justify-start gap-2">
           <div aria-hidden="true" className="inline-flex items-center gap-2 pill px-2.5 py-2 min-[1025px]:px-4 min-[1025px]:py-1.5">
             <Sparkles size={13} className="text-primary" />
@@ -463,11 +463,21 @@ export default function DashboardPage() {
             />
           </button>
         </div>
-        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2]">
+        <h1 className="mt-5 text-center text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2] md:hidden">
           <span>Welcome back,</span>{" "}
           <span className="italic text-primary">{displayName}</span>
         </h1>
-        <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
+        <div className="mt-6 hidden items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/50 md:flex">
+          <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+          Welcome back, {displayName}
+        </div>
+        <h1 className="mt-5 hidden text-[28px] font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:block">
+          Mastery is an <span className="text-primary">endurance of focus.</span>
+        </h1>
+        <p className="mt-4 hidden max-w-[560px] text-[13px] font-normal leading-[1.6] tracking-[0.01em] text-muted-foreground/60 md:block">
+          Your practice adapts to your error threshold in real time.{" "}
+          <span className="whitespace-nowrap">Zero lag, zero distractions.</span>
+        </p>
       </div>
 
       <div className="md:columns-2 gap-5">
@@ -482,7 +492,7 @@ export default function DashboardPage() {
         >
           {/* Slide 1: Profile status — teaser or complete card */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 0 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col pt-3 px-6 pb-6 h-full" style={{ background: "linear-gradient(135deg, var(--accent-06) 0%, var(--glass-02) 55%, var(--accent-04) 100%)" }}>
+            <div data-carousel-card className="w-full relative overflow-hidden rounded-3xl border border-primary/20 flex flex-col pt-3 px-6 pb-6 h-full" style={{ background: "linear-gradient(135deg, var(--accent-06) 0%, var(--glass-02) 55%, var(--accent-04) 100%)" }}>
               <div className="absolute top-0 right-0 w-44 h-44 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-40), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-40), transparent)" }} />
 
@@ -577,7 +587,7 @@ export default function DashboardPage() {
 
           {/* Slide 2: Your Stats */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 1 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, var(--accent-04) 0%, var(--glass-02) 45%, var(--glass-02) 100%)" }}>
+            <div data-carousel-card className="w-full relative overflow-hidden rounded-3xl border border-white/[0.05] p-4 h-full flex flex-col" style={{ background: "linear-gradient(160deg, var(--accent-04) 0%, var(--glass-02) 45%, var(--glass-02) 100%)" }}>
               <div className="absolute -top-10 right-0 w-36 h-36 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-30), transparent)" }} />
               <div className="relative flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
@@ -631,7 +641,7 @@ export default function DashboardPage() {
 
           {/* Slide 3: This Week + Daily Habits */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 2 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border backdrop-blur-xl p-4 sm:p-4 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
+            <div data-carousel-card className="w-full relative overflow-hidden rounded-3xl border backdrop-blur-xl p-4 sm:p-4 h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--emerald-06) 0%, var(--glass-02) 100%)" }}>
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20" style={{ background: "radial-gradient(circle, var(--emerald-30), transparent)" }} />
                 <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10" style={{ background: "radial-gradient(circle, var(--emerald-40), transparent)" }} />
 
@@ -724,7 +734,7 @@ export default function DashboardPage() {
 
           {/* Slide 4: Practice + Technique */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 3 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, var(--cyan-08) 0%, var(--amber-06) 50%, var(--glass-02) 100%)" }}>
+            <div data-carousel-card className="w-full relative overflow-hidden rounded-3xl border border-white/[0.06] p-3 h-full flex flex-col gap-2.5" style={{ background: "linear-gradient(135deg, var(--cyan-08) 0%, var(--amber-06) 50%, var(--glass-02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, var(--cyan-25), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, var(--amber-30), transparent)" }} />
 
@@ -759,7 +769,7 @@ export default function DashboardPage() {
 
           {/* Slide 5: Exam Prep Readiness */}
           <div className={cn("snap-center shrink-0 w-full h-[420px] sm:h-[380px] transition-all duration-500 ease-out origin-center", carouselIndex === 4 ? "scale-100 opacity-100" : "scale-[0.94] opacity-40")}>
-            <div data-carousel-card className="w-[calc(100%-40px)] mx-auto relative overflow-hidden rounded-3xl border border-white/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--accent-08) 0%, var(--cyan-05) 50%, var(--glass-02) 100%)" }}>
+            <div data-carousel-card className="w-full relative overflow-hidden rounded-3xl border border-white/[0.06] backdrop-blur-xl h-full flex flex-col" style={{ borderColor: GLASS_BORDER, background: "linear-gradient(160deg, var(--accent-08) 0%, var(--cyan-05) 50%, var(--glass-02) 100%)" }}>
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-30), transparent)" }} />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full opacity-10 pointer-events-none" style={{ background: "radial-gradient(circle, var(--accent-40), transparent)" }} />
 
