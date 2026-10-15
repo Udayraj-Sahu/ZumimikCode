@@ -26,7 +26,7 @@ function buildSteps(domainLabel: string): DriveStep[] {
       },
     },
     {
-      element: "[data-tour-streak]",
+      element: isMobile ? "[data-tour-mobile-streak]" : "[data-tour-streak]",
       popover: {
         title: "Track Your Streak",
         description: "Your streak and XP live up here. Stay consistent to climb the leaderboard.",
