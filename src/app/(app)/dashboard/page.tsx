@@ -118,7 +118,7 @@ function RadarChart({ axes, values, size = 280 }: { axes: string[]; values: numb
   const dataPath = dataPoints.map((p) => `${p.x},${p.y}`).join(" ") + ` ${dataPoints[0].x},${dataPoints[0].y}`;
 
   return (
-    <svg viewBox={`0 0 ${size} ${size}`} width="100%" height="auto">
+    <svg viewBox={`-40 -30 ${size + 80} ${size + 60}`} width="100%" height="auto" className="mx-auto block" style={{ maxWidth: size + 80 }}>
       <defs>
         <linearGradient id="radarFill" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor={ACCENT} stopOpacity={0.3} />
@@ -421,8 +421,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <PageContainer className="max-w-none pt-0 pb-6 overflow-x-hidden">
-      <div className="w-full md:max-w-3xl">
+    <PageContainer className="max-w-none pt-0 pb-6 overflow-x-hidden min-[1025px]:pl-[253px]">
+      <div className="w-full">
 
       {/* Ambient glow behind header */}
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-20 overflow-hidden" style={{ background: "radial-gradient(circle, var(--accent-25) 0%, transparent 70%)" }} />
@@ -470,8 +470,10 @@ export default function DashboardPage() {
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
       </div>
 
+      <div className="md:columns-2 gap-5">
+
       {/* Carousel */}
-      <div ref={animateSection} data-section-index={1.5} className="mt-5">
+      <div ref={animateSection} data-section-index={1.5} className="mt-5 md:mt-0 md:mb-5 break-inside-avoid">
         <div
           ref={carouselRef}
           className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth pb-3"
@@ -904,8 +906,8 @@ export default function DashboardPage() {
         ref={animateSection}
         data-section-index={5}
         className={cn(
-          "min-w-0 mt-6",
-          hasResume && "md:grid md:grid-cols-2 md:items-stretch md:gap-5"
+          "min-w-0 mt-6 md:mt-0 md:mb-5 break-inside-avoid",
+          hasResume && "grid gap-4"
         )}
       >
         <GlassCard className="h-full p-5 max-[359px]:p-4">
@@ -948,9 +950,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Topic Mastery + Recent Activity */}
-      <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 mt-6">
+      <div className="mt-6 md:contents">
         {/* Topic Mastery */}
-        <div ref={animateSection} data-section-index={6}>
+        <div ref={animateSection} data-section-index={6} className="md:mb-5 break-inside-avoid">
           <GlassCard className="p-5 h-full">
             <div className="flex items-center justify-between mb-5">
               <SectionHeading>Topic mastery</SectionHeading>
@@ -986,7 +988,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Activity */}
-        <div ref={animateSection} data-section-index={7} className="mt-4 md:mt-0">
+        <div ref={animateSection} data-section-index={7} className="mt-4 md:mt-0 md:mb-5 break-inside-avoid">
           <GlassCard className="p-5 h-full">
             <SectionHeading className="mb-4">Recent activity</SectionHeading>
             <div className="flex flex-col">
@@ -1011,33 +1013,33 @@ export default function DashboardPage() {
       </div>
 
       {/* Cognitive Radar + Upcoming */}
-      <div className="md:grid md:grid-cols-2 md:gap-5 gap-4 mt-4">
+      <div className="mt-4 md:contents">
         {/* Cognitive Radar */}
-        <div ref={animateSection} data-section-index={8}>
-          <GlassCard className="p-5 h-full">
+        <div ref={animateSection} data-section-index={8} className="md:break-before-column md:mb-5 break-inside-avoid">
+          <GlassCard className="p-4">
             <SectionHeading className="mb-2">Cognitive radar</SectionHeading>
-            <RadarChart axes={radarLabels} values={radarValues} />
-            <div className="flex flex-col gap-2.5 mt-3">
-              <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
-                <span className="flex items-center gap-2 text-[13px] text-muted-foreground/55 font-normal">
-                  <Zap size={13} className="text-primary" />
+            <RadarChart axes={radarLabels} values={radarValues} size={220} />
+            <div className="flex flex-col gap-2 mt-2.5">
+              <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-3 py-2">
+                <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground/55 font-normal">
+                  <Zap size={12} className="text-primary" />
                   Action Delay
                 </span>
-                <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">142ms</span>
+                <span className="text-[12px] font-bold text-primary tracking-[-0.01em]">142ms</span>
               </div>
-              <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-4 py-3">
-                <span className="flex items-center gap-2 text-[13px] text-muted-foreground/55 font-normal">
-                  <ArrowUpRight size={13} className="text-primary" />
+              <div className="flex items-center justify-between rounded-xl border border-white/[0.05] bg-white/[0.03] px-3 py-2">
+                <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground/55 font-normal">
+                  <ArrowUpRight size={12} className="text-primary" />
                   Focus Density
                 </span>
-                <span className="text-[13px] font-bold text-primary tracking-[-0.01em]">89%</span>
+                <span className="text-[12px] font-bold text-primary tracking-[-0.01em]">89%</span>
               </div>
             </div>
           </GlassCard>
         </div>
 
         {/* Upcoming */}
-        <div ref={animateSection} data-section-index={9} className="mt-4 md:mt-0">
+        <div ref={animateSection} data-section-index={9} className="mt-4 md:mt-0 md:mb-5 break-inside-avoid">
           <GlassCard className="p-5 h-full">
             <SectionHeading className="mb-4">Upcoming</SectionHeading>
             <div className="flex flex-col gap-2.5">
@@ -1068,8 +1070,8 @@ export default function DashboardPage() {
       </div>
 
       {/* Leaderboard + Invite Friends & Referral */}
-      <div className="mt-4 mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div ref={animateSection} data-section-index={10}>
+      <div className="mt-4 md:contents">
+      <div ref={animateSection} data-section-index={10} className="md:mb-5 break-inside-avoid">
         <GlassCard className="h-full p-5">
           <SectionHeading className="mb-4">Leaderboard</SectionHeading>
           <div className="flex flex-col">
@@ -1100,8 +1102,9 @@ export default function DashboardPage() {
         </GlassCard>
       </div>
 
-      <div ref={animateSection} data-section-index={11}>
+      <div ref={animateSection} data-section-index={11} className="mt-4 md:mt-0 md:mb-5 break-inside-avoid">
         <InviteCard />
+      </div>
       </div>
       </div>
 
