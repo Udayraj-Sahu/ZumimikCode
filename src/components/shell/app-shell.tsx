@@ -24,6 +24,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const theme = useThemeStore((s) => s.theme);
   const accent = useThemeStore((s) => s.accent);
   const setSidebarExpanded = useSidebarStore((s) => s.setExpanded);
+  const sidebarExpanded = useSidebarStore((s) => s.expanded);
   const sidebarRef = useRef<HTMLElement>(null);
   const mobileNavRef = useRef<HTMLElement>(null);
 
@@ -139,7 +140,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <main className={cn(
-        "min-[1025px]:ml-[84px] h-dvh overflow-y-auto overflow-x-hidden pt-[var(--sat)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
+        "h-dvh overflow-y-auto overflow-x-hidden pt-[var(--sat)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] transition-[margin-left] duration-300 ease-out",
+        sidebarExpanded ? "min-[1025px]:ml-[250px]" : "min-[1025px]:ml-[84px]",
         isExamFlow ? "pb-0" : "pb-[max(calc(var(--bottom-nav-height)+2rem),env(safe-area-inset-bottom))] min-[1025px]:pb-0",
       )}>
         <div key={pathname} ref={pageRef}>
