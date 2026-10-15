@@ -469,7 +469,7 @@ export default function DashboardPage() {
         </h1>
         <div className="mt-6 hidden items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/50 md:flex">
           <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-          Welcome back, {displayName}
+          Welcome back, <span className="italic text-primary">{displayName}</span>
         </div>
         <h1 className="mt-5 hidden text-[28px] font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:block">
           Mastery is an <span className="text-primary">endurance of focus.</span>
