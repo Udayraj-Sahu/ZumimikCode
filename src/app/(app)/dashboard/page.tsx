@@ -429,11 +429,12 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative pt-6 pb-2 text-center min-[1025px]:pt-8 max-[359px]:pt-5">
-        <div className="relative mb-3 flex items-center justify-start gap-2 min-[1025px]:justify-center">
-          <div aria-hidden="true" className="inline-flex items-center justify-center pill px-2.5 py-2">
+        <div className="relative mb-3 flex items-center justify-start gap-2">
+          <div aria-hidden="true" className="inline-flex items-center gap-2 pill px-2.5 py-2 min-[1025px]:px-4 min-[1025px]:py-1.5">
             <Sparkles size={13} className="text-primary" />
+            <span className="hidden text-[11px] font-semibold tracking-[0.22em] text-primary/80 min-[1025px]:inline">EXAM ARENA</span>
           </div>
-          <div data-tour-mobile-streak className="ml-auto flex items-center gap-1 min-[1025px]:hidden">
+          <div data-tour-streak className="ml-auto flex items-center gap-1">
             <div className="flex items-center gap-1.5 pill px-2.5 py-1.5 max-[359px]:px-2">
               <Flame size={12} className="text-[var(--orange)]" strokeWidth={2.5} />
               <span className="text-[11px] font-semibold tracking-[-0.01em] text-[var(--orange)]">{streak.current} Day</span>
@@ -448,7 +449,7 @@ export default function DashboardPage() {
             onClick={cycleAccent}
             aria-label={`Switch accent to ${nextAccent.label}`}
             title={`Switch to ${nextAccent.label}`}
-            className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/60 backdrop-blur-xl transition-all hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-[359px]:size-8 min-[1025px]:absolute min-[1025px]:right-0 min-[1025px]:top-1/2 min-[1025px]:-translate-y-1/2"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/60 backdrop-blur-xl transition-all hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-[359px]:size-8"
           >
             <span
               aria-hidden="true"
@@ -467,17 +468,6 @@ export default function DashboardPage() {
           <span className="italic text-primary">{displayName}</span>
         </h1>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal tracking-[0.01em]">{examLabel} Prep</p>
-
-        <div data-tour-streak className="mt-5 hidden items-center justify-center gap-3 min-[1025px]:flex">
-          <div className="flex items-center gap-2 pill px-4 py-2.5">
-            <Flame size={15} className="text-[var(--orange)]" strokeWidth={2.5} />
-            <span className="text-[13px] font-semibold tracking-[-0.01em] text-[var(--orange)]">{streak.current} Day</span>
-          </div>
-          <div className="flex items-center gap-2 pill px-4 py-2.5">
-            <Zap size={15} className="text-primary" strokeWidth={2.5} />
-            <span className="text-[13px] font-semibold tracking-[-0.01em] text-primary">{streak.xp.toLocaleString()} XP</span>
-          </div>
-        </div>
       </div>
 
       {/* Carousel */}
