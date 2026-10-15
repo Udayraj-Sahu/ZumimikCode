@@ -714,7 +714,7 @@ export default function DashboardPage() {
                   )}
                 </div>
 
-                <button type="button" onClick={() => setHabitModalOpen(true)} className="group relative mt-4 sm:mt-3 shrink-0 flex h-[52px] w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] text-[13px] font-semibold tracking-[0.06em] text-[var(--on-accent)] shadow-[0_8px_24px_var(--emerald-30)] transition-all duration-200 hover:shadow-[0_10px_34px_var(--emerald-40)] hover:brightness-105 active:scale-[0.97]">
+                <button type="button" onClick={() => setHabitModalOpen(true)} className="group relative mt-4 sm:mt-3 shrink-0 flex h-[44px] w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-[var(--emerald-bright)] to-[var(--emerald-solid)] text-[13px] font-semibold tracking-[0.06em] text-[var(--on-accent)] shadow-[0_8px_24px_var(--emerald-30)] transition-all duration-200 hover:shadow-[0_10px_34px_var(--emerald-40)] hover:brightness-105 active:scale-[0.97]">
                   VIEW HABITS
                   <ArrowUpRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>

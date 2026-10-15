@@ -402,7 +402,7 @@ export function ArenaIntro({
         />
 
         {/* brand + hero */}
-        <div className="relative shrink-0 px-5 pt-3 text-center">
+        <div className="relative shrink-0 px-5 pt-[max(0.75rem,var(--sat))] text-center">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-[var(--lime-25)] bg-[var(--lime-07)] px-3.5 py-1">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--lime)] opacity-60" />
