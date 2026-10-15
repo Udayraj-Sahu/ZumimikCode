@@ -138,44 +138,50 @@ export function ThemeToggle({
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       onClick={toggleTheme}
       className={cn(
-        "relative inline-flex shrink-0 items-center justify-start overflow-hidden rounded-full border-0 p-0 align-middle leading-none appearance-none cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        selectedSize.container,
-        isDark ? "bg-gray-800" : "bg-gray-200",
+        "relative inline-flex min-h-11 min-w-11 shrink-0 appearance-none items-center justify-center rounded-full border-0 p-0 align-middle leading-none cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         className,
       )}
     >
-      <motion.div
+      <span
         className={cn(
-          selectedSize.checkbox,
-          "absolute top-0 rounded-full flex items-center justify-center overflow-hidden",
-          isDark
-            ? "bg-black right-0 shadow-lg shadow-black/50"
-            : "keep-white bg-white left-0 shadow-lg shadow-white/50",
+          "relative inline-flex items-center justify-start overflow-hidden rounded-full",
+          selectedSize.container,
+          isDark ? "bg-gray-800" : "bg-gray-200",
         )}
-        animate={isDark ? "dark" : "light"}
-        variants={toggleVariants}
-        custom={selectedSize.offset}
-        transition={springTransition}
       >
         <motion.div
-          className="absolute"
-          initial="light"
+          className={cn(
+            selectedSize.checkbox,
+            "absolute top-0 rounded-full flex items-center justify-center overflow-hidden",
+            isDark
+              ? "bg-black right-0 shadow-lg shadow-black/50"
+              : "keep-white bg-white left-0 shadow-lg shadow-white/50",
+          )}
           animate={isDark ? "dark" : "light"}
-          variants={sunVariants}
+          variants={toggleVariants}
+          custom={selectedSize.offset}
           transition={springTransition}
         >
-          <Sun className={selectedSize.icon} />
+          <motion.div
+            className="absolute"
+            initial="light"
+            animate={isDark ? "dark" : "light"}
+            variants={sunVariants}
+            transition={springTransition}
+          >
+            <Sun className={selectedSize.icon} />
+          </motion.div>
+          <motion.div
+            className="absolute"
+            initial="light"
+            animate={isDark ? "dark" : "light"}
+            variants={moonVariants}
+            transition={springTransition}
+          >
+            <Moon className={cn(selectedSize.icon)} />
+          </motion.div>
         </motion.div>
-        <motion.div
-          className="absolute"
-          initial="light"
-          animate={isDark ? "dark" : "light"}
-          variants={moonVariants}
-          transition={springTransition}
-        >
-          <Moon className={cn(selectedSize.icon)} />
-        </motion.div>
-      </motion.div>
+      </span>
     </button>
   );
 }

@@ -66,7 +66,7 @@ export default function ConfigureSprintPage() {
         <div ref={headerRef} className="text-center mb-6 max-[359px]:mb-4">
           <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
             <BookOpen size={12} className="text-primary" />
-            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT</span>
+            <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT</h1>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Choose your topic, duration, and difficulty level.</p>
         </div>

@@ -41,7 +41,7 @@ export default function NotificationsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Bell size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">NOTIFICATIONS</span>
+          <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">NOTIFICATIONS</h1>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"}
@@ -66,7 +66,7 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("all")}
           className={cn(
-            "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
+            "min-h-11 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
             filter === "all"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",
@@ -79,7 +79,7 @@ export default function NotificationsPage() {
           type="button"
           onClick={() => setFilter("unread")}
           className={cn(
-            "rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
+            "min-h-11 rounded-lg px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
             filter === "unread"
               ? "bg-primary text-primary-foreground"
               : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",

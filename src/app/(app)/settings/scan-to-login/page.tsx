@@ -86,7 +86,7 @@ export default function ScanToLoginPage() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
             <QrCode size={12} className="text-primary" />
-            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SCAN TO LOGIN</span>
+            <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">SCAN TO LOGIN</h1>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal">
             Open a browser at <span className="text-foreground/60">examarena.app</span>

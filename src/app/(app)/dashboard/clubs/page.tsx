@@ -47,7 +47,7 @@ export default function ClubsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Users size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">CLUBS</span>
+          <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">CLUBS</h1>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal">Find and join study communities</p>
       </div>
@@ -59,7 +59,7 @@ export default function ClubsPage() {
             type="button"
             onClick={() => setTab(t)}
             className={cn(
-              "flex-1 py-2 rounded-xl text-[12px] font-bold transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
+              "flex-1 min-h-11 py-2 rounded-xl text-[12px] font-bold transition-all outline-none focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
               tab === t ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground/50 hover:text-foreground",
             )}
           >

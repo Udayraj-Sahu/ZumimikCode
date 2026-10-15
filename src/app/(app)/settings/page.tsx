@@ -153,8 +153,15 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-primary/20 bg-primary/10 backdrop-blur-sm">
           <span className="text-lg font-bold tracking-[-0.02em] text-primary">{initials}</span>
         </div>
-        <button type="button" className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_0_12px_var(--accent-30)]">
-          <Pencil className="h-2.5 w-2.5" />
+        <button
+          type="button"
+          onClick={onEdit}
+          aria-label="Edit profile photo"
+          className="absolute -bottom-2 -right-2 flex h-11 w-11 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_0_12px_var(--accent-30)]">
+            <Pencil className="h-2.5 w-2.5" />
+          </span>
         </button>
       </div>
       <h1 className="mt-3 text-[16px] font-bold tracking-[-0.02em] text-foreground">{name}</h1>
@@ -167,7 +174,7 @@ function ProfileHeader({ name, initials, badge, onEdit }: { name: string; initia
         <span className="text-muted-foreground/30">·</span>
         <span className="text-muted-foreground/40 font-normal">Mumbai, India</span>
       </div>
-      <button type="button" onClick={onEdit} className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.05em] text-primary whitespace-nowrap">
+      <button type="button" onClick={onEdit} className="mt-2 flex min-h-11 items-center justify-center gap-1.5 text-[11px] font-semibold tracking-[0.05em] text-primary whitespace-nowrap">
         <Pencil className="h-3 w-3" /> EDIT PROFILE
       </button>
     </div>

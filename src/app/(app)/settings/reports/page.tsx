@@ -45,13 +45,13 @@ export default function ReportsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
           <FileText size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">REPORTS</span>
+          <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">REPORTS</h1>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Detailed performance analytics</p>
         <div className="mt-3 flex justify-center">
           <Button
             size="sm"
-            className="max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-1.5 hover:scale-[1.05] active:scale-[0.95]"
+            className="min-h-11 max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-1.5 hover:scale-[1.05] active:scale-[0.95]"
           >
             <Download size={14} /> Export
           </Button>
@@ -65,7 +65,7 @@ export default function ReportsPage() {
             type="button"
             onClick={() => setPeriod(p)}
             className={cn(
-              "rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring border backdrop-blur-xl whitespace-nowrap",
+              "min-h-11 rounded-lg px-2.5 py-1 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring border backdrop-blur-xl whitespace-nowrap",
               period === p
                 ? "bg-primary text-primary-foreground border-primary"
                 : "border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",

@@ -117,7 +117,7 @@ export default function DuelPage() {
         <div ref={headerRef} className="text-center">
           <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
             <Swords size={12} className="text-primary" />
-            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">DUEL</span>
+            <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">DUEL</h1>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">Compete head-to-head in real-time</p>
         </div>
@@ -214,9 +214,9 @@ export default function DuelPage() {
           )}>
             {result.won ? <Swords size={28} /> : <Swords size={28} />}
           </div>
-          <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
+          <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground leading-tight">
             {result.won ? "Victory!" : "Good Effort!"}
-          </h1>
+          </h2>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
             {result.won ? `You beat ${opponent.name}!` : `${opponent.name} edged you out this time.`}
           </p>

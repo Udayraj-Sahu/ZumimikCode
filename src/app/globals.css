@@ -406,9 +406,13 @@
   --cta-from: #C7F252;
   --cta-to: #A8D43A;
   --chart-1: #4D7C0F;
-  --chart-2: #3B82F6;
-  --chart-3: #F59E0B;
-  --chart-4: #8B5CF6;
+  /* Chart hues are darkened for light surfaces so they clear WCAG AA (4.5:1)
+     as *text* on near-white panels. The raw brand hues (#3B82F6 / #F59E0B /
+     #8B5CF6) only reach ~3.2-4.2:1 on white and were the source of the
+     audit's contrast failures (text-chart-2/3/4). */
+  --chart-2: #1D4ED8;
+  --chart-3: #B45309;
+  --chart-4: #6D28D9;
   --chart-5: #DC2626;
   --sidebar: #FFFFFF;
   --sidebar-foreground: #0A0A0A;

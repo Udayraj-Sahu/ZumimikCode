@@ -137,7 +137,7 @@ export default function FriendsPage() {
               </div>
               <button
                 type="button"
-                className="flex items-center gap-1 rounded-xl px-3 py-2 text-micro font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
+                className="flex min-h-11 items-center gap-1 rounded-xl px-3 py-2 text-micro font-bold text-primary outline-none transition-colors hover:bg-primary/20 active:bg-primary/30 focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap"
                 style={{ background: GLASS_BG }}
               >
                 <Swords size={12} /> Duel

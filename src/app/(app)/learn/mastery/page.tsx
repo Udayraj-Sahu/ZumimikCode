@@ -35,7 +35,7 @@ export default function MasteryPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 pill px-4 py-1.5 max-[359px]:px-3 mb-3">
           <Target size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MASTERY</span>
+          <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">MASTERY</h1>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           {topics.length > 0 ? `${average}% average across ${topics.length} topics` : "Track your progress across topics"}

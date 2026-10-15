@@ -51,7 +51,7 @@ export default function LinkedDevicesPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Monitor size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">LINKED DEVICES</span>
+          <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">LINKED DEVICES</h1>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           Devices you&apos;re currently logged in on
@@ -118,7 +118,7 @@ export default function LinkedDevicesPage() {
                     onClick={() => handleRevoke(device)}
                     disabled={revoke.isPending}
                     className={cn(
-                      "flex shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-[11px] font-bold transition-all active:scale-95 max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-2 whitespace-nowrap",
+                      "flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl px-3.5 py-2.5 text-[11px] font-bold transition-all active:scale-95 max-[359px]:gap-1 max-[359px]:px-3 max-[359px]:py-2 whitespace-nowrap",
                       isConfirming
                         ? "bg-[var(--red-soft-solid)] text-[var(--on-accent)]"
                         : "border border-white/[0.07] bg-white/[0.04] text-[var(--red-soft)]",

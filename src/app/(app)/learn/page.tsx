@@ -370,7 +370,7 @@ function LearnPageContent() {
                             setActiveLearnDomain(id);
                           }}
                           className={cn(
-                            "text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all",
+                            "inline-flex min-h-11 items-center justify-center text-[11px] font-semibold rounded-full px-3.5 py-1.5 whitespace-nowrap max-[359px]:px-3 transition-all",
                             activeDomain === id
                               ? "bg-cta text-[var(--on-accent)] shadow-[0_0_12px_var(--accent-25)]"
                               : "pill bg-[var(--glass-05)] text-muted-foreground",
@@ -415,9 +415,9 @@ function LearnPageContent() {
                               >
                                 <Icon size={16} style={{ color }} />
                               </div>
-                              <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">
+                              <h2 className="text-[14px] font-semibold tracking-[-0.01em] text-foreground">
                                 {topic.name}
-                              </h3>
+                              </h2>
                             </div>
                             <div className="flex items-baseline gap-1">
                               <span
@@ -870,9 +870,9 @@ function LearnPageContent() {
                               >
                                 <FileText size={14} style={{ color: paper.accent }} />
                               </div>
-                              <h3 className="text-[13.5px] font-semibold tracking-[-0.01em] text-foreground leading-snug">
+                              <h2 className="text-[13.5px] font-semibold tracking-[-0.01em] text-foreground leading-snug">
                                 {paper.title}
-                              </h3>
+                              </h2>
                             </div>
                           </div>
                           <div className="shrink-0 grid size-7 place-items-center rounded-full border border-white/[0.07] text-muted-foreground/50">

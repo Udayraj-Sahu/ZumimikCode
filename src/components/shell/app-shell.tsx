@@ -66,6 +66,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const isExamFlow = EXAM_ROUTES.some((route) => pathname.startsWith(route));
   const avatarInitial = user?.name?.[0]?.toUpperCase() ?? "U";
   const displayName = (user?.name ?? "Operative").toUpperCase();
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <div data-theme-scope data-accent={accent} suppressHydrationWarning className={cn("min-h-screen bg-background text-foreground", theme === "light" && "light")}>
@@ -80,20 +81,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span className="grid size-9 place-items-center rounded bg-primary text-primary-foreground">
             <Flame size={18} />
           </span>
-          <h1 className="hidden whitespace-nowrap text-[19px] font-black tracking-[0.1em] leading-tight text-primary group-hover:block">
+          <span className="hidden whitespace-nowrap text-[19px] font-black tracking-[0.1em] leading-tight text-primary group-hover:block">
             EXAM ARENA
-          </h1>
+          </span>
         </div>
 
         {/* Nav */}
         <nav data-sidebar-section data-tour-nav className="relative flex flex-col gap-2.5" aria-label="Primary">
           {visibleItems.map((item) => {
-            const active = pathname === item.href;
+            const active = isActive(item.href);
             const Icon = item.icon;
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-label={item.label}
                 aria-current={active ? "page" : undefined}
                 className={cn(
                   "flex items-center justify-center gap-3.5 rounded-[10px] border border-transparent px-4 py-[13px] text-[13.5px] font-bold uppercase tracking-[0.6px] outline-none transition-[background,color,border-color,justify-content] duration-150 focus-visible:ring-2 focus-visible:ring-ring group-hover:justify-start",
@@ -114,7 +116,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <Link
             href="/play/configure-sprint"
             data-tour-start-sprint
-            className="flex items-center justify-center gap-2 rounded-[10px] bg-primary px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label="Start sprint"
+            className="flex min-h-11 items-center justify-center gap-2 rounded-[10px] bg-primary px-4 py-3 text-sm font-bold uppercase tracking-[0.1em] text-primary-foreground outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Zap className="size-4" aria-hidden="true" />
             <span className="hidden whitespace-nowrap group-hover:inline">START SPRINT</span>
@@ -162,15 +165,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       >
         <div className="flex items-center gap-1 rounded-full border border-white/[0.08] bg-[var(--blackgreen-90)] backdrop-blur-2xl px-2 py-1.5 shadow-[0_8px_32px_var(--black-50)] pointer-events-auto max-[359px]:gap-0.5 max-[359px]:px-1.5">
           {MOBILE_NAV.map((item) => {
-            const active = pathname === item.href;
+            const active = isActive(item.href);
             const Icon = item.icon;
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-label={item.label}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative flex items-center justify-center rounded-full outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring",
+                  "relative flex min-h-11 min-w-11 items-center justify-center rounded-full outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-ring",
                   active
                     ? "bg-primary/15 text-primary px-4 py-2.5 gap-2 max-[359px]:px-3 max-[359px]:gap-1.5"
                     : "text-muted-foreground/50 hover:text-muted-foreground px-3 py-2.5 max-[359px]:px-2.5",

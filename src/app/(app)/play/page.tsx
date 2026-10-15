@@ -134,7 +134,7 @@ export default function PlayPage() {
       </header>
 
       {/* Tabs */}
-      <nav className="grid grid-cols-4 gap-2.5 mb-5 max-[359px]:gap-1.5">
+      <nav aria-label="Play modes" className="grid grid-cols-4 gap-2.5 mb-5 max-[359px]:gap-1.5">
         {TABS.map((tab) => {
           const isActive = tab.id === activeTab;
           const Icon = tab.icon;
@@ -164,7 +164,7 @@ export default function PlayPage() {
       </nav>
 
       {/* Mode Cards */}
-      <main className="flex flex-col gap-3 md:grid md:grid-cols-2 md:items-stretch md:gap-5">
+      <section className="flex flex-col gap-3 md:grid md:grid-cols-2 md:items-stretch md:gap-5">
         {modes.length > 0 ? (
           modes.map((mode) => <ModeCardButton key={mode.id} mode={mode} />)
         ) : (
@@ -180,7 +180,7 @@ export default function PlayPage() {
             </p>
           </div>
         )}
-      </main>
+      </section>
       </div>
     </PageContainer>
   );

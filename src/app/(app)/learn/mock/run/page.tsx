@@ -250,7 +250,7 @@ function MockRunContent() {
         <p className="text-[13px] text-muted-foreground">No mock paper selected.</p>
         <Button
           onClick={() => router.push("/learn?mode=mock")}
-          className="mt-4 max-[359px]:px-4"
+          className="mt-4 min-h-11 max-[359px]:px-4"
         >
           Browse Papers
         </Button>
@@ -305,7 +305,7 @@ function MockRunContent() {
             <div ref={headerRef} className="pb-3 text-center max-[359px]:pb-2">
               <div className="inline-flex items-center gap-2 pill px-4 py-1.5 max-[359px]:px-3 mb-3">
                 <FileText size={10} className="text-primary" />
-                <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">MOCK TEST</span>
+                <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">MOCK TEST</h1>
               </div>
               <div className="flex items-center justify-between max-[359px]:gap-1.5">
                 <button

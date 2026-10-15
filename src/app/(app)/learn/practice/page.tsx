@@ -216,7 +216,7 @@ export default function PracticePage() {
         <div ref={headerRef} className="mb-6 text-center">
           <div className="inline-flex items-center gap-2 pill px-4 py-1.5 max-[359px]:px-3 mb-3">
             <Dumbbell size={12} className="text-primary" />
-            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">PRACTICE</span>
+            <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">PRACTICE</h1>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
             Sharpen your skills with MCQ drills or technique walkthroughs
@@ -230,7 +230,7 @@ export default function PracticePage() {
               type="button"
               onClick={() => setPracticeType("mcq")}
               className={cn(
-                "flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 max-[359px]:py-2.5 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
+                "flex min-h-11 flex-1 items-center justify-center gap-2 rounded-2xl py-3 max-[359px]:py-2.5 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                 practiceType === "mcq"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground/50 hover:text-foreground",
@@ -242,7 +242,7 @@ export default function PracticePage() {
               type="button"
               onClick={() => setPracticeType("templates")}
               className={cn(
-                "flex flex-1 items-center justify-center gap-2 rounded-2xl py-3 max-[359px]:py-2.5 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
+                "flex min-h-11 flex-1 items-center justify-center gap-2 rounded-2xl py-3 max-[359px]:py-2.5 whitespace-nowrap text-[11px] font-bold uppercase tracking-[0.14em] outline-none transition-all",
                 practiceType === "templates"
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground/50 hover:text-foreground",
@@ -451,9 +451,9 @@ export default function PracticePage() {
           )}>
             {accuracy}%
           </div>
-          <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
+          <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
             {accuracy >= 80 ? "Well Done!" : accuracy >= 50 ? "Keep Practicing!" : "Review & Improve!"}
-          </h1>
+          </h2>
         </div>
 
         <div className="grid grid-cols-2 gap-3 mb-5 max-[359px]:gap-2 max-[359px]:mb-4">
@@ -513,9 +513,9 @@ export default function PracticePage() {
           <div className="mx-auto mb-4 grid size-20 place-items-center rounded-full bg-[var(--amber-10)] backdrop-blur-xl">
             <Check size={32} className="text-[var(--amber)]" />
           </div>
-          <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
+          <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">
             Technique Learned!
-          </h1>
+          </h2>
           <p className="mt-2 text-[12px] text-muted-foreground/45 leading-relaxed max-w-xs mx-auto font-normal">
             You&apos;ve completed the walkthrough. Now apply it under real conditions.
           </p>

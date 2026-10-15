@@ -121,7 +121,7 @@ function SprintResultsContent() {
         <div className="flex justify-center">
           <div className="inline-flex items-center gap-2 pill px-5 py-2 max-[359px]:px-4">
             <BarChart3 size={10} className="text-primary" />
-            <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</span>
+            <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">SPRINT RESULTS</h1>
           </div>
         </div>
         <p className="mt-2 text-center text-[12px] text-muted-foreground/45 font-normal">

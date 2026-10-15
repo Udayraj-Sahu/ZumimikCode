@@ -450,7 +450,7 @@ export default function DashboardPage() {
             onClick={cycleAccent}
             aria-label={`Switch accent to ${nextAccent.label}`}
             title={`Switch to ${nextAccent.label}`}
-            className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/60 backdrop-blur-xl transition-all hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-[359px]:size-8"
+            className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background/60 backdrop-blur-xl transition-all hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <span
               aria-hidden="true"
@@ -900,17 +900,23 @@ export default function DashboardPage() {
           </div>
         </div>
         {/* Dot indicators */}
-        <div className="flex items-center justify-center gap-2 mt-2">
+        <div className="flex items-center justify-center gap-0.5 mt-1">
           {[0, 1, 2, 3, 4].map((i) => (
             <button
               key={i}
               type="button"
               onClick={() => scrollToSlide(i)}
-              className={cn(
-                "rounded-full transition-all duration-300",
-                carouselIndex === i ? "h-2 w-5 bg-primary" : "h-2 w-2 bg-white/15"
-              )}
-            />
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={carouselIndex === i ? "true" : undefined}
+              className="group flex h-11 w-11 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <span
+                className={cn(
+                  "rounded-full transition-all duration-300",
+                  carouselIndex === i ? "h-2 w-5 bg-primary" : "h-2 w-2 bg-white/15 group-hover:bg-white/30"
+                )}
+              />
+            </button>
           ))}
         </div>
       </div>

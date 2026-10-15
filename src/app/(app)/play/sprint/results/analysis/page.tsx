@@ -53,7 +53,7 @@ export default function AnalysisPage() {
         <div className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-primary/10 border border-primary/20">
           <Check size={28} className="text-primary" />
         </div>
-        <h1 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">Perfect Score!</h1>
+        <h2 className="text-[20px] font-bold tracking-[-0.02em] text-foreground">Perfect Score!</h2>
         <p className="mt-1 text-[12px] text-muted-foreground/45 font-normal">
           No wrong answers to analyze.
         </p>
@@ -85,7 +85,7 @@ export default function AnalysisPage() {
       <div className="flex flex-col items-center gap-2 mb-6 max-[359px]:mb-4 max-[359px]:gap-1.5">
         <div className="inline-flex items-center gap-2 pill px-5 py-2 max-[359px]:px-4">
           <TrendingUp size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</span>
+          <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">ANALYSIS</h1>
         </div>
         <p className="text-micro text-muted-foreground/45 font-normal">
           {session.topicLabel} &middot; {wrongAnswers.length} wrong answer

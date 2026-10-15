@@ -211,7 +211,7 @@ export default function AchievementsPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Trophy size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">ACHIEVEMENTS</span>
+          <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">ACHIEVEMENTS</h1>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal mt-1">
           {total > 0 ? `${unlocked}/${total} unlocked` : "Unlock badges as you train"}
@@ -264,7 +264,7 @@ export default function AchievementsPage() {
             type="button"
             onClick={() => setActiveCategory(cat.id)}
             className={cn(
-              "shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-[32px] backdrop-blur-xl max-[359px]:px-2.5 whitespace-nowrap",
+              "shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider outline-none transition-all focus-visible:ring-2 focus-visible:ring-ring min-h-11 backdrop-blur-xl max-[359px]:px-2.5 whitespace-nowrap",
               activeCategory === cat.id
                 ? "bg-primary text-primary-foreground"
                 : "border border-white/[0.06] text-muted-foreground hover:text-foreground active:text-foreground",

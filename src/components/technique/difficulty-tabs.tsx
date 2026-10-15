@@ -66,7 +66,7 @@ export function DifficultyTabs({
               aria-selected={active}
               onClick={() => handleLevelChange(lvl)}
               className={cn(
-                "flex items-center gap-1.5 rounded-xl border px-3 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all whitespace-nowrap focus-visible:ring-2 focus-visible:ring-ring",
+                "flex min-h-11 items-center gap-1.5 rounded-xl border px-3 py-3 text-[10px] font-bold uppercase tracking-wider outline-none transition-all whitespace-nowrap focus-visible:ring-2 focus-visible:ring-ring",
                 active
                   ? LEVEL_COLORS[lvl]
                   : "border-border/40 bg-card text-muted-foreground hover:border-border hover:text-foreground active:text-foreground",

@@ -31,7 +31,7 @@ export default function FeedPage() {
       <div ref={headerRef} className="text-center">
         <div className="inline-flex items-center gap-2 pill px-4 py-1.5 mb-3 max-[359px]:px-3">
           <Compass size={12} className="text-primary" />
-          <span className="text-micro font-semibold tracking-[0.22em] text-primary/80">FEED</span>
+          <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">FEED</h1>
         </div>
         <p className="text-[12px] text-muted-foreground/45 font-normal">Discover tips and strategies</p>
       </div>
@@ -52,7 +52,7 @@ export default function FeedPage() {
             type="button"
             onClick={() => setActiveCategory(cat)}
             className={cn(
-              "shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all border backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-ring min-h-[32px]",
+              "shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-bold uppercase tracking-wider whitespace-nowrap outline-none transition-all border backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-ring min-h-11",
               activeCategory === cat
                 ? "bg-primary text-primary-foreground border-primary"
                 : "text-foreground/80 border-white/[0.06] bg-white/[0.04] hover:bg-white/[0.08]",
