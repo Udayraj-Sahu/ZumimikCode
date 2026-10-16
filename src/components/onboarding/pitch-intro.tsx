@@ -241,7 +241,7 @@ export function PitchIntro({
                   </svg>
                   <div className="absolute inset-0 grid place-items-center text-center">
                     <div>
-                      <div className="text-[19px] font-black leading-none text-white">
+                      <div className="text-[19px] font-black leading-none text-white dark:text-white">
                         {Math.round(RING_PCT * 100)}%
                       </div>
                       <div className="mt-0.5  text-[7px] tracking-[0.2em] text-white/50">FOCUS</div>
@@ -253,12 +253,12 @@ export function PitchIntro({
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
                     <Flame size={16} className="text-orange-400" />
-                    <span className=" text-[12px] font-bold text-white">
+                    <span className=" text-[12px] font-bold text-white dark:text-white">
                       <span ref={streakRef}>0</span>-day streak
                     </span>
                   </div>
                   <p className="mt-2 text-[14px] font-semibold leading-snug text-white/80">
-                    You&apos;re <span className="text-white">89% better</span> at avoiding wasteful
+                    You&apos;re <span className="text-white dark:text-white">89% better</span> at avoiding wasteful
                     scrolling than last week.
                   </p>
                   <div className="mt-2.5 flex items-center gap-2  text-[9px] tracking-[0.18em] text-white/45">
@@ -284,7 +284,7 @@ export function PitchIntro({
                     statRefs.current[0] = el;
                   }}
                   data-count="6"
-                  className=" text-[24px] font-black leading-none text-white"
+                  className=" text-[24px] font-black leading-none text-white dark:text-white"
                 >
                   0
                 </span>
@@ -344,7 +344,7 @@ export function PitchIntro({
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="text-[14px] font-semibold leading-snug text-white/80">
-                        {lead} <span className="text-white">{punch}</span>
+                        {lead} <span className="text-white dark:text-white">{punch}</span>
                       </p>
                       <p className="mt-0.5 text-[12px] leading-snug text-white/55">
                         {sub}

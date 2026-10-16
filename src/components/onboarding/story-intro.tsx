@@ -855,7 +855,7 @@ function VoiceCommitmentBar({
           whileTap={still ? undefined : { scale: 0.93 }}
           transition={{ type: "spring", stiffness: 420, damping: 22 }}
           className={cn(
-            "relative z-10 grid flex-none place-items-center rounded-full text-white",
+            "relative z-10 grid flex-none place-items-center rounded-full text-white dark:text-white",
             open ? "ml-1.5 size-11" : "size-14",
           )}
         >

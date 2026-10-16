@@ -73,13 +73,13 @@ export default function FeedPage() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
-          <div className="relative h-full flex flex-col justify-between p-4 max-[359px]:p-3">
-            <div className="flex items-center gap-2 self-start">
-              <span className="flex items-center gap-1.5 bg-white/15 backdrop-blur-md border border-white/25 rounded-full px-3 py-1.5 text-[11px] font-bold text-white max-[359px]:px-2.5 whitespace-nowrap">
-                <Sparkles size={10} /> {FEED_HERO.badge}
-              </span>
-            </div>
-            <p className="text-[12px] font-bold text-white leading-snug drop-shadow-md">
+            <div className="relative h-full flex flex-col justify-between p-4 max-[359px]:p-3">
+              <div className="flex items-center gap-2 self-start">
+                <span className="flex items-center gap-1.5 bg-black/40 dark:bg-white/15 backdrop-blur-md border border-black/20 dark:border-white/25 rounded-full px-3 py-1.5 text-[11px] font-bold text-white max-[359px]:px-2.5 whitespace-nowrap">
+                  <Sparkles size={10} /> {FEED_HERO.badge}
+                </span>
+              </div>
+            <p className="text-[12px] font-bold text-white dark:text-white leading-snug drop-shadow-md">
               {FEED_HERO.title}
             </p>
           </div>
@@ -140,7 +140,7 @@ export default function FeedPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute top-2 left-2 right-2">
-                  <p className="text-[11px] font-bold text-white leading-snug drop-shadow-md">
+                  <p className="text-[11px] font-bold text-white dark:text-white leading-snug drop-shadow-md">
                     {video.label}
                   </p>
                 </div>
@@ -150,7 +150,7 @@ export default function FeedPage() {
                   </span>
                 </div>
                 <div className="absolute top-2 right-2 grid size-6 place-items-center rounded-full bg-black/40 backdrop-blur-sm">
-                  <Play size={10} fill="white" className="text-white ml-0.5" />
+                  <Play size={10} fill="currentColor" className="text-white dark:text-white ml-0.5" />
                 </div>
               </div>
             ))}

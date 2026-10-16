@@ -124,7 +124,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
 
           <div className="flex items-center gap-3 px-1.5">
-            <span className="grid size-[34px] shrink-0 place-items-center rounded-full bg-chrome-avatar text-sm font-bold text-white keep-white">
+            <span className="grid size-[34px] shrink-0 place-items-center rounded-full bg-chrome-avatar text-sm font-bold text-white dark:text-white keep-white">
               {avatarInitial}
             </span>
             <span className="hidden flex-1 truncate whitespace-nowrap text-[12.5px] font-bold uppercase tracking-[0.5px] text-chrome-foreground/60 group-hover:block">

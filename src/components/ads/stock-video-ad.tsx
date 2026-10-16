@@ -139,7 +139,7 @@ export default function StockVideoAd({
           aria-label={playLabel}
           className="absolute inset-0 grid place-items-center bg-black/30 transition-colors hover:bg-black/20"
         >
-          <span className="grid size-9 place-items-center rounded-full bg-black/55 text-white">
+            <span className="grid size-9 place-items-center rounded-full bg-black/55 text-white dark:text-white">
             <Play size={15} className="ml-0.5" />
           </span>
         </button>
@@ -149,7 +149,7 @@ export default function StockVideoAd({
         <button
           type="button"
           onClick={handleSkip}
-          className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-full bg-black/65 px-2.5 py-1 text-[10px] font-bold tracking-wide text-white transition hover:bg-black/80"
+          className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-full bg-black/65 px-2.5 py-1 text-[10px] font-bold tracking-wide text-white dark:text-white transition hover:bg-black/80"
         >
           <SkipForward size={11} />
           {skipLabel}

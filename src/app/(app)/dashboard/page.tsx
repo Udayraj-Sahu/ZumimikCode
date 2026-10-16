@@ -875,11 +875,11 @@ export default function DashboardPage() {
                       <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at top, var(--accent-20), transparent 60%)" }} />
                       {examDate ? (
                         <>
-                          <p className="relative flex items-baseline justify-center text-[26px] font-black not-italic tracking-tighter leading-none text-white">
+                          <p className="relative flex items-baseline justify-center text-[26px] font-black not-italic tracking-tighter leading-none text-white dark:text-white">
                             <NumberTicker value={daysLeft} active={carouselIndex === 4} delay={0.1} duration={1.2} startValue={0} aria-label={`${daysLeft} days`} />
                             <span className="text-[11px] font-bold not-italic tracking-[0.18em] ml-1.5 text-primary/70">DAYS</span>
                           </p>
-                          <p className="relative text-[58px] font-black not-italic tracking-tighter leading-none text-white mt-1.5">
+                          <p className="relative text-[58px] font-black not-italic tracking-tighter leading-none text-white dark:text-white mt-1.5">
                             <NumberTicker value={hoursLeft} active={carouselIndex === 4} delay={0.25} duration={1.4} startValue={0} aria-label={`${hoursLeft} hours`} />
                             <span className="text-[22px] font-bold not-italic align-top ml-1.5 text-primary">HR</span>
                           </p>
@@ -888,7 +888,7 @@ export default function DashboardPage() {
                       ) : (
                         <>
                           <p className="relative text-micro font-bold tracking-[0.28em] text-primary/70">SET YOUR TARGET</p>
-                          <p className="relative text-[20px] font-black italic tracking-tighter leading-none text-white mt-1">COUNTDOWN</p>
+                          <p className="relative text-[20px] font-black italic tracking-tighter leading-none text-white dark:text-white mt-1">COUNTDOWN</p>
                           <p className="relative text-micro font-bold tracking-[0.28em] text-white/60 mt-1">REMAINING FOR {examLabel}</p>
                         </>
                       )}
