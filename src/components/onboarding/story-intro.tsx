@@ -424,6 +424,7 @@ const overlapFraction = (start: number, end: number, from: number, to: number) =
 function DayRail({ value, spanMin }: { value: StoryCommitment; spanMin: number }) {
   const modIdx = RECLAIM_MODULES.findIndex((m) => m.id === value.reclaimSlot);
   const tone = modIdx >= 0 ? RECLAIM_MODULES[modIdx].tone : "lime";
+  const theme = useThemeStore((s) => s.theme);
   const window = value.reclaimConfigs?.[value.reclaimSlot]?.window ?? value.reclaimWindow;
   const { from } = parseWindow(window);
   const fromMin = toMinutes(from);
@@ -476,7 +477,11 @@ function DayRail({ value, spanMin }: { value: StoryCommitment; spanMin: number }
       <div className="mt-2 flex items-center gap-2">
         <span
           className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1  text-[8.5px] font-bold uppercase tracking-[0.1em]"
-          style={{ borderColor: `${hex}55`, background: `${hex}14`, color: hex }}
+          style={{
+            borderColor: `${hex}55`,
+            background: `${hex}14`,
+            color: theme === "light" ? toneDark[tone] : hex,
+          }}
         >
           <Dot color={hex} small />
           {value.reclaimSlot || "Reclaim Slot"} · {to12h(from)} · {minutes} MIN
@@ -1363,7 +1368,10 @@ export function StoryIntro({
           {notifError && (
             <div
               role="alert"
-              className="mt-4 flex items-start gap-2 rounded-xl border border-amber-400/30 bg-amber-400/10 p-3 text-[10.5px] font-medium leading-relaxed text-amber-200"
+              className={cn(
+                "mt-4 flex items-start gap-2 rounded-xl border border-amber-400/30 bg-amber-400/10 p-3 text-[10.5px] font-medium leading-relaxed",
+                theme === "light" ? "text-[var(--amber)]" : "text-amber-200",
+              )}
             >
               <AlertTriangle size={13} className="mt-0.5 shrink-0" />
               <span>{notifError}</span>

@@ -88,7 +88,7 @@ function useIntroTone() {
   const light = theme === "light";
   return {
     card: light
-      ? "border-black/[0.10] bg-white/70 shadow-[0_1px_0_rgba(255,255,255,0.7)_inset]"
+      ? "border-black/[0.10] bg-black/[0.04] shadow-[0_1px_0_rgba(255,255,255,0.7)_inset]"
       : "keep-white border-white/[0.07] bg-white/[0.03]",
     panel: light ? "border-black/[0.08] bg-black/[0.03]" : "border-white/[0.06] bg-white/[0.02]",
     inset: light ? "border-black/[0.10] bg-black/[0.04]" : "keep-white border-white/[0.06] bg-black/25",

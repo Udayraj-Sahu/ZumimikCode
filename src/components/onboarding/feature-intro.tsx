@@ -43,6 +43,12 @@ const iconTones: Record<Tone, string> = {
   fuchsia: "border-fuchsia-400/50 bg-fuchsia-400/10 text-fuchsia-400",
 };
 
+const iconTonesLight: Record<Tone, string> = {
+  lime: "border-[var(--lime-50)] bg-[var(--lime-10)] text-[var(--lime)]",
+  cyan: "border-cyan-600/50 bg-cyan-400/10 text-[var(--cyan)]",
+  fuchsia: "border-fuchsia-600/50 bg-fuchsia-400/10 text-[var(--fuchsia)]",
+};
+
 type System = {
   icon: typeof BrainCircuit;
   tone: Tone;
@@ -111,7 +117,7 @@ function SystemCarousel() {
               <span
                 className={cn(
                   "grid size-10 shrink-0 place-items-center rounded-full border",
-                  iconTones[tone],
+                  theme === "light" ? iconTonesLight[tone] : iconTones[tone],
                 )}
               >
                 <Icon className="size-5" aria-hidden />
@@ -166,7 +172,7 @@ function SystemCarousel() {
               <span
                 className={cn(
                   "grid size-10 shrink-0 place-items-center rounded-full border",
-                  iconTones[tone],
+                  theme === "light" ? iconTonesLight[tone] : iconTones[tone],
                 )}
               >
                 <Icon className="size-5" aria-hidden />
@@ -493,7 +499,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                   {copy.headline.text}
                   <motion.span
                     className="block"
-                    style={{ color: ACCENT }}
+                    style={{ color: theme === "light" ? "var(--lime)" : ACCENT }}
                     initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.18, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}

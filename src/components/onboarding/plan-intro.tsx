@@ -205,7 +205,12 @@ export function PlanSelector({
                       <span className="text-[9px] tracking-[0.14em] text-white/50">
                         UNLOCKED TRACKS:
                       </span>
-                      <span className="text-[9px] font-bold text-cyan-400">
+                      <span
+                        className={cn(
+                          "text-[9px] font-bold",
+                          theme === "light" ? "text-[var(--cyan)]" : "text-cyan-400",
+                        )}
+                      >
                         {p.lanes} Lanes Active
                       </span>
                     </div>
@@ -221,7 +226,10 @@ export function PlanSelector({
                         ) : (
                           <span
                             key={t}
-                            className="inline-flex items-center gap-1 rounded border border-cyan-400/40 bg-cyan-400/10 px-2 py-1 text-[10px] text-cyan-300"
+                            className={cn(
+                              "inline-flex items-center gap-1 rounded border border-cyan-400/40 bg-cyan-400/10 px-2 py-1 text-[10px]",
+                              theme === "light" ? "text-[var(--cyan)]" : "text-cyan-300",
+                            )}
                           >
                             <Check size={10} /> {t}
                           </span>

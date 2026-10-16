@@ -23,6 +23,7 @@ const TRACKS = [
     sub: "5-minute adaptive set, tuned to your pace.",
     Icon: Target,
     accent: "text-[var(--lime)]",
+    accentLight: "text-[var(--lime)]",
     bar: "from-[var(--lime-60)] to-transparent",
   },
   {
@@ -32,6 +33,7 @@ const TRACKS = [
     sub: "Shave seconds per question with live feedback.",
     Icon: Crosshair,
     accent: "text-cyan-300",
+    accentLight: "text-[var(--cyan)]",
     bar: "from-cyan-400/60 to-transparent",
   },
   {
@@ -41,6 +43,7 @@ const TRACKS = [
     sub: "Tight, distraction-free runs that build flow.",
     Icon: Brain,
     accent: "text-fuchsia-300",
+    accentLight: "text-[var(--fuchsia)]",
     bar: "from-fuchsia-400/60 to-transparent",
   },
 ];
@@ -252,7 +255,7 @@ export function PitchIntro({
                 {/* copy */}
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
-                    <Flame size={16} className="text-orange-400" />
+                    <Flame size={16} className={theme === "light" ? "text-orange-600" : "text-orange-400"} />
                     <span className=" text-[12px] font-bold text-white dark:text-white">
                       <span ref={streakRef}>0</span>-day streak
                     </span>
@@ -322,7 +325,7 @@ export function PitchIntro({
                 reduceMotion ? "" : "animate-marquee motion-reduce:animate-none",
               )}
             >
-              {[...TRACKS, ...TRACKS].map(({ id, lead, punch, sub, Icon, accent, bar }, i) => (
+              {[...TRACKS, ...TRACKS].map(({ id, lead, punch, sub, Icon, accent, accentLight, bar }, i) => (
                 <li
                   key={`${id}-${i}`}
                   aria-hidden={i >= TRACKS.length ? "true" : undefined}
@@ -338,7 +341,7 @@ export function PitchIntro({
                   />
                   <div className="flex items-start gap-3">
                     <span
-                      className={`mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg border ${theme === "light" ? "border-white/[0.07] bg-white/[0.04]" : "border-white/10 bg-black/30"} ${accent}`}
+                      className={`mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg border ${theme === "light" ? "border-white/[0.07] bg-white/[0.04]" : "border-white/10 bg-black/30"} ${theme === "light" ? accentLight : accent}`}
                     >
                       <Icon size={17} />
                     </span>

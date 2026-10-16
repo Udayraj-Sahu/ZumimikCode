@@ -520,7 +520,7 @@ useEffect(() => {
               <button
                 type="button"
                 onClick={goPrev}
-                className={cn("flex items-center gap-1 text-[11px] font-bold outline-none transition-colors active:scale-[0.98]", theme === "light" ? "text-black/40 hover:text-black/70" : "text-white/40 hover:text-white/70")}
+                className={cn("flex items-center gap-1 text-[11px] font-bold outline-none transition-colors active:scale-[0.98]", theme === "light" ? "text-black/60 hover:text-black/90" : "text-white/40 hover:text-white/70")}
               >
                 <ChevronLeft size={14} />
                 Back

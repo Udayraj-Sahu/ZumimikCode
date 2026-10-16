@@ -226,7 +226,7 @@ function ChildSeatSheet({
               )}
             />
             {nameError && (
-              <p id="child-seat-name-err" role="alert" className="mt-1 text-[10px] text-red-400">
+              <p id="child-seat-name-err" role="alert" className={cn("mt-1 text-[10px]", theme === "light" ? "text-red-600" : "text-red-400")}>
                 {nameError}
               </p>
             )}
@@ -255,7 +255,7 @@ function ChildSeatSheet({
               )}
             />
             {ageError && (
-              <p id="child-seat-age-err" role="alert" className="mt-1 text-[10px] text-red-400">
+              <p id="child-seat-age-err" role="alert" className={cn("mt-1 text-[10px]", theme === "light" ? "text-red-600" : "text-red-400")}>
                 {ageError}
               </p>
             )}
@@ -469,7 +469,12 @@ export function SeatBuilderSelector({ onCheckout }: { onCheckout?: (total: numbe
                           {child ? `${child.name}, ${child.age}` : s.title}
                         </h3>
                         {s.badge && (
-                          <span className="rounded border border-fuchsia-400/40 bg-fuchsia-400/15 px-1.5 py-px text-[7px] font-bold tracking-wider text-fuchsia-300">
+                          <span
+                            className={cn(
+                              "rounded border border-fuchsia-400/40 bg-fuchsia-400/15 px-1.5 py-px text-[7px] font-bold tracking-wider",
+                              theme === "light" ? "text-[var(--fuchsia)]" : "text-fuchsia-300",
+                            )}
+                          >
                             {s.badge}
                           </span>
                         )}

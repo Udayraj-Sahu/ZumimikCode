@@ -47,6 +47,7 @@ const PREP_TELEMETRY: {
   desc: string;
   Icon: LucideIcon;
   tile: string;
+  tileLight?: string;
   badge?: string;
 }[] = [
   {
@@ -62,6 +63,7 @@ const PREP_TELEMETRY: {
     desc: "Difficulty shifts in real time to expand and reinforce your detected weak areas.",
     Icon: Activity,
     tile: "border-cyan-400/40 bg-cyan-400/10 text-cyan-300",
+    tileLight: "border-cyan-600/40 bg-cyan-400/10 text-[var(--cyan)]",
   },
   {
     id: "report",
@@ -76,6 +78,7 @@ const PREP_TELEMETRY: {
     desc: "Priority check-ins that keep your concurrent lane prep on schedule.",
     Icon: Cpu,
     tile: "border-fuchsia-400/40 bg-fuchsia-400/10 text-fuchsia-300",
+    tileLight: "border-fuchsia-600/40 bg-fuchsia-400/10 text-[var(--fuchsia)]",
     badge: "PRO",
   },
 ];
@@ -223,8 +226,19 @@ export function PaywallModal() {
                 <div className="min-h-0 flex-1 space-y-5 overflow-y-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                   {/* cap alert */}
                   <section className="flex items-center gap-2 rounded-lg border border-amber-400/30 bg-amber-400/[0.05] px-2.5 py-1.5">
-                    <AlertTriangle size={12} className="shrink-0 text-amber-300" />
-                    <span className="font-mono text-[8px] font-bold tracking-wider text-amber-300">
+                    <AlertTriangle
+                      size={12}
+                      className={cn(
+                        "shrink-0",
+                        theme === "light" ? "text-[var(--amber)]" : "text-amber-300",
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "font-mono text-[8px] font-bold tracking-wider",
+                        theme === "light" ? "text-[var(--amber)]" : "text-amber-300",
+                      )}
+                    >
                       FREE TIER CAP — CLEARANCE REQUIRED
                     </span>
                   </section>
@@ -255,7 +269,8 @@ export function PaywallModal() {
                       <div
                         key={id}
                         className={cn(
-                          "keep-white relative overflow-hidden rounded-xl border bg-black/40 p-3",
+                          "relative overflow-hidden rounded-xl border p-3",
+                          theme === "light" ? "bg-black/[0.04]" : "keep-white bg-black/40",
                           warn ? "border-amber-400/25" : "border-white/10",
                         )}
                       >
@@ -263,17 +278,21 @@ export function PaywallModal() {
                           <span
                             className={cn(
                               "font-mono text-[7px] font-bold tracking-[0.18em]",
-                              warn ? "text-amber-300/80" : "text-muted-foreground/60",
+                              warn
+                                ? theme === "light"
+                                  ? "text-amber-700"
+                                  : "text-amber-300/80"
+                                : "text-muted-foreground/60",
                             )}
                           >
                             {label}
                           </span>
-                          <Icon size={12} className={warn ? "text-amber-300" : "text-[var(--lime)]"} />
+                          <Icon size={12} className={warn ? (theme === "light" ? "text-amber-700" : "text-amber-300") : "text-[var(--lime)]"} />
                         </div>
                         <div className="mt-1.5 flex items-baseline gap-1">
                           <span
                             className="font-mono text-[18px] font-bold leading-none"
-                            style={{ color: warn ? YELLOW : ACCENT }}
+                            style={{ color: theme === "light" ? (warn ? "#B45309" : "var(--lime)") : warn ? YELLOW : ACCENT }}
                           >
                             {value}
                           </span>
@@ -289,12 +308,12 @@ export function PaywallModal() {
                   </section>
 
                   {/* throttle bar */}
-                  <section className="keep-white rounded-xl border border-white/10 bg-black/40 p-3">
+                  <section className={cn("rounded-xl border border-white/10 p-3", theme === "light" ? "bg-black/[0.04]" : "keep-white bg-black/40")}>
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-[8px] font-bold tracking-[0.2em] text-muted-foreground/70">
                         LOOP THROTTLE
                       </span>
-                      <span className="font-mono text-[10px] font-bold" style={{ color: ACCENT }}>
+                      <span className="font-mono text-[10px] font-bold" style={{ color: theme === "light" ? "var(--lime)" : ACCENT }}>
                         {throttle}%
                       </span>
                     </div>
@@ -324,15 +343,15 @@ export function PaywallModal() {
                     </div>
 
                     <ul className="mt-3 space-y-2.5">
-                      {PREP_TELEMETRY.map(({ id, title, desc, Icon, tile, badge }) => (
+                      {PREP_TELEMETRY.map(({ id, title, desc, Icon, tile, tileLight, badge }) => (
                         <li
                           key={id}
-                          className="keep-white flex gap-3 rounded-xl border border-white/10 bg-black/40 p-3"
+                          className={cn("flex gap-3 rounded-xl border border-white/10 p-3", theme === "light" ? "bg-black/[0.04]" : "keep-white bg-black/40")}
                         >
                           <span
                             className={cn(
                               "grid size-8 shrink-0 place-items-center rounded-lg border",
-                              tile,
+                              theme === "light" && tileLight ? tileLight : tile,
                             )}
                           >
                             <Icon size={15} />

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useThemeStore } from "@/stores/theme-store";
 
 const inr = (n: number) => `₹${new Intl.NumberFormat("en-IN").format(n)}`;
 
@@ -55,13 +56,19 @@ export function ClearanceTiers({
   onChange: (id: string) => void;
   className?: string;
 }) {
+  const light = useThemeStore((s) => s.theme) === "light";
   return (
     <section className={className}>
       <div className="flex items-center justify-between">
         <h2 className="font-mono text-[9px] font-bold tracking-[0.2em] text-muted-foreground/80">
           CLEARANCE TIERS
         </h2>
-        <span className="font-mono text-[8px] font-bold tracking-wider text-cyan-300">
+        <span
+          className={cn(
+            "font-mono text-[8px] font-bold tracking-wider",
+            light ? "text-[var(--cyan)]" : "text-cyan-300",
+          )}
+        >
           SCALABLE ACCESS
         </span>
       </div>

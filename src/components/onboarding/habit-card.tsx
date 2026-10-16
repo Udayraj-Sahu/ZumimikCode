@@ -49,7 +49,7 @@ export default function HabitCard({
       >
         Automated Habit.
         <br />
-        <span className="text-[var(--lime)]">Compounded Speed.</span>
+        <span className="text-[#C8FF4D]">Compounded Speed.</span>
       </h2>
 
       {/* Velocity panel */}
@@ -85,12 +85,12 @@ export default function HabitCard({
                 cy="24"
                 r={radius}
                 fill="none"
-                stroke="var(--lime)"
+                stroke="#C8FF4D"
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeDasharray={circumference}
                 strokeDashoffset={offset}
-                className="drop-shadow-[0_0_4px_var(--lime-mid-35)] transition-all duration-700"
+                className="drop-shadow-[0_0_4px_rgba(163,230,53,0.35)] transition-all duration-700"
               />
             </svg>
             <span
@@ -106,7 +106,7 @@ export default function HabitCard({
           <div className="min-w-0">
             <p
               className={cn(
-                "font-bold text-[var(--lime)]",
+                "font-bold text-[#C8FF4D]",
                 compact ? "text-[13px]" : "text-base sm:text-lg",
               )}
             >
@@ -114,7 +114,7 @@ export default function HabitCard({
               <span
                 className={cn(
                   "font-medium",
-                  compact ? "text-[10px] text-[var(--lime-70)]" : "text-xs text-[var(--lime-70)]",
+                  compact ? "text-[10px] text-[rgba(200,255,77,0.7)]" : "text-xs text-[rgba(200,255,77,0.7)]",
                 )}
               >
                 ({delta > 0 ? "+" : ""}
@@ -130,7 +130,7 @@ export default function HabitCard({
             >
               <svg
                 viewBox="0 0 24 24"
-                className={compact ? "h-2.5 w-2.5 fill-[var(--lime)]" : "h-3 w-3 fill-[var(--lime)]"}
+                className={compact ? "h-2.5 w-2.5 fill-[#C8FF4D]" : "h-3 w-3 fill-[#C8FF4D]"}
                 aria-hidden
               >
                 <path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Z" />

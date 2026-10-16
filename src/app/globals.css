@@ -1084,9 +1084,17 @@
 
 /* ==== END ACCENT THEMES ==== */
 
+/* Intro/portal scopes flip tokens via .light but mount outside app-shell, so they never get its text-foreground class.
+   Re-assert the theme foreground so unclassed text (and dead text-muted-foreground/* variants) inherits the right
+   color instead of body's dark-mode white. Dark mode has no .light class, so it is untouched by construction. */
+.light {
+  color: var(--foreground);
+}
+
 /* Re-assert white-alpha utilities on surfaces that stay white-on-dark even in light mode (image covers, fixed-colored CTAs, avatars). */
 .light .keep-white {
   --color-white-rgb: 255 255 255;
+  color: #fff;
 }
 
 

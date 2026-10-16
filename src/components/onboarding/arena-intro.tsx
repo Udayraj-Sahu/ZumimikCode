@@ -125,7 +125,10 @@ export function ArenaIntro({
       title: "Lane 02 · Vedic Speed Math",
       desc: "Mental arithmetic bursts and reflex sprints",
       Icon: Zap,
-      tone: "text-cyan-300 border-cyan-400/40 bg-cyan-400/10",
+      tone:
+        theme === "light"
+          ? "text-[var(--cyan)] border-cyan-400/40 bg-cyan-400/10"
+          : "text-cyan-300 border-cyan-400/40 bg-cyan-400/10",
     });
   }
   if (second) {
@@ -134,7 +137,10 @@ export function ArenaIntro({
       title: `Lane 03 · ${label(second)}`,
       desc: "Parallel prep lane synced to the same arena clock",
       Icon: Swords,
-      tone: "text-fuchsia-300 border-fuchsia-400/40 bg-fuchsia-400/10",
+      tone:
+        theme === "light"
+          ? "text-[var(--fuchsia)] border-fuchsia-400/40 bg-fuchsia-400/10"
+          : "text-fuchsia-300 border-fuchsia-400/40 bg-fuchsia-400/10",
     });
   }
 
