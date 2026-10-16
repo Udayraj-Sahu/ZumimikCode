@@ -55,6 +55,64 @@ export const SLATE = "#9CA3AF";
 export const SLATE_DARK = "#6B7280";
 export const SLATE_DARKEST = "#4B5563";
 export const SLATE_SOFT = "#94A3B8";
+
+/* ------------------------------------------------------------------ */
+/*  Hue-as-text resolver                                                */
+/* ------------------------------------------------------------------ */
+// The raw palette constants above are dark-mode tuned. Passing one straight to
+// `style={{ color: AMBER }}` pins a bright hue that fails contrast once it lands
+// on a light surface. `hueText` swaps such a value for the matching CSS custom
+// property, which the light theme re-darkens, so text stays legible in both
+// themes. Tints and gradients are untouched because `${color}1A` still needs a
+// literal hex to interpolate.
+const HUE_TEXT_VARS: Record<string, string> = {
+  [LIME]: "var(--lime)",
+  [LIME_BRIGHT]: "var(--lime-bright)",
+  [CTA_LIME]: "var(--lime)",
+  [GREEN_SOFT]: "var(--green-soft)",
+  [EMERALD]: "var(--emerald)",
+  [EMERALD_SOLID]: "var(--emerald-solid)",
+  [EMERALD_LIGHT]: "var(--emerald-light)",
+  [CYAN]: "var(--cyan)",
+  [CYAN_LIGHT]: "var(--cyan-light)",
+  [SKY]: "var(--sky)",
+  [BLUE]: "var(--blue)",
+  [BLUE_LIGHT]: "var(--blue-light)",
+  [VIOLET_PURPLE]: "var(--violet)",
+  [VIOLET_PURPLE_2]: "var(--violet-purple-2)",
+  [VIOLET_DEEP]: "var(--violet-deep)",
+  [VIOLET_DARK]: "var(--violet-dark)",
+  [PURPLE]: "var(--purple)",
+  [FUCHSIA]: "var(--fuchsia)",
+  [AMBER]: "var(--amber)",
+  [AMBER_DARK]: "var(--amber-dark)",
+  [AMBER_LIGHT]: "var(--amber-light)",
+  [YELLOW]: "var(--yellow)",
+  [GOLD]: "var(--gold)",
+  [ORANGE]: "var(--orange)",
+  [ROSE]: "var(--rose)",
+  [ROSE_PINK]: "var(--rose-pink)",
+  [RED_SOFT]: "var(--red-soft)",
+  [RED]: "var(--red)",
+  [BRONZE]: "var(--bronze)",
+  [SILVER]: "var(--silver)",
+  [MUTED_GREEN]: "var(--muted-green)",
+  [SLATE]: "var(--slate)",
+  [SLATE_DARK]: "var(--slate-dark)",
+  [SLATE_DARKEST]: "var(--slate-darkest)",
+  [SLATE_SOFT]: "var(--slate-soft)",
+  [MUTED]: "var(--muted-foreground)",
+};
+
+const HUE_TEXT_VARS_UPPER = Object.fromEntries(
+  Object.entries(HUE_TEXT_VARS).map(([key, value]) => [key.toUpperCase(), value]),
+);
+
+/** Map a raw palette hex to its theme-aware CSS var; unknown values pass through. */
+export function hueText(value: string): string {
+  return HUE_TEXT_VARS_UPPER[value.toUpperCase()] ?? value;
+}
+
 export const BG = "var(--bg)";
 export const BG_SOFT = "var(--bg-soft)";
 export const BG_2 = "var(--bg-2)";

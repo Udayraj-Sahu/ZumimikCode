@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trophy, Puzzle, Brain, Zap, Clock, Flame, Gamepad2, type LucideIcon } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { AMBER, BLUE, CTA_LIME, GLASS_BG, GLASS_BORDER, PURPLE, SLATE_50, SLATE_DARK } from "@/lib/theme-tokens";
+import { AMBER, BLUE, CTA_LIME, GLASS_BG, GLASS_BORDER, PURPLE, SLATE_SOFT, hueText } from "@/lib/theme-tokens";
 
 const TABS = [
   { id: "math", label: "Math", icon: Zap, color: AMBER },
@@ -82,7 +82,7 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
       <div className="flex items-center justify-between mb-4 relative">
         <span
           className="text-micro font-bold tracking-[0.14em] rounded-full px-3 py-1 uppercase"
-          style={{ color: mode.color, background: `${mode.color}15`, border: `1px solid ${mode.color}20` }}
+          style={{ color: hueText(mode.color), background: `${mode.color}15`, border: `1px solid ${mode.color}20` }}
         >
           {mode.category}
         </span>
@@ -100,7 +100,7 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
         {mode.desc}
       </p>
 
-      <div className="absolute right-5 bottom-4 opacity-60 max-[359px]:right-4 max-[359px]:bottom-3" style={{ color: mode.color }}>
+      <div className="absolute right-5 bottom-4 opacity-60 max-[359px]:right-4 max-[359px]:bottom-3" style={{ color: hueText(mode.color) }}>
         <Icon size={32} strokeWidth={1.8} />
       </div>
     </button>
@@ -150,11 +150,11 @@ export default function PlayPage() {
                 className="tab-tile-chip h-9 w-9 rounded-xl flex items-center justify-center transition-all"
                 style={isActive ? { background: `${tab.color}18` } : undefined}
               >
-                <Icon size={16} strokeWidth={2.2} style={{ color: isActive ? tab.color : SLATE_DARK }} />
+                <Icon size={16} strokeWidth={2.2} style={{ color: isActive ? hueText(tab.color) : hueText(SLATE_SOFT) }} />
               </div>
               <span
                 className="text-micro font-semibold tracking-[0.02em] whitespace-nowrap"
-                style={{ color: isActive ? tab.color : SLATE_50 }}
+                style={{ color: hueText(isActive ? tab.color : SLATE_SOFT) }}
               >
                 {tab.label}
               </span>

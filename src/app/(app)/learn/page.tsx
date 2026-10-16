@@ -37,7 +37,7 @@ import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { PaywallModal } from "@/components/paywall/paywall-modal";
 import { usePlanStore } from "@/stores/plan-store";
 import { usePaywallStore } from "@/stores/paywall-store";
-import { CYAN, EMERALD, GLASS_45, GLASS_55, GLASS_BG, GLASS_BORDER, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
+import { CYAN, EMERALD, GLASS_45, GLASS_55, GLASS_BG, GLASS_BORDER, ROSE, VIOLET_PURPLE, YELLOW, hueText } from "@/lib/theme-tokens";
 import { useAccentHex } from "@/hooks/use-accent-hex";
 
 const tabVariants: Variants = {
@@ -868,7 +868,7 @@ function LearnPageContent() {
                                 className="size-8 shrink-0 rounded-lg grid place-items-center"
                                 style={{ background: `${paper.accent}1a` }}
                               >
-                                <FileText size={14} style={{ color: paper.accent }} />
+                                <FileText size={14} style={{ color: hueText(paper.accent) }} />
                               </div>
                               <h2 className="text-[13.5px] font-semibold tracking-[-0.01em] text-foreground leading-snug">
                                 {paper.title}
@@ -891,7 +891,7 @@ function LearnPageContent() {
                               <span
                                 key={s.id}
                                 className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07] whitespace-nowrap"
-                                style={{ color: paper.accent, background: `${paper.accent}0d` }}
+                                style={{ color: hueText(paper.accent), background: `${paper.accent}0d` }}
                               >
                                 {s.label} · {s.questions}
                               </span>

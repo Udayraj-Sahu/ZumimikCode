@@ -386,7 +386,7 @@
   --secondary: #F0F0F0;
   --secondary-foreground: #0A0A0A;
   --muted: #E5E5E5;
-  --muted-foreground: #6B6B6B;
+  --muted-foreground: #5A5A5A;
   /* Neutral hover surface (was green-tinted #E8F5E9, which fought every
      non-green accent). The accent-colored text token is --accent-foreground. */
   --accent: #EFEFEF;
@@ -395,7 +395,7 @@
   --accent-soft: rgba(77, 124, 15, 0.10);
   --accent-muted: rgba(77, 124, 15, 0.05);
   --accent-border: rgba(77, 124, 15, 0.30);
-  --destructive: #DC2626;
+  --destructive: #B91C1C;
   --destructive-foreground: #FFFFFF;
   --border: rgba(0, 0, 0, 0.1);
   --input: rgba(0, 0, 0, 0.12);
@@ -411,9 +411,9 @@
      #8B5CF6) only reach ~3.2-4.2:1 on white and were the source of the
      audit's contrast failures (text-chart-2/3/4). */
   --chart-2: #1D4ED8;
-  --chart-3: #B45309;
+  --chart-3: #9C5707;
   --chart-4: #6D28D9;
-  --chart-5: #DC2626;
+  --chart-5: #B91C1C;
   --sidebar: #FFFFFF;
   --sidebar-foreground: #0A0A0A;
   --sidebar-primary: #4D7C0F;
@@ -505,23 +505,49 @@
    tokens (--lime-mid/dark/pale, --emerald-solid, --cta-*, --lime-0x, etc.)
    are intentionally NOT overridden: they are fill-only, never text. */
 .light {
-  --lime: #4D7C0F;
+  --lime: #3F6A0C;
   --lime-bright: #3F6212;
   --cta-lime: #4D7C0F;
   --emerald: #047857;
-  --amber: #B45309;
+  --amber: #9C5707;
   --red-soft: #B91C1C;
   --cyan: #0E7490;
   --fuchsia: #A21CAF;
   --violet: #6D28D9;
   --violet-deep: #5B21B6;
   --blue: #1D4ED8;
-  --gold: #A16207;
+  --gold: #9C5707;
   --orange: #C2410C;
   --rose: #BE123C;
   --rose-pink: #BE123C;
-  --bronze: #A35C1D;
-  --silver: #64748B;
+  --bronze: #8A4B12;
+  --silver: #475569;
+  /* Hue-as-text companions: every hue that scripts read through `hueText()`
+     must re-darken here or its text stays bright on light surfaces. Values
+     target >= 4.5:1 on white / near-white panels. */
+  --green-soft: #15803D;
+  --emerald-solid: #047857;
+  --emerald-light: #15803D;
+  --emerald-bright: #047857;
+  --cyan-light: #0E7490;
+  --sky: #0369A1;
+  --blue-light: #1D4ED8;
+  --violet-purple-2: #6D28D9;
+  --violet-dark: #5B21B6;
+  --purple: #7E22CE;
+  --amber-dark: #B45309;
+  --amber-light: #B45309;
+  --yellow: #854D0E;
+  --red: #B91C1C;
+  --muted-green: #475569;
+  --slate: #475569;
+  --slate-dark: #334155;
+  --slate-darkest: #1E293B;
+  --slate-soft: #475569;
+  --slate-muted: rgb(71 85 105);
+  --lime-solid: #4D7C0F;
+  --amber-solid: #B45309;
+  --red-soft-solid: #B91C1C;
   --lime-50: rgba(77,124,15,0.5);
   --lime-70: rgba(77,124,15,0.7);
   --lime-80: rgba(77,124,15,0.8);

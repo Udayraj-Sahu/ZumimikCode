@@ -11,7 +11,7 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useAchievements } from "@/hooks/queries/use-achievements";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import type { AchievementItem, AchievementTier, AchievementCategory } from "@/lib/types/achievements";
-import { AMBER, AMBER_15, BRONZE, BRONZE_15, CTA_15, CTA_LIME, GLASS_02, GLASS_03, GLASS_BG, SLATE_40, SLATE_60, SLATE_SOFT, SLATE_SOFT_15 } from "@/lib/theme-tokens";
+import { AMBER, AMBER_15, BRONZE, BRONZE_15, CTA_15, CTA_LIME, GLASS_02, GLASS_03, GLASS_BG, SLATE_40, SLATE_60, SLATE_SOFT, SLATE_SOFT_15, hueText } from "@/lib/theme-tokens";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Flame, Target, Zap, Swords, Medal, Trophy, LayoutGrid, Timer, Users,
@@ -139,7 +139,7 @@ function AchievementCard({ item }: { item: AchievementItem; index: number }) {
           >
             <Icon
               size={16}
-              style={{ color: item.unlocked ? tier.ring : SLATE_40 }}
+              style={{ color: item.unlocked ? hueText(tier.ring) : SLATE_40 }}
             />
           </div>
         </div>
@@ -162,7 +162,7 @@ function AchievementCard({ item }: { item: AchievementItem; index: number }) {
       <span
         className="mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
         style={{
-          color: item.unlocked ? tier.ring : SLATE_40,
+          color: item.unlocked ? hueText(tier.ring) : SLATE_40,
           backgroundColor: item.unlocked ? `${tier.ring}12` : GLASS_03,
         }}
       >

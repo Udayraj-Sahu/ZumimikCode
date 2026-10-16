@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
-import { AMBER, AMBER_DARK, AMBER_LIGHT, AMBER_LIGHT_12, BG_SOFT, BLACK_30, CYAN, CYAN_LIGHT, CYAN_LIGHT_12, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_03, GLASS_05, GLASS_06, GLASS_15, GLASS_30, GLASS_BG, GLASS_BORDER, GREEN_SOFT, GREEN_SOFT_12, ROSE_PINK, ROSE_PINK_12, SKY, SLATE, SLATE_DARKEST, VIOLET_DARK, VIOLET_DARK_12, VIOLET_PURPLE, VIOLET_PURPLE_2, VIOLET_PURPLE_2_12, YELLOW } from "@/lib/theme-tokens";
+import { AMBER, AMBER_DARK, AMBER_LIGHT, AMBER_LIGHT_12, BG_SOFT, BLACK_30, CYAN, CYAN_LIGHT, CYAN_LIGHT_12, EMERALD, EMERALD_12, EMERALD_SOLID, GLASS_03, GLASS_05, GLASS_06, GLASS_15, GLASS_30, GLASS_BG, GLASS_BORDER, GREEN_SOFT, GREEN_SOFT_12, ROSE_PINK, ROSE_PINK_12, SKY, SLATE, SLATE_DARKEST, VIOLET_DARK, VIOLET_DARK_12, VIOLET_PURPLE, VIOLET_PURPLE_2, VIOLET_PURPLE_2_12, YELLOW, hueText } from "@/lib/theme-tokens";
 import { useAccentHex } from "@/hooks/use-accent-hex";
 import { motion, useMotionValue, useTransform, animate } from "motion/react";
 import { ACCENT_IDS, accentThemes } from "@/lib/theme-tokens";
@@ -186,9 +186,9 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
     >
       <div className="flex items-center gap-2.5">
         <div className="size-9 rounded-xl flex items-center justify-center" style={{ background: `${accent}26` }}>
-          <Icon size={15} style={{ color: accent }} fill={iconFill ? "currentColor" : "none"} />
+          <Icon size={15} style={{ color: hueText(accent) }} fill={iconFill ? "currentColor" : "none"} />
         </div>
-        <SectionLabel style={{ color: accent }}>{label}</SectionLabel>
+        <SectionLabel style={{ color: hueText(accent) }}>{label}</SectionLabel>
       </div>
       <div className="flex-1 flex flex-col justify-center">
         <h3 className="text-[16px] font-bold tracking-[-0.03em] text-foreground leading-tight">{title}</h3>
@@ -628,7 +628,7 @@ export default function DashboardPage() {
                     <div className="absolute inset-0 opacity-[0.06] group-hover:opacity-[0.1] transition-opacity" style={{ background: `radial-gradient(circle at top right, ${s.color}, transparent 75%)` }} />
                     <div className="flex items-center justify-between mb-2.5 relative">
                       <div className="size-8 rounded-lg flex items-center justify-center" style={{ background: s.color + "18" }}>
-                        <s.icon size={14} style={{ color: s.color }} />
+                        <s.icon size={14} style={{ color: hueText(s.color) }} />
                       </div>
                       <span className="text-[8.5px] font-bold text-foreground/60 bg-white/[0.04] border border-white/[0.05] rounded-full px-2 py-0.5">{s.trend}</span>
                     </div>
@@ -949,7 +949,7 @@ export default function DashboardPage() {
               >
                 <div className="relative">
                   <div className="relative h-11 w-11 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-110" style={{ background: q.bg }}>
-                    <q.icon size={18} color={q.color} />
+                    <q.icon size={18} color={hueText(q.color)} />
                   </div>
                 </div>
                 <span className="text-micro font-medium text-foreground/55 text-center leading-tight tracking-[0.01em]">{label}</span>
