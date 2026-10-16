@@ -5,6 +5,7 @@ import { CYAN, LIME_BRIGHT, PURPLE, YELLOW } from "@/lib/theme-tokens";
 import gsap from "gsap";
 import { Globe, Smartphone, Zap, Target, Trophy, Swords } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
+import { useWelcomeStore } from "@/stores/welcome-store";
 import { useRouter } from "next/navigation";
 
 const FEATURES = [
@@ -79,6 +80,7 @@ export default function OnboardingPage() {
       ease: "power2.in",
       onComplete: async () => {
         await authLogin(`${name}@exam.com`, "mock-password");
+        useWelcomeStore.getState().requestOnSignup();
         router.replace("/dashboard");
       },
     });

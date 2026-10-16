@@ -4,6 +4,7 @@ import { useState, useLayoutEffect, useEffect, useCallback, useRef } from "react
 import { useRouter, usePathname } from "next/navigation";
 import { SplashScreen } from "@/components/shell/splash-screen";
 import { useAuthStore } from "@/stores/auth-store";
+import { useWelcomeStore } from "@/stores/welcome-store";
 import OnboardingPage from "@/app/onboarding/page";
 
 export function AppEntry({ children }: { children: React.ReactNode }) {
@@ -12,6 +13,12 @@ export function AppEntry({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const platformRef = useRef<"native" | "web">("web");
+
+  // Cold app open → queue the dashboard welcome (no-op if one already played
+  // earlier in this same session, so it never repeats within a session).
+  useEffect(() => {
+    useWelcomeStore.getState().requestOnAppOpen();
+  }, []);
 
   useLayoutEffect(() => {
     document.documentElement.classList.remove("loading");

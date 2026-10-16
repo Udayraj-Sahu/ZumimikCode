@@ -48,6 +48,7 @@ import { SeatBuilderIntro } from "@/components/onboarding/seat-builder-intro";
 import { ArenaIntro } from "@/components/onboarding/arena-intro";
 import { PitchIntro } from "@/components/onboarding/pitch-intro";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
+import { DashboardWelcome } from "@/components/dashboard/mascot/dashboard-welcome";
 import { InviteCard } from "@/components/dashboard/invite-card";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { NumberTicker } from "@/registry/magicui/number-ticker";
@@ -287,6 +288,10 @@ export default function DashboardPage() {
     else if (eligibleExam && !pitchHookSeen && (temporalWindow === "whenever" || temporalWindow === "not_sure")) setShowPitch(true);
   }, [isOnboarded, onboardingOpen, planHookSeen, arenaHookSeen, pitchHookSeen, temporalWindow, targetExam]);
 
+  // The mascot welcome must never play behind a sheet that covers the dashboard.
+  const welcomeBlocked =
+    onboardingOpen || showPlan || showArena || showPitch || habitModalOpen || examDateOpen;
+
   const profileSteps = [
     { label: "Name", done: !!firstName.trim() },
     { label: "Persona", done: !!persona },
@@ -375,7 +380,6 @@ export default function DashboardPage() {
   const radarLabels = radarAxes.map((a) => a.label);
   const radarValues = radarAxes.map((a) => a.value);
 
-  const displayName = firstName || "Champion";
   const examLabel = DOMAIN_LABELS[targetExam] ?? "Exam";
 
   const animateSection = useCallback((el: HTMLDivElement | null) => {
@@ -466,21 +470,33 @@ export default function DashboardPage() {
             <ThemeToggle />
           </div>
         </div>
-        <h1 className="mt-5 text-left text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2] md:hidden">
-          <span>Welcome back,</span>{" "}
-          <span className="italic text-primary">{displayName}</span>
-        </h1>
-        <div className="mt-6 hidden items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/50 md:flex">
-          <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-          Welcome back, <span className="italic text-primary">{displayName}</span>
+        <div className="mt-5 md:mt-6">
+          <DashboardWelcome
+            enabled={!welcomeBlocked}
+            greeting={
+              <h1 className="text-[15px] font-bold leading-[1.25] tracking-[-0.01em] text-card-foreground sm:text-[16px]">
+                {firstName?.trim() ? (
+                  <>
+                    <span>Welcome back,</span>{" "}
+                    <span className="italic text-primary">{firstName.trim()}</span>
+                  </>
+                ) : (
+                  <span>
+                    <span>Welcome</span>{" "}
+                    <span className="italic text-primary">Champion</span>
+                  </span>
+                )}
+              </h1>
+            }
+          />
+          <h1 className="mt-5 hidden text-[28px] font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:block">
+            Mastery is an <span className="text-primary">endurance of focus.</span>
+          </h1>
+          <p className="mt-4 hidden max-w-[560px] text-[13px] font-normal leading-[1.6] tracking-[0.01em] text-muted-foreground/60 md:block">
+            Your practice adapts to your error threshold in real time.{" "}
+            <span className="whitespace-nowrap">Zero lag, zero distractions.</span>
+          </p>
         </div>
-        <h1 className="mt-5 hidden text-[28px] font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:block">
-          Mastery is an <span className="text-primary">endurance of focus.</span>
-        </h1>
-        <p className="mt-4 hidden max-w-[560px] text-[13px] font-normal leading-[1.6] tracking-[0.01em] text-muted-foreground/60 md:block">
-          Your practice adapts to your error threshold in real time.{" "}
-          <span className="whitespace-nowrap">Zero lag, zero distractions.</span>
-        </p>
       </div>
 
       <div className="md:columns-2 gap-5">

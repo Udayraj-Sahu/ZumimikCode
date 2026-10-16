@@ -13,6 +13,7 @@ import { useReferralStore } from "@/stores/referral-store";
 import { useResumeStore } from "@/stores/resume-store";
 import { useNetworkStore } from "@/stores/network-store";
 import { usePaywallStore } from "@/stores/paywall-store";
+import { useWelcomeStore } from "@/stores/welcome-store";
 import { queryClient } from "@/providers/query-provider";
 
 const STORAGE_KEYS = [
@@ -43,6 +44,7 @@ export async function resetAppState(): Promise<void> {
   useResumeStore.getState().reset();
   useNetworkStore.getState().reset();
   usePaywallStore.getState().reset();
+  useWelcomeStore.getState().reset();
 
   for (const key of STORAGE_KEYS) {
     try {

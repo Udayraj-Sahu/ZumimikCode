@@ -16,6 +16,7 @@
     "gen:accent": "node --experimental-strip-types scripts/generate-accent-tokens.ts"
   },
   "dependencies": {
+    "@bible-strong/avatar-react": "^0.1.0",
     "@capacitor-community/speech-recognition": "^7.0.1",
     "@capacitor/android": "^8.4.0",
     "@capacitor/app": "^8.1.0",

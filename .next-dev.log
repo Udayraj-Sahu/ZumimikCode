@@ -1,0 +1,874 @@
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3005
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ (serwist) Bundling the service worker script with the URL '/sw.js' and the scope '/'...
+ ✓ Ready in 4s
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 5.4s (2146 modules)
+ GET /dashboard 200 in 6447ms
+ GET /dashboard 200 in 58ms
+ GET /dashboard 200 in 69ms
+ GET /dashboard 200 in 48ms
+ GET /dashboard 200 in 59ms
+ GET /dashboard 200 in 70ms
+ GET /dashboard 200 in 48ms
+ GET /dashboard 200 in 46ms
+ GET /dashboard 200 in 48ms
+ GET /dashboard 200 in 57ms
+ GET /dashboard 200 in 39ms
+ ✓ Compiled in 27.1s (1091 modules)
+ ✓ Compiled in 1224ms (1091 modules)
+ ✓ Compiled in 4.2s (1091 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 948ms (1069 modules)
+ GET /dashboard 200 in 1440ms
+ GET /dashboard 200 in 98ms
+ GET /dashboard 200 in 74ms
+ GET /dashboard 200 in 64ms
+ GET /dashboard 200 in 67ms
+ GET /dashboard 200 in 63ms
+ GET /dashboard 200 in 63ms
+ GET /dashboard 200 in 51ms
+ GET /dashboard 200 in 55ms
+ GET /dashboard 200 in 60ms
+ ✓ Compiled in 3.8s (1091 modules)
+ ✓ Compiled in 1678ms (1091 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 614ms (1069 modules)
+ GET /dashboard 200 in 1005ms
+ GET /dashboard 200 in 70ms
+ GET /dashboard 200 in 62ms
+ GET /dashboard 200 in 64ms
+ GET /dashboard 200 in 67ms
+ ✓ Compiled in 2.3s (1091 modules)
+ ✓ Compiled in 1603ms (1091 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 784ms (1069 modules)
+ GET /dashboard 200 in 1244ms
+ GET /dashboard 200 in 90ms
+ GET /dashboard 200 in 65ms
+ GET /dashboard 200 in 102ms
+ GET /dashboard 200 in 86ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\0.pack.gz_' -> 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\0.pack.gz'
+ ✓ Compiled in 2.4s (1091 modules)
+ ✓ Compiled in 1717ms (1091 modules)
+ ✓ Compiled in 2.3s (1091 modules)
+ ✓ Compiled in 2.2s (1091 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 940ms (1069 modules)
+ GET /dashboard 200 in 1353ms
+ GET /dashboard 200 in 72ms
+ GET /dashboard 200 in 74ms
+ ✓ Compiled in 1890ms (1091 modules)
+ ✓ Compiled in 2s (1091 modules)
+ ✓ Compiled in 1851ms (1091 modules)
+ ✓ Compiled in 3.6s (1091 modules)
+ ✓ Compiled in 2.8s (1091 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 1246ms (1069 modules)
+ GET /dashboard 200 in 1934ms
+ ✓ Compiled in 3.6s (2160 modules)
+ GET /dashboard 200 in 957ms
+ ✓ Compiled in 4s (1091 modules)
+ ✓ Compiled in 5.4s (1091 modules)
+ ✓ Compiled in 3.2s (1091 modules)
+ ✓ Compiled in 6.5s (1091 modules)
+ ✓ Compiled in 2.4s (1091 modules)
+ ✓ Compiled in 2.5s (1091 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 1469ms (1069 modules)
+ GET /dashboard 200 in 2270ms
+ GET /dashboard 200 in 61ms
+ GET /dashboard 200 in 77ms
+ GET /dashboard 200 in 56ms
+ GET /dashboard 200 in 82ms
+ GET /dashboard 200 in 56ms
+ GET /dashboard 200 in 40ms
+ GET /dashboard 200 in 70ms
+ ✓ Compiled in 2.3s (2160 modules)
+ ✓ Compiled in 1343ms (2160 modules)
+ ✓ Compiled in 2.2s (2160 modules)
+ GET /dashboard 200 in 441ms
+ GET /dashboard 200 in 61ms
+ GET /dashboard 200 in 64ms
+ GET /dashboard 200 in 67ms
+ GET /dashboard 200 in 76ms
+ GET /dashboard 200 in 77ms
+ GET /dashboard 200 in 67ms
+ GET /dashboard 200 in 70ms
+ GET /dashboard 200 in 54ms
+ GET /dashboard 200 in 47ms
+ GET /dashboard 200 in 60ms
+ GET /dashboard 200 in 49ms
+ GET /dashboard 200 in 49ms
+ GET /dashboard 200 in 61ms
+ ✓ Compiled in 3.2s (2160 modules)
+ GET /dashboard 200 in 617ms
+ ✓ Compiled in 3.1s (2160 modules)
+ GET /dashboard 200 in 361ms
+ GET /dashboard 200 in 67ms
+ GET /dashboard 200 in 77ms
+ GET /dashboard 200 in 79ms
+ GET /dashboard 200 in 96ms
+ GET /dashboard 200 in 54ms
+ GET /dashboard 200 in 43ms
+ GET /dashboard 200 in 43ms
+ ✓ Compiled in 2.8s (2160 modules)
+ GET /dashboard 200 in 498ms
+ GET /dashboard 200 in 60ms
+ GET /dashboard 200 in 58ms
+ GET /dashboard 200 in 47ms
+ GET /dashboard 200 in 53ms
+ GET /dashboard 200 in 73ms
+ GET /dashboard 200 in 61ms
+ GET /dashboard 200 in 62ms
+ ✓ Compiled in 2.7s (2160 modules)
+ GET /dashboard 200 in 390ms
+ GET /dashboard 200 in 62ms
+ GET /dashboard 200 in 51ms
+ GET /dashboard 200 in 52ms
+ ✓ Compiled in 4.8s (2160 modules)
+ GET /dashboard 200 in 508ms
+ GET /dashboard 200 in 74ms
+ GET /dashboard 200 in 54ms
+ GET /dashboard 200 in 65ms
+ GET /dashboard 200 in 56ms
+ GET /dashboard 200 in 48ms
+ GET /dashboard 200 in 54ms
+ GET /dashboard 200 in 68ms
+ GET /dashboard 200 in 105ms
+ GET /dashboard 200 in 96ms
+ GET /dashboard 200 in 69ms
+ GET /dashboard 200 in 87ms
+ GET /dashboard 200 in 54ms
+ ✓ Compiled in 3s (2160 modules)
+ GET /dashboard 200 in 274ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\0.pack.gz_' -> 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\0.pack.gz'
+ ✓ Compiled in 1472ms (1091 modules)
+ ✓ Compiled in 4.1s (2160 modules)
+ ✓ Compiled in 4s (2162 modules)
+ GET /dashboard 200 in 426ms
+ GET /dashboard 200 in 55ms
+ GET /dashboard 200 in 53ms
+ GET /dashboard 200 in 118ms
+ GET /dashboard 200 in 107ms
+ ✓ Compiled in 3.2s (2162 modules)
+ ✓ Compiled in 3.9s (2162 modules)
+ GET /dashboard 200 in 522ms
+ GET /dashboard 200 in 77ms
+ GET /dashboard 200 in 55ms
+ GET /dashboard 200 in 62ms
+ ✓ Compiled in 3.7s (2162 modules)
+ GET /dashboard 200 in 485ms
+ GET /dashboard 200 in 96ms
+ GET /dashboard 200 in 90ms
+ GET /dashboard 200 in 64ms
+ ✓ Compiled in 3.3s (2162 modules)
+ GET /dashboard 200 in 505ms
+ GET /dashboard 200 in 101ms
+ GET /dashboard 200 in 62ms
+ GET /dashboard 200 in 98ms
+ ✓ Compiled in 5.6s (2162 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\4.pack.gz_' -> 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\4.pack.gz'
+ GET /dashboard 200 in 493ms
+ GET /dashboard 200 in 150ms
+ GET /dashboard 200 in 55ms
+ GET /dashboard 200 in 74ms
+ GET /dashboard 200 in 104ms
+ GET /dashboard 200 in 85ms
+ GET /dashboard 200 in 71ms
+ ✓ Compiled in 3s (2162 modules)
+ GET /dashboard 200 in 205ms
+ GET /dashboard 200 in 72ms
+ GET /dashboard 200 in 80ms
+ ✓ Compiled in 2.8s (2162 modules)
+ ✓ Compiled in 2.1s (2162 modules)
+ GET /dashboard 200 in 1051ms
+ GET /dashboard 200 in 46ms
+ GET /dashboard 200 in 59ms
+ ✓ Compiled in 2s (2162 modules)
+ GET /dashboard 200 in 417ms
+ GET /dashboard 200 in 130ms
+ GET /dashboard 200 in 158ms
+ GET /dashboard 200 in 90ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1212ms (2165 modules)
+ GET /_next/static/css/app/layout.css?v=1792084064910 404 in 1511ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084064910 404 in 1490ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 1508ms
+ GET /_next/static/chunks/webpack.js?v=1792084064910 404 in 1519ms
+ GET /_next/static/chunks/main-app.js?v=1792084064910 404 in 1506ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 1506ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 119ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 117ms
+ GET /_next/static/chunks/app/not-found.js 404 in 99ms
+ GET /_next/static/chunks/app/global-error.js 404 in 98ms
+ GET /_next/static/chunks/app/error.js 404 in 102ms
+ GET /dashboard 200 in 150ms
+ GET /_next/static/css/app/layout.css?v=1792084068052 404 in 70ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084068052 404 in 100ms
+ GET /_next/static/chunks/main-app.js?v=1792084068052 404 in 129ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 128ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 128ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 127ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 66ms
+ GET /_next/static/chunks/app/error.js 404 in 70ms
+ GET /_next/static/chunks/app/not-found.js 404 in 71ms
+ GET /_next/static/chunks/app/global-error.js 404 in 69ms
+ GET /dashboard 200 in 68ms
+ GET /_next/static/css/app/layout.css?v=1792084069773 404 in 73ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084069773 404 in 74ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 118ms
+ GET /_next/static/chunks/main-app.js?v=1792084069773 404 in 123ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 123ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 129ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 91ms
+ GET /_next/static/chunks/app/error.js 404 in 88ms
+ GET /_next/static/chunks/app/global-error.js 404 in 61ms
+ GET /_next/static/chunks/app/not-found.js 404 in 63ms
+ GET /dashboard 200 in 62ms
+ GET /_next/static/css/app/layout.css?v=1792084071462 404 in 122ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084071462 404 in 126ms
+ GET /_next/static/chunks/main-app.js?v=1792084071462 404 in 144ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 142ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 145ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 152ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 106ms
+ GET /_next/static/chunks/app/error.js 404 in 83ms
+ GET /_next/static/chunks/app/not-found.js 404 in 75ms
+ GET /_next/static/chunks/app/global-error.js 404 in 74ms
+ GET /dashboard 200 in 48ms
+ GET /_next/static/css/app/layout.css?v=1792084073144 404 in 61ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084073144 404 in 124ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 141ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 140ms
+ GET /_next/static/chunks/main-app.js?v=1792084073144 404 in 146ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 139ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 75ms
+ GET /_next/static/chunks/app/error.js 404 in 75ms
+ GET /_next/static/chunks/app/not-found.js 404 in 76ms
+ GET /_next/static/chunks/app/global-error.js 404 in 70ms
+ GET /dashboard 200 in 52ms
+ GET /_next/static/css/app/layout.css?v=1792084074831 404 in 51ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084074831 404 in 96ms
+ GET /_next/static/chunks/main-app.js?v=1792084074831 404 in 115ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 113ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 111ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 111ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 58ms
+ GET /_next/static/chunks/app/error.js 404 in 73ms
+ GET /_next/static/chunks/app/not-found.js 404 in 71ms
+ GET /_next/static/chunks/app/global-error.js 404 in 69ms
+ GET /dashboard 200 in 54ms
+ GET /_next/static/css/app/layout.css?v=1792084076493 404 in 75ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084076493 404 in 79ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 116ms
+ GET /_next/static/chunks/main-app.js?v=1792084076493 404 in 122ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 121ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 124ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 79ms
+ GET /_next/static/chunks/app/error.js 404 in 91ms
+ GET /_next/static/chunks/app/not-found.js 404 in 64ms
+ GET /_next/static/chunks/app/global-error.js 404 in 62ms
+ GET /dashboard 200 in 61ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084078125 404 in 109ms
+ GET /_next/static/css/app/layout.css?v=1792084078125 404 in 112ms
+ GET /_next/static/chunks/main-app.js?v=1792084078125 404 in 119ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 113ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 107ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 112ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 95ms
+ GET /_next/static/chunks/app/error.js 404 in 75ms
+ GET /_next/static/chunks/app/not-found.js 404 in 73ms
+ GET /_next/static/chunks/app/global-error.js 404 in 73ms
+ GET /dashboard 200 in 62ms
+ GET /_next/static/css/app/layout.css?v=1792084079765 404 in 56ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084079765 404 in 63ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 114ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 117ms
+ GET /_next/static/chunks/main-app.js?v=1792084079765 404 in 114ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 114ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 55ms
+ GET /_next/static/chunks/app/error.js 404 in 71ms
+ GET /_next/static/chunks/app/not-found.js 404 in 66ms
+ GET /_next/static/chunks/app/global-error.js 404 in 65ms
+ GET /dashboard 200 in 50ms
+ GET /_next/static/css/app/layout.css?v=1792084081409 404 in 96ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084081409 404 in 85ms
+ GET /_next/static/chunks/main-app.js?v=1792084081409 404 in 112ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 112ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 113ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 124ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 100ms
+ GET /_next/static/chunks/app/error.js 404 in 84ms
+ GET /_next/static/chunks/app/not-found.js 404 in 84ms
+ GET /_next/static/chunks/app/global-error.js 404 in 78ms
+ GET /dashboard 200 in 84ms
+ GET /_next/static/css/app/layout.css?v=1792084083106 404 in 149ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084083106 404 in 121ms
+ GET /_next/static/chunks/main-app.js?v=1792084083106 404 in 154ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 153ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 151ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 159ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 115ms
+ GET /_next/static/chunks/app/not-found.js 404 in 83ms
+ GET /_next/static/chunks/app/global-error.js 404 in 83ms
+ GET /_next/static/chunks/app/error.js 404 in 89ms
+ GET /dashboard 200 in 57ms
+ GET /_next/static/css/app/layout.css?v=1792084084847 404 in 79ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084084847 404 in 92ms
+ GET /_next/static/chunks/main-app.js?v=1792084084847 404 in 165ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 164ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 164ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 163ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 79ms
+ GET /_next/static/chunks/app/error.js 404 in 57ms
+ GET /_next/static/chunks/app/not-found.js 404 in 55ms
+ GET /_next/static/chunks/app/global-error.js 404 in 53ms
+ GET /dashboard 200 in 65ms
+ GET /_next/static/css/app/layout.css?v=1792084086573 404 in 181ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084086573 404 in 181ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 218ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 214ms
+ GET /_next/static/chunks/main-app.js?v=1792084086573 404 in 213ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 217ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 122ms
+ GET /_next/static/chunks/app/error.js 404 in 93ms
+ GET /_next/static/chunks/app/not-found.js 404 in 92ms
+ GET /_next/static/chunks/app/global-error.js 404 in 90ms
+ GET /dashboard 200 in 66ms
+ GET /_next/static/css/app/layout.css?v=1792084088401 404 in 68ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084088401 404 in 157ms
+ GET /_next/static/chunks/main-app.js?v=1792084088401 404 in 177ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 176ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 175ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 175ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 80ms
+ GET /_next/static/chunks/app/error.js 404 in 89ms
+ GET /_next/static/chunks/app/global-error.js 404 in 81ms
+ GET /_next/static/chunks/app/not-found.js 404 in 88ms
+ GET /dashboard 200 in 60ms
+ GET /_next/static/css/app/layout.css?v=1792084090186 404 in 73ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084090186 404 in 78ms
+ GET /_next/static/chunks/main-app.js?v=1792084090186 404 in 112ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 113ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 116ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 115ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 85ms
+ GET /_next/static/chunks/app/error.js 404 in 84ms
+ GET /_next/static/chunks/app/not-found.js 404 in 73ms
+ GET /_next/static/chunks/app/global-error.js 404 in 70ms
+ GET /dashboard 200 in 43ms
+ GET /_next/static/css/app/layout.css?v=1792084091849 404 in 141ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084091849 404 in 125ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 159ms
+ GET /_next/static/chunks/main-app.js?v=1792084091849 404 in 162ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 159ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 169ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 118ms
+ GET /_next/static/chunks/app/error.js 404 in 96ms
+ GET /_next/static/chunks/app/not-found.js 404 in 94ms
+ GET /_next/static/chunks/app/global-error.js 404 in 91ms
+ GET /dashboard 200 in 77ms
+ GET /_next/static/css/app/layout.css?v=1792084093588 404 in 133ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084093588 404 in 123ms
+ GET /_next/static/chunks/main-app.js?v=1792084093588 404 in 158ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 156ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 155ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 178ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 126ms
+ GET /_next/static/chunks/app/global-error.js 404 in 84ms
+ GET /_next/static/chunks/app/not-found.js 404 in 87ms
+ GET /_next/static/chunks/app/error.js 404 in 90ms
+ GET /dashboard 200 in 44ms
+ GET /_next/static/css/app/layout.css?v=1792084095338 404 in 84ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084095338 404 in 78ms
+ GET /_next/static/chunks/main-app.js?v=1792084095338 404 in 125ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 123ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 123ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 125ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 66ms
+ GET /_next/static/chunks/app/error.js 404 in 62ms
+ GET /_next/static/chunks/app/not-found.js 404 in 60ms
+ GET /_next/static/chunks/app/global-error.js 404 in 58ms
+ GET /dashboard 200 in 97ms
+ GET /_next/static/css/app/layout.css?v=1792084097026 404 in 114ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084097026 404 in 195ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 220ms
+ GET /_next/static/chunks/main-app.js?v=1792084097026 404 in 227ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 214ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 212ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 80ms
+ GET /_next/static/chunks/app/error.js 404 in 91ms
+ GET /_next/static/chunks/app/not-found.js 404 in 89ms
+ GET /_next/static/chunks/app/global-error.js 404 in 81ms
+ GET /dashboard 200 in 153ms
+ GET /_next/static/css/app/layout.css?v=1792084099115 404 in 359ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084099115 404 in 337ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 426ms
+ GET /_next/static/chunks/main-app.js?v=1792084099115 404 in 437ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 426ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 455ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 261ms
+ GET /_next/static/chunks/app/error.js 404 in 165ms
+ GET /_next/static/chunks/app/not-found.js 404 in 158ms
+ GET /_next/static/chunks/app/global-error.js 404 in 130ms
+ GET /dashboard 200 in 171ms
+ GET /_next/static/css/app/layout.css?v=1792084116436 404 in 215ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084116436 404 in 146ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 374ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 367ms
+ GET /_next/static/chunks/main-app.js?v=1792084116436 404 in 384ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 366ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 221ms
+ GET /_next/static/chunks/app/error.js 404 in 210ms
+ GET /_next/static/chunks/app/global-error.js 404 in 197ms
+ GET /_next/static/chunks/app/not-found.js 404 in 206ms
+ GET /dashboard 200 in 152ms
+ GET /_next/static/css/app/layout.css?v=1792084139984 404 in 197ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084139984 404 in 171ms
+ GET /_next/static/chunks/main-app.js?v=1792084139984 404 in 219ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 216ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 220ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 235ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 172ms
+ GET /_next/static/chunks/app/error.js 404 in 148ms
+ GET /_next/static/chunks/app/not-found.js 404 in 148ms
+ GET /_next/static/chunks/app/global-error.js 404 in 134ms
+ GET /dashboard 200 in 147ms
+ GET /_next/static/css/app/layout.css?v=1792084852738 404 in 137ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084852738 404 in 122ms
+ GET /_next/static/chunks/main-app.js?v=1792084852738 404 in 155ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 150ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 150ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 158ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 121ms
+ GET /_next/static/chunks/app/error.js 404 in 92ms
+ GET /_next/static/chunks/app/global-error.js 404 in 87ms
+ GET /_next/static/chunks/app/not-found.js 404 in 92ms
+ GET /dashboard 200 in 58ms
+ GET /_next/static/css/app/layout.css?v=1792084896121 404 in 116ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084896121 404 in 103ms
+ GET /_next/static/chunks/main-app.js?v=1792084896121 404 in 170ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 176ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 187ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 226ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 366ms
+ GET /_next/static/chunks/app/not-found.js 404 in 261ms
+ GET /_next/static/chunks/app/error.js 404 in 283ms
+ GET /_next/static/chunks/app/global-error.js 404 in 233ms
+ GET /dashboard 200 in 66ms
+ GET /_next/static/css/app/layout.css?v=1792084898312 404 in 45ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084898312 404 in 99ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 109ms
+ GET /_next/static/chunks/main-app.js?v=1792084898312 404 in 112ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 110ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 109ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 54ms
+ GET /_next/static/chunks/app/error.js 404 in 66ms
+ GET /_next/static/chunks/app/not-found.js 404 in 62ms
+ GET /_next/static/chunks/app/global-error.js 404 in 61ms
+ GET /dashboard 200 in 73ms
+ GET /_next/static/css/app/layout.css?v=1792084900158 404 in 89ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084900158 404 in 93ms
+ GET /_next/static/chunks/main-app.js?v=1792084900158 404 in 136ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 137ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 138ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 175ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 204ms
+ GET /_next/static/chunks/app/error.js 404 in 154ms
+ GET /_next/static/chunks/app/not-found.js 404 in 148ms
+ GET /_next/static/chunks/app/global-error.js 404 in 142ms
+ GET /dashboard 200 in 84ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084902101 404 in 93ms
+ GET /_next/static/css/app/layout.css?v=1792084902101 404 in 101ms
+ GET /_next/static/chunks/main-app.js?v=1792084902101 404 in 117ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 114ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 117ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 124ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 94ms
+ GET /_next/static/chunks/app/not-found.js 404 in 72ms
+ GET /_next/static/chunks/app/error.js 404 in 75ms
+ GET /_next/static/chunks/app/global-error.js 404 in 72ms
+ GET /dashboard 200 in 77ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084903959 404 in 105ms
+ GET /_next/static/css/app/layout.css?v=1792084903959 404 in 108ms
+ GET /_next/static/chunks/main-app.js?v=1792084903959 404 in 120ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 107ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 114ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 112ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 95ms
+ GET /_next/static/chunks/app/error.js 404 in 78ms
+ GET /_next/static/chunks/app/not-found.js 404 in 79ms
+ GET /_next/static/chunks/app/global-error.js 404 in 79ms
+ GET /dashboard 200 in 57ms
+ GET /_next/static/css/app/layout.css?v=1792084923080 404 in 90ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084923080 404 in 75ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 185ms
+ GET /_next/static/chunks/main-app.js?v=1792084923080 404 in 191ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 190ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 185ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 115ms
+ GET /_next/static/chunks/app/error.js 404 in 138ms
+ GET /_next/static/chunks/app/not-found.js 404 in 138ms
+ GET /_next/static/chunks/app/global-error.js 404 in 138ms
+ GET /dashboard 200 in 79ms
+ GET /_next/static/css/app/layout.css?v=1792084925157 404 in 63ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084925157 404 in 68ms
+ GET /_next/static/chunks/main-app.js?v=1792084925157 404 in 112ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 111ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 112ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 112ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 53ms
+ GET /_next/static/chunks/app/error.js 404 in 70ms
+ GET /_next/static/chunks/app/not-found.js 404 in 68ms
+ GET /_next/static/chunks/app/global-error.js 404 in 63ms
+ GET /dashboard 200 in 67ms
+ GET /_next/static/css/app/layout.css?v=1792084946411 404 in 72ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792084946411 404 in 117ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 151ms
+ GET /_next/static/chunks/main-app.js?v=1792084946411 404 in 164ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 165ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 162ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 175ms
+ GET /_next/static/chunks/app/error.js 404 in 160ms
+ GET /_next/static/chunks/app/not-found.js 404 in 105ms
+ GET /_next/static/chunks/app/global-error.js 404 in 100ms
+ GET /_next/static/css/app/layout.css 404 in 76ms
+ GET /dashboard 200 in 86ms
+ GET /_next/static/css/app/layout.css?v=1792085093177 404 in 140ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085093177 404 in 145ms
+ GET /_next/static/chunks/main-app.js?v=1792085093177 404 in 146ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 145ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 146ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 145ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 107ms
+ GET /_next/static/chunks/app/error.js 404 in 87ms
+ GET /_next/static/chunks/app/not-found.js 404 in 85ms
+ GET /_next/static/chunks/app/global-error.js 404 in 81ms
+ GET /dashboard 200 in 55ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085095099 404 in 101ms
+ GET /_next/static/css/app/layout.css?v=1792085095099 404 in 105ms
+ GET /_next/static/chunks/main-app.js?v=1792085095099 404 in 132ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 128ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 129ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 136ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 104ms
+ GET /_next/static/chunks/app/error.js 404 in 84ms
+ GET /_next/static/chunks/app/not-found.js 404 in 81ms
+ GET /_next/static/chunks/app/global-error.js 404 in 80ms
+ GET /dashboard 200 in 84ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085097002 404 in 125ms
+ GET /_next/static/css/app/layout.css?v=1792085097002 404 in 154ms
+ GET /_next/static/chunks/main-app.js?v=1792085097002 404 in 162ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 157ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 161ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 159ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 116ms
+ GET /_next/static/chunks/app/not-found.js 404 in 93ms
+ GET /_next/static/chunks/app/error.js 404 in 96ms
+ GET /_next/static/chunks/app/global-error.js 404 in 94ms
+ GET /dashboard 200 in 62ms
+ GET /_next/static/css/app/layout.css?v=1792085111656 404 in 65ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085111656 404 in 133ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 167ms
+ GET /_next/static/chunks/main-app.js?v=1792085111656 404 in 169ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 165ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 163ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 75ms
+ GET /_next/static/chunks/app/error.js 404 in 79ms
+ GET /_next/static/chunks/app/not-found.js 404 in 74ms
+ GET /_next/static/chunks/app/global-error.js 404 in 72ms
+ GET /dashboard 200 in 63ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085122862 404 in 139ms
+ GET /_next/static/css/app/layout.css?v=1792085122862 404 in 142ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 150ms
+ GET /_next/static/chunks/main-app.js?v=1792085122862 404 in 161ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 144ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 150ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 171ms
+ GET /_next/static/chunks/app/not-found.js 404 in 139ms
+ GET /_next/static/chunks/app/error.js 404 in 143ms
+ GET /_next/static/chunks/app/global-error.js 404 in 138ms
+ GET /dashboard 200 in 56ms
+ GET /_next/static/css/app/layout.css?v=1792085135345 404 in 99ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085135345 404 in 105ms
+ GET /_next/static/chunks/main-app.js?v=1792085135345 404 in 144ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 143ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 153ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 162ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 128ms
+ GET /_next/static/chunks/app/error.js 404 in 95ms
+ GET /_next/static/chunks/app/not-found.js 404 in 94ms
+ GET /_next/static/chunks/app/global-error.js 404 in 62ms
+ ○ Compiling / ...
+ ✓ Compiled / in 3s (2235 modules)
+ GET / 200 in 4639ms
+ GET /_next/static/css/app/layout.css?v=1792085154050 404 in 116ms
+ GET /_next/static/chunks/main-app.js?v=1792085154050 404 in 132ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 128ms
+ GET /_next/static/chunks/app/error.js 404 in 123ms
+ GET /_next/static/chunks/app/not-found.js 404 in 75ms
+ GET /_next/static/chunks/app/global-error.js 404 in 60ms
+ GET / 200 in 57ms
+ GET /_next/static/css/app/layout.css?v=1792085173497 404 in 100ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 112ms
+ GET /_next/static/chunks/main-app.js?v=1792085173497 404 in 116ms
+ GET /_next/static/chunks/app/error.js 404 in 110ms
+ GET /_next/static/chunks/app/not-found.js 404 in 77ms
+ GET /_next/static/chunks/app/global-error.js 404 in 57ms
+ GET /dashboard 200 in 266ms
+ GET /_next/static/css/app/layout.css?v=1792085197764 404 in 92ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085197764 404 in 78ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 138ms
+ GET /_next/static/chunks/main-app.js?v=1792085197764 404 in 144ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 136ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 143ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 102ms
+ GET /_next/static/chunks/app/error.js 404 in 107ms
+ GET /_next/static/chunks/app/global-error.js 404 in 78ms
+ GET /_next/static/chunks/app/not-found.js 404 in 81ms
+ GET /dashboard 200 in 71ms
+ GET /dashboard 200 in 89ms
+ GET /_next/static/css/app/layout.css?v=1792085272986 404 in 206ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085272986 404 in 189ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 252ms
+ GET /_next/static/chunks/main-app.js?v=1792085272986 404 in 256ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 269ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 3.6s (2419 modules)
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 4231ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 4038ms
+ GET /_next/static/chunks/app/layout.js 404 in 4035ms
+ GET /_next/static/chunks/app/error.js 404 in 3845ms
+ GET /_next/static/chunks/app/not-found.js 404 in 3841ms
+ GET /_next/static/chunks/app/global-error.js 404 in 3814ms
+ GET /dashboard 200 in 665ms
+ GET /_next/static/css/app/layout.css?v=1792085304398 404 in 244ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085304398 404 in 220ms
+ GET /_next/static/chunks/main-app.js?v=1792085304398 404 in 283ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 278ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 280ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 293ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 176ms
+ GET /_next/static/chunks/app/layout.js 404 in 159ms
+ GET /_next/static/chunks/app/error.js 404 in 140ms
+ GET /_next/static/chunks/app/not-found.js 404 in 137ms
+ GET /_next/static/chunks/app/global-error.js 404 in 118ms
+ GET /dashboard 200 in 91ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085330500 404 in 95ms
+ GET /_next/static/css/app/layout.css?v=1792085330500 404 in 125ms
+ GET /_next/static/chunks/main-app.js?v=1792085330500 404 in 208ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 217ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 208ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 215ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 177ms
+ GET /_next/static/chunks/app/layout.js 404 in 180ms
+ GET /_next/static/chunks/app/error.js 404 in 147ms
+ GET /_next/static/chunks/app/not-found.js 404 in 76ms
+ GET /_next/static/chunks/app/global-error.js 404 in 75ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'D:\Exam-Arena-Frontend\.next\server\vendor-chunks\clsx.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/clsx' in D:\Exam-Arena-Frontend\.next\server for build dependencies doesn't lead to expected result 'D:\Exam-Arena-Frontend\.next\server\vendor-chunks\clsx.js', but to 'Error: Can't resolve './vendor-chunks/clsx' in 'D:\Exam-Arena-Frontend\.next\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/clsx (expected D:\Exam-Arena-Frontend\.next\server\vendor-chunks\clsx.js)
+<w>  at file dependencies D:\Exam-Arena-Frontend\.next\server\webpack-runtime.js
+<w>  at file D:\Exam-Arena-Frontend\.next\server\webpack-runtime.js
+<w>  at file dependencies D:\Exam-Arena-Frontend\.next\server\app\_not-found\page.js
+<w>  at file D:\Exam-Arena-Frontend\.next\server\app\_not-found\page.js
+<w>  at file dependencies D:\Exam-Arena-Frontend\node_modules\next\dist\server\require.js
+<w>  at file D:\Exam-Arena-Frontend\node_modules\next\dist\server\require.js
+<w>  at file dependencies D:\Exam-Arena-Frontend\node_modules\next\dist\server\load-components.js
+<w>  at file D:\Exam-Arena-Frontend\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies D:\Exam-Arena-Frontend\node_modules\next\dist\build\utils.js
+<w>  at file D:\Exam-Arena-Frontend\node_modules\next\dist\build\utils.js
+<w>  at file dependencies D:\Exam-Arena-Frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file D:\Exam-Arena-Frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs D:\Exam-Arena-Frontend\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+ GET /dashboard 200 in 58ms
+ GET /_next/static/css/app/layout.css?v=1792085339904 404 in 76ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085339904 404 in 199ms
+ GET /_next/static/chunks/main-app.js?v=1792085339904 404 in 229ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 228ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 227ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 220ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 168ms
+ GET /_next/static/chunks/app/layout.js 404 in 112ms
+ GET /_next/static/chunks/app/not-found.js 404 in 77ms
+ GET /_next/static/chunks/app/global-error.js 404 in 75ms
+ GET /_next/static/chunks/app/error.js 404 in 81ms
+ GET /dashboard 200 in 57ms
+ GET /_next/static/css/app/layout.css?v=1792085361045 404 in 154ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085361045 404 in 148ms
+ GET /_next/static/chunks/main-app.js?v=1792085361045 404 in 186ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 181ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 188ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 189ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 143ms
+ GET /_next/static/chunks/app/layout.js 404 in 137ms
+ GET /_next/static/chunks/app/error.js 404 in 121ms
+ GET /_next/static/chunks/app/not-found.js 404 in 113ms
+ GET /_next/static/chunks/app/global-error.js 404 in 110ms
+ GET /dashboard 200 in 52ms
+ GET /_next/static/css/app/layout.css?v=1792085369712 404 in 120ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085369712 404 in 114ms
+ GET /_next/static/chunks/main-app.js?v=1792085369712 404 in 146ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 145ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 147ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 179ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 152ms
+ GET /_next/static/chunks/app/layout.js 404 in 147ms
+ GET /_next/static/chunks/app/error.js 404 in 127ms
+ GET /_next/static/chunks/app/not-found.js 404 in 126ms
+ GET /_next/static/chunks/app/global-error.js 404 in 103ms
+ GET /dashboard 200 in 49ms
+ GET /_next/static/css/app/layout.css?v=1792085382836 404 in 81ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085382836 404 in 74ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 151ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 157ms
+ GET /_next/static/chunks/main-app.js?v=1792085382836 404 in 161ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 155ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 89ms
+ GET /_next/static/chunks/app/layout.js 404 in 84ms
+ GET /_next/static/chunks/app/error.js 404 in 96ms
+ GET /_next/static/chunks/app/not-found.js 404 in 94ms
+ GET /_next/static/chunks/app/global-error.js 404 in 84ms
+ GET /dashboard 200 in 65ms
+ GET /_next/static/css/app/layout.css?v=1792085393532 404 in 61ms
+ GET /_next/static/css/app/(app)/layout.css?v=1792085393532 404 in 121ms
+ GET /_next/static/chunks/main-app.js?v=1792085393532 404 in 164ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 165ms
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 163ms
+ GET /_next/static/chunks/app/(app)/layout.js 404 in 176ms
+ GET /_next/static/chunks/app/(app)/loading.js 404 in 115ms
+ GET /_next/static/chunks/app/layout.js 404 in 89ms
+ GET /_next/static/chunks/app/error.js 404 in 81ms
+ GET /_next/static/chunks/app/not-found.js 404 in 75ms
+ GET /_next/static/chunks/app/global-error.js 404 in 74ms
+ GET /dashboard 200 in 54ms
+ ✓ Compiled in 2.7s (2429 modules)
+[Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\0.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\server-development\\0.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\0.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\server-development\\0.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\0.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\server-development\\0.pack.gz'
+}
+[Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\2.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\server-development\\2.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\2.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\server-development\\2.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\2.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\server-development\\2.pack.gz'
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\server-development\0.pack.gz'
+ ✓ Compiled in 7.4s (2429 modules)
+ ✓ Compiled in 2.3s (2429 modules)
+ ✓ Compiled in 2.2s (2429 modules)
+ ✓ Compiled in 3s (2429 modules)
+ ✓ Compiled in 1781ms (2429 modules)
+ ✓ Compiled in 4.3s (2429 modules)
+ ✓ Compiled in 3.4s (2429 modules)
+ ✓ Compiled in 1653ms (2429 modules)
+ ✓ Compiled in 1961ms (2429 modules)
+ ✓ Compiled in 2.1s (2429 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\4.pack.gz_' -> 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\4.pack.gz'
+ ✓ Compiled in 1933ms (2429 modules)
+ ✓ Compiled in 1746ms (2429 modules)
+ ✓ Compiled in 2.4s (2429 modules)
+ ✓ Compiled in 2.6s (2429 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: EPERM: operation not permitted, rename 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\2.pack.gz_' -> 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\2.pack.gz'
+ ✓ Compiled in 5s (2429 modules)
+ ✓ Compiled in 2.1s (2429 modules)
+ ✓ Compiled in 1226ms (2429 modules)
+ ✓ Compiled in 1966ms (2429 modules)
+ ✓ Compiled in 1424ms (2429 modules)
+ ✓ Compiled in 1135ms (2429 modules)
+ ✓ Compiled in 1959ms (2429 modules)
+ ✓ Compiled in 3.9s (2429 modules)
+ ✓ Compiled in 1966ms (2429 modules)
+ ✓ Compiled in 1141ms (1319 modules)
+ ✓ Compiled in 653ms (1319 modules)
+ ✓ Compiled in 844ms (1319 modules)
+ ✓ Compiled in 713ms (1319 modules)
+ ✓ Compiled in 689ms (1319 modules)
+ ✓ Compiled in 861ms (1319 modules)
+ ✓ Compiled in 949ms (1319 modules)
+ ✓ Compiled in 652ms (1319 modules)
+ ✓ Compiled in 624ms (1319 modules)
+ ✓ Compiled in 637ms (1319 modules)
+ ✓ Compiled in 742ms (1319 modules)
+ ✓ Compiled in 1053ms (1319 modules)
+ ✓ Compiled in 827ms (1319 modules)
+ ✓ Compiled in 1334ms (1319 modules)
+ ✓ Compiled in 864ms (1319 modules)
+ ✓ Compiled in 719ms (1319 modules)
+ ✓ Compiled in 640ms (1319 modules)
+ ✓ Compiled in 692ms (1319 modules)
+ ✓ Compiled in 757ms (1319 modules)
+ ✓ Compiled in 1415ms (1319 modules)
+ ✓ Compiled in 1053ms (1319 modules)
+ ✓ Compiled in 1005ms (1319 modules)
+ ✓ Compiled in 822ms (1319 modules)
+ ✓ Compiled in 836ms (1319 modules)
+ ✓ Compiled in 1651ms (1319 modules)
+ ✓ Compiled in 1577ms (1319 modules)
+ ✓ Compiled in 791ms (1319 modules)
+ ✓ Compiled in 966ms (1319 modules)
+ ✓ Compiled in 971ms (1319 modules)
+ ✓ Compiled in 792ms (1319 modules)
+ ✓ Compiled in 2.2s (1319 modules)
+ ✓ Compiled in 1837ms (1319 modules)
+ ✓ Compiled in 1832ms (1319 modules)
+ ✓ Compiled in 1210ms (1319 modules)
+ ✓ Compiled in 1484ms (1319 modules)
+ ✓ Compiled in 1020ms (1319 modules)
+ ✓ Compiled in 1008ms (1319 modules)
+ ✓ Compiled in 1148ms (1319 modules)
+ ✓ Compiled in 1110ms (1319 modules)
+ ✓ Compiled in 1723ms (1319 modules)
+ ✓ Compiled in 1140ms (1319 modules)
+ ✓ Compiled in 1471ms (1319 modules)
+ ✓ Compiled in 2.1s (1319 modules)
+ ✓ Compiled in 995ms (1319 modules)
+[Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\0.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\client-development\\0.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\0.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\client-development\\0.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\0.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'D:\\Exam-Arena-Frontend\\.next\\cache\\webpack\\client-development\\0.pack.gz'
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat 'D:\Exam-Arena-Frontend\.next\cache\webpack\client-development\0.pack.gz'
