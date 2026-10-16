@@ -431,9 +431,8 @@ export default function DashboardPage() {
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative pt-6 pb-2 text-left min-[1025px]:pt-8 max-[359px]:pt-5">
         <div className="relative mb-3 flex items-center justify-start gap-2">
-          <div aria-hidden="true" className="inline-flex items-center gap-2 pill px-2.5 py-2 min-[1025px]:px-4 min-[1025px]:py-1.5">
+          <div aria-hidden="true" className="inline-flex items-center gap-2 pill px-2.5 py-2 min-[1025px]:hidden">
             <Sparkles size={13} className="text-primary" />
-            <span className="hidden text-[11px] font-semibold tracking-[0.22em] text-primary/80 min-[1025px]:inline">EXAM ARENA</span>
           </div>
           <div data-tour-streak className="ml-auto flex items-center gap-1">
             <div className="flex items-center gap-1.5 pill px-2.5 py-1.5 max-[359px]:px-2">
@@ -467,7 +466,7 @@ export default function DashboardPage() {
             <ThemeToggle />
           </div>
         </div>
-        <h1 className="mt-5 text-center text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2] md:hidden">
+        <h1 className="mt-5 text-left text-[20px] font-bold tracking-[-0.02em] text-foreground leading-[1.2] md:hidden">
           <span>Welcome back,</span>{" "}
           <span className="italic text-primary">{displayName}</span>
         </h1>
