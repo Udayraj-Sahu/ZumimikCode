@@ -2,9 +2,17 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import { useWelcomeStore } from "@/stores/welcome-store";
 
-// The avatar engine is an AGPL client-only chunk loaded via next/dynamic; stub
-// the dynamic loader with a synchronous component so the test focuses on the
-// welcome state machine and never resolves an async chunk.
+// A synchronous stand-in for the reduced-motion hook. The real hook sets state
+// from a mount effect, which the sequence test does not want to race; the
+// decision path reads `prefers-reduced-motion` through window.matchMedia
+// directly (configured by `setReducedMotion` below).
+const { reducedFlag } = vi.hoisted(() => ({ reducedFlag: { value: false } }));
+vi.mock("@/lib/use-reduced-motion", () => ({
+  usePrefersReducedMotion: () => reducedFlag.value,
+}));
+
+// Stub the AGPL client-only avatar chunk so the test never resolves an async
+// module; the focus is the welcome sequence, not the renderer.
 vi.mock("next/dynamic", () => ({
   default: () => {
     const DynamicStub = () => <span data-testid="pip-avatar" />;
@@ -13,8 +21,8 @@ vi.mock("next/dynamic", () => ({
   },
 }));
 
-// Replace framer-motion with inert divs so the walk has no animation timing:
-// `onAnimationComplete` never fires and assertions stay deterministic.
+// Replace framer-motion with inert divs; transitions never run so the sequence
+// is driven purely by the parent's timers and exposed via data-* attributes.
 vi.mock("motion/react", () => {
   type MotionProps = Record<string, unknown> & { children?: React.ReactNode };
   const MotionDiv = ({ children, className, style, ...rest }: MotionProps) => {
@@ -31,9 +39,18 @@ vi.mock("motion/react", () => {
   return { motion: { div: MotionDiv } };
 });
 
-import { DashboardWelcome } from "@/components/dashboard/mascot/dashboard-welcome";
+import {
+  DashboardWelcome,
+  WELCOME_CLOUD_MS,
+  WELCOME_DELAY_MS,
+  WELCOME_SETTLE_MS,
+} from "@/components/dashboard/mascot/dashboard-welcome";
+import { MASCOT_WALK_FROM, MASCOT_WALK_MS, MASCOT_WALK_TO } from "@/components/dashboard/mascot/dashboard-mascot";
+
+const unitOf = (value: string) => value.replace(/[-\d.]/g, "");
 
 function setReducedMotion(reduced: boolean): void {
+  reducedFlag.value = reduced;
   window.matchMedia = ((query: string) => ({
     matches: reduced && query.includes("prefers-reduced-motion"),
     media: query,
@@ -54,64 +71,100 @@ async function renderWelcome(enabled = true) {
   return result;
 }
 
-async function rerenderWelcome(
-  view: ReturnType<typeof render>,
-  enabled: boolean,
-) {
+async function rerenderWelcome(view: ReturnType<typeof render>, enabled: boolean) {
   await act(async () => {
     view.rerender(<DashboardWelcome enabled={enabled} greeting={<span>Welcome back, Ada</span>} />);
   });
 }
 
-beforeEach(() => {
-  sessionStorage.clear();
-  useWelcomeStore.getState().reset();
-  setReducedMotion(false);
-});
+function advance(ms: number): void {
+  act(() => {
+    vi.advanceTimersByTime(ms);
+  });
+}
 
-afterEach(() => {
-  sessionStorage.clear();
-  useWelcomeStore.getState().reset();
-});
+const mascot = () => document.querySelector("[data-mascot]");
+const cloud = () => document.querySelector("[data-mascot-cloud]");
 
 describe("DashboardWelcome", () => {
-  it("plays the walk-in once for a queued (new sign-up / app open) welcome", async () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    sessionStorage.clear();
+    useWelcomeStore.getState().reset();
+    setReducedMotion(false);
+  });
+
+  afterEach(() => {
+    act(() => {
+      vi.runOnlyPendingTimers();
+    });
+    vi.useRealTimers();
+    sessionStorage.clear();
+    useWelcomeStore.getState().reset();
+  });
+
+  it("keeps the mascot hidden for the delay, then walks, settles, then opens the cloud and reveals the text", async () => {
     useWelcomeStore.getState().requestOnSignup();
     await renderWelcome();
 
-    expect(screen.getByTestId("pip-avatar")).toBeInTheDocument();
-    expect(document.querySelector("[data-mascot]")).toHaveAttribute("data-walking", "true");
-    expect(document.querySelector("[data-mascot-cloud]")).toHaveAttribute("data-revealed", "false");
-    // Consumed immediately so it can never replay this session.
+    // Nothing is animating yet: mascot parked, cloud closed, text hidden.
+    expect(mascot()).toHaveAttribute("data-walking", "false");
+    expect(cloud()).toHaveAttribute("data-revealed", "false");
+    expect(cloud()).toHaveAttribute("data-text", "false");
     expect(useWelcomeStore.getState().status).toBe("played");
+
+    // 1s delay elapses -> the mascot starts walking.
+    advance(WELCOME_DELAY_MS - 1);
+    expect(mascot()).toHaveAttribute("data-walking", "false");
+    advance(1);
+    expect(mascot()).toHaveAttribute("data-walking", "true");
+    expect(cloud()).toHaveAttribute("data-revealed", "false");
+
+    // Walk finishes -> settle (idle), cloud still closed.
+    advance(MASCOT_WALK_MS);
+    expect(mascot()).toHaveAttribute("data-walking", "false");
+    expect(cloud()).toHaveAttribute("data-revealed", "false");
+
+    // Settle pause elapses -> the cloud opens, text still hidden.
+    advance(WELCOME_SETTLE_MS);
+    expect(cloud()).toHaveAttribute("data-revealed", "true");
+    expect(cloud()).toHaveAttribute("data-text", "false");
+
+    // Cloud animation finishes -> the greeting text appears.
+    advance(WELCOME_CLOUD_MS);
+    expect(cloud()).toHaveAttribute("data-text", "true");
+    expect(screen.getByTestId("pip-avatar")).toBeInTheDocument();
   });
 
-  it("does not walk when no welcome is queued (already played this session)", async () => {
+  it("does not play when no welcome is queued (already played this session)", async () => {
     useWelcomeStore.getState().consume();
     await renderWelcome();
 
-    expect(document.querySelector("[data-mascot]")).toHaveAttribute("data-walking", "false");
-    expect(document.querySelector("[data-mascot-cloud]")).toHaveAttribute("data-revealed", "true");
+    expect(mascot()).toHaveAttribute("data-walking", "false");
+    expect(cloud()).toHaveAttribute("data-revealed", "true");
+    expect(cloud()).toHaveAttribute("data-text", "true");
   });
 
-  it("re-rendering a consumed welcome never restarts the walk", async () => {
+  it("never restarts the walk on re-render", async () => {
     useWelcomeStore.getState().requestOnSignup();
     const view = await renderWelcome();
-    await rerenderWelcome(view, true);
+    advance(WELCOME_DELAY_MS + MASCOT_WALK_MS + WELCOME_SETTLE_MS + WELCOME_CLOUD_MS);
+    expect(cloud()).toHaveAttribute("data-text", "true");
 
-    expect(document.querySelector("[data-mascot]")).toHaveAttribute("data-walking", "true");
+    await rerenderWelcome(view, true);
+    expect(mascot()).toHaveAttribute("data-walking", "false");
+    expect(cloud()).toHaveAttribute("data-revealed", "true");
     expect(useWelcomeStore.getState().status).toBe("played");
-    // A second mount (i.e. navigating back) must not replay it.
-    expect(document.querySelector("[data-mascot]")).toHaveAttribute("data-walking", "true");
   });
 
-  it("respects reduced motion — shows the greeting without the walk", async () => {
+  it("respects reduced motion - shows the mascot and cloud immediately", async () => {
     setReducedMotion(true);
     useWelcomeStore.getState().requestOnSignup();
     await renderWelcome();
 
-    expect(document.querySelector("[data-mascot]")).toHaveAttribute("data-walking", "false");
-    expect(document.querySelector("[data-mascot-cloud]")).toHaveAttribute("data-revealed", "true");
+    expect(mascot()).toHaveAttribute("data-walking", "false");
+    expect(cloud()).toHaveAttribute("data-revealed", "true");
+    expect(cloud()).toHaveAttribute("data-text", "true");
     expect(useWelcomeStore.getState().status).toBe("played");
   });
 
@@ -119,12 +172,14 @@ describe("DashboardWelcome", () => {
     useWelcomeStore.getState().requestOnSignup();
     const view = await renderWelcome(false);
 
-    // Covered by a sheet → the welcome must not have started or been consumed.
+    advance(WELCOME_DELAY_MS + MASCOT_WALK_MS);
+    expect(mascot()).toHaveAttribute("data-walking", "false");
+    expect(cloud()).toHaveAttribute("data-revealed", "false");
     expect(useWelcomeStore.getState().status).toBe("pending");
-    expect(document.querySelector("[data-mascot]")).toHaveAttribute("data-walking", "false");
 
     await rerenderWelcome(view, true);
-    expect(document.querySelector("[data-mascot]")).toHaveAttribute("data-walking", "true");
+    advance(WELCOME_DELAY_MS);
+    expect(mascot()).toHaveAttribute("data-walking", "true");
     expect(useWelcomeStore.getState().status).toBe("played");
   });
 
@@ -132,5 +187,12 @@ describe("DashboardWelcome", () => {
     useWelcomeStore.getState().consume();
     await renderWelcome();
     expect(screen.getByText("Welcome back, Ada")).toBeInTheDocument();
+  });
+
+  it("keeps the walk start and end in the same unit so Framer Motion can interpolate", () => {
+    // A unit mismatch ("-70vw" -> 0) makes Framer Motion fall back to an instant
+    // jump, which is exactly what made the walk look like it was not animating.
+    expect(unitOf(MASCOT_WALK_FROM)).not.toBe("");
+    expect(unitOf(MASCOT_WALK_FROM)).toBe(unitOf(MASCOT_WALK_TO));
   });
 });

@@ -434,9 +434,29 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative pt-6 pb-2 text-left min-[1025px]:pt-8 max-[359px]:pt-5">
-        <div className="relative mb-3 flex items-center justify-start gap-2">
+        <div className="relative mb-3 flex flex-wrap items-center justify-start gap-2">
           <div aria-hidden="true" className="inline-flex items-center gap-2 pill px-2.5 py-2 min-[1025px]:hidden">
             <Sparkles size={13} className="text-primary" />
+          </div>
+          <div className="order-last mt-5 w-full min-w-0 md:order-none md:mt-0 md:mr-2 md:w-auto md:flex-1">
+            <DashboardWelcome
+              enabled={!welcomeBlocked}
+              greeting={
+                <h1 className="text-[15px] font-bold leading-[1.25] tracking-[-0.01em] text-card-foreground sm:text-[16px]">
+                  {firstName?.trim() ? (
+                    <>
+                      <span>Welcome back,</span>{" "}
+                      <span className="italic text-primary">{firstName.trim()}</span>
+                    </>
+                  ) : (
+                    <span>
+                      <span>Welcome</span>{" "}
+                      <span className="italic text-primary">Champion</span>
+                    </span>
+                  )}
+                </h1>
+              }
+            />
           </div>
           <div data-tour-streak className="ml-auto flex items-center gap-1">
             <div className="flex items-center gap-1.5 pill px-2.5 py-1.5 max-[359px]:px-2">
@@ -470,29 +490,11 @@ export default function DashboardPage() {
             <ThemeToggle />
           </div>
         </div>
-        <div className="mt-5 md:mt-6">
-          <DashboardWelcome
-            enabled={!welcomeBlocked}
-            greeting={
-              <h1 className="text-[15px] font-bold leading-[1.25] tracking-[-0.01em] text-card-foreground sm:text-[16px]">
-                {firstName?.trim() ? (
-                  <>
-                    <span>Welcome back,</span>{" "}
-                    <span className="italic text-primary">{firstName.trim()}</span>
-                  </>
-                ) : (
-                  <span>
-                    <span>Welcome</span>{" "}
-                    <span className="italic text-primary">Champion</span>
-                  </span>
-                )}
-              </h1>
-            }
-          />
-          <h1 className="mt-5 hidden text-[28px] font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:block">
+        <div className="hidden md:block">
+          <h1 className="mt-5 text-[28px] font-bold leading-[1.05] tracking-[-0.025em] text-foreground">
             Mastery is an <span className="text-primary">endurance of focus.</span>
           </h1>
-          <p className="mt-4 hidden max-w-[560px] text-[13px] font-normal leading-[1.6] tracking-[0.01em] text-muted-foreground/60 md:block">
+          <p className="mt-4 max-w-[560px] text-[13px] font-normal leading-[1.6] tracking-[0.01em] text-muted-foreground/60">
             Your practice adapts to your error threshold in real time.{" "}
             <span className="whitespace-nowrap">Zero lag, zero distractions.</span>
           </p>

@@ -3,15 +3,18 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { useWelcomeStore } from "@/stores/welcome-store";
-import { DashboardMascot } from "./dashboard-mascot";
+import { DashboardMascot, MASCOT_WALK_MS, type MascotState } from "./dashboard-mascot";
 import { WelcomeCloud } from "./welcome-cloud";
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 
-function prefersReducedMotionNow(): boolean {
-  if (typeof window === "undefined" || !window.matchMedia) return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
+/** How long the dashboard sits fully loaded before the mascot entrance starts. */
+export const WELCOME_DELAY_MS = 3000;
+/** Let the mascot settle into idle before the cloud opens. */
+export const WELCOME_SETTLE_MS = 200;
+/** Cloud opening (scale + fade) duration. */
+export const WELCOME_CLOUD_MS = 350;
 
-type WelcomePhase = "rest" | "walk";
+type Stage = "hidden" | "delay" | "walk" | "settle" | "cloud" | "ready";
 
 type DashboardWelcomeProps = {
   /**
@@ -26,60 +29,111 @@ type DashboardWelcomeProps = {
 };
 
 /**
- * Owns the "play once per session" welcome state machine and drives the mascot
- * walk-in plus the cloud reveal.
+ * Owns the "play once per session" welcome sequence and drives it stage by
+ * stage so the mascot and cloud never appear together:
  *
- * It reads the persisted {@link useWelcomeStore} status, which lives in
- * `sessionStorage`: a pending status means the welcome is queued (fresh sign-up
- * or a cold app open), while a played status means it already ran this session
- * and must not replay on re-render, route change or refresh. The store status is
- * consumed the moment the walk begins so the very same render can never trigger
- * it twice.
+ *   hidden -> delay (1s) -> walk (800ms) -> settle (200ms) -> cloud (350ms) -> ready
+ *
+ * A `pending` {@link useWelcomeStore} status means the welcome is queued (fresh
+ * sign-up or a cold app open); anything else means it already ran this session
+ * and must not replay on re-render, route change or refresh. The status is
+ * consumed the moment the sequence starts, and a `decidedRef` latch keeps
+ * re-renders from restarting it. Reduced-motion visitors skip straight to the
+ * settled state with the cloud and text visible.
  */
 export function DashboardWelcome({ enabled, greeting, className }: DashboardWelcomeProps) {
   const status = useWelcomeStore((s) => s.status);
-  const [phase, setPhase] = useState<WelcomePhase>("rest");
-  const [revealed, setRevealed] = useState(false);
+  const reduced = usePrefersReducedMotion();
+  const [stage, setStage] = useState<Stage>("hidden");
+  const [cloudOpen, setCloudOpen] = useState(false);
+  const [textVisible, setTextVisible] = useState(false);
   const decidedRef = useRef(false);
+  const timersRef = useRef<number[]>([]);
+
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => {
+      timers.forEach((t) => clearTimeout(t));
+      timersRef.current = [];
+    };
+  }, []);
 
   useEffect(() => {
     if (decidedRef.current) return;
-    if (!enabled) {
-      setRevealed(true);
+
+    const showNow = () => {
+      setStage("ready");
+      setCloudOpen(true);
+      setTextVisible(true);
+    };
+
+    if (!enabled) return; // wait for the dashboard to be unobstructed
+    if (reduced || prefersReducedMotionNow()) {
+      decidedRef.current = true;
+      useWelcomeStore.getState().consume();
+      showNow();
+      return;
+    }
+
+    const store = useWelcomeStore.getState();
+    if (store.status !== "pending") {
+      showNow();
       return;
     }
 
     decidedRef.current = true;
-    const store = useWelcomeStore.getState();
-    if (store.status !== "pending") {
-      setRevealed(true);
-      return;
-    }
-
-    // The welcome is considered "played" the moment it starts, so a re-render,
-    // route change or refresh within this session can never replay it — even
-    // for reduced-motion visitors, who simply skip the walk.
     store.consume();
 
-    if (prefersReducedMotionNow()) {
-      setRevealed(true);
-      return;
-    }
+    const timers = timersRef.current;
+    setStage("delay");
+    timers.push(
+      window.setTimeout(() => {
+        setStage("walk");
+        timers.push(
+          window.setTimeout(() => {
+            setStage("settle");
+            timers.push(
+              window.setTimeout(() => {
+                setStage("cloud");
+                setCloudOpen(true);
+                timers.push(
+                  window.setTimeout(() => {
+                    setStage("ready");
+                    setTextVisible(true);
+                  }, WELCOME_CLOUD_MS),
+                );
+              }, WELCOME_SETTLE_MS),
+            );
+          }, MASCOT_WALK_MS),
+        );
+      }, WELCOME_DELAY_MS),
+    );
+  }, [enabled, status, reduced]);
 
-    setPhase("walk");
-    setRevealed(false);
-  }, [enabled, status]);
+  const mascotState: MascotState =
+    stage === "walk"
+      ? "walking"
+      : stage === "hidden" || stage === "delay"
+        ? "before"
+        : "after";
+  const mascotVisible = stage === "walk" || stage === "settle" || stage === "cloud" || stage === "ready";
 
   return (
     <div className={cn("flex items-center gap-3 md:gap-4", className)}>
-      <DashboardMascot
-        walking={phase === "walk"}
-        onArrived={() => {
-          setPhase("rest");
-          setRevealed(true);
-        }}
-      />
-      <WelcomeCloud revealed={revealed}>{greeting}</WelcomeCloud>
+      <div
+        style={{ visibility: mascotVisible ? "visible" : "hidden" }}
+        aria-hidden={!mascotVisible}
+      >
+        <DashboardMascot state={mascotState} />
+      </div>
+      <WelcomeCloud revealed={cloudOpen} showText={textVisible} reduced={reduced}>
+        {greeting}
+      </WelcomeCloud>
     </div>
   );
+}
+
+function prefersReducedMotionNow(): boolean {
+  if (typeof window === "undefined" || !window.matchMedia) return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }

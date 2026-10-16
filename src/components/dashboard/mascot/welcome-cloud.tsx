@@ -7,7 +7,12 @@ import { cn } from "@/lib/utils";
 type WelcomeCloudProps = {
   /** Whether the cloud has faded/scaled into view. */
   revealed: boolean;
-  /** Skip the entrance transition entirely (reduced motion). */
+  /**
+   * Whether the greeting text is visible. Kept separate from `revealed` so the
+   * text never appears before the cloud finishes opening.
+   */
+  showText?: boolean;
+  /** Skip the entrance transitions entirely (reduced motion). */
   reduced?: boolean;
   children: ReactNode;
   className?: string;
@@ -20,18 +25,18 @@ type WelcomeCloudProps = {
  * therefore stays legible on both the dark and light dashboard surfaces without
  * hard-coding any colour.
  */
-export function WelcomeCloud({ revealed, reduced = false, children, className }: WelcomeCloudProps) {
+export function WelcomeCloud({ revealed, showText = true, reduced = false, children, className }: WelcomeCloudProps) {
   return (
     <motion.div
-      data-mascot-cloud=""
+      data-mascot-cloud="true"
       data-revealed={revealed ? "true" : "false"}
+      data-text={showText ? "true" : "false"}
       initial={false}
-      animate={revealed ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.92, y: 6 }}
-      transition={reduced ? { duration: 0 } : { duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+      animate={{ opacity: revealed ? 1 : 0, scale: revealed ? 1 : 0.9 }}
+      transition={revealed && !reduced ? { duration: 0.35, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
       style={{ transformOrigin: "left center" }}
       className={cn("relative min-w-0", className)}
     >
-      {/* Cloud silhouette — decorative, behind the copy. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -45,7 +50,14 @@ export function WelcomeCloud({ revealed, reduced = false, children, className }:
         <div className="absolute top-1/2 -left-1.5 h-3.5 w-3.5 -translate-y-1/2 rotate-45 rounded-[3px] bg-card" />
       </div>
 
-      <div className="relative px-5 py-3.5 text-card-foreground">{children}</div>
+      <motion.div
+        className="relative px-5 py-3.5 text-card-foreground"
+        initial={false}
+        animate={{ opacity: showText ? 1 : 0 }}
+        transition={{ duration: showText ? 0.25 : 0, ease: "easeOut" }}
+      >
+        {children}
+      </motion.div>
     </motion.div>
   );
 }
