@@ -121,7 +121,7 @@ function SystemCarousel() {
                 {tag}
               </span>
             </div>
-            <p className="mt-3 text-[12px] leading-relaxed text-white/80">{body}</p>
+            <p className={cn("mt-3 text-[12px] leading-relaxed", theme === "light" ? "text-black/80" : "text-white/80")}>{body}</p>
           </li>
         ))}
       </ul>
@@ -176,7 +176,7 @@ function SystemCarousel() {
                 {tag}
               </span>
             </div>
-            <p className="mt-3 text-[12px] leading-relaxed text-white/80">{body}</p>
+            <p className={cn("mt-3 text-[12px] leading-relaxed", theme === "light" ? "text-black/80" : "text-white/80")}>{body}</p>
           </motion.button>
         );
       })}
@@ -289,7 +289,7 @@ function IncludedFactsCard() {
           </motion.div>
         ))}
       </motion.dl>
-      <p className=" mt-3 text-[9px] uppercase tracking-wider text-white/60">
+      <p className={cn(" mt-3 text-[9px] uppercase tracking-wider", theme === "light" ? "text-black/60" : "text-white/60")}>
         Accuracy tracked per topic · Missed questions resurface · Harder sets as you improve
       </p>
     </div>
