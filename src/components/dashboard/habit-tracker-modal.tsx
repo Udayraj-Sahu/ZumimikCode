@@ -561,8 +561,8 @@ export function HabitTrackerModal({ onClose }: Props) {
                               ? "bg-[var(--accent-12)]"
                               : theme === "light"
                                 ? h.todayCompleted
-                                  ? "text-white/50 hover:text-white hover:bg-white/5"
-                                  : "text-white/20 hover:text-white/50 hover:bg-white/5"
+                                  ? "text-white/50 dark:text-white/50 hover:text-white dark:hover:text-white hover:bg-white/5"
+                                  : "text-white/20 dark:text-white/20 hover:text-white/50 dark:hover:text-white/50 hover:bg-white/5"
                                 : "text-muted-foreground/20 hover:text-muted-foreground/50 hover:bg-white/5",
                           )}
                           style={h.reminderTime ? { color: theme === "light" ? (h.todayCompleted ? EMERALD_SOLID : VIOLET) : VIOLET } : undefined}
