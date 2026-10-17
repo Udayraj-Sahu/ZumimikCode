@@ -1,8 +1,9 @@
 "use client";
 
-import { SVGProps, useSyncExternalStore } from "react";
+import { SVGProps, useState, useSyncExternalStore } from "react";
 import { motion } from "motion/react";
 import type { Transition, Variants } from "motion/react";
+import { BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useThemeStore } from "@/stores/theme-store";
 
@@ -43,35 +44,39 @@ const Sun = (props: SVGProps<SVGSVGElement>) => {
   );
 };
 
+// Three positions: Light (left), Dark (middle), Study (right). Each track is
+// exactly three knobs wide, so `step` (the knob width) is the distance the knob
+// travels per position.
 const toggleSizeMap = {
   default: {
-    container: "w-12 h-6",
+    container: "w-[72px] h-6",
     checkbox: "w-6 h-6",
     icon: "w-3 h-3",
-    offset: "24px",
+    step: 24,
   },
   lg: {
-    container: "w-16 h-8",
+    container: "w-24 h-8",
     checkbox: "w-8 h-8",
     icon: "w-4 h-4",
-    offset: "32px",
+    step: 32,
   },
   xl: {
-    container: "w-24 h-12",
+    container: "w-36 h-12",
     checkbox: "w-12 h-12",
     icon: "w-6 h-6",
-    offset: "48px",
+    step: 48,
   },
 };
 
 const toggleVariants = {
-  light: (offset: string) => ({
-    left: "0px",
-    right: offset,
+  light: () => ({
+    x: 0,
   }),
-  dark: (offset: string) => ({
-    left: offset,
-    right: "0px",
+  dark: (step: number) => ({
+    x: step,
+  }),
+  study: (step: number) => ({
+    x: step * 2,
   }),
 } satisfies Variants;
 
@@ -86,6 +91,11 @@ const sunVariants = {
     x: "100%",
     opacity: 0,
   },
+  study: {
+    y: "-100%",
+    x: "100%",
+    opacity: 0,
+  },
 } satisfies Variants;
 
 const moonVariants = {
@@ -95,6 +105,32 @@ const moonVariants = {
     opacity: 0,
   },
   dark: {
+    y: "0%",
+    x: "0%",
+    opacity: 1,
+  },
+  study: {
+    y: "-100%",
+    x: "100%",
+    opacity: 0,
+  },
+} satisfies Variants;
+
+// BookOpen (lucide) is the Study Mode position. Study Mode is UI-only for now:
+// selecting it parks the toggle on the right with this icon but applies no
+// light/dark/accent tokens, so its treatment intentionally mirrors dark.
+const bookVariants = {
+  light: {
+    y: "-100%",
+    x: "-100%",
+    opacity: 0,
+  },
+  dark: {
+    y: "-100%",
+    x: "-100%",
+    opacity: 0,
+  },
+  study: {
     y: "0%",
     x: "0%",
     opacity: 1,
@@ -122,22 +158,46 @@ export function ThemeToggle({
   className?: string;
 }) {
   const theme = useThemeStore((s) => s.theme);
-  const toggleTheme = useThemeStore((s) => s.toggleTheme);
+  const setTheme = useThemeStore((s) => s.setTheme);
+  const [isStudy, setIsStudy] = useState(false);
   const mounted = useMounted();
 
   if (!mounted) {
     return null;
   }
 
-  const isDark = theme === "dark";
+  // Study Mode is UI-only for now: a third selectable position in the toggle
+  // that applies no tokens (the store's Theme axis stays "light" | "dark").
+  // Selecting it parks the knob on the right with the BookOpen icon until the
+  // full Study Mode behavior lands.
+  const mode: "light" | "dark" | "study" = isStudy ? "study" : theme;
+  const isLight = mode === "light";
   const selectedSize = toggleSizeMap[size];
+
+  const selectNextMode = () => {
+    if (isStudy) {
+      setIsStudy(false);
+      setTheme("light");
+    } else if (theme === "light") {
+      setTheme("dark");
+    } else {
+      setIsStudy(true);
+    }
+  };
+
+  const ariaLabel =
+    mode === "light"
+      ? "Switch to dark theme"
+      : mode === "dark"
+        ? "Switch to Study Mode"
+        : "Switch to light theme";
 
   return (
     <button
       type="button"
-      aria-pressed={isDark}
-      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      onClick={toggleTheme}
+      aria-pressed={mode === "dark"}
+      aria-label={ariaLabel}
+      onClick={selectNextMode}
       className={cn(
         "relative inline-flex min-h-11 min-w-11 shrink-0 appearance-none items-center justify-center rounded-full border-0 p-0 align-middle leading-none cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         className,
@@ -147,26 +207,26 @@ export function ThemeToggle({
         className={cn(
           "relative inline-flex items-center justify-start overflow-hidden rounded-full",
           selectedSize.container,
-          isDark ? "bg-gray-800" : "bg-gray-200",
+          isLight ? "bg-gray-200" : "bg-gray-800",
         )}
       >
         <motion.div
           className={cn(
             selectedSize.checkbox,
-            "absolute top-0 rounded-full flex items-center justify-center overflow-hidden",
-            isDark
-              ? "bg-black right-0 shadow-lg shadow-black/50"
-              : "keep-white bg-white left-0 shadow-lg shadow-white/50",
+            "absolute top-0 left-0 rounded-full flex items-center justify-center overflow-hidden",
+            isLight
+              ? "keep-white bg-white shadow-lg shadow-white/50"
+              : "bg-black shadow-lg shadow-black/50",
           )}
-          animate={isDark ? "dark" : "light"}
+          animate={mode}
           variants={toggleVariants}
-          custom={selectedSize.offset}
+          custom={selectedSize.step}
           transition={springTransition}
         >
           <motion.div
             className="absolute"
             initial="light"
-            animate={isDark ? "dark" : "light"}
+            animate={mode}
             variants={sunVariants}
             transition={springTransition}
           >
@@ -175,11 +235,20 @@ export function ThemeToggle({
           <motion.div
             className="absolute"
             initial="light"
-            animate={isDark ? "dark" : "light"}
+            animate={mode}
             variants={moonVariants}
             transition={springTransition}
           >
             <Moon className={cn(selectedSize.icon)} />
+          </motion.div>
+          <motion.div
+            className="absolute"
+            initial="light"
+            animate={mode}
+            variants={bookVariants}
+            transition={springTransition}
+          >
+            <BookOpen className={cn(selectedSize.icon, "text-white")} />
           </motion.div>
         </motion.div>
       </span>
