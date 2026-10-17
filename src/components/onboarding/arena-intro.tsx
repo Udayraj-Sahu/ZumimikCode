@@ -2,21 +2,26 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { BG_MOSS, FOREST, GLASS_BORDER, LIME, LIME_20, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
+import { BG_MOSS, FOREST, GLASS_BORDER, LIME, LIME_LIGHT, LIME_TINT, PANEL } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { createPortal } from "react-dom";
 import {
   ArrowRight,
   Calendar,
   Flame,
+  Layers,
   Play,
-  Radar,
+  Repeat,
   Swords,
   TrendingUp,
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import StockVideoAd from "@/components/ads/stock-video-ad";
+import { HeroCard } from "@/components/onboarding/hero-card";
+import { FeatureList } from "@/components/onboarding/feature-list";
+import { SpeedCard } from "@/components/onboarding/speed-card";
+import { HabitProtocol } from "@/components/onboarding/habit-protocol";
 import { ClearanceTiers } from "@/components/paywall/clearance-tiers";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
@@ -96,9 +101,7 @@ export function ArenaIntro({
   const { primary, speedLane, second } = useLanes();
   const { data } = useDashboardData(primary);
 
-  const radar = data?.radarAxes ?? [];
   const upcoming = data?.upcoming ?? [];
-
   const label = (id: string) => DOMAIN_LABELS[id] ?? id.toUpperCase();
 
   /* Every lane lives inside a single card, so this is one flat list. */
@@ -144,7 +147,7 @@ export function ArenaIntro({
     });
   }
 
-  /** Slides: lanes, skill radar, sponsor reel (video only), up next. Empty ones are skipped. */
+  /** Slides: hero, feature list, sponsor reel (video only), up next. Empty ones are skipped. */
   const slides: {
     id: string;
     num: string;
@@ -153,6 +156,8 @@ export function ArenaIntro({
     sub: string;
     Icon: typeof Zap;
     bare?: boolean;
+    /** Renders the body full-bleed: the slide owns its own card surface. */
+    full?: boolean;
     body: ReactNode;
   }[] = [
     ...(lanes.length > 0
@@ -161,94 +166,24 @@ export function ArenaIntro({
             id: "lanes",
             num: "01",
             tag: "ACTIVE LANES",
-            title: `${lanes.length} lane${lanes.length > 1 ? "s" : ""} running now`,
-            sub: "Every lane shares one arena clock and one checkpoint.",
+            title: "",
+            sub: "",
             Icon: Flame,
-            body: (
-              <div className="flex flex-1 flex-col gap-2.5">
-                <ul className="flex flex-1 flex-col justify-center gap-2">
-                  {lanes.map(({ id, title, desc, Icon }) => (
-                    <li
-                      key={id}
-                      className={cn("flex items-center gap-3 rounded-xl border px-3 py-2.5", tone.panel)}
-                    >
-                      <span className={cn("grid size-9 shrink-0 place-items-center rounded-xl border", lanes.find((l) => l.id === id)?.tone)}>
-                        <Icon size={16} />
-                      </span>
-                      <div className="min-w-0">
-                        <div className="text-[11.5px] font-bold leading-tight text-foreground">
-                          {title}
-                        </div>
-                        <div className={cn("mt-0.5 text-[10px] leading-snug", tone.soft)}>{desc}</div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-
-                <ul className="flex shrink-0 flex-wrap items-center justify-center gap-1.5">
-                  {[
-                    `${lanes.length} ${lanes.length === 1 ? "lane" : "lanes"}`,
-                    "1 shared clock",
-                    "1 checkpoint",
-                  ].map((chip) => (
-                    <li
-                      key={chip}
-                      className={cn(
-                        "rounded-full border px-2 py-1 text-[8.5px] font-bold uppercase tracking-[0.1em]",
-                        tone.panel,
-                        tone.faint,
-                      )}
-                    >
-                      {chip}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ),
+            full: true,
+            body: <HeroCard />,
           },
         ]
       : []),
-    ...(radar.length > 0
-      ? [
-          {
-            id: "radar",
-            num: "02",
-            tag: "SKILL RADAR",
-            title: "Where you stand",
-            sub: "Live read on every skill the arena tracks.",
-            Icon: Radar,
-            body: (
-              <ul className="flex flex-1 flex-col gap-1.5">
-                {radar.map((axis) => (
-                  <li
-                    key={axis.label}
-                    className={cn(
-                      "flex min-h-0 flex-1 items-center gap-2 rounded-xl border px-3 py-1.5",
-                      tone.panel,
-                    )}
-                  >
-                    <span className={cn("w-[58px] shrink-0 truncate text-[10px]", tone.soft)}>
-                      {axis.label}
-                    </span>
-                    <div className={cn("h-1.5 flex-1 overflow-hidden rounded-full", tone.rest)}>
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${Math.round(axis.value * 100)}%`,
-                          background: `linear-gradient(90deg, ${LIME_20}, ${LIME})`,
-                        }}
-                      />
-                    </div>
-                    <span className="w-8 shrink-0 text-right text-[10px] font-bold tabular-nums text-[var(--lime)]">
-                      {Math.round(axis.value * 100)}%
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ),
-          },
-        ]
-      : []),
+    {
+      id: "features",
+      num: "02",
+      tag: "FEATURES",
+      title: "",
+      sub: "",
+      Icon: Layers,
+      full: true,
+      body: <FeatureList />,
+    },
     {
       id: "sponsor",
       num: "03",
@@ -273,34 +208,25 @@ export function ArenaIntro({
           {
             id: "next",
             num: "04",
-            tag: "UP NEXT",
-            title: "What's queued",
-            sub: "The next two sessions already scheduled for you.",
+            tag: "SPEED",
+            title: "",
+            sub: "",
             Icon: Calendar,
-            body: (
-              <ul className="flex flex-1 flex-col gap-1.5">
-                {upcoming.map((ev) => (
-                  <li
-                    key={ev.title}
-                    className={cn(
-                      "flex min-h-0 flex-1 items-center gap-2 rounded-xl border px-3 py-1.5",
-                      tone.panel,
-                    )}
-                  >
-                    <span className={cn("min-w-0 flex-1 truncate text-[11px] text-foreground")}>
-                      {ev.title}
-                    </span>
-                    <span className={cn("shrink-0 text-[10px]", tone.soft)}>{ev.time}</span>
-                    <span className="shrink-0 rounded border border-[var(--lime-40)] bg-[var(--lime-10)] px-1.5 py-0.5 text-[8px] font-bold text-[var(--lime)]">
-                      {ev.tag}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ),
+            full: true,
+            body: <SpeedCard />,
           },
         ]
       : []),
+    {
+      id: "habit",
+      num: "05",
+      tag: "HABIT",
+      title: "",
+      sub: "",
+      Icon: Repeat,
+      full: true,
+      body: <HabitProtocol />,
+    },
   ];
 
   const TOTAL = slides.length;
@@ -459,9 +385,10 @@ export function ArenaIntro({
                       className={cn(
                         "flex min-h-0 flex-1 flex-col rounded-[18px] border p-2.5",
                         tone.card,
+                        card.full && "border-0 bg-transparent p-0",
                       )}
                     >
-                      {!card.bare && (
+                      {!card.bare && !card.full && (
                         <>
                           <div className="flex items-center gap-2">
                             <span className="text-[11px] font-black leading-none text-[var(--lime)]">
@@ -486,7 +413,7 @@ export function ArenaIntro({
                         </>
                       )}
 
-                      <div className={cn("flex min-h-0 flex-1 flex-col", card.bare ? "" : "mt-4")}>
+                      <div className={cn("flex min-h-0 flex-1 flex-col", card.bare || card.full ? "" : "mt-4")}>
                         {card.body}
                       </div>
                     </div>
