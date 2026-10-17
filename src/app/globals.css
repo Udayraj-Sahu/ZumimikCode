@@ -290,6 +290,16 @@
   --violet-deep-18: rgba(139,92,246,0.18);
   --violet-deep-28: rgba(139,92,246,0.28);
   --violet-deep-85: rgba(139,92,246,0.85);
+  /* Process card (HowItWorks slide): cyan / violet / neon step-badge tones.
+     Paired with the --cyan and --violet accent text tokens; --neon aliases the
+     brand lime so it flips with the theme automatically. */
+  --cyan-bg: rgba(34,211,238,0.10);
+  --cyan-border: rgba(34,211,238,0.30);
+  --violet-bg: rgba(167,139,250,0.12);
+  --violet-border: rgba(167,139,250,0.35);
+  --neon: var(--lime);
+  --neon-bg: rgba(200,255,77,0.08);
+  --neon-border: rgba(200,255,77,0.26);
   --amber-04: rgba(245,158,11,0.04);
   --amber-06: rgba(245,158,11,0.06);
   --amber-08: rgba(245,158,11,0.08);
@@ -580,6 +590,15 @@
   --glass-02: rgba(0,0,0,0.02);
   --glass-025: rgba(0,0,0,0.025);
   --glass-06: rgba(0,0,0,0.06);
+  /* Process card step tones: washes and borders darken with each hue so the
+     circular badges stay legible on near-white panels. --neon inherits the
+     flipped --lime above. */
+  --cyan-bg: rgba(14,116,144,0.08);
+  --cyan-border: rgba(14,116,144,0.30);
+  --violet-bg: rgba(109,40,217,0.08);
+  --violet-border: rgba(109,40,217,0.30);
+  --neon-bg: rgba(63,106,12,0.08);
+  --neon-border: rgba(63,106,12,0.28);
 }
 
 /* Glass cards sit as opaque white on the off-white page; without a shadow the

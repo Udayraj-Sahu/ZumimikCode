@@ -1,0 +1,247 @@
+.wrap {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  color: var(--foreground);
+}
+
+.card {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background: var(--panel);
+  padding: 10px;
+}
+
+.top {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.lead {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.num {
+  display: grid;
+  flex: none;
+  min-width: 20px;
+  height: 15px;
+  place-items: center;
+  border: 1px solid var(--cyan-border);
+  border-radius: 5px;
+  background: var(--cyan-bg);
+  padding: 0 4px;
+  color: var(--cyan);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.loop {
+  flex: none;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--neon);
+}
+
+.title {
+  flex: none;
+  margin: 6px 0 0;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.sub {
+  flex: none;
+  margin: 3px 0 0;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
+.steps {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-06);
+  padding: 7px 9px;
+}
+
+.badge {
+  display: grid;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.cyan {
+  border-color: var(--cyan-border);
+  background: var(--cyan-bg);
+  color: var(--cyan);
+}
+
+.violet {
+  border-color: var(--violet-border);
+  background: var(--violet-bg);
+  color: var(--violet);
+}
+
+.neon {
+  border-color: var(--neon-border);
+  background: var(--neon-bg);
+  color: var(--neon);
+}
+
+.body {
+  min-width: 0;
+  flex: 1;
+}
+
+.stepTitle {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.stepDesc {
+  display: -webkit-box;
+  margin-top: 2px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  font-size: 9.5px;
+  line-height: 1.3;
+  color: var(--muted-foreground);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.arrow {
+  flex: none;
+  color: var(--slate-dark);
+}
+
+.done {
+  flex: none;
+  color: var(--neon);
+}
+
+.foot {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 5px 12px;
+  margin: 8px 0 0;
+  border-top: 1px solid var(--glass-border);
+  padding: 8px 0 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  color: var(--muted-foreground);
+}
+
+.ic_neon {
+  color: var(--neon);
+}
+
+.ic_cyan {
+  color: var(--cyan);
+}
+
+.ic_violet {
+  color: var(--violet);
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: 14px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .sub {
+    font-size: 11px;
+  }
+
+  .step {
+    gap: 11px;
+    padding: 9px 11px;
+  }
+
+  .badge {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .stepTitle {
+    font-size: 12px;
+  }
+
+  .stepDesc {
+    font-size: 11px;
+  }
+
+  .chip {
+    font-size: 10.5px;
+  }
+}

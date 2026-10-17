@@ -12,8 +12,10 @@ import {
   Layers,
   Play,
   Repeat,
+  Star,
   Swords,
   TrendingUp,
+  Workflow,
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -22,6 +24,8 @@ import { HeroCard } from "@/components/onboarding/hero-card";
 import { FeatureList } from "@/components/onboarding/feature-list";
 import { SpeedCard } from "@/components/onboarding/speed-card";
 import { HabitProtocol } from "@/components/onboarding/habit-protocol";
+import { ReviewCarousel } from "@/components/onboarding/review-carousel";
+import { HowItWorks } from "@/components/onboarding/how-it-works";
 import { ClearanceTiers } from "@/components/paywall/clearance-tiers";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { DOMAIN_LABELS } from "@/lib/types/template";
@@ -226,6 +230,26 @@ export function ArenaIntro({
       Icon: Repeat,
       full: true,
       body: <HabitProtocol />,
+    },
+    {
+      id: "reviews",
+      num: "06",
+      tag: "REVIEWS",
+      title: "",
+      sub: "",
+      Icon: Star,
+      full: true,
+      body: <ReviewCarousel />,
+    },
+    {
+      id: "how-it-works",
+      num: "07",
+      tag: "HOW IT WORKS",
+      title: "",
+      sub: "",
+      Icon: Workflow,
+      full: true,
+      body: <HowItWorks />,
     },
   ];
 
