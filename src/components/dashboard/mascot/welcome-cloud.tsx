@@ -21,9 +21,10 @@ type WelcomeCloudProps = {
 /**
  * A soft cloud-shaped speech bubble. The silhouette is built from a rounded
  * body plus a few "puffs" and a tail, all filled with the theme card colour and
- * wrapped in a single drop-shadow filter so the union reads as one cloud. It
- * therefore stays legible on both the dark and light dashboard surfaces without
- * hard-coding any colour.
+ * wrapped in the `--cloud-shadow-filter` token so the union reads as one cloud.
+ * That token draws a --border-coloured rim plus an ambient shadow, which is what
+ * keeps the bubble legible when --card and --background are nearly identical in
+ * either theme. No colour is hard-coded here.
  */
 export function WelcomeCloud({ revealed, showText = true, reduced = false, children, className }: WelcomeCloudProps) {
   return (
@@ -40,7 +41,7 @@ export function WelcomeCloud({ revealed, showText = true, reduced = false, child
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
-        style={{ filter: "drop-shadow(0 10px 22px rgba(0,0,0,0.22))" }}
+        style={{ filter: "var(--cloud-shadow-filter)" }}
       >
         <div className="absolute inset-0 rounded-[24px] bg-card" />
         <div className="absolute -top-3 left-6 h-7 w-7 rounded-full bg-card" />

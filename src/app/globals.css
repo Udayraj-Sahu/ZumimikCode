@@ -61,6 +61,19 @@
      tint its hover surfaces green. */
   --surface-hover: #1a1a1a;
 
+  /* Welcome cloud. A single union-following filter: the four 1px offsets trace
+     a crisp rim (in --border) around the multi-shape silhouette, and the last
+     entry is the ambient lift. Because --card (#14170F) sits very close to
+     --background (#0A0C0A), the rim is what keeps the bubble readable in dark
+     mode. Defined as a token so the cloud stays theme-safe rather than
+     hard-coding colours in the component. */
+  --cloud-shadow-filter:
+    drop-shadow(1px 0 0 var(--border))
+    drop-shadow(-1px 0 0 var(--border))
+    drop-shadow(0 1px 0 var(--border))
+    drop-shadow(0 -1px 0 var(--border))
+    drop-shadow(0 12px 26px rgba(0, 0, 0, 0.6));
+
   /* Responsive foundation tokens */
   --page-padding: 16px;
   --content-max-width: 64rem;
@@ -423,6 +436,16 @@
   --sidebar-border: rgba(0, 0, 0, 0.08);
   --sidebar-ring: #4D7C0F;
   --surface: #F5F5F5;
+
+  /* Welcome cloud rim (see the :root definition): --card (#FFFFFF) is only a
+     touch lighter than --background (#F4F5F1), so the --border rim plus a
+     softer ambient shadow keep the white bubble defined on the off-white page. */
+  --cloud-shadow-filter:
+    drop-shadow(1px 0 0 var(--border))
+    drop-shadow(-1px 0 0 var(--border))
+    drop-shadow(0 1px 0 var(--border))
+    drop-shadow(0 -1px 0 var(--border))
+    drop-shadow(0 12px 26px rgba(0, 0, 0, 0.2));
 }
 
 
