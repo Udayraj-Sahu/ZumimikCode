@@ -7,8 +7,10 @@ import { DashboardMascot, MASCOT_WALK_MS, type MascotState } from "./dashboard-m
 import { WelcomeCloud } from "./welcome-cloud";
 import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 
-/** How long the dashboard sits fully loaded before the mascot entrance starts. */
-export const WELCOME_DELAY_MS = 3000;
+/** Short beat after the dashboard mounts before the mascot entrance starts. The
+ *  dashboard only mounts this component once its data is ready, so the walk
+ *  begins almost immediately instead of after a long pause. */
+export const WELCOME_DELAY_MS = 250;
 /** Let the mascot settle into idle before the cloud opens. */
 export const WELCOME_SETTLE_MS = 200;
 /** Cloud opening (scale + fade) duration. */
@@ -32,7 +34,7 @@ type DashboardWelcomeProps = {
  * Owns the "play once per session" welcome sequence and drives it stage by
  * stage so the mascot and cloud never appear together:
  *
- *   hidden -> delay (3s) -> walk (500ms) -> settle (200ms) -> cloud (350ms) -> ready
+ *   hidden -> delay (250ms) -> walk (500ms) -> settle (200ms) -> cloud (350ms) -> ready
  *
  * A `pending` {@link useWelcomeStore} status means the welcome is queued (fresh
  * sign-up or a cold app open); anything else means it already ran this session
