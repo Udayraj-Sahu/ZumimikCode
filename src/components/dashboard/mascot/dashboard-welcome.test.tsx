@@ -113,7 +113,7 @@ describe("DashboardWelcome", () => {
     expect(cloud()).toHaveAttribute("data-text", "false");
     expect(useWelcomeStore.getState().status).toBe("played");
 
-    // 1s delay elapses -> the mascot starts walking.
+    // The delay elapses -> the mascot starts walking.
     advance(WELCOME_DELAY_MS - 1);
     expect(mascot()).toHaveAttribute("data-walking", "false");
     advance(1);

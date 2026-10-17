@@ -15,14 +15,14 @@
  */
 
 import type { ComponentProps } from "react";
-import { createAvatar } from "@bible-strong/avatar-react";
+import { useMemo } from "react";
+import { Avatar } from "@bible-strong/avatar-react";
 import "@bible-strong/avatar-react/styles.css";
-import definition from "./pip.avatar.json";
-
-const Pip = createAvatar(definition);
+import { useAccentSwatch } from "@/hooks/use-accent-hex";
+import { pipDefinitionForAccent } from "./pip-avatar-definition";
 
 type MascotAnimation = "waking" | "idle";
-type MascotExpression = NonNullable<ComponentProps<typeof Pip>["expression"]>;
+type MascotExpression = NonNullable<ComponentProps<typeof Avatar>["expression"]>;
 
 type PipAvatarProps = {
   /** Controlled timeline. Mutually exclusive with `expression`. */
@@ -31,6 +31,23 @@ type PipAvatarProps = {
   expression?: MascotExpression;
 };
 
+/**
+ * The body is recolored to the active accent's swatch, so switching accent in
+ * settings repaints the mascot. The definition is memoized per accent, so the
+ * engine only re-validates and re-renders the SVG when the accent actually
+ * changes (not on every parent render).
+ */
 export default function PipAvatar({ animation, expression }: PipAvatarProps) {
-  return <Pip animation={animation} expression={expression} size="100%" />;
+  const accent = useAccentSwatch();
+  const avatarDefinition = useMemo(() => pipDefinitionForAccent(accent), [accent]);
+
+  return (
+    <Avatar
+      definition={avatarDefinition}
+      animation={animation}
+      expression={expression}
+      size="100%"
+    />
+  );
 }
+

@@ -16,3 +16,16 @@ export function useAccentHex(): string {
   const accent = useThemeStore((s) => s.accent);
   return accentThemes[accent][theme].primary;
 }
+
+/**
+ * The accent's bright swatch -- the same saturated hue shown in the settings
+ * picker, independent of light/dark mode.
+ *
+ * Use for brand *graphics* that must stay vivid on both surfaces (e.g. the
+ * dashboard mascot's body). Do NOT use for text or UI: those need the
+ * mode-resolved tokens via the CSS custom properties or {@link useAccentHex}.
+ */
+export function useAccentSwatch(): string {
+  const accent = useThemeStore((s) => s.accent);
+  return accentThemes[accent].swatch;
+}

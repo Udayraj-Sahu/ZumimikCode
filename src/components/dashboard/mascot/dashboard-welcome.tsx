@@ -32,7 +32,7 @@ type DashboardWelcomeProps = {
  * Owns the "play once per session" welcome sequence and drives it stage by
  * stage so the mascot and cloud never appear together:
  *
- *   hidden -> delay (1s) -> walk (800ms) -> settle (200ms) -> cloud (350ms) -> ready
+ *   hidden -> delay (3s) -> walk (500ms) -> settle (200ms) -> cloud (350ms) -> ready
  *
  * A `pending` {@link useWelcomeStore} status means the welcome is queued (fresh
  * sign-up or a cold app open); anything else means it already ran this session

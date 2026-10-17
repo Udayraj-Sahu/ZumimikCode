@@ -23,8 +23,8 @@ export const MASCOT_WALK_FROM = "-200px";
 /** Where the walk-in ends. Must share the `px` unit with the start value,
  * otherwise Framer Motion cannot interpolate and falls back to an instant jump. */
 export const MASCOT_WALK_TO = "0px";
-/** How long the walk-in takes to cross the screen (700-1000ms target). */
-export const MASCOT_WALK_MS = 800;
+/** How long the walk-in takes to cross the screen (kept short and snappy). */
+export const MASCOT_WALK_MS = 500;
 
 /**
  * - `before`: parked off-screen, hidden by the parent until the delay elapses.
@@ -67,7 +67,7 @@ export function DashboardMascot({ state = "after", onArrived, className }: Dashb
         animate={walking ? { y: [0, -4, 0, -4, 0] } : { y: 0 }}
         transition={
           walking
-            ? { duration: 0.9, repeat: Infinity, ease: "easeInOut" }
+            ? { duration: MASCOT_WALK_MS / 1000, repeat: Infinity, ease: "easeInOut" }
             : { duration: 0.25, ease: "easeOut" }
         }
       >
