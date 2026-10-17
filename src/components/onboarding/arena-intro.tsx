@@ -339,7 +339,7 @@ export function ArenaIntro({
       aria-labelledby="arena-hook-title"
     >
       <div
-        className="relative flex h-full w-full shrink-0 flex-col sm:h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl"
+        className="relative flex h-full w-full shrink-0 flex-col sm:h-auto sm:max-h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl"
         style={{
           borderColor: GLASS_BORDER,
           background:
@@ -394,7 +394,7 @@ export function ArenaIntro({
             <div
               ref={trackRef}
               onScroll={onTrackScroll}
-              className="flex min-h-0 flex-1 snap-x snap-mandatory gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="flex min-h-0 flex-1 snap-x snap-mandatory items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {slides.map((card, i) => {
                 const Icon = card.Icon;
@@ -403,7 +403,10 @@ export function ArenaIntro({
                     key={card.id}
                     aria-label={`${i + 1} of ${TOTAL}: ${card.tag}`}
                     aria-hidden={i !== active ? "true" : undefined}
-                    className="flex w-full shrink-0 snap-start snap-always flex-col overflow-hidden"
+                    className={cn(
+                      "flex w-full shrink-0 snap-start snap-always flex-col overflow-hidden",
+                      card.bare && "self-stretch",
+                    )}
                   >
                     <div
                       className={cn(
