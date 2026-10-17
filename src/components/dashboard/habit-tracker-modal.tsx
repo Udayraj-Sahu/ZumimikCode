@@ -28,6 +28,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TimePicker } from "@/components/ui/time-picker";
 import { AMBER, AMBER_08, CYAN, CYAN_08, DEEP_BLACK_2, DEEP_BLACK_2_CC, DEEP_BLACK_2_EE, EMERALD, EMERALD_08, EMERALD_SOLID, GLASS_012, GLASS_025, GLASS_18, GLASS_40, GLASS_75, GLASS_BG, ROSE, VIOLET, VIOLET_DIM, VIOLET_GLOW, VIOLET_PURPLE, WHITE } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { useHabitStore } from "@/stores/habit-store";
@@ -606,15 +607,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                           </button>
                         </div>
 
-                        <div className={cn("flex items-center justify-center gap-2 rounded-lg py-2 border", theme === "light" ? "border-border/40 bg-black/[0.04]" : "border-white/[0.06] bg-black/20")}>
-                          <Clock size={13} style={{ color: VIOLET }} />
-                          <input
-                            type="time"
-                            value={draftTime}
-                            onChange={(e) => { if (e.target.value) setDraftTime(e.target.value); }}
-                            className={cn("bg-transparent border-none text-[16px] font-bold tracking-wider text-foreground font-mono outline-none cursor-pointer text-center w-[110px] leading-none", theme === "light" ? "[color-scheme:light]" : "[color-scheme:dark]")}
-                          />
-                        </div>
+                        <TimePicker value={draftTime} onChange={setDraftTime} />
 
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1.5">
