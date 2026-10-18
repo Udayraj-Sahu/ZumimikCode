@@ -130,6 +130,7 @@ export default function HistoryPage() {
           <select
             value={topicFilter}
             onChange={(e) => { setTopicFilter(e.target.value); setPage(0); }}
+            aria-label="Filter by topic"
             className="min-h-11 bg-transparent text-[12px] font-bold uppercase tracking-wider text-foreground outline-none appearance-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring rounded whitespace-nowrap"
           >
             {TOPICS_FILTER_HISTORY.map((t) => (
@@ -229,7 +230,7 @@ export default function HistoryPage() {
         )}
 
         {sorted.length > 0 && (
-          <div ref={listRef} role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ backgroundColor: GLASS_BG }}>
+          <div ref={listRef} className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ backgroundColor: GLASS_BG }}>
             {paged.map((entry, i) => (
               <HistoryRow key={entry.id} entry={entry} index={i} onSelect={setSelected} />
             ))}

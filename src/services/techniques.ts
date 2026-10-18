@@ -1,12 +1,12 @@
 import type { Technique } from "@/lib/types/technique";
-import { getTechniqueById as mockGetById, getTechniquesBySubject as mockGetBySubject, getAllTechniques as mockGetAll } from "@/lib/mock/techniques";
 import { apiGet } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
 export async function getTechnique(id: string): Promise<Technique | null> {
   if (IS_MOCK) {
+    const { getTechniqueById: mockGetById } = await import("@/lib/mock/techniques");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(200);
     return mockGetById(id) ?? null;
   }
@@ -15,6 +15,8 @@ export async function getTechnique(id: string): Promise<Technique | null> {
 
 export async function getTechniquesBySubject(subjectId: string): Promise<Technique[]> {
   if (IS_MOCK) {
+    const { getTechniquesBySubject: mockGetBySubject } = await import("@/lib/mock/techniques");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(250);
     return mockGetBySubject(subjectId);
   }
@@ -23,6 +25,8 @@ export async function getTechniquesBySubject(subjectId: string): Promise<Techniq
 
 export async function getAllTechniques(): Promise<Technique[]> {
   if (IS_MOCK) {
+    const { getAllTechniques: mockGetAll } = await import("@/lib/mock/techniques");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(300);
     return mockGetAll();
   }

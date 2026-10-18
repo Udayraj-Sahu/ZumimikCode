@@ -145,7 +145,7 @@ export default function LeaderboardPage() {
 
         {entries && entries.length > 0 && (
           <>
-            <div role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
+            <div className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
               {entries.map((entry, i) => (
                 <LeaderboardRow key={entry.rank} entry={entry} index={i} />
               ))}

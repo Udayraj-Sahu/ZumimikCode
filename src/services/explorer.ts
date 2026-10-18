@@ -1,19 +1,12 @@
 import type { TopicNode, TopicEdge } from "@/lib/types/technique";
-import {
-  getSubjectTree as mockGetTree,
-  findNodeById as mockFindNode,
-  getAllLeafTechniques as mockGetLeaves,
-  getSubjectEdges as mockGetEdges,
-  getPrerequisitesForTechnique as mockGetPrereqs,
-  isTechniqueUnlocked as mockIsUnlocked,
-} from "@/lib/mock/explorer";
 import { apiGet } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
 export async function getSubjectTree(domain: string): Promise<TopicNode[]> {
   if (IS_MOCK) {
+    const { getSubjectTree: mockGetTree } = await import("@/lib/mock/explorer");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(250);
     return mockGetTree(domain);
   }
@@ -22,6 +15,8 @@ export async function getSubjectTree(domain: string): Promise<TopicNode[]> {
 
 export async function findNodeInTree(domain: string, nodeId: string): Promise<TopicNode | null> {
   if (IS_MOCK) {
+    const { getSubjectTree: mockGetTree, findNodeById: mockFindNode } = await import("@/lib/mock/explorer");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(100);
     const tree = mockGetTree(domain);
     return mockFindNode(tree, nodeId);
@@ -31,6 +26,8 @@ export async function findNodeInTree(domain: string, nodeId: string): Promise<To
 
 export async function getLeafTechniques(domain: string): Promise<TopicNode[]> {
   if (IS_MOCK) {
+    const { getSubjectTree: mockGetTree, getAllLeafTechniques: mockGetLeaves } = await import("@/lib/mock/explorer");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(200);
     const tree = mockGetTree(domain);
     return mockGetLeaves(tree);
@@ -40,6 +37,8 @@ export async function getLeafTechniques(domain: string): Promise<TopicNode[]> {
 
 export async function getSubjectEdges(): Promise<TopicEdge[]> {
   if (IS_MOCK) {
+    const { getSubjectEdges: mockGetEdges } = await import("@/lib/mock/explorer");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(100);
     return mockGetEdges();
   }
@@ -50,6 +49,8 @@ export async function getPrerequisitesForTechnique(
   techniqueId: string,
 ): Promise<TopicEdge[]> {
   if (IS_MOCK) {
+    const { getPrerequisitesForTechnique: mockGetPrereqs } = await import("@/lib/mock/explorer");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(50);
     return mockGetPrereqs(techniqueId);
   }
@@ -61,6 +62,8 @@ export async function checkTechniqueUnlocked(
   masteredTechniqueIds: string[],
 ): Promise<boolean> {
   if (IS_MOCK) {
+    const { isTechniqueUnlocked: mockIsUnlocked } = await import("@/lib/mock/explorer");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(50);
     return mockIsUnlocked(techniqueId, masteredTechniqueIds);
   }

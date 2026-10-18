@@ -1,12 +1,13 @@
-import { getDashboardData } from "@/lib/mock/dashboard";
 import type { Topic, RadarAxis, Metric, DashboardStats, StreakData, UpcomingEvent, LeaderboardEntry, HomeRecentActivityItem } from "@/lib/types/dashboard";
 import { apiGet } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
 export async function getTopicMastery(domain?: string): Promise<Topic[]> {
   if (IS_MOCK) {
+    const { getDashboardData } = await import("@/lib/mock/dashboard");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(250);
     return getDashboardData(domain ?? "").topics;
   }
@@ -16,6 +17,9 @@ export async function getTopicMastery(domain?: string): Promise<Topic[]> {
 
 export async function getRadarAxes(_domain?: string): Promise<RadarAxis[]> {
   if (IS_MOCK) {
+    const { getDashboardData } = await import("@/lib/mock/dashboard");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(150);
     return getDashboardData("").radarAxes;
   }
@@ -24,6 +28,9 @@ export async function getRadarAxes(_domain?: string): Promise<RadarAxis[]> {
 
 export async function getDashboardMetrics(_domain?: string): Promise<Metric[]> {
   if (IS_MOCK) {
+    const { getDashboardData } = await import("@/lib/mock/dashboard");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(100);
     return getDashboardData("").metrics;
   }
@@ -32,6 +39,9 @@ export async function getDashboardMetrics(_domain?: string): Promise<Metric[]> {
 
 export async function getDashboardStats(domain?: string): Promise<DashboardStats> {
   if (IS_MOCK) {
+    const { getDashboardData } = await import("@/lib/mock/dashboard");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(120);
     return getDashboardData(domain ?? "").stats;
   }
@@ -41,6 +51,9 @@ export async function getDashboardStats(domain?: string): Promise<DashboardStats
 
 export async function getStreakData(_domain?: string): Promise<StreakData> {
   if (IS_MOCK) {
+    const { getDashboardData } = await import("@/lib/mock/dashboard");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(80);
     return getDashboardData("").streak;
   }
@@ -49,6 +62,9 @@ export async function getStreakData(_domain?: string): Promise<StreakData> {
 
 export async function getUpcomingEvents(domain?: string): Promise<UpcomingEvent[]> {
   if (IS_MOCK) {
+    const { getDashboardData } = await import("@/lib/mock/dashboard");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(100);
     return getDashboardData(domain ?? "").upcoming;
   }
@@ -58,6 +74,9 @@ export async function getUpcomingEvents(domain?: string): Promise<UpcomingEvent[
 
 export async function getLeaderboard(_domain?: string): Promise<LeaderboardEntry[]> {
   if (IS_MOCK) {
+    const { getDashboardData } = await import("@/lib/mock/dashboard");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(200);
     return getDashboardData("").leaderboard;
   }
@@ -66,6 +85,9 @@ export async function getLeaderboard(_domain?: string): Promise<LeaderboardEntry
 
 export async function getHomeRecentActivity(domain?: string): Promise<HomeRecentActivityItem[]> {
   if (IS_MOCK) {
+    const { getDashboardData } = await import("@/lib/mock/dashboard");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(90);
     return getDashboardData(domain ?? "").recent;
   }

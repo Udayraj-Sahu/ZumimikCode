@@ -1,12 +1,13 @@
-import { PROFILE_DATA, PROFILE_STATS, ACHIEVEMENTS } from "@/lib/mock/profile";
 import type { ProfileData, ProfileStat, Achievement } from "@/lib/types/profile";
 import { apiGet } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
 export async function getProfile(): Promise<ProfileData> {
   if (IS_MOCK) {
+    const { PROFILE_DATA, PROFILE_STATS, ACHIEVEMENTS } = await import("@/lib/mock/profile");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(200);
     return PROFILE_DATA;
   }
@@ -15,6 +16,9 @@ export async function getProfile(): Promise<ProfileData> {
 
 export async function getProfileStats(): Promise<ProfileStat[]> {
   if (IS_MOCK) {
+    const { PROFILE_DATA, PROFILE_STATS, ACHIEVEMENTS } = await import("@/lib/mock/profile");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(150);
     return PROFILE_STATS;
   }
@@ -23,6 +27,9 @@ export async function getProfileStats(): Promise<ProfileStat[]> {
 
 export async function getAchievements(): Promise<Achievement[]> {
   if (IS_MOCK) {
+    const { PROFILE_DATA, PROFILE_STATS, ACHIEVEMENTS } = await import("@/lib/mock/profile");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(250);
     return ACHIEVEMENTS;
   }

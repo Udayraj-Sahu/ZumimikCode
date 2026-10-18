@@ -117,7 +117,7 @@ export default function NotificationsPage() {
         )}
 
         {filtered.length > 0 && (
-          <div ref={listRef} role="list" className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
+          <div ref={listRef} className="rounded-3xl border border-white/[0.06] backdrop-blur-xl divide-y divide-white/[0.06] overflow-hidden" style={{ background: GLASS_BG }}>
             {filtered.map((n) => {
               const Icon = TYPE_ICON[n.type];
               return (

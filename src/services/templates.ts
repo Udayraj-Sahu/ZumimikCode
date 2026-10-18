@@ -1,12 +1,12 @@
 import type { SolveAlongTemplate, TemplateSession } from "@/lib/types/template";
-import { SAMPLE_TEMPLATES, getTemplatesByDomain as mockGetByDomain, getCategoriesForDomain as mockGetCategories, generateFallbackTemplates } from "@/lib/mock/templates";
 import { apiGet, apiPost } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
 export async function getTemplate(id: string): Promise<SolveAlongTemplate | null> {
   if (IS_MOCK) {
+    const { SAMPLE_TEMPLATES, generateFallbackTemplates } = await import("@/lib/mock/templates");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(200);
     const match = SAMPLE_TEMPLATES.find((t) => t.id === id);
     if (match) return match;
@@ -23,6 +23,8 @@ export async function getTemplate(id: string): Promise<SolveAlongTemplate | null
 
 export async function getTemplatesByDomain(domain: string): Promise<SolveAlongTemplate[]> {
   if (IS_MOCK) {
+    const { getTemplatesByDomain: mockGetByDomain } = await import("@/lib/mock/templates");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(200);
     return mockGetByDomain(domain);
   }
@@ -31,6 +33,8 @@ export async function getTemplatesByDomain(domain: string): Promise<SolveAlongTe
 
 export async function getCategoriesForDomain(domain: string): Promise<string[]> {
   if (IS_MOCK) {
+    const { getCategoriesForDomain: mockGetCategories } = await import("@/lib/mock/templates");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(100);
     return mockGetCategories(domain);
   }
@@ -42,8 +46,10 @@ export async function getTemplatesByCategory(
   domain?: string,
 ): Promise<SolveAlongTemplate[]> {
   if (IS_MOCK) {
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(200);
-    const { getTemplatesByCategory: mockGetByCat } = await import("@/lib/mock/templates");
+    const { getTemplatesByCategory: mockGetByCat, generateFallbackTemplates } = await import("@/lib/mock/templates");
     const real = mockGetByCat(category, domain);
     if (real.length > 0) return real;
     return generateFallbackTemplates(domain ?? "cat", category);
@@ -55,6 +61,8 @@ export async function getTemplatesByCategory(
 
 export async function getAllTemplates(): Promise<SolveAlongTemplate[]> {
   if (IS_MOCK) {
+    const { SAMPLE_TEMPLATES } = await import("@/lib/mock/templates");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(300);
     return SAMPLE_TEMPLATES;
   }
@@ -66,6 +74,8 @@ export async function createTemplateSession(
   mode: "quick" | "solve_along" | "guided" = "solve_along",
 ): Promise<TemplateSession> {
   if (IS_MOCK) {
+    const { SAMPLE_TEMPLATES } = await import("@/lib/mock/templates");
+    const { delay } = await import("@/lib/mock/delay");
     await delay(300);
     const templates = SAMPLE_TEMPLATES.filter((t) => templateIds.includes(t.id));
     return {

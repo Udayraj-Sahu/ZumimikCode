@@ -1,16 +1,12 @@
 import type { PairingSession, PairingApproval } from "@/lib/types/pairing";
 import { apiGet, apiPost } from "./api";
 import { IS_MOCK } from "@/lib/config";
-import {
-  mockCreateSession,
-  mockGetSession,
-  mockScanSession,
-  mockApproveSession,
-} from "@/lib/mock/pairing";
-import { delay } from "@/lib/mock/delay";
 
 export async function createPairingSession(): Promise<PairingSession> {
   if (IS_MOCK) {
+    const { mockCreateSession, mockGetSession, mockScanSession, mockApproveSession } = await import("@/lib/mock/pairing");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(300);
     return mockCreateSession();
   }
@@ -19,6 +15,9 @@ export async function createPairingSession(): Promise<PairingSession> {
 
 export async function pollPairingStatus(sessionId: string): Promise<PairingSession> {
   if (IS_MOCK) {
+    const { mockCreateSession, mockGetSession, mockScanSession, mockApproveSession } = await import("@/lib/mock/pairing");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(200);
     const s = mockGetSession(sessionId);
     if (!s) throw new Error("Session not found");
@@ -29,6 +28,9 @@ export async function pollPairingStatus(sessionId: string): Promise<PairingSessi
 
 export async function scanPairingCode(code: string): Promise<boolean> {
   if (IS_MOCK) {
+    const { mockCreateSession, mockGetSession, mockScanSession, mockApproveSession } = await import("@/lib/mock/pairing");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(200);
     return mockScanSession(code);
   }
@@ -38,6 +40,9 @@ export async function scanPairingCode(code: string): Promise<boolean> {
 
 export async function approvePairing(code: string): Promise<PairingApproval> {
   if (IS_MOCK) {
+    const { mockCreateSession, mockGetSession, mockScanSession, mockApproveSession } = await import("@/lib/mock/pairing");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(300);
     const result = mockApproveSession(code);
     if (!result) throw new Error("Approval failed — invalid code or expired session");

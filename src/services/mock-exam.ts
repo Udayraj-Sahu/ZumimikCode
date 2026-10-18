@@ -1,14 +1,14 @@
-import { getMockPapersByDomain, getMockPaperById } from "@/lib/mock/mock-exam";
-import { buildPaperSession } from "@/lib/mock/sprint-session";
 import type { MockPaper } from "@/lib/types/mock-exam";
 import type { SprintSession } from "@/lib/types/sprint-session";
 import { apiGet } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
 export async function getMockPapers(domain?: string): Promise<MockPaper[]> {
   if (IS_MOCK) {
+    const { getMockPapersByDomain, getMockPaperById } = await import("@/lib/mock/mock-exam");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(250);
     return getMockPapersByDomain(domain);
   }
@@ -19,6 +19,10 @@ export async function getMockPapers(domain?: string): Promise<MockPaper[]> {
 
 export async function getMockPaperSession(paperId: string, domain?: string): Promise<SprintSession> {
   if (IS_MOCK) {
+    const { getMockPapersByDomain, getMockPaperById } = await import("@/lib/mock/mock-exam");
+    const { buildPaperSession } = await import("@/lib/mock/sprint-session");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(200);
     const paper = getMockPaperById(paperId);
     if (!paper) throw new Error("Mock paper not found");

@@ -78,19 +78,19 @@ Severity: Critical / High / Medium / Low / Informational.
 
 | # | Sev | Category | Location | Issue | Status |
 |---|---|---|---|---|---|
-| 1 | Critical | Light/Dark | `tailwind.config.ts` | No `darkMode` key → 26 `dark:` utilities follow OS, not app theme. | ☐ |
-| 2 | Critical | Light/Dark | `ui/toaster.tsx:63` | Portal target outside every `[data-theme-scope]`. | ☐ |
-| 3 | Critical | Performance | `shell/app-entry.tsx:8` → `app/layout.tsx:8` | Onboarding page statically imported into the root layout entry. | ☐ |
-| 4 | Critical | Tooling | `package.json`, no `.github/` | No `typecheck` script and no CI. | ☐ |
-| 5 | High | Build | `lib/config.ts:5` + `src/services/*` | `IS_MOCK` is a runtime check; services statically import `@/lib/mock/*`, so `lib/mock/techniques.ts` (56 KB) always ships. | ☐ |
-| 6 | High | Product | `dashboard/page.tsx:59-93, 339-346` | Hardcoded `FALLBACK_*` arrays (incl. a fake "You" at rank 47) used as live render fallback. | ☐ |
-| 7 | High | Reusability | 5× `formatTime`, 3× `SectionLabel`, 2× `SectionHeading`/`FadeUp`/`timeAgo`, `todayStr`×2, `clamp`×6 | Duplicated general-purpose helpers. | ☐ |
-| 8 | High | Correctness | `habit-tracker-modal.tsx:82` | `days.sort()` mutates in place during render. | ☐ |
-| 9 | High | Light/Dark | `habit-tracker-modal.tsx:365-366,512,569,600-601,670-671,684` | Raw `VIOLET` (`#34D399`) in light branches → ≈2.1:1 on white. | ☐ |
-| 10 | High | Error handling | `play/configure-sprint/page.tsx:44` | `.then()` with no `.catch()` → permanent spinner on rejection. | ☐ |
-| 11 | High | a11y | `tests/e2e/a11y.spec.ts:4` | Axe scans only `/`, `/auth`, `/onboarding` — none of the 38 authenticated screens. | ☐ |
-| 12 | Medium | React | `learn/practice/page.tsx:190-194` | Missing effect deps (lint warning). | ☐ |
-| 13 | Medium | React | `learn/explorer/page.tsx:78`, `explorer/mind-map.tsx:59`, `onboarding/feature-intro.tsx:321` | Remaining `react-hooks/exhaustive-deps` warnings. | ☐ |
+| 1 | Critical | Light/Dark | `tailwind.config.ts` | No `darkMode` key → 26 `dark:` utilities follow OS, not app theme. | ✅ |
+| 2 | Critical | Light/Dark | `ui/toaster.tsx:63` | Portal target outside every `[data-theme-scope]`. | ✅ |
+| 3 | Critical | Performance | `shell/app-entry.tsx:8` → `app/layout.tsx:8` | Onboarding page statically imported into the root layout entry. | ✅ |
+| 4 | Critical | Tooling | `package.json`, no `.github/` | No `typecheck` script and no CI. | ✅ |
+| 5 | High | Build | `lib/config.ts:5` + `src/services/*` | `IS_MOCK` is a runtime check; services statically import `@/lib/mock/*`, so `lib/mock/techniques.ts` (56 KB) always ships. | ✅ |
+| 6 | High | Product | `dashboard/page.tsx:59-93, 339-346` | Hardcoded `FALLBACK_*` arrays (incl. a fake "You" at rank 47) used as live render fallback. | ✅ |
+| 7 | High | Reusability | 5× `formatTime`, 3× `SectionLabel`, 2× `SectionHeading`/`FadeUp`/`timeAgo`, `todayStr`×2, `clamp`×6 | Duplicated general-purpose helpers. | ~ `formatTime`/`todayStr` consolidated in `lib/format.ts`; `SectionLabel` and the rest deliberately deferred |
+| 8 | High | Correctness | `habit-tracker-modal.tsx:82` | `days.sort()` mutates in place during render. | ✅ |
+| 9 | High | Light/Dark | `habit-tracker-modal.tsx:365-366,512,569,600-601,670-671,684` | Raw `VIOLET` (`#34D399`) in light branches → ≈2.1:1 on white. | ✅ |
+| 10 | High | Error handling | `play/configure-sprint/page.tsx:44` | `.then()` with no `.catch()` → permanent spinner on rejection. | ✅ |
+| 11 | High | a11y | `tests/e2e/a11y.spec.ts:4` | Axe scans only `/`, `/auth`, `/onboarding` — none of the 38 authenticated screens. | ✅ |
+| 12 | Medium | React | `learn/practice/page.tsx:190-194` | Missing effect deps (lint warning). | ✅ |
+| 13 | Medium | React | `learn/explorer/page.tsx:78`, `explorer/mind-map.tsx:59`, `onboarding/feature-intro.tsx:321` | Remaining `react-hooks/exhaustive-deps` warnings. | ✅ |
 | 14 | Medium | Performance | `shell/app-shell.tsx:6` | Eager `Walkthrough`, `RatePrompt`, `Toaster`, `gsap` in the authenticated shell. | ☐ |
 | 15 | Medium | Performance | `lib/notifications/story-reminders.ts:1-2`, `invite-card.tsx:8-9`, `habit-tracker-modal.tsx:35-36` | Static `@capacitor/*` imports reached from eagerly-loaded routes. | ☐ |
 | 16 | Medium | Data layer | `practice/page.tsx`, `configure-sprint/page.tsx`, `sprint/results/page.tsx`, `ui/content-feedback.tsx` | Direct service calls bypassing React Query. | ☐ |
@@ -163,20 +163,35 @@ Updated as work progresses. `[x]` = implemented and re-verified on this branch;
 
 ### Critical
 
-- [ ] **#1 `darkMode: "class"`** — make `dark:` follow the in-app theme store.
-- [ ] **#2 Toaster theme scope** — portal inherits `[data-theme-scope]` tokens.
-- [ ] **#3 Lazy onboarding** — `next/dynamic` in `app-entry.tsx`, remove static page import.
-- [ ] **#4 `typecheck` script + GitHub Actions CI** (typecheck, lint, unit tests).
+- [x] **#1 `darkMode: "class"`** — make `dark:` follow the in-app theme store.
+- [x] **#2 Toaster theme scope** — portal inherits `[data-theme-scope]` tokens.
+- [x] **#3 Lazy onboarding** — `next/dynamic` in `app-entry.tsx`, remove static page import.
+- [x] **#4 `typecheck` script + GitHub Actions CI** (typecheck, lint, unit tests).
 
 ### High
 
-- [ ] **#5 Mock tree-shaking** — stop shipping `lib/mock/**` when `NEXT_PUBLIC_API_MOCK=false`.
-- [ ] **#6 Dashboard fallback data** — real loading/empty/error states instead of fabricated data.
-- [ ] **#7 `src/lib/format.ts`** — single source for `formatTime`, `formatDuration`, `formatDate`/`timeAgo`, `formatMembers`, `clamp`, `todayStr`; delete duplicates.
-- [ ] **#8/#9 Habit tracker** — copy before sort; replace raw `VIOLET` with tokens.
-- [ ] **#10 Sprint config error handling** — `.catch` + error UI.
-- [ ] **#11 A11y coverage** — add authenticated routes to the axe spec.
-- [ ] **#12/#13 Effect-dependency lint warnings** — clear all 4.
+- [x] **#5 Mock tree-shaking** — stop shipping `lib/mock/**` when `NEXT_PUBLIC_API_MOCK=false`.
+  (All static `@/lib/mock/*` imports in `src/services/*` converted to `await import()`
+  inside `if (IS_MOCK)` branches; built bundle verified — mock data now lives only in lazy
+  page chunks, e.g. the 56 KB techniques mock ships as a 47 KB on-demand chunk.)
+- [x] **#6 Dashboard fallback data** — real loading/empty/error states instead of fabricated data.
+  (`FALLBACK_*` arrays replaced with `EMPTY_*` neutral defaults; fabricated trend chips removed.)
+- [~] **#7 `src/lib/format.ts`** — single source for `formatTime`, `formatDuration`, `formatDate`/`timeAgo`, `formatMembers`, `clamp`, `todayStr`; delete duplicates.
+  (Partial: `formatTime`, `formatHoursMinutes`, `formatMinutes`, `todayStr` added and
+  5×/2× duplicates removed. `SectionLabel` unification skipped — three different markup
+  shapes, visual-regression risk. `clamp`/`formatMembers`/`timeAgo` duplicates remain.)
+- [x] **#8/#9 Habit tracker** — copy before sort; replace raw `VIOLET` with tokens.
+  (Sort copies; 16 component-level `VIOLET` usages replaced with `EMERALD_DEEP` light /
+  accent-dark via a `habitAccent` local.)
+- [x] **#10 Sprint config error handling** — `.catch` + error UI.
+  (`.catch` resets templates + request-id guard; `.finally` clears loading.)
+- [x] **#11 A11y coverage** — add authenticated routes to the axe spec.
+  (17 authenticated routes added, seeded via `seedAppState`. The expanded scan found 5
+  real serious violations, all fixed: scrollable `<main>` on analytics made focusable;
+  violet stat-label contrast on explorer; locked-achievement contrast on profile;
+  unlabeled `<select>` on history; invalid `role="list"` containers on
+  history/notifications/leaderboard.)
+- [x] **#12/#13 Effect-dependency lint warnings** — clear all 4.
 
 ### Medium
 
@@ -205,4 +220,26 @@ Updated as work progresses. `[x]` = implemented and re-verified on this branch;
 
 ## G. Post-remediation verification
 
-*(Filled in on completion — see bottom of file.)*
+Actual results on `feature/frontend-standards-improvements` after the Critical + High pass:
+
+| Command | Result |
+|---|---|
+| `npm run typecheck` | PASS — 0 errors. |
+| `npm run lint` | PASS exit 0 — 0 `exhaustive-deps` warnings (baseline had 4); only pre-existing `no-img-element` warnings remain. |
+| `npm run test` | PASS — 28 files, **337/337 tests**. |
+| `npm run build` | PASS (static export). Bundle inspection: mock-data markers (`SAMPLE_TEMPLATES`, `DUEL_OPPONENTS`, `FAQ_ITEMS`, `getTechniqueById`) appear **only** in small lazy page chunks (1–47 KB), not in the main/shared chunks. |
+| `npm run test:a11y` | PASS — **20/20** (3 public + 17 authenticated routes via `seedAppState`). The 5 serious violations the expanded scan initially found were fixed and re-verified green. |
+| `tests/e2e/responsive.spec.ts` | Still not run in this pass (unchanged from baseline; layout-sensitive changes were limited to `tabIndex`/`outline-none` on `<main>`, which do not affect layout). |
+
+### Known caveats (honest disclosures)
+
+- **Pre-paint theme flash:** no inline theme bootstrap script was added to the root layout,
+  because `tests/security.test.ts` restricts `dangerouslySetInnerHTML.__html` to
+  JSON/DECODE patterns. On first load of a rehydrated non-default theme there is up to a
+  ~1-frame window before `applyThemeToScopes()` runs. Documented, accepted, deferred.
+- **`SectionLabel` not unified** — three different markup shapes across call sites;
+  unification deferred (visual-regression risk without visual QA).
+- **No visual inspection performed** — no claim is made about pixel-level appearance in
+  either theme; only automated checks (tsc, lint, unit tests, axe, bundle inspection) were run.
+- **Medium and Low findings (#14–#29) not addressed** in this pass — remaining checklist
+  items above are accurate and unclaimed.

@@ -99,7 +99,7 @@ export default function ProfilePage() {
                   className={`rounded-2xl border px-3 py-4 text-center transition-all sm:p-5 max-[359px]:p-2.5 ${
                     a.unlocked
                       ? "border-border/40 bg-card"
-                      : "border-dashed border-border/20 opacity-40"
+                      : "border-dashed border-border/20"
                   }`}
                 >
                   <div
@@ -112,7 +112,7 @@ export default function ProfilePage() {
                   <p className="text-fluid-xs font-bold uppercase tracking-wide sm:text-fluid-sm whitespace-nowrap">
                     {a.label}
                   </p>
-                  <p className="mt-0.5 text-fluid-xs text-muted-foreground/60">
+                  <p className="mt-0.5 text-fluid-xs text-muted-foreground">
                     {a.desc}
                   </p>
                 </div>

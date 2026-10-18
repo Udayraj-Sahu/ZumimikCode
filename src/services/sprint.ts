@@ -1,12 +1,13 @@
-import { getTopicsByDomain, SPRINT_CONFIG } from "@/lib/mock/sprint";
 import type { SprintTopic, SprintConfig } from "@/lib/types/sprint";
 import { apiGet } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
 export async function getSprintTopics(domain?: string): Promise<SprintTopic[]> {
   if (IS_MOCK) {
+    const { getTopicsByDomain, SPRINT_CONFIG } = await import("@/lib/mock/sprint");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(200);
     return getTopicsByDomain(domain ?? "cat");
   }
@@ -16,6 +17,9 @@ export async function getSprintTopics(domain?: string): Promise<SprintTopic[]> {
 
 export async function getSprintConfig(): Promise<SprintConfig> {
   if (IS_MOCK) {
+    const { getTopicsByDomain, SPRINT_CONFIG } = await import("@/lib/mock/sprint");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(100);
     return SPRINT_CONFIG;
   }

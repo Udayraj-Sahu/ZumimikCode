@@ -1,12 +1,13 @@
-import { PLANNER_DAYS, PLANNER_STATS } from "@/lib/mock/planner";
 import type { PlannerDay, PlannerStats } from "@/lib/types/planner";
 import { apiGet } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
 export async function getPlannerDays(): Promise<PlannerDay[]> {
   if (IS_MOCK) {
+    const { PLANNER_DAYS, PLANNER_STATS } = await import("@/lib/mock/planner");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(200);
     return PLANNER_DAYS;
   }
@@ -15,6 +16,9 @@ export async function getPlannerDays(): Promise<PlannerDay[]> {
 
 export async function getPlannerStats(): Promise<PlannerStats> {
   if (IS_MOCK) {
+    const { PLANNER_DAYS, PLANNER_STATS } = await import("@/lib/mock/planner");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(100);
     return PLANNER_STATS;
   }

@@ -1,7 +1,5 @@
-import { generateSprintSession } from "@/lib/mock/sprint-session";
 import type { SprintSession } from "@/lib/types/sprint-session";
 import { apiGet } from "./api";
-import { delay } from "@/lib/mock/delay";
 
 import { IS_MOCK } from "@/lib/config";
 
@@ -12,6 +10,9 @@ export async function getSprintQuestions(
   domain?: string,
 ): Promise<SprintSession> {
   if (IS_MOCK) {
+    const { generateSprintSession } = await import("@/lib/mock/sprint-session");
+    const { delay } = await import("@/lib/mock/delay");
+
     await delay(300);
     return generateSprintSession(topic, length, difficulty, domain);
   }

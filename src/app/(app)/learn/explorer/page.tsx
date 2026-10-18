@@ -1,6 +1,6 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
-import { BG, CTA_35, CYAN, CYAN_14, CYAN_18, CYAN_85, GLASS_02, GLASS_03, GLASS_07, GLASS_50, GLASS_55, GLASS_BG, GLASS_BORDER, VIOLET_DEEP, VIOLET_DEEP_14, VIOLET_DEEP_18, VIOLET_DEEP_85 } from "@/lib/theme-tokens";
+import { BG, CTA_35, CYAN, CYAN_14, CYAN_18, CYAN_85, GLASS_02, GLASS_03, GLASS_07, GLASS_50, GLASS_55, GLASS_BG, GLASS_BORDER, VIOLET_DEEP, VIOLET_DEEP_14, VIOLET_DEEP_18, VIOLET_TEXT } from "@/lib/theme-tokens";
 
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -316,7 +316,7 @@ function ExplorerContent() {
                 {conquest.practiceSets}
               </span>
             </div>
-            <p className="relative mt-3 text-micro font-semibold tracking-[0.14em] uppercase" style={{ color: VIOLET_DEEP_85 }}>
+            <p className="relative mt-3 text-micro font-semibold tracking-[0.14em] uppercase" style={{ color: VIOLET_TEXT }}>
               Practice sets to conquer
             </p>
           </div>
