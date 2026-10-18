@@ -130,6 +130,7 @@
   --green-solid: #22C55E;
   --cyan: #22D3EE;
   --cyan-light: #3DD6F5;
+  --mint: #3DDC97;
   --sky: #06b6d4;
   --blue: #3B82F6;
   --blue-light: #60A5FA;
@@ -297,6 +298,8 @@
   --cyan-border: rgba(34,211,238,0.30);
   --violet-bg: rgba(167,139,250,0.12);
   --violet-border: rgba(167,139,250,0.35);
+  --mint-bg: rgba(61,220,151,0.10);
+  --mint-border: rgba(61,220,151,0.30);
   --neon: var(--lime);
   --neon-bg: rgba(200,255,77,0.08);
   --neon-border: rgba(200,255,77,0.26);
@@ -368,6 +371,34 @@
   --deep-black-2-ee: rgba(17,17,22,0.933);
   --lime-bright-rgb: 200, 255, 90;
   --slate-muted: rgb(120 130 125);
+
+  /* ── Intro surface ladder ──
+     Semantic vocabulary used by the intro overlays (Story, Arena, Pitch) so a
+     component can talk about page / surface / tile / hairline / text tiers
+     without picking a concrete panel colour. The surface and text aliases point
+     at tokens that already flip with the theme; the hairline ramp and the three
+     literal text/status values are restated per theme below. */
+  --page: var(--background);
+  --surface-0: var(--chrome);
+  --surface-1: var(--surface);
+  --tile: var(--card);
+  --track: var(--muted);
+  /* Hairline ramp: 0 = quiet divider, 1 = default edge, 2 = emphasised edge.
+     Deliberately not aliased to --border: that token is a solid dark green in
+     dark mode, which would sit *below* the white-alpha hairlines and invert the
+     order. An alpha ramp against the foreground flips theme by construction. */
+  --border-0: rgba(255, 255, 255, 0.07);
+  --border-1: rgba(255, 255, 255, 0.13);
+  --border-2: rgba(255, 255, 255, 0.22);
+  /* Text ramp naming matches the design system's vocabulary: body, supporting,
+     faint. --text-dim stays >= 4.5:1 against the tile it is used on. */
+  --text: var(--foreground);
+  --text-muted: var(--muted-foreground);
+  --text-dim: #7c817d;
+  /* Status washes. --neon-bg/--neon-border and --cyan-* already exist above;
+     only the amber pair was missing from the family. */
+  --amber-bg: rgba(245, 158, 11, 0.10);
+  --amber-border: rgba(245, 158, 11, 0.30);
 }
 
 @media (min-width: 600px) {
@@ -545,6 +576,7 @@
   --amber: #9C5707;
   --red-soft: #B91C1C;
   --cyan: #0E7490;
+  --mint: #15803D;
   --fuchsia: #A21CAF;
   --violet: #6D28D9;
   --violet-deep: #5B21B6;
@@ -597,8 +629,27 @@
   --cyan-border: rgba(14,116,144,0.30);
   --violet-bg: rgba(109,40,217,0.08);
   --violet-border: rgba(109,40,217,0.30);
+  --mint-bg: rgba(21,128,61,0.08);
+  --mint-border: rgba(21,128,61,0.30);
   --neon-bg: rgba(63,106,12,0.08);
   --neon-border: rgba(63,106,12,0.28);
+  /* Intro surface ladder (see the :root note). The surface and text aliases
+     follow their parents, which already flip here; the hairline ramp and the
+     literal members are restated because on white panels they need to *darken*
+     to hold the ramp order and keep >= 4.5:1. */
+  --page: var(--background);
+  --surface-0: var(--chrome);
+  --surface-1: var(--surface);
+  --tile: var(--card);
+  --track: var(--muted);
+  --border-0: rgba(10, 10, 10, 0.08);
+  --border-1: rgba(10, 10, 10, 0.14);
+  --border-2: rgba(10, 10, 10, 0.24);
+  --text: var(--foreground);
+  --text-muted: var(--muted-foreground);
+  --text-dim: #6b6b6b;
+  --amber-bg: rgba(156, 87, 7, 0.10);
+  --amber-border: rgba(156, 87, 7, 0.30);
 }
 
 /* Glass cards sit as opaque white on the off-white page; without a shadow the
