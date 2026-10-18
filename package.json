@@ -8,6 +8,7 @@
     "build": "next build && node scripts/fix-asset-paths.js",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

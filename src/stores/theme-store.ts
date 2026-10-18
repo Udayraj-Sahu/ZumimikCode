@@ -23,7 +23,17 @@ const STORAGE_KEY = "exam-arena-theme";
 // subtrees permanently resolves :root (dark) values. The same loop carries
 // `data-accent`, which is what globals.css keys its [data-accent="<id>"] token
 // blocks off, so portaled dialogs follow the user's accent too.
+// `documentElement.classList` carries the `dark` class that Tailwind's
+// `darkMode: "class"` keys `dark:` variants off. Portaled dialogs and toasts live
+// outside every `[data-theme-scope]`, so the document root is the only ancestor
+// that covers them.
+function applyThemeToDocument(theme: Theme) {
+  if (typeof document === "undefined") return;
+  document.documentElement.classList.toggle("dark", theme === "dark");
+}
+
 function applyThemeToScopes(theme: Theme, accent: AccentId) {
+  applyThemeToDocument(theme);
   if (typeof document === "undefined") return;
   document.querySelectorAll<HTMLElement>("[data-theme-scope]").forEach((el) => {
     el.classList.toggle("light", theme === "light");
@@ -102,6 +112,10 @@ useThemeStore.subscribe((state, prev) => {
     applyThemeToScopes(state.theme, state.accent);
   }
 });
+
+// Persisted value is read synchronously at module scope, so set the root class
+// immediately instead of waiting for the first rehydrate/subscription tick.
+applyThemeToDocument(useThemeStore.getState().theme);
 
 /**
  * Portals (dialogs, onboarding, paywall, habit tracker) mount *after*

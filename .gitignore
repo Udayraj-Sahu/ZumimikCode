@@ -7,6 +7,7 @@ public/sw.js
 
 # build/test artifacts
 tsconfig.tsbuildinfo
+coverage/
 playwright-report/
 test-results/
 app-debug.apk

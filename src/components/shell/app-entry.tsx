@@ -2,10 +2,18 @@
 
 import { useState, useLayoutEffect, useEffect, useCallback, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
 import { SplashScreen } from "@/components/shell/splash-screen";
 import { useAuthStore } from "@/stores/auth-store";
 import { useWelcomeStore } from "@/stores/welcome-store";
-import OnboardingPage from "@/app/onboarding/page";
+
+// The whole onboarding flow lives in a single ~3k-line module; statically
+// importing it here would pull it into every route's client bundle via the
+// root layout. Load it only on the unauthenticated path.
+const OnboardingPage = dynamic(
+  () => import("@/app/onboarding/page"),
+  { ssr: false },
+);
 
 export function AppEntry({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<"loading" | "native" | "web">("loading");

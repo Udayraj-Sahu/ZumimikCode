@@ -2,6 +2,10 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  // The app themes via a `.dark`/`.light` class toggled by the theme store, NOT via
+  // the OS preference. Without this, `dark:` utilities silently track
+  // `prefers-color-scheme` and desync from the in-app toggle.
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
