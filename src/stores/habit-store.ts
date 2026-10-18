@@ -2,11 +2,8 @@ import { create } from "zustand";
 import { AMBER, CTA_LIME, CYAN, ROSE, VIOLET_PURPLE } from "@/lib/theme-tokens";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { safeLocalStorage } from "@/lib/browser";
+import { todayStr } from "@/lib/format";
 import type { Habit, HabitLog, HabitStats, HabitWithLog } from "@/lib/types/habit-tracker";
-
-function todayStr(): string {
-  return new Date().toISOString().split("T")[0];
-}
 
 function dateStr(d: Date): string {
   return d.toISOString().split("T")[0];

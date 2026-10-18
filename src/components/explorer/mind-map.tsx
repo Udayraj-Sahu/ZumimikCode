@@ -49,8 +49,8 @@ export function MindMap({
   useEffect(() => {
     setPath([]);
     setExpanded(new Set());
-    if (!root || !focusNodeId) return;
-    const ancestors = collectAncestors(root, focusNodeId);
+    if (!tree || !focusNodeId) return;
+    const ancestors = collectAncestors(tree, focusNodeId);
     if (ancestors && ancestors.length > 1) {
       const parents = ancestors.slice(0, -1);
       setPath(parents);

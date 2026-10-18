@@ -41,11 +41,19 @@ export default function ConfigureSprintPage() {
     }
     const reqId = ++templateReqRef.current;
     setLoadingTemplates(true);
-    getTemplatesByCategory(cats[0], targetExam).then((results) => {
-      if (reqId !== templateReqRef.current) return;
-      setTemplates(results);
-      setLoadingTemplates(false);
-    });
+    getTemplatesByCategory(cats[0], targetExam)
+      .then((results) => {
+        if (reqId !== templateReqRef.current) return;
+        setTemplates(results);
+      })
+      .catch(() => {
+        if (reqId !== templateReqRef.current) return;
+        setTemplates([]);
+      })
+      .finally(() => {
+        if (reqId !== templateReqRef.current) return;
+        setLoadingTemplates(false);
+      });
   }, [topic, targetExam]);
 
   const { headerRef, animateSection } = useEntranceAnimations();

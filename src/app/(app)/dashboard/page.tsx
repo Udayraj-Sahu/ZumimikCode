@@ -56,41 +56,16 @@ import { useResumeStore } from "@/stores/resume-store";
 
 const ACCENT = "var(--primary)";
 
-const FALLBACK_TOPICS = [
-  { name: "Quantitative Aptitude", value: 92, color: "primary" as const },
-  { name: "Logical Reasoning", value: 78, color: "primary" as const },
-  { name: "Data Interpretation", value: 85, color: "primary" as const },
-  { name: "Verbal Ability", value: 64, color: "primary" as const },
-  { name: "General Knowledge", value: 41, color: "primary" as const },
-];
-
-const FALLBACK_RADAR = [
-  { label: "SPEED", value: 0.95 },
-  { label: "LOGIC", value: 0.85 },
-  { label: "STAMINA", value: 0.8 },
-  { label: "FOCUS", value: 0.9 },
-  { label: "MEMORY", value: 0.75 },
-  { label: "REFLEX", value: 0.88 },
-];
-
-const FALLBACK_STATS = { accuracy: 87, questions: 1247, percentile: 64, speed: 47 };
-const FALLBACK_STREAK = { current: 6, xp: 2340, days: [true, true, true, false, true, true, false], labels: ["M", "T", "W", "T", "F", "S", "S"] };
-const FALLBACK_UPCOMING = [
-  { title: "LRDI Sprint", time: "Today, 8PM", tag: "LIVE" },
-  { title: "Mock CAT #7", time: "Thu, 10AM", tag: "MOCK" },
-  { title: "VA Sectional", time: "Sat, 3PM", tag: "GROUP" },
-];
-const FALLBACK_LEADERBOARD = [
-  { rank: 1, name: "Priya S.", xp: 4820 },
-  { rank: 2, name: "Arjun M.", xp: 4310 },
-  { rank: 3, name: "Rohan K.", xp: 3990 },
-  { rank: 47, name: "You", xp: 2340, me: true },
-];
-const FALLBACK_RECENT = [
-  { label: "LR Sprint", score: "22/25", time: "2h ago" },
-  { label: "Quant Set #14", score: "18/20", time: "Yesterday" },
-  { label: "Full CAT Mock", score: "142/300", time: "2d ago" },
-];
+// Neutral defaults only — never fabricated activity. A missing field renders as
+// empty/zero so the real loading and error states stay the only honest sources
+// of "no data yet".
+const EMPTY_TOPICS: { name: string; value: number; color: "primary" }[] = [];
+const EMPTY_RADAR: { label: string; value: number }[] = [];
+const EMPTY_STATS = { accuracy: 0, questions: 0, percentile: 0, speed: 0 };
+const EMPTY_STREAK = { current: 0, xp: 0, days: [false, false, false, false, false, false, false], labels: ["M", "T", "W", "T", "F", "S", "S"] };
+const EMPTY_UPCOMING: { title: string; time: string; tag: string }[] = [];
+const EMPTY_LEADERBOARD: { rank: number; name: string; xp: number; me?: boolean }[] = [];
+const EMPTY_RECENT: { label: string; score: string; time: string }[] = [];
 
 const QUICK_ACCESS_ITEMS = [
   { label: "Exam Prep", icon: Target, color: VIOLET_DARK, bg: VIOLET_DARK_12, href: "/learn" },
@@ -336,14 +311,14 @@ export default function DashboardPage() {
     gsap.fromTo(card, { y: 14, opacity: 0.55, scale: 0.985 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" });
   }, [carouselIndex, reduced]);
 
-  const topics = data?.topics ?? FALLBACK_TOPICS;
+  const topics = data?.topics ?? EMPTY_TOPICS;
   const overallMastery = topics.length > 0 ? Math.round(topics.reduce((sum, t) => sum + t.value, 0) / topics.length) : 0;
-  const radarAxes = data?.radarAxes ?? FALLBACK_RADAR;
-  const stats = data?.stats ?? FALLBACK_STATS;
-  const streak = data?.streak ?? FALLBACK_STREAK;
-  const upcoming = data?.upcoming ?? FALLBACK_UPCOMING;
-  const leaderboard = data?.leaderboard ?? FALLBACK_LEADERBOARD;
-  const recent = data?.recent ?? FALLBACK_RECENT;
+  const radarAxes = data?.radarAxes ?? EMPTY_RADAR;
+  const stats = data?.stats ?? EMPTY_STATS;
+  const streak = data?.streak ?? EMPTY_STREAK;
+  const upcoming = data?.upcoming ?? EMPTY_UPCOMING;
+  const leaderboard = data?.leaderboard ?? EMPTY_LEADERBOARD;
+  const recent = data?.recent ?? EMPTY_RECENT;
 
   const habits = useHabitStore((s) => s.habits);
   const logs = useHabitStore((s) => s.logs);
@@ -631,10 +606,10 @@ export default function DashboardPage() {
               </div>
               <div className="grid grid-cols-2 gap-2.5 flex-1 content-center">
                 {[
-                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target, color: EMERALD, trend: "+4%" },
-                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen, color: CYAN, trend: "+23" },
-                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award, color: VIOLET_PURPLE, trend: "Top 8%" },
-                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap, color: YELLOW, trend: "-2s" },
+                  { label: "Accuracy", value: `${stats.accuracy}%`, icon: Target, color: EMERALD },
+                  { label: "Questions", value: stats.questions.toLocaleString(), icon: BookOpen, color: CYAN },
+                  { label: "Percentile", value: `${stats.percentile}%ile`, icon: Award, color: VIOLET_PURPLE },
+                  { label: "Speed", value: `${stats.speed}s avg`, icon: Zap, color: YELLOW },
                 ].map((s) => (
                   <button
                     key={s.label}
@@ -647,7 +622,6 @@ export default function DashboardPage() {
                       <div className="size-8 rounded-lg flex items-center justify-center" style={{ background: s.color + "18" }}>
                         <s.icon size={14} style={{ color: hueText(s.color) }} />
                       </div>
-                      <span className="text-[8.5px] font-bold text-foreground/60 bg-white/[0.04] border border-white/[0.05] rounded-full px-2 py-0.5">{s.trend}</span>
                     </div>
                     <p className="text-[20px] font-bold tracking-[-0.03em] text-foreground relative leading-none">{s.value}</p>
                     <div className="flex items-center justify-between mt-2 relative">

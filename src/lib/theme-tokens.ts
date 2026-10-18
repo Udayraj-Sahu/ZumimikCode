@@ -21,6 +21,9 @@ export const LIME_PALE_3 = "#E9FFA8";
 export const GREEN_SOFT = "#7DDB6A";
 export const EMERALD = "#34D399";
 export const EMERALD_SOLID = "#10B981";
+// Darker emerald for text on light surfaces: #34D399/#10B981 only reach
+// ~2.1–2.5:1 on white, below the 4.5:1 WCAG AA floor for small text.
+export const EMERALD_DEEP = "#047857";
 export const EMERALD_LIGHT = "#4ADE80";
 export const EMERALD_PALE = "#86efac";
 export const GREEN_SOLID = "#22C55E";

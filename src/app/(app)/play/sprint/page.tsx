@@ -20,12 +20,7 @@ import { Button } from "@/components/ui/button";
 import { ExamShell } from "@/components/exam/exam-shell";
 import { QuestionNavigator } from "@/components/exam/question-navigator";
 import { GLASS_02, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-tokens";
-
-function formatTime(s: number): string {
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${m}:${sec.toString().padStart(2, "0")}`;
-}
+import { formatTime } from "@/lib/format";
 
 function SprintContent() {
   usePageMeta("Sprint — Exam Arena");

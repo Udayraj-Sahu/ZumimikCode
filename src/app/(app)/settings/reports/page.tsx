@@ -9,13 +9,7 @@ import { useReports } from "@/hooks/queries/use-reports";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { GLASS_BG } from "@/lib/theme-tokens";
 import { Button } from "@/components/ui/button";
-
-function formatTime(s: number): string {
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  if (h > 0) return `${h}h ${m}m`;
-  return `${m}m`;
-}
+import { formatHoursMinutes } from "@/lib/format";
 
 export default function ReportsPage() {
   usePageMeta("Reports — Exam Arena");
@@ -120,7 +114,7 @@ export default function ReportsPage() {
                   <Clock size={14} className="text-chart-4" />
                   <p className="text-micro text-muted-foreground/50 font-semibold tracking-wider whitespace-nowrap">TOTAL TIME</p>
                 </div>
-                <p className="text-[20px] font-bold text-foreground">{formatTime(data.summary.totalTime)}</p>
+                <p className="text-[20px] font-bold text-foreground">{formatHoursMinutes(data.summary.totalTime)}</p>
               </div>
             </div>
 

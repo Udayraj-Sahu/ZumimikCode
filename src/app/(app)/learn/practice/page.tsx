@@ -187,11 +187,17 @@ export default function PracticePage() {
     }
   };
 
+  // Latest-ref pattern: the auto-start effect only keys off the URL param and
+  // the load flags; calling the live function through a ref keeps the lint-clean
+  // dependency array without changing when the auto-start actually fires.
+  const startTemplatePracticeRef = useRef(startTemplatePractice);
+  startTemplatePracticeRef.current = startTemplatePractice;
+
   useEffect(() => {
     if (templateIdParam && !loadingTemplates && loadedTemplates.length === 0) {
-      startTemplatePractice(templateIdParam);
+      startTemplatePracticeRef.current(templateIdParam);
     }
-  }, [templateIdParam]);
+  }, [templateIdParam, loadingTemplates, loadedTemplates.length]);
 
   const handleTemplateNext = () => {
     if (storeCurrentIndex >= storeTemplates.length - 1) {

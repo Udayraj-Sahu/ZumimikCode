@@ -12,12 +12,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { HistoryEntry } from "@/lib/types/history";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { GLASS_BG } from "@/lib/theme-tokens";
-
-function formatTime(s: number): string {
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${m}:${sec.toString().padStart(2, "0")}`;
-}
+import { formatTime } from "@/lib/format";
 
 function formatDate(iso: string): string {
   const d = new Date(iso);

@@ -75,7 +75,7 @@ function ExplorerContent() {
   const [showAddPrep, setShowAddPrep] = useState(false);
 
   const { data: trees, isLoading, isError: treesError } = useSubjectTree(activeDomain);
-  const subjects = trees ?? [];
+  const subjects = useMemo(() => trees ?? [], [trees]);
 
   const { data: allTechniques, isError: techniquesError } = useAllTechniques();
   const availableTechniqueIds = useMemo(

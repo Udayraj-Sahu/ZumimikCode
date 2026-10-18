@@ -318,7 +318,7 @@ function IncludedCarousel() {
       if (Math.abs(deltaX) < 40) return;
       setActive((a) => (a + (deltaX < 0 ? 1 : cards.length - 1)) % cards.length);
     },
-    [],
+    [cards.length],
   );
 
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {

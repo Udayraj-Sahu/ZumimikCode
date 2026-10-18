@@ -28,8 +28,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { todayStr } from "@/lib/format";
 import { TimePicker } from "@/components/ui/time-picker";
-import { AMBER, AMBER_08, CYAN, CYAN_08, DEEP_BLACK_2, DEEP_BLACK_2_CC, DEEP_BLACK_2_EE, EMERALD, EMERALD_08, EMERALD_SOLID, GLASS_012, GLASS_025, GLASS_18, GLASS_40, GLASS_75, GLASS_BG, ROSE, VIOLET, VIOLET_DIM, VIOLET_GLOW, VIOLET_PURPLE, WHITE } from "@/lib/theme-tokens";
+import { AMBER, AMBER_08, CYAN, CYAN_08, DEEP_BLACK_2, DEEP_BLACK_2_CC, DEEP_BLACK_2_EE, EMERALD, EMERALD_08, EMERALD_DEEP, EMERALD_SOLID, GLASS_012, GLASS_025, GLASS_18, GLASS_40, GLASS_75, GLASS_BG, ROSE, VIOLET, VIOLET_DIM, VIOLET_GLOW, VIOLET_PURPLE, WHITE } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { useHabitStore } from "@/stores/habit-store";
 import { Capacitor } from "@capacitor/core";
@@ -63,10 +64,6 @@ function getFirstDayOfWeek(year: number, month: number): number {
   return d === 0 ? 6 : d - 1;
 }
 
-function todayStr(): string {
-  return new Date().toISOString().split("T")[0];
-}
-
 const isNative = Capacitor.isNativePlatform();
 
 const DAY_PILLS = ["M", "T", "W", "T", "F", "S", "S"];
@@ -79,7 +76,7 @@ function allDays(): number[] {
 }
 
 function reminderLabel(days: number[] | undefined, time: string): string {
-  const list = days && days.length > 0 ? days.sort() : allDays();
+  const list = days && days.length > 0 ? [...days].sort((a, b) => a - b) : allDays();
   if (list.length === 7) return `Every day at ${time}`;
   if (list.length === 5 && [1, 2, 3, 4, 5].every((d) => list.includes(d))) {
     return `Weekdays at ${time}`;
@@ -178,6 +175,9 @@ export function HabitTrackerModal({ onClose }: Props) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const theme = useThemeStore((s) => s.theme);
+  // #34D399 reads well on the dark surface but fails contrast on light; swap in
+  // the darker emerald when the scope flips so badges/labels stay legible.
+  const habitAccent = theme === "light" ? EMERALD_DEEP : VIOLET;
   const [showAdd, setShowAdd] = useState(false);
   const [newName, setNewName] = useState("");
   const [newIcon, setNewIcon] = useState("Zap");
@@ -318,7 +318,7 @@ export function HabitTrackerModal({ onClose }: Props) {
   const todayPct = totalHabits > 0 ? Math.round((completedToday / totalHabits) * 100) : 0;
 
   const statCards = [
-    { icon: Flame, label: "STREAK", value: `${stats.currentStreak}d`, color: VIOLET, bg: VIOLET_DIM },
+    { icon: Flame, label: "STREAK", value: `${stats.currentStreak}d`, color: habitAccent, bg: VIOLET_DIM },
     { icon: Target, label: "DONE", value: `${stats.totalCompletions}`, color: CYAN, bg: CYAN_08 },
     { icon: TrendingUp, label: "RATE", value: `${stats.completionRate}%`, color: EMERALD, bg: EMERALD_08 },
     { icon: Trophy, label: "BEST", value: `${stats.bestStreak}d`, color: EMERALD_SOLID, bg: AMBER_08 },
@@ -362,8 +362,8 @@ export function HabitTrackerModal({ onClose }: Props) {
             <ArrowLeft size={18} />
           </button>
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5" style={{ background: VIOLET_DIM, border: `1px solid ${VIOLET_GLOW}` }}>
-            <Sparkles size={10} style={{ color: VIOLET }} />
-            <span id="habit-tracker-title" className="text-micro font-semibold tracking-[0.22em]" style={{ color: VIOLET }}>DAILY HABITS</span>
+            <Sparkles size={10} style={{ color: habitAccent }} />
+            <span id="habit-tracker-title" className="text-micro font-semibold tracking-[0.22em]" style={{ color: habitAccent }}>DAILY HABITS</span>
           </div>
           <button
             type="button"
@@ -372,7 +372,7 @@ export function HabitTrackerModal({ onClose }: Props) {
             title={notifsEnabled ? "Notifications enabled" : "Enable notifications"}
             aria-label={notifsEnabled ? "Notifications enabled" : "Enable notifications"}
           >
-            {notifsEnabled ? <Bell size={16} style={{ color: VIOLET }} /> : <BellOff size={16} className={theme === "light" ? "text-white/40" : "text-muted-foreground/40"} />}
+            {notifsEnabled ? <Bell size={16} style={{ color: habitAccent }} /> : <BellOff size={16} className={theme === "light" ? "text-white/40" : "text-muted-foreground/40"} />}
           </button>
         </div>
 
@@ -406,7 +406,7 @@ export function HabitTrackerModal({ onClose }: Props) {
               <svg width="92" height="92" viewBox="0 0 92 92">
                 <circle cx="46" cy="46" r="40" fill="none" stroke="var(--accent-08)" strokeWidth="6" />
                 <circle
-                  cx="46" cy="46" r="40" fill="none" stroke={VIOLET} strokeWidth="6"
+                  cx="46" cy="46" r="40" fill="none" stroke={habitAccent} strokeWidth="6"
                   strokeLinecap="round"
                   strokeDasharray={`${2 * Math.PI * 40}`}
                   strokeDashoffset={`${2 * Math.PI * 40 * (1 - todayPct / 100)}`}
@@ -480,7 +480,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                       "aspect-square rounded-[4px] flex items-center justify-center text-micro font-medium transition-all duration-300",
                       isToday && "ring-1 shadow-[0_0_8px_var(--accent-40)]",
                     )}
-                    style={{ background: bg, color: tc, ...(isToday ? { ringColor: VIOLET } : {}) }}
+                    style={{ background: bg, color: tc, ...(isToday ? { ringColor: habitAccent } : {}) }}
                   >
                     {day}
                   </div>
@@ -509,7 +509,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                 <div className="h-1.5 w-16 rounded-full bg-white/[0.05] overflow-hidden">
                   <div className="h-full rounded-full transition-all duration-500" style={{ width: `${todayPct}%`, background: `linear-gradient(90deg, var(--cta-from), var(--cta-to))` }} />
                 </div>
-                <span className="text-micro font-bold" style={{ color: VIOLET }}>{todayPct}%</span>
+                <span className="text-micro font-bold" style={{ color: habitAccent }}>{todayPct}%</span>
               </div>
             </div>
             <div className="space-y-2">
@@ -566,7 +566,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                                   : "text-white/20 dark:text-white/20 hover:text-white/50 dark:hover:text-white/50 hover:bg-white/5"
                                 : "text-muted-foreground/20 hover:text-muted-foreground/50 hover:bg-white/5",
                           )}
-                          style={h.reminderTime ? { color: theme === "light" ? (h.todayCompleted ? EMERALD_SOLID : VIOLET) : VIOLET } : undefined}
+                          style={h.reminderTime ? { color: habitAccent } : undefined}
                           title={h.reminderTime ? `Reminds ${reminderLabel(h.reminderDays, h.reminderTime)}` : "Set reminder"}
                           aria-label={h.reminderTime ? `Reminder set for ${reminderLabel(h.reminderDays, h.reminderTime)}` : "Set reminder"}
                         >
@@ -597,8 +597,8 @@ export function HabitTrackerModal({ onClose }: Props) {
                       <div className="mx-2 mt-1 rounded-xl px-3 py-3 space-y-2.5" style={{ background: VIOLET_DIM, border: `1px solid ${VIOLET_GLOW}` }}>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1.5">
-                            <Clock size={12} style={{ color: VIOLET }} />
-                            <p className="text-[9px] font-bold uppercase tracking-[0.12em]" style={{ color: `${VIOLET}cc` }}>
+                            <Clock size={12} style={{ color: habitAccent }} />
+                            <p className="text-[9px] font-bold uppercase tracking-[0.12em]" style={{ color: `${habitAccent}cc` }}>
                               Daily Reminder
                             </p>
                           </div>
@@ -611,7 +611,7 @@ export function HabitTrackerModal({ onClose }: Props) {
 
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1.5">
-                            <Calendar size={11} style={{ color: VIOLET }} />
+                            <Calendar size={11} style={{ color: habitAccent }} />
                             <p className={cn("text-[9px] font-bold uppercase tracking-[0.12em]", theme === "light" ? "text-white/50" : "text-muted-foreground/50")}>
                               Repeat on
                             </p>
@@ -620,7 +620,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                             type="button"
                             onClick={(e) => { e.stopPropagation(); setDraftDays(draftDays.length === 7 ? [] : allDays()); }}
                             className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold tracking-wide transition-colors", draftDays.length === 7 ? "text-[var(--on-accent)]" : theme === "light" ? "text-white/40 hover:text-foreground" : "text-muted-foreground/40 hover:text-foreground")}
-                            style={draftDays.length === 7 ? { background: `${VIOLET}22`, border: `1px solid ${VIOLET}40` } : undefined}
+                            style={draftDays.length === 7 ? { background: `${habitAccent}22`, border: `1px solid ${habitAccent}40` } : undefined}
                           >
                             {"Every day"}
                           </button>
@@ -667,8 +667,8 @@ export function HabitTrackerModal({ onClose }: Props) {
 
                     {!isEditing && h.reminderTime && (
                       <div className="flex items-center gap-1.5 mx-6">
-                        <div className="size-1 rounded-full animate-pulse" style={{ background: VIOLET }} />
-                        <span className="text-micro font-medium" style={{ color: `${VIOLET}99` }}>{reminderLabel(h.reminderDays, h.reminderTime)}</span>
+                        <div className="size-1 rounded-full animate-pulse" style={{ background: habitAccent }} />
+                        <span className="text-micro font-medium" style={{ color: `${habitAccent}99` }}>{reminderLabel(h.reminderDays, h.reminderTime)}</span>
                       </div>
                     )}
                   </div>
@@ -681,7 +681,7 @@ export function HabitTrackerModal({ onClose }: Props) {
           {showAdd ? (
             <div className="rounded-3xl p-4 space-y-3" style={{ background: VIOLET_DIM, border: `1px solid ${VIOLET_GLOW}` }}>
               <div className="flex items-center justify-between">
-                <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: `${VIOLET}cc` }}>NEW HABIT</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: `${habitAccent}cc` }}>NEW HABIT</p>
                 <button type="button" onClick={() => setShowAdd(false)} className={cn("hover:text-foreground transition-colors", theme === "light" ? "text-white/40" : "text-muted-foreground/40")}><X size={14} /></button>
               </div>
               <input
@@ -697,7 +697,7 @@ export function HabitTrackerModal({ onClose }: Props) {
                     return (
                       <button key={iconName} type="button" onClick={() => setNewIcon(iconName)}
                         className={cn("size-8 rounded-lg flex items-center justify-center transition-all", newIcon === iconName ? "bg-[var(--accent-15)]" : theme === "light" ? "bg-black/[0.04] text-white/40 hover:bg-black/[0.08]" : "bg-white/[0.04] text-muted-foreground/40 hover:bg-white/[0.08]")}
-                        style={newIcon === iconName ? { color: VIOLET } : undefined}
+                        style={newIcon === iconName ? { color: habitAccent } : undefined}
                       >
                         <IC size={14} />
                       </button>

@@ -6,6 +6,7 @@ import { Play, X, Clock, Sparkles, ChevronRight } from "lucide-react";
 import { useResumeStore } from "@/stores/resume-store";
 import { useTodayPlan } from "@/hooks/queries/use-adaptive";
 import { cn } from "@/lib/utils";
+import { formatTime } from "@/lib/format";
 
 function timeAgo(ts: number): string {
   const s = Math.max(1, Math.round((Date.now() - ts) / 1000));
@@ -15,12 +16,6 @@ function timeAgo(ts: number): string {
   const h = Math.floor(m / 60);
   if (h < 24) return `${h}h ago`;
   return `${Math.floor(h / 24)}d ago`;
-}
-
-function formatTime(s: number): string {
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${m}:${sec.toString().padStart(2, "0")}`;
 }
 
 function shade(hex: string, percent: number): string {

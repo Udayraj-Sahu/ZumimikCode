@@ -18,12 +18,7 @@ import type { SprintResult, Question } from "@/lib/types/sprint-session";
 import { GLASS_BG } from "@/lib/theme-tokens";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
-
-function formatTime(s: number): string {
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${m}:${sec.toString().padStart(2, "0")}`;
-}
+import { formatTime } from "@/lib/format";
 
 export default function SprintResultsPage() {
   return (
