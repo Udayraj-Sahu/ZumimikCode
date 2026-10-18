@@ -1657,15 +1657,15 @@ function DdGroupCard({
                 </button>
                 <div className={s.bd}>
                   <div className={s.sc2}>
-                    {x.sl.map((s, j) => (
+                    {x.sl.map((slot, j) => (
                       <button
                         key={j}
                         type="button"
                         className={s.sl2}
                         onClick={() => onOpenSlot(key, j)}
                       >
-                        <b>{ddF12(s.t)}</b>
-                        {` · ${s.d}m · ${ddDayList(s.days)}`}
+                        <b>{ddF12(slot.t)}</b>
+                        {` · ${slot.d}m · ${ddDayList(slot.days)}`}
                       </button>
                     ))}
                     <button
