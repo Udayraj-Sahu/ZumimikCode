@@ -134,9 +134,11 @@ function SystemCarousel() {
     );
   }
 
+  const activeSystem = SYSTEMS[active];
+
   return (
     <div
-      className={cn("relative mt-3", theme === "light" ? "h-[220px]" : "h-[230px]")}
+      className="relative mt-3"
       role="group"
       aria-roledescription="carousel"
       aria-label="Core systems"
@@ -186,6 +188,23 @@ function SystemCarousel() {
           </motion.button>
         );
       })}
+      {/* Invisible sizer mirrors the active card's content so the container
+          height always matches the wrapped text height (no fixed px, no overflow) */}
+      <div
+        aria-hidden
+        className="invisible w-[90%] rounded-2xl border border-transparent p-4 text-left"
+      >
+        <div className="flex items-center gap-3">
+          <span className="grid size-10 shrink-0 place-items-center rounded-full border" />
+          <h3 className="flex-1 text-[14px] font-semibold leading-tight">{activeSystem.title}</h3>
+          <span className=" max-w-[7.5rem] rounded bg-white/5 px-2 py-1 text-right text-[9px] uppercase leading-3 tracking-wider text-muted-foreground">
+            {activeSystem.tag}
+          </span>
+        </div>
+        <p className={cn("mt-3 text-[12px] leading-relaxed", theme === "light" ? "text-black/80" : "text-white/80")}>
+          {activeSystem.body}
+        </p>
+      </div>
     </div>
   );
 }
