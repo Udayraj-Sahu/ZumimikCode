@@ -106,12 +106,15 @@ export function PlanSelector({
   onChange,
   billing,
   lane,
+  layout = "stack",
 }: {
   value: PlanId;
   onChange: (plan: PlanId) => void;
   onLaneChange: (lane: string) => void;
   lane: string;
   billing?: "annual" | "monthly";
+  /** "row" lays the three plans side by side on wide viewports. */
+  layout?: "stack" | "row";
 }) {
   const theme = useThemeStore((s) => s.theme);
   const store = useOnboardingStore();
@@ -128,7 +131,11 @@ export function PlanSelector({
       : undefined;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div
+      className={cn(
+        layout === "row" ? "grid grid-cols-1 gap-3 lg:grid-cols-3" : "flex flex-col gap-3",
+      )}
+    >
       {PLANS.map((p, idx) => {
         const selected = p.id === value;
         const unit = billing === "monthly" ? "mo" : "yr";
@@ -199,7 +206,7 @@ export function PlanSelector({
                   </div>
                 </div>
 
-                {tracks && selected && (
+                {tracks && (
                   <div className="mt-3">
                     <div className="flex items-center justify-between">
                       <span className="text-[9px] tracking-[0.14em] text-white/50">
@@ -354,7 +361,7 @@ export function PlanIntro({
         aria-labelledby="plan-hook-title"
       >
       <div
-        className="relative flex h-full w-full shrink-0 flex-col sm:h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl"
+        className="relative flex h-full w-full shrink-0 flex-col sm:h-auto sm:max-h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl lg:max-w-5xl xl:max-w-[1180px]"
         style={{
           borderColor: GLASS_BORDER,
           background:
@@ -454,6 +461,7 @@ export function PlanIntro({
               lane={lane}
               onLaneChange={store.setPlanLane}
               billing={billing}
+              layout="row"
             />
           </div>
 
@@ -461,7 +469,7 @@ export function PlanIntro({
           <p className={cn("mb-2.5 mt-5 px-0.5 text-[11px] font-semibold tracking-[0.12em]", tone.soft)}>
             PAY WITH
           </p>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="mb-4 grid grid-cols-3 gap-2">
             {PAY_MODES.map(({ id, label, Icon }) => {
               const on = pay === id;
               return (
