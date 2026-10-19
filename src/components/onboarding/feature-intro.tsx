@@ -136,7 +136,7 @@ function SystemCarousel() {
 
   return (
     <div
-      className={cn("relative mt-3", theme === "light" ? "h-[170px]" : "h-[180px]")}
+      className={cn("relative mt-3", theme === "light" ? "h-[220px]" : "h-[230px]")}
       role="group"
       aria-roledescription="carousel"
       aria-label="Core systems"
