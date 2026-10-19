@@ -3,7 +3,7 @@ import { PageContainer } from "@/components/ui/page-container";
 
 import { useCallback, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import gsap from "gsap";
 import { BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -49,6 +49,13 @@ function SprintResultsContent() {
   const isAdaptive = searchParams.get("adaptive") === "1";
   const adaptiveDomain = searchParams.get("domain") ?? targetExam;
 
+  const recordSession = useMutation({
+    mutationFn: recordAdaptiveSession,
+    onSuccess: (_data, outcome) => {
+      queryClient.invalidateQueries({ queryKey: ["adaptive-state", outcome.domain] });
+    },
+  });
+
   useEffect(() => {
     incrementSprint();
   }, [incrementSprint]);
@@ -71,9 +78,7 @@ function SprintResultsContent() {
       totalTimeSpent: lastResult.totalTimeSpent,
       ts: Date.now(),
     };
-    recordAdaptiveSession(outcome).then(() => {
-      queryClient.invalidateQueries({ queryKey: ["adaptive-state", outcome.domain] });
-    });
+    recordSession.mutate(outcome);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdaptive, lastResult, lastSession, adaptiveDomain]);
 

@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -91,7 +92,14 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  // `light:` utilities match elements inside a `.light` scope (the theme store
+  // toggles `.light` on every `[data-theme-scope]`). Lets components own their
+  // light-mode overrides instead of globals.css scraping class strings.
+  plugins: [
+    plugin(({ addVariant }) => {
+      addVariant("light", ".light &");
+    }),
+  ],
 };
 
 export default config;

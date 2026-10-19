@@ -23,6 +23,8 @@ import {
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { usePracticeSession } from "@/hooks/queries/use-practice";
+import { templatesKeys } from "@/hooks/queries/use-templates";
+import { useQueryClient } from "@tanstack/react-query";
 import { useStepProgress } from "@/hooks/use-step-progress";
 import { useTemplateStore } from "@/stores/template-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -150,6 +152,7 @@ export default function PracticePage() {
   const storeCurrentIndex = useTemplateStore((s) => s.currentIndex);
   const storeTemplates = useTemplateStore((s) => s.templates);
   const setMode = useTemplateStore((s) => s.setMode);
+  const queryClient = useQueryClient();
 
   const startTemplatePractice = async (singleTemplateId?: string) => {
     const exam = singleTemplateId ? undefined : targetExam;
@@ -165,7 +168,10 @@ export default function PracticePage() {
         const tpl = await getTemplate(singleTemplateId);
         templatesForSession = tpl ? [tpl] : [];
       } else {
-        const all = await getTemplatesByDomain(exam!);
+        const all = await queryClient.fetchQuery({
+          queryKey: templatesKeys.domain(exam!),
+          queryFn: () => getTemplatesByDomain(exam!),
+        });
         templatesForSession = templateCategory === "all"
           ? all
           : all.filter((t) => t.concept.category === templateCategory);

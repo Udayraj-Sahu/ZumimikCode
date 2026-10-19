@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { submitContentFeedback } from "@/services/content-pipeline";
@@ -13,20 +14,23 @@ interface ContentFeedbackProps {
 
 export default function ContentFeedback({ questionId, className }: ContentFeedbackProps) {
   const [submitted, setSubmitted] = useState<"up" | "down" | null>(null);
-  const [sending, setSending] = useState(false);
 
-  const handleFeedback = async (feedbackType: "thumbs_up" | "thumbs_down") => {
-    if (submitted || sending) return;
-    setSending(true);
-    setSubmitted(feedbackType === "thumbs_up" ? "up" : "down");
-    try {
-      await submitContentFeedback({ questionId, feedbackType });
-    } catch {
+  const sendFeedback = useMutation({
+    mutationFn: (feedbackType: "thumbs_up" | "thumbs_down") =>
+      submitContentFeedback({ questionId, feedbackType }),
+    onSuccess: (_data, feedbackType) => {
+      setSubmitted(feedbackType === "thumbs_up" ? "up" : "down");
+    },
+    onError: () => {
       setSubmitted(null);
       toast.error("Couldn't save your feedback", "Check your connection and try again.");
-    } finally {
-      setSending(false);
-    }
+    },
+  });
+
+  const handleFeedback = (feedbackType: "thumbs_up" | "thumbs_down") => {
+    if (submitted || sendFeedback.isPending) return;
+    setSubmitted(feedbackType === "thumbs_up" ? "up" : "down");
+    sendFeedback.mutate(feedbackType);
   };
 
   return (

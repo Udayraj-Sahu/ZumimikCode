@@ -1,19 +1,18 @@
 "use client";
 import { PageContainer } from "@/components/ui/page-container";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { useSprintTopics } from "@/hooks/queries/use-sprint";
+import { useTemplatesByCategory } from "@/hooks/queries/use-templates";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useSprintStore } from "@/stores/sprint-store";
 import { useResumeStore } from "@/stores/resume-store";
-import { getTemplatesByCategory } from "@/services/templates";
 import { getTemplateCategoriesForTopic } from "@/lib/topic-template-map";
-import type { SolveAlongTemplate } from "@/lib/types/template";
 import { GLASS_06, GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 import { Button } from "@/components/ui/button";
 
@@ -25,36 +24,14 @@ export default function ConfigureSprintPage() {
   const [topic, setTopic] = useState<string | null>(null);
   const [length, setLength] = useState(10);
   const [difficulty, setDifficulty] = useState("Beginner");
-  const [templates, setTemplates] = useState<SolveAlongTemplate[]>([]);
-  const [loadingTemplates, setLoadingTemplates] = useState(false);
-  const templateReqRef = useRef(0);
-
-  useEffect(() => {
-    if (!topic) {
-      setTemplates([]);
-      return;
-    }
-    const cats = getTemplateCategoriesForTopic(targetExam, topic);
-    if (cats.length === 0) {
-      setTemplates([]);
-      return;
-    }
-    const reqId = ++templateReqRef.current;
-    setLoadingTemplates(true);
-    getTemplatesByCategory(cats[0], targetExam)
-      .then((results) => {
-        if (reqId !== templateReqRef.current) return;
-        setTemplates(results);
-      })
-      .catch(() => {
-        if (reqId !== templateReqRef.current) return;
-        setTemplates([]);
-      })
-      .finally(() => {
-        if (reqId !== templateReqRef.current) return;
-        setLoadingTemplates(false);
-      });
-  }, [topic, targetExam]);
+  const templateCats = useMemo(
+    () => (topic ? getTemplateCategoriesForTopic(targetExam, topic) : []),
+    [topic, targetExam],
+  );
+  const { data: templates = [], isLoading: loadingTemplates } = useTemplatesByCategory(
+    templateCats[0] ?? null,
+    targetExam,
+  );
 
   const { headerRef, animateSection } = useEntranceAnimations();
 

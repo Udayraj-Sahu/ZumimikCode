@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 
-import StopFeeding from "@/components/StopFeeding/StopFeeding";
+import StopFeeding from "@/components/stop-feeding/StopFeeding";
 
 describe("StopFeeding", () => {
   it("renders the default copy, tagline and both statistic cards", () => {

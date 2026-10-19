@@ -82,7 +82,11 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
       <div className="flex items-center justify-between mb-4 relative">
         <span
           className="text-micro font-bold tracking-[0.14em] rounded-full px-3 py-1 uppercase"
-          style={{ color: hueText(mode.color), background: `${mode.color}15`, border: `1px solid ${mode.color}20` }}
+          style={{
+            color: hueText(mode.color),
+            background: `color-mix(in srgb, ${hueText(mode.color)} 8%, transparent)`,
+            border: `1px solid color-mix(in srgb, ${hueText(mode.color)} 12%, transparent)`,
+          }}
         >
           {mode.category}
         </span>

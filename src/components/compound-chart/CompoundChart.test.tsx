@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
 
-import CompoundChart from "@/components/CompoundChart/CompoundChart";
-import styles from "@/components/CompoundChart/CompoundChart.module.css";
+import CompoundChart from "@/components/compound-chart/CompoundChart";
+import styles from "@/components/compound-chart/CompoundChart.module.css";
 
 /** Forces the reduced-motion branch so the count-up resolves synchronously. */
 function withReducedMotion() {

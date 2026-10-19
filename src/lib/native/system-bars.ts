@@ -1,5 +1,3 @@
-import { Capacitor, registerPlugin } from "@capacitor/core";
-
 /**
  * Mirrors `Theme` from the theme store. Declared here rather than imported so
  * this bridge stays independent of the store it is driven by.
@@ -18,14 +16,28 @@ type SystemBarsPlugin = {
   setAppearance(options: { mode: SystemBarMode }): Promise<void>;
 };
 
-const SystemBars = registerPlugin<SystemBarsPlugin>("SystemBars");
+let pluginPromise: Promise<SystemBarsPlugin | null> | null = null;
 
-// iOS owns status-bar styling through its own plist/UIViewController path and
-// has no navigation-bar icon appearance, so this bridge is Android-only.
-const isAndroidNative =
-  typeof window !== "undefined" &&
-  Capacitor.isNativePlatform() &&
-  Capacitor.getPlatform() === "android";
+function getPlugin(): Promise<SystemBarsPlugin | null> {
+  if (!pluginPromise) {
+    pluginPromise = import("@capacitor/core")
+      .then(({ Capacitor, registerPlugin }) => {
+        // iOS owns status-bar styling through its own plist/UIViewController
+        // path and has no navigation-bar icon appearance, so this bridge is
+        // Android-only.
+        if (
+          typeof window === "undefined" ||
+          !Capacitor.isNativePlatform() ||
+          Capacitor.getPlatform() !== "android"
+        ) {
+          return null;
+        }
+        return registerPlugin<SystemBarsPlugin>("SystemBars");
+      })
+      .catch(() => null);
+  }
+  return pluginPromise;
+}
 
 /**
  * Mirror the web theme onto the Android system bars.
@@ -35,9 +47,10 @@ const isAndroidNative =
  * ready yet, the bars simply keep the platform default.
  */
 export async function applySystemBars(mode: SystemBarMode): Promise<void> {
-  if (!isAndroidNative) return;
+  const plugin = await getPlugin();
+  if (!plugin) return;
   try {
-    await SystemBars.setAppearance({ mode });
+    await plugin.setAppearance({ mode });
   } catch {
     /* ignore */
   }

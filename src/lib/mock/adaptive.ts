@@ -1,48 +1,61 @@
-import { CYAN, EMERALD, ROSE, VIOLET_PURPLE, YELLOW } from "@/lib/theme-tokens";
-export type AdaptiveTopic = {
+import type { AdaptiveDomainState, SessionOutcome } from "@/lib/types/adaptive";
+import { applyOutcome, initialDomainState } from "@/lib/adaptive/engine";
+
+export type AdaptiveTopicSeed = {
   id: string;
   name: string;
-  value: number;
   color: string;
+  value: number;
 };
 
-const COLOR = [EMERALD, CYAN, VIOLET_PURPLE, YELLOW, ROSE];
-
-export const ADAPTIVE_TOPICS_BY_DOMAIN: Record<string, AdaptiveTopic[]> = {
+export const ADAPTIVE_TOPICS_BY_DOMAIN: Record<string, AdaptiveTopicSeed[]> = {
   gmat: [
-    { id: "ps", name: "Problem Solving", value: 36, color: COLOR[0] },
-    { id: "ds", name: "Data Sufficiency", value: 52, color: COLOR[1] },
-    { id: "sc", name: "Sentence Correction", value: 44, color: COLOR[2] },
-    { id: "cr", name: "Critical Reasoning", value: 61, color: COLOR[3] },
-    { id: "rc", name: "Reading Comp.", value: 28, color: COLOR[4] },
+    { id: "ps", name: "Problem Solving", color: "#22c55e", value: 20 },
+    { id: "ds", name: "Data Sufficiency", color: "#06b6d4", value: 16 },
+    { id: "sc", name: "Sentence Correction", color: "#a78bfa", value: 18 },
+    { id: "cr", name: "Critical Reasoning", color: "#f59e0b", value: 14 },
+    { id: "rc", name: "Reading Comp.", color: "#10b981", value: 16 },
   ],
   cat: [
-    { id: "qa", name: "Quantitative Apt.", value: 40, color: COLOR[0] },
-    { id: "lrdi", name: "LR & DI", value: 33, color: COLOR[1] },
-    { id: "va", name: "Verbal Ability", value: 55, color: COLOR[2] },
+    { id: "qa", name: "Quantitative Apt.", color: "#22c55e", value: 18 },
+    { id: "lrdi", name: "LR & DI", color: "#06b6d4", value: 16 },
+    { id: "va", name: "Verbal Ability", color: "#a78bfa", value: 16 },
   ],
   gre: [
-    { id: "qc", name: "Quant Comparison", value: 48, color: COLOR[0] },
-    { id: "ps", name: "Problem Solving", value: 42, color: COLOR[1] },
-    { id: "tc", name: "Text Completion", value: 36, color: COLOR[2] },
-    { id: "se", name: "Sentence Equivalence", value: 31, color: COLOR[3] },
-    { id: "rc", name: "Reading Comp.", value: 25, color: COLOR[4] },
+    { id: "qc", name: "Quant Comparison", color: "#22c55e", value: 18 },
+    { id: "ps", name: "Problem Solving", color: "#06b6d4", value: 16 },
+    { id: "tc", name: "Text Completion", color: "#a78bfa", value: 16 },
+    { id: "se", name: "Sentence Equivalence", color: "#f59e0b", value: 14 },
+    { id: "rc", name: "Reading Comp.", color: "#10b981", value: 16 },
   ],
   banking: [
-    { id: "numerical", name: "Numerical Ability", value: 50, color: COLOR[0] },
-    { id: "reasoning", name: "Reasoning", value: 44, color: COLOR[1] },
-    { id: "english", name: "English", value: 57, color: COLOR[2] },
-    { id: "ga", name: "General Awareness", value: 30, color: COLOR[3] },
-    { id: "computer", name: "Computer Knowledge", value: 63, color: COLOR[4] },
+    { id: "numerical", name: "Numerical Ability", color: "#22c55e", value: 16 },
+    { id: "reasoning", name: "Reasoning", color: "#06b6d4", value: 16 },
+    { id: "english", name: "English", color: "#a78bfa", value: 16 },
+    { id: "ga", name: "General Awareness", color: "#f59e0b", value: 12 },
+    { id: "computer", name: "Computer Knowledge", color: "#10b981", value: 12 },
   ],
   "vedic-math": [
-    { id: "addition", name: "Vedic Addition", value: 0, color: COLOR[0] },
-    { id: "subtraction", name: "Vedic Subtraction", value: 0, color: COLOR[1] },
-    { id: "multiplication", name: "Vedic Multiplication", value: 0, color: COLOR[2] },
-    { id: "squares", name: "Squares & Bases", value: 0, color: COLOR[3] },
+    { id: "addition", name: "Vedic Addition", color: "#22c55e", value: 22 },
+    { id: "subtraction", name: "Vedic Subtraction", color: "#06b6d4", value: 20 },
+    { id: "multiplication", name: "Vedic Multiplication", color: "#a78bfa", value: 18 },
+    { id: "squares", name: "Squares & Bases", color: "#f59e0b", value: 18 },
   ],
 };
 
-export function getAdaptiveTopics(domain: string): AdaptiveTopic[] {
-  return ADAPTIVE_TOPICS_BY_DOMAIN[domain] ?? ADAPTIVE_TOPICS_BY_DOMAIN["cat"] ?? [];
+const states: Record<string, AdaptiveDomainState> = {};
+
+export function ensureAdaptiveState(domain: string): AdaptiveDomainState {
+  const existing = states[domain];
+  if (existing) return existing;
+  const fresh = initialDomainState(domain);
+  states[domain] = fresh;
+  return fresh;
+}
+
+export function recordMockAdaptiveSession(outcome: SessionOutcome): AdaptiveDomainState {
+  const current = ensureAdaptiveState(outcome.domain);
+  const next = applyOutcome(current, outcome);
+  states[outcome.domain] = next;
+  return next;
 }

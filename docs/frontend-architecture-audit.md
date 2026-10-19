@@ -195,21 +195,21 @@ Updated as work progresses. `[x]` = implemented and re-verified on this branch;
 
 ### Medium
 
-- [ ] **#14 Lazy shell UI** — `Walkthrough` / `RatePrompt` via `next/dynamic`.
-- [ ] **#15 Lazy native plugins** — dynamic import inside `isNativePlatform()` branches.
-- [ ] **#16 Query-layer routing** for direct service calls.
-- [ ] **#17–#20 CSS hardening** — font re-scale, attribute-scraping selectors, scrollbar scoping, fixed-width renderers.
-- [ ] **#21 Onboarding modal state mirror**.
+- [x] **#14 Lazy shell UI** — `Walkthrough` / `RatePrompt` via `next/dynamic`.
+- [x] **#15 Lazy native plugins** — dynamic import inside `isNativePlatform()` branches.
+- [x] **#16 Query-layer routing** for direct service calls.
+- [x] **#17–#20 CSS hardening** — font re-scale, attribute-scraping selectors, scrollbar scoping, fixed-width renderers.
+- [x] **#21 Onboarding modal state mirror**.
 
 ### Low / Info
 
-- [ ] **#22 Half-flipped alpha tints.**
-- [ ] **#23 Driver tour font + light styling.**
-- [ ] **#24 Lifecycle cleanups.**
-- [ ] **#25 Remove unused deps** (`animejs`, `zod`, `@capacitor/preferences`) — only after verifying zero references.
-- [ ] **#26 Type hygiene.**
-- [ ] **#27 `services/adaptive.ts` layering.**
-- [ ] **#28/#29 Naming + README branch name.**
+- [x] **#22 Half-flipped alpha tints.**
+- [x] **#23 Driver tour font + light styling.**
+- [x] **#24 Lifecycle cleanups.**
+- [x] **#25 Remove unused deps** (`animejs`, `zod`, `@capacitor/preferences`) — only after verifying zero references.
+- [x] **#26 Type hygiene.**
+- [x] **#27 `services/adaptive.ts` layering.**
+- [x] **#28/#29 Naming + README branch name.**
 
 ### Explicitly out of scope for this pass
 

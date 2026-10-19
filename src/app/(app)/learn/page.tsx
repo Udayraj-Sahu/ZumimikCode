@@ -891,7 +891,7 @@ function LearnPageContent() {
                               <span
                                 key={s.id}
                                 className="text-[9px] font-bold px-2 py-0.5 rounded-full border border-white/[0.07] whitespace-nowrap"
-                                style={{ color: hueText(paper.accent), background: `${paper.accent}0d` }}
+                                style={{ color: hueText(paper.accent), background: `color-mix(in srgb, ${hueText(paper.accent)} 5%, transparent)` }}
                               >
                                 {s.label} · {s.questions}
                               </span>

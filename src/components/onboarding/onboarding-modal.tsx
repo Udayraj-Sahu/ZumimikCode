@@ -29,7 +29,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useThemeStore } from "@/stores/theme-store";
 import { useOnboardingStore, examIdForGoal } from "@/stores/onboarding-store";
-import { VEDIC_USE_CASES, DRILLS, PLANS } from "@/lib/types/onboarding";
+import { VEDIC_USE_CASES, DRILLS, PLANS, type VedicUseCaseId } from "@/lib/types/onboarding";
 import { FeatureIntro } from "@/components/onboarding/feature-intro";
 import { FamilyIntro } from "@/components/onboarding/family-intro";
 import { FamilyHubIntro } from "@/components/onboarding/family-hub-intro";
@@ -150,7 +150,9 @@ const STEP_LABEL_BY_ID: Record<StepId, string> = {
   details: "Details",
 };
 
-const STEP_ICON_BY_ID: Record<StepId, any> = {
+import type { LucideIcon } from "lucide-react";
+
+const STEP_ICON_BY_ID: Record<StepId, LucideIcon> = {
   name: User,
   persona: Users,
   goal: Target,
@@ -193,6 +195,20 @@ export function OnboardingModal({ onClose, inline }: Props) {
   const [showArena, setShowArena] = useState(false);
   const [showPitch, setShowPitch] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
+
+  // Store-derived mirrors (firstName, persona, …) must follow the store if it
+  // changes underneath the modal — a completed onboarding from another surface,
+  // a profile edit — instead of silently overwriting newer data on commit.
+  // Fields that deliberately start blank on re-entry (goal/temporal/…) are
+  // local-only and are not re-synced here.
+  useEffect(() => {
+    setLocalFirstName(store.firstName);
+    setLocalPersona(store.persona);
+    setLocalTriggers(store.triggers);
+    setLocalSex(store.sex);
+    setLocalDob(store.dob);
+    setLocalVedicUseCase(store.vedicUseCase);
+  }, [store.firstName, store.persona, store.triggers, store.sex, store.dob, store.vedicUseCase]);
 
   const preloadFamilyHub = showFamily || featureHookVariant === "vedic";
   const preloadSeatBuilder = showFamilyHub;
@@ -243,14 +259,20 @@ useEffect(() => {
 
   useEffect(() => {
     if (inline) return;
+    const tweens: gsap.core.Tween[] = [];
     if (overlayRef.current && panelRef.current) {
-      gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
-      gsap.fromTo(
-        panelRef.current,
-        { opacity: 0, y: 32, scale: 0.97 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" },
+      tweens.push(gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 }));
+      tweens.push(
+        gsap.fromTo(
+          panelRef.current,
+          { opacity: 0, y: 32, scale: 0.97 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" },
+        ),
       );
     }
+    return () => {
+      tweens.forEach((t) => t.kill());
+    };
   }, [inline]);
 
   const animateStepTransition = useCallback((dir: 1 | -1) => {
@@ -276,7 +298,7 @@ useEffect(() => {
       store.setTargetExam(resolvedExamId());
     }
     if (isExam && localTemporal) store.setTemporalWindow(localTemporal);
-    if (isVedic) store.setVedicUseCase(localVedicUseCase as any);
+    if (isVedic) store.setVedicUseCase(localVedicUseCase as VedicUseCaseId);
     store.setSex(localSex);
     store.setDob(localDob);
     localTriggers.forEach((t) => {
@@ -322,7 +344,7 @@ useEffect(() => {
     store.setDob(localDob);
     store.setTargetExam(resolvedExamId());
     if (isExam) store.setTemporalWindow(localTemporal);
-    if (isVedic) store.setVedicUseCase(localVedicUseCase as any);
+    if (isVedic) store.setVedicUseCase(localVedicUseCase as VedicUseCaseId);
     const domainId = resolvedExamId();
     store.setAdaptiveConfigured(domainId !== "");
     store.setJustExploring(localGoal === "Just exploring");
@@ -816,7 +838,7 @@ function StepSingleSelect({
 }: {
   title: string;
   subtitle: string;
-  options: { label: string; icon: any; color: string; desc?: string }[];
+  options: { label: string; icon: LucideIcon; color: string; desc?: string }[];
   value: string | null;
   onSelect: (v: string) => void;
 }) {

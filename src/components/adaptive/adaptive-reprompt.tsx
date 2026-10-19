@@ -87,15 +87,21 @@ export function AdaptiveReprompt({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     if (!open) return;
+    const tweens: gsap.core.Tween[] = [];
     if (overlayRef.current)
-      gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+      tweens.push(gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 }));
     if (panelRef.current) {
-      gsap.fromTo(
-        panelRef.current,
-        { opacity: 0, y: 32, scale: 0.97 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" },
+      tweens.push(
+        gsap.fromTo(
+          panelRef.current,
+          { opacity: 0, y: 32, scale: 0.97 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" },
+        ),
       );
     }
+    return () => {
+      tweens.forEach((t) => t.kill());
+    };
   }, [open]);
 
   const animateStepTransition = useCallback((dir: 1 | -1) => {

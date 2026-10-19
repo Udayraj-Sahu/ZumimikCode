@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { SplashScreen } from "@/components/shell/splash-screen";
 import { useAuthStore } from "@/stores/auth-store";
 import { useWelcomeStore } from "@/stores/welcome-store";
+import { isNativeRuntime } from "@/lib/native/is-native";
 
 // The whole onboarding flow lives in a single ~3k-line module; statically
 // importing it here would pull it into every route's client bundle via the
@@ -36,7 +37,7 @@ export function AppEntry({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      if ((window as any).Capacitor?.isNativePlatform?.()) {
+      if (isNativeRuntime()) {
         platformRef.current = "native";
         setState("native");
         return;

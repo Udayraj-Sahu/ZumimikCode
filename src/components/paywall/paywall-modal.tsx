@@ -22,6 +22,7 @@ import { useOnboardingStore } from "@/stores/onboarding-store";
 import type { PlanId } from "@/lib/types/onboarding";
 import { cn } from "@/lib/utils";
 import { useThemeStore } from "@/stores/theme-store";
+import { isNativeRuntime } from "@/lib/native/is-native";
 import { ClearanceTiers, PREP_OPTIONS } from "@/components/paywall/clearance-tiers";
 
 const ACCENT = LIME;
@@ -100,10 +101,9 @@ export function PaywallModal() {
   const [state, setState] = useState<"idle" | "success">("idle");
   const overlayRef = useRef<HTMLDivElement>(null);
   const wasOpenRef = useRef(false);
-  const [isNative] = useState(
-    () => typeof window !== "undefined" && !!(window as any).Capacitor?.isNativePlatform?.(),
-  );
+  const [isNative] = useState(() => isNativeRuntime());
   const [closing, setClosing] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (open && !wasOpenRef.current) {
@@ -127,6 +127,10 @@ export function PaywallModal() {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
     };
   }, [open, planId, planLane, targetExam, isNative]);
 
@@ -158,7 +162,11 @@ export function PaywallModal() {
     }
     setPro();
     setState("success");
-    setTimeout(requestClose, 450);
+    if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = window.setTimeout(() => {
+      closeTimerRef.current = null;
+      requestClose();
+    }, 450);
   };
 
   if (!open || !action) return null;

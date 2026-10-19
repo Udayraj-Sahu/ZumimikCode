@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 
-import Manifesto from "@/components/Manifesto/Manifesto";
+import Manifesto from "@/components/manifesto/Manifesto";
 
 describe("Manifesto", () => {
   it("renders the three statements and the default caption", () => {

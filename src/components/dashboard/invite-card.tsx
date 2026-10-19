@@ -5,8 +5,6 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Dialog } from "@/components/ui/dialog";
 import { QRCodeSVG } from "qrcode.react";
 import { Share2, KeyRound, QrCode, Copy, Check, X } from "lucide-react";
-import { Capacitor } from "@capacitor/core";
-import { Share } from "@capacitor/share";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useReferralStore } from "@/stores/referral-store";
 
@@ -47,7 +45,9 @@ export function InviteCard() {
     if (!code) return;
     let shared = false;
     try {
+      const { Capacitor } = await import("@capacitor/core");
       if (Capacitor.isNativePlatform()) {
+        const { Share } = await import("@capacitor/share");
         await Share.share({ title: "Exam Arena invite", text: shareText, dialogTitle: "Invite friends" });
         shared = true;
       } else if (navigator.share) {

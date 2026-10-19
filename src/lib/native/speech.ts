@@ -1,5 +1,3 @@
-import { Capacitor } from "@capacitor/core";
-import { SpeechRecognition } from "@capacitor-community/speech-recognition";
 import type { PluginListenerHandle } from "@capacitor/core";
 
 /**
@@ -128,6 +126,7 @@ function startWebCapture(handlers: VoiceCaptureHandlers): VoiceSession | null {
 /* ── Native backend ── */
 
 async function startNativeCapture(handlers: VoiceCaptureHandlers): Promise<VoiceSession | null> {
+  const { SpeechRecognition } = await import("@capacitor-community/speech-recognition");
   const fail = (text: string): null => {
     handlers.onError?.(text);
     return null;
@@ -227,8 +226,10 @@ async function startNativeCapture(handlers: VoiceCaptureHandlers): Promise<Voice
 /** Whether a mic could work at all here. The UI uses this to decide whether
  *  to offer voice input in the first place. */
 export async function isVoiceSupported(): Promise<boolean> {
+  const { Capacitor } = await import("@capacitor/core");
   if (!Capacitor.isNativePlatform()) return webCtor() !== null;
   try {
+    const { SpeechRecognition } = await import("@capacitor-community/speech-recognition");
     const { available } = await SpeechRecognition.available();
     return available;
   } catch {
@@ -237,6 +238,7 @@ export async function isVoiceSupported(): Promise<boolean> {
 }
 
 export async function startVoiceCapture(handlers: VoiceCaptureHandlers): Promise<VoiceSession | null> {
+  const { Capacitor } = await import("@capacitor/core");
   if (!Capacitor.isNativePlatform()) return startWebCapture(handlers);
   return startNativeCapture(handlers);
 }

@@ -16,7 +16,15 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(function Gla
   return (
     <div
       ref={ref}
-      className={cn("relative border backdrop-blur-xl", radius === "3xl" ? "rounded-3xl" : "rounded-2xl", className)}
+      className={cn(
+        "relative border backdrop-blur-xl",
+        radius === "3xl" ? "rounded-3xl" : "rounded-2xl",
+        // Glass cards are near-white on the off-white light page; without a
+        // shadow the delta is too subtle to read as elevation. Owned here
+        // instead of globals.css scraping [style*="--glass-bg"].
+        "light:shadow-[0_1px_2px_rgba(16,24,40,0.04),0_2px_8px_rgba(16,24,40,0.05)]",
+        className,
+      )}
       style={{ borderColor: GLASS_BORDER, background: GLASS_BG, ...style }}
       {...props}
     />

@@ -33,8 +33,11 @@ import { TimePicker } from "@/components/ui/time-picker";
 import { AMBER, AMBER_08, CYAN, CYAN_08, DEEP_BLACK_2, DEEP_BLACK_2_CC, DEEP_BLACK_2_EE, EMERALD, EMERALD_08, EMERALD_DEEP, EMERALD_SOLID, GLASS_012, GLASS_025, GLASS_18, GLASS_40, GLASS_75, GLASS_BG, ROSE, VIOLET, VIOLET_DIM, VIOLET_GLOW, VIOLET_PURPLE, WHITE } from "@/lib/theme-tokens";
 import { useThemeStore } from "@/stores/theme-store";
 import { useHabitStore } from "@/stores/habit-store";
-import { Capacitor } from "@capacitor/core";
-import { LocalNotifications } from "@capacitor/local-notifications";
+
+async function isNativePlatform(): Promise<boolean> {
+  const { Capacitor } = await import("@capacitor/core");
+  return Capacitor.isNativePlatform();
+}
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Zap, Calculator, BookOpen, CreditCard, Target,
@@ -64,8 +67,6 @@ function getFirstDayOfWeek(year: number, month: number): number {
   return d === 0 ? 6 : d - 1;
 }
 
-const isNative = Capacitor.isNativePlatform();
-
 const DAY_PILLS = ["M", "T", "W", "T", "F", "S", "S"];
 const DAY_JS: number[] = [1, 2, 3, 4, 5, 6, 0];
 const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
@@ -85,8 +86,9 @@ function reminderLabel(days: number[] | undefined, time: string): string {
 }
 
 async function requestNotificationPermission(): Promise<boolean> {
-  if (isNative) {
+  if (await isNativePlatform()) {
     try {
+      const { LocalNotifications } = await import("@capacitor/local-notifications");
       const perms = await LocalNotifications.checkPermissions();
       if (perms.display === "granted") return true;
       const req = await LocalNotifications.requestPermissions();
@@ -113,8 +115,9 @@ function habitBaseId(habitId: string): number {
 
 async function scheduleReminder(habitId: string, habitName: string, time: string, days: number[]) {
   const [hours, minutes] = time.split(":").map(Number);
-  if (isNative) {
+  if (await isNativePlatform()) {
     try {
+      const { LocalNotifications } = await import("@capacitor/local-notifications");
       const base = habitBaseId(habitId);
       await LocalNotifications.schedule({
         notifications: days.map((d, i) => ({
@@ -157,8 +160,9 @@ function scheduleWebReminder(habitId: string, habitName: string, hours: number, 
 }
 
 async function cancelReminder(habitId: string) {
-  if (!isNative) return;
+  if (!(await isNativePlatform())) return;
   try {
+    const { LocalNotifications } = await import("@capacitor/local-notifications");
     const pending = await LocalNotifications.getPending();
     const ids = pending.notifications
       .filter((n) => n.extra?.habitId === habitId && n.extra?.source === "habit-reminder")
@@ -204,8 +208,9 @@ export function HabitTrackerModal({ onClose }: Props) {
     let mounted = true;
     (async () => {
       let enabled = false;
-      if (isNative) {
+      if (await isNativePlatform()) {
         try {
+          const { LocalNotifications } = await import("@capacitor/local-notifications");
           const perms = await LocalNotifications.checkPermissions();
           enabled = perms.display === "granted";
         } catch {

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useRef, useEffect, useCallback, useState } from "react";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { LogOut, Zap, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,9 +12,16 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useThemeStore } from "@/stores/theme-store";
 import { useSidebarStore } from "@/stores/sidebar-store";
 import { resetAppState } from "@/lib/reset-app-state";
-import { Walkthrough } from "@/components/shell/walkthrough";
-import { RatePrompt } from "@/components/shell/rate-prompt";
 import { Toaster } from "@/components/ui/toaster";
+
+const Walkthrough = dynamic(
+  () => import("@/components/shell/walkthrough").then((m) => ({ default: m.Walkthrough })),
+  { ssr: false },
+);
+const RatePrompt = dynamic(
+  () => import("@/components/shell/rate-prompt").then((m) => ({ default: m.RatePrompt })),
+  { ssr: false },
+);
 
 const EXAM_ROUTES = ["/play/sprint", "/learn/mock/run", "/learn/practice"];
 

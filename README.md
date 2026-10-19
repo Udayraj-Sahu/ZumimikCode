@@ -4,7 +4,7 @@ Not a coaching app. **A competitive battlefield** where India's sharpest minds f
 
 Exam Arena is a mobile-first **exam prep & skill-training app** built with **Next.js 14 (App Router) + Capacitor** for Android, featuring a dark glassmorphism design, gamified sprints, habit tracking, adaptive learning, live-friendly rankings, and a "scan to login" device-pairing flow — all wrapped in a shared design system.
 
-> **Branch**: `mobile/dashboard-glassmorphism`
+> **Branch**: `feature/frontend-standards-improvements`
 > **Repo**: https://github.com/Udayraj-Sahu/ExamArena.git
 
 ---
@@ -321,7 +321,7 @@ Highest-priority items to build first (full contract in `BACKEND_HANDOFF.md`):
 ## 📝 Contributing / Convention Notes
 
 - **Language**: respond in English only (project-level agent rule).
-- **Every verified change** is committed + pushed to `mobile/dashboard-glassmorphism`.
+- **Every verified change** is committed + pushed to `feature/frontend-standards-improvements`.
 - **Run `npx tsc --noEmit` (must be COUNT=0) before each commit**; then `git checkout tsconfig.tsbuildinfo`.
 - Fonts: no per-element overrides — use the global `--font-space-grotesk` (headings) / `--font-inter` (body).
 - No inline secrets/keys; never commit credentials.
