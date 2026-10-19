@@ -136,3 +136,59 @@
   text-transform: uppercase;
   color: var(--foreground);
 }
+
+/* Arena split layout from lg up only: the slide sits in a wide right-hand
+   panel, so the review cards and their type step up one size to read at that
+   scale. Below lg the split column collapses, so the base sizes stay put. */
+@media (min-width: 1024px) {
+  :global([data-intro-layout="split"]) .wrap {
+    gap: 12px;
+    border-radius: 20px;
+    padding: 14px;
+  }
+
+  :global([data-intro-layout="split"]) .group {
+    gap: 12px;
+    padding-right: 12px;
+  }
+
+  :global([data-intro-layout="split"]) .card {
+    width: 244px;
+    border-radius: 14px;
+    padding: 13px;
+  }
+
+  :global([data-intro-layout="split"]) .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    font-size: 11px;
+  }
+
+  :global([data-intro-layout="split"]) .name {
+    font-size: 13px;
+  }
+
+  :global([data-intro-layout="split"]) .title {
+    margin-top: 9px;
+    font-size: 12px;
+  }
+
+  :global([data-intro-layout="split"]) .text {
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  :global([data-intro-layout="split"]) .rating {
+    padding-top: 12px;
+  }
+
+  :global([data-intro-layout="split"]) .quote {
+    font-size: 12.5px;
+  }
+
+  :global([data-intro-layout="split"]) .score {
+    margin-top: 8px;
+    font-size: 10px;
+  }
+}

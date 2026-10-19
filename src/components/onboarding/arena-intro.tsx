@@ -4,7 +4,8 @@ import { IntroCarousel, useArenaIntroSlides } from "@/components/onboarding/intr
 
 /**
  * Arena intro — shown when the target exam is later this year. Renders the
- * shared intro carousel with the full Arena slide set.
+ * shared intro carousel with the full Arena slide set in the split (side-by-
+ * side tiers + carousel) arrangement on wide screens, stacked below.
  */
 export function ArenaIntro({
   onClose,
@@ -26,6 +27,7 @@ export function ArenaIntro({
       onSkip={onSkip}
       preloaded={preloaded}
       titleId="arena-hook-title"
+      layout="split"
     />
   );
 }

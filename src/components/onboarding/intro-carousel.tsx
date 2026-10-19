@@ -358,6 +358,7 @@ export function IntroCarousel({
   titleId,
   badge = "ARENA",
   heading = { lead: "The arena is", highlight: "live." },
+  layout = "stacked",
 }: {
   slides: IntroSlide[];
   lanesCount: number;
@@ -371,10 +372,19 @@ export function IntroCarousel({
   badge?: string;
   /** Hero heading: plain lead text plus the gradient-highlighted tail. */
   heading?: { lead: string; highlight: string };
+  /**
+   * Shell arrangement. `stacked` (default) is the single narrow column used by
+   * Pitch. `split` lays the carousel and the clearance tiers side by side from
+   * `lg` up — tiers on the left, carousel on the right — and keeps the stacked
+   * column below that so mobile and tablet stay untouched.
+   */
+  layout?: "stacked" | "split";
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const closingRef = useRef(false);
+
+  const split = layout === "split";
 
   const theme = useThemeStore((s) => s.theme);
   const tone = useArenaTone();
@@ -456,6 +466,7 @@ export function IntroCarousel({
     <div
       ref={overlayRef}
       data-theme-scope
+      data-intro-layout={layout}
       className={cn(
         "fixed inset-0 z-[var(--z-intro)] flex overflow-hidden flex-col sm:items-center sm:justify-center sm:bg-black/60 sm:backdrop-blur-sm",
         preloaded && "invisible pointer-events-none",
@@ -467,7 +478,10 @@ export function IntroCarousel({
       aria-labelledby={titleId}
     >
       <div
-        className="relative flex h-full w-full shrink-0 flex-col sm:h-auto sm:max-h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl"
+        className={cn(
+          "relative flex h-full w-full shrink-0 flex-col sm:h-auto sm:max-h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl",
+          split && "lg:max-w-4xl xl:max-w-[1080px]",
+        )}
         style={{
           borderColor: GLASS_BORDER,
           background:
@@ -512,12 +526,20 @@ export function IntroCarousel({
           </h1>
         </div>
 
-        {/* carousel: fills remaining space, video + CTA below */}
-        <div className="relative flex min-h-0 flex-1 flex-col px-5 pt-3">
+        {/* panels: stacked column by default; side-by-side from lg in split mode */}
+        <div
+          className={cn(
+            "relative flex min-h-0 flex-1 flex-col",
+            split && "lg:flex-row-reverse",
+          )}
+        >
           <section
             aria-roledescription="carousel"
             aria-label="Arena overview"
-            className="flex min-h-0 flex-1 flex-col"
+            className={cn(
+              "flex min-h-0 flex-1 flex-col px-5 pt-3",
+              split && "lg:min-w-0 lg:px-6 lg:pt-4 lg:pb-2",
+            )}
           >
             <div
               ref={trackRef}
@@ -594,37 +616,44 @@ export function IntroCarousel({
               ))}
             </nav>
           </section>
-        </div>
 
-        <div className="relative mx-auto flex w-full max-w-[400px] shrink-0 flex-col px-5 pb-[max(0.5rem,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4">
-          {/* clearance tiers: replaces the stock video, mirrors the paywall */}
-          <div className="mt-3 shrink-0">
-            <ClearanceTiers value={tier} onChange={setTier} />
+          <div
+            className={cn(
+              "relative mx-auto flex w-full max-w-[400px] shrink-0 flex-col px-5 pb-[max(0.5rem,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4",
+              split && "lg:mx-0 lg:w-[400px] lg:min-h-0 lg:overflow-y-auto lg:px-6 lg:pb-6 lg:pt-4 xl:w-[440px]",
+            )}
+          >
+            <div className={cn(split && "lg:my-auto")}>
+              {/* clearance tiers: replaces the stock video, mirrors the paywall */}
+              <div className="mt-3 shrink-0">
+                <ClearanceTiers value={tier} onChange={setTier} />
+              </div>
+
+              {/* fixed CTA */}
+              <footer className="mt-2.5 shrink-0">
+                <button
+                  onClick={() => exit(onClose)}
+                  className="flex w-full items-center justify-center gap-2 rounded-[16px] py-3.5 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
+                  style={{
+                    background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
+                    boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
+                  }}
+                >
+                  ENTER {lanesCount > 1 ? "MULTI-LANE" : "YOUR"} ARENA
+                  <ArrowRight size={14} />
+                </button>
+                <button
+                  onClick={() => exit(onSkip ?? onClose)}
+                  className={cn(
+                    "mx-auto mt-2 block text-[10px] underline-offset-2 transition-colors hover:text-muted-foreground hover:underline",
+                    tone.faint,
+                  )}
+                >
+                  Skip for now
+                </button>
+              </footer>
+            </div>
           </div>
-
-          {/* fixed CTA */}
-          <footer className="mt-2.5 shrink-0">
-            <button
-              onClick={() => exit(onClose)}
-              className="flex w-full items-center justify-center gap-2 rounded-[16px] py-3.5 text-[12px] font-bold tracking-[0.12em] text-[var(--on-accent)] transition hover:brightness-110 active:scale-[0.98]"
-              style={{
-                background: `linear-gradient(90deg, ${LIME}, ${LIME_LIGHT})`,
-                boxShadow: "0 10px 34px var(--lime-mid-25), 0 1px 0 var(--glass-25) inset",
-              }}
-            >
-              ENTER {lanesCount > 1 ? "MULTI-LANE" : "YOUR"} ARENA
-              <ArrowRight size={14} />
-            </button>
-            <button
-              onClick={() => exit(onSkip ?? onClose)}
-              className={cn(
-                "mx-auto mt-2 block text-[10px] underline-offset-2 transition-colors hover:text-muted-foreground hover:underline",
-                tone.faint,
-              )}
-            >
-              Skip for now
-            </button>
-          </footer>
         </div>
       </div>
     </div>,
