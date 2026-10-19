@@ -2148,7 +2148,8 @@ function DecodeDay({
     : "";
 
   return (
-    <div className="flex flex-col">
+    <div className={s.pg}>
+      <div className={s.gHero}>
       <div className={s.card}>
         <p className={s.mut}>These minutes vanish today. Together they’re</p>
         <div className={s.big}>
@@ -2183,7 +2184,9 @@ function DecodeDay({
           10,000 hours is for world-class. 20 gets you started.
         </p>
       </div>
+      </div>
 
+      <div className={s.gTell}>
       <div className={s.card}>
         <p className={s.q}>Just tell us about your day</p>
         <p className={s.mut} style={{ marginBottom: 8 }}>
@@ -2229,7 +2232,9 @@ function DecodeDay({
           </div>
         )}
       </div>
+      </div>
 
+      <div className={s.gWhere}>
       <div className={s.hh}>
         <h2>Where does time slip away?</h2>
         <button type="button" className={s.pl} aria-label="Add your own" onClick={() => addOwn(form.b)}>
@@ -2286,7 +2291,9 @@ function DecodeDay({
           onAddOwn={() => addOwn(gi)}
         />
       ))}
+      </div>
 
+      <div className={s.gKeep}>
       <h2>Keep it moving</h2>
 
       <div className={cn(s.card, hourly.on && s.on)}>
@@ -2357,6 +2364,38 @@ function DecodeDay({
         </div>
       </div>
 
+      <div className={s.card}>
+        <p className={s.mut}>What you’ll see</p>
+        <div key={`nudge-${nudge}`} className={cn(s.nt, nudge > 0 && s.f)}>
+          <span className={s.ic} aria-hidden>
+            ⚡
+          </span>
+          <div>
+            <small>Decode · now</small>
+            <b>10 min practice</b>
+            <p>Tea break is open. Tap to start.</p>
+          </div>
+        </div>
+        <div className={s.nt}>
+          <span className={s.ic} aria-hidden>
+            ⏱
+          </span>
+          <div>
+            <small>Decode · hourly</small>
+            <b>Where did the last hour go?</b>
+            <p>Tap + to add it.</p>
+          </div>
+        </div>
+        <button type="button" className={s.t2} onClick={testNudge}>
+          Send a test nudge
+        </button>
+      </div>
+      </div>
+
+      <div className={s.gWhat}>
+      <h2 className={s.gWhatHead} aria-hidden>
+        &nbsp;
+      </h2>
       <div className={cn(s.card, track.on && s.on)}>
         <button type="button" className={s.hd} aria-pressed={track.on} onClick={() => setTrack((t) => ({ ...t, on: !t.on }))}>
           <span className={s.ic} aria-hidden>
@@ -2591,34 +2630,9 @@ function DecodeDay({
           </div>
         </div>
       </div>
-
-      <div className={s.card}>
-        <p className={s.mut}>What you’ll see</p>
-        <div key={`nudge-${nudge}`} className={cn(s.nt, nudge > 0 && s.f)}>
-          <span className={s.ic} aria-hidden>
-            ⚡
-          </span>
-          <div>
-            <small>Decode · now</small>
-            <b>10 min practice</b>
-            <p>Tea break is open. Tap to start.</p>
-          </div>
-        </div>
-        <div className={s.nt}>
-          <span className={s.ic} aria-hidden>
-            ⏱
-          </span>
-          <div>
-            <small>Decode · hourly</small>
-            <b>Where did the last hour go?</b>
-            <p>Tap + to add it.</p>
-          </div>
-        </div>
-        <button type="button" className={s.t2} onClick={testNudge}>
-          Send a test nudge
-        </button>
       </div>
 
+      <div className={s.gFoot}>
       <button type="button" className={s.cta} disabled={!weekly} onClick={lockIn}>
         {weekly ? `Lock in schedule · ${(weekly / 60).toFixed(1)} h/week` : "Lock in schedule"}
       </button>
@@ -2626,6 +2640,7 @@ function DecodeDay({
         Skip for now
       </button>
       {toast && <p className={s.toast}>{toast}</p>}
+      </div>
 
       {sheet && (
         <DdSheet
@@ -2764,7 +2779,7 @@ export function StoryIntro({
         aria-labelledby="story-hook-title"
       >
         <div
-          className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[92vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl"
+          className="relative w-full min-h-full sm:min-h-0 sm:max-w-md sm:max-h-[92vh] sm:flex sm:flex-col sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl lg:max-w-5xl xl:max-w-[1180px]"
           style={{
             borderColor: GLASS_BORDER,
             background:
