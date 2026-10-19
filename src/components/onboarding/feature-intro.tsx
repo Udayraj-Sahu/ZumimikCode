@@ -519,26 +519,11 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                 </p>
               </motion.section>
 
-              {/* Core systems */}
-              <motion.section
-                variants={itemVariants}
-                aria-labelledby="core-heading"
-                className={theme === "light" ? "mt-5 md:mt-6" : "mt-7 md:mt-8"}
-              >
-                <h2
-                  id="core-heading"
-                  className=" text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
-                >
-                  Core systems
-                </h2>
-                <SystemCarousel />
-              </motion.section>
-
               {/* What's included */}
               <motion.section
                 variants={itemVariants}
                 aria-labelledby="facts-heading"
-                className={theme === "light" ? "mt-3 md:mt-4" : "mt-4 md:mt-6"}
+                className={theme === "light" ? "mt-5 md:mt-6" : "mt-7 md:mt-8"}
               >
                 <h2
                   id="facts-heading"
@@ -550,8 +535,14 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               </motion.section>
             </motion.div>
               </div>
-              {/* Right column: carousel/visual (reserve space) */}
-              <div className="hidden md:flex md:w-1/2 lg:w-[48%] md:min-h-0 md:items-center md:justify-center md:px-6 md:py-6">
+              {/* Right column: single carousel instance (stacks below on mobile) */}
+              <div className="flex w-full md:w-1/2 lg:w-[48%] min-h-0 flex-col justify-center px-5 md:px-6 md:py-6">
+                <h2
+                  id="core-heading"
+                  className="mb-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+                >
+                  Core systems
+                </h2>
                 <div className="relative flex h-full w-full items-center justify-center">
                   <SystemCarousel />
                 </div>
