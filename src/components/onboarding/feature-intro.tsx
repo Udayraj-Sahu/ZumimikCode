@@ -489,87 +489,98 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
           />
 
           <div className="relative mx-auto flex h-full w-full max-w-[360px] flex-col sm:min-h-0 sm:max-w-none sm:flex-1">
-            <div className="flex flex-1 flex-col md:flex-row md:min-h-0">
-              {/* Left column: text/content */}
-              <div className={cn("flex-1 min-h-0 overflow-y-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4 md:px-8 md:py-6", theme === "light" ? "pb-5" : "pb-6")}>
-            {/* Protocol pill */}
-            <div className="flex justify-center pt-[max(1rem,var(--sat))] pb-3 md:justify-start md:pt-2">
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm"
-              >
-                <Sparkles size={12} className="text-[var(--lime)]" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--lime-85)]">
-                  {copy.pill}
-                </span>
-              </motion.div>
-            </div>
-
-            <motion.div variants={containerVariants} initial="hidden" animate="show">
-              {/* Hero */}
-              <motion.section
-                variants={itemVariants}
-                className={theme === "light" ? "mt-5 md:mt-6" : "mt-6 md:mt-8"}
-              >
-                <h1
-                  id="feature-hook-title"
-                  className="text-[clamp(1.15rem,5.3vw,1.4rem)] md:text-[clamp(1.6rem,2.8vw,2rem)] lg:text-[clamp(1.8rem,3vw,2.2rem)] font-bold uppercase leading-[1.08] tracking-[-0.035em]"
-                >
-                  {copy.headline.text}
-                  <motion.span
-                    className="block"
-                    style={{ color: theme === "light" ? "var(--lime)" : ACCENT }}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.18, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              className="flex min-h-0 flex-1 flex-col"
+            >
+              {/* Header: protocol pill + hero (centered above the two-column row) */}
+              <div className="shrink-0 px-5 max-[359px]:px-4 md:mx-auto md:max-w-[720px] md:px-8">
+                {/* Protocol pill */}
+                <div className="flex justify-center pt-[max(1rem,var(--sat))] pb-3 md:pt-2">
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm"
                   >
-                    {copy.headline.accent}
-                  </motion.span>
-                </h1>
-                <p
-                  className={cn(
-                    "text-[13px] md:text-[13.5px] lg:text-[14px] leading-relaxed text-muted-foreground",
-                    theme === "light" ? "mt-2.5" : "mt-3",
-                  )}
-                >
-                  {copy.sub}
-                </p>
-              </motion.section>
+                    <Sparkles size={12} className="text-[var(--lime)]" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--lime-85)]">
+                      {copy.pill}
+                    </span>
+                  </motion.div>
+                </div>
 
-              {/* What's included */}
-              <motion.section
-                variants={itemVariants}
-                aria-labelledby="facts-heading"
-                className={theme === "light" ? "mt-5 md:mt-6" : "mt-7 md:mt-8"}
-              >
-                <h2
-                  id="facts-heading"
-                  className=" text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+                {/* Hero */}
+                <motion.section
+                  variants={itemVariants}
+                  className={theme === "light" ? "mt-5 md:mt-6" : "mt-6 md:mt-8"}
                 >
-                  What is included
-                </h2>
-                <IncludedCarousel />
-              </motion.section>
-            </motion.div>
+                  <h1
+                    id="feature-hook-title"
+                    className="text-[clamp(1.15rem,5.3vw,1.4rem)] md:text-center md:text-[clamp(1.6rem,2.8vw,2rem)] lg:text-[clamp(1.8rem,3vw,2.2rem)] font-bold uppercase leading-[1.08] tracking-[-0.035em]"
+                  >
+                    {copy.headline.text}
+                    <motion.span
+                      className="block"
+                      style={{ color: theme === "light" ? "var(--lime)" : ACCENT }}
+                      initial={{ opacity: 0, x: -6 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.18, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {copy.headline.accent}
+                    </motion.span>
+                  </h1>
+                  <p
+                    className={cn(
+                      "text-[13px] md:mx-auto md:max-w-[560px] md:text-center md:text-[13.5px] lg:text-[14px] leading-relaxed text-muted-foreground",
+                      theme === "light" ? "mt-2.5" : "mt-3",
+                    )}
+                  >
+                    {copy.sub}
+                  </p>
+                </motion.section>
               </div>
-              {/* Right column: single carousel instance (stacks below on mobile) */}
-              <div className="flex w-full md:w-1/2 lg:w-[48%] min-h-0 flex-col justify-center px-5 md:px-6 md:py-6">
-                <h2
-                  id="core-heading"
-                  className="mb-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
-                >
-                  Core systems
-                </h2>
-                <div className="relative flex h-full w-full items-center justify-center">
-                  <SystemCarousel />
+
+              {/* Row: What's included | Core systems (side by side on md+, stacked on mobile) */}
+              <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+                {/* Left column: What's included */}
+                <div className={cn("flex-1 min-h-0 overflow-y-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4 md:px-8 md:py-6", theme === "light" ? "pb-5" : "pb-6")}>
+                  <motion.section
+                    variants={itemVariants}
+                    aria-labelledby="facts-heading"
+                    className={theme === "light" ? "mt-5 md:mt-0" : "mt-7 md:mt-0"}
+                  >
+                    <h2
+                      id="facts-heading"
+                      className=" text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+                    >
+                      What is included
+                    </h2>
+                    <IncludedCarousel />
+                  </motion.section>
+                </div>
+
+                {/* Right column: single carousel instance (stacks below on mobile) */}
+                <div className="flex w-full md:w-1/2 lg:w-[48%] min-h-0 flex-col justify-start px-5 md:px-6 md:py-6">
+                  <motion.section variants={itemVariants} aria-labelledby="core-heading">
+                    <h2
+                      id="core-heading"
+                      className="mb-3 text-[10px] uppercase tracking-[0.16em] text-muted-foreground"
+                    >
+                      Core systems
+                    </h2>
+                    <div className="relative flex h-full w-full items-center justify-center">
+                      <SystemCarousel />
+                    </div>
+                  </motion.section>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
-          <footer className={cn("shrink-0 px-5 pb-[max(1rem,var(--sab))] md:px-8 md:pb-6", theme === "light" ? "pt-3.5 md:pt-4" : "pt-4 md:pt-5")}>
+          <footer className={cn("shrink-0 px-5 pb-[max(1rem,var(--sab))] md:flex md:justify-center md:px-8 md:pb-6", theme === "light" ? "pt-3.5 md:pt-4" : "pt-4 md:pt-5")}>
             <button
               type="button"
               onClick={(e) => {
