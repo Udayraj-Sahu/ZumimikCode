@@ -480,7 +480,7 @@ export function IntroCarousel({
       <div
         className={cn(
           "relative flex h-full w-full shrink-0 flex-col sm:h-auto sm:max-h-[92vh] sm:max-w-md sm:overflow-hidden sm:rounded-3xl sm:border sm:shadow-2xl",
-          split && "lg:max-w-5xl xl:max-w-[1180px]",
+          split && "lg:max-w-6xl xl:max-w-[1320px]",
         )}
         style={{
           borderColor: GLASS_BORDER,
@@ -620,7 +620,7 @@ export function IntroCarousel({
           <div
             className={cn(
               "relative mx-auto flex w-full max-w-[400px] shrink-0 flex-col px-5 pb-[max(0.5rem,var(--sab))] pt-0 sm:max-w-none max-[359px]:px-4",
-              split && "lg:mx-0 lg:w-[460px] lg:min-h-0 lg:overflow-y-auto lg:px-6 lg:pb-6 lg:pt-4 xl:w-[520px]",
+              split && "lg:mx-0 lg:w-[520px] lg:min-h-0 lg:overflow-y-auto lg:px-6 lg:pb-6 lg:pt-4 xl:w-[600px]",
             )}
           >
             <div className={cn(split && "lg:my-auto")}>
