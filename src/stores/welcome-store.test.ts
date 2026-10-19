@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useWelcomeStore, type WelcomeStatus } from "@/stores/welcome-store";
 
-const KEY = "exam-arena-welcome";
+const KEY = "zuzumik-welcome";
 
 function storedStatus(): WelcomeStatus | null {
   const raw = sessionStorage.getItem(KEY);

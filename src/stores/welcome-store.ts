@@ -15,7 +15,7 @@ import { safeSessionStorage } from "@/lib/browser";
  */
 export type WelcomeStatus = "idle" | "pending" | "played";
 
-const STORAGE_KEY = "exam-arena-welcome";
+const STORAGE_KEY = "zuzumik-welcome";
 
 function readStoredStatus(): WelcomeStatus {
   const raw = safeSessionStorage.getItem(STORAGE_KEY);

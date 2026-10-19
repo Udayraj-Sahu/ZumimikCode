@@ -2,7 +2,7 @@
   {
     "command": "page.rename",
     "params": {
-      "name": "Exam Arena · Core Screens"
+      "name": "Zuzumik · Core Screens"
     }
   },
   {
@@ -193,7 +193,7 @@
       "x": 40,
       "y": 303,
       "width": 310,
-      "text": "EXAM ARENA",
+      "text": "ZUZUMIK",
       "props": {
         "textAlign": "center",
         "fontFamily": "Space Grotesk",
@@ -593,7 +593,7 @@
       "x": 40,
       "y": 802,
       "width": 310,
-      "text": "Exam Arena · v1.0",
+      "text": "Zuzumik · v1.0",
       "props": {
         "textAlign": "center",
         "fontFamily": "JetBrains Mono",
@@ -775,7 +775,7 @@
       "x": 40,
       "y": 222,
       "width": 310,
-      "text": "EXAM ARENA",
+      "text": "ZUZUMIK",
       "props": {
         "textAlign": "center",
         "fontFamily": "Space Grotesk",

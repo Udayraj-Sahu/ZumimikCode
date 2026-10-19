@@ -50,7 +50,7 @@ function countConquestStats(subject: TopicNode): { topics: number; practiceSets:
 }
 
 function ExplorerContent() {
-  usePageMeta("Topic Explorer — Exam Arena");
+  usePageMeta("Topic Explorer — Zuzumik");
   const searchParams = useSearchParams();
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);

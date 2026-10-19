@@ -178,7 +178,7 @@ export function RankSignal() {
 
         <div className="text-center px-6">
           <p className="mb-3 tracking-[0.3em] uppercase text-xs text-muted-foreground font-mono">
-            Exam Arena · Season 4
+            Zuzumik · Season 4
           </p>
           <h1
             className="mb-6 leading-[1.05] text-foreground font-display"

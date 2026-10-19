@@ -1,4 +1,4 @@
-# Exam Arena — Frontend Architecture & Standards Audit
+# Zuzumik — Frontend Architecture & Standards Audit
 
 > **Status:** baseline captured 2026-10-18 · remediation tracked in the checklist below.
 > **Branch at audit time:** `feat/dashboard-mascot` @ `b6e8fb7`.

@@ -37,7 +37,7 @@ export default function SprintResultsPage() {
 }
 
 function SprintResultsContent() {
-  usePageMeta("Sprint Results — Exam Arena");
+  usePageMeta("Sprint Results — Zuzumik");
   const router = useRouter();
   const searchParams = useSearchParams();
   const lastResult = useSprintStore((s) => s.lastResult);

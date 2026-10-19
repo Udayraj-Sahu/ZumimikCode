@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 
 export default function AnalyticsPage() {
-  usePageMeta("Analytics — Exam Arena");
+  usePageMeta("Analytics — Zuzumik");
   const { data, isLoading, error } = useAnalyticsData();
   const { headerRef, animateSection } = useEntranceAnimations();
 

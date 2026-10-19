@@ -42,7 +42,7 @@ type PracticeType = "mcq" | "templates";
 type Phase = "config" | "active" | "done";
 
 export default function PracticePage() {
-  usePageMeta("Practice — Exam Arena");
+  usePageMeta("Practice — Zuzumik");
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);

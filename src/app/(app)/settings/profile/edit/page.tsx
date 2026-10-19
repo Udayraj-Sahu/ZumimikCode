@@ -12,7 +12,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Button } from "@/components/ui/button";
 
 export default function EditProfilePage() {
-  usePageMeta("Edit Profile — Exam Arena");
+  usePageMeta("Edit Profile — Zuzumik");
   const router = useRouter();
   const { data } = useProfileData();
   const profile = data?.profile;

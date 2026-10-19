@@ -20,7 +20,7 @@ function formatMembers(n: number): string {
 }
 
 export default function ClubsPage() {
-  usePageMeta("Clubs — Exam Arena");
+  usePageMeta("Clubs — Zuzumik");
   const [tab, setTab] = useState<Tab>("find");
   const [activeFilter, setActiveFilter] = useState<ClubFilter>("All");
   const listRef = useRef<HTMLDivElement>(null);

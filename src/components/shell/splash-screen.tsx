@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { Swords } from "lucide-react";
+import { ZuzumikMark } from "@/components/brand/zuzumik-mark";
+import { ZuzumikWordmark } from "@/components/brand/zuzumik-wordmark";
 
 export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -19,8 +20,10 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
 
   return (
     <div ref={ref} className="fixed inset-0 z-[var(--z-splash)] flex flex-col items-center justify-center bg-background">
-      <Swords className="size-16 text-primary mb-4" />
-        <h1 className="text-2xl font-bold text-white dark:text-white">Exam Arena</h1>
+      <ZuzumikMark className="size-16 mb-4" />
+        <h1 className="flex justify-center text-white dark:text-white">
+          <ZuzumikWordmark className="h-[26px] w-auto" />
+        </h1>
       <p className="text-muted-foreground text-sm mt-1">Arena of Champions</p>
     </div>
   );

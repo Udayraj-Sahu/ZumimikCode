@@ -12,7 +12,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 
 export default function AnalysisPage() {
-  usePageMeta("Analysis — Exam Arena");
+  usePageMeta("Analysis — Zuzumik");
   const router = useRouter();
 
   const lastResult = useSprintStore((s) => s.lastResult);

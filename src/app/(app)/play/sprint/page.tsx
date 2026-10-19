@@ -23,7 +23,7 @@ import { GLASS_02, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from "@/lib/theme-to
 import { formatTime } from "@/lib/format";
 
 function SprintContent() {
-  usePageMeta("Sprint — Exam Arena");
+  usePageMeta("Sprint — Zuzumik");
   const router = useRouter();
   const searchParams = useSearchParams();
   const topic = searchParams.get("topic") ?? "";

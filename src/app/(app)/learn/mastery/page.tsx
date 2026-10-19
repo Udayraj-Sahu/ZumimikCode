@@ -11,7 +11,7 @@ import { useEntranceAnimations } from "@/lib/use-entrance-animations";
 import { GLASS_BG } from "@/lib/theme-tokens";
 
 export default function MasteryPage() {
-  usePageMeta("Topic Mastery — Exam Arena");
+  usePageMeta("Topic Mastery — Zuzumik");
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data, isLoading, error } = useDashboardData(targetExam);
   const topics = useMemo(() => data?.topics ?? [], [data?.topics]);

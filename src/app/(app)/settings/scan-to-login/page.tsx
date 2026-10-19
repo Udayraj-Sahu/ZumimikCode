@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 const STEP_ICON = { phone: Smartphone, web: Globe, check: Check };
 
 export default function ScanToLoginPage() {
-  usePageMeta("Scan to Login — Exam Arena");
+  usePageMeta("Scan to Login — Zuzumik");
   const router = useRouter();
   const scan = useScanPairingCode();
   const approve = useApprovePairing();
@@ -89,7 +89,7 @@ export default function ScanToLoginPage() {
             <h1 className="text-micro font-semibold tracking-[0.22em] text-primary/80">SCAN TO LOGIN</h1>
           </div>
           <p className="text-[12px] text-muted-foreground/45 font-normal">
-            Open a browser at <span className="text-foreground/60">examarena.app</span>
+            Open a browser at <span className="text-foreground/60">zuzumik.app</span>
           </p>
         </div>
 

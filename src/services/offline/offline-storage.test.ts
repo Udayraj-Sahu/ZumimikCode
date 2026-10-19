@@ -14,8 +14,8 @@ import type { ContentFeedbackRequest } from "@/lib/types/content-feedback";
 const DAY = 86_400_000;
 const HOUR = 3_600_000;
 
-const SETTINGS_KEY = "exam-arena-settings";
-const AUTH_KEY = "exam-arena-auth";
+const SETTINGS_KEY = "zuzumik-settings";
+const AUTH_KEY = "zuzumik-auth";
 
 const FEEDBACK: ContentFeedbackRequest = {
   questionId: "q1",
@@ -137,7 +137,7 @@ describe("offline storage edge cases", () => {
       return new Versioned();
     }
 
-    const legacy = versionedDB("ExamArenaMigrationTest", 1, {
+    const legacy = versionedDB("ZuzumikMigrationTest", 1, {
       dashboardCache: "id",
     });
     await legacy.open();
@@ -148,7 +148,7 @@ describe("offline storage edge cases", () => {
     });
     await legacy.close();
 
-    const upgraded = versionedDB("ExamArenaMigrationTest", 2, {
+    const upgraded = versionedDB("ZuzumikMigrationTest", 2, {
       dashboardCache: "id, updatedAt, trustStatus",
       feedbackQueue: "id, createdAt, retryCount",
     });
@@ -164,7 +164,7 @@ describe("offline storage edge cases", () => {
     ).toBe(0);
 
     await upgraded.close();
-    await Dexie.delete("ExamArenaMigrationTest");
+    await Dexie.delete("ZuzumikMigrationTest");
   });
 
   it("5. storage unavailable: reads/writes/reverts never throw and fall back safely", async () => {

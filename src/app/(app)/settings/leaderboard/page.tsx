@@ -65,7 +65,7 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry; index: number }) {
 }
 
 export default function LeaderboardPage() {
-  usePageMeta("Leaderboard — Exam Arena");
+  usePageMeta("Leaderboard — Zuzumik");
   const [period, setPeriod] = useState<"week" | "month" | "all">("all");
   const { data: entries, isLoading, error } = useLeaderboard();
   const { headerRef, animateSection, reduced } = useEntranceAnimations();

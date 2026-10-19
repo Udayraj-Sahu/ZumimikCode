@@ -135,7 +135,7 @@ const MODES: {
 ];
 
 function LearnPageContent() {
-  usePageMeta("Learn — Exam Arena");
+  usePageMeta("Learn — Zuzumik");
   const router = useRouter();
   const searchParams = useSearchParams();
   const targetExam = useOnboardingStore((s) => s.targetExam);

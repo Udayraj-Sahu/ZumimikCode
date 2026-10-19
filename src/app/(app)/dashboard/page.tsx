@@ -49,6 +49,7 @@ import { ArenaIntro } from "@/components/onboarding/arena-intro";
 import { PitchIntro } from "@/components/onboarding/pitch-intro";
 import { HabitTrackerModal } from "@/components/dashboard/habit-tracker-modal";
 import { DashboardWelcome } from "@/components/dashboard/mascot/dashboard-welcome";
+import { ZuzumikMark } from "@/components/brand/zuzumik-mark";
 import { InviteCard } from "@/components/dashboard/invite-card";
 import { ResumeProtocolCard } from "@/components/adaptive/resume-protocol-card";
 import { NumberTicker } from "@/registry/magicui/number-ticker";
@@ -189,7 +190,7 @@ function SlideActionCard({ accent, label, icon: Icon, iconFill, title, desc, cta
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function DashboardPage() {
-  usePageMeta("Dashboard — Exam Arena");
+  usePageMeta("Dashboard — Zuzumik");
   const router = useRouter();
   const accentHex = useAccentHex();
   const activeAccent = useThemeStore((s) => s.accent);
@@ -410,8 +411,8 @@ export default function DashboardPage() {
       {/* Header */}
       <div ref={animateSection} data-section-index={0} className="relative pt-6 pb-2 text-left min-[1025px]:pt-8 max-[359px]:pt-5">
         <div className="relative mb-3 flex flex-wrap items-center justify-start gap-2">
-          <div aria-hidden="true" className="inline-flex items-center gap-2 pill px-2.5 py-2 min-[1025px]:hidden">
-            <Sparkles size={13} className="text-primary" />
+          <div aria-hidden="true" className="inline-flex items-center gap-2 pill px-2 py-1.5 min-[1025px]:hidden">
+            <ZuzumikMark className="size-4" />
           </div>
           <div className="order-last mt-5 w-full min-w-0 md:order-none md:mt-0 md:mr-2 md:w-auto md:flex-1">
             <DashboardWelcome

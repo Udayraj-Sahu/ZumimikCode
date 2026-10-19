@@ -22,7 +22,7 @@ import { CTA_06, CTA_30, GLASS_02, GLASS_BG, GLASS_BORDER, RED_06, RED_30 } from
 import { formatTime } from "@/lib/format";
 
 function MockRunContent() {
-  usePageMeta("Mock Test — Exam Arena");
+  usePageMeta("Mock Test — Zuzumik");
   const router = useRouter();
   const searchParams = useSearchParams();
   const paperId = searchParams.get("paper") ?? "";

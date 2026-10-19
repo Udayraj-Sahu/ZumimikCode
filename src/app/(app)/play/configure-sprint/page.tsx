@@ -17,7 +17,7 @@ import { GLASS_06, GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 import { Button } from "@/components/ui/button";
 
 export default function ConfigureSprintPage() {
-  usePageMeta("Configure Sprint — Exam Arena");
+  usePageMeta("Configure Sprint — Zuzumik");
   const router = useRouter();
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const { data, isLoading } = useSprintTopics(targetExam);

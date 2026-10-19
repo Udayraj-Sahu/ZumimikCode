@@ -83,7 +83,7 @@ export function Walkthrough() {
   const temporalWindow = useOnboardingStore((s) => s.temporalWindow);
   const { start, refresh } = useDriver();
 
-  const domainLabel = DOMAIN_LABELS[targetExam] || "Exam Arena";
+  const domainLabel = DOMAIN_LABELS[targetExam] || "Zuzumik";
   const startedRef = useRef(false);
 
   useEffect(() => {

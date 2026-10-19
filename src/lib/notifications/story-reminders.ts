@@ -89,7 +89,7 @@ export async function applyStoryNotifications(
         for (const day of allDays ? [null] : selectedDays) {
           entries.push({
             id,
-            title: "Exam Arena",
+            title: "Zuzumik",
             body:
               id === 2001
                 ? `Prep time — ${commitment.dailyMinutes ?? 30} min today. Let's go.`
@@ -115,7 +115,7 @@ export async function applyStoryNotifications(
     }
   }
 
-  if (reminder) webOneShot("Exam Arena", `Prep time — ${commitment.dailyMinutes ?? 30} min today.`, reminder);
-  if (trigger) webOneShot("Exam Arena", `Trigger: ${commitment.triggerType || "Focus"} — start now.`, trigger);
+  if (reminder) webOneShot("Zuzumik", `Prep time — ${commitment.dailyMinutes ?? 30} min today.`, reminder);
+  if (trigger) webOneShot("Zuzumik", `Trigger: ${commitment.triggerType || "Focus"} — start now.`, trigger);
   return { requested: true, granted: true, scheduled: true };
 }

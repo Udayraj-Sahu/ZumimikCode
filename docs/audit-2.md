@@ -1,4 +1,4 @@
-# Exam Arena — Audit 2 (Design System & Theme)
+# Zuzumik — Audit 2 (Design System & Theme)
 
 Companion to `docs/QA-AUDIT.md`. Covers the design-system consistency and
 theme-edge-case checklist for the app shell + feature screens.
@@ -183,7 +183,7 @@ plus `resetAppState` invariants.
 - [x] **Stale state** — legacy persisted shapes are healed via `merge`/`migrate` (padded 7-day `weekDays`, default `reclaimConfigs`); mismatched-version blobs without a `migrate` fn and malformed blobs are ignored with defaults kept, no throw.
 - [x] **Race conditions** — concurrent async logins settle to a consistent last-write-wins auth state (no torn/superseded mix); rapid sequential writes persist the final value.
 - [x] **No unnecessary global state** — only serializable data is persisted (never action functions; JSON round-trip safe); transient UI stores (`toast`, `paywall`, `network`, `sprint`, `template`) never write `localStorage`.
-- [x] **No duplicated source of truth** — one unique persist key per store (11 total); `resetAppState` `STORAGE_KEYS` mirrors every persisted store *except* `exam-arena-theme` (theme intentionally survives logout — a conscious exclusion, not drift).
+- [x] **No duplicated source of truth** — one unique persist key per store (11 total); `resetAppState` `STORAGE_KEYS` mirrors every persisted store *except* `zuzumik-theme` (theme intentionally survives logout — a conscious exclusion, not drift).
 - [x] **Store resets correctly** — `resetAppState` restores every store, empties both Dexie tables and clears scratch rows. (Note: the ephemeral toast queue is intentionally not managed by `resetAppState`.)
 - [x] **Persisted values are version-safe** — onboarding `version: 1` + `migrate` is non-throwing for stored versions 0–3; forward migrations keep new keys (`arenaHookSeen`/`pitchHookSeen`) and pad legacy shapes.
 - [x] **Sensitive data isn't unnecessarily persisted** — recursive scan of all persisted payloads: no `password`/`otp`/`pin`/`secret`/`idToken` fields, and the password arg is never stored in auth memory. Acknowledged trade-off to revisit with real JWTs: `token`/`refreshToken` currently persist for session restore.
@@ -308,7 +308,7 @@ Automated coverage: `src/lib/security.test.ts` (vitest + static scans). All 15 c
 - [x] **Android back button** - `enableOnBackInvokedCallback="true"` (predictive back) with `singleTask` launch mode.
 - [x] **Storage perms (as applicable)** - no CAMERA/STORAGE permissions declared - correct, since uploads use the Android Storage Access Framework picker (no runtime permission needed).
 - [x] **Notification permissions** - `POST_NOTIFICATIONS` declared for (currently dark-mode-frozen) notification feature.
-- Device tier / gaps: **deep links** - no intent-filter for `com.examarena.app`; **external links / status & navigation bars / keyboard overlap / backgrounding / resume / killed-and-reopened / file picker / camera (N/A)** - require an on-device QA pass. Splash/status bar theming uses Capacitor defaults (no plugin config in `capacitor.config.ts`).## Responsive & breakpoints
+- Device tier / gaps: **deep links** - no intent-filter for `com.zuzumik.app`; **external links / status & navigation bars / keyboard overlap / backgrounding / resume / killed-and-reopened / file picker / camera (N/A)** - require an on-device QA pass. Splash/status bar theming uses Capacitor defaults (no plugin config in `capacitor.config.ts`).## Responsive & breakpoints
 
 Matrix: 11 primary screens x [320,360,375,390,414,768,1024,1280,1440,1920] + secondary screens x
 [320,375,768,1024,1280,1920], Chromium + mobile-Chrome projects. Auto-verified by

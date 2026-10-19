@@ -258,7 +258,7 @@ function SubscriptionCard() {
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function SettingsPage() {
-  usePageMeta("Settings — Exam Arena");
+  usePageMeta("Settings — Zuzumik");
   const router = useRouter();
   const firstName = useOnboardingStore((s) => s.firstName);
   const targetExam = useOnboardingStore((s) => s.targetExam);

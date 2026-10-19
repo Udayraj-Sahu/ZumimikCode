@@ -20,7 +20,7 @@ export const useSettingsStore = create<SettingsState>()(
       reset: () => set({ soundEnabled: true, hapticEnabled: true }),
     }),
     {
-      name: "exam-arena-settings",
+      name: "zuzumik-settings",
       storage: createJSONStorage(() => safeLocalStorage),
     },
   ),

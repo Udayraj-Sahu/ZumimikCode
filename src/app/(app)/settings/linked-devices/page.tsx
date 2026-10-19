@@ -23,7 +23,7 @@ function timeAgo(lastActive: string): string {
 }
 
 export default function LinkedDevicesPage() {
-  usePageMeta("Linked Devices — Exam Arena");
+  usePageMeta("Linked Devices — Zuzumik");
   const router = useRouter();
   const { data: devices, isLoading, error } = useLinkedDevices();
   const revoke = useRevokeDevice();

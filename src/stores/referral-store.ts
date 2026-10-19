@@ -47,7 +47,7 @@ export const useReferralStore = create<ReferralState>()(
       reset: () => set({ code: null, invitesSent: 0, friendsJoined: 0 }),
     }),
     {
-      name: "exam-arena-referral",
+      name: "zuzumik-referral",
       storage: createJSONStorage(() => safeLocalStorage),
     },
   ),

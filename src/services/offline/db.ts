@@ -16,12 +16,12 @@ export interface QueuedFeedback {
   retryCount: number;
 }
 
-class ExamArenaDB extends Dexie {
+class ZuzumikDB extends Dexie {
   dashboardCache!: Table<DashboardCache, string>;
   feedbackQueue!: Table<QueuedFeedback, string>;
 
   constructor() {
-    super("ExamArenaDB");
+    super("ZuzumikDB");
     this.version(2).stores({
       dashboardCache: "id, updatedAt, trustStatus",
       feedbackQueue: "id, createdAt, retryCount",
@@ -29,4 +29,4 @@ class ExamArenaDB extends Dexie {
   }
 }
 
-export const db = new ExamArenaDB();
+export const db = new ZuzumikDB();

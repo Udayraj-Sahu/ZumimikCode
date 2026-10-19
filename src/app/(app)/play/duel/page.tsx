@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 type Phase = "config" | "active" | "done";
 
 export default function DuelPage() {
-  usePageMeta("Duel — Exam Arena");
+  usePageMeta("Duel — Zuzumik");
   const router = useRouter();
   const feedback = useFeedback();
   const targetExam = useOnboardingStore((s) => s.targetExam);

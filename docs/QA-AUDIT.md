@@ -1,4 +1,4 @@
-# Exam Arena — QA Audit Matrix
+# Zuzumik — QA Audit Matrix
 
 Generated against the "Professional Website + APK Frontend Checklist" (35 sections).
 Status: `[ ]` unchecked = not yet audited/fixed, `[x]` checked = verified fixed/passing, `(~)` = partial.
@@ -9,7 +9,7 @@ dark theme via `:root` CSS vars in `globals.css` + tailwind custom colors (no se
 `IS_MOCK` defaults on.
 
 ## Offline strategy (Dexie/IndexedDB) — as wired on this branch
-- DB: `src/services/offline/db.ts` — `ExamArenaDB` v2, two tables: `dashboardCache` (`id, updatedAt, trustStatus`, TTL) and `feedbackQueue` (`id, createdAt, retryCount`).
+- DB: `src/services/offline/db.ts` — `ZuzumikDB` v2, two tables: `dashboardCache` (`id, updatedAt, trustStatus`, TTL) and `feedbackQueue` (`id, createdAt, retryCount`).
 - Read path: `cacheQueryData("dashboard", data)` writes on dashboard data arrival (`use-dashboard.ts:44`).
 - **[x] Offline read path wired (this branch):** `useDashboardData` now runs `clearExpiredCache()` on mount, loads `getCachedQueryData("dashboard")` into state, uses it as `placeholderData` when offline, and the queryFn falls back to cached data when a fetch fails while offline (`use-dashboard.ts`). `OnlineProvider` also calls `clearExpiredCache()` on boot.
 - Write-buffer path: `submitContentFeedback` (`content-pipeline.ts`) queues to `feedbackQueue` + `syncQueue` when `!isOnline`; `online-provider.tsx` fires `syncAll()` on reconnect (`POST /sync/<key>`, deletes from queue + feedbackQueue on success; failures are retained).
@@ -29,7 +29,7 @@ Routing map used throughout:
 - [~] One source of truth for colors/tokens — `:root` CSS vars in `globals.css` + tailwind `colors` in `tailwind.config.ts`; **JS-side glass/violet tokens centralized** in `src/lib/theme-tokens.ts` (`GLASS_BG`, `GLASS_BORDER`, `VIOLET`, `VIOLET_DIM`, `VIOLET_GLOW`) — replaced 27 files' duplicated local glass/border constants; **all `GLASS_*` JS tokens are now `var(--glass-*)` references** (incl. `GLASS_BORDER`, `GLASS_02`, `GLASS_025`, `GLASS_06`) so they flip in light mode automatically; the generated `.light` block omits `--glass-02/025/06`, so those are added in the hand-written `.light` override (`globals.css` ~481-484) as black-alpha values; system-wide hex-usage sweep pending (landing + per-screen accent palettes to Phase 6 follow-up)
 - [x] Light theme **scoped to app shell** — `.light` flips `[data-theme-scope]` subtrees only (AppShell root + app-internal modal portals: exam-date, add-prep, paywall, adaptive-reprompt, onboarding-modal, habit-tracker-modal, and all 8 onboarding intro overlays arena/feature/story/plan/pitch/seat-builder/family/family-hub). Landing page + landing components + auth/onboarding login page stay **dark always** (zero landing edits per user directive). Toggle: Settings → APPEARANCE.
 - [x] Dark theme completely implemented
-- [~] Theme switching — persisted via `theme-store` (`exam-arena-theme` in localStorage); **white-alpha utilities flip automatically in light mode** because `tailwind.config.ts` maps `white: "rgb(var(--color-white-rgb) / <alpha-value>)"` and `.light` sets `--color-white-rgb: 0 0 0` (confirmed in compiled CSS). Keep-dark console chrome chips (`bg-black/XX` panels with `border-white/·`, e.g. paywall HUD cards, onboarding billing switch/receipt, arena/story/seat/feature/family intro chips) re-assert white via the `.light .keep-white` class (globals.css ~780) so their white borders/icons stay visible in light; same for the dashboard `RollingNumber` odometer rail. `DEEP_BLACK` stays literal — it's a solid surface color, not an alpha glass.
+- [~] Theme switching — persisted via `theme-store` (`zuzumik-theme` in localStorage); **white-alpha utilities flip automatically in light mode** because `tailwind.config.ts` maps `white: "rgb(var(--color-white-rgb) / <alpha-value>)"` and `.light` sets `--color-white-rgb: 0 0 0` (confirmed in compiled CSS). Keep-dark console chrome chips (`bg-black/XX` panels with `border-white/·`, e.g. paywall HUD cards, onboarding billing switch/receipt, arena/story/seat/feature/family intro chips) re-assert white via the `.light .keep-white` class (globals.css ~780) so their white borders/icons stay visible in light; same for the dashboard `RollingNumber` odometer rail. `DEEP_BLACK` stays literal — it's a solid surface color, not an alpha glass.
 
 ### Theme edge cases
 - [x] Text readable (dark mode) — tokens flip via `.light`; residual keep-dark chrome uses `.keep-white` to preserve white-alpha borders/labels (paywall HUD, onboarding chips, dashboard odometer rail)
@@ -310,7 +310,7 @@ Every major screen: loading / success / empty / error / retry / refresh.
 
 ## 23. 📅 Date & Time
 - [ ] Picker / invalid / min / max / same start=end / start>end / timezone / midnight / month & year boundary / leap year / past / future
-- [ ] Exam Arena: Start Date < End Date enforced everywhere (planner, sprint config)
+- [ ] Zuzumik: Start Date < End Date enforced everywhere (planner, sprint config)
 
 ---
 

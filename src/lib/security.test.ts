@@ -86,8 +86,8 @@ describe("security surface", () => {
     expect(isFirebaseConfigured()).toBe(false);
 
     vi.stubEnv("NEXT_PUBLIC_FIREBASE_API_KEY", "AIza-stubbed");
-    vi.stubEnv("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN", "examarena.firebaseapp.com");
-    vi.stubEnv("NEXT_PUBLIC_FIREBASE_PROJECT_ID", "exam-arena");
+    vi.stubEnv("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN", "zuzumik.firebaseapp.com");
+    vi.stubEnv("NEXT_PUBLIC_FIREBASE_PROJECT_ID", "zuzumik");
     expect(isFirebaseConfigured()).toBe(true);
   });
 
@@ -99,7 +99,7 @@ describe("security surface", () => {
     expect(mod.IS_MOCK).toBe(false);
     expect(mod.API_BASE_URL).toBe("https://api.example.com");
     expect(mod.apiUrl("sync/foo")).toBe("https://api.example.com/api/v1/sync/foo");
-    expect(mod.SITE_NAME).toBe("Exam Arena");
+    expect(mod.SITE_NAME).toBe("Zuzumik");
   });
 
   it("7. mock mode is the safe default when NEXT_PUBLIC_API_MOCK is unset", async () => {
@@ -110,13 +110,13 @@ describe("security surface", () => {
   });
 
   it("8. logout clears auth user + token + refreshToken in state AND in the persisted blob", async () => {
-    await useAuthStore.getState().login("alice@examarena.com", "pw1234");
+    await useAuthStore.getState().login("alice@zuzumik.com", "pw1234");
     useAuthStore.getState().setRefreshToken("jwt.refresh.secret");
     await new Promise((r) => setTimeout(r, 0));
 
     expect(useAuthStore.getState().isAuthenticated).toBe(true);
     expect(useAuthStore.getState().token).toBe("mock-jwt-token");
-    const blobBefore = JSON.parse(localStorage.getItem("exam-arena-auth") as string);
+    const blobBefore = JSON.parse(localStorage.getItem("zuzumik-auth") as string);
     expect(blobBefore.state.refreshToken).toBe("jwt.refresh.secret");
 
     useAuthStore.getState().logout();
@@ -127,7 +127,7 @@ describe("security surface", () => {
     expect(st.token).toBeNull();
     expect(st.refreshToken).toBeNull();
     expect(st.isAuthenticated).toBe(false);
-    const blobAfter = JSON.parse(localStorage.getItem("exam-arena-auth") as string);
+    const blobAfter = JSON.parse(localStorage.getItem("zuzumik-auth") as string);
     expect(blobAfter.state.token).toBeNull();
     expect(blobAfter.state.refreshToken).toBeNull();
     expect(blobAfter.state.user).toBeNull();
@@ -135,7 +135,7 @@ describe("security surface", () => {
 
   it("9. login flips the authenticated gate - the flag drives protected-route gating", async () => {
     expect(useAuthStore.getState().isAuthenticated).toBe(false);
-    await useAuthStore.getState().login("bob@examarena.com", "pw1234");
+    await useAuthStore.getState().login("bob@zuzumik.com", "pw1234");
     expect(useAuthStore.getState().isAuthenticated).toBe(true);
   });
 });

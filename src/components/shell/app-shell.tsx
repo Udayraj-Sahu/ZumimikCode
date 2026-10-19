@@ -5,7 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { useRef, useEffect, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
-import { LogOut, Zap, Flame } from "lucide-react";
+import { LogOut, Zap } from "lucide-react";
+import { ZuzumikMark } from "@/components/brand/zuzumik-mark";
+import { ZuzumikWordmark } from "@/components/brand/zuzumik-wordmark";
 import { cn } from "@/lib/utils";
 import { MOBILE_NAV } from "@/lib/mock/dashboard";
 import { useAuthStore } from "@/stores/auth-store";
@@ -86,12 +88,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       >
         {/* Logo */}
         <div className="mb-12 flex items-center gap-3 pl-1.5">
-          <span className="grid size-9 place-items-center rounded bg-primary text-primary-foreground">
-            <Flame size={18} />
-          </span>
-          <span className="hidden whitespace-nowrap text-[19px] font-black tracking-[0.1em] leading-tight text-primary group-hover:block">
-            EXAM ARENA
-          </span>
+          <ZuzumikMark className="size-9" />
+          <ZuzumikWordmark className="hidden h-[27px] w-auto shrink-0 text-primary group-hover:block" />
         </div>
 
         {/* Nav */}

@@ -37,7 +37,7 @@ export const FEED_VIDEOS: FeedVideo[] = [
     id: "quant-speed",
     thumbnailUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=200&h=250&fit=crop",
     label: "Quant Speed Techniques",
-    source: "Exam Arena",
+    source: "Zuzumik",
     duration: "12 min",
   },
   {
@@ -58,7 +58,7 @@ export const FEED_VIDEOS: FeedVideo[] = [
     id: "mock-walkthrough",
     thumbnailUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200&h=250&fit=crop",
     label: "Mock Test Walkthrough",
-    source: "Exam Arena",
+    source: "Zuzumik",
     duration: "20 min",
   },
 ];

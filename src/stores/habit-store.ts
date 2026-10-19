@@ -174,7 +174,7 @@ export const useHabitStore = create<HabitState>()(
       reset: () => set({ habits: DEFAULT_HABITS, logs: SEED_LOGS }),
     }),
     {
-      name: "exam-arena-habits",
+      name: "zuzumik-habits",
       storage: createJSONStorage(() => safeLocalStorage),
     },
   ),

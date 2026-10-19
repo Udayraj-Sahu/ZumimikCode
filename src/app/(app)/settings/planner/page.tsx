@@ -11,7 +11,7 @@ import { GLASS_BG } from "@/lib/theme-tokens";
 import { GlassCard } from "@/components/ui/glass-card";
 
 export default function PlannerPage() {
-  usePageMeta("Study Planner — Exam Arena");
+  usePageMeta("Study Planner — Zuzumik");
   const { data, isLoading, error } = usePlanner();
   const gridRef = useRef<HTMLDivElement>(null);
   const { headerRef, animateSection, staggerIn } = useEntranceAnimations();

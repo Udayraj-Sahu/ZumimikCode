@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test("landing page loads with expected title", async ({ page }) => {
   await page.goto("/");
-  await expect(page).toHaveTitle(/Exam Arena/);
+  await expect(page).toHaveTitle(/Zuzumik/);
   await expect(page.locator("#main-content")).toBeVisible();
 });
 

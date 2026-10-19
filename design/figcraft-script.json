@@ -2,7 +2,7 @@
   {
     "command": "page.rename",
     "params": {
-      "name": "Exam Arena"
+      "name": "Zuzumik"
     }
   },
   {
@@ -3209,7 +3209,7 @@
       "x": 24,
       "y": 40,
       "width": 372,
-      "text": "Exam Arena — Tokens",
+      "text": "Zuzumik — Tokens",
       "props": {
         "fontFamily": "Space Grotesk",
         "fontSize": 20,

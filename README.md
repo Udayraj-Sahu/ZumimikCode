@@ -1,11 +1,11 @@
-# Exam Arena ⚔️ — "Arena of Champions"
+# Zuzumik ⚔️ — "Arena of Champions"
 
 Not a coaching app. **A competitive battlefield** where India's sharpest minds fight, rank, and rise.
 
-Exam Arena is a mobile-first **exam prep & skill-training app** built with **Next.js 14 (App Router) + Capacitor** for Android, featuring a dark glassmorphism design, gamified sprints, habit tracking, adaptive learning, live-friendly rankings, and a "scan to login" device-pairing flow — all wrapped in a shared design system.
+Zuzumik is a mobile-first **exam prep & skill-training app** built with **Next.js 14 (App Router) + Capacitor** for Android, featuring a dark glassmorphism design, gamified sprints, habit tracking, adaptive learning, live-friendly rankings, and a "scan to login" device-pairing flow — all wrapped in a shared design system.
 
 > **Branch**: `feature/frontend-standards-improvements`
-> **Repo**: https://github.com/Udayraj-Sahu/ExamArena.git
+> **Repo**: https://github.com/Udayraj-Sahu/Zuzumik.git
 
 ---
 
@@ -30,7 +30,7 @@ Exam Arena is a mobile-first **exam prep & skill-training app** built with **Nex
 
 ## 📖 Overview
 
-Exam Arena turns exam preparation into a game:
+Zuzumik turns exam preparation into a game:
 
 - **Learn** — choose an exam prep, browse topics, and track mastery.
 - **Sprint** — timed, exam-style competitive bursts (single-domain and full-mock).
@@ -302,7 +302,7 @@ cd android
 - `@capacitor/local-notifications` — native habit reminders (Android).
 - `@capacitor/share` — native share sheets (invite card).
 
-App identity: `appId: "com.examarena.app"`, `appName: "Exam Arena"`, `webDir: "out"` (see `capacitor.config.ts`).
+App identity: `appId: "com.zuzumik.app"`, `appName: "Zuzumik"`, `webDir: "out"` (see `capacitor.config.ts`).
 
 ---
 

@@ -18,7 +18,7 @@ const TYPE_ICON: Record<NotificationItem["type"], typeof Bell> = {
 };
 
 export default function NotificationsPage() {
-  usePageMeta("Notifications — Exam Arena");
+  usePageMeta("Notifications — Zuzumik");
   const [filter, setFilter] = useState<"all" | "unread">("all");
   const { data: notifications, isLoading, error } = useNotifications();
   const listRef = useRef<HTMLDivElement>(null);

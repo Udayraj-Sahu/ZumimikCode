@@ -16,7 +16,7 @@ type ThemeState = {
   reset: () => void;
 };
 
-const STORAGE_KEY = "exam-arena-theme";
+const STORAGE_KEY = "zuzumik-theme";
 
 // `.light` is scoped to app-shell subtrees ([data-theme-scope]) so the landing
 // page and onboarding/auth surfaces never flip. Everything outside those

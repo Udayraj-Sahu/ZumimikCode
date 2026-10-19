@@ -181,7 +181,7 @@ function AchievementCard({ item }: { item: AchievementItem; index: number }) {
 /*  Main Page                                                           */
 /* ------------------------------------------------------------------ */
 export default function AchievementsPage() {
-  usePageMeta("Achievements — Exam Arena");
+  usePageMeta("Achievements — Zuzumik");
   const { data: achievements, isLoading, error } = useAchievements();
   const [activeCategory, setActiveCategory] = useState<AchievementCategory | "all">("all");
   const gridRef = useRef<HTMLDivElement>(null);

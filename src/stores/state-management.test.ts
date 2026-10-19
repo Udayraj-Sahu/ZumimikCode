@@ -22,7 +22,7 @@ import { useToastStore } from "@/stores/toast-store";
 import { useWalkthroughStore } from "@/stores/walkthrough-store";
 
 const DAY = 86_400_000;
-const THEME_KEY = "exam-arena-theme";
+const THEME_KEY = "zuzumik-theme";
 const STORES_DIR = path.join(process.cwd(), "src", "stores");
 
 const PERSISTED_STORES = [
@@ -320,20 +320,20 @@ describe("state management edge cases", () => {
     useThemeStore.getState().setTheme("light");
 
     expect(useAuthStore.getState().isAuthenticated).toBe(true);
-    expect(readStorage("exam-arena-auth")?.state.token).toBe("tk-1");
-    expect(readStorage("exam-arena-settings")?.state.soundEnabled).toBe(false);
-    expect(readStorage("exam-arena-plan")?.state).toMatchObject({ plan: "pro", mocksTaken: 2 });
-    expect(readStorage("exam-arena-rate")?.state.sprintCount).toBe(3);
-    expect(readStorage("exam-arena-walkthrough-v2")?.state.completed).toBe(true);
-    const onb = readStorage("exam-arena-onboarding")?.state;
+    expect(readStorage("zuzumik-auth")?.state.token).toBe("tk-1");
+    expect(readStorage("zuzumik-settings")?.state.soundEnabled).toBe(false);
+    expect(readStorage("zuzumik-plan")?.state).toMatchObject({ plan: "pro", mocksTaken: 2 });
+    expect(readStorage("zuzumik-rate")?.state.sprintCount).toBe(3);
+    expect(readStorage("zuzumik-walkthrough-v2")?.state.completed).toBe(true);
+    const onb = readStorage("zuzumik-onboarding")?.state;
     expect(onb?.isOnboarded).toBe(true);
     expect(onb?.authMethod).toBe("google");
     expect(useHabitStore.getState().getLogsForDate("2026-09-01")).toContain("h1");
-    expect(readStorage("exam-arena-habits")?.state.logs).toHaveLength(
+    expect(readStorage("zuzumik-habits")?.state.logs).toHaveLength(
       useHabitStore.getState().logs.length,
     );
-    expect(readStorage("exam-arena-referral")?.state.code).toMatch(/^ALIC-/);
-    expect(readStorage("exam-arena-adaptive")?.state.states).toHaveProperty("Quant");
+    expect(readStorage("zuzumik-referral")?.state.code).toMatch(/^ALIC-/);
+    expect(readStorage("zuzumik-adaptive")?.state.states).toHaveProperty("Quant");
     expect(readStorage(THEME_KEY)?.state.theme).toBe("light");
   });
 
@@ -444,7 +444,7 @@ describe("state management edge cases", () => {
     expect(settingsData().soundEnabled).toBe(false);
     expect(rateData().sprintCount).toBe(1);
     expect(onboardingData().isOnboarded).toBe(true);
-    expect(JSON.parse(localStorage.getItem("exam-arena-auth")!)).toMatchObject({
+    expect(JSON.parse(localStorage.getItem("zuzumik-auth")!)).toMatchObject({
       state: { isAuthenticated: false },
     });
 
@@ -503,7 +503,7 @@ describe("state management edge cases", () => {
 
   it("9. stale state: legacy persisted shapes are healed; mismatched/malformed blobs are ignored", async () => {
     localStorage.setItem(
-      "exam-arena-onboarding",
+      "zuzumik-onboarding",
       JSON.stringify({ state: { isOnboarded: true, weekDays: [true, false, true] }, version: 0 }),
     );
     await useOnboardingStore.persist.rehydrate();
@@ -520,7 +520,7 @@ describe("state management edge cases", () => {
 
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     localStorage.setItem(
-      "exam-arena-settings",
+      "zuzumik-settings",
       JSON.stringify({ state: { soundEnabled: false, hapticEnabled: false }, version: 999 }),
     );
     await useSettingsStore.persist.rehydrate();
@@ -528,12 +528,12 @@ describe("state management edge cases", () => {
     expect(useSettingsStore.getState().hapticEnabled).toBe(true);
     expect(spy).toHaveBeenCalled();
 
-    localStorage.setItem("exam-arena-rate", JSON.stringify("garbage"));
+    localStorage.setItem("zuzumik-rate", JSON.stringify("garbage"));
     await useRateStore.persist.rehydrate();
     expect(useRateStore.getState().sprintCount).toBe(0);
 
     localStorage.setItem(
-      "exam-arena-onboarding",
+      "zuzumik-onboarding",
       JSON.stringify({ state: { isOnboarded: true }, version: 2 }),
     );
     await useOnboardingStore.persist.rehydrate();
@@ -557,7 +557,7 @@ describe("state management edge cases", () => {
     expect(s.user?.email).toBe("bob@example.com");
     expect(s.token).toBe("mock-jwt-token");
     expect(s.isAuthenticated).toBe(true);
-    expect(JSON.parse(localStorage.getItem("exam-arena-auth")!)).toMatchObject({
+    expect(JSON.parse(localStorage.getItem("zuzumik-auth")!)).toMatchObject({
       state: { user: { name: "bob" } },
     });
   });
@@ -565,7 +565,7 @@ describe("state management edge cases", () => {
   it("10b. race conditions: rapid sequential writes persist the last value", () => {
     useSettingsStore.getState().setSoundEnabled(false);
     useSettingsStore.getState().setSoundEnabled(true);
-    expect(readStorage("exam-arena-settings")?.state.soundEnabled).toBe(true);
+    expect(readStorage("zuzumik-settings")?.state.soundEnabled).toBe(true);
   });
 
   it("11. no unnecessary global state: only serializable data is persisted, never actions", () => {
@@ -602,11 +602,11 @@ describe("state management edge cases", () => {
     useTemplateStore.getState().loadTemplates([], "s");
 
     for (const key of [
-      "exam-arena-toast",
-      "exam-arena-paywall",
-      "exam-arena-network",
-      "exam-arena-sprint",
-      "exam-arena-template",
+      "zuzumik-toast",
+      "zuzumik-paywall",
+      "zuzumik-network",
+      "zuzumik-sprint",
+      "zuzumik-template",
     ]) {
       expect(localStorage.getItem(key)).toBeNull();
     }
@@ -688,7 +688,7 @@ describe("state management edge cases", () => {
   it("14. persisted values are version-safe: migration is non-throwing for old and future versions", async () => {
     for (let v = 0; v <= 3; v++) {
       localStorage.setItem(
-        "exam-arena-onboarding",
+        "zuzumik-onboarding",
         JSON.stringify({ state: { isOnboarded: true, weekDays: [true, false] }, version: v }),
       );
       await useOnboardingStore.persist.rehydrate();

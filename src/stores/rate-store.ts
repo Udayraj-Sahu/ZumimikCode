@@ -24,7 +24,7 @@ export const useRateStore = create<RateState>()(
       reset: () => set({ sprintCount: 0, dismissed: false, neverShowAgain: false }),
     }),
     {
-      name: "exam-arena-rate",
+      name: "zuzumik-rate",
       storage: createJSONStorage(() => safeLocalStorage),
     },
   ),

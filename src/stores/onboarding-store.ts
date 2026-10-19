@@ -230,7 +230,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       finishOnboarding: () => set({ isOnboarded: true }),
     }),
     {
-      name: "exam-arena-onboarding",
+      name: "zuzumik-onboarding",
       storage: createJSONStorage(() => safeLocalStorage),
       version: 1,
       migrate: (persisted) => {

@@ -98,7 +98,7 @@ export const useAuthStore = create<AuthState>()(
         })),
     }),
     {
-      name: "exam-arena-auth",
+      name: "zuzumik-auth",
       storage: createJSONStorage(() => safeLocalStorage),
     },
   ),

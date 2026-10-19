@@ -1,8 +1,8 @@
 import type { Page } from "@playwright/test";
 
-export const AUTH_KEY = "exam-arena-auth";
-export const ONBOARD_KEY = "exam-arena-onboarding";
-export const WALKTHROUGH_KEY = "exam-arena-walkthrough-v2";
+export const AUTH_KEY = "zuzumik-auth";
+export const ONBOARD_KEY = "zuzumik-onboarding";
+export const WALKTHROUGH_KEY = "zuzumik-walkthrough-v2";
 
 export const PRIMARY_WIDTHS = [320, 360, 375, 390, 414, 768, 1024, 1280, 1440, 1920];
 export const EXTREME_WIDTHS = [320, 375, 768, 1024, 1280, 1920];

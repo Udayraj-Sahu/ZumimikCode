@@ -1,5 +1,5 @@
 // Generates design/cards-script.json for `figcraft-cli run --in ... --out ...`.
-// Appends ONE new frame to design/exam-arena.figcraft: the five dashboard
+// Appends ONE new frame to design/zuzumik.figcraft: the five dashboard
 // carousel cards at their shortened (content) heights measured from the built
 // app at a 390px viewport: 366 / 321 / 424 / 313 / 405.
 // Colours/radius/type mirror the app's carousel + the board's existing frames.

@@ -1,5 +1,5 @@
 // Generates design/figcraft-script.json for `figcraft-cli run`.
-// The script drives FigCraft headlessly to build the Exam Arena mobile UI kit.
+// The script drives FigCraft headlessly to build the Zuzumik mobile UI kit.
 // Colours are copied from src/lib/theme-tokens.ts so the design matches the app.
 // `$step` references let a step target a layer an earlier step created, so the
 // generator tracks step indexes while it walks the layer tree.
@@ -264,7 +264,7 @@ const swatch = (label, hex, x, y, w, h, overText) =>
   ]);
 
 const tokens = Fr("Tokens", 1880, 0, 420, 844, { fill: "#0B0D0A", clip: true }, [
-  T("Title", "Exam Arena \u2014 Tokens", 24, 40, 372, { fontFamily: F.head, fontSize: 20, fontStyle: "bold", fill: C.white }),
+  T("Title", "Zuzumik \u2014 Tokens", 24, 40, 372, { fontFamily: F.head, fontSize: 20, fontStyle: "bold", fill: C.white }),
   T("SurfacesLabel", "SURFACES", 24, 82, 200, { fontFamily: F.mono, fontSize: 11, fill: C.muted, letterSpacing: "6%" }),
   swatch("BG", C.bg, 24, 102, 116, 64, "#050505"),
   swatch("Panel", C.panel, 152, 102, 116, 64, "#10140E"),
@@ -299,7 +299,7 @@ const tokens = Fr("Tokens", 1880, 0, 420, 844, { fill: "#0B0D0A", clip: true }, 
 
 /* ---------------------------------------------------------------- Build --- */
 
-steps.unshift({ command: "page.rename", params: { name: "Exam Arena" } });
+steps.unshift({ command: "page.rename", params: { name: "Zuzumik" } });
 
 for (const node of [home, arena, analytics, leaderboard, tokens]) add(node, null);
 

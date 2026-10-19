@@ -17,16 +17,16 @@ import { useWelcomeStore } from "@/stores/welcome-store";
 import { queryClient } from "@/providers/query-provider";
 
 const STORAGE_KEYS = [
-  "exam-arena-auth",
-  "exam-arena-walkthrough-v2",
-  "exam-arena-rate",
-  "exam-arena-onboarding",
-  "exam-arena-plan",
-  "exam-arena-resume",
-  "exam-arena-settings",
-  "exam-arena-adaptive",
-  "exam-arena-habits",
-  "exam-arena-referral",
+  "zuzumik-auth",
+  "zuzumik-walkthrough-v2",
+  "zuzumik-rate",
+  "zuzumik-onboarding",
+  "zuzumik-plan",
+  "zuzumik-resume",
+  "zuzumik-settings",
+  "zuzumik-adaptive",
+  "zuzumik-habits",
+  "zuzumik-referral",
 ];
 
 export async function resetAppState(): Promise<void> {

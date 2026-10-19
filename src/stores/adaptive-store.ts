@@ -34,7 +34,7 @@ export const useAdaptiveStore = create<AdaptiveStoreState>()(
       reset: () => set({ states: {} }),
     }),
     {
-      name: "exam-arena-adaptive",
+      name: "zuzumik-adaptive",
       storage: createJSONStorage(() => safeLocalStorage),
       merge: (persisted, current) => ({ ...current, ...(persisted as Partial<AdaptiveStoreState>) }),
     },

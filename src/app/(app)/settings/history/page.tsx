@@ -69,7 +69,7 @@ function HistoryRow({
 }
 
 export default function HistoryPage() {
-  usePageMeta("Sprint History — Exam Arena");
+  usePageMeta("Sprint History — Zuzumik");
   const targetExam = useOnboardingStore((s) => s.targetExam);
   const domain = targetExam;
   const TOPICS_FILTER_HISTORY = getTopicFilters(domain);

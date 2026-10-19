@@ -1,6 +1,6 @@
 {
-  "title": "Exam Arena — Whole-App UI Audit",
-  "project": "Exam Arena Frontend",
+  "title": "Zuzumik — Whole-App UI Audit",
+  "project": "Zuzumik Frontend",
   "date": "2026-10-16",
   "screenshot_url": null,
   "scope": {
@@ -1183,7 +1183,7 @@
           "tag": "span",
           "ratio": 1.08,
           "need": 4.5,
-          "sample": "Exam Arena",
+          "sample": "Zuzumik",
           "example_combo": "d-dark"
         }
       ],

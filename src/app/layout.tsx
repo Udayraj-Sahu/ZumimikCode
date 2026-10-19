@@ -35,33 +35,37 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Exam Arena — Competitive Learning Platform",
+  title: "Zuzumik — Competitive Learning Platform",
   description:
     "A competitive battlefield where India's sharpest minds fight, rank, and rise through dynamic exam preparation.",
-  keywords: ["exam preparation", "competitive exams", "IIT JEE", "NEET", "UPSC", "online learning", "exam arena", "mock tests"],
+  keywords: ["exam preparation", "competitive exams", "IIT JEE", "NEET", "UPSC", "online learning", "zuzumik", "mock tests"],
   robots: "index, follow",
-  metadataBase: new URL("https://examarena.com"),
+  metadataBase: new URL("https://zuzumik.com"),
   alternates: {
-    canonical: "https://examarena.com",
+    canonical: "https://zuzumik.com",
   },
   openGraph: {
-    title: "Exam Arena — Become the Legend.",
+    title: "Zuzumik — Become the Legend.",
     description:
       "Not a coaching platform. A competitive battlefield where India's sharpest minds fight, rank, and rise.",
     type: "website",
-    url: "https://examarena.com",
-    siteName: "Exam Arena",
+    url: "https://zuzumik.com",
+    siteName: "Zuzumik",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Exam Arena — Competitive Learning Platform",
+    title: "Zuzumik — Competitive Learning Platform",
     description:
       "Not a coaching platform. A competitive battlefield where India's sharpest minds fight, rank, and rise.",
   },
   manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.svg",
-    apple: "/favicon.svg",
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
   other: {
     "theme-color": LIME_BRIGHT,
@@ -93,7 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "WebApplication",
-                name: "Exam Arena",
+                name: "Zuzumik",
                 description:
                   "A competitive exam preparation platform with dynamic progress maps, rankings, and AI coaching.",
                 applicationCategory: "EducationalApplication",

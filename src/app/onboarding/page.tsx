@@ -3,10 +3,12 @@
 import { useEffect, useRef } from "react";
 import { CYAN, LIME_BRIGHT, PURPLE, YELLOW } from "@/lib/theme-tokens";
 import gsap from "gsap";
-import { Globe, Smartphone, Zap, Target, Trophy, Swords } from "lucide-react";
+import { Globe, Smartphone, Zap, Target, Trophy } from "lucide-react";
+import { ZuzumikMark } from "@/components/brand/zuzumik-mark";
 import { useAuthStore } from "@/stores/auth-store";
 import { useWelcomeStore } from "@/stores/welcome-store";
 import { useRouter } from "next/navigation";
+import { ZuzumikWordmark } from "@/components/brand/zuzumik-wordmark";
 
 const FEATURES = [
   { icon: Zap, label: "Speed Drills", color: LIME_BRIGHT },
@@ -109,14 +111,12 @@ export default function OnboardingPage() {
         {/* Brand */}
         <div ref={brandRef} className="flex flex-col items-center gap-4 mb-8 max-[359px]:gap-3 max-[359px]:mb-6">
           <div className="relative">
-            <div className="grid size-16 place-items-center rounded-2xl bg-primary/10 ring-1 ring-primary/20">
-              <Swords size={32} className="text-primary" />
-            </div>
+            <ZuzumikMark className="size-16" />
             <div className="absolute -inset-2 rounded-3xl bg-primary/5 blur-xl" />
           </div>
           <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-black tracking-[0.15em] text-foreground">
-              EXAM ARENA
+            <h1 className="flex justify-center text-foreground">
+              <ZuzumikWordmark className="h-[34px] w-auto md:h-[40px]" />
             </h1>
             <div className="flex items-center justify-center gap-2 mt-1.5">
               <div className="h-px w-6 bg-primary/30" />

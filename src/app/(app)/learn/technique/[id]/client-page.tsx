@@ -14,7 +14,7 @@ export function ClientTechniquePage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { data: technique, isLoading, error } = useTechnique(params.id);
-  usePageMeta(technique ? `${technique.name} — Exam Arena` : "Technique — Exam Arena");
+  usePageMeta(technique ? `${technique.name} — Zuzumik` : "Technique — Zuzumik");
 
   const { headerRef } = useEntranceAnimations();
 

@@ -9,7 +9,6 @@ import {
   Lock,
   MonitorSmartphone,
   Smartphone,
-  Swords,
   QrCode,
   Loader2,
   RefreshCw,
@@ -22,6 +21,8 @@ import {
   usePollPairingStatus,
 } from "@/hooks/queries/use-pairing";
 import type { PairingStatus } from "@/lib/types/pairing";
+import { ZuzumikMark } from "@/components/brand/zuzumik-mark";
+import { ZuzumikWordmark } from "@/components/brand/zuzumik-wordmark";
 
 const ACCENT = "var(--primary)";
 const POLL_INTERVAL_MS = 2500;
@@ -197,11 +198,11 @@ export default function AuthPage() {
 
       <div className="relative w-full max-w-md">
         <div className="mb-6 flex items-center justify-center gap-2.5">
-          <div className="grid size-11 place-items-center rounded-2xl bg-primary/10 ring-1 ring-primary/20">
-            <Swords size={22} className="text-primary" />
-          </div>
+          <ZuzumikMark className="size-11" />
           <div className="text-center">
-            <h1 className="text-lg font-black tracking-[0.15em] text-foreground">EXAM ARENA</h1>
+            <h1 className="flex justify-center text-foreground">
+              <ZuzumikWordmark className="h-[24px] w-auto" />
+            </h1>
             <span className="text-[9px] font-bold tracking-[0.3em] text-primary/60">WEB LOGIN</span>
           </div>
         </div>
@@ -272,7 +273,7 @@ export default function AuthPage() {
 
               <ol className="mt-5 space-y-3">
                 {[
-                  { icon: Smartphone, text: "Open Exam Arena on your phone" },
+                  { icon: Smartphone, text: "Open Zuzumik on your phone" },
                   { icon: QrCode, text: "Tap “Scan to login on web” on your device" },
                   { icon: Check, text: "Confirm the pairing to continue" },
                 ].map((s, i) => {
@@ -320,7 +321,7 @@ export default function AuthPage() {
         </div>
 
         <p className="mt-5 text-center text-[10.5px] text-muted-foreground/60 leading-relaxed">
-          Scan the QR from your phone&apos;s Exam Arena app (<span className="text-muted-foreground/50">Scan to login on web</span>) to link this browser.<br />
+          Scan the QR from your phone&apos;s Zuzumik app (<span className="text-muted-foreground/50">Scan to login on web</span>) to link this browser.<br />
           <span className="text-muted-foreground/40">In preview, the flow is simulated end-to-end.</span>
         </p>
       </div>

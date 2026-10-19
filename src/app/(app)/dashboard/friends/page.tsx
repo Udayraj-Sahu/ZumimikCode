@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { GLASS_06, GLASS_BG, GLASS_BORDER } from "@/lib/theme-tokens";
 
 export default function FriendsPage() {
-  usePageMeta("Friends — Exam Arena");
+  usePageMeta("Friends — Zuzumik");
   const { data, isLoading, error } = useFriends();
   const [tab, setTab] = useState<"friends" | "activity" | "requests">("friends");
   const listRef = useRef<HTMLDivElement>(null);

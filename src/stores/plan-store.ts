@@ -33,7 +33,7 @@ export const usePlanStore = create<PlanStoreState>()(
       reset: () => set({ plan: "free", mocksTaken: 0 }),
     }),
     {
-      name: "exam-arena-plan",
+      name: "zuzumik-plan",
       storage: createJSONStorage(() => safeLocalStorage),
       merge: (persisted, current) => ({ ...current, ...(persisted as Partial<PlanStoreState>) }),
     },

@@ -11,7 +11,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 export default function ProfilePage() {
-  usePageMeta("Profile — Exam Arena");
+  usePageMeta("Profile — Zuzumik");
   const { data, isLoading, error } = useProfileData();
 
   if (isLoading || !data) {

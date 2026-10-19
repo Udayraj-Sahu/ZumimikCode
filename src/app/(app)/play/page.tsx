@@ -115,7 +115,7 @@ function ModeCardButton({ mode }: { mode: ModeCard }) {
 /*  Main page                                                           */
 /* ------------------------------------------------------------------ */
 export default function PlayPage() {
-  usePageMeta("Play — Exam Arena");
+  usePageMeta("Play — Zuzumik");
   const [activeTab, setActiveTab] = useState<TabId>("math");
   const modes = MODES_BY_TAB[activeTab];
   const comingSoon = COMING_SOON[activeTab];

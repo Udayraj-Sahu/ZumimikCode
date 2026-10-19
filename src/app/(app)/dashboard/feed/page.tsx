@@ -12,7 +12,7 @@ import { FEED_HERO, FEED_CATEGORIES, FEED_STORIES, FEED_VIDEOS } from "@/lib/moc
 
 
 export default function FeedPage() {
-  usePageMeta("Feed — Exam Arena");
+  usePageMeta("Feed — Zuzumik");
   const [activeCategory, setActiveCategory] = useState<string>("Explore");
   const scrollRef = useRef<HTMLDivElement>(null);
   const { headerRef, animateSection, staggerIn } = useEntranceAnimations();

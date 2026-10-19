@@ -75,7 +75,7 @@ function FaqAccordion({ items }: { items: FaqItem[] }) {
 }
 
 export default function HelpPage() {
-  usePageMeta("Help & About — Exam Arena");
+  usePageMeta("Help & About — Zuzumik");
   const { data, isLoading, error } = useHelpData();
   const sectionsRef = useRef<HTMLDivElement>(null);
   const { headerRef, staggerIn } = useEntranceAnimations();
@@ -145,12 +145,12 @@ export default function HelpPage() {
             <div data-help-section className="rounded-3xl border border-white/[0.06] backdrop-blur-xl p-4 sm:p-5 max-[359px]:p-3" style={{ background: GLASS_BG }}>
               <h2 className="text-micro font-bold uppercase tracking-[0.18em] text-muted-foreground/40 mb-3">Contact & Support</h2>
               <a
-                href="mailto:report@examarena.io"
+                href="mailto:report@zuzumik.io"
                 className="flex items-center gap-3 rounded-xl border border-white/[0.06] px-4 py-3 text-[12px] font-semibold text-foreground/80 outline-none transition-colors hover:bg-white/[0.04] active:bg-white/[0.06] focus-visible:ring-2 focus-visible:ring-ring backdrop-blur-xl max-[359px]:gap-2 max-[359px]:px-3 max-[359px]:py-2.5 whitespace-nowrap"
                 style={{ background: GLASS_BG }}
               >
                 <Mail size={16} className="text-muted-foreground/40" />
-                report@examarena.io
+                report@zuzumik.io
               </a>
             </div>
 

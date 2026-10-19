@@ -1,4 +1,4 @@
-package com.examarena.app;
+package com.zuzumik.app;
 
 import android.os.Bundle;
 

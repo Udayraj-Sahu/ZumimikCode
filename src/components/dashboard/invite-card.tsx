@@ -25,7 +25,7 @@ export function InviteCard() {
     setOrigin(window.location.origin);
   }, []);
 
-  const shareText = `Join me on Exam Arena — use my invite code ${code} to get started.`;
+  const shareText = `Join me on Zuzumik — use my invite code ${code} to get started.`;
   const inviteLink = code ? `${origin || ""}/?ref=${code}` : "";
   const earnedXp = friendsJoined * REWARD_XP;
 
@@ -48,10 +48,10 @@ export function InviteCard() {
       const { Capacitor } = await import("@capacitor/core");
       if (Capacitor.isNativePlatform()) {
         const { Share } = await import("@capacitor/share");
-        await Share.share({ title: "Exam Arena invite", text: shareText, dialogTitle: "Invite friends" });
+        await Share.share({ title: "Zuzumik invite", text: shareText, dialogTitle: "Invite friends" });
         shared = true;
       } else if (navigator.share) {
-        await navigator.share({ title: "Exam Arena invite", text: shareText });
+        await navigator.share({ title: "Zuzumik invite", text: shareText });
         shared = true;
       }
     } catch {

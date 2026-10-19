@@ -73,7 +73,7 @@ const SLIDES = [
   { num: "01", label: "AGES 6–12", tag: "DAILY HABIT", accent: "emerald", title: "AGES 6–12: THREE SKILLS, ONE PLAY HABIT" },
   { num: "02", label: "DIFFERENTIATOR", tag: "INSIGHT ENGINE", accent: "emerald", title: "PARENT INSIGHT: SEE THE WHOLE PICTURE" },
   { num: "03", label: "COOPERATIVE DOJO", tag: "SHARED JOY", accent: "violet", title: "FAMILY MODE: LEARN TOGETHER" },
-  { num: "04", label: "EXECUTIVE EXAM TRACK", tag: "CAT · GMAT · GRE", accent: "lime", title: "AGES 16+: EXAM ARENA" },
+  { num: "04", label: "EXECUTIVE EXAM TRACK", tag: "CAT · GMAT · GRE", accent: "lime", title: "AGES 16+: ZUZUMIK" },
   { num: "05", label: "PROCESS", tag: "3-STEP LOOP", accent: "lime", title: "HOW IT WORKS" },
 ] as const satisfies readonly { num: string; label: string; tag: string; accent: Accent; title: string }[];
 
@@ -356,7 +356,7 @@ function Slide3() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Slide 4 — exam arena                                               */
+/* Slide 4 — zuzumik                                               */
 /* ------------------------------------------------------------------ */
 
 const PILLARS: { title: string; value: string; sub: string; accent: Accent; icon: React.ReactNode }[] = [

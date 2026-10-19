@@ -38,7 +38,7 @@ export const useResumeStore = create<ResumeStoreState>()(
       reset: () => set({ snapshot: null }),
     }),
     {
-      name: "exam-arena-resume",
+      name: "zuzumik-resume",
       storage: createJSONStorage(() => safeLocalStorage),
       merge: (persisted, current) => ({ ...current, ...(persisted as Partial<ResumeStoreState>) }),
     },

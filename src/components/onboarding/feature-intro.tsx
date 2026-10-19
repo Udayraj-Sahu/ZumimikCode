@@ -589,7 +589,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               }}
               className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] py-3 text-[11px] font-bold uppercase tracking-wider text-[var(--on-accent)] transition-transform hover:scale-[1.02] active:scale-[0.98] md:w-auto md:px-8"
             >
-              Enter Exam Arena{" "}
+              Enter Zuzumik{" "}
               <motion.span
                 className="inline-flex"
                 animate={reduceMotion ? {} : { x: [0, 4, 0] }}

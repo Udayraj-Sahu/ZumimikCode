@@ -30,7 +30,7 @@ export function RatePrompt() {
   const handleRate = () => {
     if (rating === 0) return;
     if (rating >= 4) {
-      window.open("https://play.google.com/store/apps/details?id=com.examarena.app", "_blank");
+      window.open("https://play.google.com/store/apps/details?id=com.zuzumik.app", "_blank");
     }
     setSubmitted(true);
     neverShow();
@@ -64,7 +64,7 @@ export function RatePrompt() {
       >
         <div className="flex items-center justify-between mb-4">
           <h3 id="rate-title" className="text-fluid-xl font-black tracking-tight text-foreground">
-            Enjoying Exam Arena?
+            Enjoying Zuzumik?
           </h3>
           <button
             type="button"

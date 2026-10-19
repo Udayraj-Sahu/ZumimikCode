@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import gsap from "gsap";
-import { X, Flame } from "lucide-react";
+import { X } from "lucide-react";
+import { ZuzumikMark } from "@/components/brand/zuzumik-mark";
 import { AuthPanel } from "./auth-panel";
 import { useAuthStore } from "@/stores/auth-store";
 import { useOnboardingStore } from "@/stores/onboarding-store";
@@ -67,10 +68,8 @@ export function AuthModal({ onClose }: AuthModalProps) {
       >
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
-            <span className="grid size-7 place-items-center rounded bg-primary text-primary-foreground">
-              <Flame size={14} />
-            </span>
-            <span id="auth-modal-title" className="text-fluid-sm font-bold tracking-wider text-foreground">EXAM ARENA</span>
+            <ZuzumikMark className="size-7" />
+            <span id="auth-modal-title" className="text-fluid-sm font-bold tracking-wider text-foreground">ZUZUMIK</span>
           </div>
           <button
             ref={closeBtnRef}

@@ -1,7 +1,7 @@
-// Generates design/screens-script.json — faithful mockups of the real Exam Arena
+// Generates design/screens-script.json — faithful mockups of the real Zuzumik
 // screens, built from the actual components/tokens in src/.
 // Run: node design/build-screens.mjs
-// Then: figcraft-cli run design/screens-script.json --out design/exam-arena-app.figcraft
+// Then: figcraft-cli run design/screens-script.json --out design/zuzumik-app.figcraft
 
 import { writeFileSync } from "node:fs";
 import { dirname } from "node:path";
@@ -148,7 +148,7 @@ const onboarding = screen("01 · Onboarding", 0, [
   E("Glow", 55, 150, 280, 280, { fill: C.lime06, opacity: 0.7 }),
   R("BrandTile", 163, 214, 64, 64, { fill: C.lime10, cornerRadius: 18, stroke: C.lime20, strokeWeight: 1 }),
   glyph("BrandGlyph", 163, 214, 64, "⚔", C.lime, 28),
-  TC("Brand", "EXAM ARENA", 40, 300, 310, 40, {
+  TC("Brand", "ZUZUMIK", 40, 300, 310, 40, {
     fontFamily: F.head,
     fontSize: 28,
     fontStyle: "bold",
@@ -191,7 +191,7 @@ const onboarding = screen("01 · Onboarding", 0, [
     fontSize: 12,
     fill: C.muted,
   }),
-  TC("Foot", "Exam Arena · v1.0", 40, 800, 310, 16, { fontFamily: F.mono, fontSize: 10, fill: "#9CA3AF80" }),
+  TC("Foot", "Zuzumik · v1.0", 40, 800, 310, 16, { fontFamily: F.mono, fontSize: 10, fill: "#9CA3AF80" }),
 ]);
 
 /* ----------------------------------------------------------------- 2 AUTH */
@@ -199,7 +199,7 @@ const auth = screen("02 · Auth (Web Login)", 430, [
   statusBar(),
   R("LogoTile", 167, 148, 56, 56, { fill: C.lime10, cornerRadius: 16, stroke: C.lime20, strokeWeight: 1 }),
   glyph("LogoGlyph", 167, 148, 56, "⚔", C.lime, 24),
-  TC("Brand", "EXAM ARENA", 40, 220, 310, 34, {
+  TC("Brand", "ZUZUMIK", 40, 220, 310, 34, {
     fontFamily: F.head,
     fontSize: 24,
     fontStyle: "bold",
@@ -727,7 +727,7 @@ const titles = [
   "11 Tokens",
 ];
 
-steps.push({ command: "page.rename", params: { name: "Exam Arena · Core Screens" } });
+steps.push({ command: "page.rename", params: { name: "Zuzumik · Core Screens" } });
 frames.forEach((f, i) => {
   const x = 0 + i * 470;
   add(label(titles[i], x), null);

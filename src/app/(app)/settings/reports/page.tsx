@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { formatHoursMinutes } from "@/lib/format";
 
 export default function ReportsPage() {
-  usePageMeta("Reports — Exam Arena");
+  usePageMeta("Reports — Zuzumik");
   const { data, isLoading, error } = useReports();
   const [period, setPeriod] = useState<"7d" | "30d" | "90d">("30d");
   const gridRef = useRef<HTMLDivElement>(null);

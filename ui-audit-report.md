@@ -1,6 +1,6 @@
-# Exam Arena — Whole-App UI Audit
+# Zuzumik — Whole-App UI Audit
 
-**Project:** Exam Arena Frontend  
+**Project:** Zuzumik Frontend  
 **Date:** 2026-10-16  
 **Screens audited:** 40 routes x 6 viewport/theme combos (240 renders)  
 **Method:** code + computed-DOM inspection (automated) — Playwright chromium against static export (out/) on localhost:3008
