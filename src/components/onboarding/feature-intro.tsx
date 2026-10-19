@@ -451,7 +451,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
         aria-labelledby="feature-hook-title"
       >
         <div
-          className="relative flex h-full w-full flex-col overflow-hidden sm:h-auto sm:min-h-0 sm:max-w-md sm:max-h-[90vh] sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
+          className="relative flex h-full w-full flex-col overflow-hidden sm:h-auto sm:min-h-0 sm:max-w-lg sm:max-h-[90vh] md:max-w-3xl md:max-h-[85vh] lg:max-w-4xl xl:max-w-[1080px] sm:rounded-3xl sm:border sm:border-white/[0.06] sm:shadow-2xl"
           style={{
             background: "linear-gradient(180deg, var(--screen-tint) 0%, var(--overlay-solid) 100%)",
           }}
@@ -470,9 +470,11 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
           />
 
           <div className="relative mx-auto flex h-full w-full max-w-[360px] flex-col sm:min-h-0 sm:max-w-none sm:flex-1">
-            <div className={cn("flex-1 min-h-0 overflow-y-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4", theme === "light" ? "pb-5" : "pb-6")}>
+            <div className="flex flex-1 flex-col md:flex-row md:min-h-0">
+              {/* Left column: text/content */}
+              <div className={cn("flex-1 min-h-0 overflow-y-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-[359px]:px-4 md:px-8 md:py-6", theme === "light" ? "pb-5" : "pb-6")}>
             {/* Protocol pill */}
-            <div className="flex justify-center pt-[max(1rem,var(--sat))] pb-3">
+            <div className="flex justify-center pt-[max(1rem,var(--sat))] pb-3 md:justify-start md:pt-2">
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -490,11 +492,11 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               {/* Hero */}
               <motion.section
                 variants={itemVariants}
-                className={theme === "light" ? "mt-5" : "mt-6"}
+                className={theme === "light" ? "mt-5 md:mt-6" : "mt-6 md:mt-8"}
               >
                 <h1
                   id="feature-hook-title"
-                  className="text-[clamp(1.15rem,5.3vw,1.4rem)] font-bold uppercase leading-[1.08] tracking-[-0.035em]"
+                  className="text-[clamp(1.15rem,5.3vw,1.4rem)] md:text-[clamp(1.6rem,2.8vw,2rem)] lg:text-[clamp(1.8rem,3vw,2.2rem)] font-bold uppercase leading-[1.08] tracking-[-0.035em]"
                 >
                   {copy.headline.text}
                   <motion.span
@@ -509,7 +511,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                 </h1>
                 <p
                   className={cn(
-                    "text-[13px] leading-relaxed text-muted-foreground",
+                    "text-[13px] md:text-[13.5px] lg:text-[14px] leading-relaxed text-muted-foreground",
                     theme === "light" ? "mt-2.5" : "mt-3",
                   )}
                 >
@@ -521,7 +523,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               <motion.section
                 variants={itemVariants}
                 aria-labelledby="core-heading"
-                className={theme === "light" ? "mt-5" : "mt-7"}
+                className={theme === "light" ? "mt-5 md:mt-6" : "mt-7 md:mt-8"}
               >
                 <h2
                   id="core-heading"
@@ -536,7 +538,7 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
               <motion.section
                 variants={itemVariants}
                 aria-labelledby="facts-heading"
-                className={theme === "light" ? "mt-3" : "mt-4"}
+                className={theme === "light" ? "mt-3 md:mt-4" : "mt-4 md:mt-6"}
               >
                 <h2
                   id="facts-heading"
@@ -547,34 +549,38 @@ export function FeatureIntro({ variant, onDone, onClose, preloaded = false }: Pr
                 <IncludedCarousel />
               </motion.section>
             </motion.div>
+              </div>
+              {/* Right column: carousel/visual (reserve space) */}
+              <div className="hidden md:flex md:w-1/2 lg:w-[48%] md:min-h-0 md:items-center md:justify-center md:px-6 md:py-6">
+                <div className="relative flex h-full w-full items-center justify-center">
+                  <SystemCarousel />
+                </div>
+              </div>
+            </div>
           </div>
 
-          <footer className={cn("shrink-0 px-5 pb-[max(1rem,var(--sab))]", theme === "light" ? "pt-3.5" : "pt-4")}>
+          <footer className={cn("shrink-0 px-5 pb-[max(1rem,var(--sab))] md:px-8 md:pb-6", theme === "light" ? "pt-3.5 md:pt-4" : "pt-4 md:pt-5")}>
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 exit(onDone);
               }}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] py-3 text-[11px] font-bold uppercase tracking-wider text-[var(--on-accent)] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--lime-solid)] to-[var(--lime-mid)] py-3 text-[11px] font-bold uppercase tracking-wider text-[var(--on-accent)] transition-transform hover:scale-[1.02] active:scale-[0.98] md:w-auto md:px-8"
             >
               Enter Exam Arena{" "}
               <motion.span
                 className="inline-flex"
-                variants={{ hidden: { x: -4, opacity: 0 }, show: { x: 0, opacity: 1 } }}
-                initial="hidden"
-                animate="show"
-                transition={{ delay: 0.5, duration: 0.3 }}
+                animate={reduceMotion ? {} : { x: [0, 4, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
               >
                 <ArrowRight
                   size={14}
-                  strokeWidth={2.5}
-                  className="transition-transform duration-200 group-hover:translate-x-0.5"
+                  className="transition-transform group-hover:translate-x-0.5"
                 />
               </motion.span>
             </button>
           </footer>
-        </div>
         </div>
       </div>
     </MotionConfig>,
