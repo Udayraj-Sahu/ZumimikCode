@@ -9,11 +9,6 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test",
-    "test:a11y": "playwright test tests/e2e/a11y --project=chromium",
     "gen:accent": "node --experimental-strip-types scripts/generate-accent-tokens.ts"
   },
   "dependencies": {
